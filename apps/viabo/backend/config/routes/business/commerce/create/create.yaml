@@ -1,0 +1,4 @@
+commerce-creator:
+  path: '/comercio/registro'
+  controller: Viabo\Backend\Controller\business\commerce\CommerceCreatorController
+  methods: GET

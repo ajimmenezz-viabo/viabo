@@ -16,3 +16,31 @@
 ###> Symfony ###
 /apps/viabo/backend/var/
 ###< Symfony ###
+
+
+# Logs
+/apps/viabo/frontend/logs
+/apps/viabo/frontend/*.log
+/apps/viabo/frontend/npm-debug.log*
+/apps/viabo/frontend/yarn-debug.log*
+/apps/viabo/frontend/yarn-error.log*
+/apps/viabo/frontend/pnpm-debug.log*
+/apps/viabo/frontend/lerna-debug.log*
+
+/apps/viabo/frontend/node_modules
+/apps/viabo/frontend/dist
+/apps/viabo/frontend/dist-ssr
+/apps/viabo/frontend/*.local
+/apps/viabo/frontend/pnpm-lock.yaml
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+

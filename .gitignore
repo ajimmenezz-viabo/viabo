@@ -1,0 +1,18 @@
+###> IDES ###
+/.idea/
+###< IDES ###
+
+###> composer ###
+/vendor/
+/composer.lock
+###< composer ###
+
+###> Files ###
+/.env.local
+/apps/viabo/backend/config/jwt/private.pem
+/apps/viabo/backend/config/jwt/public.pem
+###< Files ###
+
+###> Symfony ###
+/apps/viabo/backend/var/
+###< Symfony ###

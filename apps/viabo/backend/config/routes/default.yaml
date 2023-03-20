@@ -1,0 +1,9 @@
+#default:
+#  path: '/'
+#  controller: Viabo\Backend\Controller\DefaultController
+#  methods: GET
+
+#frontend:
+#  path: '/{path?}'
+#  controller: Siccob\Adist\Backend\Controller\DefaultController
+#  methods: GET

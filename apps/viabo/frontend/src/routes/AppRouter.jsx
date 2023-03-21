@@ -1,18 +1,15 @@
-import { createBrowserRouter, Link } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import TradeRegister from '@/app/business/register/pages/TradeRegister'
 
-export const AppRouter = createBrowserRouter([
-  {
-    path: '/',
-    element: (
-      <div>
-        <h1>Viabo</h1>
-        <Link to="registro/comercio">Registar Comercio </Link>
-      </div>
-    )
-  },
-  {
-    path: 'registro/comercio',
-    element: <TradeRegister />
-  }
-])
+export const AppRouter = () =>
+  useRoutes([
+    {
+      path: '/',
+      element: <h1>Inicio</h1>
+    },
+    {
+      path: '/comercio/registro',
+      element: <TradeRegister />
+    },
+    { path: '*', element: <h1>Pagina No encontrada</h1> }
+  ])

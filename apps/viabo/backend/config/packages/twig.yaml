@@ -1,3 +1,5 @@
 twig:
   globals:
     host: '%env(HOST_VIABO)%'
+  paths:
+    '%kernel.project_dir%/public/react': App

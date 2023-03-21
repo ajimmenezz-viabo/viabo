@@ -11,6 +11,8 @@
 /.env.local
 /apps/viabo/backend/config/jwt/private.pem
 /apps/viabo/backend/config/jwt/public.pem
+apps/viabo/backend/public/assets
+apps/viabo/backend/public/landingPage
 ###< Files ###
 
 ###> Symfony ###

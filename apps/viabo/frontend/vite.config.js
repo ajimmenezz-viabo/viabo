@@ -6,13 +6,25 @@ import path from 'path'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-console.log(`isProduction: ${isProduction}`)
 export default defineConfig({
   mode: isProduction ? 'production' : 'development',
   base: isProduction ? '/react/' : '/',
   build: {
     // publicPath: '/',
-    outDir: path.resolve(__dirname, '..', 'backend/public/react')
+    outDir: path.resolve(__dirname, '..', 'backend/public/react'),
+    rollupOptions: {
+      output: {
+        assetFileNames: assetInfo => {
+          let extType = assetInfo.name.split('.').at(1)
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+            extType = 'img'
+          }
+          return `assets/${extType}/[name]-[hash][extname]`
+        },
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        chunkFileNames: 'assets/js/[name]-[hash].js'
+      }
+    }
   },
   plugins: [react()],
   server: {

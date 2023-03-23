@@ -3,3 +3,12 @@
     text-align: center;
     box-sizing: border-box;
 }
+
+
+.notistack-SnackbarContainer {
+    width: calc(100vh - 200px) !important;
+}
+
+#notistack-snackbar {
+    max-width: 95%;
+}

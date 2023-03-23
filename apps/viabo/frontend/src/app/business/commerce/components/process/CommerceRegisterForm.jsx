@@ -1,59 +1,41 @@
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { Avatar, Box, Button, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { EmailOutlined, PhoneOutlined, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useState } from 'react'
+import { useFormik } from 'formik'
+import { Box, Button, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
+import { EmailOutlined, Visibility, VisibilityOff } from '@mui/icons-material'
+import { commerceRegisterValidation } from '@/app/business/commerce/validations'
+import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { MuiTelInput } from 'mui-tel-input'
 
-export const FormTradeRegister = () => {
+function CommerceRegisterForm({ store }) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const { schema, initialValues } = commerceRegisterValidation()
+  const { setActualProcess, setLastProcess } = store
 
-  const registerValidation = Yup.object({
-    name: Yup.string('Ingresa tu nombre').required('El nombre es requerido'),
-    fullName: Yup.string('Ingresa tus apellidos').required('Los apellidos son requeridos'),
-    email: Yup.string('Ingresa tu correo').email('Ingresa un correo valido').required('El correo es requerido'),
-    password: Yup.string('Ingresa tu contraseña')
-      .min(8, 'La contraseña debe tener al menos 8 caracteres')
-      .required('La contraseña es requerida')
-  })
+  // const { mutate, isError, isLoading } = useRegisterCommerce()
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      fullName: '',
-      phone: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    },
-    validationSchema: registerValidation,
+    initialValues,
+    validationSchema: schema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2))
+      // alert(JSON.stringify(values, null, 2))
+      setActualProcess(PROCESS_LIST.VALIDATION_REGISTER_CODE)
+      setLastProcess({ info: values, name: PROCESS_LIST.REGISTER })
     }
   })
 
   return (
-    <Box
-      sx={{
-        minHeight: '600px',
-        height: { xs: '100vh', sm: 'calc(100vh - 200px)' },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center',
-        mx: 5,
-        zIndex: 1
-      }}
-      className="animate__animated animate__fadeIn"
-    >
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon sx={{ color: 'text.primary' }} />
-      </Avatar>
-      <Typography component="h2">VIABO</Typography>
+    <>
+      <Stack direction={'column'} width={1} spacing={1}>
+        <Typography variant="h4" color="textPrimary" align="center">
+          Registrar Comercio
+        </Typography>
+        <Typography paragraph align="center" variant="body1" color={'text.secondary'} whiteSpace="pre-line">
+          Ingrese la información para iniciar con el proceos de registro.
+        </Typography>
+      </Stack>
 
-      <Box width={1} mt={3} component={'form'} onSubmit={formik.handleSubmit}>
+      <Box width={1} mt={4} component={'form'} onSubmit={formik.handleSubmit}>
         <Stack spacing={3} direction={'column'}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
             <TextField
@@ -99,22 +81,15 @@ export const FormTradeRegister = () => {
               }}
             />
 
-            <TextField
-              fullWidth
+            <MuiTelInput
               name="phone"
-              type="tel"
-              label="Telefono"
-              value={formik.values.phone}
-              placeholder={'(+52) 55-55-55-55'}
-              error={formik.touched.phone && Boolean(formik.errors.phone)}
-              helperText={formik.touched.phone && formik.errors.phone}
-              onChange={formik.handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PhoneOutlined />
-                  </InputAdornment>
-                )
+              fullWidth
+              langOfCountryName="es"
+              preferredCountries={['MX', 'US']}
+              continents={['NA', 'SA']}
+              value={formik.values.phone || '+52'}
+              onChange={(value, info) => {
+                formik.setFieldValue('phone', value)
               }}
             />
           </Stack>
@@ -170,6 +145,8 @@ export const FormTradeRegister = () => {
           </Button>
         </Stack>
       </Box>
-    </Box>
+    </>
   )
 }
+
+export default CommerceRegisterForm

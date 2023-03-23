@@ -1,15 +1,15 @@
 import { styled } from '@mui/material/styles'
 import { Grid, Paper } from '@mui/material'
-import { FormTradeRegister } from '@/app/business/register/components'
+import { RegisterProcess } from '@/app/business/commerce/components'
 import { Page } from '@/shared/components/containers'
 
 const ContainerStyle = styled('div')(({ theme }) => ({
   display: 'flex',
-  maxWidth: '1170px',
+  maxWidth: theme.breakpoints.values.lg,
   margin: '0 auto',
-  minHeight: '600px',
-  height: { xs: '100vh', sm: 'calc(100vh - 200px)' },
+  height: '100%',
   zIndex: '100000',
+  justifyContent: 'center',
   backgroundColor: theme.palette.background.paper,
   [theme.breakpoints.up('md')]: {
     borderRadius: '12px',
@@ -30,18 +30,18 @@ const RegisterContainer = styled('div')(({ theme }) => ({
   }
 }))
 
-function TradeRegister() {
+function CommerceRegister() {
   return (
     <Page title="Registro Comercio">
       <RegisterContainer className="animate__animated animated__fadeIn">
         <ContainerStyle>
-          <Grid container spacing={0} component="main">
+          <Grid container spacing={0} component="main" justifyContent={'center'}>
             <Grid
               item
               component={Paper}
               elevation={0}
               xs={false}
-              sm={4}
+              sm={false}
               md={6}
               sx={{
                 borderRadius: '8px 0px 0px 8px',
@@ -55,7 +55,7 @@ function TradeRegister() {
             <Grid
               item
               xs={12}
-              sm={8}
+              sm={12}
               md={6}
               alignItems="center"
               justify="center"
@@ -63,7 +63,7 @@ function TradeRegister() {
               elevation={10}
               sx={{ borderRadius: '0px 8px 8px 0px' }}
             >
-              <FormTradeRegister />
+              <RegisterProcess />
             </Grid>
           </Grid>
         </ContainerStyle>
@@ -72,4 +72,4 @@ function TradeRegister() {
   )
 }
 
-export default TradeRegister
+export default CommerceRegister

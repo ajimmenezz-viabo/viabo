@@ -1,15 +1,19 @@
 import { useRoutes } from 'react-router-dom'
-import TradeRegister from '@/app/business/register/pages/TradeRegister'
+import { LoadableRoute } from '@/routes/LoadableRoute'
+import { lazy } from 'react'
+import { Typography } from '@mui/material'
 
 export const AppRouter = () =>
   useRoutes([
     {
       path: '/',
-      element: <h1>Inicio</h1>
+      element: <Typography variant={'h1'}>Inicio</Typography>
     },
     {
       path: '/comercio/registro',
-      element: <TradeRegister />
+      element: <CommerceRegister />
     },
-    { path: '*', element: <h1>Pagina No encontrada</h1> }
+    { path: '*', element: <Typography variant={'h1'}>Pagina No encontrada</Typography> }
   ])
+
+const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))

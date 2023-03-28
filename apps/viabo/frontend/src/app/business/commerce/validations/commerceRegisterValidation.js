@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-export const commerceRegisterValidation = () => {
+export const commerceRegisterValidation = store => {
   const registerValidation = Yup.object({
     name: Yup.string('Ingresa tu nombre').required('El nombre es requerido'),
     fullName: Yup.string('Ingresa tus apellidos').required('Los apellidos son requeridos'),
@@ -13,18 +13,24 @@ export const commerceRegisterValidation = () => {
       ),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden')
-      .required('La confirmación de la contraseña es requerida')
+      .required('La confirmación de la contraseña es requerida'),
+    terms: Yup.bool().oneOf([true], 'Debe aceptar los acuerdos y condiciones')
   })
+
+  const register = {
+    name: '',
+    fullName: '',
+    phone: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    terms: false
+  }
+
+  const init = store?.lastProcess?.info || register
 
   return {
     schema: registerValidation,
-    initialValues: {
-      name: '',
-      fullName: '',
-      phone: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    }
+    initialValues: init
   }
 }

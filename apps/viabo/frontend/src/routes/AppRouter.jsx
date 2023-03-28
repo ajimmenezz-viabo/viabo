@@ -7,7 +7,7 @@ export const AppRouter = () =>
   useRoutes([
     {
       path: '/',
-      element: <Typography variant={'h1'}>Inicio</Typography>
+      element: <Typography variant={'h1'}>Modo Desarrollo</Typography>
     },
     {
       path: '/comercio/registro',

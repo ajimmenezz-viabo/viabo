@@ -1,37 +1,51 @@
 import { useState } from 'react'
-import { Box, Divider, Link, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
 import { MuiOtpInput } from 'mui-one-time-password-input'
 import mail from '@/shared/assets/img/mail.svg'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { matchIsNumeric } from '@/shared/utils'
-import { useSnackbar } from 'notistack'
+import { useSendValidationCode, useValidateCode } from '@/app/business/commerce/hooks'
+import { PROCESS_LIST } from '@/app/business/commerce/services'
 
 RegisterCodeValidation.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
 
 function RegisterCodeValidation({ store }) {
-  const { lastProcess } = store
+  const { lastProcess, setActualProcess, setLastProcess } = store
   const { info } = lastProcess
-  const { enqueueSnackbar } = useSnackbar()
+  const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
+  const { mutate: validateCode, isLoading: isValidatingCode, isError: isErrorValidatingCode, reset } = useValidateCode()
 
   const [otp, setOtp] = useState('')
 
   const handleChange = newValue => {
     setOtp(newValue)
+    reset()
   }
 
   const validateChar = (value, index) => matchIsNumeric(value)
 
   const handleComplete = value => {
-    setOtp('')
+    setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
+    setLastProcess()
+    // validateCode(
+    //   { code: value },
+    //   {
+    //     onSuccess: () => {
+    //       setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
+    //       setLastProcess()
+    //     },
+    //     onError: () => {
+    //       setOtp('')
+    //     }
+    //   }
+    // )
   }
 
   const handleResendCode = () => {
-    enqueueSnackbar('Código Reenviado!', {
-      variant: 'success'
-    })
+    sendValidationCode({})
   }
 
   return (
@@ -68,17 +82,31 @@ function RegisterCodeValidation({ store }) {
         onComplete={handleComplete}
         onChange={handleChange}
         validateChar={validateChar}
-        TextFieldsProps={{ placeholder: '-' }}
+        sx={{ gap: { xs: 1.5, sm: 2, md: 3 } }}
+        TextFieldsProps={{ placeholder: '-', error: isErrorValidatingCode, disabled: isValidatingCode }}
       />
+      {Boolean(isErrorValidatingCode) && (
+        <Box mt={1}>
+          <Typography variant={'caption'} color={'error'}>
+            Código incorrecto
+          </Typography>
+        </Box>
+      )}
       <Box mb={5}>
         <Divider sx={{ my: 4 }}>
           <Stack direction={'row'} spacing={1} justifyContent={'center'}>
-            <Typography variant={'body2'}>¿No tengo un código?</Typography>
-            <Link underline={'hover'} sx={{ cursor: 'pointer' }} onClick={handleResendCode}>
-              <Typography variant={'body2'} color={'primary'}>
-                Reenviar código
-              </Typography>
-            </Link>
+            {isSendingCode ? (
+              <CircularProgress wid sx={{ mx: 3 }} />
+            ) : (
+              <>
+                <Typography variant={'body2'}>¿No tengo un código?</Typography>
+                <Link underline={'hover'} sx={{ cursor: 'pointer' }} onClick={handleResendCode}>
+                  <Typography variant={'body2'} color={'primary'}>
+                    Reenviar código
+                  </Typography>
+                </Link>
+              </>
+            )}
           </Stack>
         </Divider>
       </Box>

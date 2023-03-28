@@ -19,8 +19,8 @@ const StyledSnackbarProvider = styled(SnackbarProvider)(({ theme }) => ({
   },
   '&.notistack-MuiContent': {
     borderRadius: theme.shape.borderRadius,
-    color: theme.palette.grey[theme.palette.mode === 'light' ? 0 : 800],
-    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 900 : 0]
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.mode === 'light' ? theme.palette.background.neutral : theme.palette.background.paper
   },
   '&.SnackbarItem-variantSuccess, &.SnackbarItem-variantError, &.SnackbarItem-variantWarning, &.SnackbarItem-variantInfo':
     {

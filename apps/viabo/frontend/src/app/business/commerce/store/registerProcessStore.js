@@ -5,16 +5,19 @@ import PropTypes from 'prop-types'
 
 export const propTypesStore = {
   actualProcess: PropTypes.string,
+  token: PropTypes.string,
   lastProcess: PropTypes.shape({
     name: PropTypes.any,
     info: PropTypes.any
   }),
   getComponent: PropTypes.func,
   setLastProcess: PropTypes.func,
-  setActualProcess: PropTypes.func
+  setActualProcess: PropTypes.func,
+  setToken: PropTypes.func
 }
 const processStore = (set, get) => ({
   actualProcess: PROCESS_LIST.REGISTER,
+  token: null,
   lastProcess: {
     name: null,
     info: null
@@ -22,11 +25,19 @@ const processStore = (set, get) => ({
   processList: [
     {
       name: PROCESS_LIST.REGISTER,
-      component: () => import('@/app/business/commerce/components/process/CommerceRegisterForm')
+      component: () => import('@/app/business/commerce/components/process/register/CommerceRegisterForm')
     },
     {
       name: PROCESS_LIST.VALIDATION_REGISTER_CODE,
       component: () => import('@/app/business/commerce/components/process/RegisterCodeValidation')
+    },
+    {
+      name: PROCESS_LIST.SERVICES_SELECTION,
+      component: () => import('@/app/business/commerce/components/process/ServicesSelection')
+    },
+    {
+      name: PROCESS_LIST.COMMERCE_INFO,
+      component: () => import('@/app/business/commerce/components/process/CommerceInfo')
     }
   ],
   getComponent: () => {
@@ -38,7 +49,7 @@ const processStore = (set, get) => ({
     const { lastProcess } = get()
     set(state => ({
       ...state,
-      actualProcess: lastProcess.name || PROCESS_LIST.REGISTER
+      actualProcess: lastProcess?.name ?? PROCESS_LIST.REGISTER
     }))
   },
   setLastProcess: process => {
@@ -54,6 +65,12 @@ const processStore = (set, get) => ({
     set(state => ({
       ...state,
       actualProcess: processName
+    }))
+  },
+  setToken: token => {
+    set(state => ({
+      ...state,
+      token
     }))
   }
 })

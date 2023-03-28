@@ -2,14 +2,17 @@ import * as Yup from 'yup'
 
 export const commerceRegisterValidation = store => {
   const registerValidation = Yup.object({
-    name: Yup.string('Ingresa tu nombre').required('El nombre es requerido'),
-    fullName: Yup.string('Ingresa tus apellidos').required('Los apellidos son requeridos'),
-    email: Yup.string('Ingresa tu correo').email('Ingresa un correo valido').required('El correo es requerido'),
-    password: Yup.string('Ingresa tu contraseña')
+    name: Yup.string().required('El nombre es requerido'),
+    lastName: Yup.string().required('Los apellidos son requeridos'),
+    email: Yup.string().email('Ingresa un correo valido').required('El correo es requerido'),
+    phone: Yup.string()
+      .required('El telefono es requerido')
+      .test('longitud', 'El telefono es muy corto', value => !(value && value.replace(/[\s+]/g, '').length < 10)),
+    password: Yup.string()
       .required('La contraseña es requerida')
       .matches(
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})',
-        'La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número'
+        '^(?=(?:.*\\d))(?=.*[A-Z])(?=.*[a-z])(?=.*[_\\-.\\@])\\S{8,16}$',
+        'La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula , un número y un caracter especial [ - _ . @]'
       ),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden')
@@ -17,9 +20,9 @@ export const commerceRegisterValidation = store => {
     terms: Yup.bool().oneOf([true], 'Debe aceptar los acuerdos y condiciones')
   })
 
-  const register = {
+  const initRegister = {
     name: '',
-    fullName: '',
+    lastName: '',
     phone: '',
     email: '',
     password: '',
@@ -27,10 +30,8 @@ export const commerceRegisterValidation = store => {
     terms: false
   }
 
-  const init = store?.lastProcess?.info || register
-
   return {
     schema: registerValidation,
-    initialValues: init
+    initialValues: initRegister
   }
 }

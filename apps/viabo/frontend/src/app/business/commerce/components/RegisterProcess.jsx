@@ -1,14 +1,21 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useRegisterProcessStore } from '@/app/business/commerce/store'
 import CommerceRegisterForm from '@/app/business/commerce/components/process/register/CommerceRegisterForm'
 import { Box, Button, CircularProgress, Stack } from '@mui/material'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { shallow } from 'zustand/shallow'
 
 export const RegisterProcess = () => {
-  const component = useRegisterProcessStore(state => state.getComponent())
-  const returnComponent = useRegisterProcessStore(state => state.returnComponent)
-  const store = useRegisterProcessStore()
-  const { actualProcess } = store
+  const component = useRegisterProcessStore(state => state.getComponent(), shallow)
+  const returnComponent = useRegisterProcessStore(state => state.returnComponent, shallow)
+  const store = useRegisterProcessStore(state => state, shallow)
+  const { actualProcess, setToken } = store
+
+  useEffect(() => {
+    if (actualProcess === PROCESS_LIST.REGISTER) {
+      setToken(null)
+    }
+  }, [actualProcess])
 
   const handleBack = () => {
     returnComponent()

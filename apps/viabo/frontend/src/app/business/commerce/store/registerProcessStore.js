@@ -28,8 +28,8 @@ const processStore = (set, get) => ({
       component: () => import('@/app/business/commerce/components/process/register/CommerceRegisterForm')
     },
     {
-      name: PROCESS_LIST.VALIDATION_REGISTER_CODE,
-      component: () => import('@/app/business/commerce/components/process/RegisterCodeValidation')
+      name: PROCESS_LIST.VALIDATION_CODE,
+      component: () => import('@/app/business/commerce/components/process/ValidationCode')
     },
     {
       name: PROCESS_LIST.SERVICES_SELECTION,
@@ -42,7 +42,7 @@ const processStore = (set, get) => ({
   ],
   getComponent: () => {
     const { processList, actualProcess } = get()
-    const componentDefault = () => import('@/app/business/commerce/components/process/RegisterCodeValidation')
+    const componentDefault = () => import('@/app/business/commerce/components/process/ValidationCode')
     return processList.find(process => process.name === actualProcess).component ?? componentDefault
   },
   returnComponent: () => {

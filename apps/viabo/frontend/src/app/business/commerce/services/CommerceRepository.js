@@ -1,12 +1,12 @@
 import { axios } from '@/shared/interceptors'
 
 export const createNewCommerce = async commerce => {
-  const { data } = await axios.post('/api/business/commerce/new', commerce)
+  const { data } = await axios.post('/api/security/legalRepresentative/new', commerce)
   return data
 }
 
 export const getCommerceToken = async commerceEmail => {
-  const { data } = await axios.get('/api/business/commerce/token', commerceEmail)
+  const { data } = await axios.get(`/api/register/commerce/legalRepresentative/find/${commerceEmail}`)
   return data
 }
 

@@ -22,6 +22,7 @@ import RegisterWithGoogle from '@/app/business/commerce/components/process/regis
 import { useRegisterCommerce } from '@/app/business/commerce/hooks'
 import { LoadingButton } from '@mui/lab'
 import { AlertWithFocus } from '@/shared/components/alerts'
+import { NewCommerceAdapter } from '@/app/business/commerce/adapters'
 
 CommerceRegisterForm.propTypes = {
   store: PropTypes.shape(propTypesStore)
@@ -31,25 +32,25 @@ function CommerceRegisterForm({ store }) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { schema, initialValues } = useMemo(() => commerceRegisterValidation(store), [store])
-  const { setActualProcess, setLastProcess, setToken } = store
+  const { setActualProcess, setLastProcess } = store
 
   const {
     mutate: registerCommerce,
     isError: isErrorRegisterCommerce,
-    isLoading: isCreatingCommerce
+    isLoading: isCreatingCommerce,
+    error
   } = useRegisterCommerce()
 
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
     onSubmit: values => {
-      // setActualProcess(PROCESS_LIST.VALIDATION_REGISTER_CODE)
-      // setLastProcess({ info: values, name: PROCESS_LIST.REGISTER })
-      // setToken('13')
-      registerCommerce(values, {
+      const commerceAdapter = NewCommerceAdapter(values)
+      const { email } = commerceAdapter
+      registerCommerce(commerceAdapter, {
         onSuccess: () => {
-          setActualProcess(PROCESS_LIST.VALIDATION_REGISTER_CODE)
-          setLastProcess({ info: values, name: PROCESS_LIST.REGISTER })
+          setActualProcess(PROCESS_LIST.VALIDATION_CODE)
+          setLastProcess({ info: { email }, name: PROCESS_LIST.REGISTER })
           setSubmitting(false)
         },
         onError: () => {
@@ -85,8 +86,9 @@ function CommerceRegisterForm({ store }) {
       </Stack>
 
       {isErrorRegisterCommerce && (
-        <AlertWithFocus listenElement={isErrorRegisterCommerce} sx={{ mt: 3 }} severity="warning">
-          <AlertTitle sx={{ textAlign: 'initial' }}>Error al crear comercio</AlertTitle>No se puede crear el comercio
+        <AlertWithFocus listenElement={isErrorRegisterCommerce} sx={{ mt: 3, textAlign: 'initial' }} severity="warning">
+          <AlertTitle sx={{ textAlign: 'initial' }}>Error al registrar el comercio</AlertTitle>
+          {error}
         </AlertWithFocus>
       )}
 
@@ -109,11 +111,11 @@ function CommerceRegisterForm({ store }) {
 
             <TextField
               fullWidth
-              name="fullName"
+              name="lastName"
               label="Apellidos"
-              value={values.fullName}
-              error={touched.fullName && Boolean(errors.fullName)}
-              helperText={touched.fullName && errors.fullName}
+              value={values.lastName}
+              error={touched.lastName && Boolean(errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
               onChange={handleChange}
               disabled={loading}
             />
@@ -151,6 +153,8 @@ function CommerceRegisterForm({ store }) {
               onChange={(value, info) => {
                 setFieldValue('phone', value)
               }}
+              error={touched.phone && Boolean(errors.phone)}
+              helperText={touched.phone && errors.phone}
             />
           </Stack>
 

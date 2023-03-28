@@ -26,12 +26,26 @@ export default defineConfig({
       }
     }
   },
+
   plugins: [react()],
   server: {
     port: 3000,
     hmr: {
       host: 'localhost',
       overlay: true
+    },
+    proxy: {
+      '**': {
+        target: 'http://viabo:80/',
+        changeOrigin: true,
+        secure: false
+      },
+      '/api': {
+        target: 'http://viabo:80/',
+        changeOrigin: true,
+        secure: false,
+        ws: true
+      }
     }
   },
   resolve: {

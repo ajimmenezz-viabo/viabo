@@ -1,22 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
 import { MuiOtpInput } from 'mui-one-time-password-input'
 import mail from '@/shared/assets/img/mail.svg'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { matchIsNumeric } from '@/shared/utils'
-import { useSendValidationCode, useValidateCode } from '@/app/business/commerce/hooks'
+import { useFindCommerceToken, useSendValidationCode, useValidateCode } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 
-RegisterCodeValidation.propTypes = {
+ValidationCode.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
 
-function RegisterCodeValidation({ store }) {
-  const { lastProcess, setActualProcess, setLastProcess } = store
+function ValidationCode({ store }) {
+  const { lastProcess, setActualProcess, setLastProcess, setToken } = store
   const { info } = lastProcess
   const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
   const { mutate: validateCode, isLoading: isValidatingCode, isError: isErrorValidatingCode, reset } = useValidateCode()
+  const { data, isError } = useFindCommerceToken(info?.email)
+
+  useEffect(() => {
+    if (data) {
+      setToken(data?.token)
+    }
+  }, [data])
 
   const [otp, setOtp] = useState('')
 
@@ -28,20 +35,20 @@ function RegisterCodeValidation({ store }) {
   const validateChar = (value, index) => matchIsNumeric(value)
 
   const handleComplete = value => {
-    setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
-    setLastProcess()
-    // validateCode(
-    //   { code: value },
-    //   {
-    //     onSuccess: () => {
-    //       setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
-    //       setLastProcess()
-    //     },
-    //     onError: () => {
-    //       setOtp('')
-    //     }
-    //   }
-    // )
+    // setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
+    // setLastProcess()
+    validateCode(
+      { code: value },
+      {
+        onSuccess: () => {
+          setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
+          setLastProcess()
+        },
+        onError: () => {
+          setOtp('')
+        }
+      }
+    )
   }
 
   const handleResendCode = () => {
@@ -114,4 +121,4 @@ function RegisterCodeValidation({ store }) {
   )
 }
 
-export default RegisterCodeValidation
+export default ValidationCode

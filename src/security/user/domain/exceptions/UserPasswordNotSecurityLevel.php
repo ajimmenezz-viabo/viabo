@@ -20,6 +20,6 @@ final class UserPasswordNotSecurityLevel extends DomainError
 
     public function errorMessage(): string
     {
-        return "El password no cumple con nivel de seguridad requerida: $this->message";
+        return "La contraseña no cumple con nivel de seguridad requerida: $this->message";
     }
 }

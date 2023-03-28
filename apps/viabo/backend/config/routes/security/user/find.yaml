@@ -1,0 +1,4 @@
+user-find-for-register-commerce:
+  path: '/api/register/commerce/legalRepresentative/find/{username}'
+  controller: Viabo\Backend\Controller\security\user\find\LegalRepresentativeFinderController
+  methods: GET

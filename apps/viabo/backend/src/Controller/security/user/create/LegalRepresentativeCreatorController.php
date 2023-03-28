@@ -1,18 +1,19 @@
 <?php
-namespace Viabo\Backend\Controller\business\commerce;
+
+namespace Viabo\Backend\Controller\security\user\create;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\create\CommerceCreator;
-use Viabo\business\commerce\application\create\CommerceCreatorRequest;
+use Viabo\security\user\application\create\LegalRepresentativeCreator;
+use Viabo\security\user\application\create\LegalRepresentativeRequest;
 
 
-final class CommerceCreatorController extends AbstractController
+final class LegalRepresentativeCreatorController extends AbstractController
 {
 
-    public function __construct(private readonly CommerceCreator $creator)
+    public function __construct(private readonly LegalRepresentativeCreator $creator)
     {
     }
 
@@ -20,10 +21,11 @@ final class CommerceCreatorController extends AbstractController
     {
         try {
             $data = $request->toArray();
-            $request = new CommerceCreatorRequest(
+            $request = new LegalRepresentativeRequest(
                 $data['name'],
                 $data['lastname'],
                 $data['phone'],
+                $data['email'],
                 $data['password'],
                 $data['confirmPassword']
             );

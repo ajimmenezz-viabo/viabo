@@ -1,4 +1,4 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { useSettings } from '@theme/hooks/useSettings'
 import { useMemo } from 'react'
 import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
@@ -29,10 +29,12 @@ export const CustomTheme = ({ children }) => {
   theme.components = ComponentsOverrides(theme)
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </StyledEngineProvider>
   )
 }
 

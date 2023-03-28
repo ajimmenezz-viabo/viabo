@@ -1,21 +1,24 @@
-// ----------------------------------------------------------------------
-
-export default function CssBaseline() {
+export default function CssBaseline(theme) {
   return {
     MuiCssBaseline: {
       styleOverrides: {
         '*': {
-          boxSizing: 'border-box',
-          '*::-webkit-scrollbar': {
-            height: 6,
-            width: '0.4em'
-          },
-          '*::-webkit-scrollbar-track': {
-            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
-          },
-          '*::-webkit-scrollbar-thumb': {
-            borderRadius: '7px'
-          }
+          margin: 0,
+          padding: 0,
+          boxSizing: 'border-box'
+        },
+        html: {
+          width: '100%',
+          height: '100%',
+          WebkitOverflowScrolling: 'touch'
+        },
+        body: {
+          width: '100%',
+          height: '100%'
+        },
+        '#root': {
+          width: '100%',
+          height: '100%'
         },
         // input: {
         //   '&[type=number]': {

@@ -1,13 +1,15 @@
 import axios from 'axios'
-import { HOST_API } from '@/config'
+import { isHTML } from '@/shared/utils'
 
 const axiosInstance = axios.create({
-  baseURL: HOST_API
+  // baseURL: '/'
 })
 
 axiosInstance.interceptors.response.use(
   response => response,
-  error => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+  error => Promise.reject(error)
 )
+
+export const getErrorAPI = (error, errorMessage = '') => (error.data && !isHTML(error.data) ? error.data : errorMessage)
 
 export default axiosInstance

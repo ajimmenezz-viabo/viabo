@@ -1,4 +1,4 @@
 commerce-creator:
   path: '/api/commerce/new'
   controller: Viabo\Backend\Controller\business\commerce\CommerceCreatorController
-  methods: GET
+  methods: POST

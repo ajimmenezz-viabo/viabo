@@ -3,8 +3,9 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
-parameters:
 imports:
+  - { resource: ../../../../src/business/shared/infrastructure/symfony/dependencyInjection/business_database.yaml }
+  - { resource: ../../../../src/security/shared/infrastructure/symfony/dependencyInjection/security_database.yaml }
 
 services:
   # default configuration for services in *this* file
@@ -12,17 +13,24 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+  #Configure
+  _instanceof:
+    Viabo\shared\domain\bus\event\DomainEventSubscriber:
+      tags: [ 'domain_event_subscriber' ]
 
-  # makes classes in src/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
+  # Wire
   Viabo\:
     resource: '../../../../src'
 
-  # controllers are imported separately to make sure services can be injected
-  # as action arguments even if you don't extend any base controller class
   Viabo\Backend\Controller\:
     resource: '../src/Controller'
     tags: [ 'controller.service_arguments' ]
 
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+  # TAGGING
+  Viabo\shared\infrastructure\bus\event\DomainEventMapping:
+    arguments: [ !tagged domain_event_subscriber ]
+    lazy: true
+
+#  viabo.user_authenticator:
+#    class: Viabo\shared\infrastructure\symfony\security\UserAuthenticator
+#    parent: lexik_jwt_authentication.security.jwt_authenticator

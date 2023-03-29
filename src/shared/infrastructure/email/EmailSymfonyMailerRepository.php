@@ -22,7 +22,7 @@ final readonly class EmailSymfonyMailerRepository implements EmailRepository
         list($to , $subject , $template , $context) = $email->content();
 
         $email = (new TemplatedEmail())
-            ->from('test@viabo.com.mx')
+            ->from($_ENV['MAILER_FROM'])
             ->to(...$to)
             ->subject($subject)
             ->htmlTemplate($template)

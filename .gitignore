@@ -13,6 +13,7 @@
 /apps/viabo/backend/config/jwt/public.pem
 apps/viabo/backend/public/assets
 apps/viabo/backend/public/landingPage
+/apps/viabo/backend/public/.htaccess
 ###< Files ###
 
 ###> Symfony ###

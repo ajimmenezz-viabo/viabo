@@ -13,22 +13,18 @@ final  class Code extends AggregateRoot
         private readonly CodeId       $id ,
         private readonly CodeUserId   $userId ,
         private readonly CodeValue    $value ,
-        private readonly CodeType     $type ,
         private readonly CodeRegister $register ,
-        private readonly CodeStatus   $status
     )
     {
     }
 
-    public static function create(string $userId, string $codeType): self
+    public static function create(string $userId): self
     {
         return new self(
-            new CodeId(''),
-            new CodeUserId($userId),
-            CodeValue::random(),
-            new CodeType($codeType),
-            CodeRegister::create(),
-            new CodeStatus('Pending')
+            new CodeId('') ,
+            new CodeUserId($userId) ,
+            CodeValue::random() ,
+            CodeRegister::create()
         );
 
     }
@@ -37,7 +33,17 @@ final  class Code extends AggregateRoot
     {
         $userData['code'] = $this->value->value();
         $this->record(new CodeCreatedDomainEvent(
-            $this->userId->value(), $userData
+            $this->userId->value() , $userData
         ));
+    }
+
+    public function isNotSame(string $verificationCode): bool
+    {
+        return $this->value->isNotSame($verificationCode);
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->register->isExpired();
     }
 }

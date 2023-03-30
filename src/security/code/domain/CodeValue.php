@@ -17,4 +17,9 @@ final class CodeValue extends StringValueObject
     {
         return strval(random_int(100000,999999));
     }
+
+    public function isNotSame(string $verificationCode): bool
+    {
+        return $verificationCode !== $this->value;
+    }
 }

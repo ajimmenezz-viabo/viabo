@@ -12,7 +12,7 @@ use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CodeCreator implements DomainEventSubscriber
 {
-    public function __construct(private CodeRepository $repository, private EventBus $bus)
+    public function __construct(private CodeRepository $repository , private EventBus $bus)
     {
     }
 
@@ -26,7 +26,7 @@ final readonly class CodeCreator implements DomainEventSubscriber
         $userId = $event->aggregateId();
         $userData = $event->toPrimitives();
 
-        $code = Code::create($userId , 'verification');
+        $code = Code::create($userId);
         $code->setEventCreated($userData);
         $this->repository->save($code);
 

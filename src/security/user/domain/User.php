@@ -78,4 +78,18 @@ final class User extends AggregateRoot
             'active' => $this->active->value()
         ];
     }
+
+    public function toArray(): array
+    {
+        return [
+            'profile' => $this->profile->value() ,
+            'name' => $this->name->value() ,
+            'lastname' => $this->lastname->value() ,
+            'phone' => $this->phone->value() ,
+            'email' => $this->email->value() ,
+            'password' => $this->password->value() ,
+            'register' => $this->register->value() ,
+            'active' => $this->active->value()
+        ];
+    }
 }

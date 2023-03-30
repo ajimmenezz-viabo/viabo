@@ -21,6 +21,7 @@ abstract class DateTimeValueObject
 
     public function value(): string
     {
+        self::setDate();
         return empty($this->value) ? '' : $this->date->formatDateTime($this->value);
     }
 

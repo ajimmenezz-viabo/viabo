@@ -18,11 +18,11 @@ final  class Code extends AggregateRoot
     {
     }
 
-    public static function create(string $userId): self
+    public static function create(CodeUserId $userId): self
     {
         return new self(
             new CodeId('') ,
-            new CodeUserId($userId) ,
+            $userId ,
             CodeValue::random() ,
             CodeRegister::create()
         );

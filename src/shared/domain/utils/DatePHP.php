@@ -105,17 +105,25 @@ class DatePHP
         return date('Y-m-d' , strtotime($date . '- ' . $weeks . ' week'));
     }
 
-    public function differenceDays(string $date , string $now): int
+    public function lastDayOfTheMonth(string $date): string
     {
         $this->timeZone();
-        $date = date_create($date);
-        $now = date_create($now);
-        $difference = $date->diff($now);
-
-        return intval($difference->days);
+        $date = new DateTime($date);
+        return $date->format('Y-m-t');
     }
 
-    public function differenceDates(string $date1 , string $date2 , string $format): string
+    public function lastDayOfWeek(string $date , string $dayOfWeek): string
+    {
+        $this->timeZone();
+        $date = new DateTime($date);
+        $date->modify('last ' . $dayOfWeek);
+        return $date->format('Y-m-d');
+    }
+
+    /**
+     * @param string $format Each format character must be prefixed with a percent sign (%), example %h %i %s
+     */
+    public function diffDates(string $date1 , string $date2 , string $format): string
     {
         $this->timeZone();
         $date1 = date_create($date1);
@@ -125,9 +133,25 @@ class DatePHP
         return $difference->format($format);
     }
 
-    public function differenceToNow(string $d): string
+    public function diffInDays(string $date1 , string $date2): int
     {
-        $date = new DateTime($d);
+        $this->timeZone();
+        $date1 = date_create($date1);
+        $date2 = date_create($date2);
+        $difference = $date1->diff($date2);
+
+        return intval($difference->days);
+    }
+
+    public function diffInMinutes(string $date1 , string $date2): float
+    {
+        $minutes = (strtotime($date1) - strtotime($date2)) / 60;
+        return floor(abs($minutes));
+    }
+
+    public function diffNow(string $dateOld): string
+    {
+        $date = new DateTime($dateOld);
         $dateNow = new DateTime();
         $diff = date_diff($date , $dateNow);
 
@@ -154,19 +178,5 @@ class DatePHP
         return $timeDiff;
     }
 
-    public function lastDayOfTheMonth(string $date): string
-    {
-        $this->timeZone();
-        $date = new DateTime($date);
-        return $date->format('Y-m-t');
-    }
-
-    public function lastDayOfWeek(string $date , string $dayOfWeek): string
-    {
-        $this->timeZone();
-        $date = new DateTime($date);
-        $date->modify('last ' . $dayOfWeek);
-        return $date->format('Y-m-d');
-    }
 
 }

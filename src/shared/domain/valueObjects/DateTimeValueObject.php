@@ -24,6 +24,11 @@ abstract class DateTimeValueObject
         return empty($this->value) ? '' : $this->date->formatDateTime($this->value);
     }
 
+    protected function setDate(): void
+    {
+        $this->date = new DatePHP();
+    }
+
     private function validate(?string $value): ?string
     {
         if ($value === '0000-00-00 00:00:00') {

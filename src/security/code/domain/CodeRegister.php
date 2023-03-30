@@ -12,4 +12,11 @@ final class CodeRegister extends DateTimeValueObject
     {
         return new self(self::todayDate());
     }
+
+    public function isExpired(): bool
+    {
+        $this->setDate();
+        $diffMinutes = $this->date->diffInMinutes($this->value , $this->date->dateTime());
+        return $diffMinutes > 60;
+    }
 }

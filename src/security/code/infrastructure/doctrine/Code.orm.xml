@@ -8,9 +8,7 @@
         <embedded name="id" class="CodeId" use-column-prefix="false"/>
         <embedded name="userId" class="CodeUserId" use-column-prefix="false"/>
         <embedded name="value" class="CodeValue" use-column-prefix="false"/>
-        <embedded name="type" class="CodeType" use-column-prefix="false"/>
         <embedded name="register" class="CodeRegister" use-column-prefix="false"/>
-        <embedded name="status" class="CodeStatus" use-column-prefix="false"/>
     </entity>
 
 </doctrine-mapping>

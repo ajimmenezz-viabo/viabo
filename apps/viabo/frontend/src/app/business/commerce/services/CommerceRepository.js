@@ -10,13 +10,13 @@ export const getCommerceToken = async commerceEmail => {
   return data
 }
 
-export const sendValidationCode = async () => {
-  const { data } = await axios.post('/api/business/commerce/token')
+export const sendValidationCode = async token => {
+  const { data } = await axios.post('/api/code/verification/resend', token)
   return data
 }
 
 export const validateCode = async validationCode => {
-  const { data } = await axios.post('/api/business/commerce/validationCode', validationCode)
+  const { data } = await axios.post('/api/code/verificate', validationCode)
   return data
 }
 

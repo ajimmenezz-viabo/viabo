@@ -38,7 +38,7 @@ function ValidationCode({ store }) {
     // setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
     // setLastProcess()
     validateCode(
-      { code: value },
+      { verificationCode: value, token: data?.token },
       {
         onSuccess: () => {
           setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
@@ -52,7 +52,7 @@ function ValidationCode({ store }) {
   }
 
   const handleResendCode = () => {
-    sendValidationCode({})
+    sendValidationCode({ token: data?.token })
   }
 
   return (

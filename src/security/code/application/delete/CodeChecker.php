@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\security\code\application\update;
+namespace Viabo\security\code\application\delete;
 
 
 use Viabo\security\code\domain\CodeRepository;

@@ -6,28 +6,26 @@ namespace Viabo\security\code\application\create;
 
 use Viabo\security\code\domain\Code;
 use Viabo\security\code\domain\CodeRepository;
-use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
-use Viabo\shared\domain\bus\event\DomainEventSubscriber;
+use Viabo\security\code\domain\CodeUserId;
+use Viabo\security\code\domain\services\DeleteCodeExist;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CodeCreator implements DomainEventSubscriber
+final readonly class CodeCreator
 {
-    public function __construct(private CodeRepository $repository , private EventBus $bus)
+    public function __construct(
+        private CodeRepository  $repository ,
+        private DeleteCodeExist $deleteCodeExist,
+        private EventBus        $bus
+    )
     {
     }
 
-    public static function subscribedTo(): array
+    public function __invoke(CodeUserId $userId , array $userData): void
     {
-        return [LegalRepresentativeCreatedDomainEvent::class];
-    }
-
-    public function __invoke(LegalRepresentativeCreatedDomainEvent $event): void
-    {
-        $userId = $event->aggregateId();
-        $userData = $event->toPrimitives();
-
         $code = Code::create($userId);
         $code->setEventCreated($userData);
+
+        ($this->deleteCodeExist)($userId);
         $this->repository->save($code);
 
         $this->bus->publish(...$code->pullDomainEvents());

@@ -1,6 +1,6 @@
 <?php
 
-namespace Viabo\Backend\Controller\security\code\delete;
+namespace Viabo\Backend\Controller\security\code\create;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
@@ -8,15 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\security\code\application\delete\CodeChecker;
-use Viabo\security\code\application\delete\CodeCheckerRequest;
+use Viabo\security\code\application\create\CreateCodeCommand;
+use Viabo\security\code\application\create\CreateCodeCommandHandler;
 
 
-final class CodeCheckerController extends AbstractController
+final class CodeCreatorController extends AbstractController
 {
     public function __construct(
-        private readonly CodeChecker         $updater ,
-        private readonly JWTEncoderInterface $JWTEncoder
+        private readonly CreateCodeCommandHandler $handler ,
+        private readonly JWTEncoderInterface      $JWTEncoder
     )
     {
     }
@@ -26,7 +26,7 @@ final class CodeCheckerController extends AbstractController
         try {
             $data = $request->toArray();
             $tokenData = $this->JWTEncoder->decode($data['token']);
-            ($this->updater)(new CodeCheckerRequest($tokenData['id'], $data['verificationCode']));
+            ($this->handler)(new CreateCodeCommand($tokenData['id']));
 
             return new JsonResponse('' , Response::HTTP_OK);
         } catch (\DomainException $exception) {

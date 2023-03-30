@@ -12,5 +12,7 @@ interface UserRepository
 
     public function search(UserEmail $email): ?User;
 
+    public function searchId(UserId $userId): ?User;
+
     public function searchCriteria(Criteria $criteria): array;
 }

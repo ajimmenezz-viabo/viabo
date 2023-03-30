@@ -23,6 +23,6 @@ final class UserDoesNotExist extends DomainError
 
     public function errorMessage(): string
     {
-        return "El usuario con $this->value no existe";
+        return "El usuario $this->value no existe";
     }
 }

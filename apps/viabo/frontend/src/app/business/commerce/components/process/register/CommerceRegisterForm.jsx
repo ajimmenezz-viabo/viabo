@@ -3,6 +3,7 @@ import { useFormik } from 'formik'
 import {
   AlertTitle,
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   IconButton,
@@ -15,7 +16,7 @@ import { EmailOutlined, Visibility, VisibilityOff } from '@mui/icons-material'
 import { commerceRegisterValidation } from '@/app/business/commerce/validations'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { MuiTelInput } from 'mui-tel-input'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import RegisterWithGoogle from '@/app/business/commerce/components/process/register/RegisterWithGoogle'
@@ -73,6 +74,10 @@ function CommerceRegisterForm({ store }) {
   } = formik
 
   const loading = isCreatingCommerce || isSubmitting
+
+  const handleContinueProcess = () => {
+    setActualProcess(PROCESS_LIST.CONTINUE_PROCESS)
+  }
 
   return (
     <>
@@ -219,13 +224,13 @@ function CommerceRegisterForm({ store }) {
               label={
                 <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
                   He leído y acepto los &nbsp;
-                  <Link underline="always" color="primary" href=".#">
+                  <RouterLink underline="always" color="primary" href=".#">
                     Terminos
-                  </Link>
+                  </RouterLink>
                   &nbsp; y &nbsp;
-                  <Link underline="always" color="text.secondary" href=".#">
+                  <RouterLink underline="always" color="text.secondary" href=".#">
                     Acuerdos de privacidad
-                  </Link>
+                  </RouterLink>
                   .
                 </Typography>
               }
@@ -247,6 +252,8 @@ function CommerceRegisterForm({ store }) {
           >
             Registrar
           </LoadingButton>
+
+          <Button onClick={handleContinueProcess}>{'>> Continuar proceso'}</Button>
         </Stack>
       </Box>
     </>

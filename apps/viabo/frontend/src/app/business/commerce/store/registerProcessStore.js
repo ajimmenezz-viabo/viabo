@@ -38,6 +38,10 @@ const processStore = (set, get) => ({
     {
       name: PROCESS_LIST.COMMERCE_INFO,
       component: () => import('@/app/business/commerce/components/process/CommerceInfo')
+    },
+    {
+      name: PROCESS_LIST.CONTINUE_PROCESS,
+      component: () => import('@/app/business/commerce/components/process/ProcessContinue')
     }
   ],
   getComponent: () => {
@@ -45,16 +49,8 @@ const processStore = (set, get) => ({
     const componentDefault = () => import('@/app/business/commerce/components/process/ValidationCode')
     return processList.find(process => process.name === actualProcess).component ?? componentDefault
   },
-  returnComponent: () => {
-    const { lastProcess } = get()
-    set(state => ({
-      ...state,
-      actualProcess: lastProcess?.name ?? PROCESS_LIST.REGISTER
-    }))
-  },
   setLastProcess: process => {
     set(state => ({
-      ...state,
       lastProcess: {
         name: process?.name || null,
         info: process?.info || null
@@ -63,13 +59,11 @@ const processStore = (set, get) => ({
   },
   setActualProcess: processName => {
     set(state => ({
-      ...state,
       actualProcess: processName
     }))
   },
   setToken: token => {
     set(state => ({
-      ...state,
       token
     }))
   }

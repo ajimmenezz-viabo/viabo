@@ -13,11 +13,13 @@ ValidationCode.propTypes = {
 }
 
 function ValidationCode({ store }) {
-  const { lastProcess, setActualProcess, setLastProcess, setToken } = store
+  const { lastProcess, setActualProcess, setLastProcess, setToken, token } = store
   const { info } = lastProcess
   const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
   const { mutate: validateCode, isLoading: isValidatingCode, isError: isErrorValidatingCode, reset } = useValidateCode()
-  const { data, isError } = useFindCommerceToken(info?.email)
+  const { data, isError } = useFindCommerceToken(info?.email, {
+    enabled: Boolean(info?.email)
+  })
 
   useEffect(() => {
     if (data) {
@@ -35,10 +37,8 @@ function ValidationCode({ store }) {
   const validateChar = (value, index) => matchIsNumeric(value)
 
   const handleComplete = value => {
-    // setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
-    // setLastProcess()
     validateCode(
-      { verificationCode: value, token: data?.token },
+      { verificationCode: value, token },
       {
         onSuccess: () => {
           setActualProcess(PROCESS_LIST.SERVICES_SELECTION)

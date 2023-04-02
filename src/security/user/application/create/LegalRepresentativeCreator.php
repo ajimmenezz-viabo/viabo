@@ -11,10 +11,10 @@ use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class LegalRepresentativeCreator
 {
-    private const PROFILE = '3';
+    private const LEGAL_REPRESENTATIVE_PROFILE = '3';
     private UserValidator $validator;
 
-    public function __construct(private UserRepository $repository, private EventBus $bus)
+    public function __construct(private UserRepository $repository , private EventBus $bus)
     {
         $this->validator = new UserValidator($this->repository);
     }
@@ -22,13 +22,13 @@ final readonly class LegalRepresentativeCreator
     public function __invoke(LegalRepresentativeRequest $request): void
     {
         $user = User::create(
-            self::PROFILE ,
-            $request->getName(),
-            $request->getLastname(),
-            $request->getPhone(),
-            $request->getEmail(),
-            $request->getPassword(),
-            $request->getConfirmPassword()
+            self::LEGAL_REPRESENTATIVE_PROFILE ,
+            $request->name ,
+            $request->lastname ,
+            $request->phone ,
+            $request->email ,
+            $request->password ,
+            $request->confirmPassword
         );
 
         $this->validator->validateNotExist($user);

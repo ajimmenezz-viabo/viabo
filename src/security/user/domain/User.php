@@ -38,14 +38,14 @@ final class User extends AggregateRoot
             new UserProfile($profile) ,
             UserName::create($name) ,
             UserLastname::create($lastname) ,
-            new UserPhone($phone) ,
+            UserPhone::create($phone) ,
             UserEmail::create($email) ,
             UserPassword::create($password , $confirmPassword) ,
             UserRegister::create() ,
             new UserActive('1') ,
         );
 
-        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id() , $user->eventData()));
+        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id() , $user->id() , $user->toArray()));
 
         return $user;
     }
@@ -63,20 +63,6 @@ final class User extends AggregateRoot
     public function password(): string
     {
         return $this->password->value();
-    }
-
-    private function eventData(): array
-    {
-        return [
-            'profile' => $this->profile->value() ,
-            'name' => $this->name->value() ,
-            'lastname' => $this->lastname->value() ,
-            'phone' => $this->phone->value() ,
-            'email' => $this->email->value() ,
-            'password' => $this->password->value() ,
-            'register' => $this->register->value() ,
-            'active' => $this->active->value()
-        ];
     }
 
     public function toArray(): array

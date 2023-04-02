@@ -8,7 +8,7 @@ use Viabo\security\code\domain\CodeUserId;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
-final readonly class LegalRepresentativeCreated implements DomainEventSubscriber
+final readonly class CreateCodeByLegalRepresentativeCreated implements DomainEventSubscriber
 {
     public function __construct(private CodeCreator $creator)
     {
@@ -24,6 +24,6 @@ final readonly class LegalRepresentativeCreated implements DomainEventSubscriber
         $userId = new CodeUserId($event->aggregateId());
         $userData = $event->toPrimitives();
 
-        ($this->creator)($userId , $userData);
+//        ($this->creator)($userId , $userData);
     }
 }

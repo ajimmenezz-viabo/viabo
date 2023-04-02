@@ -1,0 +1,4 @@
+commerce-finder:
+  path: '/api/commerce/{token}'
+  controller: Viabo\Backend\Controller\business\commerce\CommerceFinderController
+  methods: GET

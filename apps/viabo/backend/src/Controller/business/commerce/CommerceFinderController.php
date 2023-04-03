@@ -26,7 +26,7 @@ final class CommerceFinderController extends AbstractController
             $tokenData = $this->JWTEncoder->decode($token);
             $data = ($this->handler)(new CommerceFinderCommand($tokenData['id']));
 
-            return new JsonResponse(['data' => $data]);
+            return new JsonResponse($data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         } catch (JWTDecodeFailureException $e) {

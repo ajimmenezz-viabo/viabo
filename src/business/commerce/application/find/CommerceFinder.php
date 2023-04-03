@@ -7,6 +7,7 @@ namespace Viabo\business\commerce\application\find;
 use Viabo\business\commerce\domain\Commerce;
 use Viabo\business\commerce\domain\CommerceLegalRepresentative;
 use Viabo\business\commerce\domain\CommerceRepository;
+use Viabo\business\commerce\domain\exceptions\CommerceNotExist;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
@@ -23,10 +24,16 @@ final readonly class CommerceFinder
         ]);
         $commerces = $this->repository->searchCriteria(new Criteria($filters));
 
-        return array_map(function (Commerce $commerce) {
+        if(empty($commerces)){
+            throw new CommerceNotExist();
+        }
+
+        $commerces = array_map(function (Commerce $commerce) {
             $commerce = $commerce->toArray();
             unset($commerce['legalRepresentative'] , $commerce['active']);
             return $commerce;
         } , $commerces);
+
+        return $commerces[0];
     }
 }

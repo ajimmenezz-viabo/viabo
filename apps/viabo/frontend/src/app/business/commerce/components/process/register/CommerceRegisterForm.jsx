@@ -19,7 +19,6 @@ import { MuiTelInput } from 'mui-tel-input'
 import { Link as RouterLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
-import RegisterWithGoogle from '@/app/business/commerce/components/process/register/RegisterWithGoogle'
 import { useRegisterCommerce } from '@/app/business/commerce/hooks'
 import { LoadingButton } from '@mui/lab'
 import { AlertWithFocus } from '@/shared/components/alerts'
@@ -98,7 +97,7 @@ function CommerceRegisterForm({ store }) {
       )}
 
       <Box width={1} mt={4} component={'form'} onSubmit={handleSubmit}>
-        <RegisterWithGoogle />
+        {/* <RegisterWithGoogle /> */}
         <Stack spacing={3} pb={5} direction="column">
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
             <TextField

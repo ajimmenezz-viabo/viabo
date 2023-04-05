@@ -7,11 +7,12 @@ import { shallow } from 'zustand/shallow'
 export const RegisterProcess = () => {
   const component = useRegisterProcessStore(state => state.getComponent)
   const store = useRegisterProcessStore(state => state, shallow)
-  const { actualProcess, setToken, lastProcess, setActualProcess } = store
+  const { actualProcess, setToken, lastProcess, setActualProcess, setResume } = store
 
   useEffect(() => {
     if (actualProcess === PROCESS_LIST.REGISTER) {
       setToken(null)
+      setResume(null)
     }
   }, [actualProcess, setToken])
 

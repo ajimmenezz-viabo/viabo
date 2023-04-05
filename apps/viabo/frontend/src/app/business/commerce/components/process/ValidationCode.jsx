@@ -5,7 +5,12 @@ import mail from '@/shared/assets/img/mail.svg'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { matchIsNumeric } from '@/shared/utils'
-import { useFindCommerceToken, useSendValidationCode, useValidateCode } from '@/app/business/commerce/hooks'
+import {
+  useFindCommerceProcess,
+  useFindCommerceToken,
+  useSendValidationCode,
+  useValidateCode
+} from '@/app/business/commerce/hooks'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 
 ValidationCode.propTypes = {
@@ -13,19 +18,31 @@ ValidationCode.propTypes = {
 }
 
 function ValidationCode({ store }) {
-  const { lastProcess, setActualProcess, setLastProcess, setToken, token } = store
+  const { lastProcess, setActualProcess, setLastProcess, setToken, token, setResume, resume } = store
   const { info } = lastProcess
   const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
   const { mutate: validateCode, isLoading: isValidatingCode, isError: isErrorValidatingCode, reset } = useValidateCode()
-  const { data, isError } = useFindCommerceToken(info?.email, {
+  const { data: tokenData, isError } = useFindCommerceToken(info?.email, {
     enabled: Boolean(info?.email)
   })
 
+  const { data: commerceProcess, isSuccess: isSuccessCommerceProcess } = useFindCommerceProcess(token, {
+    enabled: !!token
+  })
+
   useEffect(() => {
-    if (data) {
-      setToken(data?.token)
+    if (tokenData) {
+      setToken(tokenData?.token)
     }
-  }, [data])
+  }, [tokenData])
+
+  useEffect(() => {
+    if (commerceProcess && isSuccessCommerceProcess) {
+      setResume(commerceProcess)
+    } else {
+      setResume(null)
+    }
+  }, [commerceProcess, isSuccessCommerceProcess])
 
   const [otp, setOtp] = useState('')
 
@@ -41,7 +58,11 @@ function ValidationCode({ store }) {
       { verificationCode: value, token },
       {
         onSuccess: () => {
-          setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
+          if (resume?.step) {
+            setActualProcess(resume?.step)
+          } else {
+            setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
+          }
           setLastProcess()
         },
         onError: () => {
@@ -52,7 +73,7 @@ function ValidationCode({ store }) {
   }
 
   const handleResendCode = () => {
-    sendValidationCode({ token: data?.token })
+    sendValidationCode({ token: tokenData?.token })
   }
 
   return (

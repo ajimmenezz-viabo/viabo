@@ -1,4 +1,5 @@
 import { axios } from '@/shared/interceptors'
+import { CommerceProcessAdapter } from '@/app/business/commerce/adapters'
 
 export const createNewCommerce = async commerce => {
   const { data } = await axios.post('/api/security/legalRepresentative/new', commerce)
@@ -19,8 +20,12 @@ export const validateCode = async validationCode => {
   const { data } = await axios.post('/api/code/verificate', validationCode)
   return data
 }
+export const getCommerceProcess = async token => {
+  const { data } = await axios.get(`/api/commerce/${token}`)
+  return CommerceProcessAdapter(data)
+}
 
-export const setServicesToCommerce = async services => {
+export const updateCommerceProcess = async services => {
   const { data } = await axios.post('/api/business/commerce/addServices', services)
   return data
 }

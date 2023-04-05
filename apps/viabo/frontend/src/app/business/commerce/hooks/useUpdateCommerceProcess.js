@@ -1,19 +1,19 @@
 import { useSnackbar } from 'notistack'
 import { useMutation } from 'react-query'
-import { setServicesToCommerce } from '@/app/business/commerce/services'
+import { updateCommerceProcess } from '@/app/business/commerce/services'
 import { getErrorAPI } from '@/shared/interceptors'
 
-export const useSetCommerceServices = (options = {}) => {
+export const useUpdateCommerceProcess = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()
   return useMutation({
-    mutationFn: setServicesToCommerce,
+    mutationFn: updateCommerceProcess,
     onSuccess: () => {
-      enqueueSnackbar('Servicios agregados al comercio!', {
+      enqueueSnackbar('Se actualizo la información del proceso!', {
         variant: 'success'
       })
     },
     onError: error => {
-      const message = getErrorAPI(error, 'No se puede agregar los servicios al comercio')
+      const message = getErrorAPI(error, 'No se puede agregar la información al proceso')
       enqueueSnackbar(message, {
         variant: error?.status === 500 ? 'error' : 'warning',
         autoHideDuration: 5000

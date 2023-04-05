@@ -2,32 +2,16 @@ import { AlertTitle, Box, Card, CardContent, CardMedia, Stack, Typography } from
 import { LoadingButton } from '@mui/lab'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
-import ViaboCard from '@/shared/assets/img/viabo-card.png'
-import ViaboPay from '@/shared/assets/img/viabo-pay.png'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { alpha } from '@mui/material/styles'
 import { AlertWithFocus } from '@/shared/components/alerts'
-import { useSetCommerceServices } from '@/app/business/commerce/hooks'
-import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { useUpdateCommerceProcess } from '@/app/business/commerce/hooks'
+import { PROCESS_LIST, SERVICES_LIST } from '@/app/business/commerce/services'
 
 ServicesSelection.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
-
-const SERVICES = [
-  {
-    name: 'Viabo Card',
-    description:
-      'Tarjeta CARNET X VIABO para control de gastos, pago de compensaciones, cash-back y fidelización por perfiles.',
-    image: ViaboCard
-  },
-  {
-    name: 'Viabo Pay',
-    description: 'Herramienta de cobro/pago por pefiles,transparencia transaccional y alertas.',
-    image: ViaboPay
-  }
-]
 
 const variants = {
   selected: {
@@ -41,10 +25,16 @@ const variants = {
 }
 
 export function ServicesSelection({ store }) {
-  const { setActualProcess, setLastProcess } = store
+  const { setActualProcess, setLastProcess, resume } = store
   const [selectedServices, setSelectedServices] = useState([])
   const [emptyServices, setEmptyServices] = useState(false)
-  const { mutate: setServicesToCommerce, isLoading: isAddingServices } = useSetCommerceServices()
+  const { mutate: setServicesToCommerce, isLoading: isAddingServices } = useUpdateCommerceProcess()
+
+  useEffect(() => {
+    if (resume?.services) {
+      setSelectedServices(resume?.services)
+    }
+  }, [resume?.services])
   const handleCardClick = service => {
     if (!selectedServices.includes(service.name)) {
       return setSelectedServices([...selectedServices, service.name])
@@ -60,20 +50,20 @@ export function ServicesSelection({ store }) {
       return setEmptyServices(true)
     }
 
-    // setActualProcess(PROCESS_LIST.COMMERCE_INFO)
-    // setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
-    // setEmptyServices(false)
+    setActualProcess(PROCESS_LIST.COMMERCE_INFO)
+    setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
+    setEmptyServices(false)
 
-    return setServicesToCommerce(
-      { services: selectedServices },
-      {
-        onSuccess: () => {
-          setActualProcess(PROCESS_LIST.COMMERCE_INFO)
-          setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
-          setEmptyServices(false)
-        }
-      }
-    )
+    // return setServicesToCommerce(
+    //   { services: selectedServices },
+    //   {
+    //     onSuccess: () => {
+    //       setActualProcess(PROCESS_LIST.COMMERCE_INFO)
+    //       setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
+    //       setEmptyServices(false)
+    //     }
+    //   }
+    // )
   }
 
   return (
@@ -112,7 +102,7 @@ export function ServicesSelection({ store }) {
             }
           }}
         >
-          {SERVICES.map((service, index) => {
+          {SERVICES_LIST.map((service, index) => {
             const isSelected = selectedServices.includes(service.name)
 
             return (

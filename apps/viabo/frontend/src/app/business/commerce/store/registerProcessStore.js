@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 export const propTypesStore = {
   actualProcess: PropTypes.string,
   token: PropTypes.string,
+  resume: PropTypes.object,
   lastProcess: PropTypes.shape({
     name: PropTypes.any,
     info: PropTypes.any
@@ -13,11 +14,13 @@ export const propTypesStore = {
   getComponent: PropTypes.func,
   setLastProcess: PropTypes.func,
   setActualProcess: PropTypes.func,
-  setToken: PropTypes.func
+  setToken: PropTypes.func,
+  setResume: PropTypes.func
 }
 const processStore = (set, get) => ({
   actualProcess: PROCESS_LIST.REGISTER,
   token: null,
+  resume: null,
   lastProcess: {
     name: null,
     info: null
@@ -65,6 +68,11 @@ const processStore = (set, get) => ({
   setToken: token => {
     set(state => ({
       token
+    }))
+  },
+  setResume: resume => {
+    set(state => ({
+      resume
     }))
   }
 })

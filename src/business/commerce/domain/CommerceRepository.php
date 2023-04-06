@@ -2,6 +2,7 @@
 
 namespace Viabo\business\commerce\domain;
 
+use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface CommerceRepository
@@ -9,4 +10,8 @@ interface CommerceRepository
     public function save(Commerce $commerce): void;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function search(CommerceId $commerceId): Commerce|null;
+
+    public function update(Commerce $commerce): void;
 }

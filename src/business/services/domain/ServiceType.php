@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\business\commerce\domain;
+namespace Viabo\business\services\domain;
 
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommerceType extends StringValueObject
+final class ServiceType extends StringValueObject
 {
 }

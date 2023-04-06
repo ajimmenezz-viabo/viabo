@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\business\commerce\domain;
+namespace Viabo\business\services\domain;
 
 
 use Viabo\shared\domain\valueObjects\UuidValueObject;
 
-final class CommerceId extends UuidValueObject
+final class ServiceId extends UuidValueObject
 {
     public static function create(): self
     {

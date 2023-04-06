@@ -4,8 +4,8 @@
 namespace Viabo\business\commerce\application\create;
 
 
-use Viabo\business\commerce\domain\CommerceLegalRepresentative;
 use Viabo\business\commerce\domain\CommerceRegisterStep;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 

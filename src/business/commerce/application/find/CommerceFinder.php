@@ -5,9 +5,9 @@ namespace Viabo\business\commerce\application\find;
 
 
 use Viabo\business\commerce\domain\Commerce;
-use Viabo\business\commerce\domain\CommerceLegalRepresentative;
 use Viabo\business\commerce\domain\CommerceRepository;
 use Viabo\business\commerce\domain\exceptions\CommerceNotExist;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 

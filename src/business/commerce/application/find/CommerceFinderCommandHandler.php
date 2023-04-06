@@ -4,7 +4,7 @@
 namespace Viabo\business\commerce\application\find;
 
 
-use Viabo\business\commerce\domain\CommerceLegalRepresentative;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 
 final readonly class CommerceFinderCommandHandler
 {

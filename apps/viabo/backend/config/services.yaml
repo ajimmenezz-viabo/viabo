@@ -19,6 +19,9 @@ services:
     Viabo\shared\domain\bus\event\DomainEventSubscriber:
       tags: [ 'domain_event_subscriber' ]
 
+    Viabo\shared\domain\bus\command\CommandHandler:
+      tags: [ 'command_handler' ]
+
   # Wire
   Viabo\:
     resource: '../../../../src'
@@ -32,6 +35,11 @@ services:
     arguments: [ !tagged domain_event_subscriber ]
     lazy: true
 
+  # -- APP DEFINITIONS --
+  # Command/Query Handlers
+  Viabo\shared\infrastructure\bus\command\InMemorySymfonyCommandBus:
+    arguments: [ !tagged command_handler ]
+#
 #  viabo.user_authenticator:
 #    class: Viabo\shared\infrastructure\symfony\security\UserAuthenticator
 #    parent: lexik_jwt_authentication.security.jwt_authenticator

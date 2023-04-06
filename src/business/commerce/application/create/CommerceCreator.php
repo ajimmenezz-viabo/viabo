@@ -5,9 +5,9 @@ namespace Viabo\business\commerce\application\create;
 
 
 use Viabo\business\commerce\domain\Commerce;
-use Viabo\business\commerce\domain\CommerceLegalRepresentative;
 use Viabo\business\commerce\domain\CommerceRegisterStep;
 use Viabo\business\commerce\domain\CommerceRepository;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CommerceCreator

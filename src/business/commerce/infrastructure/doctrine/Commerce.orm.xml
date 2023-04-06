@@ -5,9 +5,10 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="Viabo\business\commerce\domain\Commerce"  table="t_business_commerces">
-        <embedded name="id" class="CommerceId" use-column-prefix="false"/>
-        <embedded name="legalRepresentative" class="CommerceLegalRepresentative" use-column-prefix="false"/>
-        <embedded name="type" class="CommerceType" use-column-prefix="false"/>
+        <id name="id" column="Id"/>
+        <field name="legalRepresentative" column="LegalRepresentative"/>
+
+        <embedded name="fiscalPersonType" class="CommerceFiscalPersonType" use-column-prefix="false"/>
         <embedded name="taxName" class="CommerceTaxName" use-column-prefix="false"/>
         <embedded name="tradeName" class="CommerceTradeName" use-column-prefix="false"/>
         <embedded name="rfc" class="CommerceRfc" use-column-prefix="false"/>

@@ -4,8 +4,22 @@
 namespace Viabo\business\commerce\domain;
 
 
+use Viabo\business\commerce\domain\exceptions\CommerceRegisterStepEmpty;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CommerceRegisterStep extends StringValueObject
 {
+    public static function update(string $value): self
+    {
+        self::validate($value);
+        return new self($value);
+    }
+
+    public static function validate(string $value): void
+    {
+        if (empty($value)) {
+            throw new CommerceRegisterStepEmpty();
+        }
+    }
+
 }

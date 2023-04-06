@@ -5,24 +5,27 @@ namespace Viabo\business\commerce\domain;
 
 
 use Viabo\business\commerce\domain\events\CommerceCreatedDomainEvent;
+use Viabo\business\commerce\domain\events\CommerceUpdatedDomainEvent;
+use Viabo\business\shared\domain\commerce\CommerceId;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Commerce extends AggregateRoot
 {
     public function __construct(
-        private readonly CommerceId                  $id ,
-        private readonly CommerceLegalRepresentative $legalRepresentative ,
-        private readonly CommerceType                $type ,
-        private readonly CommerceTaxName             $taxName ,
-        private readonly CommerceTradeName           $tradeName ,
-        private readonly CommerceRfc                 $rfc ,
-        private readonly CommerceEmployees           $employees ,
-        private readonly CommerceBranchOffices       $branchOffices ,
-        private readonly CommercePointSaleTerminal   $pointSaleTerminal ,
-        private readonly CommercePaymentApi          $paymentApi ,
-        private readonly CommerceRegister            $register ,
-        private readonly CommerceRegisterStep        $registerStep ,
-        private readonly CommerceActive              $active
+        private CommerceId                  $id ,
+        private CommerceLegalRepresentative $legalRepresentative ,
+        private CommerceFiscalPersonType    $fiscalPersonType ,
+        private CommerceTaxName             $taxName ,
+        private CommerceTradeName           $tradeName ,
+        private CommerceRfc                 $rfc ,
+        private CommerceEmployees           $employees ,
+        private CommerceBranchOffices       $branchOffices ,
+        private CommercePointSaleTerminal   $pointSaleTerminal ,
+        private CommercePaymentApi          $paymentApi ,
+        private CommerceRegister            $register ,
+        private CommerceRegisterStep        $registerStep ,
+        private CommerceActive              $active
     )
     {
     }
@@ -34,7 +37,7 @@ final class Commerce extends AggregateRoot
         $commerce = new self(
             CommerceId::create() ,
             $legalRepresentative ,
-            new CommerceType('') ,
+            new CommerceFiscalPersonType('') ,
             new CommerceTaxName('') ,
             new CommerceTradeName('') ,
             new CommerceRfc('') ,
@@ -58,7 +61,7 @@ final class Commerce extends AggregateRoot
     {
         return [
             'legalRepresentative' => $this->legalRepresentative->value() ,
-            'type' => $this->type->value() ,
+            'fiscalPersonType' => $this->fiscalPersonType->value() ,
             'taxName' => $this->taxName->value() ,
             'tradeName' => $this->tradeName->value() ,
             'rfc' => $this->rfc->value() ,
@@ -70,6 +73,34 @@ final class Commerce extends AggregateRoot
             'registerStep' => $this->registerStep->value() ,
             'active' => $this->active->value()
         ];
+    }
+
+    public function update(
+        CommerceLegalRepresentative $legalRepresentative ,
+        CommerceFiscalPersonType    $fiscalPersonType ,
+        CommerceTaxName             $taxName ,
+        CommerceTradeName           $tradeName ,
+        CommerceRfc                 $rfc ,
+        CommerceEmployees           $employees ,
+        CommerceBranchOffices       $branchOffices ,
+        CommercePointSaleTerminal   $pointSaleTerminal ,
+        CommercePaymentApi          $paymentApi ,
+        CommerceRegisterStep        $registerStep
+    ): void
+    {
+        $this->fiscalPersonType = $fiscalPersonType;
+        $this->taxName = $taxName;
+        $this->tradeName = $tradeName;
+        $this->rfc = $rfc;
+        $this->employees = $employees;
+        $this->branchOffices = $branchOffices;
+        $this->pointSaleTerminal = $pointSaleTerminal;
+        $this->paymentApi = $paymentApi;
+        $this->registerStep = $this->registerStep->update($registerStep->value());
+
+        $this->record(new CommerceUpdatedDomainEvent(
+            $legalRepresentative->value() , $this->id->value() , $this->toArray()
+        ));
     }
 
 }

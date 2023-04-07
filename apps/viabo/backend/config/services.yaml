@@ -21,10 +21,10 @@ services:
       tags: [ 'domain_event_subscriber' ]
 
     Viabo\shared\domain\bus\command\CommandHandler:
-      tags: [ 'command_handler' ]
+      tags: [ 'viabo.command_handler' ]
 
     Viabo\shared\domain\bus\query\queryHandler:
-      tags: [ 'query_handler' ]
+      tags: [ 'viabo.query_handler' ]
 
   # Wire
   Viabo\:
@@ -42,10 +42,11 @@ services:
   # -- APP DEFINITIONS --
   # Command/Query Handlers
   Viabo\shared\infrastructure\bus\command\InMemorySymfonyCommandBus:
-    arguments: [ !tagged command_handler ]
+    arguments: [ !tagged viabo.command_handler ]
 
   Viabo\shared\infrastructure\bus\query\InMemorySymfonyQueryBus:
-    arguments: [ !tagged query_handler ]
+    arguments: [ !tagged viabo.query_handler ]
+
 #
 #  viabo.user_authenticator:
 #    class: Viabo\shared\infrastructure\symfony\security\UserAuthenticator

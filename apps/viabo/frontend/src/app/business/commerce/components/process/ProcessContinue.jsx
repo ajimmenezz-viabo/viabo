@@ -37,7 +37,7 @@ export default function ProcessContinue({ store }) {
             {
               onSuccess: () => {
                 setActualProcess(PROCESS_LIST.VALIDATION_CODE)
-                setLastProcess()
+                setLastProcess({ info: { email }, name: PROCESS_LIST.CONTINUE_PROCESS })
               },
               onError: () => {
                 setSubmitting(false)

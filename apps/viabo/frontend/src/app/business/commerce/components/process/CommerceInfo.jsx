@@ -5,20 +5,24 @@ import { getCommerceValidationByService } from '@/app/business/commerce/validati
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { LoadingButton } from '@mui/lab'
-import { CARD_USES } from '@/app/business/commerce/services'
+import { CARD_USES, PROCESS_LIST } from '@/app/business/commerce/services'
 
 CommerceInfo.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
 
 export default function CommerceInfo({ store }) {
-  const { resume } = store
+  const { resume, setActualProcess, setLastProcess } = store
   const { schema, initialValues, allInfoIsRequired } = useMemo(() => getCommerceValidationByService(resume), [resume])
 
   const formik = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema: schema,
-    onSubmit: values => {}
+    onSubmit: values => {
+      setActualProcess(PROCESS_LIST.COMMERCE_DOCUMENTATION)
+      setLastProcess({ info: null, name: PROCESS_LIST.COMMERCE_INFO })
+    }
   })
 
   const {

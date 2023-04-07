@@ -6,6 +6,7 @@ import { shallow } from 'zustand/shallow'
 
 export const RegisterProcess = () => {
   const component = useRegisterProcessStore(state => state.getComponent)
+  const getBackProcess = useRegisterProcessStore(state => state.getBackProcess)
   const store = useRegisterProcessStore(state => state, shallow)
   const { actualProcess, setToken, lastProcess, setActualProcess, setResume } = store
 
@@ -17,7 +18,8 @@ export const RegisterProcess = () => {
   }, [actualProcess, setToken])
 
   const handleBack = () => {
-    setActualProcess(lastProcess?.name ?? PROCESS_LIST.REGISTER)
+    const backProcess = getBackProcess()
+    setActualProcess(backProcess)
   }
 
   const LazyComponent = lazy(component())

@@ -1,2 +1,3 @@
 export * from './matchTypes'
 export * from './dom'
+export * from './formatNumber'

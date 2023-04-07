@@ -4,8 +4,8 @@
 namespace Viabo\business\shared\domain\commerce;
 
 
-use Viabo\shared\domain\valueObjects\StringValueObject;
+use Viabo\shared\domain\valueObjects\UuidValueObject;
 
-final class CommerceLegalRepresentative extends StringValueObject
+final class CommerceLegalRepresentative extends UuidValueObject
 {
 }

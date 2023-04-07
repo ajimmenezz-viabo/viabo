@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\update\UpdateCommerceCommand;
+use Viabo\business\services\application\create\UpdateViaboServicesCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 
@@ -19,9 +20,13 @@ final readonly class CommerceUpdaterController extends ApiController
             $files = $request->files->all();
             $request = $request->toArray();
 
+            $services = $request['services'];
+            $legalRepresentative = $tokenData['id'];
+            $commerceId = $request['commerceId'];
+
             $this->dispatch(new UpdateCommerceCommand(
-                $tokenData['id'] ,
-                $request['commerceId'] ,
+                $legalRepresentative ,
+                $commerceId ,
                 $request['fiscalPersonType'] ,
                 $request['taxName'] ,
                 $request['tradeName'] ,
@@ -30,10 +35,12 @@ final readonly class CommerceUpdaterController extends ApiController
                 $request['branchOffices'] ,
                 $request['pointSaleTerminal'] ,
                 $request['paymentApi'] ,
-                $request['services'],
-                $files,
+                $services ,
+                $files ,
                 $request['registerStep']
             ));
+
+            $this->dispatch(new UpdateViaboServicesCommand($legalRepresentative , $commerceId , $services));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

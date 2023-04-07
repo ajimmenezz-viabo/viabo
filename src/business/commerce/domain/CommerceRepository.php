@@ -3,6 +3,7 @@
 namespace Viabo\business\commerce\domain;
 
 use Viabo\business\shared\domain\commerce\CommerceId;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface CommerceRepository
@@ -14,4 +15,7 @@ interface CommerceRepository
     public function search(CommerceId $commerceId): Commerce|null;
 
     public function update(Commerce $commerce): void;
+
+    public function searchBy(CommerceLegalRepresentative $legalRepresentative): array;
+
 }

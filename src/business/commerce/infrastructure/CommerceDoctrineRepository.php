@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Viabo\business\commerce\domain\Commerce;
 use Viabo\business\commerce\domain\CommerceRepository;
 use Viabo\business\shared\domain\commerce\CommerceId;
+use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -38,5 +39,13 @@ final class CommerceDoctrineRepository extends DoctrineRepository implements Com
     public function update(Commerce $commerce): void
     {
         $this->entityManager()->flush($commerce);
+    }
+
+    public function searchBy(CommerceLegalRepresentative $legalRepresentative): array
+    {
+        $query = "select * from v_business_commerces where LegalRepresentative = :legalRepresentative";
+        $statement = $this->entityManager()->getConnection()->prepare($query);
+        $statement->bindValue('legalRepresentative' , $legalRepresentative->value());
+        return $statement->executeQuery()->fetchAllAssociative();
     }
 }

@@ -4,5 +4,5 @@ namespace Viabo\shared\infrastructure\doctrine;
 
 interface DoctrineCustomType
 {
-    public function customTypeName(): string;
+    public static function customTypeName(): string;
 }

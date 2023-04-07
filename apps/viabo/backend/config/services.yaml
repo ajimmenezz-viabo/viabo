@@ -7,6 +7,7 @@ imports:
   - { resource: ../../../../src/analytics/shared/infrastructure/symfony/dependencyInjection/analytics_database.yaml }
   - { resource: ../../../../src/business/shared/infrastructure/symfony/dependencyInjection/business_database.yaml }
   - { resource: ../../../../src/security/shared/infrastructure/symfony/dependencyInjection/security_database.yaml }
+  - { resource: ../../../../src/catalogs/shared/infrastructure/symfony/dependencyInjection/catalogs_database.yaml }
 
 services:
   # default configuration for services in *this* file
@@ -21,6 +22,9 @@ services:
 
     Viabo\shared\domain\bus\command\CommandHandler:
       tags: [ 'command_handler' ]
+
+    Viabo\shared\domain\bus\query\queryHandler:
+      tags: [ 'query_handler' ]
 
   # Wire
   Viabo\:
@@ -39,6 +43,9 @@ services:
   # Command/Query Handlers
   Viabo\shared\infrastructure\bus\command\InMemorySymfonyCommandBus:
     arguments: [ !tagged command_handler ]
+
+  Viabo\shared\infrastructure\bus\query\InMemorySymfonyQueryBus:
+    arguments: [ !tagged query_handler ]
 #
 #  viabo.user_authenticator:
 #    class: Viabo\shared\infrastructure\symfony\security\UserAuthenticator

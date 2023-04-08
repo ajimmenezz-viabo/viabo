@@ -17,10 +17,8 @@ final readonly class CommerceUpdaterController extends ApiController
     {
         try {
             $tokenData = $this->decode($token);
-            $files = $request->files->all();
             $request = $request->toArray();
 
-            $services = $request['services'];
             $legalRepresentative = $tokenData['id'];
             $commerceId = $request['commerceId'];
 
@@ -35,12 +33,10 @@ final readonly class CommerceUpdaterController extends ApiController
                 $request['branchOffices'] ,
                 $request['pointSaleTerminal'] ,
                 $request['paymentApi'] ,
-                $services ,
-                $files ,
                 $request['registerStep']
             ));
 
-            $this->dispatch(new UpdateViaboServicesCommand($legalRepresentative , $commerceId , $services));
+            $this->dispatch(new UpdateViaboServicesCommand($legalRepresentative , $commerceId , $request['services']));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

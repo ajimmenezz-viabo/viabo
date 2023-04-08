@@ -12,21 +12,36 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class Service extends AggregateRoot
 {
     public function __construct(
-        private ServiceId   $id ,
-        private CommerceId  $commerceId ,
-        private ServiceType $type
+        private ServiceId           $id ,
+        private CommerceId          $commerceId ,
+        private ServiceType         $type ,
+        private ServiceCardNumbers  $cardNumbers ,
+        private ServiceCardUse      $cardUse ,
+        private ServicePersonalized $personalized
     )
     {
     }
 
     public static function create(
-        CommerceLegalRepresentative $legalRepresentative , CommerceId $commerceId , string $serviceType
+        CommerceLegalRepresentative $legalRepresentative ,
+        CommerceId                  $commerceId ,
+        string                      $serviceType,
+        string                      $cardNumbers,
+        string                      $cardUse,
+        string                      $personalized
     ): self
     {
 
-        $service = new self(ServiceId::create() , $commerceId , new ServiceType($serviceType));
+        $service = new self(
+            ServiceId::create() ,
+            $commerceId ,
+            new ServiceType($serviceType),
+            new ServiceCardNumbers($cardNumbers),
+            new ServiceCardUse($cardUse),
+            new ServicePersonalized($personalized)
+        );
         $service->record(new ServiceCreatedDomainEvent(
-            $legalRepresentative->value() , $service->commerceId->value() , $service->toArray()
+            $legalRepresentative->value() , $service->id->value() , $service->toArray()
         ));
         return $service;
     }
@@ -34,8 +49,11 @@ final class Service extends AggregateRoot
     private function toArray(): array
     {
         return [
-            'id' => $this->id->value() ,
-            'serviceType' => $this->type->value()
+            'commerceId' => $this->commerceId->value() ,
+            'serviceType' => $this->type->value(),
+            'cardNumbers' => $this->cardNumbers->value(),
+            'cardUse' => $this->cardUse->value(),
+            'personalized' => $this->personalized->value()
         ];
     }
 

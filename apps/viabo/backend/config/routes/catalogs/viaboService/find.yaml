@@ -1,4 +1,4 @@
 catalog-services-find:
-  path: '/api/catalogs/viabo/services/{token}'
+  path: '/api/catalogs/viabo/services'
   controller: Viabo\Backend\Controller\catalogs\viaboService\ServicesCatalogFinderController
   methods: GET

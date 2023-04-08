@@ -1,4 +1,4 @@
 commerce-update:
-  path: '/api/commerce/{commerceId}/update/{token}'
+  path: '/api/commerce/{commerceId}/update'
   controller: Viabo\Backend\Controller\business\commerce\CommerceUpdaterController
   methods: PUT

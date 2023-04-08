@@ -5,6 +5,7 @@ namespace Viabo\Backend\Controller\security\user\find;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\security\user\application\find\LegalRepresentativeFinder;
 use Viabo\security\user\application\find\LegalRepresentativeFinderRequest;
@@ -20,9 +21,10 @@ final class LegalRepresentativeFinderController extends AbstractController
     {
     }
 
-    public function __invoke(string $username): Response
+    public function __invoke(Request $request): Response
     {
         try {
+            $username = $request->headers->get('Username');
             $request = new LegalRepresentativeFinderRequest($username);
             $userId = $this->finder->__invoke($request);
             $token = $this->jwt->encode(['id' => $userId]);

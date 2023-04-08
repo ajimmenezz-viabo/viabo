@@ -13,10 +13,10 @@ use Viabo\shared\infrastructure\symfony\ApiController;
 final readonly class CommerceUpdaterController extends ApiController
 {
 
-    public function __invoke(string $token , Request $request): Response
+    public function __invoke(Request $request): Response
     {
         try {
-            $tokenData = $this->decode($token);
+            $tokenData = $this->decode($request->headers->get('Authorization'));
             $request = $request->toArray();
 
             $legalRepresentative = $tokenData['id'];

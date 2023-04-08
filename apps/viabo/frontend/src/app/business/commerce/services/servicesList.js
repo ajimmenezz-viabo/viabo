@@ -8,14 +8,16 @@ export const SERVICES_NAMES = {
 
 export const SERVICES_LIST = [
   {
+    type: 1,
+    name: SERVICES_NAMES.VIABO_PAY,
+    description: 'Herramienta de cobro/pago por pefiles,transparencia transaccional y alertas.',
+    image: ViaboPay
+  },
+  {
+    type: 2,
     name: SERVICES_NAMES.VIABO_CARD,
     description:
       'Tarjeta CARNET X VIABO para control de gastos, pago de compensaciones, cash-back y fidelización por perfiles.',
     image: ViaboCard
-  },
-  {
-    name: SERVICES_NAMES.VIABO_PAY,
-    description: 'Herramienta de cobro/pago por pefiles,transparencia transaccional y alertas.',
-    image: ViaboPay
   }
 ]

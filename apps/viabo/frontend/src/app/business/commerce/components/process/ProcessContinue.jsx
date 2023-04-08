@@ -9,11 +9,13 @@ import { useFindCommerceToken, useSendValidationCode } from '@/app/business/comm
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
+import React from 'react'
 
 ProcessContinue.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
-export default function ProcessContinue({ store }) {
+
+function ProcessContinue({ store }) {
   const { setToken, setActualProcess, setLastProcess } = store
   const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
 
@@ -133,3 +135,5 @@ export default function ProcessContinue({ store }) {
     </>
   )
 }
+
+export default ProcessContinue

@@ -1,14 +1,36 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { useRegisterProcessStore } from '@/app/business/commerce/store'
 import { Box, Button, CircularProgress, Stack } from '@mui/material'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { shallow } from 'zustand/shallow'
+import { useFindCommerceProcess } from '@/app/business/commerce/hooks'
 
 export const RegisterProcess = () => {
   const component = useRegisterProcessStore(state => state.getComponent)
   const getBackProcess = useRegisterProcessStore(state => state.getBackProcess)
   const store = useRegisterProcessStore(state => state, shallow)
-  const { actualProcess, setToken, lastProcess, setActualProcess, setResume } = store
+  const { actualProcess, setToken, setActualProcess, setResume, token } = store
+
+  const {
+    data: commerceProcess,
+    isSuccess: isSuccessCommerceProcess,
+    refetch
+  } = useFindCommerceProcess({
+    enabled: !!token
+  })
+  useEffect(() => {
+    if (token) {
+      refetch()
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (commerceProcess && isSuccessCommerceProcess) {
+      setResume(commerceProcess)
+    } else {
+      setResume(null)
+    }
+  }, [commerceProcess, isSuccessCommerceProcess])
 
   useEffect(() => {
     if (actualProcess === PROCESS_LIST.REGISTER) {
@@ -22,7 +44,7 @@ export const RegisterProcess = () => {
     setActualProcess(backProcess)
   }
 
-  const LazyComponent = lazy(component())
+  const LazyComponent = useMemo(() => lazy(component()), [actualProcess])
   return (
     <Box
       sx={{

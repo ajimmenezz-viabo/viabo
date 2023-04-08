@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from 'react-query'
 import { useSnackbar } from 'notistack'
 import { getErrorAPI } from '@/shared/interceptors'
 import { createNewCommerce } from '@/app/business/commerce/services'
 import { useState } from 'react'
 import { COMMERCE_KEYS } from '@/app/business/commerce/adapters'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export const useRegisterCommerce = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

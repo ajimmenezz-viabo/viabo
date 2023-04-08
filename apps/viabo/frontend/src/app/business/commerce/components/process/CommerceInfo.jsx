@@ -6,6 +6,8 @@ import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { LoadingButton } from '@mui/lab'
 import { CARD_USES, PROCESS_LIST } from '@/app/business/commerce/services'
+import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
+import { useUpdateCommerceProcess } from '@/app/business/commerce/hooks'
 
 CommerceInfo.propTypes = {
   store: PropTypes.shape(propTypesStore)
@@ -15,29 +17,66 @@ export default function CommerceInfo({ store }) {
   const { resume, setActualProcess, setLastProcess } = store
   const { schema, initialValues, allInfoIsRequired } = useMemo(() => getCommerceValidationByService(resume), [resume])
 
+  const { mutate: updateInfoCommerce, isLoading: isUpdatingCommerce } = useUpdateCommerceProcess()
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema: schema,
     onSubmit: values => {
-      setActualProcess(PROCESS_LIST.COMMERCE_DOCUMENTATION)
-      setLastProcess({ info: null, name: PROCESS_LIST.COMMERCE_INFO })
+      const {
+        fiscalName,
+        rfc,
+        commercialName,
+        employeesNumber,
+        branchesNumber,
+        tpvsNumber,
+        apiRequired,
+        cardsUse,
+        cardsNumber,
+        customCardsRequired
+      } = values
+      const resumeAdapter = CommerceUpdateAdapter(resume, 3)
+      const services = resumeAdapter?.services?.map(service => {
+        if (service?.type === '2') {
+          return {
+            type: service.type.toString(),
+            cardNumbers: cardsNumber.toString(),
+            cardUse: cardsUse,
+            personalized: customCardsRequired ? '1' : '0'
+          }
+        } else {
+          return service
+        }
+      })
+      const dataAdapted = {
+        ...resumeAdapter,
+        taxName: fiscalName,
+        tradeName: commercialName,
+        rfc,
+        employees: employeesNumber,
+        branchOffices: branchesNumber,
+        pointSaleTerminal: tpvsNumber,
+        paymentApi: apiRequired ? '1' : '0',
+        services
+      }
+
+      updateInfoCommerce(dataAdapted, {
+        onSuccess: () => {
+          setActualProcess(PROCESS_LIST.COMMERCE_DOCUMENTATION)
+          setLastProcess({ info: null, name: PROCESS_LIST.COMMERCE_INFO })
+          setSubmitting(false)
+        },
+        onError: () => {
+          setSubmitting(false)
+        }
+      })
     }
   })
 
-  const {
-    handleSubmit,
-    values,
-    errors,
-    touched,
-    handleChange,
-    isSubmitting,
-    setSubmitting,
-    getFieldProps,
-    setFieldValue
-  } = formik
+  const { handleSubmit, values, errors, touched, handleChange, isSubmitting, setSubmitting, getFieldProps } = formik
 
-  const loading = isSubmitting
+  const loading = isSubmitting || isUpdatingCommerce
 
   return (
     <>
@@ -141,8 +180,8 @@ export default function CommerceInfo({ store }) {
 
           {allInfoIsRequired && (
             <TextField
-              {...getFieldProps('cardUses')}
-              value={values?.cardUses}
+              {...getFieldProps('cardsUse')}
+              value={values?.cardsUse}
               disabled={isSubmitting}
               fullWidth
               select
@@ -153,6 +192,8 @@ export default function CommerceInfo({ store }) {
                   sx: { '& .MuiPaper-root': { maxHeight: 260 } }
                 }
               }}
+              error={touched.cardsUse && Boolean(errors.cardsUse)}
+              helperText={touched.cardsUse && errors.cardsUse}
               sx={{
                 textTransform: 'capitalize'
               }}
@@ -191,10 +232,10 @@ export default function CommerceInfo({ store }) {
             <FormControlLabel
               control={
                 <Checkbox
-                  {...getFieldProps('apiRequired')}
+                  {...getFieldProps('customCardsRequired')}
                   disabled={loading}
-                  checked={values?.apiRequired}
-                  value={values?.apiRequired}
+                  checked={values?.customCardsRequired}
+                  value={values?.customCardsRequired}
                 />
               }
               label="¿Desea que las tarjetas fisicas esten personalizadas? (Grabadas)"

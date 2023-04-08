@@ -19,8 +19,6 @@ final readonly class UpdateCommerceCommand implements Command
         public string $branchOffices ,
         public string $pointSaleTerminal ,
         public string $paymentApi ,
-        public array  $services,
-        public array  $documents,
         public string $registerStep
     )
     {

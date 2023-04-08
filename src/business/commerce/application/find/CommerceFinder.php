@@ -24,6 +24,7 @@ final readonly class CommerceFinder
 
         $commerce = array_map(function (array $commerce) {
             $commerce['Services'] = empty($commerce['Services']) ? [] : json_decode("[{$commerce['Services']}]");
+            unset($commerce['Active']);
             return $commerce;
         } , $commerce);
 

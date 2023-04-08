@@ -16,8 +16,8 @@ final readonly class CreateServicesCommandHandler implements CommandHandler
     {
         $legalRepresentative = new CommerceLegalRepresentative($command->legalRepresentative);
         $commerceId = new CommerceId($command->commerceId);
-        $servicesType = $command->services;
+        $services = $command->services;
 
-        ($this->servicesUpdater)($legalRepresentative , $commerceId , $servicesType);
+        ($this->servicesUpdater)($legalRepresentative , $commerceId , $services);
     }
 }

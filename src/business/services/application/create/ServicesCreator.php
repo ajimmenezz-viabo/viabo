@@ -19,17 +19,25 @@ final readonly class ServicesCreator
     public function __invoke(
         CommerceLegalRepresentative $legalRepresentative ,
         CommerceId                  $commerceId ,
-        array                       $servicesType
+        array                       $services
     ): void
     {
+
         $this->repository->delete($commerceId);
 
-        array_map(function (string $serviceType) use ($legalRepresentative , $commerceId) {
-            $service = Service::create($legalRepresentative , $commerceId , $serviceType);
+        array_map(function (array $service) use ($legalRepresentative , $commerceId) {
+            $service = Service::create(
+                $legalRepresentative ,
+                $commerceId ,
+                $service['type'] ,
+                $service['cardNumbers'] ,
+                $service['cardUse'] ,
+                $service['personalized']
+            );
             $this->repository->save($service);
 
             $this->bus->publish(...$service->pullDomainEvents());
-        } , $servicesType);
+        } , $services);
     }
 
 }

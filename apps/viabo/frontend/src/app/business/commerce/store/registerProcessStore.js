@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { devtools } from 'zustand/middleware'
 import PropTypes from 'prop-types'
+import { axios } from '@/shared/interceptors'
 
 export const propTypesStore = {
   actualProcess: PropTypes.string,
@@ -19,7 +20,7 @@ export const propTypesStore = {
   setResume: PropTypes.func
 }
 const processStore = (set, get) => ({
-  actualProcess: PROCESS_LIST.COMMERCE_DOCUMENTATION,
+  actualProcess: PROCESS_LIST.REGISTER,
   token: null,
   resume: null,
   lastProcess: {
@@ -79,11 +80,17 @@ const processStore = (set, get) => ({
     set(state => ({
       actualProcess: processName
     }))
+    if (processName === PROCESS_LIST.REGISTER) {
+      localStorage.removeItem('token')
+      delete axios.defaults.headers.common.Authorization
+    }
   },
   setToken: token => {
     set(state => ({
       token
     }))
+    window.localStorage.setItem('token', token)
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
   },
   setResume: resume => {
     set(state => ({

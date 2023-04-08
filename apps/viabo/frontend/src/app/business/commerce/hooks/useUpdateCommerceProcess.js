@@ -1,13 +1,16 @@
 import { useSnackbar } from 'notistack'
-import { useMutation } from 'react-query'
 import { updateCommerceProcess } from '@/app/business/commerce/services'
 import { getErrorAPI } from '@/shared/interceptors'
+import { COMMERCE_KEYS } from '@/app/business/commerce/adapters'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export const useUpdateCommerceProcess = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()
+  const client = useQueryClient()
   return useMutation({
     mutationFn: updateCommerceProcess,
     onSuccess: () => {
+      client.invalidateQueries([COMMERCE_KEYS.COMMERCE_PROCESS])
       enqueueSnackbar('Se actualizo la información del proceso!', {
         variant: 'success'
       })

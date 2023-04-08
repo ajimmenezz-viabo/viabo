@@ -1,24 +1,19 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
 import { MuiOtpInput } from 'mui-one-time-password-input'
 import mail from '@/shared/assets/img/mail.svg'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { matchIsNumeric } from '@/shared/utils'
-import {
-  useFindCommerceProcess,
-  useFindCommerceToken,
-  useSendValidationCode,
-  useValidateCode
-} from '@/app/business/commerce/hooks'
-import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { useFindCommerceToken, useSendValidationCode, useValidateCode } from '@/app/business/commerce/hooks'
+import { PROCESS_LIST, PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
 
 ValidationCode.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
 
 function ValidationCode({ store }) {
-  const { lastProcess, setActualProcess, setLastProcess, setToken, token, setResume, resume } = store
+  const { lastProcess, setActualProcess, setLastProcess, setToken, token, resume } = store
   const { info } = lastProcess
   const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
   const { mutate: validateCode, isLoading: isValidatingCode, isError: isErrorValidatingCode, reset } = useValidateCode()
@@ -26,23 +21,11 @@ function ValidationCode({ store }) {
     enabled: Boolean(info?.email)
   })
 
-  const { data: commerceProcess, isSuccess: isSuccessCommerceProcess } = useFindCommerceProcess(token, {
-    enabled: !!token
-  })
-
   useEffect(() => {
     if (tokenData) {
       setToken(tokenData?.token)
     }
   }, [tokenData])
-
-  useEffect(() => {
-    if (commerceProcess && isSuccessCommerceProcess) {
-      setResume(commerceProcess)
-    } else {
-      setResume(null)
-    }
-  }, [commerceProcess, isSuccessCommerceProcess])
 
   const [otp, setOtp] = useState('')
 
@@ -59,7 +42,9 @@ function ValidationCode({ store }) {
       {
         onSuccess: () => {
           if (resume?.step) {
-            setActualProcess(resume?.step)
+            setActualProcess(
+              PROCESS_LIST_STEPS.find(process => process.step === resume?.step)?.name || PROCESS_LIST.SERVICES_SELECTION
+            )
           } else {
             setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
           }
@@ -142,4 +127,4 @@ function ValidationCode({ store }) {
   )
 }
 
-export default ValidationCode
+export default React.memo(ValidationCode)

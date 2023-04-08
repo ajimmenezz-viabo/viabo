@@ -8,6 +8,7 @@ import { alpha } from '@mui/material/styles'
 import { AlertWithFocus } from '@/shared/components/alerts'
 import { useUpdateCommerceProcess } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST, SERVICES_LIST } from '@/app/business/commerce/services'
+import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
 
 ServicesSelection.propTypes = {
   store: PropTypes.shape(propTypesStore)
@@ -32,7 +33,11 @@ export function ServicesSelection({ store }) {
 
   useEffect(() => {
     if (resume?.services) {
-      setSelectedServices(resume?.services)
+      const services =
+        resume?.services.map(
+          service => SERVICES_LIST.find(serviceList => serviceList.type.toString() === service?.type)?.name
+        ) || []
+      setSelectedServices(services)
     }
   }, [resume?.services])
   const handleCardClick = service => {
@@ -49,21 +54,25 @@ export function ServicesSelection({ store }) {
     if (selectedServices.length === 0) {
       return setEmptyServices(true)
     }
+    const resumeAdapter = CommerceUpdateAdapter(resume, 2)
 
-    setActualProcess(PROCESS_LIST.COMMERCE_INFO)
-    setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
-    setEmptyServices(false)
+    const services = SERVICES_LIST.filter(service => selectedServices.includes(service.name)).map(service => ({
+      type: service.type.toString(),
+      cardNumbers: '0',
+      cardUse: '',
+      personalized: '0'
+    }))
 
-    // return setServicesToCommerce(
-    //   { services: selectedServices },
-    //   {
-    //     onSuccess: () => {
-    //       setActualProcess(PROCESS_LIST.COMMERCE_INFO)
-    //       setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
-    //       setEmptyServices(false)
-    //     }
-    //   }
-    // )
+    return setServicesToCommerce(
+      { ...resumeAdapter, services },
+      {
+        onSuccess: () => {
+          setActualProcess(PROCESS_LIST.COMMERCE_INFO)
+          setLastProcess({ info: selectedServices, name: PROCESS_LIST.SERVICES_SELECTION })
+          setEmptyServices(false)
+        }
+      }
+    )
   }
 
   return (

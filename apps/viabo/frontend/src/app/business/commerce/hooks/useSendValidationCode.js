@@ -1,7 +1,7 @@
-import { useMutation } from 'react-query'
 import { useSnackbar } from 'notistack'
 import { sendValidationCode } from '@/app/business/commerce/services'
 import { getErrorAPI } from '@/shared/interceptors'
+import { useMutation } from '@tanstack/react-query'
 
 export const useSendValidationCode = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

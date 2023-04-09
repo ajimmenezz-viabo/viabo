@@ -45,6 +45,12 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         ws: true
+      },
+      '/storage': {
+        target: 'http://viabo:80/',
+        changeOrigin: true,
+        secure: false,
+        ws: true
       }
     }
   },

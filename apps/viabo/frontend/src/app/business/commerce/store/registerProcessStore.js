@@ -57,6 +57,11 @@ const processStore = (set, get) => ({
       name: PROCESS_LIST.COMMERCE_DOCUMENTATION,
       component: () => import('@/app/business/commerce/components/process/documentation/CommerceDocumentation'),
       backProcess: PROCESS_LIST.COMMERCE_INFO
+    },
+    {
+      name: PROCESS_LIST.FINISHED_PROCESS,
+      component: () => import('@/app/business/commerce/components/process/FinishProcess'),
+      backProcess: PROCESS_LIST.COMMERCE_DOCUMENTATION
     }
   ],
   getComponent: () => {

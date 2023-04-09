@@ -250,7 +250,7 @@ export default function CommerceInfo({ store }) {
             type="submit"
             sx={{ textTransform: 'uppercase' }}
           >
-            Continuar
+            Guardar
           </LoadingButton>
         </Stack>
       </Box>

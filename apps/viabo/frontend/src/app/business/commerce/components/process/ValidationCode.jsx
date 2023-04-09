@@ -127,4 +127,4 @@ function ValidationCode({ store }) {
   )
 }
 
-export default React.memo(ValidationCode)
+export default ValidationCode

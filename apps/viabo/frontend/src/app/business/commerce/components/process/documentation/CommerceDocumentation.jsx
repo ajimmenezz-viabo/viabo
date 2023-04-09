@@ -1,43 +1,66 @@
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
-import { Alert, Box, Card, Grid, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import { Alert, Box, Card, Grid, Link, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { documentList, documentTypes } from '@/app/business/commerce/services'
+import { documentList, documentTypes, PROCESS_LIST } from '@/app/business/commerce/services'
 import DocumentDropzone from '@/app/business/commerce/components/process/documentation/DocumentDropZone'
 import { LoadingButton } from '@mui/lab'
 import { useMemo } from 'react'
+import { CommerceUploadDocumentsAdapter } from '@/app/business/commerce/adapters'
+import { useSnackbar } from 'notistack'
+import { useUpdateCommerceProcess, useUploadDocuments } from '@/app/business/commerce/hooks'
+import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
 
 CommerceDocumentation.propTypes = {
   store: PropTypes.shape(propTypesStore)
 }
 export default function CommerceDocumentation({ store }) {
-  const formik = useFormik({
-    initialValues: {
-      ACTA_CONSTITUTIVA: null,
-      DOCUMENTO_PODER: null,
-      IDENTIFICACION: null,
-      CEDULA_FISCAL_EMPRESA: null,
-      CEDULA_FISCAL_APODERADO: null,
-      COMPROBANTE_DOMICILIO: null,
-      moralPerson: true
-    },
+  const { resume, setActualProcess, setLastProcess } = store
+  const { files, fiscalTypePerson } = resume
+  const { enqueueSnackbar } = useSnackbar()
+  const { mutate: uploadDocuments, isLoading: uploadingDocuments } = useUploadDocuments()
+  const { mutate: updateInfoCommerce, isLoading: isUpdatingCommerce } = useUpdateCommerceProcess()
 
-    onSubmit: values => {}
+  const formik = useFormik({
+    initialValues: Object.keys(documentTypes).reduce(
+      (acc, type) => {
+        acc[type] = files?.find(file => file?.Name === type)?.storePath || null
+        return acc
+      },
+      { moralPerson: fiscalTypePerson === '' ? '1' : fiscalTypePerson }
+    ),
+    enableReinitialize: true,
+    onSubmit: values => {
+      const { moralPerson, ...documents } = values
+      const someFile = Object.values(documents).some(valor => valor !== null)
+      if (someFile) {
+        const documentsAdapter = CommerceUploadDocumentsAdapter(documents, resume?.id)
+        uploadDocuments(documentsAdapter, {
+          onSuccess: () => {
+            const allDocumentsFilled = filterDocuments?.every(fieldName => values[fieldName] !== null)
+            const resumeAdapter = CommerceUpdateAdapter(resume, allDocumentsFilled ? 4 : 3)
+            const dataAdapted = { ...resumeAdapter, fiscalPersonType: moralPerson }
+            updateInfoCommerce(dataAdapted, {
+              onSuccess: () => {
+                if (allDocumentsFilled) {
+                  setActualProcess(PROCESS_LIST.FINISHED_PROCESS)
+                  setLastProcess({ info: null, name: PROCESS_LIST.COMMERCE_DOCUMENTATION })
+                }
+              }
+            })
+          }
+        })
+      } else {
+        enqueueSnackbar('Se debe subir al menos un archivo!', {
+          variant: 'warning'
+        })
+      }
+
+      setSubmitting(false)
+    }
   })
 
-  const {
-    handleSubmit,
-    getFieldProps,
-    touched,
-    errors,
-    resetForm,
-    values,
-    setSubmitting,
-    isSubmitting,
-    setFieldValue,
-    handleChange,
-    handleBlur
-  } = formik
+  const { handleSubmit, values, setSubmitting, isSubmitting, setFieldValue } = formik
 
   const filterDocuments = useMemo(
     () =>
@@ -49,6 +72,8 @@ export default function CommerceDocumentation({ store }) {
       }),
     [values.moralPerson]
   )
+
+  const loading = uploadingDocuments || isSubmitting || isUpdatingCommerce
 
   return (
     <>
@@ -68,11 +93,16 @@ export default function CommerceDocumentation({ store }) {
             exclusive
             onChange={(event, newValue) => {
               setFieldValue('moralPerson', newValue)
+              if (newValue === '2') {
+                setFieldValue('ACTA_CONSTITUTIVA', null)
+                setFieldValue('DOCUMENTO_PODER', null)
+                setFieldValue('CEDULA_FISCAL_EMPRESA', null)
+              }
             }}
             aria-label="Platform"
           >
-            <ToggleButton value={true}>Persona Moral</ToggleButton>
-            <ToggleButton value={false}>Persona Física</ToggleButton>
+            <ToggleButton value={'1'}>Persona Moral</ToggleButton>
+            <ToggleButton value={'2'}>Persona Física</ToggleButton>
           </ToggleButtonGroup>
           <Grid container spacing={2}>
             {filterDocuments?.map(name => (
@@ -81,10 +111,16 @@ export default function CommerceDocumentation({ store }) {
                   <Typography pt={2} variant="subtitle2" color="textPrimary" align="center">
                     {documentTypes[name]}
                   </Typography>
-                  {values[name] && (
+                  {values[name] && typeof values[name] === 'object' && (
                     <Typography variant="caption" color="textPrimary" align="center">
                       {values[name]?.path}
                     </Typography>
+                  )}
+
+                  {values[name] && !(typeof values[name] === 'object') && (
+                    <Link href={values[name]} target="_blank">
+                      Ver | Descargar
+                    </Link>
                   )}
                   {documentList[name].expiration && (
                     <Alert
@@ -116,7 +152,7 @@ export default function CommerceDocumentation({ store }) {
           </Grid>
 
           <LoadingButton
-            loading={isSubmitting}
+            loading={loading}
             color="primary"
             variant="contained"
             fullWidth

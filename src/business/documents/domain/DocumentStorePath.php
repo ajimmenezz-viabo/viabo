@@ -10,6 +10,6 @@ final class DocumentStorePath extends StringValueObject
 {
     public function update(string $value): self
     {
-        return new self("/store$value");
+        return new self("/storage$value");
     }
 }

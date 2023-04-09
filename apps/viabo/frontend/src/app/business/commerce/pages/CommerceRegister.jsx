@@ -1,7 +1,20 @@
-import { styled } from '@mui/material/styles'
-import { Grid, Paper } from '@mui/material'
+import { alpha, styled } from '@mui/material/styles'
+import { Box, Grid, Paper } from '@mui/material'
 import { RegisterProcess } from '@/app/business/commerce/components'
 import { Page } from '@/shared/components/containers'
+import React from 'react'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import INTEGRATION from '@/shared/assets/img/integracion-tecnologica.png'
+
+const OverlayStyle = styled('div')(({ theme }) => ({
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 8,
+  position: 'absolute',
+  backgroundColor: alpha(theme.palette.grey[900], 0.1)
+}))
 
 const ContainerStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -46,21 +59,19 @@ function CommerceRegister() {
       <RegisterContainer className="animate__animated animated__fadeIn">
         <ContainerStyle>
           <Grid container spacing={0} component="main" justifyContent={'center'}>
-            <Grid
-              item
-              elevation={0}
-              xs={false}
-              sm={false}
-              md={6}
-              sx={{
-                borderRadius: { xl: '16px 0px 0px 16px' },
-                backgroundImage: 'url(https://source.unsplash.com/random)',
-                backgroundRepeat: 'no-repeat',
-                backgroundColor: t => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
-            />
+            <Grid item elevation={0} xs={false} sm={false} md={6}>
+              <Box sx={{ position: 'relative', display: 'flex', height: 1, backgroundColor: '#161C24' }}>
+                <OverlayStyle />
+                <Box
+                  component={LazyLoadImage}
+                  wrapperClassName="wrapper"
+                  effect={'blur'}
+                  placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
+                  sx={{ width: 1, height: 1, objectFit: 'cover' }}
+                  src={INTEGRATION}
+                />
+              </Box>
+            </Grid>
             <Grid
               item
               xs={12}
@@ -70,7 +81,7 @@ function CommerceRegister() {
               justify="center"
               component={Paper}
               elevation={10}
-              sx={{ overflow: 'auto', borderRadius: { xl: '0px 16px 16px 0px' } }}
+              sx={{ overflow: 'auto', borderRadius: { md: 0, xl: '0px 16px 16px 0px' } }}
             >
               <RegisterProcess />
             </Grid>

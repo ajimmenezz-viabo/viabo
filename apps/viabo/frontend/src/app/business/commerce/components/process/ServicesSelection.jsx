@@ -16,7 +16,7 @@ ServicesSelection.propTypes = {
 
 const variants = {
   selected: {
-    backgroundColor: theme => alpha(theme.palette.primary.main, 0.08),
+    backgroundColor: theme => alpha(theme.palette.primary.main, 0.1),
     borderColor: theme => theme.palette.primary.main
   },
   unselected: {
@@ -147,7 +147,7 @@ export function ServicesSelection({ store }) {
           type="submit"
           sx={{ textTransform: 'uppercase' }}
         >
-          Continuar
+          Guardar
         </LoadingButton>
       </Stack>
     </>

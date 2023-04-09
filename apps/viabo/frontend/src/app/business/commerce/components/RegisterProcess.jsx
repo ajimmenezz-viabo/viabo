@@ -9,7 +9,7 @@ export const RegisterProcess = () => {
   const component = useRegisterProcessStore(state => state.getComponent)
   const getBackProcess = useRegisterProcessStore(state => state.getBackProcess)
   const store = useRegisterProcessStore(state => state, shallow)
-  const { actualProcess, setToken, setActualProcess, setResume, token } = store
+  const { actualProcess, setToken, setActualProcess, setResume, token, resume } = store
 
   const { data: commerceProcess, isSuccess: isSuccessCommerceProcess } = useFindCommerceProcess({
     enabled: !!token

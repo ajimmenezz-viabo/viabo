@@ -33,3 +33,8 @@ export const updateCommerceProcess = async commerceInfo => {
   const { data } = await axios.put(`/api/commerce/update`, commerceInfo)
   return data
 }
+
+export const uploadDocuments = async documents => {
+  const { data } = await axios.post(`/api/commerce/documents/create`, documents)
+  return data
+}

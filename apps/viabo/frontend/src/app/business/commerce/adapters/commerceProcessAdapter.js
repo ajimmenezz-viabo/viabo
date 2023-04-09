@@ -1,5 +1,3 @@
-import { PROCESS_LIST } from '@/app/business/commerce/services'
-
 export const CommerceProcessAdapter = process => {
   const {
     Id,
@@ -13,7 +11,8 @@ export const CommerceProcessAdapter = process => {
     RegisterStep,
     LegalRepresentative,
     Services,
-    PointSaleTerminal
+    PointSaleTerminal,
+    Documents
   } = process
 
   const serviceCard = Services.find(service => service.type === '2')
@@ -36,7 +35,7 @@ export const CommerceProcessAdapter = process => {
     cardsNumber: Number(cardsNumber),
     cardsUse: cardUse,
     customCardsRequired: customCard,
-    files: [],
-    step: RegisterStep === 1 || RegisterStep === '' ? PROCESS_LIST.SERVICES_SELECTION : RegisterStep
+    files: Documents,
+    step: RegisterStep
   }
 }

@@ -4,7 +4,7 @@
 namespace Viabo\security\code\application\create;
 
 
-use Viabo\security\code\domain\CodeUserId;
+use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
@@ -21,9 +21,9 @@ final readonly class CreateCodeByLegalRepresentativeCreated implements DomainEve
 
     public function __invoke(LegalRepresentativeCreatedDomainEvent $event): void
     {
-        $userId = new CodeUserId($event->aggregateId());
+        $userId = new UserId($event->aggregateId());
         $userData = $event->toPrimitives();
 
-//        ($this->creator)($userId , $userData);
+        ($this->creator)($userId , $userData);
     }
 }

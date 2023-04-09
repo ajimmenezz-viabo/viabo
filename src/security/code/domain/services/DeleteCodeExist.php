@@ -5,7 +5,7 @@ namespace Viabo\security\code\domain\services;
 
 
 use Viabo\security\code\domain\CodeRepository;
-use Viabo\security\code\domain\CodeUserId;
+use Viabo\security\shared\domain\user\UserId;
 
 final readonly class DeleteCodeExist
 {
@@ -13,7 +13,7 @@ final readonly class DeleteCodeExist
     {
     }
 
-    public function __invoke(CodeUserId $userId): void
+    public function __invoke(UserId $userId): void
     {
         $code = $this->repository->search($userId);
 

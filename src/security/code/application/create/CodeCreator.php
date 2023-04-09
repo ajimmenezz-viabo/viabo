@@ -6,8 +6,8 @@ namespace Viabo\security\code\application\create;
 
 use Viabo\security\code\domain\Code;
 use Viabo\security\code\domain\CodeRepository;
-use Viabo\security\code\domain\CodeUserId;
 use Viabo\security\code\domain\services\DeleteCodeExist;
+use Viabo\security\shared\domain\user\UserId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CodeCreator
@@ -20,7 +20,7 @@ final readonly class CodeCreator
     {
     }
 
-    public function __invoke(CodeUserId $userId , array $userData): void
+    public function __invoke(UserId $userId , array $userData): void
     {
         $code = Code::create($userId);
         $code->setEventCreated($userData);

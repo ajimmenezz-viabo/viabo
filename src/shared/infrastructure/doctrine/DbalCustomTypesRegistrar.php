@@ -14,7 +14,7 @@ class DbalCustomTypesRegistrar
         if (!self::$initialized) {
             each(self::registerType(), $dbalCustomTypesClasses);
 
-            self::$initialized = true;
+//            self::$initialized = true;
         }
     }
 

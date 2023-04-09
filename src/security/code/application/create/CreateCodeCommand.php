@@ -4,15 +4,12 @@
 namespace Viabo\security\code\application\create;
 
 
-final readonly class CreateCodeCommand
-{
-    public function __construct(private string $userId)
-    {
-    }
+use Viabo\shared\domain\bus\command\Command;
 
-    public function getUserId(): string
+final readonly class CreateCodeCommand implements Command
+{
+    public function __construct(public string $userId)
     {
-        return $this->userId;
     }
 
 }

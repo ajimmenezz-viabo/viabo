@@ -5,9 +5,9 @@ namespace Viabo\security\user\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
-use Viabo\security\user\domain\UserEmail;
+use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\User;
-use Viabo\security\user\domain\UserId;
+use Viabo\security\user\domain\UserEmail;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;

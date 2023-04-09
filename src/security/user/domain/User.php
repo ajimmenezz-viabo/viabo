@@ -42,7 +42,7 @@ final class User extends AggregateRoot
             UserPhone::create($phone) ,
             UserEmail::create($email) ,
             UserPassword::create($password , $confirmPassword) ,
-            UserRegister::create() ,
+            UserRegister::todayDate() ,
             new UserActive('1') ,
         );
 

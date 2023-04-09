@@ -1,0 +1,4 @@
+commerce-documents-create:
+  path: '/api/commerce/documents/create'
+  controller: Viabo\Backend\Controller\business\documents\DocumentsCreatorController
+  methods: POST

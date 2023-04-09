@@ -15,8 +15,8 @@ export const getCommerceToken = async commerceEmail => {
   return data
 }
 
-export const sendValidationCode = async token => {
-  const { data } = await axios.post('/api/code/verification/resend', token)
+export const sendValidationCode = async () => {
+  const { data } = await axios.post('/api/code/verification/resend')
   return data
 }
 
@@ -30,6 +30,6 @@ export const getCommerceProcess = async () => {
 }
 
 export const updateCommerceProcess = async commerceInfo => {
-  const { data } = await axios.put(`/api/commerce/${commerceInfo?.commerceId}/update`, commerceInfo)
+  const { data } = await axios.put(`/api/commerce/update`, commerceInfo)
   return data
 }

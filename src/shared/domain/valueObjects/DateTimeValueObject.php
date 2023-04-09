@@ -8,15 +8,15 @@ use Viabo\shared\domain\utils\DatePHP;
 
 abstract class DateTimeValueObject
 {
-    public function __construct(protected ?string $value, protected $date = new DatePHP())
+    public function __construct(protected ?string $value , protected $date = new DatePHP())
     {
         $this->value = $this->validate($value);
     }
 
-    public static function todayDate(): string
+    public static function todayDate(): static
     {
         $date = new DatePHP();
-        return $date->dateTime();
+        return new static($date->dateTime());
     }
 
     public function value(): string

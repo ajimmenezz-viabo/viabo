@@ -8,11 +8,6 @@ use Viabo\shared\domain\valueObjects\DateTimeValueObject;
 
 final class CodeRegister extends DateTimeValueObject
 {
-    public static function create(): self
-    {
-        return new self(self::todayDate());
-    }
-
     public function isExpired(): bool
     {
         $this->setDate();

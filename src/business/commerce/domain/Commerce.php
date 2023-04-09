@@ -45,7 +45,7 @@ final class Commerce extends AggregateRoot
             new CommerceBranchOffices('0') ,
             new CommercePointSaleTerminal('0') ,
             new CommercePaymentApi('0') ,
-            CommerceRegister::create() ,
+            CommerceRegister::todayDate() ,
             $registerStep ,
             new CommerceActive('1') ,
         );

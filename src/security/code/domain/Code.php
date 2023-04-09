@@ -25,7 +25,7 @@ final  class Code extends AggregateRoot
             new CodeId('') ,
             $userId ,
             CodeValue::random() ,
-            CodeRegister::create()
+            CodeRegister::todayDate()
         );
 
     }

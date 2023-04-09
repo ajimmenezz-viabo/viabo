@@ -11,18 +11,9 @@ export const RegisterProcess = () => {
   const store = useRegisterProcessStore(state => state, shallow)
   const { actualProcess, setToken, setActualProcess, setResume, token } = store
 
-  const {
-    data: commerceProcess,
-    isSuccess: isSuccessCommerceProcess,
-    refetch
-  } = useFindCommerceProcess({
+  const { data: commerceProcess, isSuccess: isSuccessCommerceProcess } = useFindCommerceProcess({
     enabled: !!token
   })
-  useEffect(() => {
-    if (token) {
-      refetch()
-    }
-  }, [token])
 
   useEffect(() => {
     if (commerceProcess && isSuccessCommerceProcess) {

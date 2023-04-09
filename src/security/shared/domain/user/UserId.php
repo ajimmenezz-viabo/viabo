@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\security\user\domain;
+namespace Viabo\security\shared\domain\user;
 
 
 use Viabo\shared\domain\valueObjects\UuidValueObject;

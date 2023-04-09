@@ -5,9 +5,10 @@ namespace Viabo\security\code\application\delete;
 
 
 use Viabo\security\code\domain\CodeRepository;
-use Viabo\security\code\domain\CodeUserId;
+use Viabo\security\code\domain\CodeValue;
 use Viabo\security\code\domain\exceptions\CodeExpired;
 use Viabo\security\code\domain\exceptions\WrongCode;
+use Viabo\security\shared\domain\user\UserId;
 
 final readonly class CodeChecker
 {
@@ -15,15 +16,15 @@ final readonly class CodeChecker
     {
     }
 
-    public function __invoke(CodeCheckerRequest $request): void
+    public function __invoke(UserId $userId, CodeValue $verificationCode): void
     {
-        $code = $this->repository->search(new CodeUserId($request->getUserId()));
+        $code = $this->repository->search($userId);
 
         if(empty($code)){
             throw new WrongCode();
         }
 
-        if($code->isNotSame($request->getVerificationCode())){
+        if($code->isNotSame($verificationCode)){
             throw new WrongCode();
         }
 

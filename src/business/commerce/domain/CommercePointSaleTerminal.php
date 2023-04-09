@@ -10,6 +10,6 @@ final class CommercePointSaleTerminal extends StringValueObject
 {
     public static function create(string $value): self
     {
-        return new self(!empty($value) ?: '0');
+        return new self(!empty($value) ? $value : '0');
     }
 }

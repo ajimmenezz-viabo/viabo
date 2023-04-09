@@ -4,6 +4,7 @@
 namespace Viabo\security\user\domain;
 
 
+use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 

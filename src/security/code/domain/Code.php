@@ -5,20 +5,21 @@ namespace Viabo\security\code\domain;
 
 
 use Viabo\security\code\domain\events\CodeCreatedDomainEvent;
+use Viabo\security\shared\domain\user\UserId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final  class Code extends AggregateRoot
 {
     public function __construct(
         private readonly CodeId       $id ,
-        private readonly CodeUserId   $userId ,
+        private readonly UserId       $userId ,
         private readonly CodeValue    $value ,
         private readonly CodeRegister $register ,
     )
     {
     }
 
-    public static function create(CodeUserId $userId): self
+    public static function create(UserId $userId): self
     {
         return new self(
             new CodeId('') ,
@@ -37,9 +38,9 @@ final  class Code extends AggregateRoot
         ));
     }
 
-    public function isNotSame(string $verificationCode): bool
+    public function isNotSame(CodeValue $verificationCode): bool
     {
-        return $this->value->isNotSame($verificationCode);
+        return $this->value->isNotSame($verificationCode->value());
     }
 
     public function isExpired(): bool

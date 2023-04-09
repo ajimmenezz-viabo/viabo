@@ -4,6 +4,7 @@
 namespace Viabo\security\user\domain;
 
 
+use Viabo\security\shared\domain\user\UserId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface UserRepository

@@ -16,7 +16,7 @@ ServicesSelection.propTypes = {
 
 const variants = {
   selected: {
-    backgroundColor: theme => alpha(theme.palette.primary.main, 0.1),
+    backgroundColor: theme => alpha(theme.palette.primary.main, 0.3),
     borderColor: theme => theme.palette.primary.main
   },
   unselected: {

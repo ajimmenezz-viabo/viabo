@@ -12,4 +12,9 @@ final class DocumentStorePath extends StringValueObject
     {
         return new self("/storage$value");
     }
+
+    public function directory(): string
+    {
+        return str_replace('/storage' , '' , $this->value);
+    }
 }

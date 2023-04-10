@@ -9,7 +9,9 @@ use Viabo\business\documents\domain\Document;
 use Viabo\business\documents\domain\DocumentName;
 use Viabo\business\documents\domain\DocumentRepository;
 use Viabo\business\shared\domain\commerce\CommerceId;
+use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
+use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 use Viabo\shared\infrastructure\symfony\uploadFile\UploadedFileSymfonyAdapter;
 
 final class DocumentDoctrineRepository extends DoctrineRepository implements DocumentRepository
@@ -35,10 +37,22 @@ final class DocumentDoctrineRepository extends DoctrineRepository implements Doc
         $this->persist($document);
     }
 
+    public function searchCriteria(Criteria $criteria): array
+    {
+        $criteriaDoctrine = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(Document::class)->matching($criteriaDoctrine)->toArray();
+    }
+
     public function deleteBy(CommerceId $commerceId , DocumentName $name): void
     {
         $this->entityManager()->getConnection()->delete('t_business_commerces_documents' ,
             ['CommerceId' => $commerceId->value() , 'Name' => $name->value()]
         );
+    }
+
+    public function delete(Document $document): void
+    {
+        $this->uploadedFile->removeFile($document->directoryFilePath());
+        $this->remove($document);
     }
 }

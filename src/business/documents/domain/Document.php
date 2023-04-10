@@ -5,6 +5,7 @@ namespace Viabo\business\documents\domain;
 
 
 use Viabo\business\documents\domain\events\DocumentCreatedDomainEvent;
+use Viabo\business\documents\domain\events\DocumentDeletedDomainEvent;
 use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -32,14 +33,19 @@ final  class Document extends AggregateRoot
         );
     }
 
-    public function directoryPath(): string
-    {
-        return "/Business/Commerce_{$this->commerceId->value()}/Documents";
-    }
-
     public function name(): DocumentName
     {
         return $this->name;
+    }
+
+    public function directoryFilePath(): string
+    {
+        return $this->storePath->directory();
+    }
+
+    public function directoryPath(): string
+    {
+        return "/Business/Commerce_{$this->commerceId->value()}/Documents";
     }
 
     public function recordUploadFileData(string $fileName , string $path): void
@@ -51,6 +57,13 @@ final  class Document extends AggregateRoot
     public function setEventCreated(CommerceLegalRepresentative $legalRepresentative): void
     {
         $this->record(new DocumentCreatedDomainEvent(
+            $legalRepresentative->value() , $this->id->value() , $this->toArray()
+        ));
+    }
+
+    public function setEventDelete(CommerceLegalRepresentative $legalRepresentative): void
+    {
+        $this->record(new DocumentDeletedDomainEvent(
             $legalRepresentative->value() , $this->id->value() , $this->toArray()
         ));
     }

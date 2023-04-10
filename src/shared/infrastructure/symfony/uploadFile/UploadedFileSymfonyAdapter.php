@@ -61,4 +61,9 @@ final class UploadedFileSymfonyAdapter
     {
         return $this->originalFileName;
     }
+
+    public function removeFile(string $storePath): void
+    {
+        unlink($this->rootDir . $storePath);
+    }
 }

@@ -38,3 +38,8 @@ export const uploadDocuments = async documents => {
   const { data } = await axios.post(`/api/commerce/documents/create`, documents)
   return data
 }
+
+export const deleteDocuments = async documents => {
+  const { data } = await axios.post(`/api/commerce/documents/delete`, documents)
+  return data
+}

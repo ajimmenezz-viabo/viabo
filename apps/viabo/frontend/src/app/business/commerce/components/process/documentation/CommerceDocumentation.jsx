@@ -8,7 +8,7 @@ import { LoadingButton } from '@mui/lab'
 import { useMemo } from 'react'
 import { CommerceUploadDocumentsAdapter } from '@/app/business/commerce/adapters'
 import { useSnackbar } from 'notistack'
-import { useUpdateCommerceProcess, useUploadDocuments } from '@/app/business/commerce/hooks'
+import { useDeleteDocuments, useUpdateCommerceProcess, useUploadDocuments } from '@/app/business/commerce/hooks'
 import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
 
 CommerceDocumentation.propTypes = {
@@ -19,6 +19,7 @@ export default function CommerceDocumentation({ store }) {
   const { files, fiscalTypePerson } = resume
   const { enqueueSnackbar } = useSnackbar()
   const { mutate: uploadDocuments, isLoading: uploadingDocuments } = useUploadDocuments()
+  const { mutate: deleteDocuments, isLoading: deletingDocuments } = useDeleteDocuments()
   const { mutate: updateInfoCommerce, isLoading: isUpdatingCommerce } = useUpdateCommerceProcess()
 
   const formik = useFormik({
@@ -32,10 +33,15 @@ export default function CommerceDocumentation({ store }) {
     enableReinitialize: true,
     onSubmit: values => {
       const { moralPerson, ...documents } = values
-      const someFile = Object.values(documents).some(valor => valor !== null)
+      const someFile = filterDocuments?.some(fieldName => values[fieldName] !== null)
       if (someFile) {
-        const documentsAdapter = CommerceUploadDocumentsAdapter(documents, resume?.id)
-        uploadDocuments(documentsAdapter, {
+        const { deleteDocumentsForm, uploadDocumentsForm } = CommerceUploadDocumentsAdapter(
+          documents,
+          resume?.id,
+          moralPerson
+        )
+
+        uploadDocuments(uploadDocumentsForm, {
           onSuccess: () => {
             const allDocumentsFilled = filterDocuments?.every(fieldName => values[fieldName] !== null)
             const resumeAdapter = CommerceUpdateAdapter(resume, allDocumentsFilled ? 4 : 3)
@@ -50,6 +56,7 @@ export default function CommerceDocumentation({ store }) {
             })
           }
         })
+        deleteDocuments(deleteDocumentsForm)
       } else {
         enqueueSnackbar('Se debe subir al menos un archivo!', {
           variant: 'warning'
@@ -65,7 +72,7 @@ export default function CommerceDocumentation({ store }) {
   const filterDocuments = useMemo(
     () =>
       Object.keys(documentList).filter(document => {
-        if (values.moralPerson) {
+        if (values.moralPerson === '1') {
           return document
         }
         return documentList[document].moralPerson === false || documentList[document].moralPerson === 'all'
@@ -73,7 +80,7 @@ export default function CommerceDocumentation({ store }) {
     [values.moralPerson]
   )
 
-  const loading = uploadingDocuments || isSubmitting || isUpdatingCommerce
+  const loading = uploadingDocuments || isSubmitting || isUpdatingCommerce || deletingDocuments
 
   return (
     <>
@@ -93,11 +100,6 @@ export default function CommerceDocumentation({ store }) {
             exclusive
             onChange={(event, newValue) => {
               setFieldValue('moralPerson', newValue)
-              if (newValue === '2') {
-                setFieldValue('ACTA_CONSTITUTIVA', null)
-                setFieldValue('DOCUMENTO_PODER', null)
-                setFieldValue('CEDULA_FISCAL_EMPRESA', null)
-              }
             }}
             aria-label="Platform"
           >

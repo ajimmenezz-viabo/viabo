@@ -4,28 +4,19 @@
 namespace Viabo\security\user\application\find;
 
 
+use Viabo\security\user\domain\services\UserNameFinder;
 use Viabo\security\user\domain\UserEmail;
-use Viabo\security\user\domain\exceptions\UserDoesNotExist;
 use Viabo\security\user\domain\User;
-use Viabo\security\user\domain\UserRepository;
 
-final class UserFinder
+final readonly class UserFinder
 {
-    private UserRepository $repository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(private UserNameFinder $finder)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(UserFinderRequest $request): User
     {
-        $user = $this->repository->search(new UserEmail($request->getUserId()));
-
-        if(empty($user)){
-            throw new UserDoesNotExist($request->getUserId());
-        }
-
-        return $user;
+        return ($this->finder)(new UserEmail($request->getUserId()));
     }
 }

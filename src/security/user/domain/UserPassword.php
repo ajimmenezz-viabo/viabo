@@ -78,4 +78,10 @@ final class UserPassword extends StringValueObject
     {
         return password_hash($_ENV['APP_PASSWORD_SECURITY'] . $value , PASSWORD_DEFAULT);
     }
+
+    public function isDifferent(string $passwordEntered): bool
+    {
+        $passwordEntered = $_ENV['APP_PASSWORD_SECURITY'] . $passwordEntered;
+        return !password_verify($passwordEntered, $this->value);
+    }
 }

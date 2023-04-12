@@ -4,6 +4,7 @@
 namespace Viabo\shared\infrastructure\bus\query;
 
 
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
@@ -24,7 +25,7 @@ final readonly class InMemorySymfonyQueryBus implements QueryBus
             [
                 new HandleMessageMiddleware(
                     new HandlersLocator(CallableFirstParameterExtractor::forCallables($queryHandlers))
-                ),
+                ) ,
             ]
         );
     }
@@ -38,6 +39,8 @@ final readonly class InMemorySymfonyQueryBus implements QueryBus
             return $stamp->getResult();
         } catch (NoHandlerForMessageException) {
             throw new QueryNotRegisteredError($query);
+        } catch (HandlerFailedException $error) {
+            throw $error->getPrevious() ?? $error;
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Viabo\shared\infrastructure\symfony;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
 use Viabo\shared\domain\bus\command\Command;
 use Viabo\shared\domain\bus\command\CommandBus;
 use Viabo\shared\domain\bus\query\Query;
@@ -35,9 +36,18 @@ abstract readonly class ApiController
     protected function decode(string $token): array
     {
         try {
-            $token = explode(' ',$token);
+            $token = explode(' ' , $token);
             return $this->JWTEncoder->decode($token[1]);
         } catch (JWTDecodeFailureException) {
+            throw new \DomainException('Sin acceso' , 401);
+        }
+    }
+
+    protected function encode(array $data): string
+    {
+        try {
+            return $this->JWTEncoder->encode($data);
+        } catch (JWTEncodeFailureException) {
             throw new \DomainException('Sin acceso' , 401);
         }
     }

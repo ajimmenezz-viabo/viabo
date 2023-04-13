@@ -10,6 +10,15 @@ export const AppRouter = () =>
       element: <Typography variant={'h1'}>Modo Desarrollo</Typography>
     },
     {
+      path: '/auth',
+      children: [
+        {
+          path: 'login',
+          element: <Login />
+        }
+      ]
+    },
+    {
       path: '/comercio/registro',
       element: <CommerceRegister />
     },
@@ -17,3 +26,4 @@ export const AppRouter = () =>
   ])
 
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
+const Login = LoadableRoute(lazy(() => import('@/app/authentication/pages/Login')))

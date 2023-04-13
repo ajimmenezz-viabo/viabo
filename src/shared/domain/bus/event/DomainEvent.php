@@ -4,9 +4,8 @@
 namespace Viabo\shared\domain\bus\event;
 
 
-use Viabo\shared\domain\Utils;
+use Viabo\shared\domain\utils\DatePHP;
 use Viabo\shared\domain\valueObjects\UuidValueObject;
-use DateTimeImmutable;
 
 abstract readonly class DomainEvent
 {
@@ -20,8 +19,9 @@ abstract readonly class DomainEvent
         string         $occurredOn = null
     )
     {
+        $date = new DatePHP();
         $this->eventId    = $eventId ?: UuidValueObject::random()->value();
-        $this->occurredOn = $occurredOn ?: Utils::dateToString(new DateTimeImmutable());
+        $this->occurredOn = $occurredOn ?: $date->dateTime();
     }
 
     abstract public static function fromPrimitives(

@@ -5,7 +5,6 @@ namespace Viabo\security\session\application\create;
 
 
 use Viabo\security\session\domain\SessionLoginDate;
-use Viabo\security\session\domain\SessionUserId;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;

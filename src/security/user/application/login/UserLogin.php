@@ -8,10 +8,11 @@ use Viabo\security\user\domain\exceptions\UserPasswordWrong;
 use Viabo\security\user\domain\services\UserNameFinder;
 use Viabo\security\user\domain\UserEmail;
 use Viabo\security\user\domain\UserPassword;
+use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class UserLogin
 {
-    public function __construct(private UserNameFinder $finder)
+    public function __construct(private UserNameFinder $finder , private EventBus $bus)
     {
     }
 
@@ -19,9 +20,12 @@ final readonly class UserLogin
     {
         $user = ($this->finder)($email);
 
-        if($user->isDifferent($passwordEntered)){
+        if ($user->isDifferent($passwordEntered)) {
             throw new UserPasswordWrong();
         }
+
+        $user->setEventSessionStarted();
+        $this->bus->publish(...$user->pullDomainEvents());
 
         return new UserLoginResponse($user->id());
     }

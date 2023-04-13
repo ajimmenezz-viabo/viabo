@@ -9,6 +9,7 @@
         <field name="userId" type="user_id" column="UserId"/>
         <embedded name="loginDate" class="SessionLoginDate" use-column-prefix="false"/>
         <embedded name="logoutDate" class="SessionLogoutDate" use-column-prefix="false"/>
+        <embedded name="active" class="SessionActive" use-column-prefix="false"/>
     </entity>
 
 </doctrine-mapping>

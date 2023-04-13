@@ -6,6 +6,7 @@ namespace Viabo\security\user\domain;
 
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
+use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class User extends AggregateRoot
@@ -69,6 +70,11 @@ final class User extends AggregateRoot
     public function isDifferent(UserPassword $passwordEntered): bool
     {
         return $this->password->isDifferent($passwordEntered->value());
+    }
+
+    public function setEventSessionStarted(): void
+    {
+        $this->record(new SessionStartedDomainEvent($this->id->value()));
     }
 
     public function toArray(): array

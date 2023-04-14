@@ -8,11 +8,16 @@ use Viabo\security\user\domain\exceptions\UserPasswordWrong;
 use Viabo\security\user\domain\services\UserNameFinder;
 use Viabo\security\user\domain\UserEmail;
 use Viabo\security\user\domain\UserPassword;
+use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class UserLogin
 {
-    public function __construct(private UserNameFinder $finder , private EventBus $bus)
+    public function __construct(
+        private UserRepository $repository,
+        private UserNameFinder $finder ,
+        private EventBus $bus
+    )
     {
     }
 
@@ -24,9 +29,10 @@ final readonly class UserLogin
             throw new UserPasswordWrong();
         }
 
+        $userView = $this->repository->searchView($user->id());
+
         $user->setEventSessionStarted();
         $this->bus->publish(...$user->pullDomainEvents());
-
-        return new UserLoginResponse($user->id());
+        return new UserLoginResponse($userView->tokenData());
     }
 }

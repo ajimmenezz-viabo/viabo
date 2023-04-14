@@ -17,7 +17,8 @@ final readonly class LoginController extends ApiController
         try {
             $data = $request->toArray();
             $data = $this->ask(new LoginQuery($data['username'] , $data['password']));
-            $token = $this->encode(['id' => $data->userId]);
+            $token = $this->encode($data->token);
+
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());

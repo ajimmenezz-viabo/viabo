@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class UserLoginResponse implements Response
 {
-    public function __construct(public string $userId)
+    public function __construct(public array $token)
     {
     }
 }

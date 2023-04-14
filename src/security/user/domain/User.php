@@ -47,14 +47,16 @@ final class User extends AggregateRoot
             new UserActive('1') ,
         );
 
-        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id() , $user->id() , $user->toArray()));
+        $user->record(new LegalRepresentativeCreatedDomainEvent(
+            $user->id()->value() , $user->id()->value() , $user->toArray()
+        ));
 
         return $user;
     }
 
-    public function id(): string
+    public function id(): UserId
     {
-        return $this->id->value();
+        return $this->id;
     }
 
     public function email(): string

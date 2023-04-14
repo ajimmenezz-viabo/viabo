@@ -17,6 +17,7 @@
         <field name="profileName" column="ProfileName"/>
         <field name="permissionModules" column="PermissionModules"/>
         <field name="actionsModules" column="ActionsModules"/>
+        <field name="urlInit" column="UrlInit"/>
     </entity>
 
 </doctrine-mapping>

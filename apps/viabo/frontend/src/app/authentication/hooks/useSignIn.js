@@ -4,10 +4,12 @@ import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '@/shared/hooks'
 import { setSession } from '@/shared/utils'
 import { signIn } from '@/app/authentication/services'
+import { useNavigate } from 'react-router-dom'
 
 export const useSignIn = (options = {}) => {
   const [customError, setCustomError] = useState(null)
   const { dispatch } = useAuth()
+  const navigate = useNavigate()
 
   const register = useMutation(signIn, {
     onSuccess: response => {
@@ -19,6 +21,7 @@ export const useSignIn = (options = {}) => {
           user: {}
         }
       })
+      navigate('/dashboard')
     },
     onError: error => {
       setCustomError({

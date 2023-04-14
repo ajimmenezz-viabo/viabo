@@ -32,7 +32,7 @@ export default function GlobalStyles() {
         body: {
           width: '100%',
           height: '100%',
-          backgroundColor: `${theme.palette.background.neutral}!important`
+          backgroundColor: theme.palette.mode === 'light' && `${theme.palette.background.neutral}!important`
         },
         '#root': {
           width: '100%',

@@ -9,6 +9,7 @@ use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\User;
 use Viabo\security\user\domain\UserEmail;
 use Viabo\security\user\domain\UserRepository;
+use Viabo\security\user\domain\UserView;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -25,12 +26,12 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
         $this->persist($user);
     }
 
-    public function search(UserEmail $email): ?User
+    public function search(UserEmail $email): User|null
     {
         return $this->repository(User::class)->findOneBy(['email.value' => $email->value()]);
     }
 
-    public function searchId(UserId $userId): ?User
+    public function searchId(UserId $userId): User|null
     {
         return $this->repository(User::class)->find($userId->value());
     }
@@ -39,5 +40,10 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
     {
         $criteriaDoctrine = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(User::class)->matching($criteriaDoctrine)->toArray();
+    }
+
+    public function searchView(UserId $userId): UserView|null
+    {
+        return $this->repository(UserView::class)->findOneBy(['id' => $userId->value() , 'active' => '1']);
     }
 }

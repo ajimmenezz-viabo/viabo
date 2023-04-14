@@ -11,9 +11,11 @@ interface UserRepository
 {
     public function save(User $user): void;
 
-    public function search(UserEmail $email): ?User;
+    public function search(UserEmail $email): User|null;
 
-    public function searchId(UserId $userId): ?User;
+    public function searchId(UserId $userId): User|null;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function searchView(UserId $userId): UserView|null;
 }

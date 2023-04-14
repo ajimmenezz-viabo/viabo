@@ -18,7 +18,8 @@ final readonly class UserView
         private string      $active ,
         private string      $profileName ,
         private string      $permissionModules ,
-        private string|null $actionsModules
+        private string|null $actionsModules ,
+        private string      $urlInit
     )
     {
     }
@@ -28,6 +29,17 @@ final readonly class UserView
         return [
             'permissionModules' => $this->permissionModules ,
             'actionsModules' => $this->actionsModules
+        ];
+    }
+
+    public function tokenData(): array
+    {
+        return [
+            'id' => $this->id ,
+            'name' => "$this->name $this->lastname" ,
+            'profile' => $this->profileName ,
+            'email' => $this->email ,
+            'urlInit' => $this->urlInit
         ];
     }
 

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { createContext } from 'react'
-import { defaultSettings } from '@/config'
 import { useLocalStorage } from '@/shared/hooks'
 import { colorPresets, defaultPreset, getColorPresets } from '@theme/utils'
+import { defaultSettings } from '@theme/overrides/options'
 
 const initialState = {
   ...defaultSettings,

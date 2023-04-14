@@ -5,7 +5,11 @@ import { isValidToken, setSession } from '@/shared/utils'
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null
+  user: {
+    email: 'test@test.com.mx',
+    name: 'Test User',
+    modules: []
+  }
 }
 
 const handlers = {

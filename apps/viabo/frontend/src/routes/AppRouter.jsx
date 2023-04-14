@@ -2,6 +2,7 @@ import { useRoutes } from 'react-router-dom'
 import { LoadableRoute } from '@/routes/LoadableRoute'
 import { lazy } from 'react'
 import { Typography } from '@mui/material'
+import { DashboardLayout } from '@/shared/layout/dashboard'
 
 export const AppRouter = () =>
   useRoutes([
@@ -21,6 +22,10 @@ export const AppRouter = () =>
     {
       path: '/comercio/registro',
       element: <CommerceRegister />
+    },
+    {
+      path: '/dashboard',
+      element: <DashboardLayout />
     },
     { path: '*', element: <Typography variant={'h1'}>Pagina No encontrada</Typography> }
   ])

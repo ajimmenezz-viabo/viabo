@@ -1,9 +1,9 @@
-#default:
-#  path: '/'
-#  controller: Viabo\Backend\Controller\DefaultController
-#  methods: GET
+default:
+  path: '/dashboard'
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
 
-#frontend:
-#  path: '/{path?}'
-#  controller: Siccob\Adist\Backend\Controller\DefaultController
-#  methods: GET
+frontend:
+  path: '/dashboard/{path?}'
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET

@@ -1,20 +1,12 @@
 import { useRef, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { alpha } from '@mui/material/styles'
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Tooltip,
-  Typography
-} from '@mui/material'
-import { useAuth, useUser } from '@/shared/hooks'
+import { Box, Divider, IconButton, ListItemIcon, ListItemText, MenuItem, Tooltip, Typography } from '@mui/material'
+import { useUser } from '@/shared/hooks'
 import { MenuPopover } from '@/shared/components/containers'
 import { MyAvatar } from '@/shared/layout/dashboard/header'
+import { useLogout } from '@/app/authentication/hooks'
+import { LoadingButton } from '@mui/lab'
 
 const MENU_OPTIONS = [
   // {
@@ -28,7 +20,7 @@ export default function AccountPopover() {
   const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
   const user = useUser()
-  const { logout: logoutContext } = useAuth()
+  const { mutate: logout, isLoading } = useLogout()
 
   const handleOpen = () => {
     setOpen(true)
@@ -38,8 +30,7 @@ export default function AccountPopover() {
   }
 
   const handleLogout = () => {
-    window.location.replace('/Logout')
-    logoutContext()
+    logout()
   }
 
   return (
@@ -97,9 +88,9 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth variant="outlined" color="error" onClick={handleLogout}>
+          <LoadingButton loading={isLoading} fullWidth variant="outlined" color="error" onClick={handleLogout}>
             Cerrar Sesión
-          </Button>
+          </LoadingButton>
         </Box>
       </MenuPopover>
     </>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useResponsive } from '@theme/hooks'
 
 const initialState = {
+  isCollapse: true,
   collapseClick: false,
   collapseHover: false,
   onToggleCollapse: () => {},
@@ -50,7 +51,7 @@ function CollapseDrawerProvider({ children }) {
   return (
     <CollapseDrawerContext.Provider
       value={{
-        isCollapse: collapse.click && !collapse.hover,
+        isCollapse: Boolean(collapse.click && !collapse.hover),
         collapseClick: collapse.click,
         collapseHover: collapse.hover,
         onToggleCollapse: handleToggleCollapse,

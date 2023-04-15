@@ -16,7 +16,6 @@ const ContainerStyle = styled(Card)(({ theme }) => ({
   },
 
   margin: '0 auto',
-  zIndex: '100000',
   backgroundColor: theme.palette.background.paper
 }))
 

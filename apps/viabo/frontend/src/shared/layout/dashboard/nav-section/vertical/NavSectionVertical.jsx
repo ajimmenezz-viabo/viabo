@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material'
@@ -6,8 +6,9 @@ import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { NavListRoot } from './NavList'
 import { ListItemTextStyle } from './style'
-import { useUser } from '@/shared/hooks'
-import navConfigTest from '@/shared/layout/dashboard/navbar/NavConfig'
+import { useAuth } from '@/shared/hooks'
+import { useQueryClient } from '@tanstack/react-query'
+import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 
 export const ListSubheaderStyle = styled(props => <ListItemButton {...props} />)(({ theme }) => ({
   ...theme.typography.overline,
@@ -26,28 +27,47 @@ NavSectionVertical.propTypes = {
   navConfig: PropTypes.array
 }
 
-function NavSectionVertical({ isCollapse = false, ...other }) {
-  const user = useUser()
-  const navConfig = user?.modules || navConfigTest
+function NavSectionVertical({ isCollapse, ...other }) {
+  const { user } = useAuth()
+  const client = useQueryClient()
+  const data = client.getQueryData([AUTHENTICATION_KEYS.USER_MODULES])
+  const navConfig = data?.menu
+  const initialState = useMemo(() => navConfig?.map(() => true), [navConfig])
+
+  const [openStates, setOpenStates] = useState([])
+  const [savedStates, setSavedStates] = useState(openStates)
+
+  useEffect(() => {
+    if (isCollapse && navConfig?.length > 0) {
+      setOpenStates(initialState)
+    }
+    if (!isCollapse && navConfig?.length > 0) {
+      const data = savedStates.length === 0 ? initialState : savedStates
+      setOpenStates(data)
+    }
+  }, [initialState, isCollapse, navConfig, openStates, savedStates])
+
+  const handleOpen = index => {
+    setOpenStates(prevStates => {
+      const newStates = [...openStates]
+      newStates[index] = !openStates[index]
+      return newStates
+    })
+
+    setSavedStates(prevStates => {
+      const newStates = [...openStates]
+      newStates[index] = !openStates[index]
+      return newStates
+    })
+  }
+
   return (
     <Box {...other} sx={{ pb: 2 }}>
       {navConfig?.map((group, index) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [open, setOpen] = useState(true)
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [saveOpen, setSaveOpen] = useState(open)
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => {
-          if (isCollapse) {
-            setOpen(true)
-          } else {
-            setOpen(saveOpen)
-          }
-        }, [isCollapse])
-
-        return (
-          group?.category && (
-            <List key={group.category} disablePadding sx={{ px: 2 }}>
+        if (group?.category) {
+          const open = Boolean(openStates && openStates[index])
+          return (
+            <List key={index} disablePadding sx={{ px: 2 }}>
               {!isCollapse && (
                 <ListSubheaderStyle
                   sx={{
@@ -56,8 +76,7 @@ function NavSectionVertical({ isCollapse = false, ...other }) {
                     })
                   }}
                   onClick={() => {
-                    setOpen(!open)
-                    setSaveOpen(!open)
+                    handleOpen(index)
                   }}
                 >
                   <ListItemTextStyle
@@ -69,15 +88,16 @@ function NavSectionVertical({ isCollapse = false, ...other }) {
                   {open ? <ExpandLess /> : <ExpandMore />}
                 </ListSubheaderStyle>
               )}
-              {group?.modules.map(list => (
-                <Collapse key={list.name} in={open} timeout="auto">
+              {group?.modules.map((list, index) => (
+                <Collapse key={index} in={open} timeout="auto">
                   <NavListRoot list={list} isCollapse={isCollapse} />
                 </Collapse>
               ))}
               {isCollapse && index !== navConfig.length - 1 && <Divider sx={{ mb: 0.5 }} />}
             </List>
           )
-        )
+        }
+        return null
       })}
     </Box>
   )

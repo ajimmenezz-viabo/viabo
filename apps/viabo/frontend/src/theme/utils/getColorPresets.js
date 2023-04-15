@@ -1,10 +1,10 @@
-import { palette } from '@theme/overrides/options'
+import { palette, PRIMARY } from '@theme/overrides/options'
 
 export const colorPresets = [
   // DEFAULT
   {
     name: 'default',
-    ...palette.light.primary
+    ...PRIMARY
   },
   // PURPLE
   {

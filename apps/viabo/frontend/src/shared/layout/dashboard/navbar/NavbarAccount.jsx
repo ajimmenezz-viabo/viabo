@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import { Box, Link, Typography } from '@mui/material'
 import { MyAvatar } from '@/shared/layout/dashboard/header'
+import { useAuth } from '@/shared/hooks'
 
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -19,10 +20,7 @@ NavbarAccount.propTypes = {
 }
 
 export default function NavbarAccount({ isCollapse }) {
-  const user = {
-    displayName: 'Viabo Admin',
-    role: 'Admin'
-  }
+  const { user } = useAuth()
   return (
     <Link underline="none" color="inherit" href="/">
       <RootStyle
@@ -47,11 +45,9 @@ export default function NavbarAccount({ isCollapse }) {
             })
           }}
         >
-          <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
-          </Typography>
+          <Typography variant="subtitle2">{user?.name}</Typography>
           <Typography textAlign={'left'} variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-            {user?.role}
+            {user?.profile}
           </Typography>
         </Box>
       </RootStyle>

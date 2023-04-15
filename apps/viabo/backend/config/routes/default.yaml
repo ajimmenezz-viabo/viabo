@@ -1,9 +1,9 @@
 default:
-  path: '/dashboard'
+  path: '/management'
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
 frontend:
-  path: '/dashboard/{path?}'
+  path: '/management/{path?}'
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET

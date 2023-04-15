@@ -3,9 +3,6 @@ import { useEffect, useState } from 'react'
 export function useLocalStorage(key, defaultValue) {
   const [value, setValue] = useState(() => {
     const storedValue = localStorage.getItem(key)
-    if (!storedValue) {
-      localStorage.setItem(key, JSON.stringify(defaultValue))
-    }
     return storedValue === null ? defaultValue : JSON.parse(storedValue)
   })
 

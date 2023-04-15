@@ -1,29 +1,27 @@
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useIsFetching, useMutation, useQuery } from '@tanstack/react-query'
 import { useAuth } from '@/shared/hooks'
+import { getUserModules, signIn } from '@/app/authentication/services'
+import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 import { setSession } from '@/shared/utils'
-import { signIn } from '@/app/authentication/services'
-import { useNavigate } from 'react-router-dom'
 
 export const useSignIn = (options = {}) => {
   const [customError, setCustomError] = useState(null)
-  const { dispatch } = useAuth()
-  const navigate = useNavigate()
+  const [tokenExists, setTokenExists] = useState(false)
+  const { login } = useAuth()
 
-  const register = useMutation(signIn, {
+  const isFetching = useIsFetching([AUTHENTICATION_KEYS.USER_MODULES])
+
+  const signInMutation = useMutation(signIn, {
     onSuccess: response => {
       setCustomError(null)
       setSession(response?.token)
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          user: {}
-        }
-      })
-      navigate('/dashboard')
+      setTokenExists(true)
     },
     onError: error => {
+      setTokenExists(false)
+      setSession(null)
       setCustomError({
         message: getErrorAPI(error, 'Ocurrio un error inesperado. Intente nuevamente o reportelo al área de sistemas'),
         code: getNotificationTypeByErrorCode(error?.response?.status)
@@ -32,8 +30,30 @@ export const useSignIn = (options = {}) => {
     ...options
   })
 
+  const userModules = useQuery([AUTHENTICATION_KEYS.USER_MODULES], getUserModules, {
+    onSuccess: data => {
+      login()
+      setCustomError(null)
+      setTokenExists(false)
+    },
+    onError: error => {
+      setTokenExists(false)
+      setSession(null)
+      setCustomError({
+        message: getErrorAPI(error, 'Ocurrio un error inesperado. Intente nuevamente o reportelo al área de sistemas'),
+        code: getNotificationTypeByErrorCode(error?.response?.status)
+      })
+    },
+    enabled: !!tokenExists,
+    retry: false
+  })
+
   return {
-    ...register,
-    error: customError || null
+    ...signInMutation,
+    setCustomError,
+    isError: signInMutation.isError || userModules.isError,
+    isSuccess: signInMutation.isSuccess && userModules.isSuccess,
+    isLoading: signInMutation.isLoading || isFetching === 1,
+    error: customError ?? null
   }
 }

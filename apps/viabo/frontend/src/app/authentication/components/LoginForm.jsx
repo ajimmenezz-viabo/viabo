@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AlertTitle, Box, InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -11,7 +11,7 @@ import { AlertWithFocus } from '@/shared/components/alerts'
 import ViaboLogo from '@/shared/assets/img/logo-big.png'
 
 export function LoginForm() {
-  const { mutate: login, error, isError, isLoading } = useSignIn()
+  const { mutate: login, error, isError, isLoading, isSuccess, setCustomError } = useSignIn()
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Ingrese un correo valido').required('El correo es requerido'),
     password: Yup.string().required('La contraseña es requerida')
@@ -24,25 +24,24 @@ export function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
+      setCustomError(null)
       const data = {
         username: values?.email,
         password: values?.password
       }
-      login(data, {
-        onSuccess: () => {
-          setSubmitting(false)
-          console.log('inicio de sesion correcto')
-        },
-        onError: () => {
-          setSubmitting(false)
-        }
-      })
+      login(data)
     }
   })
 
-  const { isSubmitting } = formik
+  const { isSubmitting, setSubmitting } = formik
 
   const loading = isLoading || isSubmitting
+
+  useEffect(() => {
+    if (isSuccess || isError) {
+      setSubmitting(false)
+    }
+  }, [isError, isSuccess])
 
   return (
     <MotionViewport>
@@ -54,8 +53,8 @@ export function LoginForm() {
         <Typography variant="h5" align="center" gutterBottom>
           ¡Bienvenido!
         </Typography>
-        {isError && (
-          <AlertWithFocus listenElement={isError} sx={{ mt: 3, textAlign: 'initial' }} severity={error?.code}>
+        {error && (
+          <AlertWithFocus listenElement={error} sx={{ mt: 3, textAlign: 'initial' }} severity={error?.code}>
             <AlertTitle sx={{ textAlign: 'initial' }}>Inicio de Sesión</AlertTitle>
             {error?.message}
           </AlertWithFocus>

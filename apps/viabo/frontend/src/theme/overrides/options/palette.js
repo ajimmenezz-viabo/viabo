@@ -6,7 +6,7 @@ function createGradient(color1, color2) {
 }
 
 // SETUP COLORS
-const PRIMARY = {
+export const PRIMARY = {
   lighter: '#D7C3FE',
   light: '#844BFF',
   main: '#661FFF',

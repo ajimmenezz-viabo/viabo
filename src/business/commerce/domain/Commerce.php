@@ -24,6 +24,7 @@ final class Commerce extends AggregateRoot
         private CommercePointSaleTerminal   $pointSaleTerminal ,
         private CommercePaymentApi          $paymentApi ,
         private CommerceRegister            $register ,
+        private CommerceStatusId            $statusId ,
         private CommerceRegisterStep        $registerStep ,
         private CommerceActive              $active
     )
@@ -46,6 +47,7 @@ final class Commerce extends AggregateRoot
             new CommercePointSaleTerminal('0') ,
             new CommercePaymentApi('0') ,
             CommerceRegister::todayDate() ,
+            new CommerceStatusId('1') ,
             $registerStep ,
             new CommerceActive('1') ,
         );
@@ -55,24 +57,6 @@ final class Commerce extends AggregateRoot
         ));
 
         return $commerce;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'legalRepresentative' => $this->legalRepresentative->value() ,
-            'fiscalPersonType' => $this->fiscalPersonType->value() ,
-            'taxName' => $this->taxName->value() ,
-            'tradeName' => $this->tradeName->value() ,
-            'rfc' => $this->rfc->value() ,
-            'employees' => $this->employees->value() ,
-            'branchOffices' => $this->branchOffices->value() ,
-            'pointSaleTerminal' => $this->pointSaleTerminal->value() ,
-            'paymentApi' => $this->paymentApi->value() ,
-            'register' => $this->register->value() ,
-            'registerStep' => $this->registerStep->value() ,
-            'active' => $this->active->value()
-        ];
     }
 
     public function update(
@@ -97,10 +81,30 @@ final class Commerce extends AggregateRoot
         $this->pointSaleTerminal = $pointSaleTerminal;
         $this->paymentApi = $paymentApi;
         $this->registerStep = $this->registerStep->update($registerStep->value());
+        $this->statusId = $this->statusId->update($registerStep->isLastStep());
 
         $this->record(new CommerceUpdatedDomainEvent(
             $legalRepresentative->value() , $this->id->value() , $this->toArray()
         ));
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'legalRepresentative' => $this->legalRepresentative->value() ,
+            'fiscalPersonType' => $this->fiscalPersonType->value() ,
+            'taxName' => $this->taxName->value() ,
+            'tradeName' => $this->tradeName->value() ,
+            'rfc' => $this->rfc->value() ,
+            'employees' => $this->employees->value() ,
+            'branchOffices' => $this->branchOffices->value() ,
+            'pointSaleTerminal' => $this->pointSaleTerminal->value() ,
+            'paymentApi' => $this->paymentApi->value() ,
+            'register' => $this->register->value() ,
+            'statusId' => $this->statusId->value() ,
+            'registerStep' => $this->registerStep->value() ,
+            'active' => $this->active->value()
+        ];
     }
 
 }

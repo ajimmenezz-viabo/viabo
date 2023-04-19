@@ -69,6 +69,11 @@ final class User extends AggregateRoot
         return $this->password->value();
     }
 
+    public function tokenData(): array
+    {
+        return ['id' => $this->id->value()];
+    }
+
     public function isDifferent(UserPassword $passwordEntered): bool
     {
         return $this->password->isDifferent($passwordEntered->value());

@@ -17,10 +17,10 @@ final readonly class CommerceCreator
     }
 
     public function __invoke(
-        CommerceLegalRepresentative $legalRepresentative , CommerceRegisterStep $registerStatus
+        CommerceLegalRepresentative $legalRepresentative , CommerceRegisterStep $registerStep
     ): void
     {
-        $commerce = Commerce::create($legalRepresentative , $registerStatus);
+        $commerce = Commerce::create($legalRepresentative , $registerStep);
         $this->repository->save($commerce);
 
         $this->bus->publish(...$commerce->pullDomainEvents());

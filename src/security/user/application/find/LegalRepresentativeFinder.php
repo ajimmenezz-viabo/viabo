@@ -14,14 +14,14 @@ final readonly class LegalRepresentativeFinder
     {
     }
 
-    public function __invoke(LegalRepresentativeFinderRequest $request): string
+    public function __invoke(UserEmail $email): TokenDataResponse
     {
-        $user = $this->repository->search(new UserEmail($request->getUsername()));
+        $user = $this->repository->search($email);
 
-        if(empty($user)){
-            throw new UserDoesNotExist($request->getUsername());
+        if (empty($user)) {
+            throw new UserDoesNotExist($email->value());
         }
 
-        return $user->id();
+        return new TokenDataResponse($user->tokenData());
     }
 }

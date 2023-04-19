@@ -17,6 +17,7 @@
         <embedded name="pointSaleTerminal" class="CommercePointSaleTerminal" use-column-prefix="false"/>
         <embedded name="paymentApi" class="CommercePaymentApi" use-column-prefix="false"/>
         <embedded name="register" class="CommerceRegister" use-column-prefix="false"/>
+        <embedded name="statusId" class="CommerceStatusId" use-column-prefix="false"/>
         <embedded name="registerStep" class="CommerceRegisterStep" use-column-prefix="false"/>
         <embedded name="active" class="CommerceActive" use-column-prefix="false"/>
     </entity>

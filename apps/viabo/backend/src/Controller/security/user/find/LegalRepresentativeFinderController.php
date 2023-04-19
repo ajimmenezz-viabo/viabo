@@ -2,34 +2,24 @@
 
 namespace Viabo\Backend\Controller\security\user\find;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\security\user\application\find\LegalRepresentativeFinder;
-use Viabo\security\user\application\find\LegalRepresentativeFinderRequest;
+use Viabo\security\user\application\find\FindLegalRepresentativeCommand;
+use Viabo\shared\infrastructure\symfony\ApiController;
 
 
-final class LegalRepresentativeFinderController extends AbstractController
+final readonly class LegalRepresentativeFinderController extends ApiController
 {
-
-    public function __construct(
-        private readonly LegalRepresentativeFinder $finder ,
-        private readonly JWTEncoderInterface       $jwt
-    )
-    {
-    }
 
     public function __invoke(Request $request): Response
     {
         try {
             $username = $request->headers->get('Username');
-            $request = new LegalRepresentativeFinderRequest($username);
-            $userId = $this->finder->__invoke($request);
-            $token = $this->jwt->encode(['id' => $userId]);
+            $data = $this->ask(new FindLegalRepresentativeCommand($username));
+            $token = $this->encode($data->tokenData);
 
-            return new JsonResponse(['token' => $token] , Response::HTTP_OK);
+            return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

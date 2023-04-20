@@ -1,5 +1,4 @@
 import { alpha } from '@mui/material/styles'
-import { lime } from '@mui/material/colors'
 
 function createGradient(color1, color2) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`
@@ -14,11 +13,11 @@ export const PRIMARY = {
   darker: '#361778'
 }
 const SECONDARY = {
-  lighter: lime.A100,
-  light: lime.A200,
-  main: lime.A400,
-  dark: lime.A700,
-  darker: lime['900']
+  lighter: '#eaff99',
+  light: '#d4ff33',
+  main: '#caff00',
+  dark: '#c1f400',
+  darker: '#8db200'
 }
 const INFO = {
   lighter: '#D0F2FF',

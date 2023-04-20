@@ -10,7 +10,8 @@ export function GuestGuard({ children }) {
   const { isAuthenticated, user } = useAuth()
 
   if (isAuthenticated) {
-    return <Navigate to={user?.urlInit} replace />
+    const url = window.localStorage.getItem('lastPath') ?? user?.urlInit
+    return <Navigate to={url} replace />
   }
 
   return <>{children}</>

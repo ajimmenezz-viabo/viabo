@@ -21,4 +21,9 @@ final class FilterValue extends StringValueObject
             throw new FilterValueEmpty();
         }
     }
+
+    public function toArray(): array
+    {
+        return explode(',' , $this->value);
+    }
 }

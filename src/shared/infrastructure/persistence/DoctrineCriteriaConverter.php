@@ -52,12 +52,18 @@ final class DoctrineCriteriaConverter
     private function buildComparison(): callable
     {
         return function (Filter $filter): Comparison {
+            $operator = $filter->getOperator()->value();
             $field = $this->mapFieldValue($filter->getField());
             $value = $this->existsHydratorFor($field)
                 ? $this->hydrate($field , $filter->getValue()->value())
                 : $filter->getValue()->value();
 
-            return new Comparison($field , $filter->getOperator()->value() , $value);
+            if ($filter->getOperator()->isTypeIN()) {
+                $operator = Comparison::IN;
+                $value = $filter->getValue()->toArray();
+            }
+
+            return new Comparison($field , $operator , $value);
         };
     }
 

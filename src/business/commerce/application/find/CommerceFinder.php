@@ -5,8 +5,11 @@ namespace Viabo\business\commerce\application\find;
 
 
 use Viabo\business\commerce\domain\CommerceRepository;
+use Viabo\business\commerce\domain\CommerceView;
 use Viabo\business\commerce\domain\exceptions\CommerceNotExist;
 use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CommerceFinder
 {
@@ -16,17 +19,17 @@ final readonly class CommerceFinder
 
     public function __invoke(CommerceLegalRepresentative $legalRepresentative): CommerceResponse
     {
-        $commerce = $this->repository->searchBy($legalRepresentative);
+        $filters = Filters::fromValues([
+            ['field' => 'legalRepresentative' , 'operator' => '=' , 'value' => $legalRepresentative->value()]
+        ]);
+        $commerce = $this->repository->searchViewCriteria(new Criteria($filters));
 
         if (empty($commerce)) {
             throw new CommerceNotExist();
         }
 
-        $commerce = array_map(function (array $commerce) {
-            $commerce['Services'] = empty($commerce['Services']) ? [] : json_decode("[{$commerce['Services']}]");
-            $commerce['Documents'] = empty($commerce['Documents']) ? [] : json_decode("[{$commerce['Documents']}]");
-            unset($commerce['Active']);
-            return $commerce;
+        $commerce = array_map(function (CommerceView $commerce) {
+            return $commerce->toArray();
         } , $commerce);
 
         return new CommerceResponse($commerce[0]);

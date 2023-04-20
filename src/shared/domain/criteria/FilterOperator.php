@@ -25,11 +25,12 @@ final class FilterOperator extends StringValueObject
 
     public function isTypeIN(): bool
     {
-        return $this->value === 'IN' || $this->value === 'NOT IN';
+        return strtoupper($this->value) === 'IN' || strtoupper($this->value) === 'NOT IN';
     }
 
     public function isTypeLike(): bool
     {
         return $this->value === 'LIKE' || $this->value === 'NOT LIKE';
     }
+
 }

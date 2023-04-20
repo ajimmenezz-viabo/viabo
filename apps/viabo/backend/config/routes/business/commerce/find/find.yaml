@@ -2,3 +2,8 @@ commerce-finder:
   path: '/api/commerce/legal-representative'
   controller: Viabo\Backend\Controller\business\commerce\CommerceFinderController
   methods: GET
+
+new-commerces-finder:
+  path: '/api/new-commerces'
+  controller: Viabo\Backend\Controller\business\commerce\NewCommercesFinderController
+  methods: GET

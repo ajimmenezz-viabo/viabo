@@ -14,8 +14,8 @@ interface CommerceRepository
 
     public function search(CommerceId $commerceId): Commerce|null;
 
-    public function update(Commerce $commerce): void;
+    public function searchViewCriteria(Criteria $criteria): array;
 
-    public function searchBy(CommerceLegalRepresentative $legalRepresentative): array;
+    public function update(Commerce $commerce): void;
 
 }

@@ -10,7 +10,7 @@ export function MyAvatar({ ...other }) {
     <Avatar
       src={user?.avatar !== '' ? user?.avatar : ''}
       alt={user?.name}
-      color={user?.avatar !== '' ? 'default' : createAvatar(user?.name).color}
+      color={createAvatar(user?.name).color}
       {...other}
     >
       {createAvatar(user?.name).name}

@@ -14,15 +14,18 @@ const initialState = {
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user, isFetchingModules } = action.payload
+    const { isAuthenticated, user } = action.payload
     return {
       ...state,
       isAuthenticated,
-      isFetchingModules,
       isInitialized: true,
       user
     }
   },
+  LOADING: (state, action) => ({
+    ...state,
+    isFetchingModules: action.payload
+  }),
   LOGIN: (state, action) => {
     const { user } = action.payload
 
@@ -62,7 +65,8 @@ function AuthProvider({ children }) {
   const {
     data: userModules,
     error,
-    remove
+    remove,
+    isLoading
   } = UseFindModulesByUser({
     staleTime: 60 * 15000, // 15 minutos
     // cacheTime: 60 * 15000,
@@ -92,7 +96,6 @@ function AuthProvider({ children }) {
         type: 'INITIALIZE',
         payload: {
           isAuthenticated: true,
-          isFetchingModules: false,
           user: {
             ...state.user,
             modules: userModules
@@ -100,9 +103,17 @@ function AuthProvider({ children }) {
         }
       })
     }
+    dispatch({
+      type: 'LOADING',
+      payload: false
+    })
   }, [userModules])
 
   useEffect(() => {
+    dispatch({
+      type: 'LOADING',
+      payload: false
+    })
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken')
@@ -114,7 +125,6 @@ function AuthProvider({ children }) {
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: true,
-              isFetchingModules: true,
               user: {
                 name: decoded?.name,
                 profile: decoded?.profile,
@@ -123,23 +133,35 @@ function AuthProvider({ children }) {
               }
             }
           })
+          if (isLoading) {
+            dispatch({
+              type: 'LOADING',
+              payload: true
+            })
+          }
         } else {
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: false,
-              isFetchingModules: false,
               user: null
             }
+          })
+          dispatch({
+            type: 'LOADING',
+            payload: false
           })
         }
       } catch (err) {
         console.error(err)
         dispatch({
+          type: 'LOADING',
+          payload: false
+        })
+        dispatch({
           type: 'INITIALIZE',
           payload: {
             isAuthenticated: false,
-            isFetchingModules: false,
             user: null
           }
         })
@@ -147,7 +169,7 @@ function AuthProvider({ children }) {
     }
 
     initialize()
-  }, [])
+  }, [isLoading])
 
   const logout = async () => {
     setSession(null)

@@ -114,15 +114,19 @@ export default function CommerceDocumentation({ store }) {
                     {documentTypes[name]}
                   </Typography>
                   {values[name] && typeof values[name] === 'object' && (
-                    <Typography variant="caption" color="textPrimary" align="center">
-                      {values[name]?.path}
-                    </Typography>
+                    <Stack sx={{ textAlign: 'center', align: 'center' }}>
+                      <Typography variant="caption" color="textPrimary" align="center">
+                        {values[name]?.path}
+                      </Typography>
+                    </Stack>
                   )}
 
                   {values[name] && !(typeof values[name] === 'object') && (
-                    <Link href={values[name]} target="_blank">
-                      Ver | Descargar
-                    </Link>
+                    <Stack sx={{ textAlign: 'center', align: 'center' }}>
+                      <Link href={values[name]} target="_blank">
+                        Ver | Descargar
+                      </Link>
+                    </Stack>
                   )}
                   {documentList[name].expiration && (
                     <Alert

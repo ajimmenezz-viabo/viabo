@@ -1,12 +1,26 @@
 import { memo } from 'react'
 import { Box, Card, Stack, Typography } from '@mui/material'
 import { Avatar } from '@/shared/components/avatar'
-import { Person, QueryBuilderTwoTone } from '@mui/icons-material'
+import { PendingTwoTone, Person, QueryBuilderTwoTone } from '@mui/icons-material'
 import { createAvatar } from '@theme/utils'
-import { fDate } from '@/shared/utils'
 import { Label } from '@/shared/components/form'
+import { useCommerce } from '@/app/management/commerces/store'
+import { shallow } from 'zustand/shallow'
+import { alpha, styled } from '@mui/material/styles'
 
-function CommerceCard({ commerce, selected }) {
+const IconWrapperStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  borderRadius: '50%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.primary.main,
+  backgroundColor: alpha(theme.palette.primary.main, 0.08)
+}))
+
+function CommerceCard({ commerce }) {
+  const { commerce: selectedCommerce } = useCommerce(state => state, shallow)
+  const { account, information, status } = commerce
+  const selected = selectedCommerce?.id === commerce.id
   return (
     <Card
       sx={theme => ({
@@ -33,25 +47,38 @@ function CommerceCard({ commerce, selected }) {
             textTransform: 'capitalize'
           }}
         >
-          {commerce?.status}
+          {status?.name}
         </Label>
       </Box>
       <Stack spacing={2.5}>
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ p: 3, pb: 2.5 }}>
-          <Avatar
-            src={commerce?.avatar !== '' ? commerce?.avatar : ''}
-            alt={commerce?.fiscalName}
-            color={createAvatar(commerce?.fiscalName).color}
-          >
-            {createAvatar(commerce?.fiscalName).name}
-          </Avatar>
-          <div>
-            <Typography variant="subtitle2">{commerce?.fiscalName}</Typography>
-            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 0.5, display: 'block' }}>
-              nombre fiscal
-            </Typography>
-          </div>
-        </Stack>
+        {information?.commercialName ? (
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ p: 3, pb: 2.5 }}>
+            <Avatar
+              src={information?.avatar !== '' ? information?.avatar : ''}
+              alt={information?.commercialName}
+              color={createAvatar(information?.commercialName).color}
+            >
+              {createAvatar(information?.commercialName).name}
+            </Avatar>
+            <div>
+              <Typography variant="subtitle2">{information?.commercialName}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 0.5, display: 'block' }}>
+                {information?.fiscalName}
+              </Typography>
+            </div>
+          </Stack>
+        ) : (
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ px: 3, pb: 0, pt: 4 }}>
+            <PendingTwoTone sx={{ width: 30, height: 30, color: 'info.main' }} />
+
+            <div>
+              <Typography variant="subtitle2">No Disponible</Typography>
+              <Typography variant="body2" sx={{ color: 'text.info', mt: 0.5, display: 'block' }}>
+                Se encuentra en el paso: {status?.step}
+              </Typography>
+            </div>
+          </Stack>
+        )}
 
         <Stack
           direction="row"
@@ -69,12 +96,12 @@ function CommerceCard({ commerce, selected }) {
         >
           <Stack direction="row" alignItems="center" spacing={1}>
             <Person sx={{ width: 16, height: 16 }} />
-            <Typography variant="caption">{commerce?.name}</Typography>
+            <Typography variant="caption">{account?.name}</Typography>
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
             <QueryBuilderTwoTone sx={{ width: 16, height: 16 }} />
-            <Typography variant="caption">{fDate(commerce?.registerDate)} </Typography>
+            <Typography variant="caption">{account?.register ? account?.register : '-'} </Typography>
           </Stack>
         </Stack>
       </Stack>

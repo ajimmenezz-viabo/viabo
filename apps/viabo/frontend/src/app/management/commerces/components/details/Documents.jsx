@@ -1,12 +1,11 @@
-import { Box, Card, CardHeader, Link, List, ListItem, Stack, Typography } from '@mui/material'
+import { Card, CardHeader, Link, List, ListItem, Stack, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { documentList } from '@/app/business/commerce/services'
 import { AnimatePresence, m } from 'framer-motion'
 import { varFade } from '@/shared/components/animate'
 import { InsertDriveFile } from '@mui/icons-material'
-import { fDateTime } from '@/shared/utils'
 
-export function Documents() {
+export function Documents({ documents }) {
   const theme = useTheme()
   const files = Object.keys(documentList)
 
@@ -14,7 +13,7 @@ export function Documents() {
     <Card sx={{ p: 5 }}>
       <CardHeader
         title="Documentos"
-        subheader={`${files.length} archivos`}
+        subheader={`${documents?.length} archivos`}
         sx={{
           p: 0,
           mb: 3,
@@ -23,8 +22,8 @@ export function Documents() {
       />
       <List disablePadding sx={{ my: 3 }}>
         <AnimatePresence>
-          {files.map(file => (
-            <FileItem key={file} file={file} />
+          {documents?.map(file => (
+            <FileItem key={file?.id} file={file} />
           ))}
         </AnimatePresence>
       </List>
@@ -49,19 +48,19 @@ function FileItem({ file }) {
       <Stack>
         <Typography variant={'subtitle2'}>
           {' '}
-          <Link href={'#'} target="_blank">
-            {file}
+          <Link href={file?.path} target="_blank">
+            {file?.name}
           </Link>
         </Typography>
-        <Stack direction={'row'} spacing={1} alignItems={'center'} sx={{ fontWeight: 400 }}>
-          <Typography variant={'caption'} color={'text.secondary'}>
-            20MB
-          </Typography>
-          <Box sx={{ width: '2px', height: '2px', borderRadius: '50%', bgcolor: 'text.secondary' }} />
-          <Typography variant={'caption'} color={'text.secondary'}>
-            {fDateTime(new Date())}
-          </Typography>
-        </Stack>
+        {/* <Stack direction={'row'} spacing={1} alignItems={'center'} sx={{ fontWeight: 400 }}> */}
+        {/*  <Typography variant={'caption'} color={'text.secondary'}> */}
+        {/*    20MB */}
+        {/*  </Typography> */}
+        {/*  <Box sx={{ width: '2px', height: '2px', borderRadius: '50%', bgcolor: 'text.secondary' }} /> */}
+        {/*  <Typography variant={'caption'} color={'text.secondary'}> */}
+        {/*    {fDateTime(new Date())} */}
+        {/*  </Typography> */}
+        {/* </Stack> */}
       </Stack>
     </ListItem>
   )

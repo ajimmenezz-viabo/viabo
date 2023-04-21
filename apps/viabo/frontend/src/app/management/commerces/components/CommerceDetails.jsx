@@ -31,7 +31,7 @@ export function CommerceDetails() {
           <Stack direction="row" spacing={1}>
             <Typography variant="h5">Detalles</Typography>
           </Stack>
-          {commerce && <Button variant="contained">Afiliación</Button>}
+          {commerce && commerce?.status?.id === '2' && <Button variant="contained">Afiliación</Button>}
         </Stack>
       </Toolbar>
       {commerce ? (

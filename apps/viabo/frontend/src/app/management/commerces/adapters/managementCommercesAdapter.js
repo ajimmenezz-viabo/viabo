@@ -33,6 +33,10 @@ export const ManagementCommercesAdapter = commerces =>
     const {
       id,
       legalRepresentative,
+      legalRepresentativeName,
+      legalRepresentativePhone,
+      legalRepresentativeLastSession,
+      legalRepresentativeEmail,
       taxName,
       fiscalPersonType,
       tradeName,
@@ -53,11 +57,12 @@ export const ManagementCommercesAdapter = commerces =>
       id,
       account: {
         id: legalRepresentative,
-        name: `Usuario ${index + 1}`,
-        email: null,
-        phone: null,
-        status: null,
-        lastLogged: null,
+        name: legalRepresentativeName,
+        email: legalRepresentativeEmail,
+        phone: legalRepresentativePhone,
+        status: 'Activo',
+        lastLogged:
+          legalRepresentativeLastSession === '' ? 'No ha iniciado sesión' : fDateTime(legalRepresentativeLastSession),
         register: fDateTime(register) ?? ''
       },
       information: {

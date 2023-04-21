@@ -1,41 +1,41 @@
 export const CommerceProcessAdapter = process => {
   const {
-    Id,
-    FiscalPersonType,
-    TaxName,
-    TradeName,
-    RFC,
-    Employees,
-    BranchOffices,
-    PaymentAPI,
-    RegisterStep,
-    LegalRepresentative,
-    Services,
-    PointSaleTerminal,
-    Documents
+    id,
+    fiscalPersonType,
+    taxName,
+    tradeName,
+    rfc,
+    employees,
+    branchOffices,
+    paymentAPI,
+    registerStep,
+    legalRepresentative,
+    services,
+    pointSaleTerminal,
+    documents
   } = process
 
-  const serviceCard = Services.find(service => service.type === '2')
+  const serviceCard = services?.find(service => service.type === '2')
   const cardsNumber = serviceCard?.cardNumbers || 0
   const cardUse = serviceCard?.cardUse || ''
   const customCard = serviceCard?.personalized === '1' || false
 
   return {
-    id: Id,
-    idUser: LegalRepresentative,
-    services: Services,
-    fiscalTypePerson: FiscalPersonType,
-    fiscalName: TaxName,
-    rfc: RFC,
-    commercialName: TradeName,
-    employeesNumber: Employees,
-    branchesNumber: BranchOffices,
-    tpvsNumber: PointSaleTerminal,
-    apiRequired: Boolean(PaymentAPI === 1),
+    id,
+    idUser: legalRepresentative,
+    services,
+    fiscalTypePerson: fiscalPersonType,
+    fiscalName: taxName,
+    rfc,
+    commercialName: tradeName,
+    employeesNumber: Number(employees),
+    branchesNumber: Number(branchOffices),
+    tpvsNumber: Number(pointSaleTerminal),
+    apiRequired: Boolean(paymentAPI === '1'),
     cardsNumber: Number(cardsNumber),
     cardsUse: cardUse,
     customCardsRequired: customCard,
-    files: Documents,
-    step: RegisterStep
+    files: documents,
+    step: Number(registerStep)
   }
 }

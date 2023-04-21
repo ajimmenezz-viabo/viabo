@@ -1,7 +1,6 @@
 import { Card, Grid, Typography } from '@mui/material'
-import { fDate, fDateTime } from '@/shared/utils'
 
-export function AccountInfo() {
+export function AccountInfo({ account }) {
   return (
     <Card sx={{ p: 5 }}>
       <Grid container spacing={5}>
@@ -15,42 +14,42 @@ export function AccountInfo() {
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Nombre
           </Typography>
-          <Typography variant="body2">Test Viabo System</Typography>
+          <Typography variant="body2">{account?.name}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Correo Electronico
           </Typography>
-          <Typography variant="body2">test@viabo.com</Typography>
+          <Typography variant="body2">{account?.email ?? '-'}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Telefono
           </Typography>
-          <Typography variant="body2">+5255425443543</Typography>
+          <Typography variant="body2">{account?.phone ?? '-'}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Fecha Registro
           </Typography>
-          <Typography variant="body2">{fDate(new Date())}</Typography>
+          <Typography variant="body2">{account?.register ?? '-'}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Estado
           </Typography>
-          <Typography variant="body2">Activo</Typography>
+          <Typography variant="body2">{account?.status ?? '-'}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Último Inicio de Sesión
           </Typography>
-          <Typography variant="body2">{fDateTime(new Date())}</Typography>
+          <Typography variant="body2">{account?.lastLogged ?? '-'}</Typography>
         </Grid>
       </Grid>
     </Card>

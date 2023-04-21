@@ -1,4 +1,4 @@
-import { Backdrop } from '@mui/material'
+import { Backdrop, Box } from '@mui/material'
 import { NAVBAR } from '@theme/overrides/options'
 import { CircularLoading } from '@/shared/components/loadings/CircularLoading'
 import { useCollapseDrawer } from '@theme/hooks'
@@ -22,5 +22,27 @@ export function RequestLoading({ ...rest }) {
     >
       <CircularLoading />
     </Backdrop>
+  )
+}
+
+export function RequestLoadingComponent(props) {
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backdropFilter: 'blur(1px)',
+        zIndex: theme => theme.zIndex.modal - 1
+      }}
+      {...props}
+    >
+      <CircularLoading />
+    </Box>
   )
 }

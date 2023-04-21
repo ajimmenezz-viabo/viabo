@@ -1,7 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import { LoadableRoute } from '@/routes/LoadableRoute'
 import { lazy } from 'react'
-import { Typography } from '@mui/material'
 import { DashboardLayout } from '@/shared/layout/dashboard'
 import { AuthGuard, GuestGuard } from '@/shared/guards'
 import { useUser } from '@/shared/hooks'
@@ -9,6 +8,7 @@ import { ManagementRouter } from '@/app/management/shared/routes'
 
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
 const Login = LoadableRoute(lazy(() => import('@/app/authentication/pages/Login')))
+const NotFound = LoadableRoute(lazy(() => import('@/shared/pages/Page404')))
 export const AppRouter = () => {
   const user = useUser()
 
@@ -46,8 +46,8 @@ export const AppRouter = () => {
     {
       path: '*',
       children: [
-        { path: '404', element: <Typography variant={'h1'}>Pagina No encontrada</Typography> },
-        { path: '403', element: <Typography variant={'h1'}>Sin Acceso al sistema</Typography> }
+        { path: '404', element: <NotFound /> },
+        { path: '403', element: <NotFound /> }
       ]
     },
     { path: '*', element: <Navigate to="/404" /> }

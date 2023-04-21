@@ -1,9 +1,6 @@
-import { Card, Grid, Stack, Typography } from '@mui/material'
-import ViaboCard from '@/shared/assets/img/viabo-card.png'
-import ViaboPay from '@/shared/assets/img/viabo-pay.png'
-import { Image } from '@/shared/components/images'
+import { Card, Grid, Typography } from '@mui/material'
 
-export function GeneralInfo({ commerce }) {
+export function GeneralInfo({ info }) {
   const allInfoIsRequired = true
   return (
     <Card sx={{ p: 5 }}>
@@ -18,45 +15,42 @@ export function GeneralInfo({ commerce }) {
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Nombre Comercial
           </Typography>
-          <Typography variant="body2">Comercio 1</Typography>
+          <Typography variant="body2">{info?.commercialName}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Nombre Fiscal
           </Typography>
-          <Typography variant="body2">Comercio 1</Typography>
+          <Typography variant="body2">{info?.fiscalName}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             RFC
           </Typography>
-          <Typography variant="body2">321HJG3HJ12G312KJ</Typography>
+          <Typography variant="body2">{info?.rfc}</Typography>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Persona
+          </Typography>
+          <Typography variant="body2">{info?.fiscalTypePerson}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Numero de Empleados
           </Typography>
-          <Typography variant="body2">321</Typography>
+          <Typography variant="body2">{info?.employeesNumber}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Numero de Sucursales
           </Typography>
-          <Typography variant="body2">20</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Servicios
-          </Typography>
-          <Stack spacing={2} direction={'row'}>
-            <Image disabledEffect visibleByDefault alt="logo" src={ViaboPay} sx={{ maxWidth: 120 }} />
-            <Image disabledEffect visibleByDefault alt="logo" src={ViaboCard} sx={{ maxWidth: 120 }} />
-          </Stack>
+          <Typography variant="body2">{info?.branchesNumber}</Typography>
         </Grid>
       </Grid>
     </Card>

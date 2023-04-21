@@ -7,6 +7,11 @@
     <entity name="Viabo\business\commerce\domain\CommerceView" table="v_business_commerces">
         <id name="id" column="Id"/>
         <field name="legalRepresentative" column="LegalRepresentative"/>
+        <field name="legalRepresentativeName" column="LegalRepresentativeName"/>
+        <field name="legalRepresentativeEmail" column="LegalRepresentativeEmail"/>
+        <field name="legalRepresentativePhone" column="LegalRepresentativePhone"/>
+        <field name="legalRepresentativeRegister" column="LegalRepresentativeRegister"/>
+        <field name="legalRepresentativeLastSession" column="LegalRepresentativeLastSession"/>
         <field name="fiscalPersonType" column="FiscalPersonType"/>
         <field name="taxName" column="TaxName"/>
         <field name="tradeName" column="TradeName"/>

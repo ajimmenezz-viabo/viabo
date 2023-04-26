@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
 import { m } from 'framer-motion'
@@ -15,6 +16,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 }))
 
 export default function Page404() {
+  useEffect(() => {
+    window.localStorage.removeItem('lastPath')
+  }, [])
+
   return (
     <Page title="404 Page Not Found">
       <RootStyle>

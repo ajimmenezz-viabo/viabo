@@ -1,16 +1,30 @@
-import { Navigate, useRoutes } from 'react-router-dom'
+import { Navigate, useLocation, useRoutes } from 'react-router-dom'
 import { LoadableRoute } from '@/routes/LoadableRoute'
-import { lazy } from 'react'
+import { lazy, useEffect } from 'react'
 import { DashboardLayout } from '@/shared/layout/dashboard'
 import { AuthGuard, GuestGuard } from '@/shared/guards'
 import { useUser } from '@/shared/hooks'
 import { ManagementRouter } from '@/app/management/shared/routes'
+import { useSettings } from '@theme/hooks'
 
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
 const Login = LoadableRoute(lazy(() => import('@/app/authentication/pages/Login')))
 const NotFound = LoadableRoute(lazy(() => import('@/shared/pages/Page404')))
 export const AppRouter = () => {
   const user = useUser()
+  const { pathname } = useLocation()
+  const { themeMode, onChangeMode } = useSettings()
+
+  useEffect(() => {
+    if (pathname === '/comercio/registro' && themeMode !== 'light') {
+      console.log('cambiando')
+      onChangeMode({
+        target: {
+          value: 'light'
+        }
+      })
+    }
+  }, [pathname, themeMode])
 
   return useRoutes([
     {

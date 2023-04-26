@@ -7,6 +7,7 @@ import { Label } from '@/shared/components/form'
 import { useCommerce } from '@/app/management/commerces/store'
 import { shallow } from 'zustand/shallow'
 import { alpha, styled } from '@mui/material/styles'
+import { getColorStatusCommerceById } from '@/app/management/commerces/services'
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -37,7 +38,7 @@ function CommerceCard({ commerce }) {
       <Box sx={{ p: 1, position: 'relative' }}>
         <Label
           variant={'filled'}
-          color={'info'}
+          color={getColorStatusCommerceById(status?.id)}
           sx={{
             right: 16,
             zIndex: 9,

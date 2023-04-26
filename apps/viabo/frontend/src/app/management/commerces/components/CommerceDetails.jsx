@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Alert, Box, Button, Grid, Stack, Toolbar, Typography } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
 import { m } from 'framer-motion'
@@ -6,10 +7,18 @@ import { varFade } from '@/shared/components/animate'
 import { useCommerce } from '@/app/management/commerces/store'
 import { shallow } from 'zustand/shallow'
 import { SelectDataIllustration } from '@/shared/components/illustrations'
-import React from 'react'
 
 export function CommerceDetails() {
   const { commerce } = useCommerce(state => state, shallow)
+  const [expanded, setExpanded] = useState('')
+
+  const handleChange = newExpanded => {
+    if (expanded === newExpanded) {
+      setExpanded('')
+    } else {
+      setExpanded(newExpanded)
+    }
+  }
 
   const minHeight = 700
   return (
@@ -47,33 +56,47 @@ export function CommerceDetails() {
             <Grid container sx={{ p: 2 }} spacing={3}>
               <Grid item xs={12} xl={6}>
                 <m.div {...varFade().in}>
-                  <AccountInfo account={commerce?.account} />
+                  <AccountInfo
+                    account={commerce?.account}
+                    expanded={expanded}
+                    handleChange={handleChange}
+                    status={commerce?.status}
+                  />
                 </m.div>
               </Grid>
 
-              {commerce?.information.available && (
-                <Grid item xs={12} xl={6}>
-                  <m.div {...varFade().in}>
-                    <GeneralInfo info={commerce?.information} />
-                  </m.div>
-                </Grid>
-              )}
+              <Grid item xs={12} xl={6}>
+                <m.div {...varFade().in}>
+                  <GeneralInfo
+                    info={commerce?.information}
+                    expanded={expanded}
+                    handleChange={handleChange}
+                    status={commerce?.status}
+                  />
+                </m.div>
+              </Grid>
 
-              {commerce?.services.available && (
-                <Grid item xs={12} xl={6}>
-                  <m.div {...varFade().in}>
-                    <ServicesInfo services={commerce?.services} />
-                  </m.div>
-                </Grid>
-              )}
+              <Grid item xs={12} xl={6}>
+                <m.div {...varFade().in}>
+                  <ServicesInfo
+                    services={commerce?.services}
+                    expanded={expanded}
+                    handleChange={handleChange}
+                    status={commerce?.status}
+                  />
+                </m.div>
+              </Grid>
 
-              {commerce?.documents?.length > 0 && (
-                <Grid item xs={12} xl={6}>
-                  <m.div {...varFade().in}>
-                    <Documents documents={commerce?.documents} />
-                  </m.div>
-                </Grid>
-              )}
+              <Grid item xs={12} xl={6}>
+                <m.div {...varFade().in}>
+                  <Documents
+                    documents={commerce?.documents}
+                    expanded={expanded}
+                    handleChange={handleChange}
+                    status={commerce?.status}
+                  />
+                </m.div>
+              </Grid>
             </Grid>
           </Scrollbar>
         </Box>

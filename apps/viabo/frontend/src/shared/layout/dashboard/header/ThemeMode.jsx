@@ -7,11 +7,13 @@ export function ThemeMode() {
   const { themeMode, onChangeMode } = useSettings()
 
   const handleChangeMode = () => {
+    const value = themeMode === 'light' ? 'dark' : 'light'
     onChangeMode({
       target: {
-        value: themeMode === 'light' ? 'dark' : 'light'
+        value
       }
     })
+    window.localStorage.setItem('dashboardTheme', value)
   }
 
   return (

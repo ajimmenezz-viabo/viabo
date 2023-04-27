@@ -37,6 +37,7 @@ final readonly class UserView
         return [
             'id' => $this->id,
             'name' => "$this->name $this->lastname",
+            'profileId' => $this->profileId,
             'profile' => $this->profileName,
             'email' => $this->email,
             'urlInit' => $this->urlInit

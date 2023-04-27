@@ -9,6 +9,7 @@ use Viabo\business\documents\domain\Document;
 use Viabo\business\documents\domain\DocumentName;
 use Viabo\business\documents\domain\DocumentRepository;
 use Viabo\business\shared\domain\commerce\CommerceId;
+use Viabo\business\shared\domain\documents\DocumentId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -35,6 +36,11 @@ final class DocumentDoctrineRepository extends DoctrineRepository implements Doc
         );
         $document->recordUploadFileData($this->uploadedFile->fileName() , $this->uploadedFile->path());
         $this->persist($document);
+    }
+
+    public function search(DocumentId $documentId): Document|null
+    {
+        return $this->repository(Document::class)->find($documentId->value());
     }
 
     public function searchCriteria(Criteria $criteria): array

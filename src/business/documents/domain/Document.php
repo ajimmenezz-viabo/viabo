@@ -8,6 +8,7 @@ use Viabo\business\documents\domain\events\DocumentCreatedDomainEvent;
 use Viabo\business\documents\domain\events\DocumentDeletedDomainEvent;
 use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
+use Viabo\business\shared\domain\documents\DocumentId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final  class Document extends AggregateRoot
@@ -68,12 +69,13 @@ final  class Document extends AggregateRoot
         ));
     }
 
-    private function toArray(): array
+    public function toArray(): array
     {
         return [
-            'commerceId' => $this->commerceId->value(),
-            'name' => $this->name->value(),
-            'storePath' => $this->storePath->value(),
+            'id' => $this->id->value() ,
+            'commerceId' => $this->commerceId->value() ,
+            'name' => $this->name->value() ,
+            'storePath' => $this->storePath->value() ,
             'register' => $this->register->value()
         ];
     }

@@ -1,0 +1,4 @@
+commerce-affiliates-finder:
+  path: '/api/commerces/affiliates'
+  controller: Viabo\Backend\Controller\management\commerce\CommerceAffiliatesFinderController
+  methods: GET

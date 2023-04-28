@@ -35,7 +35,7 @@ Scrollbar.propTypes = {
   sx: PropTypes.object
 }
 
-export function Scrollbar({ children, sx, ...other }) {
+export function Scrollbar({ children, containerProps = {}, sx, ...other }) {
   const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
@@ -49,7 +49,7 @@ export function Scrollbar({ children, sx, ...other }) {
   }
 
   return (
-    <RootStyle>
+    <RootStyle {...containerProps}>
       <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx} {...other}>
         {children}
       </SimpleBarStyle>

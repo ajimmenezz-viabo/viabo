@@ -1,4 +1,5 @@
 export const MANAGEMENT_FRIENDLY_NAMES = {
   management: 'administracion',
-  commerces: 'comercios'
+  commerces: 'comercios',
+  stock_cards: 'stock de tarjetas'
 }

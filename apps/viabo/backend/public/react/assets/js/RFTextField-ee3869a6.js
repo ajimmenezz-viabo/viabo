@@ -1,0 +1,1 @@
+import{j as o}from"./index-2dd0b517.js";import{F as d}from"./formik.esm-40da06a7.js";import{T as l}from"./TextField-5be2cc10.js";function x({name:e,...i}){return o(d,{name:e,children:({field:t,meta:r})=>o(l,{...t,...i,error:!!(r.touched&&r.error),helperText:r.touched&&r.error})})}export{x as R};

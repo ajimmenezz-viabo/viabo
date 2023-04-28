@@ -6,7 +6,7 @@ import { CommerceLayout } from '@/app/management/commerces/components'
 
 export default function ManagementCommerces() {
   return (
-    <Page title="Administracion Comercios | Viabo">
+    <Page title="Administracion Comercios">
       <ContainerPage>
         <HeaderPage name={'Comercios'} breadcrumbs={ManagementBreadcrumbs} />
         <CommerceLayout />

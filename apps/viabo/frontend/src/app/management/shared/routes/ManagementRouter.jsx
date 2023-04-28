@@ -12,7 +12,7 @@ const Loadable = Component => props =>
   )
 
 const ManagementCommerces = Loadable(lazy(() => import('@/app/management/commerces/pages/ManagementCommerces')))
-
+const StockCards = Loadable(lazy(() => import('@/app/management/stock-cards/pages/StockCards')))
 export const ManagementRouter = {
   path: 'management',
   children: [
@@ -20,6 +20,10 @@ export const ManagementRouter = {
     {
       path: 'commerces',
       element: <ManagementCommerces />
+    },
+    {
+      path: 'stock-cards',
+      element: <StockCards />
     }
   ]
 }

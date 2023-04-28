@@ -20,4 +20,15 @@ function fData(number) {
   return numeral(number).format('0.0 b')
 }
 
-export { fCurrency, fPercent, fNumber, fShortenNumber, fData }
+function fCardNumber(card) {
+  return card.toString().replace(/\d{4}(?=\d)/g, '$& ')
+}
+
+function fCardNumberHidden(card) {
+  let formattedCard = card.toString().replace(/\d(?=\d{4})/g, '*')
+  formattedCard = formattedCard.replace(/(\*{4})/g, '$1 ')
+  formattedCard = formattedCard.replace(/(\*{4}) (\*{4}) (\*{4}) /g, '$1 $2 $3 ')
+  return formattedCard
+}
+
+export { fCurrency, fPercent, fNumber, fShortenNumber, fData, fCardNumber, fCardNumberHidden }

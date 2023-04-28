@@ -1,4 +1,5 @@
 export * from './RFTextField'
+export * from './RFSelect'
 export * from './RFPasswordField'
 export * from './Label'
 export * from './FormProvider'

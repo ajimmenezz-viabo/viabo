@@ -6,6 +6,6 @@ const ERROR_CODES = {
   200: 'success'
 }
 
-const getNotificationTypeByErrorCode = code => ERROR_CODES[code] ?? 'error'
+const getNotificationTypeByErrorCode = error => ERROR_CODES[error?.response?.status] ?? 'error'
 
 export { ERROR_CODES, getNotificationTypeByErrorCode }

@@ -17,7 +17,7 @@ export const useLogout = (options = {}) => {
     onError: error => {
       setCustomError({
         message: getErrorAPI(error, 'Ocurrio un error inesperado. Intente nuevamente o reportelo al área de sistemas'),
-        code: getNotificationTypeByErrorCode(error?.response?.status)
+        code: getNotificationTypeByErrorCode(error)
       })
     },
     ...options

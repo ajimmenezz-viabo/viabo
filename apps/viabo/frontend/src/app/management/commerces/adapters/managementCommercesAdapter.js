@@ -55,6 +55,7 @@ export const ManagementCommercesAdapter = commerces =>
 
     return {
       id,
+      name: tradeName,
       account: {
         id: legalRepresentative,
         name: legalRepresentativeName,

@@ -13,7 +13,7 @@ export function GeneralInfo({ info, expanded, handleChange, status }) {
   return (
     <Card
       sx={{
-        p: 5,
+        p: isExpanded ? 5 : 3,
         border: isExpanded ? 3 : 0,
         borderColor: isExpanded
           ? theme => (theme.palette.mode === 'dark' ? theme.palette.secondary.main : theme.palette.primary.main)

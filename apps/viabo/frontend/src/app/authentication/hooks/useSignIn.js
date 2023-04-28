@@ -24,7 +24,7 @@ export const useSignIn = (options = {}) => {
       setSession(null)
       setCustomError({
         message: getErrorAPI(error, 'Ocurrio un error inesperado. Intente nuevamente o reportelo al área de sistemas'),
-        code: getNotificationTypeByErrorCode(error?.response?.status)
+        code: getNotificationTypeByErrorCode(error)
       })
     },
     ...options
@@ -41,7 +41,7 @@ export const useSignIn = (options = {}) => {
       setSession(null)
       setCustomError({
         message: getErrorAPI(error, 'Ocurrio un error inesperado. Intente nuevamente o reportelo al área de sistemas'),
-        code: getNotificationTypeByErrorCode(error?.response?.status)
+        code: getNotificationTypeByErrorCode(error)
       })
     },
     enabled: !!tokenExists,

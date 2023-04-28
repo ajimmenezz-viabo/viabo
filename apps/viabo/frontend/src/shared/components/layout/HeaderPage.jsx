@@ -10,7 +10,6 @@ HeaderPage.propTypes = {
   name: PropTypes.string.isRequired,
   buttonName: PropTypes.string,
   to: PropTypes.string,
-  disableButton: PropTypes.bool,
   loading: PropTypes.bool,
   breadcrumbs: PropTypes.elementType
 }
@@ -29,7 +28,7 @@ export function HeaderPage({ name, buttonName, to = '', onClick, loading = false
       {buttonName && (
         <Box sx={{ flexShrink: 0, paddingLeft: 2 }}>
           {to === '' ? (
-            <LoadingButton loading={loading} variant="contained" onClick={onClick} startIcon={<Add />}>
+            <LoadingButton loading={loading} variant="contained" fullWidth onClick={onClick} startIcon={<Add />}>
               {buttonName}
             </LoadingButton>
           ) : (

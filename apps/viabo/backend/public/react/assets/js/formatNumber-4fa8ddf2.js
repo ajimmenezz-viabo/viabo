@@ -1,0 +1,1 @@
+import{bn as a}from"./index-2dd0b517.js";function n(r){return a(r).format("0.0 b")}function d(r){return r.toString().replace(/\d{4}(?=\d)/g,"$& ")}function f(r){let e=r.toString().replace(/\d(?=\d{4})/g,"*");return e=e.replace(/(\*{4})/g,"$1 "),e=e.replace(/(\*{4}) (\*{4}) (\*{4}) /g,"$1 $2 $3 "),e}export{d as a,n as b,f};

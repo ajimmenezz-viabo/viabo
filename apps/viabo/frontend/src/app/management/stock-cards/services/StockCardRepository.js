@@ -12,6 +12,6 @@ export const getAffiliatedCommerces = async () => {
 }
 
 export const getCardTypes = async () => {
-  const { data } = await axios.get(`/api/commerces/affiliates`)
+  const { data } = await axios.get('/api/payment-processors')
   return CardTypesAdapter(data)
 }

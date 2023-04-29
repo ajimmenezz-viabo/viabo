@@ -5,7 +5,7 @@ import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapte
 import { getErrorAPI } from '@/shared/interceptors'
 import { getCardTypes } from '@/app/management/stock-cards/services'
 
-export const useFindAffiliatedCommerces = (options = {}) => {
+export const useFindCardTypes = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()
   const [customError, setCustomError] = useState(null)
   const commerces = useQuery([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST], getCardTypes, {

@@ -7,3 +7,8 @@ new-commerces-finder:
   path: '/api/new-commerces'
   controller: Viabo\Backend\Controller\business\commerce\NewCommercesFinderController
   methods: GET
+
+commerce-affiliates-finder:
+  path: '/api/commerces/affiliates'
+  controller: Viabo\Backend\Controller\business\commerce\CommerceAffiliatesFinderController
+  methods: GET

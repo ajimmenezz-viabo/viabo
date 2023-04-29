@@ -29,6 +29,7 @@ const CARD_TYPES = [
 export function StockCardForm({ setOpen }) {
   const { mutate: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
+  const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
 
   const CardSchema = Yup.object().shape({
     cardNumber: Yup.string()
@@ -50,7 +51,7 @@ export function StockCardForm({ setOpen }) {
   const formik = useFormik({
     initialValues: {
       cardNumber: '',
-      cardType: (CARD_TYPES && CARD_TYPES.length > 0 && CARD_TYPES[0]) || null,
+      cardType: (cardTypes && cardTypes.length > 0 && cardTypes[0]) || null,
       expiration: '',
       cvv: '',
       assigned: null
@@ -90,7 +91,7 @@ export function StockCardForm({ setOpen }) {
                   name={'cardType'}
                   disableClearable
                   textFieldParams={{ placeholder: 'Seleccionar ...', required: true }}
-                  options={CARD_TYPES}
+                  options={cardTypes}
                   disabled={loading}
                 />
               </Stack>

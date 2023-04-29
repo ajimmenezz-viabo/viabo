@@ -10,6 +10,6 @@ export const CreateCardAdapter = card => {
     paymentProcessorId: cardType?.value,
     expirationDate: expirationFormatted,
     cvv,
-    commerceId: assigned?.value
+    commerceId: assigned?.value || ''
   }
 }

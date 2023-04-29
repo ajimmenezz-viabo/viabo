@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\Backend\Controller\management\commerce;
+namespace Viabo\Backend\Controller\business\commerce;
 
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\management\commerce\application\find\CommercesAffiliatesQuery;
+use Viabo\business\commerce\application\find\CommercesAffiliatesQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommerceAffiliatesFinderController extends ApiController

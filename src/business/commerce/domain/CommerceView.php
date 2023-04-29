@@ -63,4 +63,9 @@ final class CommerceView extends AggregateRoot
         ];
     }
 
+    public function toArrayForCatalog(): array
+    {
+        return ['id' => $this->id, 'name' => $this->tradeName];
+    }
+
 }

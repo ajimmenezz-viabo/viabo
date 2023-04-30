@@ -16,7 +16,7 @@ final readonly class CardCreatorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $data = $request->toArray();
+            $data = $this->OpensslDecrypt($request->toArray());
             $this->dispatch(new CreateCardCommand(
                 $tokenData['id'] ,
                 $data['cardNumber'] ,

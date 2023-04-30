@@ -51,4 +51,17 @@ abstract readonly class ApiController
             throw new \DomainException('Sin acceso' , 401);
         }
     }
+
+    protected function OpensslDecrypt(array $requestData)
+    {
+        try {
+            $ciphertext = base64_decode($requestData['ciphertext']);
+            $iv = base64_decode($requestData['iv']);
+            $plaintext = openssl_decrypt($ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $iv);
+            return !$plaintext ? throw new \DomainException() : json_decode($plaintext , true);
+        } catch (\ErrorException) {
+            throw new \DomainException('Error de cifrado' , 406);
+        }
+
+    }
 }

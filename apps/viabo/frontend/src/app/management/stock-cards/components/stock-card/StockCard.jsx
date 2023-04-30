@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Box, Card, CardHeader, IconButton, MenuItem, Stack, Typography } from '@mui/material'
+import { Box, Card, CardHeader, IconButton, Stack, Typography } from '@mui/material'
 import { Image } from '@/shared/components/images'
-import { MenuPopover } from '@/shared/components/containers'
-import { DeleteForeverTwoTone, EditTwoTone, MoreVertTwoTone, Visibility, VisibilityOff } from '@mui/icons-material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { fCardNumber, fCardNumberHidden, fDateTime } from '@/shared/utils'
 import carnet from '@/shared/assets/img/new_carnet.svg'
 import mastercard from '@/shared/assets/img/ic_mastercard.svg'
 import overlay from '@/shared/assets/img/overlay_2.jpg'
+import { StockCardMenu } from '@/app/management/stock-cards/components/stock-card/StockCardMenu'
 
 const HEIGHT = 230
 
@@ -38,11 +38,7 @@ export function StockCard({ card }) {
       })}
     >
       <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertTwoTone />
-          </IconButton>
-        }
+        action={<StockCardMenu />}
         title={<Typography sx={{ typography: 'subtitle2', opacity: 0.72 }}>Viabo Card</Typography>}
         subheader={fDateTime(new Date())}
         sx={{ p: 0 }}
@@ -84,55 +80,5 @@ export function StockCard({ card }) {
         </Stack>
       </Stack>
     </Card>
-  )
-}
-
-function MoreMenuButton() {
-  const [open, setOpen] = useState(null)
-
-  const handleOpen = event => {
-    setOpen(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setOpen(null)
-  }
-
-  const ICON = {
-    mr: 2,
-    width: 20,
-    height: 20
-  }
-
-  return (
-    <>
-      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpen}>
-        <MoreVertTwoTone width={20} height={20} />
-      </IconButton>
-
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -0.5,
-          width: 'auto',
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 }
-        }}
-      >
-        <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
-          <DeleteForeverTwoTone sx={{ ...ICON }} />
-          Delete card
-        </MenuItem>
-
-        <MenuItem onClick={handleClose}>
-          <EditTwoTone sx={{ ...ICON }} />
-          Edit card
-        </MenuItem>
-      </MenuPopover>
-    </>
   )
 }

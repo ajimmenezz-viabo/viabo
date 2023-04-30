@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
+const { readFileSync } = require('fs')
+
 // https://vitejs.dev/config/
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -25,6 +27,9 @@ export default defineConfig({
         chunkFileNames: 'assets/js/[name]-[hash].js'
       }
     }
+  },
+  define: {
+    'process.env': loadEnv()
   },
 
   plugins: [react()],
@@ -61,3 +66,14 @@ export default defineConfig({
     }
   }
 })
+
+function loadEnv() {
+  const env = {}
+  const envPath = path.resolve(__dirname, '..', '..', '..', '.env')
+  const envContent = readFileSync(envPath, 'utf8')
+  envContent.split('\n').forEach(line => {
+    const [key, value] = line.trim().split('=')
+    env[key] = value
+  })
+  return env
+}

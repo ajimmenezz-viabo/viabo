@@ -1,3 +1,5 @@
+import { getCryptInfo } from '@/shared/utils'
+
 export const CreateCardAdapter = card => {
   const { cardNumber, cardType, expiration, cvv, assigned } = card
 
@@ -5,11 +7,12 @@ export const CreateCardAdapter = card => {
 
   const expirationFormatted = expiration?.slice(0, 3) + expirationYear
 
-  return {
+  const cardAdapter = {
     cardNumber: cardNumber.replace(/\s+/g, ''),
     paymentProcessorId: cardType?.value,
     expirationDate: expirationFormatted,
     cvv,
     commerceId: assigned?.value || ''
   }
+  return getCryptInfo(cardAdapter)
 }

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Box, Card, CardHeader, IconButton, Stack, Typography } from '@mui/material'
 import { Image } from '@/shared/components/images'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { fCardNumber, fCardNumberHidden, fDateTime } from '@/shared/utils'
+import { fCardNumber, fCardNumberHidden } from '@/shared/utils'
 import carnet from '@/shared/assets/img/new_carnet.svg'
 import mastercard from '@/shared/assets/img/ic_mastercard.svg'
 import overlay from '@/shared/assets/img/overlay_2.jpg'
@@ -11,9 +11,6 @@ import { StockCardMenu } from '@/app/management/stock-cards/components/stock-car
 const HEIGHT = 230
 
 export function StockCard({ card }) {
-  const { cardType, cardNumber, cvv, expiration } = card
-
-  const expirationYear = card.expiration.slice(-2)
   const [showCVV, setShowCVV] = useState(true)
   const [showCardNumber, setShowCardNumber] = useState(true)
 
@@ -40,7 +37,7 @@ export function StockCard({ card }) {
       <CardHeader
         action={<StockCardMenu />}
         title={<Typography sx={{ typography: 'subtitle2', opacity: 0.72 }}>Viabo Card</Typography>}
-        subheader={fDateTime(new Date())}
+        subheader={card?.register}
         sx={{ p: 0 }}
       />
 
@@ -50,11 +47,11 @@ export function StockCard({ card }) {
             disabledEffect
             visibleByDefault
             alt="credit-card"
-            src={cardType === 'mastercard' ? mastercard : carnet}
+            src={card?.cardType?.toLowerCase() === 'mastercard' ? mastercard : carnet}
             sx={{ height: 30 }}
           />
           <Typography sx={{ typography: 'h6' }}>
-            {showCardNumber ? fCardNumberHidden(cardNumber) : fCardNumber(cardNumber)}
+            {showCardNumber ? fCardNumberHidden(card?.cardNumber) : fCardNumber(card?.cardNumber)}
           </Typography>
           <IconButton size={'small'} color="inherit" onClick={onToggleShowCardNumber} sx={{ opacity: 0.2 }}>
             {showCardNumber ? <Visibility /> : <VisibilityOff />}
@@ -65,12 +62,14 @@ export function StockCard({ card }) {
       <Stack direction="row" spacing={5}>
         <Stack>
           <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>Vencimiento</Typography>
-          <Typography sx={{ typography: 'subtitle1' }}>{card.expiration.slice(0, 3) + expirationYear}</Typography>
+          <Typography sx={{ typography: 'subtitle1' }}>{card?.expiration}</Typography>
         </Stack>
         <Stack position={'relative'}>
           <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>CVV</Typography>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography sx={{ typography: showCVV ? 'subtitle2' : 'subtitle2' }}>{showCVV ? '***' : cvv}</Typography>
+            <Typography sx={{ typography: showCVV ? 'subtitle2' : 'subtitle2' }}>
+              {showCVV ? '***' : card?.cvv}
+            </Typography>
           </Stack>
           <Box position={'absolute'} sx={{ left: '32px', top: '20px' }}>
             <IconButton size={'small'} color="inherit" onClick={onToggleShowCVV} sx={{ opacity: 0.2 }}>

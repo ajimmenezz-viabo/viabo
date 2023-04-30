@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Box, InputAdornment, Pagination, TextField } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { usePagination } from '@/shared/hooks'
 import { StockCard, StockCardSkeleton } from '@/app/management/stock-cards/components/stock-card'
-import { EXAMPLE_CARDS } from '@/app/management/stock-cards/mock'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
+import { useFindStockCards } from '@/app/management/stock-cards/hooks'
+import EmptyList from '@/shared/components/notifications/EmptyList'
+import { ErrorRequestPage } from '@/shared/components/notifications'
 
 export function StockCardsList() {
   const isDesktop = useResponsive('up', 'xl')
@@ -12,12 +14,13 @@ export function StockCardsList() {
   const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResult, setSearchResult] = useState([])
+  const { data, isLoading, isError, error, isSuccess: isSuccessCards, refetch } = useFindStockCards()
 
-  const cardList = EXAMPLE_CARDS ?? []
-  const loadingCards = false
+  const cardList = data || []
+  const loadingCards = isLoading
 
   const PER_PAGE = isDesktop ? 12 : 9
-  const source = searchTerm ? searchResult : cardList
+  const source = useMemo(() => (searchTerm !== '' ? searchResult : cardList), [searchTerm, cardList, searchResult])
   const length = source?.length || 0
   const count = Math.ceil(length / PER_PAGE)
   const _DATA = usePagination(source || [], PER_PAGE)
@@ -27,15 +30,15 @@ export function StockCardsList() {
     _DATA.jump(p)
   }
 
-  const searchModels = (cards, searchTerm) =>
-    cards.filter(model =>
-      Object.keys(model).some(key => model[key].toString().toLowerCase().includes(searchTerm.toLowerCase()))
+  const search = (cards, searchTerm) =>
+    cards.filter(card =>
+      Object.keys(card).some(key => card[key].toString().toLowerCase().includes(searchTerm.toLowerCase()))
     )
 
   useEffect(() => {
     if (searchTerm) {
-      const filteredModels = searchModels(cardList, searchTerm)
-      setSearchResult(filteredModels)
+      const filterCards = search(cardList, searchTerm)
+      setSearchResult(filterCards)
     } else {
       setSearchResult([])
     }
@@ -43,28 +46,30 @@ export function StockCardsList() {
 
   return (
     <>
-      <Box display="flex" mb={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center' }}>
-        <Box>
-          <TextField
-            fullWidth
-            size="small"
-            placeholder="Buscar ..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Box sx={{ color: 'text.disabled' }}>
-                    <Search sx={{ marginTop: 1 }} />
-                  </Box>
-                </InputAdornment>
-              )
-            }}
-          />
+      {isSuccessCards && cardList?.length > 0 && (
+        <Box display="flex" mb={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center' }}>
+          <Box>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="Buscar ..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Box sx={{ color: 'text.disabled' }}>
+                      <Search sx={{ marginTop: 1 }} />
+                    </Box>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
+          <Box sx={{ flex: '1 1 auto', mb: { xs: 3 } }} />
+          <Pagination count={count} page={page} onChange={handleChange} />
         </Box>
-        <Box sx={{ flex: '1 1 auto', mb: { xs: 3 } }} />
-        <Pagination count={count} page={page} onChange={handleChange} />
-      </Box>
+      )}
 
       <Box
         mb={3}
@@ -84,6 +89,16 @@ export function StockCardsList() {
           card ? <StockCard card={card} key={index} /> : <StockCardSkeleton key={index} />
         )}
       </Box>
+
+      {!loadingCards && isSuccessCards && cardList.length === 0 && (
+        <EmptyList widthImage={'30%'} message="No hay tarjetas disponibles en stock" />
+      )}
+
+      {!loadingCards && isSuccessCards && searchTerm !== '' && source.length === 0 && (
+        <EmptyList widthImage={'30%'} message="No hay tarjetas que coincidan con la búsqueda" />
+      )}
+
+      {!loadingCards && isError && <ErrorRequestPage widthImage={'30%'} errorMessage={error} handleButton={refetch} />}
     </>
   )
 }

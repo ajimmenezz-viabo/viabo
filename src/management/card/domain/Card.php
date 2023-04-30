@@ -64,6 +64,11 @@ final class Card extends AggregateRoot
         return $this->id;
     }
 
+    public function number(): CardNumber
+    {
+        return $this->number;
+    }
+
     public function toArray(): array
     {
         return [
@@ -81,10 +86,5 @@ final class Card extends AggregateRoot
             'register' => $this->registerDate->value(),
             'active' => $this->active->value()
         ];
-    }
-
-    public function number(): CardNumber
-    {
-        return $this->number;
     }
 }

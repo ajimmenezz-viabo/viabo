@@ -2,8 +2,8 @@ import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { InputAdornment, Stack, Typography } from '@mui/material'
-import { CreditCard, VpnKey } from '@mui/icons-material'
-import { forwardRef } from 'react'
+import { AddCard, CreditCard, VpnKey } from '@mui/icons-material'
+import React, { forwardRef } from 'react'
 import { IMaskInput } from 'react-imask'
 import { Scrollbar } from '@/shared/components/scroll'
 import { LoadingButton } from '@mui/lab'
@@ -206,6 +206,7 @@ export function StockCardForm({ setOpen }) {
           type="submit"
           onClick={handleSubmit}
           disabled={loading}
+          startIcon={<AddCard />}
         >
           Crear
         </LoadingButton>

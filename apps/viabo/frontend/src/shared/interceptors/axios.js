@@ -11,6 +11,8 @@ axiosInstance.interceptors.response.use(
 )
 
 export const getErrorAPI = (error, errorMessage = '') =>
-  error?.response?.data && !isHTML(error?.response?.data) ? error?.response?.data : errorMessage
+  error?.response?.data && !isHTML(error?.response?.data) && error?.response?.status !== 406
+    ? error?.response?.data
+    : errorMessage
 
 export default axiosInstance

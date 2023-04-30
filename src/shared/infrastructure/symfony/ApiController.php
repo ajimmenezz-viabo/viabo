@@ -52,16 +52,26 @@ abstract readonly class ApiController
         }
     }
 
-    protected function OpensslDecrypt(array $requestData)
+    protected function opensslDecrypt(array $requestData): array
     {
         try {
             $ciphertext = base64_decode($requestData['ciphertext']);
-            $iv = base64_decode($requestData['iv']);
-            $plaintext = openssl_decrypt($ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $iv);
+            $initializationVector = base64_decode($requestData['iv']);
+            $plaintext = openssl_decrypt($ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector);
             return !$plaintext ? throw new \DomainException() : json_decode($plaintext , true);
         } catch (\ErrorException) {
             throw new \DomainException('Error de cifrado' , 406);
         }
 
+    }
+
+    protected function opensslEncrypt(array $data): array
+    {
+        $json = json_encode($data);
+        $initializationVector = openssl_random_pseudo_bytes(16);
+        $ciphertext = openssl_encrypt(
+            $json , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector
+        );
+        return ['ciphertext' => base64_encode($ciphertext) , 'iv' => base64_encode($initializationVector)];
     }
 }

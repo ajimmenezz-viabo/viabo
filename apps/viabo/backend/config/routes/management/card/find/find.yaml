@@ -1,0 +1,4 @@
+stock-cards-find:
+  path: '/api/cards/stock'
+  controller: Viabo\Backend\Controller\management\card\StockCardsFinderController
+  methods: GET

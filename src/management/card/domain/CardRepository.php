@@ -11,4 +11,6 @@ interface CardRepository
     public function save(Card $card): void;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function searchView(Criteria $criteria): array;
 }

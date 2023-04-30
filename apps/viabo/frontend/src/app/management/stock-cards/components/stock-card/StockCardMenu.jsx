@@ -2,10 +2,16 @@ import { IconButton, MenuItem, Tooltip } from '@mui/material'
 import { MenuPopover } from '@/shared/components/containers'
 import { AddBusiness, MoreVertTwoTone } from '@mui/icons-material'
 import { useState } from 'react'
+import { useAssignCardStore } from '@/app/management/stock-cards/store'
+import { useSnackbar } from 'notistack'
 
-export function StockCardMenu() {
+export function StockCardMenu({ card }) {
+  const isReadyToAssign = useAssignCardStore(state => state.isReadyToAssign)
+  const setOpenAssignCards = useAssignCardStore(state => state.setOpen)
+  const setCard = useAssignCardStore(state => state.setCard)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
+  const { enqueueSnackbar } = useSnackbar()
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
@@ -13,7 +19,18 @@ export function StockCardMenu() {
     setAnchorEl(null)
   }
 
-  const handleChangeStatus = () => {}
+  const handleAssignCard = () => {
+    if (isReadyToAssign) {
+      setOpenAssignCards(true)
+      setCard(card)
+    } else {
+      setOpenAssignCards(false)
+      enqueueSnackbar(`Por el momento no se puede asignar la tarjeta. No hay comercios disponibles`, {
+        variant: 'warning',
+        autoHideDuration: 5000
+      })
+    }
+  }
 
   return (
     <>
@@ -50,6 +67,7 @@ export function StockCardMenu() {
       >
         <MenuItem
           onClick={() => {
+            handleAssignCard()
             handleClose()
           }}
           sx={{ color: 'text.secondary' }}

@@ -20,3 +20,9 @@ export const getStockCards = async () => {
   const { data } = await axios.get('/api/cards/stock')
   return StockCardsAdapter(data)
 }
+
+export const assignCards = async cards => {
+  const url = cards?.cardId ? '/api/card/assign' : '/api/cards/assign'
+  const { data } = await axios.post(url, cards)
+  return data
+}

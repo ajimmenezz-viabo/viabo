@@ -1,25 +1,17 @@
 import { useState } from 'react'
 import { Box, Card, CardHeader, IconButton, Stack, Typography } from '@mui/material'
-import { Image } from '@/shared/components/images'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { fCardNumber, fCardNumberHidden } from '@/shared/utils'
-import carnet from '@/shared/assets/img/new_carnet.svg'
-import mastercard from '@/shared/assets/img/ic_mastercard.svg'
 import overlay from '@/shared/assets/img/overlay_2.jpg'
 import { StockCardMenu } from '@/app/management/stock-cards/components/stock-card/StockCardMenu'
+import CardNumber from '@/app/shared/components/card/CardNumber'
 
 const HEIGHT = 230
 
 export function StockCard({ card }) {
   const [showCVV, setShowCVV] = useState(true)
-  const [showCardNumber, setShowCardNumber] = useState(true)
 
   const onToggleShowCVV = () => {
     setShowCVV(prev => !prev)
-  }
-
-  const onToggleShowCardNumber = () => {
-    setShowCardNumber(prev => !prev)
   }
 
   return (
@@ -35,28 +27,14 @@ export function StockCard({ card }) {
       })}
     >
       <CardHeader
-        action={<StockCardMenu />}
+        action={<StockCardMenu card={card} />}
         title={<Typography sx={{ typography: 'subtitle2', opacity: 0.72 }}>Viabo Card</Typography>}
         subheader={card?.register}
         sx={{ p: 0 }}
       />
 
       <div>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Image
-            disabledEffect
-            visibleByDefault
-            alt="credit-card"
-            src={card?.cardType?.toLowerCase() === 'mastercard' ? mastercard : carnet}
-            sx={{ height: 30 }}
-          />
-          <Typography sx={{ typography: 'h6' }}>
-            {showCardNumber ? fCardNumberHidden(card?.cardNumber) : fCardNumber(card?.cardNumber)}
-          </Typography>
-          <IconButton size={'small'} color="inherit" onClick={onToggleShowCardNumber} sx={{ opacity: 0.2 }}>
-            {showCardNumber ? <Visibility /> : <VisibilityOff />}
-          </IconButton>
-        </Stack>
+        <CardNumber card={card} />
       </div>
 
       <Stack direction="row" spacing={5}>

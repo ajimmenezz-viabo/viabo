@@ -1,18 +1,9 @@
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
-import { RequestLoading } from '@/shared/components/loadings'
+import { Lodable } from '@/shared/components/lodables'
 
-const Loadable = Component => props =>
-  (
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-
-    <Suspense fallback={<RequestLoading open />}>
-      <Component {...props} />
-    </Suspense>
-  )
-
-const ManagementCommerces = Loadable(lazy(() => import('@/app/management/commerces/pages/ManagementCommerces')))
-const StockCards = Loadable(lazy(() => import('@/app/management/stock-cards/pages/StockCards')))
+const ManagementCommerces = Lodable(lazy(() => import('@/app/management/commerces/pages/ManagementCommerces')))
+const StockCards = Lodable(lazy(() => import('@/app/management/stock-cards/pages/StockCards')))
 export const ManagementRouter = {
   path: 'management',
   children: [

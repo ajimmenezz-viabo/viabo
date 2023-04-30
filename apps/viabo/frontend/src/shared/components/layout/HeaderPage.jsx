@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import { Add } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
@@ -11,13 +11,14 @@ HeaderPage.propTypes = {
   buttonName: PropTypes.string,
   to: PropTypes.string,
   loading: PropTypes.bool,
-  breadcrumbs: PropTypes.elementType
+  breadcrumbs: PropTypes.elementType,
+  buttons: PropTypes.object
 }
 
-export function HeaderPage({ name, buttonName, to = '', onClick, loading = false, breadcrumbs }) {
+export function HeaderPage({ name, buttonName, to = '', onClick, loading = false, breadcrumbs, buttons }) {
   return (
-    <Stack display="flex" mb={5} spacing={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }}>
-      <Box sx={{ flexGrow: 1 }}>
+    <Box display="flex" mb={5} spacing={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }}>
+      <Box sx={{ flexGrow: 1, mb: { xs: buttonName ? 3 : 0, sm: 0 } }}>
         <Typography variant="h4" gutterBottom>
           {name}
         </Typography>
@@ -25,10 +26,12 @@ export function HeaderPage({ name, buttonName, to = '', onClick, loading = false
       </Box>
       <Box sx={{ flex: '1 1 auto' }} />
 
+      {buttons}
+
       {buttonName && (
-        <Box sx={{ flexShrink: 0, paddingLeft: 2 }}>
+        <>
           {to === '' ? (
-            <LoadingButton loading={loading} variant="contained" fullWidth onClick={onClick} startIcon={<Add />}>
+            <LoadingButton loading={loading} variant="contained" onClick={onClick} startIcon={<Add />}>
               {buttonName}
             </LoadingButton>
           ) : (
@@ -36,8 +39,8 @@ export function HeaderPage({ name, buttonName, to = '', onClick, loading = false
               {buttonName}
             </Button>
           )}
-        </Box>
+        </>
       )}
-    </Stack>
+    </Box>
   )
 }

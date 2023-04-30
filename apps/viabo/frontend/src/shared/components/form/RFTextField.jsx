@@ -1,17 +1,15 @@
-import { Field } from 'formik'
+import { useField } from 'formik'
 import { TextField } from '@mui/material'
 
 export function RFTextField({ name, ...rest }) {
+  const [field, meta, helpers] = useField(name)
+
   return (
-    <Field name={name}>
-      {({ field, meta }) => (
-        <TextField
-          {...field}
-          {...rest}
-          error={Boolean(meta.touched && meta.error)}
-          helperText={meta.touched && meta.error}
-        />
-      )}
-    </Field>
+    <TextField
+      {...field}
+      {...rest}
+      error={Boolean(meta.touched && meta.error)}
+      helperText={meta.touched && meta.error}
+    />
   )
 }

@@ -3,14 +3,26 @@ import { ManagementBreadcrumbs } from '@/app/management/shared/components'
 import { HeaderPage } from '@/shared/components/layout'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { StockCardSidebar, StockCardsList } from '@/app/management/stock-cards/components'
-import { useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { useFindAffiliatedCommerces, useFindCardTypes } from '@/app/management/stock-cards/hooks'
+import { Button } from '@mui/material'
+import { AddBusinessTwoTone } from '@mui/icons-material'
+import { useGetQueryData } from '@/shared/hooks'
+import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
+import { useAssignCardStore } from '@/app/management/stock-cards/store'
+import { Lodable } from '@/shared/components/lodables'
+
+const AssignCardModal = Lodable(lazy(() => import('@/app/management/stock-cards/components/AssignCardModal')))
 
 export default function StockCards() {
   const [open, setOpen] = useState(false)
   const { data: affiliatedCommerces, isSuccess, isLoading } = useFindAffiliatedCommerces()
   const { data: cardTypes, isSuccess: isSuccessCardTypes, isLoading: isLoadingCardTypes } = useFindCardTypes()
+  const cards = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST]) || []
+  const setOpenAssignCards = useAssignCardStore(state => state.setOpen)
+  const setReadyToAssign = useAssignCardStore(state => state.setReadyToAssign)
+  const openAssignCard = useAssignCardStore(state => state.open)
   const { enqueueSnackbar } = useSnackbar()
 
   const handleNewCard = () => {
@@ -24,6 +36,26 @@ export default function StockCards() {
     }
   }
 
+  const handleAssignCards = () => {
+    if (affiliatedCommerces && affiliatedCommerces.length > 0) {
+      setOpenAssignCards(true)
+    } else {
+      setOpenAssignCards(false)
+      enqueueSnackbar(`Por el momento no se puede asignar tarjetas. No hay comercios disponibles`, {
+        variant: 'warning',
+        autoHideDuration: 5000
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (affiliatedCommerces && affiliatedCommerces.length > 0) {
+      setReadyToAssign(true)
+    } else {
+      setReadyToAssign(false)
+    }
+  }, [affiliatedCommerces])
+
   return (
     <Page title="Stock de Tarjetas">
       <ContainerPage>
@@ -33,9 +65,24 @@ export default function StockCards() {
           buttonName={'Nueva Tarjeta'}
           onClick={handleNewCard}
           loading={isLoading || isLoadingCardTypes}
+          buttons={
+            cards && cards?.length > 0 ? (
+              <Button
+                sx={{ mr: { sm: 3 }, mb: { xs: 3, sm: 0 }, color: 'black' }}
+                type="button"
+                color="secondary"
+                variant="contained"
+                onClick={handleAssignCards}
+                startIcon={<AddBusinessTwoTone />}
+              >
+                Asignar Tarjetas
+              </Button>
+            ) : null
+          }
         />
         <StockCardsList />
         <StockCardSidebar open={open} setOpen={setOpen} />
+        {openAssignCard && <AssignCardModal />}
       </ContainerPage>
     </Page>
   )

@@ -17,6 +17,7 @@ export function ErrorRequestPage({
   errorMessage,
   errorTextButton = 'Recargar',
   severity = 'error',
+  widthImage = '60%',
   ...others
 }) {
   return (
@@ -40,7 +41,7 @@ export function ErrorRequestPage({
         {titleMessage && <AlertTitle>{titleMessage}</AlertTitle>}
         {errorMessage}
       </Alert>
-      <ErrorRequestIllustration sx={{ width: '60%', mt: 5 }} />
+      <ErrorRequestIllustration sx={{ width: widthImage, mt: 5 }} />
     </Box>
   )
 }

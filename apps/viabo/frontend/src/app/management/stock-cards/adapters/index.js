@@ -1,4 +1,5 @@
-export * from './managementStockCards'
+export * from './managementStockCardsKeys'
 export * from './createCardAdapter'
 export * from './affiliatedCommercesAdapter'
 export * from './cardTypesAdapter'
+export * from './stockCardsAdapter'

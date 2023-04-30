@@ -6,7 +6,7 @@ import { EmptyDataIllustration } from '@/shared/components/illustrations'
 EmptyList.propTypes = {
   message: PropTypes.string
 }
-export default function EmptyList({ message, ...others }) {
+export default function EmptyList({ message, widthImage = '60%', ...others }) {
   return (
     <Box
       justifyContent="center"
@@ -19,7 +19,7 @@ export default function EmptyList({ message, ...others }) {
       <Typography variant="subtitle1" textTransform="capitalize">
         {message}
       </Typography>
-      <EmptyDataIllustration sx={{ width: '60%' }} />
+      <EmptyDataIllustration sx={{ width: widthImage }} />
     </Box>
   )
 }

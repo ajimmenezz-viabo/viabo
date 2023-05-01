@@ -22,7 +22,7 @@ export const getStockCards = async () => {
 }
 
 export const assignCards = async cards => {
-  const url = cards?.cardId ? '/api/card/assign' : '/api/cards/assign'
+  const url = cards?.cardId ? '/api/card/assign/commerce' : '/api/cards/assign/commerce'
   const { data } = await axios.post(url, cards)
   return data
 }

@@ -1,4 +1,0 @@
-commerce-register:
-  path: '/comercio/registro'
-  controller: Viabo\Backend\Controller\RoutesFrontendController
-  methods: GET

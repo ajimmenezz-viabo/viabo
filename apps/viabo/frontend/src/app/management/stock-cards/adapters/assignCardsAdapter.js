@@ -1,5 +1,5 @@
 export const AssignCardsAdapter = cards => {
-  const commerceId = cards?.commerce?.value
+  const commerceId = cards?.commerce?.value || ''
   if (cards?.cardId) {
     return {
       cardId: cards?.cardId,
@@ -8,7 +8,8 @@ export const AssignCardsAdapter = cards => {
   }
 
   return {
-    cardNumbers: cards?.numberOfCards,
+    amount: cards?.numberOfCards.toString(),
+    paymentProcessorId: cards?.cardType?.value || '',
     commerceId
   }
 }

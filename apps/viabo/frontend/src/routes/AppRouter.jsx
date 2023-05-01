@@ -6,6 +6,7 @@ import { AuthGuard, GuestGuard } from '@/shared/guards'
 import { useUser } from '@/shared/hooks'
 import { ManagementRouter } from '@/app/management/shared/routes'
 import { useSettings } from '@theme/hooks'
+import { BusinessRouter } from '@/app/business/shared/routes'
 
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
 const Login = LoadableRoute(lazy(() => import('@/app/authentication/pages/Login')))
@@ -17,7 +18,6 @@ export const AppRouter = () => {
 
   useEffect(() => {
     if (pathname === '/comercio/registro' && themeMode !== 'light') {
-      console.log('cambiando')
       onChangeMode({
         target: {
           value: 'light'
@@ -50,6 +50,7 @@ export const AppRouter = () => {
       children: [
         { element: <Navigate to={user?.urlInit} replace />, index: true },
         ManagementRouter,
+        BusinessRouter,
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

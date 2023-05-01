@@ -17,7 +17,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function Page404() {
   useEffect(() => {
-    window.localStorage.removeItem('lastPath')
+    localStorage.removeItem('lastPath')
   }, [])
 
   return (

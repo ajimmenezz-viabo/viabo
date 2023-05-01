@@ -116,7 +116,7 @@ function AuthProvider({ children }) {
     })
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem('accessToken')
+        const accessToken = localStorage.getItem('accessToken')
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken)
           const decoded = jwtDecode(accessToken)
@@ -178,7 +178,7 @@ function AuthProvider({ children }) {
   }
 
   const login = async () => {
-    const accessToken = window.localStorage.getItem('accessToken')
+    const accessToken = localStorage.getItem('accessToken')
 
     const decoded = jwtDecode(accessToken)
 
@@ -193,6 +193,7 @@ function AuthProvider({ children }) {
         }
       }
     })
+    localStorage.setItem('lastAuth', decoded?.email)
   }
 
   return (

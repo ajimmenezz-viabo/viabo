@@ -94,7 +94,7 @@ const processStore = (set, get) => ({
     set(state => ({
       token
     }))
-    window.localStorage.setItem('token', token)
+    localStorage.setItem('token', token)
     axios.defaults.headers.common.Authorization = `Bearer ${token}`
   },
   setResume: resume => {

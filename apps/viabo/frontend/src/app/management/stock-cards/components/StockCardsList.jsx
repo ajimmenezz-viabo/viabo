@@ -4,17 +4,16 @@ import { Search } from '@mui/icons-material'
 import { usePagination } from '@/shared/hooks'
 import { StockCard, StockCardSkeleton } from '@/app/management/stock-cards/components/stock-card'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
-import { useFindStockCards } from '@/app/management/stock-cards/hooks'
 import EmptyList from '@/shared/components/notifications/EmptyList'
 import { ErrorRequestPage } from '@/shared/components/notifications'
 
-export function StockCardsList() {
+export function StockCardsList({ stockCards }) {
   const isDesktop = useResponsive('up', 'xl')
   const { isCollapse } = useCollapseDrawer()
   const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResult, setSearchResult] = useState([])
-  const { data, isLoading, isError, error, isSuccess: isSuccessCards, refetch } = useFindStockCards()
+  const { data, isLoading, isError, error, isSuccess: isSuccessCards, refetch } = stockCards
 
   const cardList = data || []
   const loadingCards = isLoading
@@ -71,6 +70,12 @@ export function StockCardsList() {
         </Box>
       )}
 
+      {!loadingCards && isSuccessCards && cardList.length === 0 && (
+        <EmptyList widthImage={'30%'} message="No hay tarjetas disponibles en stock" />
+      )}
+
+      {!loadingCards && isError && <ErrorRequestPage widthImage={'30%'} errorMessage={error} handleButton={refetch} />}
+
       <Box
         mb={3}
         sx={{
@@ -90,15 +95,9 @@ export function StockCardsList() {
         )}
       </Box>
 
-      {!loadingCards && isSuccessCards && cardList.length === 0 && (
-        <EmptyList widthImage={'30%'} message="No hay tarjetas disponibles en stock" />
-      )}
-
       {!loadingCards && isSuccessCards && searchTerm !== '' && source.length === 0 && (
         <EmptyList widthImage={'30%'} message="No hay tarjetas que coincidan con la búsqueda" />
       )}
-
-      {!loadingCards && isError && <ErrorRequestPage widthImage={'30%'} errorMessage={error} handleButton={refetch} />}
     </>
   )
 }

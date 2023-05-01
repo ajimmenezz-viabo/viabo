@@ -13,14 +13,14 @@ export const useAssignCards = (options = {}) => {
   const register = useMutation(assignCards, {
     onSuccess: () => {
       setCustomError(null)
-      client.removeQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
+      client.invalidateQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
       enqueueSnackbar('Se asignaron las tarjetas al comercio', {
         variant: 'success',
         autoHideDuration: 5000
       })
     },
     onError: error => {
-      client.removeQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
+      client.invalidateQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
       const errorFormatted = getErrorAPI(error, 'No se puede asignar las tarjetas al comercio')
       enqueueSnackbar(errorFormatted, {
         variant: getNotificationTypeByErrorCode(error),

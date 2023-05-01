@@ -4,50 +4,13 @@
 namespace Viabo\shared\domain\criteria;
 
 
-final class Criteria
+final readonly class Criteria
 {
     public function __construct(
-        private Filters          $filters = new Filters([]) ,
-        private AndSpecification $and = new AndSpecification() ,
-        private OrSpecification  $or = new OrSpecification()
+        private Filters $filters ,
+        private ?int    $limit = null
     )
     {
-    }
-
-    public function andWhere(Filters $filters): void
-    {
-        $this->filters = $filters;
-        $this->and->add($filters);
-    }
-
-    public function orWhere(Filters $filters): void
-    {
-        $this->or->add($filters);
-    }
-
-    public function hasConditionsAnd(): bool
-    {
-        return $this->and->count() > 0;
-    }
-
-    public function hasConditionsOr(): bool
-    {
-        return $this->or->count() > 0;
-    }
-
-    public function getFiltersAnd(): array
-    {
-        return $this->and->get();
-    }
-
-    public function getFiltersOr(): array
-    {
-        return $this->or->get();
-    }
-
-    public function hasNotFilters(): bool
-    {
-        return !$this->hasConditionsAnd() && !$this->hasConditionsOr();
     }
 
     public function hasFilters(): bool
@@ -60,8 +23,8 @@ final class Criteria
         return $this->filters->get();
     }
 
-    public function clearFilters(): void
+    public function limit(): ?int
     {
-        $this->filters = new Filters([]);
+        return $this->limit;
     }
 }

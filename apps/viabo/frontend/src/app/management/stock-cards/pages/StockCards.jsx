@@ -5,11 +5,9 @@ import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { StockCardSidebar, StockCardsList } from '@/app/management/stock-cards/components'
 import { lazy, useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
-import { useFindAffiliatedCommerces, useFindCardTypes } from '@/app/management/stock-cards/hooks'
+import { useFindAffiliatedCommerces, useFindCardTypes, useFindStockCards } from '@/app/management/stock-cards/hooks'
 import { Button } from '@mui/material'
 import { AddBusinessTwoTone } from '@mui/icons-material'
-import { useGetQueryData } from '@/shared/hooks'
-import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { Lodable } from '@/shared/components/lodables'
 
@@ -19,7 +17,8 @@ export default function StockCards() {
   const [open, setOpen] = useState(false)
   const { data: affiliatedCommerces, isSuccess, isLoading } = useFindAffiliatedCommerces()
   const { data: cardTypes, isSuccess: isSuccessCardTypes, isLoading: isLoadingCardTypes } = useFindCardTypes()
-  const cards = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST]) || []
+  const stockCards = useFindStockCards()
+  const { data: cards } = stockCards
   const setOpenAssignCards = useAssignCardStore(state => state.setOpen)
   const setReadyToAssign = useAssignCardStore(state => state.setReadyToAssign)
   const openAssignCard = useAssignCardStore(state => state.open)
@@ -37,7 +36,7 @@ export default function StockCards() {
   }
 
   const handleAssignCards = () => {
-    if (affiliatedCommerces && affiliatedCommerces.length > 0) {
+    if (affiliatedCommerces && affiliatedCommerces.length > 0 && cardTypes && cardTypes.length > 0) {
       setOpenAssignCards(true)
     } else {
       setOpenAssignCards(false)
@@ -80,7 +79,7 @@ export default function StockCards() {
             ) : null
           }
         />
-        <StockCardsList />
+        <StockCardsList stockCards={stockCards} />
         <StockCardSidebar open={open} setOpen={setOpen} />
         {openAssignCard && <AssignCardModal />}
       </ContainerPage>

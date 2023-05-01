@@ -17,6 +17,7 @@ export default function AssignCardModal() {
   const card = useAssignCardStore(state => state.card)
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
   const cardsList = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST]) || []
+  const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
 
   const { mutate: assign, isLoading: isAssigning } = useAssignCards()
 
@@ -31,9 +32,20 @@ export default function AssignCardModal() {
     }
     return {
       ...initialSchema,
+      cardType: Yup.object().nullable().required('El tipo de tarjeta es requerido'),
       numberOfCards: Yup.number()
         .min(1, 'Al menos debe existir una tarjeta')
-        .max(cardsList.length, `La cantidad maxima de tarjetas son: ${cardsList.length} `)
+        .test('maxCards', 'El maximo de tarjetas', function (value) {
+          const { cardType } = this.parent
+          const filteredCards = cardsList.filter(card => card.cardTypeId === cardType.id)
+          const count = filteredCards.length
+          if (value > count) {
+            return this.createError({
+              message: `No se pueden agregar más tarjetas que las disponibles (${count} tarjetas)`
+            })
+          }
+          return true
+        })
         .required('El número de tarjetas es requerido')
     }
   }, [card, cardsList])
@@ -47,6 +59,7 @@ export default function AssignCardModal() {
     }
     return {
       numberOfCards: 1,
+      cardType: (cardTypes && cardTypes.length > 0 && cardTypes[0]) || null,
       commerce: null
     }
   }, [card])
@@ -55,7 +68,6 @@ export default function AssignCardModal() {
     initialValues: initial,
     validationSchema: Yup.object().shape(schema),
     onSubmit: (values, { setSubmitting }) => {
-      console.log(values)
       const assignData = AssignCardsAdapter(values)
       assign(assignData, {
         onSuccess: () => {
@@ -90,18 +102,34 @@ export default function AssignCardModal() {
       <FormProvider formik={formik}>
         <Stack spacing={3} sx={{ py: 3 }}>
           {!card ? (
-            <Stack>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Número de tarjetas:
-              </Typography>
-              <RFTextField
-                name={'numberOfCards'}
-                placeholder={'1'}
-                type={'number'}
-                inputProps={{ inputMode: 'numeric', min: '1' }}
-                disabled={isLoading}
-              />
-            </Stack>
+            <>
+              <Stack>
+                <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                  Tipo de Tarjeta:
+                </Typography>
+                <RFSelect
+                  name={'cardType'}
+                  textFieldParams={{ placeholder: 'Seleccionar ...', required: true }}
+                  options={cardTypes}
+                  disabled={isLoading}
+                />
+              </Stack>
+              <Stack>
+                <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                  Número de tarjetas:
+                </Typography>
+                <RFTextField
+                  name={'numberOfCards'}
+                  placeholder={'1'}
+                  type={'number'}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  inputProps={{ inputMode: 'numeric', min: '1' }}
+                  disabled={isLoading}
+                />
+              </Stack>
+            </>
           ) : (
             <CardNumber card={card} />
           )}

@@ -13,7 +13,7 @@ export function ThemeMode() {
         value
       }
     })
-    window.localStorage.setItem('dashboardTheme', value)
+    localStorage.setItem('dashboardTheme', value)
   }
 
   return (

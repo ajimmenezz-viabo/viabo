@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '@/shared/hooks'
-import { useEffect } from 'react'
+import { useAuth, useGetQueryData } from '@/shared/hooks'
+import { useEffect, useMemo } from 'react'
 import { useSettings } from '@theme/hooks'
+import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 
 GuestGuard.propTypes = {
   children: PropTypes.node
@@ -11,9 +12,21 @@ GuestGuard.propTypes = {
 export function GuestGuard({ children }) {
   const { isAuthenticated, user } = useAuth()
   const { themeMode, onChangeMode } = useSettings()
+  const lastPath = localStorage.getItem('lastPath')
+  const modules = useGetQueryData([AUTHENTICATION_KEYS.USER_MODULES])
+
+  const existsLastPath = useMemo(
+    () =>
+      Boolean(
+        modules?.menu
+          ?.flatMap(category => category.modules)
+          .find(module => module.path.toLowerCase() === lastPath?.toLowerCase())
+      ),
+    [lastPath, modules]
+  )
 
   useEffect(() => {
-    const dashboardMode = window.localStorage.getItem('dashboardTheme')
+    const dashboardMode = localStorage.getItem('dashboardTheme')
     if (dashboardMode && themeMode !== dashboardMode) {
       onChangeMode({
         target: {
@@ -32,7 +45,7 @@ export function GuestGuard({ children }) {
   }, [])
 
   if (isAuthenticated) {
-    const url = window.localStorage.getItem('lastPath') ?? user?.urlInit
+    const url = existsLastPath ? lastPath : user?.urlInit
     return <Navigate to={url} replace />
   }
 

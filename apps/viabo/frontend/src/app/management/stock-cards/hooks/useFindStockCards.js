@@ -7,7 +7,7 @@ import { getErrorAPI } from '@/shared/interceptors'
 export const useFindStockCards = (options = {}) => {
   const [customError, setCustomError] = useState(null)
   const commerces = useQuery([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST], getStockCards, {
-    staleTime: 60 * 5000,
+    staleTime: 60000,
     onError: error => {
       const errorMessage = getErrorAPI(
         error,

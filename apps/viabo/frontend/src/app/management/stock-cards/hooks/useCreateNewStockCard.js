@@ -13,7 +13,7 @@ export const useCreateNewStockCard = (options = {}) => {
   const register = useMutation(createNewStockCard, {
     onSuccess: () => {
       setCustomError(null)
-      client.removeQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
+      client.invalidateQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
       enqueueSnackbar('Se agrego una nueva tarjeta al stock', {
         variant: 'success',
         autoHideDuration: 5000

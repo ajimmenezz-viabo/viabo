@@ -1,1 +1,0 @@
-import{j as e,b7 as r,P as a}from"./index-d15e21ee.js";import{C as s,H as o}from"./HeaderPage-0d86c0b4.js";import"./Container-6e256a94.js";const m={cards:"tarjetas",commerce:"comercio"};function t(){return e(r,{friendlyPages:m})}function d(){return e(a,{title:"Tarjetas del Comercio",children:e(s,{children:e(o,{name:"Tarjetas del Comercio",breadcrumbs:t})})})}export{d as default};

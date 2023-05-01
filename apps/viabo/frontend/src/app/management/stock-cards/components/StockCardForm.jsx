@@ -15,17 +15,6 @@ import { useGetQueryData } from '@/shared/hooks'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
-const CARD_TYPES = [
-  {
-    value: '1',
-    label: 'MASTER CARD'
-  },
-  {
-    value: '2',
-    label: 'CARNET'
-  }
-]
-
 export function StockCardForm({ setOpen }) {
   const { mutate: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []

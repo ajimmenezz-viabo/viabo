@@ -6,6 +6,7 @@ import { StockCard, StockCardSkeleton } from '@/app/management/stock-cards/compo
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
 import EmptyList from '@/shared/components/notifications/EmptyList'
 import { ErrorRequestPage } from '@/shared/components/notifications'
+import { searchByTerm } from '@/app/shared/utils'
 
 export function StockCardsList({ stockCards }) {
   const isDesktop = useResponsive('up', 'xl')
@@ -29,14 +30,9 @@ export function StockCardsList({ stockCards }) {
     _DATA.jump(p)
   }
 
-  const search = (cards, searchTerm) =>
-    cards.filter(card =>
-      Object.keys(card).some(key => card[key].toString().toLowerCase().includes(searchTerm.toLowerCase()))
-    )
-
   useEffect(() => {
     if (searchTerm) {
-      const filterCards = search(cardList, searchTerm)
+      const filterCards = searchByTerm(cardList, searchTerm)
       setSearchResult(filterCards)
     } else {
       setSearchResult([])

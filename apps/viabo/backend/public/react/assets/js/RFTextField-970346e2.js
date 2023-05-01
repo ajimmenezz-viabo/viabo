@@ -1,0 +1,1 @@
+import{j as i}from"./index-70a88a68.js";import{a as s}from"./formik.esm-08fe098b.js";import{T as a}from"./TextField-1dd7ffce.js";function f({name:r,...o}){const[t,e,l]=s(r);return i(a,{...t,...o,error:!!(e.touched&&e.error),helperText:e.touched&&e.error})}export{f as R};

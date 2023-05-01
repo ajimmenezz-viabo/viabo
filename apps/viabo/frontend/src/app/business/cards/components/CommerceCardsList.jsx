@@ -1,27 +1,33 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Box, InputAdornment, Pagination, Stack, TextField } from '@mui/material'
-import { motion } from 'framer-motion'
-import { Scrollbar } from '@/shared/components/scroll'
-import CommerceCard from '@/app/management/commerces/components/CommerceCard'
+import { useEffect, useMemo, useState } from 'react'
 import { usePagination } from '@/shared/hooks'
-import { Search } from '@mui/icons-material'
-import { useFindCommerceList } from '@/app/management/commerces/hooks/useFindCommerceList'
-import { RequestLoadingComponent } from '@/shared/components/loadings'
+import { Box, InputAdornment, Pagination, Stack, TextField } from '@mui/material'
 import { ErrorRequestPage } from '@/shared/components/notifications'
-import { useCommerce } from '@/app/management/commerces/store'
-import EmptyList from '@/shared/components/notifications/EmptyList'
-import { shallow } from 'zustand/shallow'
+import { RequestLoadingComponent } from '@/shared/components/loadings'
+import { motion } from 'framer-motion'
 import { Label } from '@/shared/components/form'
-import { getColorStatusCommerceById } from '@/app/management/commerces/services'
+import { Search } from '@mui/icons-material'
+import { Scrollbar } from '@/shared/components/scroll'
+import EmptyList from '@/shared/components/notifications/EmptyList'
+import { useFindCommerceCards } from '@/app/business/cards/hooks'
 import { searchByTerm } from '@/app/shared/utils'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { getColorCardStatusById } from '@/app/shared/services'
+import { CommerceViaboCard } from '@/app/business/cards/components/CommerceViaboCard'
 
-export function CommerceList({ minHeight }) {
-  const { data: commerces, isLoading: loadingCommerces, isError, error, refetch, isSuccess } = useFindCommerceList()
-  const setCommerce = useCommerce(state => state.setCommerce)
-  const { commerce: commerceSelected } = useCommerce(state => state, shallow)
+export function CommerceCardsList() {
+  const {
+    data: commerceCards,
+    isLoading: loadingCommerces,
+    isError,
+    error,
+    refetch,
+    isSuccess
+  } = useFindCommerceCards()
+  const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
+  const commerceCardSelected = useCommerceDetailsCard(state => state.card)
 
   const statusList = useMemo(() => {
-    const statusList = commerces?.map(commerce => commerce?.status) || []
+    const statusList = commerceCards?.map(card => card?.status) || []
     const uniqueStatus = {}
     const filterStatusList = []
     statusList.forEach(status => {
@@ -32,7 +38,7 @@ export function CommerceList({ minHeight }) {
     })
 
     return filterStatusList
-  }, [commerces])
+  }, [commerceCards])
 
   const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
@@ -41,7 +47,7 @@ export function CommerceList({ minHeight }) {
   const [searchResultStatus, setSearchResultStatus] = useState([])
 
   const PER_PAGE = 4
-  const source = searchTerm ? searchResult : selectedStatus ? searchResultStatus : commerces
+  const source = searchTerm ? searchResult : selectedStatus ? searchResultStatus : commerceCards
   const length = source?.length || 0
   const count = Math.ceil(length / PER_PAGE)
   const _DATA = usePagination(source || [], PER_PAGE)
@@ -55,18 +61,18 @@ export function CommerceList({ minHeight }) {
     if (searchTerm.trim() !== '' && searchResultStatus && selectedStatus) {
       const filteredModels = searchByTerm(searchResultStatus, searchTerm)
       setSearchResult(filteredModels)
-    } else if (searchTerm && commerces && !selectedStatus) {
-      const filteredModels = searchByTerm(commerces, searchTerm)
+    } else if (searchTerm && commerceCards && !selectedStatus) {
+      const filteredModels = searchByTerm(commerceCards, searchTerm)
       setSearchResult(filteredModels)
     }
-  }, [searchTerm, commerces, selectedStatus, searchResultStatus])
+  }, [searchTerm, commerceCards, selectedStatus, searchResultStatus])
 
   useEffect(() => {
-    if (commerces && commerceSelected) {
-      const commerceUpdate = commerces?.find(commerce => commerce?.id === commerceSelected?.id)
-      commerceUpdate && setCommerce(commerceUpdate)
+    if (commerceCards && commerceCardSelected) {
+      const commerceUpdate = commerceCards?.find(card => card?.id === commerceCardSelected?.id)
+      commerceUpdate && setCommerceCard(commerceUpdate)
     }
-  }, [commerces, commerceSelected])
+  }, [commerceCards, commerceCardSelected])
 
   if (isError) {
     return (
@@ -84,13 +90,13 @@ export function CommerceList({ minHeight }) {
       setSelectedStatus(status)
       searchStatus = status?.name || ''
     }
-    const filteredModels = searchByTerm(commerces, searchStatus)
+    const filteredModels = searchByTerm(commerceCards, searchStatus)
     setSearchResultStatus(filteredModels)
   }
   return (
     <Stack sx={{ pr: { sm: 2 } }}>
       {loadingCommerces && <RequestLoadingComponent />}
-      {commerces?.length > 0 && (
+      {commerceCards?.length > 0 && (
         <>
           <Box display="flex">
             {statusList?.map(status => {
@@ -104,7 +110,7 @@ export function CommerceList({ minHeight }) {
                 >
                   <Label
                     variant={selected ? 'ghost' : 'filled'}
-                    color={getColorStatusCommerceById(status?.id)}
+                    color={getColorCardStatusById(status?.id)}
                     sx={{
                       textTransform: 'uppercase',
                       marginRight: 1,
@@ -142,26 +148,19 @@ export function CommerceList({ minHeight }) {
             <Pagination count={count} page={page} onChange={handleChange} />
           </Box>
           <Box sx={{ maxHeight: 1, minHeight: '100%', overflow: 'auto' }}>
-            <Scrollbar
-              sx={
-                {
-                  // height: 1,
-                  // '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' }
-                }
-              }
-            >
+            <Scrollbar>
               <Stack direction="column" spacing={2} sx={{ p: 2, cursor: 'pointer' }}>
                 {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
-                {_DATA?.currentData()?.map((commerce, index) => (
+                {_DATA?.currentData()?.map((card, index) => (
                   <motion.div
                     onClick={() => {
-                      setCommerce(commerce)
+                      setCommerceCard(card)
                     }}
                     key={index}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.8 }}
                   >
-                    <CommerceCard commerce={commerce} selected={index === 0} />
+                    <CommerceViaboCard card={card} />
                   </motion.div>
                 ))}
               </Stack>
@@ -169,7 +168,9 @@ export function CommerceList({ minHeight }) {
           </Box>
         </>
       )}
-      {commerces && commerces?.length === 0 && <EmptyList pt={2.5} message={'No hay comercios Registrados'} />}
+      {commerceCards && commerceCards?.length === 0 && (
+        <EmptyList pt={2.5} message={'No hay tarjetas asignadas a este comercio'} />
+      )}
     </Stack>
   )
 }

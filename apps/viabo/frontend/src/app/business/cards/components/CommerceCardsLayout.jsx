@@ -1,9 +1,9 @@
-import { Box, Grid } from '@mui/material'
-import { CommerceList } from '@/app/management/commerces/components/CommerceList'
 import { useCollapseDrawer } from '@theme/hooks'
-import { CommerceDetails } from '@/app/management/commerces/components/CommerceDetails'
+import { Box, Grid } from '@mui/material'
+import { CommerceCardsList } from '@/app/business/cards/components/CommerceCardsList'
+import { CommerceViaboCardDetails } from '@/app/business/cards/components/CommerceViaboCardDetails'
 
-export const CommerceLayout = () => {
+export function CommerceCardsLayout() {
   const { isCollapse } = useCollapseDrawer()
 
   return (
@@ -23,7 +23,7 @@ export const CommerceLayout = () => {
         })}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <CommerceList />
+          <CommerceCardsList />
         </Box>
       </Grid>
 
@@ -37,7 +37,7 @@ export const CommerceLayout = () => {
         sx={{ px: 2, flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <CommerceDetails />
+          <CommerceViaboCardDetails />
         </Box>
       </Grid>
     </Grid>

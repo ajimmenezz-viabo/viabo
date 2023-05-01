@@ -6,7 +6,7 @@ import { fCardNumber, fCardNumberHidden } from '@/shared/utils'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useState } from 'react'
 
-export default function CardNumber({ card }) {
+export default function CardNumber({ card, disableShow }) {
   const [showCardNumber, setShowCardNumber] = useState(true)
   const onToggleShowCardNumber = () => {
     setShowCardNumber(prev => !prev)
@@ -24,9 +24,13 @@ export default function CardNumber({ card }) {
       <Typography sx={{ typography: 'h6' }}>
         {showCardNumber ? fCardNumberHidden(card?.cardNumber) : fCardNumber(card?.cardNumber)}
       </Typography>
-      <IconButton size={'small'} color="inherit" onClick={onToggleShowCardNumber} sx={{ opacity: 0.2 }}>
-        {showCardNumber ? <Visibility /> : <VisibilityOff />}
-      </IconButton>
+      {!disableShow && (
+        <>
+          <IconButton size={'small'} color="inherit" onClick={onToggleShowCardNumber} sx={{ opacity: 0.2 }}>
+            {showCardNumber ? <Visibility /> : <VisibilityOff />}
+          </IconButton>
+        </>
+      )}
     </Stack>
   )
 }

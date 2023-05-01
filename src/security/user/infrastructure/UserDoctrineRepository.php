@@ -5,9 +5,9 @@ namespace Viabo\security\user\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\User;
-use Viabo\security\user\domain\UserEmail;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\security\user\domain\UserView;
 use Viabo\shared\domain\criteria\Criteria;
@@ -26,14 +26,14 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
         $this->persist($user);
     }
 
-    public function search(UserEmail $email): User|null
-    {
-        return $this->repository(User::class)->findOneBy(['email.value' => $email->value()]);
-    }
-
-    public function searchId(UserId $userId): User|null
+    public function search(UserId $userId): User|null
     {
         return $this->repository(User::class)->find($userId->value());
+    }
+
+    public function searchBy(UserEmail $email): User|null
+    {
+        return $this->repository(User::class)->findOneBy(['email' => $email->value()]);
     }
 
     public function searchCriteria(Criteria $criteria): array

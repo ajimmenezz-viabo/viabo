@@ -10,7 +10,11 @@ interface CardRepository
 {
     public function save(Card $card): void;
 
+    public function search(CardId $cardId): Card|null;
+
     public function searchCriteria(Criteria $criteria): array;
 
     public function searchView(Criteria $criteria): array;
+
+    public function update(Card $card): void;
 }

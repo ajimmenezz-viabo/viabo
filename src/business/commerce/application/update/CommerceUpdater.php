@@ -26,13 +26,11 @@ final readonly class CommerceUpdater
         private CommerceRepository $repository ,
         private CommerceFinder     $commerceFinder ,
         private EventBus           $bus
-
     )
     {
     }
 
     public function __invoke(
-        CommerceLegalRepresentative $legalRepresentative ,
         CommerceId                  $commerceId ,
         CommerceFiscalPersonType    $fiscalPersonType ,
         CommerceTaxName             $taxName ,
@@ -45,9 +43,8 @@ final readonly class CommerceUpdater
         CommerceRegisterStep        $registerStep
     ): void
     {
-        $commerce = $this->commerceFinder->finder($commerceId);
+        $commerce = $this->commerceFinder->commerce($commerceId , CommerceLegalRepresentative::empty());
         $commerce->update(
-            $legalRepresentative ,
             $fiscalPersonType ,
             $taxName ,
             $tradeName ,

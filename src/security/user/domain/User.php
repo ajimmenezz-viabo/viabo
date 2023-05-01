@@ -4,6 +4,7 @@
 namespace Viabo\security\user\domain;
 
 
+use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
@@ -47,9 +48,7 @@ final class User extends AggregateRoot
             new UserActive('1') ,
         );
 
-        $user->record(new LegalRepresentativeCreatedDomainEvent(
-            $user->id()->value() , $user->id()->value() , $user->toArray()
-        ));
+        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id()->value() , $user->toArray()));
 
         return $user;
     }
@@ -87,6 +86,7 @@ final class User extends AggregateRoot
     public function toArray(): array
     {
         return [
+            'id' => $this->id->value() ,
             'profile' => $this->profile->value() ,
             'name' => $this->name->value() ,
             'lastname' => $this->lastname->value() ,

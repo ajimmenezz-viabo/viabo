@@ -6,7 +6,7 @@ namespace Viabo\security\user\domain\exceptions;
 
 use Viabo\shared\domain\DomainError;
 
-final class UserWrong extends DomainError
+final class UserNoAccess extends DomainError
 {
     public function errorCode(): int
     {

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\security\user\domain;
+namespace Viabo\security\shared\domain\user;
 
 
 use Viabo\security\user\domain\exceptions\UserEmailEmpty;
@@ -25,5 +25,10 @@ final class UserEmail extends StringValueObject
         if (!filter_var($value , FILTER_VALIDATE_EMAIL)) {
             throw new UserEmailNoValid();
         }
+    }
+
+    public function isNotEmpty(): bool
+    {
+        return !empty($this->value);
     }
 }

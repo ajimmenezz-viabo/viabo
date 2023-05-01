@@ -5,7 +5,7 @@ namespace Viabo\security\user\application\find;
 
 
 use Viabo\security\shared\domain\user\UserId;
-use Viabo\security\user\domain\exceptions\UserDoesNotExist;
+use Viabo\security\user\domain\exceptions\UserNotExist;
 use Viabo\security\user\domain\UserRepository;
 
 final readonly class UserPermissionsFinder
@@ -19,7 +19,7 @@ final readonly class UserPermissionsFinder
         $user = $this->repository->searchView($userId);
 
         if (empty($user)) {
-            throw new UserDoesNotExist('');
+            throw new UserNotExist('');
         }
 
         return new UserPermissionsResponde($user->permissions());

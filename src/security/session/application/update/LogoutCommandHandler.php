@@ -18,6 +18,6 @@ final readonly class LogoutCommandHandler implements CommandHandler
     {
         $userId = new UserId($command->userId);
 
-        $this->updater->__invoke($userId);
+        ($this->updater)($userId);
     }
 }

@@ -14,7 +14,6 @@ use Viabo\business\commerce\domain\CommerceRfc;
 use Viabo\business\commerce\domain\CommerceTaxName;
 use Viabo\business\commerce\domain\CommerceTradeName;
 use Viabo\business\shared\domain\commerce\CommerceId;
-use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class UpdateCommerceCommandHandler implements CommandHandler
@@ -25,7 +24,6 @@ final readonly class UpdateCommerceCommandHandler implements CommandHandler
 
     public function __invoke(UpdateCommerceCommand $command): void
     {
-        $legalRepresentative = new CommerceLegalRepresentative($command->legalRepresentative);
         $commerceId = new CommerceId($command->commerceId);
         $fiscalPersonType = new CommerceFiscalPersonType($command->fiscalPersonType);
         $taxName = new CommerceTaxName($command->taxName);
@@ -38,7 +36,6 @@ final readonly class UpdateCommerceCommandHandler implements CommandHandler
         $registerStep = new CommerceRegisterStep($command->registerStep);
 
         ($this->updater)(
-            $legalRepresentative ,
             $commerceId ,
             $fiscalPersonType ,
             $taxName ,

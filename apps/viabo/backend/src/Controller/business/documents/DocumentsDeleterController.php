@@ -15,10 +15,10 @@ final readonly class DocumentsDeleterController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->decode($request->headers->get('Authorization'));
             $uploadDocuments = $request->files->all();
             $commerceId = $request->request->get('commerceId');
-            $this->dispatch(new DeleteDocumentsCommand($tokenData['id'] , $commerceId , $uploadDocuments));
+            $this->dispatch(new DeleteDocumentsCommand($commerceId , $uploadDocuments));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

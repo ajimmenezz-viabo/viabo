@@ -4,19 +4,20 @@
 namespace Viabo\security\user\application\find;
 
 
-use Viabo\security\user\domain\services\UserNameFinder;
-use Viabo\security\user\domain\UserEmail;
-use Viabo\security\user\domain\User;
+use Viabo\security\shared\domain\user\UserEmail;
+use Viabo\security\shared\domain\user\UserId;
+use Viabo\security\user\domain\services\UserFinder as UserFinderService;
 
 final readonly class UserFinder
 {
 
-    public function __construct(private UserNameFinder $finder)
+    public function __construct(private UserFinderService $finder)
     {
     }
 
-    public function __invoke(UserFinderRequest $request): User
+    public function __invoke(UserId $userId , UserEmail $username): UserResponse
     {
-        return ($this->finder)(new UserEmail($request->getUserId()));
+        $user = $this->finder->__invoke($userId , $username);
+        return new UserResponse($user->toArray());
     }
 }

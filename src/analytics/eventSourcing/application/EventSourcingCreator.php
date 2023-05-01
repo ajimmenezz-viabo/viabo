@@ -23,11 +23,12 @@ final readonly class EventSourcingCreator
         EventSourcingId          $id ,
         EventSourcingType        $type ,
         EventSourcingAggregateId $aggregateId ,
-        EventSourcingModifierId  $modifierId ,
         EventSourcingBody        $value ,
         EventSourcingOccurredOn  $occurredOn
     ): void
     {
+
+        $modifierId = new EventSourcingModifierId($this->repository->userSession());
         $eventSourcing = new EventSourcing($id , $type , $aggregateId , $modifierId , $value , $occurredOn);
 
         $this->repository->save($eventSourcing);

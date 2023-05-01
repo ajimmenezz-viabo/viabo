@@ -4,8 +4,10 @@
 namespace Viabo\security\user\domain\services;
 
 
+use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
-use Viabo\security\user\domain\exceptions\UserDoesNotExist;
+use Viabo\security\user\domain\exceptions\UserNotExist;
+use Viabo\security\user\domain\User;
 use Viabo\security\user\domain\UserRepository;
 
 final readonly class UserFinder
@@ -14,14 +16,21 @@ final readonly class UserFinder
     {
     }
 
-    public function __invoke(UserId $userId): array
+    public function __invoke(UserId $userId , UserEmail $userEmail): User
     {
-        $user = $this->repository->searchId($userId);
-
-        if (empty($user)) {
-            throw new UserDoesNotExist('');
+        $user = null;
+        if ($userId->isNotEmpty()) {
+            $user = $this->repository->search($userId);
         }
 
-        return $user->toArray();
+        if ($userEmail->isNotEmpty()) {
+            $user = $this->repository->searchBy($userEmail);
+        }
+
+        if (empty($user)) {
+            throw new UserNotExist('');
+        }
+
+        return $user;
     }
 }

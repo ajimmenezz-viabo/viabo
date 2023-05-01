@@ -33,9 +33,7 @@ final  class Code extends AggregateRoot
     public function setEventCreated(array $userData): void
     {
         $userData['code'] = $this->value->value();
-        $this->record(new CodeCreatedDomainEvent(
-            $this->userId->value() , $userData
-        ));
+        $this->record(new CodeCreatedDomainEvent($this->userId->value() , $userData));
     }
 
     public function isNotSame(CodeValue $verificationCode): bool

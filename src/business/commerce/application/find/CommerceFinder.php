@@ -4,34 +4,25 @@
 namespace Viabo\business\commerce\application\find;
 
 
-use Viabo\business\commerce\domain\CommerceRepository;
-use Viabo\business\commerce\domain\CommerceView;
-use Viabo\business\commerce\domain\exceptions\CommerceNotExist;
+use Viabo\business\commerce\domain\services\CommerceFinder as CommerceFinderServiceDomain;
+use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
-use Viabo\shared\domain\criteria\Criteria;
-use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CommerceFinder
 {
-    public function __construct(private CommerceRepository $repository)
+    public function __construct( private CommerceFinderServiceDomain $finder)
     {
     }
 
-    public function __invoke(CommerceLegalRepresentative $legalRepresentative): CommerceResponse
+    public function commerce(CommerceId $commerceId, CommerceLegalRepresentative $legalRepresentative): CommerceResponse
     {
-        $filters = Filters::fromValues([
-            ['field' => 'legalRepresentative' , 'operator' => '=' , 'value' => $legalRepresentative->value()]
-        ]);
-        $commerce = $this->repository->searchViewCriteria(new Criteria($filters));
+        $commerce = $this->finder->commerce($commerceId , $legalRepresentative);
+        return new CommerceResponse($commerce->toArray());
+    }
 
-        if (empty($commerce)) {
-            throw new CommerceNotExist();
-        }
-
-        $commerce = array_map(function (CommerceView $commerce) {
-            return $commerce->toArray();
-        } , $commerce);
-
-        return new CommerceResponse($commerce[0]);
+    public function view(CommerceId $commerceId, CommerceLegalRepresentative $legalRepresentative): CommerceResponse
+    {
+        $commerce = $this->finder->view($commerceId , $legalRepresentative);
+        return new CommerceResponse($commerce->toArray());
     }
 }

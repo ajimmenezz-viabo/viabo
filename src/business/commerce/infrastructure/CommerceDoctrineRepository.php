@@ -30,6 +30,11 @@ final class CommerceDoctrineRepository extends DoctrineRepository implements Com
         return $this->repository(Commerce::class)->find($commerceId->value());
     }
 
+    public function searchView(CommerceId $commerceId): CommerceView|null
+    {
+        return $this->repository(CommerceView::class)->find($commerceId->value());
+    }
+
     public function searchCriteria(Criteria $criteria): array
     {
         $criteria = DoctrineCriteriaConverter::convert($criteria);
@@ -38,8 +43,6 @@ final class CommerceDoctrineRepository extends DoctrineRepository implements Com
 
     public function searchViewCriteria(Criteria $criteria): array
     {
-        $query = "SET group_concat_max_len = 1048576";
-        $this->entityManager()->getConnection()->executeQuery($query);
         $criteria = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(CommerceView::class)->matching($criteria)->toArray();
     }

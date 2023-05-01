@@ -9,19 +9,25 @@ use Viabo\shared\domain\bus\event\DomainEvent;
 final readonly class CommerceCreatedDomainEvent extends DomainEvent
 {
     public function __construct(
-        string $modifierId ,
-        string $aggregateId ,
-        private array  $content ,
-        string $eventId = null ,
-        string $occurredOn = null
+        string        $aggregateId ,
+        private array $content ,
+        string        $modifierId = null ,
+        string        $eventId = null ,
+        string        $occurredOn = null
     )
     {
-        parent::__construct($modifierId , $aggregateId, $eventId, $occurredOn);
+        parent::__construct($aggregateId , $modifierId , $eventId , $occurredOn);
     }
 
-    public static function fromPrimitives(string $modifierId , string $aggregateId , array $body , string $eventId , string $occurredOn): DomainEvent
+    public static function fromPrimitives(
+        string $aggregateId ,
+        array  $body ,
+        string $modifierId ,
+        string $eventId ,
+        string $occurredOn
+    ): DomainEvent
     {
-        return new self($modifierId , $aggregateId , $body , $eventId , $occurredOn);
+        return new self($aggregateId , $body , $modifierId , $eventId , $occurredOn);
     }
 
     public static function eventName(): string

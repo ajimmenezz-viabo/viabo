@@ -9,7 +9,6 @@ use Viabo\shared\domain\bus\command\Command;
 final readonly class UpdateCommerceCommand implements Command
 {
     public function __construct(
-        public string $legalRepresentative ,
         public string $commerceId ,
         public string $fiscalPersonType ,
         public string $taxName ,

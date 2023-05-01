@@ -10,7 +10,7 @@ final class CommerceNotExist extends DomainError
 {
     public function errorCode(): int
     {
-        return 404;
+        return 400;
     }
 
     public function errorMessage(): string

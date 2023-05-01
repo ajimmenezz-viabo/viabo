@@ -1,0 +1,4 @@
+utility-encryption:
+  path: '/api/encrypt'
+  controller: Viabo\Backend\Controller\UtilitiesController::encrypt
+  methods: POST

@@ -8,11 +8,7 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class UpdateViaboServicesCommand implements Command
 {
-    public function __construct(
-        public string $legalRepresentative ,
-        public string $commerceId ,
-        public array  $services
-    )
+    public function __construct(public string $commerceId , public array $services)
     {
     }
 

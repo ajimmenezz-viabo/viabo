@@ -4,6 +4,7 @@
 namespace Viabo\business\commerce\application\find;
 
 
+use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\bus\query\QueryHandler;
 
@@ -15,7 +16,13 @@ final readonly class FindCommerceQueryHandler implements QueryHandler
 
     public function __invoke(FindCommerceQuery $command): CommerceResponse
     {
-        $legalRepresentative = new CommerceLegalRepresentative($command->legalRepresentative);
-        return ($this->finder)($legalRepresentative);
+        $commerceId = empty($command->commerceId) ?
+            CommerceId::empty() :
+            new CommerceId($command->commerceId);
+        $legalRepresentative = empty($command->legalRepresentative)
+            ? CommerceLegalRepresentative::empty()
+            : new CommerceLegalRepresentative($command->legalRepresentative);
+
+        return $this->finder->commerce($commerceId , $legalRepresentative);
     }
 }

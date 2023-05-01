@@ -4,7 +4,7 @@
 namespace Viabo\security\user\application\login;
 
 
-use Viabo\security\user\domain\UserEmail;
+use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\user\domain\UserPassword;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;

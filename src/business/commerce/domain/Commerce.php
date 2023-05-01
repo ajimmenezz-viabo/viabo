@@ -52,24 +52,21 @@ final class Commerce extends AggregateRoot
             new CommerceActive('1') ,
         );
 
-        $commerce->record(new CommerceCreatedDomainEvent(
-            $commerce->legalRepresentative->value() , $commerce->id->value() , $commerce->toArray()
-        ));
+        $commerce->record(new CommerceCreatedDomainEvent($commerce->id->value() , $commerce->toArray()));
 
         return $commerce;
     }
 
     public function update(
-        CommerceLegalRepresentative $legalRepresentative ,
-        CommerceFiscalPersonType    $fiscalPersonType ,
-        CommerceTaxName             $taxName ,
-        CommerceTradeName           $tradeName ,
-        CommerceRfc                 $rfc ,
-        CommerceEmployees           $employees ,
-        CommerceBranchOffices       $branchOffices ,
-        CommercePointSaleTerminal   $pointSaleTerminal ,
-        CommercePaymentApi          $paymentApi ,
-        CommerceRegisterStep        $registerStep
+        CommerceFiscalPersonType  $fiscalPersonType ,
+        CommerceTaxName           $taxName ,
+        CommerceTradeName         $tradeName ,
+        CommerceRfc               $rfc ,
+        CommerceEmployees         $employees ,
+        CommerceBranchOffices     $branchOffices ,
+        CommercePointSaleTerminal $pointSaleTerminal ,
+        CommercePaymentApi        $paymentApi ,
+        CommerceRegisterStep      $registerStep
     ): void
     {
         $this->fiscalPersonType = $fiscalPersonType;
@@ -83,14 +80,13 @@ final class Commerce extends AggregateRoot
         $this->registerStep = $this->registerStep->update($registerStep->value());
         $this->statusId = $this->statusId->update($registerStep->isLastStep());
 
-        $this->record(new CommerceUpdatedDomainEvent(
-            $legalRepresentative->value() , $this->id->value() , $this->toArray()
-        ));
+        $this->record(new CommerceUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function toArray(): array
     {
         return [
+            'id' => $this->id->value() ,
             'legalRepresentative' => $this->legalRepresentative->value() ,
             'fiscalPersonType' => $this->fiscalPersonType->value() ,
             'taxName' => $this->taxName->value() ,

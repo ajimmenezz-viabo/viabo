@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Viabo\security\user\application\find\UserFinder;
 use Viabo\security\user\application\find\UserFinderRequest;
-use Viabo\security\user\domain\exceptions\UserDoesNotExist;
+use Viabo\security\user\domain\exceptions\UserNotExist;
 
 final class JwtUserProvider implements UserProviderInterface
 {
@@ -39,13 +39,14 @@ final class JwtUserProvider implements UserProviderInterface
     public function loadUser(string $userId): JwtUser
     {
         try {
-            $user = ($this->userFinder)(new UserFinderRequest($userId));
-            return new JwtUser(
-                $user->id(),
-                $user->email(),
-                $user->password()
-            );
-        } catch (UserDoesNotExist $exception) {
+//            $user = ($this->userFinder)(new UserFinderRequest($userId));
+//            return new JwtUser(
+//                $user->id(),
+//                $user->email(),
+//                $user->password()
+//            );
+            return new JwtUser('','','');
+        } catch (UserNotExist $exception) {
             throw new UserNotFoundException($exception->getMessage());
         }
     }

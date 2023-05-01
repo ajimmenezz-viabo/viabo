@@ -7,7 +7,6 @@ namespace Viabo\business\services\application\create;
 use Viabo\business\services\domain\Service;
 use Viabo\business\services\domain\ServiceRepository;
 use Viabo\business\shared\domain\commerce\CommerceId;
-use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class ServicesCreator
@@ -16,18 +15,12 @@ final readonly class ServicesCreator
     {
     }
 
-    public function __invoke(
-        CommerceLegalRepresentative $legalRepresentative ,
-        CommerceId                  $commerceId ,
-        array                       $services
-    ): void
+    public function __invoke(CommerceId $commerceId , array $services): void
     {
-
         $this->repository->delete($commerceId);
 
-        array_map(function (array $service) use ($legalRepresentative , $commerceId) {
+        array_map(function (array $service) use ($commerceId) {
             $service = Service::create(
-                $legalRepresentative ,
                 $commerceId ,
                 $service['type'] ,
                 $service['cardNumbers'] ,

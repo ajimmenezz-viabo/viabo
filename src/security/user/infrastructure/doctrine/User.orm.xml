@@ -10,7 +10,7 @@
         <embedded name="name" class="UserName" use-column-prefix="false"/>
         <embedded name="lastname" class="UserLastname" use-column-prefix="false"/>
         <embedded name="phone" class="UserPhone" use-column-prefix="false"/>
-        <embedded name="email" class="UserEmail" use-column-prefix="false"/>
+        <field name="email" type="user_email" column="Email"/>
         <embedded name="password" class="UserPassword" use-column-prefix="false"/>
         <embedded name="register" class="UserRegister" use-column-prefix="false"/>
         <embedded name="active" class="UserActive" use-column-prefix="false"/>

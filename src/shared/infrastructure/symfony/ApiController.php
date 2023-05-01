@@ -7,6 +7,7 @@ namespace Viabo\shared\infrastructure\symfony;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Viabo\shared\domain\bus\command\Command;
 use Viabo\shared\domain\bus\command\CommandBus;
 use Viabo\shared\domain\bus\query\Query;
@@ -18,7 +19,8 @@ abstract readonly class ApiController
     public function __construct(
         private QueryBus            $queryBus ,
         private CommandBus          $commandBus ,
-        private JWTEncoderInterface $JWTEncoder
+        private JWTEncoderInterface $JWTEncoder ,
+        private Session             $session = new Session()
     )
     {
     }
@@ -73,5 +75,19 @@ abstract readonly class ApiController
             $json , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector
         );
         return ['ciphertext' => base64_encode($ciphertext) , 'iv' => base64_encode($initializationVector)];
+    }
+
+    public function startSession(array $data): void
+    {
+        if ($this->session->isStarted()) {
+            $this->session->invalidate();
+            $this->session->start();
+        }
+        $this->session->set('userId' , $data['id']);
+    }
+
+    public function endSession(): void
+    {
+        $this->session->invalidate();
     }
 }

@@ -8,14 +8,25 @@ use Viabo\shared\domain\bus\event\DomainEvent;
 
 final readonly class SessionStartedDomainEvent extends DomainEvent
 {
-    public function __construct(string $aggregateId , string $eventId = null , string $occurredOn = null)
+    public function __construct(
+        string $aggregateId ,
+        string $modifierId = null ,
+        string $eventId = null ,
+        string $occurredOn = null
+    )
     {
-        parent::__construct($aggregateId , $aggregateId , $eventId , $occurredOn);
+        parent::__construct($aggregateId , $modifierId , $eventId , $occurredOn);
     }
 
-    public static function fromPrimitives(string $modifierId , string $aggregateId , array $body , string $eventId , string $occurredOn): DomainEvent
+    public static function fromPrimitives(
+        string $aggregateId ,
+        array  $body ,
+        string $modifierId ,
+        string $eventId ,
+        string $occurredOn
+    ): DomainEvent
     {
-        return new self($aggregateId , $eventId , $occurredOn);
+        return new self($aggregateId , $modifierId , $eventId , $occurredOn);
     }
 
     public static function eventName(): string

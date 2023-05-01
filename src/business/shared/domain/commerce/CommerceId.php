@@ -12,4 +12,21 @@ final class CommerceId extends UuidValueObject
     {
         return new self(self::random()->value());
     }
+
+    public static function empty(): static
+    {
+        $commerceId = parent::random();
+        $commerceId->setEmpty();
+        return $commerceId;
+    }
+
+    private function setEmpty(): void
+    {
+        $this->value = '';
+    }
+
+    public function isNotEmpty(): bool
+    {
+        return !empty($this->value);
+    }
 }

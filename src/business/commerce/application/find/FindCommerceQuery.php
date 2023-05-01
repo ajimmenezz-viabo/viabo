@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class FindCommerceQuery implements Query
 {
-    public function __construct(public string $legalRepresentative)
+    public function __construct(public string $commerceId , public string $legalRepresentative)
     {
     }
 }

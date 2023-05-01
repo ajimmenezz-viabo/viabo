@@ -7,7 +7,6 @@ namespace Viabo\business\documents\domain;
 use Viabo\business\documents\domain\events\DocumentCreatedDomainEvent;
 use Viabo\business\documents\domain\events\DocumentDeletedDomainEvent;
 use Viabo\business\shared\domain\commerce\CommerceId;
-use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\business\shared\domain\documents\DocumentId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -25,13 +24,15 @@ final  class Document extends AggregateRoot
 
     public static function create(CommerceId $commerceId , DocumentName $name): Document
     {
-        return new self(
+        $document = new self(
             DocumentId::random() ,
             $commerceId ,
             $name ,
             new DocumentStorePath('') ,
             DocumentRegister::todayDate()
         );
+        $document->record(new DocumentCreatedDomainEvent($document->id->value() , $document->toArray()));
+        return $document;
     }
 
     public function name(): DocumentName
@@ -55,18 +56,9 @@ final  class Document extends AggregateRoot
         $this->storePath = $this->storePath->update($path);
     }
 
-    public function setEventCreated(CommerceLegalRepresentative $legalRepresentative): void
+    public function setEventDelete(): void
     {
-        $this->record(new DocumentCreatedDomainEvent(
-            $legalRepresentative->value() , $this->id->value() , $this->toArray()
-        ));
-    }
-
-    public function setEventDelete(CommerceLegalRepresentative $legalRepresentative): void
-    {
-        $this->record(new DocumentDeletedDomainEvent(
-            $legalRepresentative->value() , $this->id->value() , $this->toArray()
-        ));
+        $this->record(new DocumentDeletedDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function toArray(): array

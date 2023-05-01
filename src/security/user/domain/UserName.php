@@ -21,4 +21,9 @@ final class UserName extends StringValueObject
             throw new UserNameEmpty();
         }
     }
+
+    public function isNotEmpty(): bool
+    {
+        return !empty($this->value);
+    }
 }

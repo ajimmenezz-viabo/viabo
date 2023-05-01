@@ -5,7 +5,6 @@ namespace Viabo\business\documents\application\create;
 
 
 use Viabo\business\shared\domain\commerce\CommerceId;
-use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateDocumentsCommandHandler implements CommandHandler
@@ -16,10 +15,8 @@ final readonly class CreateDocumentsCommandHandler implements CommandHandler
 
     public function __invoke(CreateDocumentsCommand $command): void
     {
-        $legalRepresentative = new CommerceLegalRepresentative($command->userId);
         $commerceId = new CommerceId($command->commerceId);
-
-        ($this->creator)($legalRepresentative , $commerceId , $command->uploadDocuments);
+        ($this->creator)($commerceId , $command->uploadDocuments);
 
     }
 }

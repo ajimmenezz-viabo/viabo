@@ -15,9 +15,9 @@ final readonly class LogoutController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->dispatch(new LogoutCommand($tokenData['id']));
+            $this->endSession();
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

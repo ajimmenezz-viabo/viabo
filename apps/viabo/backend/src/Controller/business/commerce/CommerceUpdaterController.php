@@ -16,14 +16,12 @@ final readonly class CommerceUpdaterController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->decode($request->headers->get('Authorization'));
             $request = $request->toArray();
 
-            $legalRepresentative = $tokenData['id'];
             $commerceId = $request['commerceId'];
 
             $this->dispatch(new UpdateCommerceCommand(
-                $legalRepresentative ,
                 $commerceId ,
                 $request['fiscalPersonType'] ,
                 $request['taxName'] ,
@@ -36,7 +34,7 @@ final readonly class CommerceUpdaterController extends ApiController
                 $request['registerStep']
             ));
 
-            $this->dispatch(new UpdateViaboServicesCommand($legalRepresentative , $commerceId , $request['services']));
+            $this->dispatch(new UpdateViaboServicesCommand($commerceId , $request['services']));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

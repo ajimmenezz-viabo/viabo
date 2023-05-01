@@ -4,7 +4,7 @@
 namespace Viabo\security\user\application\find;
 
 
-use Viabo\security\user\domain\UserEmail;
+use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
@@ -18,6 +18,6 @@ final readonly class FindLegalRepresentativeCommandHandler implements QueryHandl
     {
         $userEmail = new UserEmail($command->username);
 
-        return $this->finder->__invoke($userEmail);
+        return ($this->finder)($userEmail);
     }
 }

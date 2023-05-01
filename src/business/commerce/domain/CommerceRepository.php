@@ -10,9 +10,11 @@ interface CommerceRepository
 {
     public function save(Commerce $commerce): void;
 
-    public function searchCriteria(Criteria $criteria): array;
-
     public function search(CommerceId $commerceId): Commerce|null;
+
+    public function searchView(CommerceId $commerceId): CommerceView|null;
+
+    public function searchCriteria(Criteria $criteria): array;
 
     public function searchViewCriteria(Criteria $criteria): array;
 

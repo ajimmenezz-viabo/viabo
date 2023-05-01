@@ -5,20 +5,22 @@ namespace Viabo\security\code\application\create;
 
 
 use Viabo\security\shared\domain\user\UserId;
-use Viabo\security\user\domain\services\UserFinder;
+use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\domain\bus\command\CommandHandler;
+use Viabo\shared\domain\bus\query\QueryBus;
 
 final readonly class CreateCodeCommandHandler implements CommandHandler
 {
-    public function __construct(private CodeCreator $creator , private UserFinder $userFinder)
+    public function __construct(private CodeCreator $creator , private QueryBus $queryBus)
     {
     }
 
     public function __invoke(CreateCodeCommand $command): void
     {
+        $userEmail = '';
         $userId = new UserId($command->userId);
-        $userData = ($this->userFinder)($userId);
+        $data = $this->queryBus->ask(new FindUserQuery($command->userId, $userEmail));
 
-        ($this->creator)($userId , $userData);
+        ($this->creator)($userId , $data->userData);
     }
 }

@@ -17,9 +17,7 @@ final readonly class DocumentsCreator
     {
     }
 
-    public function __invoke(
-        CommerceLegalRepresentative $legalRepresentative , CommerceId $commerceId , array $uploadDocuments
-    ): void
+    public function __invoke(CommerceId $commerceId , array $uploadDocuments): void
     {
         foreach ($uploadDocuments as $documentName => $uploadDocument) {
             $name = DocumentName::create($documentName);
@@ -27,8 +25,6 @@ final readonly class DocumentsCreator
 
             $document = Document::create($commerceId , $name);
             $this->repository->save($document , $uploadDocument);
-
-            $document->setEventCreated($legalRepresentative);
 
             $this->bus->publish(...$document->pullDomainEvents());
         }

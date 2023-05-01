@@ -6,7 +6,6 @@ namespace Viabo\analytics\eventSourcing\application;
 
 use Viabo\analytics\eventSourcing\domain\EventSourcingAggregateId;
 use Viabo\analytics\eventSourcing\domain\EventSourcingId;
-use Viabo\analytics\eventSourcing\domain\EventSourcingModifierId;
 use Viabo\analytics\eventSourcing\domain\EventSourcingOccurredOn;
 use Viabo\analytics\eventSourcing\domain\EventSourcingType;
 use Viabo\analytics\eventSourcing\domain\EventSourcingBody;
@@ -26,13 +25,21 @@ final readonly class StoreDomainEventOccurredOn implements DomainEventSubscriber
 
     public function __invoke(DomainEvent $event): void
     {
+
+        if ($this->isLoginEvent($event)) return;
+
         $id = new EventSourcingId($event->eventId());
         $type = new EventSourcingType($event->eventName());
         $aggregateId = new EventSourcingAggregateId($event->aggregateId());
-        $modifierId = new EventSourcingModifierId($event->modifierId());
         $body = EventSourcingBody::create($event->toPrimitives());
         $ocurreOn = new EventSourcingOccurredOn($event->occurredOn());
 
-        ($this->creator)($id , $type , $aggregateId , $modifierId , $body , $ocurreOn);
+        ($this->creator)($id , $type , $aggregateId , $body , $ocurreOn);
     }
+
+    private function isLoginEvent(DomainEvent $event): bool
+    {
+        return str_contains(get_class($event) , 'SessionStartedDomainEvent');
+    }
+
 }

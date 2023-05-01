@@ -6,7 +6,6 @@ namespace Viabo\business\services\domain;
 
 use Viabo\business\services\domain\events\ServiceCreatedDomainEvent;
 use Viabo\business\shared\domain\commerce\CommerceId;
-use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Service extends AggregateRoot
@@ -23,7 +22,6 @@ final class Service extends AggregateRoot
     }
 
     public static function create(
-        CommerceLegalRepresentative $legalRepresentative ,
         CommerceId                  $commerceId ,
         string                      $serviceType,
         string                      $cardNumbers,
@@ -40,9 +38,7 @@ final class Service extends AggregateRoot
             new ServiceCardUse($cardUse),
             new ServicePersonalized($personalized)
         );
-        $service->record(new ServiceCreatedDomainEvent(
-            $legalRepresentative->value() , $service->id->value() , $service->toArray()
-        ));
+        $service->record(new ServiceCreatedDomainEvent($service->id->value() , $service->toArray()));
         return $service;
     }
 

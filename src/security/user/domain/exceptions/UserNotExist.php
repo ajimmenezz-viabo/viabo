@@ -6,7 +6,7 @@ namespace Viabo\security\user\domain\exceptions;
 
 use Viabo\shared\domain\DomainError;
 
-final class UserDoesNotExist extends DomainError
+final class UserNotExist extends DomainError
 {
     private string $value;
 

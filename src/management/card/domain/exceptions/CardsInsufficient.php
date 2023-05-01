@@ -6,7 +6,7 @@ namespace Viabo\management\card\domain\exceptions;
 
 use Viabo\shared\domain\DomainError;
 
-final class CardTypeEmpty extends DomainError
+final class CardsInsufficient extends DomainError
 {
     public function errorCode(): int
     {
@@ -15,6 +15,6 @@ final class CardTypeEmpty extends DomainError
 
     public function errorMessage(): string
     {
-        return 'No esta definido el tipo de tarjeta';
+        return 'En el stock no hay las cantidad de tarjetas solicitadas';
     }
 }

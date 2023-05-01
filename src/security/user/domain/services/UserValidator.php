@@ -21,10 +21,8 @@ final readonly class UserValidator
         $filters = Filters::fromValues([
             ['field' => 'email.value' , 'operator' => '=' , 'value' => $user->email()]
         ]);
-        $criteria = new Criteria();
-        $criteria->andWhere($filters);
 
-        $user = $this->repository->searchCriteria($criteria);
+        $user = $this->repository->searchCriteria(new Criteria($filters));
 
         if (!empty($user)) {
             throw new UserExist();

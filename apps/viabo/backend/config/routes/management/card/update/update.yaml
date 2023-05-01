@@ -1,4 +1,9 @@
 card-assign:
   path: '/api/card/assign/commerce'
-  controller: Viabo\Backend\Controller\management\card\CardAssignerController
+  controller: Viabo\Backend\Controller\management\card\CardAssignerControllerInCommerce
+  methods: POST
+
+cards-assign:
+  path: '/api/cards/assign/commerce'
+  controller: Viabo\Backend\Controller\management\card\CardsAssignerControllerInCommerce
   methods: POST

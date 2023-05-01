@@ -4,7 +4,6 @@
 namespace Viabo\management\card\application\find;
 
 
-use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardView;
 use Viabo\shared\domain\criteria\Criteria;

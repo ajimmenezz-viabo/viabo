@@ -4,7 +4,7 @@
 namespace Viabo\management\card\domain;
 
 
-use Viabo\management\card\domain\exceptions\CardTypeEmpty;
+use Viabo\management\card\domain\exceptions\CardPaymentProcessorEmpty;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardPaymentProcessorId extends StringValueObject
@@ -18,7 +18,7 @@ final class CardPaymentProcessorId extends StringValueObject
     public static function validate(string $value): void
     {
         if (empty($value)) {
-            throw new CardTypeEmpty();
+            throw new CardPaymentProcessorEmpty();
         }
     }
 }

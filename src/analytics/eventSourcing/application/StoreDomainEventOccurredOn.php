@@ -27,6 +27,7 @@ final readonly class StoreDomainEventOccurredOn implements DomainEventSubscriber
     {
 
         if ($this->isLoginEvent($event)) return;
+        if ($this->isLogoutEvent($event)) return;
 
         $id = new EventSourcingId($event->eventId());
         $type = new EventSourcingType($event->eventName());
@@ -40,6 +41,11 @@ final readonly class StoreDomainEventOccurredOn implements DomainEventSubscriber
     private function isLoginEvent(DomainEvent $event): bool
     {
         return str_contains(get_class($event) , 'SessionStartedDomainEvent');
+    }
+
+    private function isLogoutEvent(DomainEvent $event): bool
+    {
+        return str_contains(get_class($event) , 'LogoutDomainEvent');
     }
 
 }

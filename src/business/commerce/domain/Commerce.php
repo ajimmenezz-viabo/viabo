@@ -63,6 +63,29 @@ final class Commerce extends AggregateRoot
         return $commerce;
     }
 
+    public static function createInformal(CommerceTradeName $commerceTradeName): static
+    {
+        return new static(
+            CommerceId::create() ,
+            new CommerceFatherId('') ,
+            CommerceLegalRepresentative::empty() ,
+            new CommerceFiscalPersonType('') ,
+            new CommerceTaxName('') ,
+            $commerceTradeName ,
+            new CommerceRfc('') ,
+            new CommerceEmployees('0') ,
+            new CommerceBranchOffices('0') ,
+            new CommercePointSaleTerminal('0') ,
+            new CommercePaymentApi('0') ,
+            CommerceRegister::todayDate() ,
+            new CommerceType('2') ,
+            new CommerceAllowTransactions('0') ,
+            new CommerceStatusId('3') ,
+            new CommerceRegisterStep('4')  ,
+            new CommerceActive('1') ,
+        );
+    }
+
     public function update(
         CommerceFiscalPersonType  $fiscalPersonType ,
         CommerceTaxName           $taxName ,

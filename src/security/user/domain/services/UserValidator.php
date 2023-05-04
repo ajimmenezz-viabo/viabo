@@ -19,7 +19,7 @@ final readonly class UserValidator
     public function validateNotExist(User $user): void
     {
         $filters = Filters::fromValues([
-            ['field' => 'email.value' , 'operator' => '=' , 'value' => $user->email()]
+            ['field' => 'email' , 'operator' => '=' , 'value' => $user->email()]
         ]);
 
         $user = $this->repository->searchCriteria(new Criteria($filters));

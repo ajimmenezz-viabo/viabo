@@ -14,6 +14,7 @@ final class Commerce extends AggregateRoot
 {
     public function __construct(
         private CommerceId                  $id ,
+        private CommerceFatherId            $fatherId ,
         private CommerceLegalRepresentative $legalRepresentative ,
         private CommerceFiscalPersonType    $fiscalPersonType ,
         private CommerceTaxName             $taxName ,
@@ -24,6 +25,8 @@ final class Commerce extends AggregateRoot
         private CommercePointSaleTerminal   $pointSaleTerminal ,
         private CommercePaymentApi          $paymentApi ,
         private CommerceRegister            $register ,
+        private CommerceType                $type ,
+        private CommerceAllowTransactions   $allowTransactions ,
         private CommerceStatusId            $statusId ,
         private CommerceRegisterStep        $registerStep ,
         private CommerceActive              $active
@@ -37,6 +40,7 @@ final class Commerce extends AggregateRoot
     {
         $commerce = new self(
             CommerceId::create() ,
+            new CommerceFatherId('') ,
             $legalRepresentative ,
             new CommerceFiscalPersonType('') ,
             new CommerceTaxName('') ,
@@ -47,6 +51,8 @@ final class Commerce extends AggregateRoot
             new CommercePointSaleTerminal('0') ,
             new CommercePaymentApi('0') ,
             CommerceRegister::todayDate() ,
+            new CommerceType('1') ,
+            new CommerceAllowTransactions('1') ,
             new CommerceStatusId('1') ,
             $registerStep ,
             new CommerceActive('1') ,
@@ -87,6 +93,7 @@ final class Commerce extends AggregateRoot
     {
         return [
             'id' => $this->id->value() ,
+            'fatherId' => $this->fatherId->value() ,
             'legalRepresentative' => $this->legalRepresentative->value() ,
             'fiscalPersonType' => $this->fiscalPersonType->value() ,
             'taxName' => $this->taxName->value() ,
@@ -97,6 +104,8 @@ final class Commerce extends AggregateRoot
             'pointSaleTerminal' => $this->pointSaleTerminal->value() ,
             'paymentApi' => $this->paymentApi->value() ,
             'register' => $this->register->value() ,
+            'type' => $this->type->value() ,
+            'allowTransactions' => $this->allowTransactions->value() ,
             'statusId' => $this->statusId->value() ,
             'registerStep' => $this->registerStep->value() ,
             'active' => $this->active->value()

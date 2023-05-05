@@ -26,24 +26,22 @@ final class User extends AggregateRoot
     {
     }
 
-    public static function create(
-        string $profile ,
-        string $name ,
-        string $lastname ,
-        string $phone ,
-        string $email ,
-        string $password ,
-        string $confirmPassword
+    public static function createLegalRepresentative(
+        UserName     $name ,
+        UserLastname $lastname ,
+        UserPhone    $phone ,
+        UserEmail    $email ,
+        UserPassword $password
     ): self
     {
         $user = new self(
             UserId::random() ,
-            new UserProfile($profile) ,
-            UserName::create($name) ,
-            UserLastname::create($lastname) ,
-            UserPhone::create($phone) ,
-            UserEmail::create($email) ,
-            UserPassword::create($password , $confirmPassword) ,
+            new UserProfile('3') ,
+            $name ,
+            $lastname ,
+            $phone ,
+            $email ,
+            $password ,
             UserRegister::todayDate() ,
             new UserActive('1') ,
         );

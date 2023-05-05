@@ -4,7 +4,9 @@
 namespace Viabo\security\user\application\create;
 
 
-final readonly class LegalRepresentativeRequest
+use Viabo\shared\domain\bus\query\Query;
+
+final readonly class CreateLegalRepresentativeQuery implements Query
 {
     public function __construct(
         public string $name,

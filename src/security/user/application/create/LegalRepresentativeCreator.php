@@ -4,14 +4,18 @@
 namespace Viabo\security\user\application\create;
 
 
+use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\user\domain\services\UserValidator;
 use Viabo\security\user\domain\User;
+use Viabo\security\user\domain\UserLastname;
+use Viabo\security\user\domain\UserName;
+use Viabo\security\user\domain\UserPassword;
+use Viabo\security\user\domain\UserPhone;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class LegalRepresentativeCreator
 {
-    private const LEGAL_REPRESENTATIVE_PROFILE = '3';
     private UserValidator $validator;
 
     public function __construct(private UserRepository $repository , private EventBus $bus)
@@ -19,16 +23,20 @@ final readonly class LegalRepresentativeCreator
         $this->validator = new UserValidator($this->repository);
     }
 
-    public function __invoke(LegalRepresentativeRequest $request): void
+    public function __invoke(
+        UserName     $name ,
+        UserLastname $lastname ,
+        UserPhone    $phone ,
+        UserEmail    $email ,
+        UserPassword $password
+    ): LegalRepresentativeResponse
     {
-        $user = User::create(
-            self::LEGAL_REPRESENTATIVE_PROFILE ,
-            $request->name ,
-            $request->lastname ,
-            $request->phone ,
-            $request->email ,
-            $request->password ,
-            $request->confirmPassword
+        $user = User::createLegalRepresentative(
+            $name,
+            $lastname,
+            $phone,
+            $email,
+            $password,
         );
 
         $this->validator->validateNotExist($user);
@@ -36,5 +44,7 @@ final readonly class LegalRepresentativeCreator
         $this->repository->save($user);
 
         $this->bus->publish(...$user->pullDomainEvents());
+
+        return new LegalRepresentativeResponse($user->id()->value());
     }
 }

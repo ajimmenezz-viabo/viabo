@@ -39,7 +39,7 @@ final class Commerce extends AggregateRoot
     ): self
     {
         $commerce = new self(
-            CommerceId::create() ,
+            CommerceId::random() ,
             new CommerceFatherId('') ,
             $legalRepresentative ,
             new CommerceFiscalPersonType('') ,
@@ -66,7 +66,7 @@ final class Commerce extends AggregateRoot
     public static function createInformal(CommerceTradeName $commerceTradeName): static
     {
         return new static(
-            CommerceId::create() ,
+            CommerceId::random() ,
             new CommerceFatherId('') ,
             CommerceLegalRepresentative::empty() ,
             new CommerceFiscalPersonType('') ,

@@ -1,0 +1,31 @@
+<?php declare(strict_types=1);
+
+
+namespace Viabo\shared\domain\utils;
+
+
+final class Crypt
+{
+    private const INITIALIZATION_VECTOR = '19cddc7b35918ee3';
+
+    public static function encrypt(string $value): string
+    {
+        $ciphertext = openssl_encrypt(
+            $value , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , static::INITIALIZATION_VECTOR
+        );
+        return base64_encode($ciphertext);
+    }
+
+    public static function decrypt(string $value): string
+    {
+        try {
+            $ciphertext = base64_decode($value);
+            $plaintext = openssl_decrypt(
+                $ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , static::INITIALIZATION_VECTOR
+            );
+            return !$plaintext ? throw new \DomainException() : $plaintext;
+        } catch (\ErrorException) {
+            throw new \DomainException('Error de cifrado' , 406);
+        }
+    }
+}

@@ -1,15 +1,16 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { Stack, Typography } from '@mui/material'
 import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 import { useGetQueryData } from '@/shared/hooks'
-import { Modal } from '@/shared/components/modals'
+import { Modal, ModalAlert } from '@/shared/components/modals'
 import { CardNumber } from '@/app/shared/components/card'
 import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { useAssignCards } from '@/app/management/stock-cards/hooks/useAssignCards'
 import { AssignCardsAdapter } from '@/app/management/stock-cards/adapters/assignCardsAdapter'
+import { WarningAmberOutlined } from '@mui/icons-material'
 
 export default function AssignCardModal() {
   const setOpenAssignCards = useAssignCardStore(state => state.setOpen)
@@ -18,6 +19,7 @@ export default function AssignCardModal() {
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
   const cardsList = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST]) || []
   const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
+  const [openAlertConfirm, setOpenAlertConfirm] = useState(false)
 
   const { mutate: assign, isLoading: isAssigning } = useAssignCards()
 
@@ -68,84 +70,122 @@ export default function AssignCardModal() {
     initialValues: initial,
     validationSchema: Yup.object().shape(schema),
     onSubmit: (values, { setSubmitting }) => {
-      const assignData = AssignCardsAdapter(values)
-      assign(assignData, {
-        onSuccess: () => {
-          setOpenAssignCards(false)
-          setCard(null)
-          setSubmitting(false)
-        },
-        onError: () => {
-          setSubmitting(false)
-        }
-      })
+      setSubmitting(false)
+      setOpenAlertConfirm(true)
     }
   })
 
-  const { isSubmitting, handleSubmit, resetForm } = formik
+  const { isSubmitting, handleSubmit, values, setSubmitting } = formik
 
   const isLoading = isSubmitting || isAssigning
-  return (
-    <Modal
-      onClose={() => {
+
+  const handleAssignCards = cards => {
+    const assignData = AssignCardsAdapter(cards)
+    assign(assignData, {
+      onSuccess: () => {
         setOpenAssignCards(false)
         setCard(null)
-      }}
-      onSuccess={handleSubmit}
-      isSubmitting={isLoading}
-      fullWidth
-      scrollType="body"
-      title={!card ? 'Asignar Tarjetas' : 'Asignar Tarjeta'}
-      textButtonSuccess="Guardar"
-      open={true}
-    >
-      <FormProvider formik={formik}>
-        <Stack spacing={3} sx={{ py: 3 }}>
-          {!card ? (
-            <>
-              <Stack>
-                <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                  Tipo de Tarjeta:
-                </Typography>
-                <RFSelect
-                  name={'cardType'}
-                  textFieldParams={{ placeholder: 'Seleccionar ...', required: true }}
-                  options={cardTypes}
-                  disabled={isLoading}
-                />
-              </Stack>
-              <Stack>
-                <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                  Número de tarjetas:
-                </Typography>
-                <RFTextField
-                  name={'numberOfCards'}
-                  placeholder={'1'}
-                  type={'number'}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  inputProps={{ inputMode: 'numeric', min: '1' }}
-                  disabled={isLoading}
-                />
-              </Stack>
-            </>
-          ) : (
-            <CardNumber card={card} />
-          )}
-          <Stack>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Comercio:
-            </Typography>
-            <RFSelect
-              name={'commerce'}
-              textFieldParams={{ placeholder: 'Seleccionar ...', required: true }}
-              options={commerces}
-              disabled={isLoading}
-            />
+        setOpenAlertConfirm(false)
+      },
+      onError: () => {
+        setOpenAlertConfirm(false)
+      }
+    })
+  }
+  return (
+    <>
+      <Modal
+        onClose={() => {
+          setOpenAssignCards(false)
+          setCard(null)
+        }}
+        onSuccess={handleSubmit}
+        isSubmitting={isLoading}
+        fullWidth
+        scrollType="body"
+        title={!card ? 'Asignar Tarjetas' : 'Asignar Tarjeta'}
+        textButtonSuccess="Asignar"
+        open={!openAlertConfirm}
+      >
+        <FormProvider formik={formik}>
+          <Stack spacing={3} sx={{ py: 3 }}>
+            {!card ? (
+              <>
+                <Stack>
+                  <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                    Tipo de Tarjeta:
+                  </Typography>
+                  <RFSelect
+                    name={'cardType'}
+                    textFieldParams={{ placeholder: 'Seleccionar ...', required: true }}
+                    options={cardTypes}
+                    disabled={isLoading}
+                  />
+                </Stack>
+                <Stack>
+                  <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                    Número de tarjetas:
+                  </Typography>
+                  <RFTextField
+                    name={'numberOfCards'}
+                    placeholder={'1'}
+                    type={'number'}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    inputProps={{ inputMode: 'numeric', min: '1' }}
+                    disabled={isLoading}
+                  />
+                </Stack>
+              </>
+            ) : (
+              <CardNumber card={card} />
+            )}
+            <Stack>
+              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                Comercio:
+              </Typography>
+              <RFSelect
+                name={'commerce'}
+                textFieldParams={{ placeholder: 'Seleccionar ...', required: true }}
+                options={commerces}
+                disabled={isLoading}
+              />
+            </Stack>
           </Stack>
-        </Stack>
-      </FormProvider>
-    </Modal>
+        </FormProvider>
+      </Modal>
+      {openAlertConfirm && (
+        <ModalAlert
+          title={!card ? 'Asignar Tarjetas' : 'Asignar Tarjeta'}
+          typeAlert="warning"
+          textButtonSuccess="Asignar"
+          onClose={() => {
+            setOpenAlertConfirm(false)
+            setSubmitting(false)
+          }}
+          open={openAlertConfirm}
+          isSubmitting={isLoading}
+          description={
+            <Stack spacing={2}>
+              <Typography>
+                {!card
+                  ? '¿Está seguro de asignar estas tarjetas a este comercio?'
+                  : '¿Está seguro de asignar esta tarjeta a este comercio?'}
+              </Typography>
+              <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                <WarningAmberOutlined />
+                <Typography variant={'caption'}>Verifique que todos los datos esten correctos</Typography>
+              </Stack>
+            </Stack>
+          }
+          onSuccess={() => {
+            handleAssignCards(values)
+          }}
+          fullWidth
+          maxWidth="xs"
+        />
+      )}
+    </>
   )
 }

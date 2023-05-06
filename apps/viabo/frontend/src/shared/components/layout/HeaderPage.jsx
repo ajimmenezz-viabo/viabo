@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { Add } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import React from 'react'
+import { SimpleBreadcrumbs } from '@/shared/components/breadcrumbs'
 
 HeaderPage.propTypes = {
   onClick: PropTypes.func,
@@ -11,18 +12,17 @@ HeaderPage.propTypes = {
   buttonName: PropTypes.string,
   to: PropTypes.string,
   loading: PropTypes.bool,
-  breadcrumbs: PropTypes.elementType,
   buttons: PropTypes.object
 }
 
-export function HeaderPage({ name, buttonName, to = '', onClick, loading = false, breadcrumbs, buttons }) {
+export function HeaderPage({ name, buttonName, to = '', onClick, loading = false, buttons, links = [] }) {
   return (
     <Box display="flex" mb={5} spacing={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }}>
       <Box sx={{ flexGrow: 1, mb: { xs: buttonName ? 3 : 0, sm: 0 } }}>
         <Typography variant="h4" gutterBottom>
           {name}
         </Typography>
-        {React.createElement(breadcrumbs)}
+        <SimpleBreadcrumbs links={links} />
       </Box>
       <Box sx={{ flex: '1 1 auto' }} />
 

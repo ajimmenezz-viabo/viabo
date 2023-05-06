@@ -1,3 +1,2 @@
 export * from './BusinessRouter'
-export * from './BusinessBreadcrumbs'
-export * from './businessFriendlyNames'
+export * from './businessPaths'

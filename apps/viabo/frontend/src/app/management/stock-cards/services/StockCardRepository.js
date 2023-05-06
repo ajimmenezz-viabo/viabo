@@ -4,7 +4,7 @@ import { CardsAdapter } from '@/app/shared/adapters'
 
 export const createNewStockCard = async card => {
   const { data } = await axios.post('/api/card/new', card)
-  return data
+  return card
 }
 
 export const getAffiliatedCommerces = async () => {

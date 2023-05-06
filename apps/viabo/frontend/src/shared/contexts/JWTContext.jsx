@@ -193,7 +193,6 @@ function AuthProvider({ children }) {
         }
       }
     })
-    localStorage.setItem('lastAuth', decoded?.email)
   }
 
   return (

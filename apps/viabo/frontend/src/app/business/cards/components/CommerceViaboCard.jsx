@@ -41,7 +41,7 @@ export function CommerceViaboCard({ card }) {
           </Label>
         </Box>
         <div>
-          <CardNumber card={card} disableShow={true} />
+          <CardNumber card={card} />
         </div>
 
         <Stack direction="row" spacing={5}>
@@ -49,7 +49,7 @@ export function CommerceViaboCard({ card }) {
             <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>Vencimiento</Typography>
             <Typography sx={{ typography: 'subtitle1' }}>{card?.expiration}</Typography>
           </Stack>
-          <CardCVV card={card} disableShow={true} />
+          <CardCVV card={card} />
         </Stack>
       </CardStyled>
     </Box>

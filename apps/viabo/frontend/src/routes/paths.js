@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-function path(root, sublink) {
+export function path(root, sublink) {
   return `${root}${sublink}`
 }
 

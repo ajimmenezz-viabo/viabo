@@ -1,17 +1,18 @@
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { forwardRef, useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { InputAdornment, Stack, Typography } from '@mui/material'
-import { AddCard, CreditCard, VpnKey } from '@mui/icons-material'
-import React, { forwardRef } from 'react'
-import { IMaskInput } from 'react-imask'
-import { Scrollbar } from '@/shared/components/scroll'
 import { LoadingButton } from '@mui/lab'
 import { DatePicker } from '@mui/x-date-pickers'
+import { InputAdornment, Stack, Typography } from '@mui/material'
+import { AddCard, CreditCard, VpnKey, WarningAmberOutlined } from '@mui/icons-material'
 import { format, isAfter, isValid, parse } from 'date-fns'
+import { IMaskInput } from 'react-imask'
+import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 import { CreateCardAdapter, MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { useCreateNewStockCard } from '@/app/management/stock-cards/hooks'
 import { useGetQueryData } from '@/shared/hooks'
+import { ModalAlert } from '@/shared/components/modals'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
@@ -19,6 +20,7 @@ export function StockCardForm({ setOpen }) {
   const { mutate: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
   const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
+  const [openAlertConfirm, setOpenAlertConfirm] = useState(false)
 
   const CardSchema = Yup.object().shape({
     cardNumber: Yup.string()
@@ -47,23 +49,35 @@ export function StockCardForm({ setOpen }) {
     },
     validationSchema: CardSchema,
     onSubmit: (values, { setSubmitting }) => {
-      const cardAdapter = CreateCardAdapter(values)
-      createCard(cardAdapter, {
-        onSuccess: () => {
-          setOpen(false)
-          setSubmitting(false)
-          resetForm()
-        },
-        onError: () => {
-          setSubmitting(false)
-        }
-      })
+      setSubmitting(false)
+      if (values.assigned) {
+        setOpenAlertConfirm(true)
+      } else {
+        handleCreateCard(values)
+      }
     }
   })
 
-  const { isSubmitting, values, setFieldValue, errors, handleSubmit, touched, resetForm } = formik
+  const { isSubmitting, values, setFieldValue, errors, handleSubmit, touched, resetForm, setSubmitting } = formik
 
   const loading = isSubmitting || isCreatingCard
+
+  const handleCreateCard = (card, isAssigned = false) => {
+    const cardAdapter = CreateCardAdapter(card)
+    createCard(
+      { ...cardAdapter, isAssigned },
+      {
+        onSuccess: () => {
+          setOpen(false)
+          resetForm()
+          setOpenAlertConfirm(false)
+        },
+        onError: () => {
+          setOpenAlertConfirm(false)
+        }
+      }
+    )
+  }
 
   return (
     <>
@@ -200,6 +214,33 @@ export function StockCardForm({ setOpen }) {
           Crear
         </LoadingButton>
       </Stack>
+      {openAlertConfirm && (
+        <ModalAlert
+          title="Asignar Tarjeta"
+          typeAlert="warning"
+          textButtonSuccess="Asignar"
+          onClose={() => {
+            setOpenAlertConfirm(false)
+            setSubmitting(false)
+          }}
+          open={openAlertConfirm}
+          isSubmitting={isCreatingCard}
+          description={
+            <Stack spacing={2}>
+              <Typography>¿Está seguro de asignar esta tarjeta a este comercio?</Typography>
+              <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                <WarningAmberOutlined />
+                <Typography variant={'caption'}>Verifique que todos los datos esten correctos</Typography>
+              </Stack>
+            </Stack>
+          }
+          onSuccess={() => {
+            handleCreateCard(values, true)
+          }}
+          fullWidth
+          maxWidth="xs"
+        />
+      )}
     </>
   )
 }

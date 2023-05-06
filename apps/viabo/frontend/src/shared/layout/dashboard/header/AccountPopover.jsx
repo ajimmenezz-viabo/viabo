@@ -61,7 +61,7 @@ export default function AccountPopover() {
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Tooltip title={user?.name || ''} arrow followCursor>
-            <Typography variant="subtitle1" noWrap>
+            <Typography variant="subtitle1" noWrap textTransform={'capitalize'}>
               {user?.name}
             </Typography>
           </Tooltip>

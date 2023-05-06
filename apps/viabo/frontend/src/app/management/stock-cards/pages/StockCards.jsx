@@ -1,5 +1,4 @@
 import { Page } from '@/shared/components/containers'
-import { ManagementBreadcrumbs } from '@/app/management/shared/components'
 import { HeaderPage } from '@/shared/components/layout'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { StockCardSidebar, StockCardsList } from '@/app/management/stock-cards/components'
@@ -10,6 +9,8 @@ import { Button } from '@mui/material'
 import { AddBusinessTwoTone } from '@mui/icons-material'
 import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { Lodable } from '@/shared/components/lodables'
+import { MANAGEMENT_PATHS, MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes'
+import { PATH_DASHBOARD } from '@/routes'
 
 const AssignCardModal = Lodable(lazy(() => import('@/app/management/stock-cards/components/AssignCardModal')))
 
@@ -60,7 +61,11 @@ export default function StockCards() {
       <ContainerPage>
         <HeaderPage
           name={'Stock de Tarjetas'}
-          breadcrumbs={ManagementBreadcrumbs}
+          links={[
+            { name: 'Inicio', href: PATH_DASHBOARD.root },
+            { name: 'Administracion', href: MANAGEMENT_PATHS.stock_cards },
+            { name: MANAGEMENT_ROUTES_NAMES.stock_cards.name }
+          ]}
           buttonName={'Nueva Tarjeta'}
           onClick={handleNewCard}
           loading={isLoading || isLoadingCardTypes}

@@ -11,13 +11,16 @@ export const useCreateNewStockCard = (options = {}) => {
   const client = useQueryClient()
 
   const register = useMutation(createNewStockCard, {
-    onSuccess: () => {
+    onSuccess: card => {
       setCustomError(null)
       client.invalidateQueries([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST])
-      enqueueSnackbar('Se agrego una nueva tarjeta al stock', {
-        variant: 'success',
-        autoHideDuration: 5000
-      })
+      enqueueSnackbar(
+        card?.isAssigned ? 'Se agrego una nueva tarjeta al comercio' : 'Se agrego una nueva tarjeta al stock',
+        {
+          variant: 'success',
+          autoHideDuration: 5000
+        }
+      )
     },
     onError: error => {
       const errorFormatted = getErrorAPI(error, 'No se puede agregar la tarjeta al stock')

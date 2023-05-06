@@ -153,7 +153,7 @@ export function CommerceCardsList() {
                 {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
                 {_DATA?.currentData()?.map((card, index) => (
                   <motion.div
-                    onClick={() => {
+                    onClick={e => {
                       setCommerceCard(card)
                     }}
                     key={index}

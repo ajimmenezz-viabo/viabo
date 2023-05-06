@@ -1,19 +1,20 @@
 import { lazy } from 'react'
-import { Navigate } from 'react-router-dom'
 import { Lodable } from '@/shared/components/lodables'
+import { MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes/managementPaths'
+import { Navigate } from 'react-router-dom'
 
 const ManagementCommerces = Lodable(lazy(() => import('@/app/management/commerces/pages/ManagementCommerces')))
 const StockCards = Lodable(lazy(() => import('@/app/management/stock-cards/pages/StockCards')))
 export const ManagementRouter = {
-  path: 'management',
+  path: MANAGEMENT_ROUTES_NAMES.root.route,
   children: [
-    { index: true, path: '/management', element: <Navigate to="commerces" /> },
+    { index: true, path: '/management', element: <Navigate to="/404" /> },
     {
-      path: 'commerces',
+      path: MANAGEMENT_ROUTES_NAMES.commerces.route,
       element: <ManagementCommerces />
     },
     {
-      path: 'stock-cards',
+      path: MANAGEMENT_ROUTES_NAMES.stock_cards.route,
       element: <StockCards />
     }
   ]

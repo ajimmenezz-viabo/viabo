@@ -5,9 +5,9 @@ namespace Viabo\management\card\domain\services;
 
 
 use Viabo\management\card\domain\Card;
-use Viabo\management\card\domain\CardId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\exceptions\CardNotExist;
+use Viabo\management\shared\domain\card\CardId;
 
 final readonly class CardFinder
 {

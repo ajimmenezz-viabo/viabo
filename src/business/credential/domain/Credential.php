@@ -5,6 +5,7 @@ namespace Viabo\business\credential\domain;
 
 
 use Viabo\business\credential\domain\events\CommerceCredentialCreatedDomainEvent;
+use Viabo\business\credential\domain\exceptions\CredentialPaymentProcessorEmpty;
 use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -36,7 +37,7 @@ final class Credential extends AggregateRoot
             $credentialCarnetKey ,
             CredentialRegisterDate::todayDate()
         );
-
+        $credential->ensureKeys();
         //No se manda el evento ya  que todavia no hay interfaz para realizarlo
         //Ya que se requiere que se inicie session para poder registrar el usuario
         //que registro la claves de acceso.
@@ -52,14 +53,21 @@ final class Credential extends AggregateRoot
         return $this->commerceId;
     }
 
-    private function toArray(): array
+    private function ensureKeys(): void
+    {
+        if ($this->masterCardKey->isEmpty() && $this->carnetKey->isEmpty()) {
+            throw new CredentialPaymentProcessorEmpty();
+        }
+    }
+
+    public function toArray(): array
     {
         return [
             'id' => $this->id->value() ,
             'commerceId' => $this->commerceId->value() ,
-            'mainKey' => $this->mainKey->value() ,
-            'masterCardKey' => $this->masterCardKey->value() ,
-            'carnetKey' => $this->carnetKey->value() ,
+            'mainKey' => $this->mainKey->valueDecrypt() ,
+            'masterCardKey' => $this->masterCardKey->valueDecrypt() ,
+            'carnetKey' => $this->carnetKey->valueDecrypt() ,
             'registerDate' => $this->registerDate->value()
         ];
     }

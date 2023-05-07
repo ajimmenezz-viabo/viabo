@@ -28,4 +28,10 @@ final class CredentialMainKey extends StringValueObject
             throw new CredentialMainKeyEmpty();
         }
     }
+
+    public function valueDecrypt(): string
+    {
+        return Crypt::decrypt($this->value);
+    }
+
 }

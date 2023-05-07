@@ -8,4 +8,9 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CommerceType extends StringValueObject
 {
+    public function isInformal(): bool
+    {
+        $informalType = '2';
+        return $this->value === $informalType;
+    }
 }

@@ -5,6 +5,7 @@ namespace Viabo\management\card\domain;
 
 
 use Viabo\management\card\domain\exceptions\CarCVVEmpty;
+use Viabo\shared\domain\utils\Crypt;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardCVV extends StringValueObject
@@ -12,7 +13,7 @@ final class CardCVV extends StringValueObject
     public static function create(string $value): self
     {
         self::validate($value);
-        return new self($value);
+        return new self(Crypt::encrypt($value));
     }
 
     public static function validate(string $value): void
@@ -20,5 +21,10 @@ final class CardCVV extends StringValueObject
         if (empty($value)) {
             throw new CarCVVEmpty();
         }
+    }
+
+    public function valueDecrypt(): string
+    {
+        return Crypt::decrypt($this->value);
     }
 }

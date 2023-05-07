@@ -4,13 +4,13 @@
 namespace Viabo\management\card\application\find;
 
 
-use Viabo\management\card\domain\CardCommerceId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardView;
+use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class CommerceCardFinder
+final readonly class CommerceCardsFinder
 {
     public function __construct(private CardRepository $repository)
     {

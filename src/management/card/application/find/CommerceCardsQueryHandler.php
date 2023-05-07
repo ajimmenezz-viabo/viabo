@@ -4,13 +4,13 @@
 namespace Viabo\management\card\application\find;
 
 
-use Viabo\management\card\domain\CardCommerceId;
+use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
 final readonly class CommerceCardsQueryHandler implements QueryHandler
 {
-    public function __construct(private CommerceCardFinder $finder)
+    public function __construct(private CommerceCardsFinder $finder)
     {
     }
 

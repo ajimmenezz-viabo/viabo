@@ -135,4 +135,14 @@ final class Commerce extends AggregateRoot
         ];
     }
 
+    public function isInformal(): bool
+    {
+        return $this->type->isInformal();
+    }
+
+    public function father(): CommerceFatherId
+    {
+        return $this->fatherId;
+    }
+
 }

@@ -6,9 +6,9 @@ namespace Viabo\management\card\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\management\card\domain\Card;
-use Viabo\management\card\domain\CardId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardView;
+use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;

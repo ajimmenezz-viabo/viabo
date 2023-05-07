@@ -4,8 +4,10 @@
 namespace Viabo\management\card\domain;
 
 
-use Viabo\management\card\domain\events\CardCreatedDomainEvent;
 use Viabo\management\card\domain\events\AssignedCardDomaEventInCommerce;
+use Viabo\management\card\domain\events\CardCreatedDomainEvent;
+use Viabo\management\shared\domain\card\CardCommerceId;
+use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Card extends AggregateRoot
@@ -85,7 +87,7 @@ final class Card extends AggregateRoot
         return [
             'id' => $this->id->value() ,
             'number' => $this->number->value() ,
-            'CVV' => $this->cvv->value() ,
+            'CVV' => $this->cvv->valueDecrypt() ,
             'expirationDate' => $this->expirationDate->value() ,
             'expirationMonth' => $this->expirationMonth->value() ,
             'expirationYear' => $this->expirationYear->value() ,

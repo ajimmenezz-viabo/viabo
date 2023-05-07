@@ -4,8 +4,8 @@
 namespace Viabo\management\card\application\update;
 
 
-use Viabo\management\card\domain\CardCommerceId;
 use Viabo\management\card\domain\CardPaymentProcessorId;
+use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class AssignCardsCommandHandlerInCommerce implements CommandHandler

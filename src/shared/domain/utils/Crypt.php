@@ -19,6 +19,10 @@ final class Crypt
     public static function decrypt(string $value): string
     {
         try {
+
+            if (empty($value)) {
+                return '';
+            }
             $ciphertext = base64_decode($value);
             $plaintext = openssl_decrypt(
                 $ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , static::INITIALIZATION_VECTOR

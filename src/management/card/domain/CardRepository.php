@@ -4,6 +4,7 @@
 namespace Viabo\management\card\domain;
 
 
+use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface CardRepository

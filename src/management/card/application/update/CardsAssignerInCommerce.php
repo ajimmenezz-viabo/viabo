@@ -6,11 +6,11 @@ namespace Viabo\management\card\application\update;
 
 use Viabo\business\commerce\application\find\FindCommerceQuery;
 use Viabo\management\card\domain\Card;
-use Viabo\management\card\domain\CardCommerceId;
 use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\services\CardsFinderByAmount;
 use Viabo\management\paymentProcessor\application\find\FindPaymentProcessorQuery;
+use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 

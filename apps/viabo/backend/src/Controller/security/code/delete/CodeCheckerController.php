@@ -16,6 +16,7 @@ final readonly class CodeCheckerController extends ApiController
         try {
             $data = $request->toArray();
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $this->dispatch(new CodeCheckerCommand($tokenData['id'] , $data['verificationCode']));
 
             return new JsonResponse();

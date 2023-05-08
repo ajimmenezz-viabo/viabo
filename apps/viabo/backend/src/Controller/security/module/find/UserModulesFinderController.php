@@ -16,6 +16,7 @@ final readonly class UserModulesFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $userPermission = $this->ask(new FindUserPermissionQuery($tokenData['id']));
             $data = $this->ask(new FindUserModelsQuery($userPermission->permissions));
 

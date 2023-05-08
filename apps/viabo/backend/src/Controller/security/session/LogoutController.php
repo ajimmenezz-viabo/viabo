@@ -16,6 +16,7 @@ final readonly class LogoutController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $this->dispatch(new LogoutCommand($tokenData['id']));
             $this->endSession();
 

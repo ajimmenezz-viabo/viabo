@@ -17,6 +17,7 @@ final readonly class CommerceCardsFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
 
             $commerceId = '';
             $data = $this->ask(new FindCommerceQuery($commerceId , $tokenData['id']));

@@ -16,6 +16,7 @@ final readonly class CardsAssignerControllerInCommerce extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $data = $request->toArray();
             $this->dispatch(new AssignCardsCommandInCommerce(
                 $data['commerceId'],

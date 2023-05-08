@@ -16,6 +16,7 @@ final readonly class DocumentAuthorizerController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $data = $request->toArray();
             $this->dispatch(new DocumentAuthorizeCommand(
                 $data['documentId'],

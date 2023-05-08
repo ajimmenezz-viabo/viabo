@@ -16,6 +16,7 @@ final readonly class CommerceFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $data = $this->ask(new FindCommerceViewQuery($tokenData['id']));
 
             return new JsonResponse($data->commerce);

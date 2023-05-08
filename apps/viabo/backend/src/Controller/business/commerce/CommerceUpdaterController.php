@@ -17,6 +17,7 @@ final readonly class CommerceUpdaterController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $request = $request->toArray();
 
             $commerceId = $request['commerceId'];

@@ -16,6 +16,7 @@ final readonly class PaymentProcessorsFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $data = $this->ask(new PaymentProcessorsQuery());
 
             return new JsonResponse($data->paymentProcessors);

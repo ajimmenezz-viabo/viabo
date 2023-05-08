@@ -17,6 +17,7 @@ final readonly class ServicesCatalogFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
 
             /** @var ViaboServicesResponse $response */
             $data = $this->ask(new FindViaboServicesQuery());

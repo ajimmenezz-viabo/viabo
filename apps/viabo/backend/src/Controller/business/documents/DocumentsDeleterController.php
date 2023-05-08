@@ -16,6 +16,7 @@ final readonly class DocumentsDeleterController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
             $uploadDocuments = $request->files->all();
             $commerceId = $request->request->get('commerceId');
             $this->dispatch(new DeleteDocumentsCommand($commerceId , $uploadDocuments));

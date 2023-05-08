@@ -61,7 +61,7 @@ final class CardPaymentProcessorSETAdapter implements CardPaymentProcessorAdapte
         curl_close($curl);
 
         if ($this->hasError($response)) {
-            throw new \DomainException("Error de API SET: {$response['ErrorMessage']}" , 401);
+            throw new \DomainException("Error de API SET: {$response['ErrorMessage']}" , 403);
         }
 
         return $response;

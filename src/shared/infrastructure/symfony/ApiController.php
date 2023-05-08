@@ -90,4 +90,12 @@ abstract readonly class ApiController
     {
         $this->session->invalidate();
     }
+
+    public function validateSession(): void
+    {
+        if (empty($this->session->get('userId'))) {
+            $this->session->invalidate();
+            throw new \DomainException('Sin acceso por session' , 401);
+        }
+    }
 }

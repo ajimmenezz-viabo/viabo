@@ -72,24 +72,26 @@ export function StockCardsList({ stockCards }) {
 
       {!loadingCards && isError && <ErrorRequestPage widthImage={'30%'} errorMessage={error} handleButton={refetch} />}
 
-      <Box
-        mb={3}
-        sx={{
-          display: 'grid',
-          gap: 3,
-          gridTemplateColumns: {
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(2, 1fr)',
-            lg: isCollapse ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
-            xl: 'repeat(4, 1fr)'
-          }
-        }}
-      >
-        {(loadingCards ? [...Array(PER_PAGE)] : _DATA.currentData() || []).map((card, index) =>
-          card ? <StockCard card={card} key={index} /> : <StockCardSkeleton key={index} />
-        )}
-      </Box>
+      {!isError && (
+        <Box
+          mb={3}
+          sx={{
+            display: 'grid',
+            gap: 3,
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: isCollapse ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
+              xl: 'repeat(4, 1fr)'
+            }
+          }}
+        >
+          {(loadingCards ? [...Array(PER_PAGE)] : _DATA.currentData() || []).map((card, index) =>
+            card ? <StockCard card={card} key={index} /> : <StockCardSkeleton key={index} />
+          )}
+        </Box>
+      )}
 
       {!loadingCards && isSuccessCards && searchTerm !== '' && source.length === 0 && (
         <EmptyList widthImage={'30%'} message="No hay tarjetas que coincidan con la búsqueda" />

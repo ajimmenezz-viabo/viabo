@@ -40,9 +40,7 @@ export function CommerceViaboCard({ card }) {
             {card?.status?.name}
           </Label>
         </Box>
-        <div>
-          <CardNumber card={card} />
-        </div>
+        <CardNumber card={card} />
 
         <Stack direction="row" spacing={5}>
           <Stack>

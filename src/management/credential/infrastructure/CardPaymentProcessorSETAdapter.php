@@ -34,7 +34,8 @@ final class CardPaymentProcessorSETAdapter implements CardPaymentProcessorAdapte
             'userCard' => $credential->userName()->valueDecrypt() ,
             'passCard' => $credential->password()->valueDecrypt() ,
             'emailCard' => $credential->email()->valueDecrypt() ,
-            'keyCompany' => $credential->companyKey() ,
+            'customCamp' => $credential->date() ,
+            'keyCompany' => $credential->companyKey()
         ];
         $response = $this->request($data);
         $credential->setUserId(strval($response['idUser']));

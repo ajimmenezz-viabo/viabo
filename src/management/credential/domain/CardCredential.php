@@ -95,6 +95,11 @@ final class CardCredential extends AggregateRoot
         return $this->cardData->expirationDate();
     }
 
+    public function date(): string
+    {
+        return $this->registerDate->value();
+    }
+
     public function toArray(): array
     {
         return [

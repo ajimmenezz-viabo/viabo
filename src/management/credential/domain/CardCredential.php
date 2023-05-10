@@ -32,7 +32,7 @@ final class CardCredential extends AggregateRoot
             CardCredentialId::random() ,
             $cardId ,
             new CardCredentialUserId('') ,
-            CardCredentialUserName::random(),
+            CardCredentialUserName::random() ,
             CardCredentialPassword::random() ,
             CardCredentialEmail::random() ,
             CardCredentialRegisterDate::todayDate() ,
@@ -95,7 +95,7 @@ final class CardCredential extends AggregateRoot
         return $this->cardData->expirationDate();
     }
 
-    private function toArray(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id->value() ,
@@ -107,4 +107,15 @@ final class CardCredential extends AggregateRoot
             'registerDate' => $this->registerDate->value()
         ];
     }
+
+    public function toArrayDecrypt(): array
+    {
+        return [
+            'userId' => $this->userId->valueDecrypt() ,
+            'userName' => $this->userName->valueDecrypt() ,
+            'password' => $this->password->valueDecrypt() ,
+            'email' => $this->email->valueDecrypt()
+        ];
+    }
+
 }

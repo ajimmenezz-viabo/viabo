@@ -61,7 +61,7 @@ abstract readonly class ApiController
             $initializationVector = base64_decode($requestData['iv']);
             $plaintext = openssl_decrypt($ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector);
             return !$plaintext ? throw new \DomainException() : json_decode($plaintext , true);
-        } catch (\ErrorException) {
+        } catch (\DomainException) {
             throw new \DomainException('Error de cifrado' , 406);
         }
 

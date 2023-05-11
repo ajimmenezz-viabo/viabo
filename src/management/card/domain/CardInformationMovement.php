@@ -11,7 +11,7 @@ final class CardInformationMovement
     public function __construct(
         private string $date ,
         private string $description ,
-        private int    $amount ,
+        private float  $amount ,
         private string $type
     )
     {
@@ -22,7 +22,7 @@ final class CardInformationMovement
         return [
             'date' => $this->date ,
             'description' => $this->description ,
-            'amount' => "$this->amount.00" ,
+            'amount' => $this->amount ,
             'type' => self::MOVEMENT_TYPE[$this->type]
         ];
     }

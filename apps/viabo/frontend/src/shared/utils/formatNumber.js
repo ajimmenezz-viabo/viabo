@@ -1,7 +1,7 @@
 import numeral from 'numeral'
 
 function fCurrency(number) {
-  return numeral(number).format(Number.isInteger(number) ? '$0,0' : '$0,0.00')
+  return numeral(number).format('$0,0.00')
 }
 
 function fPercent(number) {

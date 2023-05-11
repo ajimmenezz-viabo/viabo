@@ -13,8 +13,10 @@ import { searchByTerm } from '@/app/shared/utils'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { getColorCardStatusById } from '@/app/shared/services'
 import { CommerceViaboCard } from '@/app/business/cards/components/CommerceViaboCard'
+import { useCollapseDrawer } from '@theme/hooks'
 
 export function CommerceCardsList() {
+  const { isCollapse } = useCollapseDrawer()
   const {
     data: commerceCards,
     isLoading: loadingCommerces,
@@ -74,14 +76,6 @@ export function CommerceCardsList() {
     }
   }, [commerceCards, commerceCardSelected])
 
-  if (isError) {
-    return (
-      <Stack sx={{ pr: { sm: 2 } }}>
-        <ErrorRequestPage errorMessage={error} handleButton={refetch} />
-      </Stack>
-    )
-  }
-
   const handleStatus = status => {
     let searchStatus = ''
     if (status === selectedStatus) {
@@ -94,7 +88,10 @@ export function CommerceCardsList() {
     setSearchResultStatus(filteredModels)
   }
   return (
-    <Stack sx={{ pr: { sm: 2 } }}>
+    <Stack sx={{ pr: { sm: 2 }, width: 400, minWidth: 400 }}>
+      {isError && !commerceCards && !loadingCommerces && (
+        <ErrorRequestPage errorMessage={error} handleButton={refetch} />
+      )}
       {loadingCommerces && <RequestLoadingComponent />}
       {commerceCards?.length > 0 && (
         <>
@@ -147,25 +144,23 @@ export function CommerceCardsList() {
             <Box sx={{ flex: '1 1 auto', mb: { xs: 3 } }} />
             <Pagination count={count} page={page} onChange={handleChange} />
           </Box>
-          <Box sx={{ maxHeight: 1, minHeight: '100%', overflow: 'auto' }}>
-            <Scrollbar>
-              <Stack direction="column" spacing={2} sx={{ p: 2, cursor: 'pointer' }}>
-                {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
-                {_DATA?.currentData()?.map((card, index) => (
-                  <motion.div
-                    onClick={e => {
-                      setCommerceCard(card)
-                    }}
-                    key={index}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.8 }}
-                  >
-                    <CommerceViaboCard card={card} />
-                  </motion.div>
-                ))}
-              </Stack>
-            </Scrollbar>
-          </Box>
+          <Scrollbar>
+            <Stack spacing={2} sx={{ p: 2, cursor: 'pointer' }}>
+              {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
+              {_DATA?.currentData()?.map((card, index) => (
+                <motion.div
+                  onClick={e => {
+                    setCommerceCard(card)
+                  }}
+                  key={index}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <CommerceViaboCard card={card} />
+                </motion.div>
+              ))}
+            </Stack>
+          </Scrollbar>
         </>
       )}
       {commerceCards && commerceCards?.length === 0 && (

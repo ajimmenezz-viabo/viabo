@@ -16,7 +16,7 @@ final readonly class CardCredentialValidator
     {
     }
 
-    public function ensureExist(CardCredential $credential): void
+    public function ensureNotExist(CardCredential $credential): void
     {
         $filters = Filters::fromValues([
             ['field' => 'cardId' , 'operator' => '=' , 'value' => $credential->cardId()->value() ]

@@ -8,21 +8,21 @@ use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\credential\domain\CardCredential;
 use Viabo\management\credential\domain\CardCredentialRepository;
 use Viabo\management\credential\domain\CardData;
-use Viabo\management\credential\domain\CardPaymentProcessorAdapter;
 use Viabo\management\credential\domain\CommerceCredentials;
 use Viabo\management\credential\domain\services\CardCredentialValidator;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 
 final readonly class CredentialCreator
 {
     public function __construct(
-        private CardCredentialRepository    $repository ,
-        private CardCredentialValidator     $validator ,
-        private CardPaymentProcessorAdapter $adapter ,
-        private QueryBus                    $queryBus ,
-        private EventBus                    $bus
+        private CardCredentialRepository $repository ,
+        private CardCredentialValidator  $validator ,
+        private PaymentProcessorAdapter  $adapter ,
+        private QueryBus                 $queryBus ,
+        private EventBus                 $bus
     )
     {
     }
@@ -30,9 +30,13 @@ final readonly class CredentialCreator
     public function __invoke(CardId $cardId , CommerceCredentials $commerceCredentials): void
     {
         $cardData = $this->cardData($cardId);
-        $credential = CardCredential::create($cardId , $commerceCredentials , $cardData);
+        $credential = CardCredential::create(
+            $cardId ,
+            $commerceCredentials ,
+            $cardData
+        );
 
-        $this->validator->ensureExist($credential);
+        $this->validator->ensureNotExist($credential);
         $this->adapter->register($credential);
         $this->repository->save($credential);
 

@@ -40,14 +40,14 @@ export function CommerceViaboCard({ card }) {
             {card?.status?.name}
           </Label>
         </Box>
-        <CardNumber card={card} />
+        <CardNumber card={card} disableShow={true} />
 
         <Stack direction="row" spacing={5}>
           <Stack>
             <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>Vencimiento</Typography>
             <Typography sx={{ typography: 'subtitle1' }}>{card?.expiration}</Typography>
           </Stack>
-          <CardCVV card={card} />
+          <CardCVV card={card} disableShow={true} />
         </Stack>
       </CardStyled>
     </Box>

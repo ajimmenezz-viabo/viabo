@@ -7,3 +7,8 @@ commerce-cards-find:
   path: '/api/cards/commerce'
   controller: Viabo\Backend\Controller\management\card\CommerceCardsFinderController
   methods: GET
+
+card-information-find:
+  path: '/api/card/information/{cardId}'
+  controller: Viabo\Backend\Controller\management\card\CardInformationFinderController
+  methods: GET

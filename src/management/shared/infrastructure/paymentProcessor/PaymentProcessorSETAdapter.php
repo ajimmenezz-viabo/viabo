@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\management\credential\infrastructure;
+namespace Viabo\management\shared\infrastructure\paymentProcessor;
 
 
+use Viabo\management\card\domain\CardCredentials;
 use Viabo\management\credential\domain\CardCredential;
-use Viabo\management\credential\domain\CardPaymentProcessorAdapter;
+use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 
-final class CardPaymentProcessorSETAdapter implements CardPaymentProcessorAdapter
+final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
 {
     public function register(CardCredential $credential): void
     {
@@ -23,6 +24,19 @@ final class CardPaymentProcessorSETAdapter implements CardPaymentProcessorAdapte
             'keyCompany' => $credential->companyKey() ,
         ];
         $this->request($data);
+    }
+
+
+    public function searchCardInformation(CardCredentials $credential): array
+    {
+        $data = [
+            'inLogin' => true ,
+            'clientKey' => $credential->clientKey()->valueDecrypt() ,
+            'clientToken' => $this->token($credential->clientKey()->valueDecrypt()) ,
+            'userCard' => $credential->user()->valueDecrypt() ,
+            'passCard' => $credential->password()->valueDecrypt()
+        ];
+        return $this->request($data);
     }
 
     private function registerUser(CardCredential $credential): void

@@ -17,6 +17,7 @@ final class CardCredential extends AggregateRoot
         private CardCredentialUserName     $userName ,
         private CardCredentialPassword     $password ,
         private CardCredentialEmail        $email ,
+        private CardCredentialClientKey    $clientKey ,
         private CardCredentialRegisterDate $registerDate ,
         private CommerceCredentials        $commerceCredentials ,
         private CardData                   $cardData ,
@@ -35,6 +36,7 @@ final class CardCredential extends AggregateRoot
             CardCredentialUserName::random() ,
             CardCredentialPassword::random() ,
             CardCredentialEmail::random() ,
+            CardCredentialClientKey::create($commerceCredentials->clientKey()) ,
             CardCredentialRegisterDate::todayDate() ,
             $commerceCredentials ,
             $cardData
@@ -67,7 +69,7 @@ final class CardCredential extends AggregateRoot
 
     public function clientKey(): string
     {
-        return $this->commerceCredentials->clientKey();
+        return $this->clientKey->valueDecrypt();
     }
 
     public function companyKey(): string
@@ -109,6 +111,7 @@ final class CardCredential extends AggregateRoot
             'userName' => $this->userName->value() ,
             'password' => $this->password->value() ,
             'email' => $this->email->value() ,
+            'clientKey' => $this->clientKey->value() ,
             'registerDate' => $this->registerDate->value()
         ];
     }

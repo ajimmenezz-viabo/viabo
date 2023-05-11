@@ -12,6 +12,9 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Card extends AggregateRoot
 {
+    private CardCredentials $credentials;
+    private CardInformation $information;
+
     public function __construct(
         private CardId                 $id ,
         private CardNumber             $number ,
@@ -28,6 +31,8 @@ final class Card extends AggregateRoot
         private CardActive             $active
     )
     {
+        $this->credentials = CardCredentials::empty();
+        $this->information = CardInformation::empty();
     }
 
     public static function create(
@@ -80,6 +85,26 @@ final class Card extends AggregateRoot
     public function assignTo(CardOwnerId $ownerId): void
     {
         $this->ownerId = $this->ownerId->update($ownerId->value());
+    }
+
+    public function registerCredentials(CardClientKey $clientKey , CardUser $user , CardPassword $password): void
+    {
+        $this->credentials = CardCredentials::create($clientKey , $user , $password);
+    }
+
+    public function credentials(): CardCredentials
+    {
+        return $this->credentials;
+    }
+
+    public function registerInformation(array $data): void
+    {
+         $this->information = CardInformation::create($data);
+    }
+
+    public function toInformationArray(): array
+    {
+        return $this->information->toArray();
     }
 
     public function toArray(): array

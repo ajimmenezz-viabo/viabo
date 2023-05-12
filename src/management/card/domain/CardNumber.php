@@ -18,7 +18,7 @@ final class CardNumber extends StringValueObject
 
     public static function validate(string $value): void
     {
-        if(self::hasNot16Digits($value)){
+        if (self::hasNot16Digits($value)) {
             throw new CardNumberNotDigits();
         }
 
@@ -30,5 +30,10 @@ final class CardNumber extends StringValueObject
     private static function hasNot16Digits(string $value): bool
     {
         return preg_match('/\d{16}/' , $value) === 0;
+    }
+
+    public function last8Digits(): string
+    {
+        return substr($this->value , -8);
     }
 }

@@ -4,6 +4,7 @@
 namespace Viabo\management\shared\infrastructure\paymentProcessor;
 
 
+use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCredentials;
 use Viabo\management\credential\domain\CardCredential;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
@@ -19,13 +20,12 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
             'clientToken' => $this->token($credential->clientKey()) ,
             'idUser' => $credential->userId()->valueDecrypt() ,
             'userCard' => $credential->userName()->valueDecrypt() ,
-            'binCard' => $credential->cardNumber(),
+            'binCard' => $credential->cardNumber() ,
             'moyeCard' => $credential->cardExpirationDate() ,
             'keyCompany' => $credential->companyKey() ,
         ];
         $this->request($data);
     }
-
 
     public function searchCardInformation(CardCredentials $credential): array
     {
@@ -37,6 +37,19 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
             'passCard' => $credential->password()->valueDecrypt()
         ];
         return $this->request($data);
+    }
+
+    public function updateBlock(Card $card): void
+    {
+        $credential = $card->credentials();
+        $data = [
+            'inStatus' => true ,
+            'clientKey' => $credential->clientKey()->valueDecrypt() ,
+            'clientToken' => $this->token($credential->clientKey()->valueDecrypt()) ,
+            'binCard' => $card->lastDigits() ,
+            'cardStatus' => $card->block()->value()
+        ];
+        $this->request($data);
     }
 
     private function registerUser(CardCredential $credential): void

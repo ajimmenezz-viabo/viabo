@@ -7,3 +7,8 @@ cards-assign:
   path: '/api/cards/assign/commerce'
   controller: Viabo\Backend\Controller\management\card\CardsAssignerControllerInCommerce
   methods: POST
+
+card-status-update:
+  path: '/api/card/{cardId}/block/{blockStatus}'
+  controller: Viabo\Backend\Controller\management\card\CardBlockStatusUpdaterController
+  methods: PUT

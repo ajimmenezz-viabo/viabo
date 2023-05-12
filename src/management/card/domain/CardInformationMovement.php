@@ -6,7 +6,7 @@ namespace Viabo\management\card\domain;
 
 final class CardInformationMovement
 {
-    private const MOVEMENT_TYPE = ['1' => 'Ingreso' , '2' => 'gasto'];
+    private const MOVEMENT_TYPE = ['1' => 'Ingreso' , '2' => 'Gasto'];
 
     public function __construct(
         private string $date ,

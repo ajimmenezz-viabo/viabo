@@ -21,7 +21,7 @@ final readonly class CardInformationFinderController extends ApiController
             $data = $this->ask(new CardCredentialQuery($cardId));
             $data = $this->ask(new CardInformationQuery($cardId , $data->credentialData));
 
-            return new JsonResponse($data->cardData);
+            return new JsonResponse($this->opensslEncrypt($data->cardData));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

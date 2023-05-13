@@ -11,7 +11,7 @@ import {
 import { CardNumber } from '@/app/shared/components/card'
 import { useFindCardDetails } from '@/app/business/cards/hooks'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
-import { ErrorRequestPage } from '@/shared/components/notifications'
+import { BadgeStatus, ErrorRequestPage } from '@/shared/components/notifications'
 import { useCollapseDrawer } from '@theme/hooks'
 
 export function CommerceViaboCardDetails() {
@@ -48,7 +48,10 @@ export function CommerceViaboCardDetails() {
           >
             <Stack flexDirection={'row'} justifyContent="space-between" sx={{ width: 1 }} alignItems={'center'}>
               <Stack flexDirection="column" spacing={0}>
-                <Typography variant="subtitle2">Disponible</Typography>
+                <Stack flexDirection={'row'} gap={1}>
+                  <Typography variant="subtitle2">Disponible</Typography>
+                  <BadgeStatus size={'medium'} status={data?.cardON === true ? 'online' : 'offline'} />
+                </Stack>
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
                   <Typography variant="h3">{data?.balance}</Typography>
                   <Typography variant="caption">MXN</Typography>
@@ -57,7 +60,7 @@ export function CommerceViaboCardDetails() {
               <CardNumber card={card} />
             </Stack>
           </Toolbar>
-          <CardActions card={card} />
+          <CardActions card={card} cardDetails={data} />
           <Scrollbar>
             <Stack pt={2} pb={4} px={2}>
               <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>

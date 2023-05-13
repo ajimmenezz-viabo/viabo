@@ -10,3 +10,8 @@ export const getCardInfo = async cardId => {
   const { data } = await axios.get(`/api/card/information/${cardId}`)
   return CardAdapter(data)
 }
+
+export const changeStatusCard = async card => {
+  const { data } = await axios.put(`/api/card/${card?.id}/block/${card?.cardON ? 'unblocked' : 'blocked'}`)
+  return card
+}

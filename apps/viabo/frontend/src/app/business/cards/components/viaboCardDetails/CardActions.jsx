@@ -2,9 +2,15 @@ import { Box, Button, CircularProgress, Divider, Stack, Typography } from '@mui/
 import { Scrollbar } from '@/shared/components/scroll'
 import { CurrencyExchangeOutlined, PasswordTwoTone, PowerSettingsNewTwoTone } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
+import { useToggleStatusCard } from '@/app/business/cards/hooks'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { useIsFetching } from '@tanstack/react-query'
+import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 
-export function CardActions({ card }) {
+export function CardActions({ card, cardDetails }) {
   const [openCVV, setOpenCVV] = useState(false)
+  const { mutate: changeStatusCard, isLoading: isChangingStatusCard } = useToggleStatusCard()
+  const isFetchingCardDetails = useIsFetching([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id])
 
   return (
     <>
@@ -33,9 +39,17 @@ export function CardActions({ card }) {
               </Button>
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 200 }}>
-              <Button startIcon={<PowerSettingsNewTwoTone />} color={'error'} variant={'outlined'}>
-                Apagar Tarjeta
-              </Button>
+              <LoadingButton
+                loading={isChangingStatusCard || isFetchingCardDetails === 1}
+                startIcon={<PowerSettingsNewTwoTone />}
+                onClick={() => {
+                  changeStatusCard({ ...card, cardON: !cardDetails?.cardON })
+                }}
+                color={cardDetails?.cardON ? 'error' : 'success'}
+                variant={'outlined'}
+              >
+                {cardDetails?.cardON ? 'Apagar Tarjeta' : 'Encender Tarjeta'}
+              </LoadingButton>
             </Stack>
           </Stack>
         </Scrollbar>

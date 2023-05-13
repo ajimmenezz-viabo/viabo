@@ -9,6 +9,7 @@ export const CardAdapter = card => {
     return {
       SPEI: decryptedCard?.spai,
       PAYNET: decryptedCard?.paynet,
+      cardON: decryptedCard?.block === 'UnBlocked',
       balance: fCurrency(Number(decryptedCard?.balance)),
       movements:
         decryptedCard?.movements?.map(movement => {

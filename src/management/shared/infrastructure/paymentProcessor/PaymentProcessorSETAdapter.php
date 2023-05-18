@@ -6,6 +6,8 @@ namespace Viabo\management\shared\infrastructure\paymentProcessor;
 
 use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCredentials;
+use Viabo\management\cardOperation\domain\CardOperation;
+use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\credential\domain\CardCredential;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 
@@ -14,10 +16,11 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
     public function register(CardCredential $credential): void
     {
         $this->registerUser($credential);
+        $clientKey = $credential->clientKey();
         $data = [
             'inCardPlatform' => true ,
-            'clientKey' => $credential->clientKey() ,
-            'clientToken' => $this->token($credential->clientKey()) ,
+            'clientKey' => $clientKey ,
+            'clientToken' => $this->token($clientKey) ,
             'idUser' => $credential->userId()->valueDecrypt() ,
             'userCard' => $credential->userName()->valueDecrypt() ,
             'binCard' => $credential->cardNumber() ,
@@ -29,10 +32,11 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
 
     public function searchCardInformation(CardCredentials $credential): array
     {
+        $clientKey = $credential->clientKey()->valueDecrypt();
         $data = [
             'inLogin' => true ,
-            'clientKey' => $credential->clientKey()->valueDecrypt() ,
-            'clientToken' => $this->token($credential->clientKey()->valueDecrypt()) ,
+            'clientKey' => $clientKey ,
+            'clientToken' => $this->token($clientKey) ,
             'userCard' => $credential->user()->valueDecrypt() ,
             'passCard' => $credential->password()->valueDecrypt()
         ];
@@ -42,14 +46,33 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
     public function updateBlock(Card $card): void
     {
         $credential = $card->credentials();
+        $clientKey = $credential->clientKey()->valueDecrypt();
         $data = [
             'inStatus' => true ,
-            'clientKey' => $credential->clientKey()->valueDecrypt() ,
-            'clientToken' => $this->token($credential->clientKey()->valueDecrypt()) ,
+            'clientKey' => $clientKey ,
+            'clientToken' => $this->token($clientKey) ,
             'binCard' => $card->lastDigits() ,
             'cardStatus' => $card->block()->value()
         ];
         $this->request($data);
+    }
+
+    public function transactionPay(CardOperations $operations): void
+    {
+        array_map(function (CardOperation $operation) {
+            $clientKey = $operation->clientKey()->valueDecrypt();
+            $data = [
+                'applyPay' => true ,
+                'clientKey' => $clientKey ,
+                'clientToken' => $this->token($clientKey) ,
+                'binCard' => $operation->originCard()->last8Digits() ,
+                'amount' => $operation->amount()->value() ,
+                'description' => $operation->descriptionPay()->value()
+            ];
+            $response = $this->request($data);
+            $operation->updatePayData($response);
+        } , $operations->getIterator()->getArrayCopy());
+
     }
 
     private function registerUser(CardCredential $credential): void

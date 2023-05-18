@@ -1,0 +1,4 @@
+card-transactions-find:
+  path: '/api/card/transactions'
+  controller: Viabo\Backend\Controller\management\cardOperation\CardTransactionsProcessorController
+  methods: POST

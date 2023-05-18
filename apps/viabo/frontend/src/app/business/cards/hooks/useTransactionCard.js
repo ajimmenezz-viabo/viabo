@@ -1,40 +1,41 @@
-import { useSnackbar } from 'notistack'
-import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { transactionsCard } from '@/app/business/cards/services'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+import { toast } from 'react-toastify'
 
 export const useTransactionCard = (options = {}) => {
-  const { enqueueSnackbar } = useSnackbar()
-  const [customError, setCustomError] = useState(null)
   const client = useQueryClient()
 
-  const register = useMutation(transactionsCard, {
-    onSuccess: transactions => {
-      setCustomError(null)
-      client.refetchQueries([CARDS_COMMERCES_KEYS.CARD_INFO, transactions?.cardId])
-      enqueueSnackbar('Se realizo la transacción con éxito', {
-        variant: 'success',
-        autoHideDuration: 5000
+  const transactionMutate = useMutation(transactionsCard, options)
+  const transaction = async (formData, options) => {
+    const { onSuccess, onError, mutationOptions } = options
+
+    try {
+      await toast.promise(transactionMutate.mutateAsync(formData, mutationOptions), {
+        pending: 'Procesando Transferencia ...',
+        success: {
+          render({ data: transactions }) {
+            client.invalidateQueries([CARDS_COMMERCES_KEYS.CARD_INFO, transactions?.cardId])
+            onSuccess(transactions)
+            return 'Se realizo la transferencia con éxito'
+          }
+        }
       })
-    },
-    onError: error => {
+    } catch (error) {
       const errorFormatted = getErrorAPI(
         error,
         `No se puede realizar esta operacion en este momento. Intente nuevamente o reporte a sistemas`
       )
-      enqueueSnackbar(errorFormatted, {
-        variant: getNotificationTypeByErrorCode(error),
-        autoHideDuration: 5000
+      onError(errorFormatted)
+      toast.error(errorFormatted, {
+        type: getNotificationTypeByErrorCode(error)
       })
-      setCustomError(errorFormatted)
-    },
-    ...options
-  })
+    }
+  }
 
   return {
-    ...register,
-    error: customError || null
+    ...transactionMutate,
+    transaction
   }
 }

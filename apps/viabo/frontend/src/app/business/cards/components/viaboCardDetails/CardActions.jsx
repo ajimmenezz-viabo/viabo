@@ -6,10 +6,14 @@ import { useToggleStatusCard } from '@/app/business/cards/hooks'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useIsFetching } from '@tanstack/react-query'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
+import { TransferSideBar } from '@/app/business/cards/components/transfer'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
-export function CardActions({ card, cardDetails }) {
+export function CardActions() {
   const [openCVV, setOpenCVV] = useState(false)
+  const [openTransfer, setOpenTransfer] = useState(false)
   const { mutate: changeStatusCard, isLoading: isChangingStatusCard } = useToggleStatusCard()
+  const card = useCommerceDetailsCard(state => state.card)
   const isFetchingCardDetails = useIsFetching([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id])
 
   return (
@@ -34,26 +38,33 @@ export function CardActions({ card, cardDetails }) {
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 150 }}>
-              <Button startIcon={<CurrencyExchangeOutlined />} variant={'outlined'}>
+              <LoadingButton
+                loading={isFetchingCardDetails === 1}
+                disabled={card?.balance === 0 || !card?.cardON}
+                startIcon={<CurrencyExchangeOutlined />}
+                variant={'outlined'}
+                onClick={() => setOpenTransfer(true)}
+              >
                 Transferir
-              </Button>
+              </LoadingButton>
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 200 }}>
               <LoadingButton
                 loading={isChangingStatusCard || isFetchingCardDetails === 1}
                 startIcon={<PowerSettingsNewTwoTone />}
                 onClick={() => {
-                  changeStatusCard({ ...card, cardON: !cardDetails?.cardON })
+                  changeStatusCard({ ...card, cardON: !card?.cardON })
                 }}
-                color={cardDetails?.cardON ? 'error' : 'success'}
+                color={card?.cardON ? 'error' : 'success'}
                 variant={'outlined'}
               >
-                {cardDetails?.cardON ? 'Apagar Tarjeta' : 'Encender Tarjeta'}
+                {card?.cardON ? 'Apagar Tarjeta' : 'Encender Tarjeta'}
               </LoadingButton>
             </Stack>
           </Stack>
         </Scrollbar>
       </Box>
+      <TransferSideBar setOpen={setOpenTransfer} open={openTransfer} />
     </>
   )
 }

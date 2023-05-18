@@ -77,7 +77,7 @@ function AuthProvider({ children }) {
   axios.interceptors.response.use(
     response => response,
     error => {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         logout()
       }
       return Promise.reject(error)

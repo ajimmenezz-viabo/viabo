@@ -1,10 +1,10 @@
-import { fDateTime, getDecryptInfo } from '@/shared/utils'
+import { convertCatalogToReactSelect, fCardNumberHidden, fDateTime, getDecryptInfo } from '@/shared/utils'
 
 export const CardsAdapter = cards => {
   try {
     const decryptedCards = getDecryptInfo(cards?.ciphertext, cards?.iv)
     if (decryptedCards && Array.isArray(decryptedCards)) {
-      return decryptedCards?.map(card => {
+      const cardsAdapter = decryptedCards?.map(card => {
         const {
           id,
           number,
@@ -41,6 +41,7 @@ export const CardsAdapter = cards => {
             name: recorderName
           },
           cardNumber: number,
+          cardNumberHidden: fCardNumberHidden(number),
           expiration: expirationDate,
           register: fDateTime(register),
           cvv: CVV,
@@ -50,6 +51,7 @@ export const CardsAdapter = cards => {
           }
         }
       })
+      return convertCatalogToReactSelect(cardsAdapter, 'id', 'cardNumberHidden') || []
     }
     return []
   } catch (e) {

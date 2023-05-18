@@ -21,18 +21,18 @@ final readonly class CardTransactionsProcessorController extends ApiController
             $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
             $commerce = $this->ask(new FindCommerceViewQuery($tokenData['id']));
-            $credential = $this->ask(new CardCredentialQuery($data['CardCredentialId']));
+            $credential = $this->ask(new CardCredentialQuery($data['originCardId']));
             $this->dispatch(new CardTransactionCommand(
-                $tokenData['id'] ,
-                $data['originCardId'] ,
-                $data['destinationCards'] ,
-                $credential->credentialData ,
+                $tokenData['id'],
+                $data['originCardId'],
+                $data['destinationCards'],
+                $credential->credentialData,
                 $commerce->commerce['legalRepresentativeEmail']
             ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

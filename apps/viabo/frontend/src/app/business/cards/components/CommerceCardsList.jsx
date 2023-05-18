@@ -26,7 +26,7 @@ export function CommerceCardsList() {
     isSuccess
   } = useFindCommerceCards()
   const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
-  const commerceCardSelected = useCommerceDetailsCard(state => state.card)
+  const commerceCardSelectedId = useCommerceDetailsCard(state => state.card?.id)
 
   const statusList = useMemo(() => {
     const statusList = commerceCards?.map(card => card?.status) || []
@@ -59,22 +59,26 @@ export function CommerceCardsList() {
     _DATA.jump(p)
   }
 
+  const search = (list, term) => list?.filter(card => card?.cardNumber?.toString().trim().includes(term.trim())) || []
+
   useEffect(() => {
     if (searchTerm.trim() !== '' && searchResultStatus && selectedStatus) {
-      const filteredModels = searchByTerm(searchResultStatus, searchTerm)
+      const filteredModels = search(searchResultStatus, searchTerm)
       setSearchResult(filteredModels)
     } else if (searchTerm && commerceCards && !selectedStatus) {
-      const filteredModels = searchByTerm(commerceCards, searchTerm)
+      const filteredModels = search(commerceCards, searchTerm)
       setSearchResult(filteredModels)
     }
   }, [searchTerm, commerceCards, selectedStatus, searchResultStatus])
 
   useEffect(() => {
-    if (commerceCards && commerceCardSelected) {
-      const commerceUpdate = commerceCards?.find(card => card?.id === commerceCardSelected?.id)
-      commerceUpdate && setCommerceCard(commerceUpdate)
+    if (commerceCards && commerceCardSelectedId) {
+      const commerceUpdate = commerceCards?.find(card => card?.id === commerceCardSelectedId)
+      if (commerceUpdate) {
+        setCommerceCard(commerceUpdate)
+      }
     }
-  }, [commerceCards, commerceCardSelected])
+  }, [commerceCards, commerceCardSelectedId])
 
   const handleStatus = status => {
     let searchStatus = ''

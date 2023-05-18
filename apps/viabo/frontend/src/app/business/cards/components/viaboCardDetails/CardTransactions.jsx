@@ -1,8 +1,10 @@
 import { Avatar, Box, Card, Stack, Typography } from '@mui/material'
 import { DataTable } from '@/shared/components/dataTables'
 import { AccountBalance, NorthEast, SouthWest } from '@mui/icons-material'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
-export function CardTransactions({ movements = [] }) {
+export function CardTransactions() {
+  const movements = useCommerceDetailsCard(state => state.card?.movements) ?? []
   const columns = [
     {
       name: 'description',

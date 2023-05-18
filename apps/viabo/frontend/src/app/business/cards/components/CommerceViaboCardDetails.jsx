@@ -13,13 +13,21 @@ import { useFindCardDetails } from '@/app/business/cards/hooks'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { BadgeStatus, ErrorRequestPage } from '@/shared/components/notifications'
 import { useCollapseDrawer } from '@theme/hooks'
+import { useEffect } from 'react'
 
 export function CommerceViaboCardDetails() {
   const card = useCommerceDetailsCard(state => state.card)
+  const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const { data, isLoading, isError, error, refetch } = useFindCardDetails(card?.id, {
     enabled: !!card?.id
   })
   const { isCollapse } = useCollapseDrawer()
+
+  useEffect(() => {
+    if (data) {
+      addInfoCard(data)
+    }
+  }, [data])
 
   return (
     <Stack
@@ -50,28 +58,28 @@ export function CommerceViaboCardDetails() {
               <Stack flexDirection="column" spacing={0}>
                 <Stack flexDirection={'row'} gap={1}>
                   <Typography variant="subtitle2">Disponible</Typography>
-                  <BadgeStatus size={'medium'} status={data?.cardON === true ? 'online' : 'offline'} />
+                  <BadgeStatus size={'medium'} status={card?.cardON === true ? 'online' : 'offline'} />
                 </Stack>
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                  <Typography variant="h3">{data?.balance}</Typography>
+                  <Typography variant="h3">{card?.balanceFormatted}</Typography>
                   <Typography variant="caption">MXN</Typography>
                 </Stack>
               </Stack>
               <CardNumber card={card} />
             </Stack>
           </Toolbar>
-          <CardActions card={card} cardDetails={data} />
+          <CardActions />
           <Scrollbar>
             <Stack pt={2} pb={4} px={2}>
               <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>
                 <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 5 : 12} xl={5}>
-                  <CardBalance cardDetails={data} />
+                  <CardBalance />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 7 : 12} xl={5}>
-                  <CardCharge cardDetails={data} />
+                  <CardCharge />
                 </Grid>
               </Grid>
-              <CardTransactions movements={data?.movements} />
+              <CardTransactions />
             </Stack>
           </Scrollbar>
         </>

@@ -152,6 +152,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                                   mask: Number,
                                   radix: '.',
                                   thousandsSeparator: ',',
+                                  padFractionalZeros: true,
                                   min: 0,
                                   max: 50000,
                                   scale: 2,

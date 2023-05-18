@@ -16,7 +16,7 @@ final readonly class FindCardCredentialQueryHandler implements QueryHandler
 
     public function __invoke(CardCredentialQuery $query): Response
     {
-        $cardId = new CardCredentialId($query->cardId);
+        $cardId = CardCredentialId::create($query->cardId);
         return $this->finder->__invoke($cardId);
     }
 }

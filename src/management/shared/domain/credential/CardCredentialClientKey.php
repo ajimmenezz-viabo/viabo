@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\management\credential\domain;
+namespace Viabo\management\shared\domain\credential;
 
 
 use Viabo\shared\domain\utils\Crypt;

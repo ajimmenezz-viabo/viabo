@@ -6,6 +6,7 @@ namespace Viabo\management\credential\domain;
 
 use Viabo\management\credential\domain\events\CardCredentialCreatedDomainEvent;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\credential\CardCredentialClientKey;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class CardCredential extends AggregateRoot

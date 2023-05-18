@@ -6,6 +6,7 @@ namespace Viabo\management\shared\domain\paymentProcessor;
 
 use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCredentials;
+use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\credential\domain\CardCredential;
 
 interface PaymentProcessorAdapter
@@ -15,5 +16,7 @@ interface PaymentProcessorAdapter
     public function searchCardInformation(CardCredentials $credential): array;
 
     public function updateBlock(Card $card): void;
+
+    public function transactionPay(CardOperations $operations): void;
 
 }

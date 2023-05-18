@@ -75,6 +75,40 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
 
     }
 
+    public function transactionReverse(CardOperations $operations): void
+    {
+        $clientsKeyWithInsufficientBalance = [];
+        $removeOperations = [];
+        $arrayIterator = $operations->getIterator();
+
+        foreach ($arrayIterator as $key => $operation) {
+            $clientKey = $operation->clientKey()->valueDecrypt();
+
+            if (in_array($clientKey , $clientsKeyWithInsufficientBalance)) {
+                continue;
+            }
+
+            $data = [
+                'reversePay' => true ,
+                'clientKey' => $clientKey ,
+                'clientToken' => $this->token($clientKey) ,
+                'binCard' => $operation->destinationCard()->last8Digits() ,
+                'amount' => $operation->amount()->value() ,
+                'description' => $operation->descriptionReverse()->value()
+            ];
+
+            try {
+                $response = $this->request($data);
+                $operation->updateReverseData($response);
+            } catch (\DomainException) {
+                $removeOperations[] = $key;
+                $clientsKeyWithInsufficientBalance[] = $clientKey;
+            }
+        }
+
+        $operations->removeOperations($removeOperations);
+    }
+
     private function registerUser(CardCredential $credential): void
     {
         $data = [

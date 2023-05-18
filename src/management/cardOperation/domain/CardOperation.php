@@ -5,6 +5,7 @@ namespace Viabo\management\cardOperation\domain;
 
 
 use Viabo\management\cardOperation\domain\events\CardOperationCreatedDomainEvent;
+use Viabo\management\cardOperation\domain\events\CardOperationUpdateDomainEvent;
 use Viabo\management\shared\domain\credential\CardCredentialClientKey;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -27,7 +28,7 @@ final class CardOperation extends AggregateRoot
         private CardOperationEmails               $emails ,
         private CardCredentialClientKey           $clientKey ,
         private CardOperationRegisterDate         $registerDate ,
-        private CardOperationStatus               $status
+        private CardOperationActive               $active
     )
     {
     }
@@ -57,7 +58,7 @@ final class CardOperation extends AggregateRoot
             $emails ,
             $clientKey ,
             CardOperationRegisterDate::todayDate() ,
-            new CardOperationStatus('1') ,
+            new CardOperationActive('1') ,
         );
     }
 
@@ -71,6 +72,11 @@ final class CardOperation extends AggregateRoot
         return $this->originCard;
     }
 
+    public function destinationCard(): CardOperationDestination
+    {
+        return $this->destinationCard;
+    }
+
     public function amount(): CardOperationBalance
     {
         return $this->balance;
@@ -81,10 +87,27 @@ final class CardOperation extends AggregateRoot
         return $this->descriptionPay;
     }
 
+    public function descriptionReverse(): CardOperationDescriptionReverse
+    {
+        return $this->descriptionReverse;
+    }
+
+    public function setDescriptionReverse(): void
+    {
+        $this->descriptionReverse = $this->descriptionReverse->update($this->originCard->last8Digits());
+    }
+
     public function updatePayData(array $payData): void
     {
-        $this->payTransactionId = $this->payTransactionId->update($payData['Transaction_Id']);
+        $this->payTransactionId = $this->payTransactionId->update(strval($payData['Auth_Code']));
         $this->payData = $this->payData->update($payData);
+    }
+
+    public function updateReverseData(array $reverseData): void
+    {
+        $this->reverseTransactionId = $this->reverseTransactionId->update(strval($reverseData['Auth_Code']));
+        $this->reverseData = $this->reverseData->update($reverseData);
+        $this->active = $this->active->update('0');
     }
 
     public function setEventCreated(): void
@@ -93,6 +116,14 @@ final class CardOperation extends AggregateRoot
             $this->id->value() , $this->toArray() , $this->emails->value()
         ));
     }
+
+    public function setEventUpdate(): void
+    {
+        $this->record(new CardOperationUpdateDomainEvent(
+            $this->id->value() , $this->toArray() , $this->emails->value()
+        ));
+    }
+
     public function toArray(): array
     {
         return [
@@ -110,7 +141,7 @@ final class CardOperation extends AggregateRoot
             'reverseData' => $this->reverseData->value() ,
             'clientKey' => $this->clientKey->value() ,
             'registerDate' => $this->registerDate->value() ,
-            'status' => $this->status->value()
+            'active' => $this->active->value()
         ];
     }
 }

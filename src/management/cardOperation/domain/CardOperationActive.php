@@ -6,11 +6,10 @@ namespace Viabo\management\cardOperation\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CardOperationReverseData extends StringValueObject
+final class CardOperationActive extends StringValueObject
 {
-    public function update(array $reverseData): static
+    public function update(string $value): static
     {
-        $value = json_encode($reverseData);
         return new static($value);
     }
 }

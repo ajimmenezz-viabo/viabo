@@ -17,7 +17,7 @@ import { ModalAlert } from '@/shared/components/modals'
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
 export function StockCardForm({ setOpen }) {
-  const { mutate: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()
+  const { registerCard: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
   const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
   const [openAlertConfirm, setOpenAlertConfirm] = useState(false)

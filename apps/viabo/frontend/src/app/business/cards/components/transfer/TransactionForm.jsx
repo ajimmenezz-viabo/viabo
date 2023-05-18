@@ -17,7 +17,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
 
   const [cardsToSelect, setCardsToSelect] = useState(cards)
 
-  const { mutate: transactionCard, isLoading: isSending } = useTransactionCard()
+  const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
 
   const RegisterSchema = Yup.object().shape({
     items: Yup.array().of(

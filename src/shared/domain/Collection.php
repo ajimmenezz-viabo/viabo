@@ -8,11 +8,11 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
-abstract class Collection implements Countable, IteratorAggregate
+abstract class Collection implements Countable , IteratorAggregate
 {
-    public function __construct(private readonly array $items)
+    public function __construct(private array $items)
     {
-        Assert::arrayOf($this->type(), $items);
+        Assert::arrayOf($this->type() , $items);
     }
 
     abstract protected function type(): string;
@@ -30,5 +30,10 @@ abstract class Collection implements Countable, IteratorAggregate
     protected function items(): array
     {
         return $this->items;
+    }
+
+    public function remove(int $value): void
+    {
+        unset($this->items[$value]);
     }
 }

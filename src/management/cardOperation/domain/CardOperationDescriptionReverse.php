@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardOperationDescriptionReverse extends StringValueObject
 {
+    public function update(string $cardNumber): static
+    {
+        return new static("Trasferencia desde la tarjeta $cardNumber");
+    }
 }

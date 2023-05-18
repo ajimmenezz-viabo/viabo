@@ -19,4 +19,6 @@ interface PaymentProcessorAdapter
 
     public function transactionPay(CardOperations $operations): void;
 
+    public function transactionReverse(CardOperations $operations): void;
+
 }

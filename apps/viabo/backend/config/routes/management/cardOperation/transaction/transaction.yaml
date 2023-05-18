@@ -1,4 +1,9 @@
-card-transactions-find:
+card-transactions-pay-find:
   path: '/api/card/transactions'
   controller: Viabo\Backend\Controller\management\cardOperation\CardTransactionsProcessorController
   methods: POST
+
+card-transactions-reverse-find:
+  path: '/api/card/transactions/reverse'
+  controller: Viabo\Backend\Controller\management\cardOperation\ReverseCardTransactionsProcessorController
+  methods: GET

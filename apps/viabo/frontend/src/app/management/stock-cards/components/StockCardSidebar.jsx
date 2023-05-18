@@ -4,34 +4,9 @@ import { varFade } from '@/shared/components/animate'
 import { NAVBAR } from '@theme/overrides/options'
 import { useSettings } from '@theme/hooks'
 import { Close } from '@mui/icons-material'
-import { AnimatePresence, m } from 'framer-motion'
-import { alpha, styled } from '@mui/material/styles'
-import { cssStyles } from '@theme/utils'
+import { AnimatePresence } from 'framer-motion'
 import { StockCardForm } from '@/app/management/stock-cards/components/StockCardForm'
-
-const RootStyle = styled(m.div)(({ theme, isDesktop }) => ({
-  ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),
-  top: 0,
-  right: 0,
-  bottom: 0,
-  display: 'flex',
-  position: 'fixed',
-  overflow: 'hidden',
-  width: NAVBAR.BASE_WIDTH + 200,
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  },
-
-  flexDirection: 'column',
-  margin: 0,
-  paddingBottom: theme.spacing(3),
-  zIndex: theme.zIndex.drawer + 3,
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  boxShadow: `-24px 12px 32px -4px ${alpha(
-    theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.common.black,
-    0.16
-  )}`
-}))
+import { SideBarStyle } from '@/app/shared/components'
 
 export function StockCardSidebar({ open, setOpen }) {
   const { themeDirection } = useSettings()
@@ -72,7 +47,7 @@ export function StockCardSidebar({ open, setOpen }) {
       <AnimatePresence>
         {open && (
           <>
-            <RootStyle {...varSidebar}>
+            <SideBarStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
                 <Typography variant="subtitle1">Nueva Tarjeta</Typography>
                 <div>
@@ -85,7 +60,7 @@ export function StockCardSidebar({ open, setOpen }) {
               <Divider sx={{ borderStyle: 'dashed' }} />
 
               <StockCardForm setOpen={setOpen} />
-            </RootStyle>
+            </SideBarStyle>
           </>
         )}
       </AnimatePresence>

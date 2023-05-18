@@ -1,1 +1,0 @@
-import{ct as e}from"./build-177448d0.js";function n(r){return e(r).format("$0,0.00")}function f(r){return e(r).format("0.0 b")}function o(r){return r.toString().replace(/\d{4}(?=\d)/g,"$& ")}function u(r){let t=r.toString().replace(/\d(?=\d{4})/g,"*");return t=t.replace(/(\*{4})/g,"$1 "),t=t.replace(/(\*{4}) (\*{4}) (\*{4}) /g,"$1 $2 $3 "),t}export{u as a,o as b,f as c,n as f};

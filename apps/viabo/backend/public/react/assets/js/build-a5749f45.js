@@ -1,0 +1,1 @@
+import{c2 as o,aK as u,c3 as l,r as g,c4 as h}from"./build-dd390203.js";function C(r,c,a){const[t,n={}]=o(r,c,a),e=u({context:n.context}),s=e.getQueryCache();return l(g.useCallback(i=>s.subscribe(h.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{C as u};

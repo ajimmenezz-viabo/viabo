@@ -10,7 +10,8 @@ export const CardAdapter = card => {
       SPEI: decryptedCard?.spai,
       PAYNET: decryptedCard?.paynet,
       cardON: decryptedCard?.block === 'UnBlocked',
-      balance: fCurrency(Number(decryptedCard?.balance)),
+      balance: Number(decryptedCard?.balance),
+      balanceFormatted: fCurrency(Number(decryptedCard?.balance)),
       movements:
         decryptedCard?.movements?.map(movement => {
           movement?.type.toLowerCase() === 'gasto' ? (expenses += movement?.amount) : (income += movement?.amount)

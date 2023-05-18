@@ -1,20 +1,20 @@
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+import { transactionsCard } from '@/app/business/cards/services'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
-import { changeStatusCard } from '@/app/business/cards/services'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useToggleStatusCard = (options = {}) => {
+export const useTransactionCard = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()
   const [customError, setCustomError] = useState(null)
   const client = useQueryClient()
 
-  const register = useMutation(changeStatusCard, {
-    onSuccess: card => {
+  const register = useMutation(transactionsCard, {
+    onSuccess: transactions => {
       setCustomError(null)
-      client.refetchQueries([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id])
-      enqueueSnackbar(card?.cardON ? 'Se encendió la tarjeta con éxito' : 'Se apagó la tarjeta con éxito', {
+      client.refetchQueries([CARDS_COMMERCES_KEYS.CARD_INFO, transactions?.cardId])
+      enqueueSnackbar('Se realizo la transacción con éxito', {
         variant: 'success',
         autoHideDuration: 5000
       })

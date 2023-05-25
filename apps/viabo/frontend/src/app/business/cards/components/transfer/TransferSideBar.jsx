@@ -12,18 +12,24 @@ import { useGetQueryData } from '@/shared/hooks'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { fCurrency } from '@/shared/utils'
 
-export function TransferSideBar({ open, setOpen }) {
+export function TransferSideBar({ open, setOpen, isBinCard, bincardBalance, bincardId }) {
   const { themeDirection } = useSettings()
 
-  const card = useCommerceDetailsCard(state => state.card)
+  const card = !isBinCard ? useCommerceDetailsCard(state => state.card) : null
   const cardList = useGetQueryData([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST]) || []
-  const [currentBalance, setCurrentBalance] = useState(card?.balance)
+  const [currentBalance, setCurrentBalance] = useState(isBinCard ? bincardBalance : card?.balance)
 
   const insufficient = useMemo(() => Boolean(currentBalance < 0), [currentBalance])
 
   useEffect(() => {
     setCurrentBalance(card?.balance)
   }, [card?.balance])
+
+  useEffect(() => {
+    if (bincardBalance) {
+      setCurrentBalance(bincardBalance)
+    }
+  }, [bincardBalance])
 
   const filterCards = useMemo(
     () => cardList?.filter(commerceCard => commerceCard.id !== card?.id),
@@ -68,7 +74,7 @@ export function TransferSideBar({ open, setOpen }) {
           <>
             <SideBarStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
-                <Typography variant="subtitle1">Transferencias</Typography>
+                <Typography variant="subtitle1">{isBinCard ? 'Fondear' : 'Transferencias'}</Typography>
                 <div>
                   <IconButton aria-label="close" size="medium" onClick={handleClose}>
                     <Close width={20} height={20} fontSize="inherit" color="primary" />
@@ -94,12 +100,13 @@ export function TransferSideBar({ open, setOpen }) {
                 )}
               </Stack>
               <TransactionForm
-                cards={filterCards}
+                cards={isBinCard ? cardList : filterCards}
                 balance={card?.balance}
                 setCurrentBalance={setCurrentBalance}
                 insufficient={insufficient}
-                cardOrigin={card?.id}
+                cardOrigin={isBinCard ? bincardId : card?.id}
                 setOpen={setOpen}
+                isBinCard={isBinCard}
               />
             </SideBarStyle>
           </>

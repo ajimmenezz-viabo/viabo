@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { m } from 'framer-motion'
 import { Box, Button, Card, Stack, Typography } from '@mui/material'
 import { CheckCircle } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
@@ -24,14 +23,26 @@ export function CardCharge() {
         Recargar Tarjeta
       </Typography>
       <Stack spacing={2}>
-        <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="baseline"
+          gap={2}
+          sx={{ display: 'flex', flexWrap: 'wrap' }} // Agregar estas propiedades
+        >
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            SPEI
+            SPEI :
           </Typography>
-          <Stack flexDirection={'row'} alignItems={'center'} sx={{ py: 1 }} flexGrow={1} gap={1}>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            justifyContent={'flex-end'}
+            sx={{ py: 1, flexGrow: 1, flexWrap: 'wrap' }}
+            gap={2}
+          >
             <Box sx={{ borderBottom: 1, borderBottomStyle: 'dashed', textAlign: 'right', width: 1 }}>
               <Box
-                component={m.div}
+                component="div"
                 animate={{ opacity: copiedSPEI ? 0.95 : 1 }}
                 transition={{ duration: 0.1 }}
                 sx={{ textAlign: 'right', width: 1 }}
@@ -39,26 +50,36 @@ export function CardCharge() {
                 <Typography variant="body1">{card?.SPEI}</Typography>
               </Box>
             </Box>
-
             <Button
-              variant={'outlined'}
+              variant="outlined"
               color={copiedSPEI ? 'success' : 'inherit'}
-              startIcon={copiedSPEI && <CheckCircle sx={{ color: 'success', pl: 1 }} />}
               onClick={() => copyToClipboard(setCopiedSPEI, card?.SPEI)}
             >
-              {copiedSPEI ? 'Copiado' : 'Copiar'}
+              {copiedSPEI ? <CheckCircle sx={{ color: 'success', width: 18 }} /> : 'Copiar'}
             </Button>
           </Stack>
         </Stack>
 
-        <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="baseline"
+          gap={2}
+          sx={{ display: 'flex', flexWrap: 'wrap' }}
+        >
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            PAYNET
+            PAYNET :
           </Typography>
-          <Stack flexDirection={'row'} alignItems={'center'} sx={{ py: 1 }} flexGrow={1} gap={1}>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            justifyContent={'flex-end'}
+            sx={{ py: 1, flexGrow: 1, flexWrap: 'wrap' }}
+            gap={2}
+          >
             <Box sx={{ borderBottom: 1, borderBottomStyle: 'dashed', textAlign: 'right', width: 1 }}>
               <Box
-                component={m.div}
+                component="div"
                 animate={{ opacity: copiedPAYNET ? 0.95 : 1 }}
                 transition={{ duration: 0.1 }}
                 sx={{ textAlign: 'right', width: 1 }}
@@ -67,12 +88,11 @@ export function CardCharge() {
               </Box>
             </Box>
             <Button
-              variant={'outlined'}
+              variant="outlined"
               color={copiedPAYNET ? 'success' : 'inherit'}
-              startIcon={copiedPAYNET && <CheckCircle sx={{ color: 'success', pl: 1 }} />}
               onClick={() => copyToClipboard(setCopiedPAYNET, card?.PAYNET)}
             >
-              {copiedPAYNET ? 'Copiado' : 'Copiar'}
+              {copiedPAYNET ? <CheckCircle sx={{ color: 'success', width: 18 }} /> : 'Copiar'}
             </Button>
           </Stack>
         </Stack>

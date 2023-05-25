@@ -1,22 +1,14 @@
-import { useEffect, useMemo, useState } from 'react'
-import { usePagination } from '@/shared/hooks'
-import { Box, InputAdornment, Pagination, Stack, TextField } from '@mui/material'
+import { useState } from 'react'
+import { Box, InputAdornment, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { ErrorRequestPage } from '@/shared/components/notifications'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
-import { motion } from 'framer-motion'
-import { Label } from '@/shared/components/form'
-import { Search } from '@mui/icons-material'
-import { Scrollbar } from '@/shared/components/scroll'
 import EmptyList from '@/shared/components/notifications/EmptyList'
 import { useFindCommerceCards } from '@/app/business/cards/hooks'
-import { searchByTerm } from '@/app/shared/utils'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { getColorCardStatusById } from '@/app/shared/services'
-import { CommerceViaboCard } from '@/app/business/cards/components/CommerceViaboCard'
-import { useCollapseDrawer } from '@theme/hooks'
+import { Apps, FormatListBulleted, Search } from '@mui/icons-material'
+import { CardList } from '@/app/business/cards/components/cardsList'
+import { CardListTable } from '@/app/business/cards/components/cardsTable'
 
 export function CommerceCardsList() {
-  const { isCollapse } = useCollapseDrawer()
   const {
     data: commerceCards,
     isLoading: loadingCommerces,
@@ -25,109 +17,44 @@ export function CommerceCardsList() {
     refetch,
     isSuccess
   } = useFindCommerceCards()
-  const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
-  const commerceCardSelectedId = useCommerceDetailsCard(state => state.card?.id)
 
-  const statusList = useMemo(() => {
-    const statusList = commerceCards?.map(card => card?.status) || []
-    const uniqueStatus = {}
-    const filterStatusList = []
-    statusList.forEach(status => {
-      if (status && !uniqueStatus[status.id]) {
-        uniqueStatus[status.id] = true
-        filterStatusList.push(status)
-      }
-    })
-
-    return filterStatusList
-  }, [commerceCards])
-
-  const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedStatus, setSelectedStatus] = useState('')
-  const [searchResult, setSearchResult] = useState([])
-  const [searchResultStatus, setSearchResultStatus] = useState([])
 
-  const PER_PAGE = 4
-  const source = searchTerm ? searchResult : selectedStatus ? searchResultStatus : commerceCards
-  const length = source?.length || 0
-  const count = Math.ceil(length / PER_PAGE)
-  const _DATA = usePagination(source || [], PER_PAGE)
-
-  const handleChange = (e, p) => {
-    setPage(p)
-    _DATA.jump(p)
+  const [view, setView] = useState('1')
+  const handleChange = (event, newValue) => {
+    setView(newValue)
   }
 
-  const search = (list, term) => list?.filter(card => card?.cardNumber?.toString().trim().includes(term.trim())) || []
-
-  useEffect(() => {
-    if (searchTerm.trim() !== '' && searchResultStatus && selectedStatus) {
-      const filteredModels = search(searchResultStatus, searchTerm)
-      setSearchResult(filteredModels)
-    } else if (searchTerm && commerceCards && !selectedStatus) {
-      const filteredModels = search(commerceCards, searchTerm)
-      setSearchResult(filteredModels)
-    }
-  }, [searchTerm, commerceCards, selectedStatus, searchResultStatus])
-
-  useEffect(() => {
-    if (commerceCards && commerceCardSelectedId) {
-      const commerceUpdate = commerceCards?.find(card => card?.id === commerceCardSelectedId)
-      if (commerceUpdate) {
-        setCommerceCard(commerceUpdate)
-      }
-    }
-  }, [commerceCards, commerceCardSelectedId])
-
-  const handleStatus = status => {
-    let searchStatus = ''
-    if (status === selectedStatus) {
-      setSelectedStatus('')
-    } else {
-      setSelectedStatus(status)
-      searchStatus = status?.name || ''
-    }
-    const filteredModels = searchByTerm(commerceCards, searchStatus)
-    setSearchResultStatus(filteredModels)
-  }
   return (
-    <Stack sx={{ pr: { sm: 2 }, width: 400, minWidth: 400 }}>
+    <Stack
+      sx={{
+        pr: { sm: 2 },
+        width: { xs: view === '1' ? 300 : 350, xl: 400 },
+        minWidth: { xs: view === '1' ? 300 : 350, xl: 400 }
+      }}
+    >
       {isError && !commerceCards && !loadingCommerces && (
         <ErrorRequestPage errorMessage={error} handleButton={refetch} />
       )}
       {loadingCommerces && <RequestLoadingComponent />}
       {commerceCards?.length > 0 && (
         <>
-          <Box display="flex">
-            {statusList?.map(status => {
-              const selected = selectedStatus?.id === status?.id
-              return (
-                <motion.div
-                  key={status?.id}
-                  onClick={() => handleStatus(status)}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.8 }}
-                >
-                  <Label
-                    variant={selected ? 'ghost' : 'filled'}
-                    color={getColorCardStatusById(status?.id)}
-                    sx={{
-                      textTransform: 'uppercase',
-                      marginRight: 1,
-                      marginBottom: 2,
-                      cursor: 'pointer',
-                      border: selected ? 3 : 0,
-                      borderColor: selected ? theme => theme.palette.primary.main : 'inherit'
-                    }}
-                  >
-                    {status?.name}
-                  </Label>
-                </motion.div>
-              )
-            })}
-          </Box>
-          <Box display="flex" mb={3} flexDirection={'column'} alignItems={{ xs: 'center' }}>
+          <Stack flexDirection={'column'} alignItems={'flex-end'} sx={{ mt: 2 }} gap={3} justifyContent={'flex-end'}>
+            <ToggleButtonGroup
+              size={'small'}
+              color="primary"
+              value={view}
+              exclusive
+              onChange={handleChange}
+              aria-label="Platform"
+            >
+              <ToggleButton value="1">
+                <FormatListBulleted />
+              </ToggleButton>
+              <ToggleButton value="2">
+                <Apps />
+              </ToggleButton>
+            </ToggleButtonGroup>
             <TextField
               fullWidth
               size="small"
@@ -144,27 +71,10 @@ export function CommerceCardsList() {
                 )
               }}
             />
+          </Stack>
 
-            <Box sx={{ flex: '1 1 auto', mb: { xs: 3 } }} />
-            <Pagination count={count} page={page} onChange={handleChange} />
-          </Box>
-          <Scrollbar>
-            <Stack spacing={2} sx={{ p: 2, cursor: 'pointer' }}>
-              {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
-              {_DATA?.currentData()?.map((card, index) => (
-                <motion.div
-                  onClick={e => {
-                    setCommerceCard(card)
-                  }}
-                  key={index}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.8 }}
-                >
-                  <CommerceViaboCard card={card} />
-                </motion.div>
-              ))}
-            </Stack>
-          </Scrollbar>
+          {view === '2' && <CardList commerceCards={commerceCards} searchTerm={searchTerm} />}
+          {view === '1' && <CardListTable cards={commerceCards} searchTerm={searchTerm} />}
         </>
       )}
       {commerceCards && commerceCards?.length === 0 && (

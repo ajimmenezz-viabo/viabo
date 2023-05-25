@@ -32,8 +32,8 @@ export function CommerceViaboCardDetails() {
   return (
     <Stack
       sx={theme => ({
-        pl: 2,
-        display: { xs: 'none', lg: 'flex' },
+        pl: { xs: 0, lg: 2 },
+        mt: 2,
         overflow: 'hidden',
         flexDirection: 'column',
         flexGrow: 1
@@ -72,14 +72,16 @@ export function CommerceViaboCardDetails() {
           <Scrollbar>
             <Stack pt={2} pb={4} px={2}>
               <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>
-                <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 5 : 12} xl={5}>
-                  <CardBalance />
+                <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 4 : 12} xl={4}>
+                  <Stack spacing={3}>
+                    <CardBalance />
+                    <CardCharge />
+                  </Stack>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 7 : 12} xl={5}>
-                  <CardCharge />
+                <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={8}>
+                  <CardTransactions />
                 </Grid>
               </Grid>
-              <CardTransactions />
             </Stack>
           </Scrollbar>
         </>

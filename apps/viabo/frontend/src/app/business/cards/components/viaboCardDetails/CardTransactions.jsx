@@ -2,6 +2,7 @@ import { Avatar, Box, Card, Stack, Typography } from '@mui/material'
 import { DataTable } from '@/shared/components/dataTables'
 import { AccountBalance, NorthEast, SouthWest } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { CustomToolBarTransactions } from '@/app/business/cards/components/viaboCardDetails/CustomToolBarTransactions'
 
 export function CardTransactions() {
   const movements = useCommerceDetailsCard(state => state.card?.movements) ?? []
@@ -113,6 +114,9 @@ export function CardTransactions() {
         options={{
           responsive: 'simple',
           rowHover: true,
+          selectableRows: 'single',
+          selectableRowsOnClick: false,
+          selectToolbarPlacement: 'replace',
           sortOrder: {
             name: 'date',
             direction: 'desc'
@@ -122,6 +126,11 @@ export function CardTransactions() {
             filterOptions: {
               useDisplayedColumnsOnly: false // it was true
             }
+          },
+          customToolbarSelect: selectedRows => {
+            const selectedRowIndex = selectedRows.data[0].dataIndex
+            const selected = movements[selectedRowIndex]
+            return <CustomToolBarTransactions handleReport={() => {}} />
           }
         }}
       />

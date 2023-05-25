@@ -9,15 +9,18 @@ import { IMaskInput } from 'react-imask'
 import { LoadingButton } from '@mui/lab'
 import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
 import { useTransactionCard } from '@/app/business/cards/hooks'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
-export function TransactionForm({ cards, balance, setCurrentBalance, insufficient, cardOrigin, setOpen }) {
+export function TransactionForm({ cards, balance, setCurrentBalance, insufficient, cardOrigin, setOpen, isBinCard }) {
   const arrayHelpersRef = useRef(null)
 
   const [cardsToSelect, setCardsToSelect] = useState(cards)
 
   const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
+
+  const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
 
   const RegisterSchema = Yup.object().shape({
     items: Yup.array().of(
@@ -29,7 +32,14 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
   })
   const formik = useFormik({
     initialValues: {
-      transactions: [
+      transactions: (selectedCards?.length > 0 &&
+        isBinCard &&
+        selectedCards?.map(card => ({
+          id: Math.random(),
+          card: { value: card?.value, label: card?.label },
+          amount: '',
+          concept: ''
+        }))) || [
         {
           id: 1 || '',
           card: null,

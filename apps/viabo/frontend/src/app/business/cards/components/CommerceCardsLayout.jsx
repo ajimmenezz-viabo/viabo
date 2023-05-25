@@ -1,11 +1,11 @@
 import { Stack } from '@mui/material'
-import { CommerceCardsList } from '@/app/business/cards/components/CommerceCardsList'
 import { CommerceViaboCardDetails } from '@/app/business/cards/components/CommerceViaboCardDetails'
+import { CardsSidebar } from '@/app/business/cards/components/cardsSidebar'
 
 export function CommerceCardsLayout() {
   return (
-    <Stack flexDirection={'row'} sx={{ height: '100vh', display: 'flex' }}>
-      <CommerceCardsList />
+    <Stack flexDirection={'row'} sx={{ height: '99vh', display: 'flex' }}>
+      <CardsSidebar />
       <CommerceViaboCardDetails />
     </Stack>
   )

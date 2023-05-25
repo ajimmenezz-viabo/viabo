@@ -27,7 +27,7 @@ const INFO = {
   darker: '#04297A'
 }
 const SUCCESS = {
-  lighter: '#E9FCD4',
+  lighter: '#C8FACD',
   light: '#AAF27F',
   main: '#54D62C',
   dark: '#229A16',

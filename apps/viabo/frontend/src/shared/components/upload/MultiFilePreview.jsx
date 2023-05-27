@@ -112,11 +112,8 @@ export default function MultiFilePreview({ showPreview = false, files, onRemove,
 
       {hasFile && (
         <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
-          <Button color="inherit" size="small" onClick={onRemoveAll}>
+          <Button color="inherit" variant={'outlined'} size="small" onClick={onRemoveAll}>
             Borrar Todos
-          </Button>
-          <Button size="small" variant="contained">
-            Cargar Archivos
           </Button>
         </Stack>
       )}

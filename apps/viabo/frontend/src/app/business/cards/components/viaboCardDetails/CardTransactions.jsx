@@ -3,8 +3,16 @@ import { DataTable } from '@/shared/components/dataTables'
 import { AccountBalance, NorthEast, SouthWest } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { CustomToolBarTransactions } from '@/app/business/cards/components/viaboCardDetails/CustomToolBarTransactions'
+import { lazy, useState } from 'react'
+import { Lodable } from '@/shared/components/lodables'
+
+const TransactionReport = Lodable(
+  lazy(() => import('@/app/business/cards/components/viaboCardDetails/incidence/TransactionReport'))
+)
 
 export function CardTransactions() {
+  const [openReport, setOpenReport] = useState(false)
+  const [selectedMovement, setSelectedMovement] = useState(null)
   const movements = useCommerceDetailsCard(state => state.card?.movements) ?? []
   const columns = [
     {
@@ -106,34 +114,46 @@ export function CardTransactions() {
     }
   ]
   return (
-    <Card>
-      <DataTable
-        title={'Últimos Movimientos'}
-        data={movements || []}
-        columns={columns}
-        options={{
-          responsive: 'simple',
-          rowHover: true,
-          selectableRows: 'single',
-          selectableRowsOnClick: false,
-          selectToolbarPlacement: 'replace',
-          sortOrder: {
-            name: 'date',
-            direction: 'desc'
-          },
-          downloadOptions: {
-            filename: 'movimientos.csv',
-            filterOptions: {
-              useDisplayedColumnsOnly: false // it was true
+    <>
+      <Card>
+        <DataTable
+          title={'Últimos Movimientos'}
+          data={movements || []}
+          columns={columns}
+          options={{
+            responsive: 'simple',
+            rowHover: true,
+            selectableRows: 'single',
+            selectableRowsOnClick: false,
+            selectToolbarPlacement: 'replace',
+            sortOrder: {
+              name: 'date',
+              direction: 'desc'
+            },
+            downloadOptions: {
+              filename: 'movimientos.csv',
+              filterOptions: {
+                useDisplayedColumnsOnly: false // it was true
+              }
+            },
+            customToolbarSelect: selectedRows => {
+              const selectedRowIndex = selectedRows.data[0].dataIndex
+              const selected = movements[selectedRowIndex]
+
+              return (
+                <CustomToolBarTransactions
+                  handleReport={() => {
+                    setOpenReport(true)
+                    setSelectedMovement(selected)
+                  }}
+                />
+              )
             }
-          },
-          customToolbarSelect: selectedRows => {
-            const selectedRowIndex = selectedRows.data[0].dataIndex
-            const selected = movements[selectedRowIndex]
-            return <CustomToolBarTransactions handleReport={() => {}} />
-          }
-        }}
-      />
-    </Card>
+          }}
+        />
+      </Card>
+
+      <TransactionReport open={openReport} setOpen={setOpenReport} selectedMovement={selectedMovement} />
+    </>
   )
 }

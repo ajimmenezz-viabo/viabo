@@ -76,7 +76,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
         <FormProvider formik={formik}>
           <Box sx={{ p: 3 }}>
             <Stack spacing={2} direction={{ xs: 'column-reverse', md: 'row' }} alignItems={'center'} mb={3}>
-              <Typography variant="h6" sx={{ color: 'text.disabled' }}>
+              <Typography variant="subtitle1" sx={{ color: 'text.disabled' }}>
                 Transacciones:
               </Typography>
               <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }} />
@@ -144,10 +144,10 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                                 setCardsToSelect(filterCards)
                                 setFieldValue(card, value)
                               }}
-                              sx={{ width: 0.6 }}
+                              sx={{ width: { xs: 1, lg: 0.6 } }}
                             />
                             <RFTextField
-                              sx={{ width: 0.4 }}
+                              sx={{ width: { xs: 1, lg: 0.4 } }}
                               size={'small'}
                               name={amount}
                               required={true}

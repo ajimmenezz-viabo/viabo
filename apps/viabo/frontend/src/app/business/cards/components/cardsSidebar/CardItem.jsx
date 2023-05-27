@@ -16,9 +16,9 @@ const RootStyle = styled(ListItemButton)(({ theme }) => ({
 CardItem.propTypes = {
   isOpenSidebar: PropTypes.bool,
   selected: PropTypes.bool,
-  card: PropTypes.object.card,
-  onSelectRow: PropTypes.object.func,
-  onOpenDetails: PropTypes.object.func
+  card: PropTypes.object,
+  onSelectRow: PropTypes.func,
+  onOpenDetails: PropTypes.func
 }
 
 function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails }) {

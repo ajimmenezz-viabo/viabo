@@ -12,7 +12,7 @@ export function CardBalance() {
 
   return (
     <Card sx={{ p: 3 }}>
-      <Typography variant="subtitle2" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         Balance
       </Typography>
 

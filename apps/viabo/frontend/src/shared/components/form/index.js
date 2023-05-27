@@ -1,6 +1,7 @@
 export * from './RFTextField'
 export * from './RFSelect'
 export * from './RFPasswordField'
+export * from './RFUpload'
 export * from './Label'
 export * from './FormProvider'
 export * from './InputStyle'

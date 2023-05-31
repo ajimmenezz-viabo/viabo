@@ -1,12 +1,10 @@
-import { Image } from '@/shared/components/images'
-import mastercard from '@/shared/assets/img/ic_mastercard.svg'
-import carnet from '@/shared/assets/img/new_carnet.svg'
+import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 import { IconButton, Stack, Typography } from '@mui/material'
 import { fCardNumber, fCardNumberHidden } from '@/shared/utils'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useState } from 'react'
 
-export default function CardNumber({ card, disableShow }) {
+export default function CardNumber({ card, disableShow, color }) {
   const [showCardNumber, setShowCardNumber] = useState(true)
   const onToggleShowCardNumber = () => {
     setShowCardNumber(prev => !prev)
@@ -14,13 +12,8 @@ export default function CardNumber({ card, disableShow }) {
 
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
-      <Image
-        disabledEffect
-        visibleByDefault
-        alt="credit-card"
-        src={card?.cardType?.toLowerCase() === 'mastercard' ? mastercard : carnet}
-        sx={{ height: 30 }}
-      />
+      {card?.cardType?.toLowerCase() !== 'mastercard' ? <CarnetLogo color={color} /> : <MasterCardLogo color={color} />}
+
       <Typography sx={{ typography: 'h6' }}>
         {showCardNumber ? fCardNumberHidden(card?.cardNumber) : fCardNumber(card?.cardNumber)}
       </Typography>

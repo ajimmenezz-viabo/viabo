@@ -10,14 +10,18 @@ const MIN_AMOUNT = 0
 const MAX_AMOUNT = 2000
 const STEP = 100
 
-export function PaymentForm({ balance, setCurrentBalance, insufficient }) {
+export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQR }) {
   const [autoWidth, setAutoWidth] = useState(24)
 
   const formik = useFormik({
     initialValues: {
       amount: 0
     },
-    onSubmit: values => {}
+    onSubmit: values => {
+      setTimeout(() => {
+        setShowQR(true)
+      }, 3000)
+    }
   })
 
   const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting } = formik
@@ -63,7 +67,13 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient }) {
             Ingresa Cantidad
           </Typography>
 
-          <InputAmount onBlur={handleBlur} onChange={handleInputChange} autoWidth={autoWidth} amount={amount} />
+          <InputAmount
+            disabled={isSubmitting}
+            onBlur={handleBlur}
+            onChange={handleInputChange}
+            autoWidth={autoWidth}
+            amount={amount}
+          />
 
           <MuiSlider
             value={typeof amount === 'number' ? amount : 0}
@@ -73,10 +83,12 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient }) {
             min={MIN_AMOUNT}
             max={MAX_AMOUNT}
             onChange={handleSliderChange}
+            disabled={isSubmitting}
           />
 
           <Stack sx={{ pt: 3 }}>
             <LoadingButton
+              loading={isSubmitting}
               variant="contained"
               color="primary"
               disabled={amount === 0 || insufficient}

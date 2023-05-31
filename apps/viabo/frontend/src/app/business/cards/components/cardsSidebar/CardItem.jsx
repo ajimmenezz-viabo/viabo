@@ -1,10 +1,21 @@
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
-import { Avatar, Box, Checkbox, ListItem, ListItemAvatar, ListItemButton, ListItemText, Tooltip } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import {
+  Avatar,
+  Box,
+  Checkbox,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  Stack,
+  Tooltip,
+  Typography
+} from '@mui/material'
 import { BadgeStatus } from '@/shared/components/notifications'
 import { CreditCard } from '@mui/icons-material'
 import { memo } from 'react'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
   padding: theme.spacing(1.5, 3),
@@ -22,9 +33,10 @@ CardItem.propTypes = {
 }
 
 function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails }) {
-  const { cardNumberHidden, id, register, expiration } = card
+  const { cardNumberHidden, id, expiration, cardType } = card
   const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
   const commerceCard = useCommerceDetailsCard(state => state.card)
+  const theme = useTheme()
 
   const status =
     id === commerceCard?.id && commerceCard ? (commerceCard?.cardON === true ? 'online' : 'offline') : 'invisible'
@@ -77,18 +89,21 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
 
           {isOpenSidebar && (
             <>
-              <ListItemText
-                primary={cardNumberHidden}
-                primaryTypographyProps={{
-                  noWrap: true,
-                  variant: 'subtitle2'
-                }}
-                secondary={expiration}
-                secondaryTypographyProps={{
-                  noWrap: true,
-                  variant: 'subtitle2'
-                }}
-              />
+              <Stack>
+                <Typography noWrap variant={'subtitle2'}>
+                  {cardNumberHidden}
+                </Typography>
+                <Stack flexDirection={'row'} alignItems={'center'} gap={6}>
+                  <Typography color={'text.secondary'} variant={'subtitle2'}>
+                    {expiration}
+                  </Typography>
+                  {cardType === 'Carnet' ? (
+                    <CarnetLogo sx={{ width: 40 }} color={isSelected ? 'black' : theme.palette.text.primary} />
+                  ) : (
+                    <MasterCardLogo sx={{ width: 40 }} color={theme.palette.text.primary} />
+                  )}
+                </Stack>
+              </Stack>
             </>
           )}
         </RootStyle>

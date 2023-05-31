@@ -43,7 +43,7 @@ export function CardDetailsHeader({ card }) {
           </Stack>
         </Stack>
         <Stack justifyContent="flex-end" spacing={1} alignItems={{ xs: 'center', md: 'end' }}>
-          <CardNumber card={card} />
+          <CardNumber card={card} color={'#fff'} />
           <Stack
             display="flex"
             flexDirection={'row'}

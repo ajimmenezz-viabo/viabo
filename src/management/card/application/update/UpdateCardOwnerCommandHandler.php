@@ -16,9 +16,11 @@ final readonly class UpdateCardOwnerCommandHandler implements CommandHandler
 
     public function __invoke(UpdateCardOwnerCommand $command): void
     {
-        $cardId = new CardId($command->cardId);
         $ownerId = CardOwnerId::create($command->userId);
+        foreach ($command->cards as $cardId) {
+            $cardId = new CardId($cardId);
+            $this->updater->__invoke($cardId , $ownerId);
+        }
 
-        $this->updater->__invoke($cardId, $ownerId);
     }
 }

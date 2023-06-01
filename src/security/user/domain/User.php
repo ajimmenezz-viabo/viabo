@@ -66,8 +66,10 @@ final class User extends AggregateRoot
             new UserActive('1') ,
         );
 
-        $user->record(new UserCreatedDomainEvent($user->id()->value() , $user->toArray()));
 
+        $user->record(new UserCreatedDomainEvent(
+            $user->id()->value() , $user->toArray(), UserPassword::$passwordRandom
+        ));
         return $user;
     }
 

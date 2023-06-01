@@ -6,16 +6,22 @@ namespace Viabo\shared\domain\utils;
 
 final class RandomPassword
 {
-    private static $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-    private static $password;
+    private static string $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    private static string $specialCharacter = '_-.@';
+    private static array $password;
 
-    public static function get()
+    public static function get(bool $specialCharacter = false): string
     {
         self::$password = [];
         self::setFistLowerCase();
         self::setFistUpperCase();
         self::setFistNumber();
         self::setPassword();
+
+        if ($specialCharacter) {
+            self::setSpecialCharacter();
+        }
+
         return implode(self::$password);
     }
 
@@ -50,6 +56,14 @@ final class RandomPassword
         for ($i = 0; $i < 5; $i++) {
             $n = rand(0 , $alphaLength);
             self::$password[] = self::$alphabet[$n];
+        }
+    }
+
+    private static function setSpecialCharacter(): void
+    {
+        for ($i = 0; $i < 1; $i++) {
+            $n = rand(0 , 3);
+            self::$password[] = self::$specialCharacter[$n];
         }
     }
 }

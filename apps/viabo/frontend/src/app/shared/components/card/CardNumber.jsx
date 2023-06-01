@@ -6,7 +6,8 @@ import { useState } from 'react'
 
 export default function CardNumber({ card, disableShow, color }) {
   const [showCardNumber, setShowCardNumber] = useState(true)
-  const onToggleShowCardNumber = () => {
+  const onToggleShowCardNumber = e => {
+    e.stopPropagation()
     setShowCardNumber(prev => !prev)
   }
 

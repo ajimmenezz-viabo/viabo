@@ -1,8 +1,8 @@
 import { axios } from '@/shared/interceptors'
 import { CardAdapter, CardsAdapter } from '@/app/shared/adapters'
 
-export const getCommerceCards = async () => {
-  const { data } = await axios.get('/api/cards/commerce')
+export const getEnabledCommerceCards = async () => {
+  const { data } = await axios.get('/api/enabled-cards/commerce')
   return CardsAdapter(data)
 }
 

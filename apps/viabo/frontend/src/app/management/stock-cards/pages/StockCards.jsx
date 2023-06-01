@@ -1,7 +1,7 @@
 import { Page } from '@/shared/components/containers'
 import { HeaderPage } from '@/shared/components/layout'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
-import { StockCardSidebar, StockCardsList } from '@/app/management/stock-cards/components'
+import { StockCardSidebar } from '@/app/management/stock-cards/components'
 import { lazy, useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { useFindAffiliatedCommerces, useFindCardTypes, useFindStockCards } from '@/app/management/stock-cards/hooks'
@@ -11,6 +11,7 @@ import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { Lodable } from '@/shared/components/lodables'
 import { MANAGEMENT_PATHS, MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes'
 import { PATH_DASHBOARD } from '@/routes'
+import { CardsList } from '@/app/shared/components'
 
 const AssignCardModal = Lodable(lazy(() => import('@/app/management/stock-cards/components/AssignCardModal')))
 
@@ -84,7 +85,7 @@ export default function StockCards() {
             ) : null
           }
         />
-        <StockCardsList stockCards={stockCards} />
+        <CardsList cards={stockCards} />
         <StockCardSidebar open={open} setOpen={setOpen} />
         {openAssignCard && <AssignCardModal />}
       </ContainerPage>

@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getErrorAPI } from '@/shared/interceptors'
-import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
-import { getEnabledCommerceCards } from '@/app/business/cards/services'
+import { UNASSIGNED_CARDS_KEYS } from '@/app/business/unassigned-cards/adapters'
+import { getUnassignedCommerceCards } from '@/app/business/unassigned-cards/services'
 
-export const useFindCommerceCards = (options = {}) => {
+export const useFindUnassignedCards = (options = {}) => {
   const [customError, setCustomError] = useState(null)
-  const commerces = useQuery([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST], getEnabledCommerceCards, {
+  const commerces = useQuery([UNASSIGNED_CARDS_KEYS.LIST], getUnassignedCommerceCards, {
     staleTime: 60000,
     onError: error => {
       const errorMessage = getErrorAPI(

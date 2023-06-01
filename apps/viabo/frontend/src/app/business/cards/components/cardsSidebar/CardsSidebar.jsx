@@ -98,7 +98,6 @@ export function CardsSidebar() {
 
   const handleClickAwaySearch = () => {
     setSearchFocused(false)
-    setSearchQuery('')
   }
 
   const handleChangeSearch = async event => {
@@ -186,7 +185,7 @@ export function CardsSidebar() {
       )}
 
       {commerceCards && commerceCards?.length === 0 && (
-        <EmptyList pt={2.5} message={'No hay tarjetas asignadas a este comercio'} />
+        <EmptyList pt={2.5} message={'No hay tarjetas activas en este comercio'} />
       )}
 
       <Scrollbar>

@@ -10,7 +10,7 @@ use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class CommerceCardsFinder
+final readonly class EnabledCommerceCardsFinder
 {
     public function __construct(private CardRepository $repository)
     {
@@ -18,8 +18,10 @@ final readonly class CommerceCardsFinder
 
     public function __invoke(CardCommerceId $commerceId): CommerceCardsResponse
     {
+        $enabledStatus = '5';
         $filters = Filters::fromValues([
-            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()]
+            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()] ,
+            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus]
         ]);
         $cards = $this->repository->searchView(new Criteria($filters));
 

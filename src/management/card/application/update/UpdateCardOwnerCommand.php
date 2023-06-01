@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class UpdateCardOwnerCommand implements Command
 {
-    public function __construct(public string $cardId , public string $userId)
+    public function __construct(public array $cards , public string $userId)
     {
     }
 }

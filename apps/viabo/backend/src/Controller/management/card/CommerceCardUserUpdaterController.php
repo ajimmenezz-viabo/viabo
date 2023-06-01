@@ -23,16 +23,13 @@ final readonly class CommerceCardUserUpdaterController extends ApiController
             $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
 
-            $cardId = $data['cardId'];
-            $cardData = $this->ask(new CardQuery($cardId));
-
             $this->dispatch(new CreateUserCommand($data['name'] , $data['email'] , $data['phone']));
             $userData = $this->ask(new FindUserQuery('' , $data['email']));
 
             $userId = $userData->userData['id'];
-            $this->dispatch(new CreateCommerceUserCommand($userId , $cardData->cardData['commerceId']));
+            $this->dispatch(new CreateCommerceUserCommand($userId , $data['cards']));
 
-            $this->dispatch(new UpdateCardOwnerCommand($cardId , $userId));
+            $this->dispatch(new UpdateCardOwnerCommand($data['cards'] , $userId));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

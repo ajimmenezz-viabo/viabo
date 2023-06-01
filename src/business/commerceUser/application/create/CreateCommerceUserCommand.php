@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class CreateCommerceUserCommand implements Command
 {
-    public function __construct(public string $userId , public string $commerceId)
+    public function __construct(public string $userId , public array $cards)
     {
     }
 }

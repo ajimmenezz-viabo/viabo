@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\FindCommerceQuery;
-use Viabo\management\card\application\find\CommerceCardsQuery;
+use Viabo\management\card\application\find\EnabledCommerceCardsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
-final readonly class CommerceCardsFinderController extends ApiController
+final readonly class EnabledCommerceCardsFinderController extends ApiController
 {
     public function __invoke(Request $request): Response
     {
@@ -21,7 +21,7 @@ final readonly class CommerceCardsFinderController extends ApiController
 
             $commerceId = '';
             $data = $this->ask(new FindCommerceQuery($commerceId , $tokenData['id']));
-            $data = $this->ask(new CommerceCardsQuery($data->commerce['id']));
+            $data = $this->ask(new EnabledCommerceCardsQuery($data->commerce['id']));
 
             return new JsonResponse($this->opensslEncrypt($data->commerceCards));
         } catch (\DomainException $exception) {

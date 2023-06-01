@@ -7,6 +7,7 @@ namespace Viabo\management\card\domain;
 use Viabo\management\card\domain\events\AssignedCardDomaEventInCommerce;
 use Viabo\management\card\domain\events\CardBlockUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedDomainEvent;
+use Viabo\management\card\domain\events\CardOwnerUpdatedDomainEvent;
 use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -76,6 +77,11 @@ final class Card extends AggregateRoot
         return $this->number;
     }
 
+    public function block(): CardBlock
+    {
+        return $this->information->blockStatus();
+    }
+
     public function assignIn(CardCommerceId $commerceId): void
     {
         $this->commerceId = $this->commerceId->update($commerceId->value());
@@ -108,6 +114,11 @@ final class Card extends AggregateRoot
         return $this->information->toArray();
     }
 
+    public function lastDigits(): string
+    {
+        return $this->number->last8Digits();
+    }
+
     public function updateBlock(CardBlock $blockStatus): void
     {
         if (empty($this->information)) {
@@ -117,9 +128,11 @@ final class Card extends AggregateRoot
         $this->record(new CardBlockUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
-    public function block(): CardBlock
+    public function updateOwner(CardOwnerId $ownerId , CardStatusId $statusId): void
     {
-        return $this->information->blockStatus();
+        $this->ownerId = $ownerId;
+        $this->statusId = $statusId;
+        $this->record(new CardOwnerUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function toArray(): array
@@ -139,10 +152,5 @@ final class Card extends AggregateRoot
             'register' => $this->registerDate->value() ,
             'active' => $this->active->value()
         ];
-    }
-
-    public function lastDigits(): string
-    {
-        return $this->number->last8Digits();
     }
 }

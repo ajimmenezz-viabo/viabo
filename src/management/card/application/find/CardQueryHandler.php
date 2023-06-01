@@ -16,7 +16,7 @@ final readonly class CardQueryHandler implements QueryHandler
 
     public function __invoke(CardQuery $query): Response
     {
-        $cardId = new CardId($query->cardId);
+        $cardId = CardId::create($query->cardId);
 
         return $this->finder->__invoke($cardId);
     }

@@ -46,4 +46,9 @@ final class CommerceId extends UuidValueObject
     {
         return !empty($this->value);
     }
+
+    public function isDifferent(string $value): bool
+    {
+        return $this->value !== $value;
+    }
 }

@@ -8,6 +8,7 @@ use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
+use Viabo\security\user\domain\events\UserCreatedDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class User extends AggregateRoot
@@ -47,6 +48,25 @@ final class User extends AggregateRoot
         );
 
         $user->record(new LegalRepresentativeCreatedDomainEvent($user->id()->value() , $user->toArray()));
+
+        return $user;
+    }
+
+    public static function create(UserName $name , UserEmail $email , UserPhone $phone): static
+    {
+        $user = new self(
+            UserId::random() ,
+            new UserProfile('4') ,
+            $name ,
+            new UserLastname('') ,
+            $phone ,
+            $email ,
+            UserPassword::random() ,
+            UserRegister::todayDate() ,
+            new UserActive('1') ,
+        );
+
+        $user->record(new UserCreatedDomainEvent($user->id()->value() , $user->toArray()));
 
         return $user;
     }

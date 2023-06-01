@@ -17,7 +17,7 @@ final readonly class FindUserQueryHandler implements QueryHandler
 
     public function __invoke(FindUserQuery $query): Response
     {
-        $userId = new UserId($query->userId);
+        $userId = empty($query->userId) ? UserId::empty() : new UserId($query->userId);
         $userEmail = new UserEmail($query->userEmail);
 
         return ($this->finder)($userId , $userEmail);

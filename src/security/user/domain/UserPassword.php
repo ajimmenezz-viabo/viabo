@@ -6,6 +6,7 @@ namespace Viabo\security\user\domain;
 
 use Viabo\security\user\domain\exceptions\UserPasswordErrorConfirmation;
 use Viabo\security\user\domain\exceptions\UserPasswordNotSecurityLevel;
+use Viabo\shared\domain\utils\RandomPassword;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class UserPassword extends StringValueObject
@@ -17,7 +18,13 @@ final class UserPassword extends StringValueObject
         return new self(self::encrypt($value));
     }
 
-    private static function validateConfirm(string $value , string $confirm)
+    public static function random(): static
+    {
+        $value = RandomPassword::get(specialCharacter: true);
+        return self::create($value , $value);
+    }
+
+    private static function validateConfirm(string $value , string $confirm): void
     {
         if (strcmp($value , $confirm) != 0) {
             throw new UserPasswordErrorConfirmation();
@@ -82,6 +89,6 @@ final class UserPassword extends StringValueObject
     public function isDifferent(string $passwordEntered): bool
     {
         $passwordEntered = $_ENV['APP_PASSWORD_SECURITY'] . $passwordEntered;
-        return !password_verify($passwordEntered, $this->value);
+        return !password_verify($passwordEntered , $this->value);
     }
 }

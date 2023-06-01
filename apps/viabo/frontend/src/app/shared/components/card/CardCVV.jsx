@@ -5,7 +5,8 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 export default function CardCvv({ card, disableShow }) {
   const [showCVV, setShowCVV] = useState(true)
 
-  const onToggleShowCVV = () => {
+  const onToggleShowCVV = e => {
+    e.stopPropagation()
     setShowCVV(prev => !prev)
   }
 

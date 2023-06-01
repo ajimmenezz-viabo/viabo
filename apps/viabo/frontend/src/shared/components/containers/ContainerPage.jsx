@@ -10,7 +10,7 @@ export function ContainerPage({ children, ...others }) {
       className="animate__animated animate__fadeIn"
       maxWidth={false}
       {...others}
-      style={{ overflowY: 'visible' }}
+      style={{ overflowY: 'auto' }}
     >
       {children}
     </Container>

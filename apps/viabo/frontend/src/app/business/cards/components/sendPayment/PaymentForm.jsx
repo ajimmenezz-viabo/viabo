@@ -11,7 +11,7 @@ const MAX_AMOUNT = 2000
 const STEP = 100
 
 export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQR }) {
-  const [autoWidth, setAutoWidth] = useState(24)
+  const [autoWidth, setAutoWidth] = useState(30)
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +26,7 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
 
   const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting } = formik
 
-  const amount = values.amount
+  const { amount } = values
 
   const handleInputChange = event => {
     const value = event.target.value === '' ? '' : Number(event.target.value)

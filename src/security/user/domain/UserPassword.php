@@ -11,17 +11,19 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class UserPassword extends StringValueObject
 {
+    public static string $passwordRandom = '';
+
     public static function create(string $value , string $confirm): self
     {
         self::validateConfirm($value , $confirm);
         self::validateSecurity($value);
-        return new self(self::encrypt($value));
+        return new static(self::encrypt($value));
     }
 
     public static function random(): static
     {
-        $value = RandomPassword::get(specialCharacter: true);
-        return self::create($value , $value);
+        self::$passwordRandom = RandomPassword::get(specialCharacter: true);
+        return self::create(self::$passwordRandom , self::$passwordRandom);
     }
 
     private static function validateConfirm(string $value , string $confirm): void

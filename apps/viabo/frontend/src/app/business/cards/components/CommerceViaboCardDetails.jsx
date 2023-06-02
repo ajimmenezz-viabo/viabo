@@ -4,6 +4,7 @@ import { SelectDataIllustration } from '@/shared/components/illustrations'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import {
   CardActions,
+  CardAssignInfo,
   CardBalance,
   CardCharge,
   CardTransactions
@@ -52,6 +53,7 @@ export function CommerceViaboCardDetails() {
                   <Stack spacing={3}>
                     <CardBalance />
                     <CardCharge />
+                    <CardAssignInfo />
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={8}>

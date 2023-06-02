@@ -19,6 +19,8 @@ export const CardsAdapter = cards => {
           commerceName,
           ownerId,
           ownerName,
+          ownerPhone,
+          ownerEmail,
           recorderId,
           recorderName,
           active
@@ -34,7 +36,9 @@ export const CardsAdapter = cards => {
           },
           assignUser: {
             id: ownerId,
-            name: ownerName
+            name: ownerName,
+            phone: ownerPhone,
+            email: ownerEmail
           },
           staffRegister: {
             id: recorderId,

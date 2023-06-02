@@ -4,6 +4,7 @@
 namespace Viabo\management\card\application\find;
 
 
+use Viabo\management\card\domain\CardOwnerId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardView;
 use Viabo\management\shared\domain\card\CardCommerceId;
@@ -16,13 +17,29 @@ final readonly class EnabledCommerceCardsFinder
     {
     }
 
-    public function __invoke(CardCommerceId $commerceId): CommerceCardsResponse
+    public function __invoke(
+        CardCommerceId $commerceId ,
+        CardOwnerId    $ownerId ,
+        string         $userProfileId
+    ): CommerceCardsResponse
     {
         $enabledStatus = '5';
-        $filters = Filters::fromValues([
-            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()] ,
+        $filters = [
             ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus]
-        ]);
+        ];
+
+        $LegalRepresentativeProfile = '3';
+        if ($userProfileId === $LegalRepresentativeProfile) {
+            $filters[] = ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()];
+        }
+
+        $ownerProfile = '4';
+        if ($userProfileId === $ownerProfile) {
+            $filters[] = ['field' => 'ownerId' , 'operator' => '=' , 'value' => $ownerId->value()];
+        }
+
+
+        $filters = Filters::fromValues($filters);
         $cards = $this->repository->searchView(new Criteria($filters));
 
         return new CommerceCardsResponse(array_map(function (CardView $card) {

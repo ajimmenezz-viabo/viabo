@@ -15,6 +15,8 @@ interface PaymentProcessorAdapter
 
     public function searchCardInformation(CardCredentials $credential): array;
 
+    public function searchCardNip(Card $card): array;
+
     public function updateBlock(Card $card): void;
 
     public function transactionPay(CardOperations $operations): void;

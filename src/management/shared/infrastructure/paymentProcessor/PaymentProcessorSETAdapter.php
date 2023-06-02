@@ -43,6 +43,22 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
         return $this->request($data);
     }
 
+
+    public function searchCardNip(Card $card): array
+    {
+        $credential = $card->credentials();
+        $clientKey = $credential->clientKey()->valueDecrypt();
+        $data = [
+            'GetDataPanId' => true ,
+            'clientKey' => $clientKey ,
+            'clientToken' => $this->token($clientKey) ,
+            'binCard' => $card->number()->last8Digits() ,
+            'moyeCard' => $card->expirationDate()->value() ,
+            'cvv' => $card->cvv()->valueDecrypt()
+        ];
+        return $this->request($data);
+    }
+
     public function updateBlock(Card $card): void
     {
         $credential = $card->credentials();

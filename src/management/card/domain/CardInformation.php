@@ -11,6 +11,7 @@ final class CardInformation
         private CardPaynet  $paynet ,
         private CardBalance $balance ,
         private CardBlock   $block ,
+        private CardNip     $nip ,
         private array       $movements = []
     )
     {
@@ -23,7 +24,8 @@ final class CardInformation
             new CardSpai('') ,
             new CardPaynet('') ,
             new CardBalance('') ,
-            CardBlock::empty()
+            CardBlock::empty() ,
+            new CardNip('')
         );
     }
 
@@ -33,7 +35,8 @@ final class CardInformation
             new CardSpai($data['Spai']) ,
             new CardPaynet($data['Paynet']) ,
             new CardBalance(strval($data['Card'][0]['Balance'])) ,
-            new CardBlock($data['Card'][0]['Status'])
+            new CardBlock($data['Card'][0]['Status']) ,
+            new CardNip($data['Nip'])
         );
         $information->addMovements($data['Card'][0]['Movements'][0]);
         return $information;
@@ -72,6 +75,7 @@ final class CardInformation
             'paynet' => $this->paynet->value() ,
             'balance' => $this->balance->value() ,
             'block' => $this->block->value() ,
+            'nip' => $this->nip->value() ,
             'movements' => $this->movements()
         ];
     }

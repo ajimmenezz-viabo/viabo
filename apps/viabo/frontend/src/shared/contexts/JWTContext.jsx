@@ -4,6 +4,7 @@ import { isValidToken, setSession } from '@/shared/utils'
 import jwtDecode from 'jwt-decode'
 import { UseFindModulesByUser } from '@/app/authentication/hooks'
 import { axios } from '@/shared/interceptors'
+import { useQueryClient } from '@tanstack/react-query'
 
 const initialState = {
   isAuthenticated: false,
@@ -61,6 +62,7 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const client = useQueryClient()
 
   const {
     data: userModules,
@@ -174,6 +176,7 @@ function AuthProvider({ children }) {
   const logout = async () => {
     setSession(null)
     dispatch({ type: 'LOGOUT' })
+    client.removeQueries()
     remove()
   }
 

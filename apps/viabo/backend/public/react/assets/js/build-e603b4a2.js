@@ -1,1 +1,0 @@
-import{da as o,aC as u,db as l,r as C,dc as g}from"./build-bfd91332.js";function y(r,a,n){const[t,c={}]=o(r,a,n),e=u({context:c.context}),s=e.getQueryCache();return l(C.useCallback(i=>s.subscribe(g.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{y as u};

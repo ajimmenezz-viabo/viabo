@@ -82,6 +82,16 @@ final class Card extends AggregateRoot
         return $this->information->blockStatus();
     }
 
+    public function expirationDate(): CardExpirationDate
+    {
+        return $this->expirationDate;
+    }
+
+    public function cvv(): CardCVV
+    {
+        return $this->cvv;
+    }
+
     public function assignIn(CardCommerceId $commerceId): void
     {
         $this->commerceId = $this->commerceId->update($commerceId->value());

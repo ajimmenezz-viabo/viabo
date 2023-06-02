@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerceUser\application\create\CreateCommerceUserCommand;
-use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\card\application\update\UpdateCardOwnerCommand;
 use Viabo\security\user\application\create\CreateUserCommand;
 use Viabo\security\user\application\find\FindUserQuery;

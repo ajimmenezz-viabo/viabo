@@ -21,10 +21,10 @@ final readonly class EnabledCommerceCardsFinderController extends ApiController
 
             $data = $this->ask(new CommerceQuery($tokenData['id']));
             $data = $this->ask(new EnabledCommerceCardsQuery(
-                $data->commerce['id'], $tokenData['id'], $tokenData['profileId']
+                $data->commerce['id'] , $tokenData['id'] , $tokenData['profileId']
             ));
 
-            return new JsonResponse($data->commerceCards);
+            return new JsonResponse($this->opensslEncrypt($data->commerceCards));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

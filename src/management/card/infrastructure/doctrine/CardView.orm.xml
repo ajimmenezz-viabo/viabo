@@ -17,6 +17,8 @@
         <field name="commerceName" column="CommerceName"/>
         <field name="ownerId" column="OwnerId"/>
         <field name="ownerName" column="OwnerName"/>
+        <field name="ownerEmail" column="OwnerEmail"/>
+        <field name="ownerPhone" column="OwnerPhone"/>
         <field name="recorderId" column="RecorderId"/>
         <field name="recorderName" column="RecorderName"/>
         <field name="registerDate" column="RegisterDate"/>

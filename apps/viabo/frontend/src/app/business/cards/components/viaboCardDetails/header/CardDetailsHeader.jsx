@@ -64,7 +64,7 @@ export function CardDetailsHeader({ card }) {
               color={'inherit'}
               onClick={() => setOpenNIP(prev => !prev)}
             >
-              {openNIP ? `123` : 'NIP'}
+              {openNIP ? card?.nip : 'NIP'}
             </Button>
           </Stack>
         </Stack>

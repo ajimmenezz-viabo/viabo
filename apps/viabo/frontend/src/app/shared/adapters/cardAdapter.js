@@ -12,6 +12,7 @@ export const CardAdapter = card => {
       SPEI: decryptedCard?.spai,
       PAYNET: decryptedCard?.paynet,
       cardON: decryptedCard?.block === 'UnBlocked',
+      nip: decryptedCard?.nip,
       balance,
       balanceFormatted: fCurrency(balance),
       movements:

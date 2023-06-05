@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import {
   Avatar,
@@ -50,6 +50,14 @@ export default function MailCompose({ isOpenCompose, onCloseCompose }) {
   const [fullScreen, setFullScreen] = useState(false)
   const [message, setMessage] = useState('')
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
+
+  const filterSelectedCards = useMemo(
+    () =>
+      selectedCards.filter(
+        (card, index, self) => index === self.findIndex(o => o?.assignUser?.id === card?.assignUser?.id)
+      ),
+    [selectedCards]
+  )
 
   const isDesktop = useResponsive('up', 'sm')
 
@@ -123,7 +131,7 @@ export default function MailCompose({ isOpenCompose, onCloseCompose }) {
         <Divider />
         <Stack p={3}>
           <Stack flexDirection={'row'} flexWrap={'wrap'} flexGrow={1} gap={1}>
-            {selectedCards?.map(card => (
+            {filterSelectedCards?.map(card => (
               <Tooltip
                 key={card?.id}
                 title={card?.cardNumberHidden || ''}
@@ -131,7 +139,7 @@ export default function MailCompose({ isOpenCompose, onCloseCompose }) {
                 followCursor
                 PopperProps={{ style: { zIndex: 2001 } }}
               >
-                <Chip avatar={<Avatar>C</Avatar>} label={card?.assignCommerce?.name} />
+                <Chip avatar={<Avatar>C</Avatar>} label={card?.assignUser?.name} />
               </Tooltip>
             ))}
           </Stack>

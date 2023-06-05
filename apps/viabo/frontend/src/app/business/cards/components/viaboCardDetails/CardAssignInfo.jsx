@@ -4,7 +4,6 @@ import { useCommerceDetailsCard } from '@/app/business/cards/store'
 export function CardAssignInfo() {
   const card = useCommerceDetailsCard(state => state.card)
   const { assignUser } = card
-  console.log(card)
 
   return (
     <Card sx={{ p: 3 }}>

@@ -122,16 +122,17 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken)
           const decoded = jwtDecode(accessToken)
-
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: true,
               user: {
+                ...state.user,
                 name: decoded?.name,
                 profile: decoded?.profile,
                 email: decoded?.email,
-                urlInit: decoded?.urlInit ?? ''
+                urlInit: decoded?.urlInit ?? '',
+                modules: userModules
               }
             }
           })
@@ -189,6 +190,7 @@ function AuthProvider({ children }) {
       type: 'LOGIN',
       payload: {
         user: {
+          ...state.user,
           name: decoded?.name,
           profile: decoded?.profile,
           email: decoded?.email,

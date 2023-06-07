@@ -10,6 +10,6 @@ final class CardMovementTransactionId extends StringValueObject
 {
     public function isSame(string $operationId): bool
     {
-        return str_contains($this->value , $operationId);
+        return str_contains($this->value, $operationId) && !empty($operationId);
     }
 }

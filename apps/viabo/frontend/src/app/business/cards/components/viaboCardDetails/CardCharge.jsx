@@ -3,11 +3,12 @@ import { Box, Card, Collapse, IconButton, Stack, Typography } from '@mui/materia
 import { Check, CopyAll, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import Barcode from 'react-barcode'
-import { useResponsive } from '@theme/hooks'
+import { useCollapseDrawer, useResponsive } from '@theme/hooks'
 
 export function CardCharge() {
   const card = useCommerceDetailsCard(state => state.card)
   const isDesktop = useResponsive('up', 'xl')
+  const { isCollapse } = useCollapseDrawer()
   const [expand, setExpand] = useState(false)
   const [copiedSPEI, setCopiedSPEI] = useState(false)
   const [copiedPAYNET, setCopiedPAYNET] = useState(false)
@@ -100,7 +101,7 @@ export function CardCharge() {
               </IconButton>
             </Stack>
             <Box sx={{ display: 'flex', alignSelf: 'center' }}>
-              <Barcode value={card?.PAYNET || '1'} width={isDesktop ? 2 : 1} />
+              <Barcode value={card?.PAYNET || '1'} width={isDesktop && isCollapse ? 2 : 1} />
             </Box>
           </Stack>
         </Stack>

@@ -1,0 +1,1 @@
+import{dd as o,aC as u,de as l,r as C,df as g}from"./build-f64bb85d.js";function y(r,a,n){const[t,c={}]=o(r,a,n),e=u({context:c.context}),s=e.getQueryCache();return l(C.useCallback(i=>s.subscribe(g.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{y as u};

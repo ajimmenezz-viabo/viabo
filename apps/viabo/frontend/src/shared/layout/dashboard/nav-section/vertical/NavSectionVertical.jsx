@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material'
@@ -6,8 +6,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { NavListRoot } from './NavList'
 import { ListItemTextStyle } from './style'
-import { useAuth } from '@/shared/hooks'
-import { useQueryClient } from '@tanstack/react-query'
+import { useAuth, useGetQueryData } from '@/shared/hooks'
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 
 export const ListSubheaderStyle = styled(props => <ListItemButton {...props} />)(({ theme }) => ({
@@ -29,8 +28,7 @@ NavSectionVertical.propTypes = {
 
 function NavSectionVertical({ isCollapse, ...other }) {
   const { user } = useAuth()
-  const client = useQueryClient()
-  const data = client.getQueryData([AUTHENTICATION_KEYS.USER_MODULES])
+  const data = useGetQueryData([AUTHENTICATION_KEYS.USER_MODULES]) ?? []
   const navConfig = data?.menu
   const initialState = useMemo(() => navConfig?.map(() => true), [navConfig])
 

@@ -7,7 +7,7 @@ import {
   CardAssignInfo,
   CardBalance,
   CardCharge,
-  CardTransactions
+  CardMovements
 } from '@/app/business/cards/components/viaboCardDetails'
 import { useFindCardDetails } from '@/app/business/cards/hooks'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
@@ -57,7 +57,7 @@ export function CommerceViaboCardDetails() {
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={8}>
-                  <CardTransactions />
+                  <CardMovements />
                 </Grid>
               </Grid>
             </Stack>

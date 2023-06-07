@@ -1,5 +1,5 @@
 import { axios } from '@/shared/interceptors'
-import { CardAdapter, CardsAdapter } from '@/app/shared/adapters'
+import { CardAdapter, CardMovementsAdapter, CardsAdapter } from '@/app/shared/adapters'
 
 export const getEnabledCommerceCards = async () => {
   const { data } = await axios.get('/api/enabled-cards/commerce')
@@ -19,4 +19,9 @@ export const changeStatusCard = async card => {
 export const transactionsCard = async transactions => {
   const { data } = await axios.post('/api/card/transactions', transactions?.data)
   return transactions
+}
+
+export const getCardMovements = async (cardId, initialDate, finalDate) => {
+  const { data } = await axios.get(`/api/card/${cardId}/movements/${initialDate}/to/${finalDate}`)
+  return CardMovementsAdapter(data)
 }

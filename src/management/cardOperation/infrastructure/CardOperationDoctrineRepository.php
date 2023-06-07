@@ -8,10 +8,11 @@ use Doctrine\ORM\EntityManager;
 use Viabo\management\cardOperation\domain\CardOperation;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
 use Viabo\management\cardOperation\domain\CardOperations;
+use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
-use function Lambdish\Phunctional\instance_of;
 
 final class CardOperationDoctrineRepository extends DoctrineRepository implements CardOperationRepository
 {
@@ -31,6 +32,18 @@ final class CardOperationDoctrineRepository extends DoctrineRepository implement
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(CardOperation::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function searchDateRange(CardNumber $cardNumber , string $initialDate , string $finalDate): array
+    {
+        $query = "select co from Viabo\management\cardOperation\domain\CardOperation co 
+                    where co.originCard.value = :cardNumber and
+                    co.registerDate.value BETWEEN :initial and :final";
+        $statement = $this->entityManager()->createQuery($query);
+        $statement->setParameter('cardNumber' , $cardNumber->value());
+        $statement->setParameter('initial' , $initialDate);
+        $statement->setParameter('final' , $finalDate);
+        return $statement->getResult();
     }
 
     public function update(CardOperations $operations): void

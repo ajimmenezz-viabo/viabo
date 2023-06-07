@@ -4,6 +4,8 @@
 namespace Viabo\management\card\domain;
 
 
+use Viabo\management\shared\domain\card\CardClientKey;
+
 final class CardCredentials
 {
     public function __construct(

@@ -7,12 +7,12 @@ namespace Viabo\management\card\application\create;
 use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCVV;
 use Viabo\management\card\domain\CardExpirationDate;
-use Viabo\management\card\domain\CardNumber;
 use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\card\domain\CardRecorderId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\services\CardValidator;
 use Viabo\management\shared\domain\card\CardCommerceId;
+use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CardCreator

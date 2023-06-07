@@ -6,6 +6,7 @@ namespace Viabo\management\shared\infrastructure\paymentProcessor;
 
 use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCredentials;
+use Viabo\management\cardMovement\domain\CardMovementFilter;
 use Viabo\management\cardOperation\domain\CardOperation;
 use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\credential\domain\CardCredential;
@@ -55,6 +56,20 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
             'binCard' => $card->number()->last8Digits() ,
             'moyeCard' => $card->expirationDate()->value() ,
             'cvv' => $card->cvv()->valueDecrypt()
+        ];
+        return $this->request($data);
+    }
+
+    public function searchMovements(CardMovementFilter $cardMovement): array
+    {
+        $clientKey = $cardMovement->clientKey()->valueDecrypt();
+        $data = [
+            'cardMove' => true ,
+            'clientKey' => $clientKey ,
+            'clientToken' => $this->token($clientKey) ,
+            'binCard' => $cardMovement->cardNumber()->last8Digits() ,
+            'startDate' => $cardMovement->initialDate()->value() ,
+            'endDate' => $cardMovement->finalDate()->value()
         ];
         return $this->request($data);
     }

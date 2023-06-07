@@ -8,8 +8,10 @@ use Viabo\management\card\domain\events\AssignedCardDomaEventInCommerce;
 use Viabo\management\card\domain\events\CardBlockUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedDomainEvent;
 use Viabo\management\card\domain\events\CardOwnerUpdatedDomainEvent;
+use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Card extends AggregateRoot

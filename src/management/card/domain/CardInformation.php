@@ -11,8 +11,7 @@ final class CardInformation
         private CardPaynet  $paynet ,
         private CardBalance $balance ,
         private CardBlock   $block ,
-        private CardNip     $nip ,
-        private array       $movements = []
+        private CardNip     $nip
     )
     {
     }
@@ -31,15 +30,13 @@ final class CardInformation
 
     public static function create(array $data): static
     {
-        $information = new static(
+        return new static(
             new CardSpai($data['Spai']) ,
             new CardPaynet($data['Paynet']) ,
             new CardBalance(strval($data['Card'][0]['Balance'])) ,
             new CardBlock($data['Card'][0]['Status']) ,
             new CardNip($data['Nip'])
         );
-        $information->addMovements($data['Card'][0]['Movements'][0]);
-        return $information;
     }
 
     public function blockStatus(): CardBlock
@@ -52,22 +49,6 @@ final class CardInformation
         $this->block = $blockStatus;
     }
 
-    private function addMovements(array $movements): void
-    {
-        foreach ($movements as $movement) {
-            $this->movements[] = new CardInformationMovement(
-                $movement['Date'] , $movement['Description'] , $movement['Amount'] , $movement['Type_Id']
-            );
-        }
-    }
-
-    private function movements()
-    {
-        return array_map(function (CardInformationMovement $movement) {
-            return $movement->toArray();
-        } , $this->movements);
-    }
-
     public function toArray(): array
     {
         return [
@@ -75,8 +56,7 @@ final class CardInformation
             'paynet' => $this->paynet->value() ,
             'balance' => $this->balance->value() ,
             'block' => $this->block->value() ,
-            'nip' => $this->nip->value() ,
-            'movements' => $this->movements()
+            'nip' => $this->nip->value()
         ];
     }
 }

@@ -4,10 +4,10 @@
 namespace Viabo\management\card\application\update;
 
 
-use Viabo\management\card\domain\CardClientKey;
-use Viabo\management\card\domain\CardPassword;
 use Viabo\management\card\domain\CardBlock;
+use Viabo\management\card\domain\CardPassword;
 use Viabo\management\card\domain\CardUser;
+use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 

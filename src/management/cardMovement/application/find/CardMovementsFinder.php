@@ -5,11 +5,9 @@ namespace Viabo\management\cardMovement\application\find;
 
 
 use Viabo\management\cardMovement\domain\CardMovement;
-use Viabo\management\cardMovement\domain\CardMovementAmount;
 use Viabo\management\cardMovement\domain\CardMovementFilter;
 use Viabo\management\cardMovement\domain\CardMovementFinalDate;
 use Viabo\management\cardMovement\domain\CardMovementInitialDate;
-use Viabo\management\cardMovement\domain\CardMovementType;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
@@ -32,17 +30,18 @@ final readonly class CardMovementsFinder
         $cardMovement = CardMovementFilter::create($cardNumber , $clientKey , $initialDate , $finalDate);
         $cardMovements = $this->adapter->searchMovements($cardMovement);
 
+        $movements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
         return new CardMovementsResponse(array_map(function (array $movementData) use ($operations) {
             $movement = CardMovement::create(
                 $movementData['Auth_Code'] ,
                 $movementData['Type_Id'] ,
                 $movementData['charge'] ,
-                $movementData['Accredit'],
+                $movementData['Accredit'] ,
                 $movementData['Merchant'] ,
                 $movementData['Date']
             );
             $movement->updateDescriptionWith($operations);
             return $movement->toArray();
-        } , $cardMovements['TicketMessage']));
+        } , $movements));
     }
 }

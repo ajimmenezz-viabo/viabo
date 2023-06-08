@@ -71,7 +71,11 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
             'startDate' => $cardMovement->initialDate()->value() ,
             'endDate' => $cardMovement->finalDate()->value()
         ];
-        return $this->request($data);
+        try {
+            return $this->request($data);
+        } catch (\DomainException) {
+            return [];
+        }
     }
 
     public function updateBlock(Card $card): void

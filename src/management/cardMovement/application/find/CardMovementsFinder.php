@@ -5,9 +5,11 @@ namespace Viabo\management\cardMovement\application\find;
 
 
 use Viabo\management\cardMovement\domain\CardMovement;
+use Viabo\management\cardMovement\domain\CardMovementAmount;
 use Viabo\management\cardMovement\domain\CardMovementFilter;
 use Viabo\management\cardMovement\domain\CardMovementFinalDate;
 use Viabo\management\cardMovement\domain\CardMovementInitialDate;
+use Viabo\management\cardMovement\domain\CardMovementType;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
@@ -35,6 +37,7 @@ final readonly class CardMovementsFinder
                 $movementData['Auth_Code'] ,
                 $movementData['Type_Id'] ,
                 $movementData['charge'] ,
+                $movementData['Accredit'],
                 $movementData['Merchant'] ,
                 $movementData['Date']
             );

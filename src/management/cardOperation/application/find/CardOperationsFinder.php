@@ -29,7 +29,8 @@ final readonly class CardOperationsFinder
                 'payTransactionId' => $data['payTransactionId'] ,
                 'descriptionPay' => $data['descriptionPay'] ,
                 'reverseTransactionId' => $data['reverseTransactionId'] ,
-                'descriptionReverse' => $data['descriptionReverse']
+                'descriptionReverse' => $data['descriptionReverse'] ,
+                'concept' => $data['concept']
             ];
         } , $operations));
     }

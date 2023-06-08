@@ -31,7 +31,8 @@ export const useFindCardMovements = (cardId, date, options = {}) => {
         addInfoCard({
           movements: [],
           expenses: '$0.00',
-          income: '$0.00'
+          income: '$0.00',
+          balanceMovements: '$0.00'
         })
       },
       onSuccess: data => {

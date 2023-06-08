@@ -82,6 +82,11 @@ export function CardMovements() {
                   {isIncome ? 'Recibe dinero de: ' : 'Retiro de dinero en:'}
                 </Typography>
                 <Typography variant="subtitle2"> {rowData?.description}</Typography>
+                {rowData?.concept !== '' && (
+                  <Typography variant="overline" color={'text.disabled'} fontStyle={'italic'}>
+                    concepto : {rowData?.concept}
+                  </Typography>
+                )}
               </Box>
             </Box>
           )

@@ -18,7 +18,7 @@ export function CardBalance() {
 
       <Stack spacing={2}>
         <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <Typography variant="h3">{card?.balanceFormatted}</Typography>
+          <Typography variant="h3">{card?.balanceMovements}</Typography>
           <Typography variant="caption">MXN</Typography>
         </Stack>
 

@@ -18,4 +18,9 @@ final class CardMovementAmount extends StringValueObject
         return empty($this->value) ? '0' : $this->value;
     }
 
+    public function update(mixed $value): static
+    {
+        return self::create($value);
+    }
+
 }

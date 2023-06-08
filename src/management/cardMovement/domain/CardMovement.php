@@ -11,6 +11,7 @@ final class CardMovement
         private CardMovementTransactionId $transactionId ,
         private CardMovementType          $type ,
         private CardMovementAmount        $amount ,
+        private CardMovementConcept       $concept ,
         private CardMovementDescription   $description ,
         private CardMovementDate          $date ,
     )
@@ -18,13 +19,26 @@ final class CardMovement
     }
 
     public static function create(
-        string $transactionId , int $typeId , mixed $amount , string $description , string $date
+        string $transactionId ,
+        int    $typeId ,
+        mixed  $charge ,
+        mixed  $accredit ,
+        string $description ,
+        string $date
     ): static
     {
+        $typeId = CardMovementType::create($typeId);
+        $amount = CardMovementAmount::create($accredit);
+
+        if ($typeId->isSpent()) {
+            $amount = $amount->update($charge);
+        }
+
         return new static(
             new CardMovementTransactionId($transactionId) ,
-            CardMovementType::create($typeId) ,
-            CardMovementAmount::create($amount) ,
+            $typeId ,
+            $amount ,
+            new CardMovementConcept(''),
             new CardMovementDescription($description) ,
             new CardMovementDate($date)
         );
@@ -35,12 +49,13 @@ final class CardMovement
         foreach ($operations as $operation) {
             if ($this->transactionId->isSame($operation['payTransactionId'])) {
                 $this->description = $this->description->update($operation['descriptionPay']);
+                $this->concept = $this->concept->update($operation['concept']);
             }
 
             if ($this->transactionId->isSame($operation['reverseTransactionId'])) {
                 $this->description = $this->description->update($operation['descriptionReverse']);
+                $this->concept = $this->concept->update($operation['concept']);
             }
-
         }
     }
 
@@ -49,6 +64,7 @@ final class CardMovement
         return [
             'date' => $this->date->value() ,
             'description' => $this->description->value() ,
+            'concept' => $this->concept->value() ,
             'amount' => $this->amount->value() ,
             'type' => $this->type->value()
         ];

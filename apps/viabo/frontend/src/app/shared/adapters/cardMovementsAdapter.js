@@ -5,7 +5,6 @@ export const CardMovementsAdapter = movements => {
   const decryptedMovements = getDecryptInfo(movements?.ciphertext, movements?.iv)
   let expenses = 0
   let income = 0
-
   return {
     movements:
       decryptedMovements?.map(movement => {
@@ -19,10 +18,12 @@ export const CardMovementsAdapter = movements => {
           time,
           description: movement?.description,
           amount: fCurrency(amount),
-          type: movement?.type.toLowerCase()
+          type: movement?.type.toLowerCase(),
+          concept: movement?.concept ?? ''
         }
       }) ?? [],
     income: fCurrency(income),
-    expenses: fCurrency(expenses)
+    expenses: fCurrency(expenses),
+    balanceMovements: fCurrency(income - expenses)
   }
 }

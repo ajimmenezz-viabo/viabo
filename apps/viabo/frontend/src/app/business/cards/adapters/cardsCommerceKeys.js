@@ -1,7 +1,8 @@
 export const CARDS_COMMERCES_KEYS = {
   CARDS_COMMERCE_LIST: 'cardsCommerce',
   CARD_INFO: 'cardInfo',
-  CARD_MOVEMENTS: 'cardMovements'
+  CARD_MOVEMENTS: 'cardMovements',
+  MAIN_CARD: 'mainCard'
 }
 
 export const ACTIONS_PERMISSIONS = {

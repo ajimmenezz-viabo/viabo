@@ -4,7 +4,7 @@ import { FieldArray, getIn, useFormik } from 'formik'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { Add, Delete, Send } from '@mui/icons-material'
-import { forwardRef, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { IMaskInput } from 'react-imask'
 import { LoadingButton } from '@mui/lab'
 import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
@@ -21,6 +21,13 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
   const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
 
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
+
+  useEffect(() => {
+    if (selectedCards && isBinCard) {
+      const filterCards = selectedCards?.map(card => ({ ...card, isDisabled: true }))
+      setCardsToSelect(filterCards)
+    }
+  }, [selectedCards, isBinCard])
 
   const RegisterSchema = Yup.object().shape({
     items: Yup.array().of(
@@ -80,24 +87,26 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                 Transacciones:
               </Typography>
               <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }} />
-              <Button
-                type="button"
-                size="small"
-                variant={'outlined'}
-                startIcon={<Add />}
-                disabled={loading}
-                onClick={() =>
-                  arrayHelpersRef.current.push({
-                    id: Math.random(),
-                    card: null,
-                    amount: '',
-                    concept: ''
-                  })
-                }
-                sx={{ flexShrink: 0 }}
-              >
-                Nueva
-              </Button>
+              {!isBinCard && (
+                <Button
+                  type="button"
+                  size="small"
+                  variant={'outlined'}
+                  startIcon={<Add />}
+                  disabled={loading}
+                  onClick={() =>
+                    arrayHelpersRef.current.push({
+                      id: Math.random(),
+                      card: null,
+                      amount: '',
+                      concept: ''
+                    })
+                  }
+                  sx={{ flexShrink: 0 }}
+                >
+                  Nueva
+                </Button>
+              )}
             </Stack>
 
             <FieldArray
@@ -118,7 +127,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
                             <RFSelect
                               name={card}
-                              disabled={loading}
+                              disabled={loading || isBinCard}
                               textFieldParams={{
                                 placeholder: 'Seleccionar ...',
                                 label: 'Tarjeta',
@@ -189,7 +198,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                               placeholder={'Transferencia ..'}
                             />
                           </Stack>
-                          {index !== 0 && (
+                          {index !== 0 && !isBinCard && (
                             <Button
                               size="small"
                               color="error"

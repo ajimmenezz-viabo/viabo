@@ -3,10 +3,12 @@ import { Message, PriceChange } from '@mui/icons-material'
 import MailCompose from '@/app/business/cards/components/cardToolbar/MailCompose'
 import { useState } from 'react'
 import { TransferSideBar } from '@/app/business/cards/components/transfer'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
 export function CardToolbar() {
   const [openCompose, setOpenCompose] = useState(false)
   const [openTransferBin, setOpenTransferBin] = useState(false)
+  const mainCard = useCommerceDetailsCard(state => state.mainCard)
 
   return (
     <>
@@ -15,6 +17,7 @@ export function CardToolbar() {
           position: 'sticky',
           borderRadius: 1,
           py: 4,
+          mt: 2,
           top: 0,
           boxShadow: theme.customShadows.z8,
           backgroundColor: theme.palette.info.lighter,
@@ -43,28 +46,24 @@ export function CardToolbar() {
             >
               Mensaje
             </Button>
-            <Button
-              startIcon={<PriceChange />}
-              variant={'outlined'}
-              color={'info'}
-              onClick={() => {
-                setOpenTransferBin(true)
-                setOpenCompose(false)
-              }}
-            >
-              Fondear
-            </Button>
+            {mainCard && (
+              <Button
+                startIcon={<PriceChange />}
+                variant={'outlined'}
+                color={'info'}
+                onClick={() => {
+                  setOpenTransferBin(true)
+                  setOpenCompose(false)
+                }}
+              >
+                Fondear
+              </Button>
+            )}
           </Stack>
         </Stack>
       </Toolbar>
       <MailCompose isOpenCompose={openCompose} onCloseCompose={() => setOpenCompose(false)} />
-      <TransferSideBar
-        open={openTransferBin}
-        setOpen={setOpenTransferBin}
-        isBinCard={true}
-        bincardBalance={200}
-        bincardId={'a1f8ec17-9a34-4e7c-82da-5a7f1deb9239'}
-      />
+      <TransferSideBar open={openTransferBin} setOpen={setOpenTransferBin} isBinCard={true} />
     </>
   )
 }

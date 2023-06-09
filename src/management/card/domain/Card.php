@@ -21,6 +21,7 @@ final class Card extends AggregateRoot
 
     public function __construct(
         private CardId                 $id ,
+        private CardMain               $main ,
         private CardNumber             $number ,
         private CardCVV                $cvv ,
         private CardExpirationDate     $expirationDate ,
@@ -50,6 +51,7 @@ final class Card extends AggregateRoot
     {
         $card = new self(
             CardId::random() ,
+            new CardMain('0'),
             $cardNumber ,
             $cardCVV ,
             $cardExpirationDate ,
@@ -151,6 +153,7 @@ final class Card extends AggregateRoot
     {
         return [
             'id' => $this->id->value() ,
+            'main' => $this->main->value() ,
             'number' => $this->number->value() ,
             'CVV' => $this->cvv->valueDecrypt() ,
             'expirationDate' => $this->expirationDate->value() ,

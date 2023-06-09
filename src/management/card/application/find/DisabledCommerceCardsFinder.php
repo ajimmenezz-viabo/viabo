@@ -19,9 +19,10 @@ final readonly class DisabledCommerceCardsFinder
     public function __invoke(CardCommerceId $commerceId): CommerceCardsResponse
     {
         $disabledStatus = '4';
-        $filters = Filters::fromValues([
+        $filters = Filters::fromValuesEmpty([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()] ,
-            ['field' => 'statusId' , 'operator' => '=' , 'value' => $disabledStatus]
+            ['field' => 'statusId' , 'operator' => '=' , 'value' => $disabledStatus],
+            ['field' => 'main' , 'operator' => '=' , 'value' => '0']
         ]);
         $cards = $this->repository->searchView(new Criteria($filters));
 

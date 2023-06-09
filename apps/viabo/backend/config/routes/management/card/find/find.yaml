@@ -17,3 +17,8 @@ card-information-find:
   path: '/api/card/information/{cardId}'
   controller: Viabo\Backend\Controller\management\card\CardInformationFinderController
   methods: GET
+
+main-card-information-find:
+  path: '/api/main-card/information'
+  controller: Viabo\Backend\Controller\management\card\MainCardInformationFinderController
+  methods: GET

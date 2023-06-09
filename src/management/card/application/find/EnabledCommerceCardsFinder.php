@@ -25,7 +25,8 @@ final readonly class EnabledCommerceCardsFinder
     {
         $enabledStatus = '5';
         $filters = [
-            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus]
+            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus],
+            ['field' => 'main' , 'operator' => '=' , 'value' => '0']
         ];
 
         $LegalRepresentativeProfile = '3';
@@ -39,7 +40,7 @@ final readonly class EnabledCommerceCardsFinder
         }
 
 
-        $filters = Filters::fromValues($filters);
+        $filters = Filters::fromValuesEmpty($filters);
         $cards = $this->repository->searchView(new Criteria($filters));
 
         return new CommerceCardsResponse(array_map(function (CardView $card) {

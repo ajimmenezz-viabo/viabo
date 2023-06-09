@@ -10,6 +10,7 @@ final class CardView
 {
     public function __construct(
         private string $id,
+        private string $main,
         private string $number,
         private string $cvv,
         private string $expirationDate,

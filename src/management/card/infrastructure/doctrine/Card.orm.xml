@@ -6,6 +6,7 @@
 
     <entity name="Viabo\management\card\domain\Card" table="t_management_cards">
         <id name="id" type="card_id" column="Id"/>
+        <embedded name="main" class="CardMain" use-column-prefix="false"/>
         <field name="number" type="card_number" column="Number"/>
         <embedded name="cvv" class="CardCVV" use-column-prefix="false"/>
         <embedded name="expirationDate" class="CardExpirationDate" use-column-prefix="false"/>

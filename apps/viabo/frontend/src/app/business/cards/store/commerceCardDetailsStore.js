@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware'
 
 const commerceCardDetailsStore = (set, get) => ({
   card: null,
+  mainCard: null,
   selectedCards: [],
   setCard: cardSelected => {
     const { card } = get()
@@ -34,6 +35,15 @@ const commerceCardDetailsStore = (set, get) => ({
       }),
       false,
       'SET_INFO_CARD'
+    )
+  },
+  setMainCard: card => {
+    set(
+      state => ({
+        mainCard: card
+      }),
+      false,
+      'SET_MAIN_CARD'
     )
   }
 })

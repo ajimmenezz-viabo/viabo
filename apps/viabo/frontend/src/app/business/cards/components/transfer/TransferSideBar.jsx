@@ -7,10 +7,11 @@ import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { fCurrency } from '@/shared/utils'
 import { RightPanel } from '@/app/shared/components'
 
-export default function TransferSideBar({ open, setOpen, isBinCard, bincardBalance, bincardId }) {
-  const card = !isBinCard ? useCommerceDetailsCard(state => state.card) : null
+export default function TransferSideBar({ open, setOpen, isBinCard }) {
+  const card = useCommerceDetailsCard(state => state.card)
+  const mainCard = useCommerceDetailsCard(state => state.mainCard)
   const cardList = useGetQueryData([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST]) || []
-  const [currentBalance, setCurrentBalance] = useState(isBinCard ? bincardBalance : card?.balance)
+  const [currentBalance, setCurrentBalance] = useState(isBinCard ? mainCard?.balance : card?.balance)
 
   const insufficient = useMemo(() => Boolean(currentBalance < 0), [currentBalance])
 
@@ -19,10 +20,8 @@ export default function TransferSideBar({ open, setOpen, isBinCard, bincardBalan
   }, [card?.balance])
 
   useEffect(() => {
-    if (bincardBalance) {
-      setCurrentBalance(bincardBalance)
-    }
-  }, [bincardBalance])
+    setCurrentBalance(mainCard?.balance)
+  }, [mainCard?.balance])
 
   const filterCards = useMemo(
     () => cardList?.filter(commerceCard => commerceCard.id !== card?.id),
@@ -30,7 +29,7 @@ export default function TransferSideBar({ open, setOpen, isBinCard, bincardBalan
   )
 
   const handleClose = () => {
-    setCurrentBalance(isBinCard ? bincardBalance : card?.balance)
+    setCurrentBalance(isBinCard ? mainCard?.balance : card?.balance)
     setOpen(false)
   }
 
@@ -54,10 +53,10 @@ export default function TransferSideBar({ open, setOpen, isBinCard, bincardBalan
       </Stack>
       <TransactionForm
         cards={isBinCard ? cardList : filterCards}
-        balance={isBinCard ? bincardBalance : card?.balance}
+        balance={isBinCard ? mainCard?.balance : card?.balance}
         setCurrentBalance={setCurrentBalance}
         insufficient={insufficient}
-        cardOrigin={isBinCard ? bincardId : card?.id}
+        cardOrigin={isBinCard ? mainCard?.id : card?.id}
         setOpen={setOpen}
         isBinCard={isBinCard}
       />

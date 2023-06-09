@@ -65,7 +65,7 @@ export function CommerceViaboCardDetails() {
         </>
       )}
       {!card && (
-        <Stack px={2} spacing={3} sx={{ height: '100%', width: '100%' }}>
+        <Stack spacing={3} sx={{ height: '100%', width: '100%' }}>
           <Alert variant="filled" severity="info">
             Debe seleccionar una tarjeta para ver sus detalles!
           </Alert>

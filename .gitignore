@@ -15,6 +15,8 @@ apps/viabo/backend/public/assets
 apps/viabo/backend/public/landingPage
 /apps/viabo/backend/public/.htaccess
 apps/viabo/backend/public/storage
+/apps/viabo/backend/public/php.ini
+/apps/viabo/backend/public/.user.ini
 ###< Files ###
 
 ###> Symfony ###

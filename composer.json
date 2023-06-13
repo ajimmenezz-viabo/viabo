@@ -25,7 +25,8 @@
     "doctrine/orm": "^2.14",
     "lexik/jwt-authentication-bundle": "^2.17",
     "lambdish/phunctional": "^2.1",
-    "ramsey/uuid": "^4.7"
+    "ramsey/uuid": "^4.7",
+    "endroid/qr-code": "^4.8"
   },
   "require-dev": {
     "behat/behat": "^3.12",
@@ -35,5 +36,7 @@
     "friends-of-behat/mink-extension": "^2.7",
     "behat/mink-browserkit-driver": "^2.1",
     "fakerphp/faker": "^1.21"
+  },
+  "config": {
   }
 }

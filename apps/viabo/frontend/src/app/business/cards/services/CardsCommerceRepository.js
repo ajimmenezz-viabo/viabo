@@ -35,3 +35,8 @@ export const sendMessageCards = async message => {
   const { data } = await axios.post('/api/cards/send/message', message)
   return data
 }
+
+export const sharedChargeKeys = async emails => {
+  const { data } = await axios.post('/api/card/send/spei-key', emails)
+  return data
+}

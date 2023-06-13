@@ -26,12 +26,12 @@ final readonly class SendCardSPEI
             throw new NotificationDataEmpty();
         }
 
-        $qr = $this->qrCodeAdapter->generator($paynet);
+        $barcode = $this->qrCodeAdapter->generatorBarcode($paynet);
         $email = new Email(
             $emails ,
             "Notificación de Viabo - SPEI" ,
             'management/notification/emails/card.spei.key.html.twig' ,
-            ['spei' => $spei , 'qr_paynet' => $qr]
+            ['spei' => $spei , 'barcode_paynet' => $barcode, 'paynet' => $paynet]
         );
 
         $this->repository->send($email);

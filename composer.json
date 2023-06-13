@@ -26,7 +26,8 @@
     "lexik/jwt-authentication-bundle": "^2.17",
     "lambdish/phunctional": "^2.1",
     "ramsey/uuid": "^4.7",
-    "endroid/qr-code": "^4.8"
+    "endroid/qr-code": "^4.8",
+    "picqer/php-barcode-generator": "^2.2"
   },
   "require-dev": {
     "behat/behat": "^3.12",

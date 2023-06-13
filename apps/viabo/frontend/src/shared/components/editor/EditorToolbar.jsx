@@ -89,23 +89,24 @@ export default function EditorToolbar({ id, isSimple, ...other }) {
           )}
 
           {!isSimple && (
-            <select className="ql-size" defaultValue="16px">
-              {FONT_SIZE.map(size => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+            <>
+              <select className="ql-size" defaultValue="16px">
+                {FONT_SIZE.map(size => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+              <select className="ql-header" defaultValue="">
+                {HEADINGS.map((heading, index) => (
+                  <option key={heading} value={index + 1}>
+                    {heading}
+                  </option>
+                ))}
+                <option value="">Normal</option>
+              </select>
+            </>
           )}
-
-          <select className="ql-header" defaultValue="">
-            {HEADINGS.map((heading, index) => (
-              <option key={heading} value={index + 1}>
-                {heading}
-              </option>
-            ))}
-            <option value="">Normal</option>
-          </select>
         </div>
 
         <div className="ql-formats">
@@ -148,16 +149,16 @@ export default function EditorToolbar({ id, isSimple, ...other }) {
           <select className="ql-align" />
         </div>
 
-        <div className="ql-formats">
-          <button type="button" className="ql-link" />
-          <button type="button" className="ql-image" />
-          <button type="button" className="ql-video" />
-        </div>
+        {/* <div className="ql-formats"> */}
+        {/*  <button type="button" className="ql-link" /> */}
+        {/*  <button type="button" className="ql-image" /> */}
+        {/*  <button type="button" className="ql-video" /> */}
+        {/* </div> */}
 
-        <div className="ql-formats">
-          {!isSimple && <button type="button" className="ql-formula" />}
-          <button type="button" className="ql-clean" />
-        </div>
+        {/* <div className="ql-formats"> */}
+        {/*  {!isSimple && <button type="button" className="ql-formula" />} */}
+        {/*  <button type="button" className="ql-clean" /> */}
+        {/* </div> */}
 
         {!isSimple && (
           <div className="ql-formats">

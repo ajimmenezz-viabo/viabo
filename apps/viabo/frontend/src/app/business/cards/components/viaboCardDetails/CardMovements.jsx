@@ -18,15 +18,20 @@ export function CardMovements() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
   const card = useCommerceDetailsCard(state => state.card)
-  const movements = useCommerceDetailsCard(state => state.card?.movements) ?? []
+  const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
 
-  const { data, isLoading, refetch, remove } = useFindCardMovements(card?.id, currentMonth, {
+  const { data, isLoading, refetch, remove, isRefetching } = useFindCardMovements(card?.id, currentMonth, {
     enabled: !!card?.id
   })
+  const movements = data?.movements || []
 
   useEffect(() => {
     refetch()
   }, [currentMonth])
+
+  useEffect(() => {
+    addInfoCard(data)
+  }, [data, card?.id])
 
   const columns = [
     {
@@ -136,10 +141,10 @@ export function CardMovements() {
   return (
     <>
       <Card>
-        <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} />
+        <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} isLoading={isLoading} />
         <Divider sx={{ borderStyle: 'dashed' }} />
         <DataTable
-          isLoading={isLoading}
+          isLoading={isLoading || isRefetching}
           title={'Movimientos'}
           data={movements || []}
           columns={columns}

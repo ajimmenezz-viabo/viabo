@@ -30,3 +30,8 @@ export const getMainCardCommerce = async () => {
   const { data } = await axios.get('/api/main-card/information')
   return CardMainAdapter(data)
 }
+
+export const sendMessageCards = async message => {
+  const { data } = await axios.post('/api/cards/send/message', message)
+  return data
+}

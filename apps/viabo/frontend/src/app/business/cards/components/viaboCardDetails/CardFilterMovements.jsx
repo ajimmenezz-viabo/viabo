@@ -1,8 +1,6 @@
 import { Box, InputBase, MenuItem, Select, Stack } from '@mui/material'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
-import { useIsFetching } from '@tanstack/react-query'
-import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { LoadingButton } from '@mui/lab'
 
 const monthOptions = [
@@ -33,13 +31,13 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   }
 }))
 
-export function CardFilterMovements({ setCurrentMonth, currentMonth }) {
+export function CardFilterMovements({ setCurrentMonth, currentMonth, isLoading }) {
   const startYear = 2020
   const currentYear = new Date().getFullYear()
 
   const yearOptions = Array.from({ length: currentYear - startYear + 1 }, (_, index) => startYear + index).reverse()
 
-  const isFetching = useIsFetching([CARDS_COMMERCES_KEYS.CARD_MOVEMENTS]) === 1
+  const isFetching = isLoading
 
   const handlePreviousMonth = () => {
     setCurrentMonth(prevMonth => {

@@ -8,7 +8,7 @@ use Viabo\management\notifications\domain\exceptions\NotificationEmailEmpty;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 
-final readonly class CardMessagesSend
+final readonly class SendCardMessages
 {
     public function __construct(private EmailRepository $repository)
     {

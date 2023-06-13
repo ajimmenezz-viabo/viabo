@@ -7,10 +7,10 @@ namespace Viabo\Backend\Controller\management\notifications;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\management\notifications\application\SendCardMessages\SendCardMessagesCommand;
+use Viabo\management\notifications\application\SendCardSPEIKey\SendCardSPEIKeyCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
-final readonly class CardMessagesSendController extends ApiController
+final readonly class CardKeySPEISendController extends ApiController
 {
     public function __invoke(Request $request): Response
     {
@@ -18,7 +18,7 @@ final readonly class CardMessagesSendController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
-            $this->dispatch(new SendCardMessagesCommand($data['subject'] , $data['emails'] , $data['message']));
+            $this->dispatch(new SendCardSPEIKeyCommand($data['spei'] , $data['paynet'] , $data['emails']));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

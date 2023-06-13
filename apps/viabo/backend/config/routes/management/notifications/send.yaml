@@ -3,4 +3,8 @@ card-messages-send:
   controller: Viabo\Backend\Controller\management\notifications\CardMessagesSendController
   methods: POST
 
+card-message-spei-key-send:
+  path: '/api/card/send/spei-key'
+  controller: Viabo\Backend\Controller\management\notifications\CardKeySPEISendController
+  methods: POST
 

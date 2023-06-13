@@ -21,7 +21,7 @@ final class QRCodeEndroidAdapter implements QRCodeAdapter
 
     public function generator(string $value): string
     {
-        $filename = 'temp_qr.png';
+        $filename = "temp_qr_$value.png";
         $filePath = "$this->rootDir/temp/qr";
 
         if (!file_exists($filePath)) {
@@ -37,7 +37,7 @@ final class QRCodeEndroidAdapter implements QRCodeAdapter
     {
         $generator = new BarcodeGeneratorPNG();
         $barcodeImage = $generator->getBarcode($value , $generator::TYPE_CODE_128 , 2 , 30 , [255 , 255 , 255]);
-        $filename = 'temp_barcode.png';
+        $filename = "temp_barcode_$value.png";
         $filePath = "$this->rootDir/temp/barcode";
 
         if (!file_exists($filePath)) {

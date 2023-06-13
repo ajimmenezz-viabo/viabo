@@ -8,6 +8,7 @@
         <embedded name="id" class="CardOperationId" use-column-prefix="false"/>
         <embedded name="typeId" class="CardOperationTypeId" use-column-prefix="false"/>
         <embedded name="originCard" class="CardOperationOrigin" use-column-prefix="false"/>
+        <embedded name="originCardMain" class="CardOperationOriginMain" use-column-prefix="false"/>
         <embedded name="destinationCard" class="CardOperationDestination" use-column-prefix="false"/>
         <embedded name="payTransactionId" class="CardOperationPayTransactionId" use-column-prefix="false"/>
         <embedded name="reverseTransactionId" class="CardOperationReverseTransactionId" use-column-prefix="false"/>

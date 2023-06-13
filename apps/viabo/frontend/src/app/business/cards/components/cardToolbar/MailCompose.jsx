@@ -23,8 +23,8 @@ import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useFormik } from 'formik'
 import { FormProvider } from '@/shared/components/form'
 import * as Yup from 'yup'
-import { useSendMessageCards } from '@/app/business/cards/hooks/useSendMessageCards'
-import { SendMessageCardsAdapter } from '@/app/business/cards/adapters/sendMessageCardsAdapter'
+import { useSendMessageCards } from '@/app/business/cards/hooks'
+import { SendMessageCardsAdapter } from '@/app/business/cards/adapters'
 
 const RootStyle = styled(Paper)(({ theme }) => ({
   right: 0,

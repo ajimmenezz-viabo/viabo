@@ -1,0 +1,6 @@
+card-messages-send:
+  path: '/api/cards/send/message'
+  controller: Viabo\Backend\Controller\management\notifications\CardMessagesSendController
+  methods: POST
+
+

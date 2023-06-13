@@ -25,15 +25,19 @@ final readonly class SendCardPayOperationEmail implements DomainEventSubscriber
         $transactionData = $event->toPrimitives();
         $emails = $event->emails();
 
+        if (!empty($transactionData['originCardMain'])) {
+            return;
+        }
+
         $email = new Email(
-            [$emails],
-            'Notificación de Transferencia',
-            'management/notification/emails/card.pay.operation.html.twig',
+            [$emails] ,
+            'Notificación de Transferencia' ,
+            'management/notification/emails/card.pay.operation.html.twig' ,
             [
-                'originCard' => substr($transactionData['originCard'] , -8),
-                'destinationCard' => substr($transactionData['destinationCard'] , -8),
-                'balance' => $transactionData['balance'],
-                'registerDate' => $transactionData['registerDate'],
+                'originCard' => substr($transactionData['originCard'] , -8) ,
+                'destinationCard' => substr($transactionData['destinationCard'] , -8) ,
+                'balance' => $transactionData['balance'] ,
+                'registerDate' => $transactionData['registerDate'] ,
                 'referencia' => $transactionData['payTransactionId']
             ]
         );

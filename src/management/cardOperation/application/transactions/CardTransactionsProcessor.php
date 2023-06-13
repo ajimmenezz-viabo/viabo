@@ -12,6 +12,7 @@ use Viabo\management\cardOperation\domain\CardOperationConcept;
 use Viabo\management\cardOperation\domain\CardOperationDestination;
 use Viabo\management\cardOperation\domain\CardOperationEmails;
 use Viabo\management\cardOperation\domain\CardOperationOrigin;
+use Viabo\management\cardOperation\domain\CardOperationOriginMain;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
 use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\cardOperation\domain\exceptions\CardOperationCardBlocked;
@@ -42,7 +43,7 @@ final readonly class CardTransactionsProcessor
         array                   $destinationCards
     ): void
     {
-        if(empty($destinationCards)) return;
+        if (empty($destinationCards)) return;
 
         $originCardData = $this->cardData($originCardId);
         $destinationCardsData = $this->destinationCardsData($destinationCards);
@@ -51,7 +52,9 @@ final readonly class CardTransactionsProcessor
         $this->ensureCardsNotBlocked($destinationCardsData);
         $this->ensureOriginCardHasSufficientBalance($originCardData , $destinationCardsData);
 
-        $operations = $this->operations($destinationCardsData , $originCardData['number'] , $emails , $clientKey);
+        $operations = $this->operations(
+            $destinationCardsData , $originCardData['number'] , $originCardData['main'] , $emails , $clientKey
+        );
 
         $this->adapter->transactionPay($operations);
 
@@ -112,6 +115,7 @@ final readonly class CardTransactionsProcessor
     private function operations(
         array                   $destinationCardsData ,
         string                  $originCardNumber ,
+        string                  $originCardMain ,
         CardOperationEmails     $emails ,
         CardCredentialClientKey $clientKey
     ): CardOperations
@@ -120,6 +124,7 @@ final readonly class CardTransactionsProcessor
         foreach ($destinationCardsData as $destinationCardData) {
             $operations[] = CardOperation::create(
                 new CardOperationOrigin($originCardNumber) ,
+                new CardOperationOriginMain($originCardMain) ,
                 new CardOperationDestination($destinationCardData['number']) ,
                 new CardOperationBalance($destinationCardData['amount']) ,
                 new CardOperationConcept($destinationCardData['concept']) ,

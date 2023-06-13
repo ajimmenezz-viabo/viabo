@@ -16,6 +16,7 @@ final class CardOperation extends AggregateRoot
         private CardOperationId                   $id ,
         private CardOperationTypeId               $typeId ,
         private CardOperationOrigin               $originCard ,
+        private CardOperationOriginMain           $originCardMain ,
         private CardOperationDestination          $destinationCard ,
         private CardOperationPayTransactionId     $payTransactionId ,
         private CardOperationReverseTransactionId $reverseTransactionId ,
@@ -35,6 +36,7 @@ final class CardOperation extends AggregateRoot
 
     public static function create(
         CardOperationOrigin      $originCard ,
+        CardOperationOriginMain  $originCardMain ,
         CardOperationDestination $destinationCard ,
         CardOperationBalance     $balance ,
         CardOperationConcept     $concept ,
@@ -46,6 +48,7 @@ final class CardOperation extends AggregateRoot
             CardOperationId::random() ,
             new CardOperationTypeId('1') ,
             $originCard ,
+            $originCardMain ,
             $destinationCard ,
             new CardOperationPayTransactionId('') ,
             new CardOperationReverseTransactionId('') ,
@@ -130,6 +133,7 @@ final class CardOperation extends AggregateRoot
             'id' => $this->id->value() ,
             'typeId' => $this->typeId->value() ,
             'originCard' => $this->originCard->value() ,
+            'originCardMain' => $this->originCardMain->value() ,
             'destinationCard' => $this->destinationCard->value() ,
             'payTransactionId' => $this->payTransactionId->value() ,
             'reverseTransactionId' => $this->reverseTransactionId->value() ,

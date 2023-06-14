@@ -4,7 +4,7 @@
 namespace Viabo\management\cardOperation\application\transactions;
 
 
-use Viabo\management\cardOperation\domain\CardOperationEmails;
+use Viabo\management\cardOperation\domain\CardOperationPayEmail;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\credential\CardCredentialClientKey;
 use Viabo\shared\domain\bus\command\CommandHandler;
@@ -19,8 +19,8 @@ final readonly class CardTransactionCommandHandler implements CommandHandler
     {
         $originCardId = new CardId($command->cardId);
         $clientKey = new CardCredentialClientKey($command->cardCredential['clientKey']);
-        $emails = new CardOperationEmails($command->legalRepresentativeEmail);
+        $payEmail = new CardOperationPayEmail($command->legalRepresentativeEmail);
 
-        ($this->processor)($originCardId , $clientKey , $emails , $command->destinationCards);
+        ($this->processor)($originCardId , $clientKey , $payEmail , $command->destinationCards);
     }
 }

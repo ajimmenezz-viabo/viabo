@@ -26,7 +26,8 @@ final class CardOperation extends AggregateRoot
         private CardOperationConcept              $concept ,
         private CardOperationPayData              $payData ,
         private CardOperationReverseData          $reverseData ,
-        private CardOperationEmails               $emails ,
+        private CardOperationPayEmail             $payEmail ,
+        private CardOperationReverseEmail         $reverseEmail ,
         private CardCredentialClientKey           $clientKey ,
         private CardOperationRegisterDate         $registerDate ,
         private CardOperationActive               $active
@@ -35,13 +36,14 @@ final class CardOperation extends AggregateRoot
     }
 
     public static function create(
-        CardOperationOrigin      $originCard ,
-        CardOperationOriginMain  $originCardMain ,
-        CardOperationDestination $destinationCard ,
-        CardOperationBalance     $balance ,
-        CardOperationConcept     $concept ,
-        CardOperationEmails      $emails ,
-        CardCredentialClientKey  $clientKey
+        CardOperationOrigin       $originCard ,
+        CardOperationOriginMain   $originCardMain ,
+        CardOperationDestination  $destinationCard ,
+        CardOperationBalance      $balance ,
+        CardOperationConcept      $concept ,
+        CardOperationPayEmail     $payEmail ,
+        CardOperationReverseEmail $reverseEmail ,
+        CardCredentialClientKey   $clientKey
     ): static
     {
         return new static(
@@ -58,7 +60,8 @@ final class CardOperation extends AggregateRoot
             $concept ,
             new CardOperationPayData('') ,
             new CardOperationReverseData('') ,
-            $emails ,
+            $payEmail ,
+            $reverseEmail ,
             $clientKey ,
             CardOperationRegisterDate::todayDate() ,
             new CardOperationActive('1') ,
@@ -116,14 +119,14 @@ final class CardOperation extends AggregateRoot
     public function setEventCreated(): void
     {
         $this->record(new CardOperationCreatedDomainEvent(
-            $this->id->value() , $this->toArray() , $this->emails->value()
+            $this->id->value() , $this->toArray() , $this->payEmail->value()
         ));
     }
 
     public function setEventUpdate(): void
     {
         $this->record(new CardOperationUpdateDomainEvent(
-            $this->id->value() , $this->toArray() , $this->emails->value()
+            $this->id->value() , $this->toArray() , $this->reverseEmail->value()
         ));
     }
 

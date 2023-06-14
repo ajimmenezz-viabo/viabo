@@ -10,10 +10,11 @@ use Viabo\management\cardOperation\domain\CardOperation;
 use Viabo\management\cardOperation\domain\CardOperationBalance;
 use Viabo\management\cardOperation\domain\CardOperationConcept;
 use Viabo\management\cardOperation\domain\CardOperationDestination;
-use Viabo\management\cardOperation\domain\CardOperationEmails;
+use Viabo\management\cardOperation\domain\CardOperationPayEmail;
 use Viabo\management\cardOperation\domain\CardOperationOrigin;
 use Viabo\management\cardOperation\domain\CardOperationOriginMain;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
+use Viabo\management\cardOperation\domain\CardOperationReverseEmail;
 use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\cardOperation\domain\exceptions\CardOperationCardBlocked;
 use Viabo\management\cardOperation\domain\exceptions\CardOperationCommerceDifferent;
@@ -22,6 +23,7 @@ use Viabo\management\credential\application\find\CardCredentialQuery;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\credential\CardCredentialClientKey;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
+use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 
@@ -39,7 +41,7 @@ final readonly class CardTransactionsProcessor
     public function __invoke(
         CardId                  $originCardId ,
         CardCredentialClientKey $clientKey ,
-        CardOperationEmails     $emails ,
+        CardOperationPayEmail   $payEmail ,
         array                   $destinationCards
     ): void
     {
@@ -53,7 +55,7 @@ final readonly class CardTransactionsProcessor
         $this->ensureOriginCardHasSufficientBalance($originCardData , $destinationCardsData);
 
         $operations = $this->operations(
-            $destinationCardsData , $originCardData['number'] , $originCardData['main'] , $emails , $clientKey
+            $destinationCardsData , $originCardData['number'] , $originCardData['main'] , $payEmail , $clientKey
         );
 
         $this->adapter->transactionPay($operations);
@@ -71,12 +73,20 @@ final readonly class CardTransactionsProcessor
         return array_merge($card->cardData , $cardInformation->cardData);
     }
 
+    private function ownerEmail($ownerId): string
+    {
+        $user = $this->queryBus->ask(new FindUserQuery($ownerId , ''));
+        return $user->userData['email'];
+    }
+
     private function destinationCardsData(array $destinationCards): array
     {
         $destinationCardsData = [];
         foreach ($destinationCards as $destinationCard) {
             $cardData = $this->cardData(new CardId($destinationCard['cardId']));
+            $ownerEmail = $this->ownerEmail($cardData['ownerId']);
             unset($destinationCard['cardId']);
+            $cardData['ownerEmail'] = $ownerEmail;
             $destinationCardsData[] = array_merge($cardData , $destinationCard);
         }
         return $destinationCardsData;
@@ -116,7 +126,7 @@ final readonly class CardTransactionsProcessor
         array                   $destinationCardsData ,
         string                  $originCardNumber ,
         string                  $originCardMain ,
-        CardOperationEmails     $emails ,
+        CardOperationPayEmail   $payEmail ,
         CardCredentialClientKey $clientKey
     ): CardOperations
     {
@@ -128,7 +138,8 @@ final readonly class CardTransactionsProcessor
                 new CardOperationDestination($destinationCardData['number']) ,
                 new CardOperationBalance($destinationCardData['amount']) ,
                 new CardOperationConcept($destinationCardData['concept']) ,
-                $emails ,
+                $payEmail ,
+                new CardOperationReverseEmail($destinationCardData['ownerEmail']) ,
                 $clientKey
             );
         }

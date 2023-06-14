@@ -18,7 +18,8 @@
         <embedded name="concept" class="CardOperationConcept" use-column-prefix="false"/>
         <embedded name="payData" class="CardOperationPayData" use-column-prefix="false"/>
         <embedded name="reverseData" class="CardOperationReverseData" use-column-prefix="false"/>
-        <embedded name="emails" class="CardOperationEmails" use-column-prefix="false"/>
+        <embedded name="payEmail" class="CardOperationPayEmail" use-column-prefix="false"/>
+        <embedded name="reverseEmail" class="CardOperationReverseEmail" use-column-prefix="false"/>
         <field name="clientKey" type="card_client_key" column="ClientKey" />
         <embedded name="registerDate" class="CardOperationRegisterDate" use-column-prefix="false"/>
         <embedded name="active" class="CardOperationActive" use-column-prefix="false"/>

@@ -4,8 +4,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <embeddable name="Viabo\management\cardOperation\domain\CardOperationEmails">
-        <field name="value" column="Emails"/>
+    <embeddable name="Viabo\management\cardOperation\domain\CardOperationPayEmail">
+        <field name="value" column="PayEmail"/>
     </embeddable>
 
 </doctrine-mapping>

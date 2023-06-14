@@ -6,6 +6,6 @@ namespace Viabo\management\cardOperation\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CardOperationEmails extends StringValueObject
+final class CardOperationPayEmail extends StringValueObject
 {
 }

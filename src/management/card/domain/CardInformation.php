@@ -32,7 +32,7 @@ final class CardInformation
     {
         return new static(
             new CardSpai($data['Spai']) ,
-            new CardPaynet($data['Paynet']) ,
+            new CardPaynet(strval($data['Paynet'])) ,
             new CardBalance(strval($data['Card'][0]['Balance'])) ,
             new CardBlock($data['Card'][0]['Status']) ,
             new CardNip($data['Nip'])

@@ -12,7 +12,6 @@ import {
   Typography
 } from '@mui/material'
 import { BadgeStatus } from '@/shared/components/notifications'
-import { CreditCard } from '@mui/icons-material'
 import { memo } from 'react'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
@@ -59,7 +58,7 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
     <Tooltip title={!isOpenSidebar ? cardNumberHidden : ''} arrow placement="right">
       <ListItem
         sx={{
-          pb: 1,
+          mb: 1,
           borderRadius: 1
         }}
         secondaryAction={
@@ -86,7 +85,11 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
                   backgroundColor: theme.palette.primary.main
                 })}
               >
-                <CreditCard width={24} height={24} />
+                {cardType === 'Carnet' ? (
+                  <CarnetLogo sx={{ width: 30 }} color={'white'} />
+                ) : (
+                  <MasterCardLogo sx={{ width: 30 }} />
+                )}
               </Avatar>
               <BadgeStatus status={status} sx={{ right: 2, bottom: 2, position: 'absolute' }} />
             </Box>
@@ -98,16 +101,6 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
                 <Typography noWrap variant={'subtitle2'}>
                   {cardNumberHidden}
                 </Typography>
-                <Stack flexDirection={'row'} alignItems={'center'} gap={6}>
-                  <Typography color={'text.secondary'} variant={'subtitle2'}>
-                    {expiration}
-                  </Typography>
-                  {cardType === 'Carnet' ? (
-                    <CarnetLogo sx={{ width: 40 }} color={isSelected ? 'black' : theme.palette.text.primary} />
-                  ) : (
-                    <MasterCardLogo sx={{ width: 40 }} color={theme.palette.text.primary} />
-                  )}
-                </Stack>
               </Stack>
             </>
           )}

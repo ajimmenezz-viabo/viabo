@@ -17,7 +17,7 @@ HeaderPage.propTypes = {
 
 export function HeaderPage({ name, buttonName, to = '', onClick, loading = false, buttons, links = [] }) {
   return (
-    <Box display="flex" mb={5} spacing={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }}>
+    <Box display="flex" mb={2} spacing={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }}>
       <Box sx={{ flexGrow: 1, mb: { xs: buttonName ? 3 : 0, sm: 0 } }}>
         <Typography variant="h4" gutterBottom>
           {name}

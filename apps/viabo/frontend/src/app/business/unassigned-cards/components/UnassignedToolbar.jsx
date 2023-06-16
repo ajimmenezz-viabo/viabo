@@ -1,18 +1,16 @@
 import { Button, Checkbox, Stack, Toolbar, Typography } from '@mui/material'
 import { AssignmentIndRounded } from '@mui/icons-material'
 import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
-import { AssignCardsSidebar } from '@/app/business/unassigned-cards/components/AssignCardsSidebar'
-import { useState } from 'react'
 
 export function UnassignedToolbar({ cards }) {
   const cardsSelected = useUnassignedCards(state => state.cards)
   const setAllCards = useUnassignedCards(state => state.setAllCards)
   const resetCards = useUnassignedCards(state => state.resetCards)
+  const setOpenAssignCards = useUnassignedCards(state => state.setOpenAssign)
 
   const numSelected = cardsSelected?.length || 0
   const rowCount = cards?.length || 0
 
-  const [openAssignCards, setOpenAssignCards] = useState(false)
   const onSelectAllRows = checked => {
     if (checked) {
       setAllCards(cards)
@@ -65,7 +63,6 @@ export function UnassignedToolbar({ cards }) {
           </Stack>
         </Stack>
       </Toolbar>
-      <AssignCardsSidebar open={openAssignCards} setOpen={setOpenAssignCards} />
     </>
   )
 }

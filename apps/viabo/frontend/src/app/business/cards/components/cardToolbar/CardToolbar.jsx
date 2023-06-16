@@ -17,7 +17,6 @@ export function CardToolbar() {
           position: 'sticky',
           borderRadius: 1,
           py: 4,
-          mt: 2,
           top: 0,
           boxShadow: theme.customShadows.z8,
           backgroundColor: theme.palette.info.lighter,

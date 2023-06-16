@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Box, Button, Card, Collapse, IconButton, Stack, Typography } from '@mui/material'
-import { Check, CopyAll, Share, Visibility, VisibilityOff } from '@mui/icons-material'
+import { Check, CopyAll, Mail, Receipt, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import Barcode from 'react-barcode'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
 import { ModalSharedCharge } from '@/app/business/cards/components/viaboCardDetails/ModalSharedCharge'
 
@@ -78,43 +77,14 @@ export function CardCharge() {
               <Typography variant="body1">{card?.SPEI}</Typography>
             </Stack>
 
-            <Stack
-              flexDirection="column"
-              justifyContent="space-between"
-              alignItems="baseline"
-              gap={1}
-              sx={{ display: 'flex', flexWrap: 'wrap' }}
-            >
-              <Stack
-                flexDirection="row"
-                alignItems="center"
-                justifyContent={'center'}
-                sx={{ flexGrow: 1, flexWrap: 'wrap' }}
-                gap={1}
-              >
-                <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-                  PAYNET
-                </Typography>
-                <IconButton
-                  variant="outlined"
-                  color={copiedPAYNET ? 'success' : 'inherit'}
-                  onClick={() => copyToClipboard(setCopiedPAYNET, card?.PAYNET)}
-                >
-                  {copiedPAYNET ? (
-                    <Check sx={{ color: 'success', width: 18 }} />
-                  ) : (
-                    <CopyAll sx={{ color: 'text.disabled' }} />
-                  )}
-                </IconButton>
-              </Stack>
-              <Box sx={{ display: 'flex', alignSelf: 'center' }}>
-                <Barcode value={card?.PAYNET || '1'} width={isDesktop && isCollapse ? 2 : 1} />
-              </Box>
+            <Stack flexDirection={'row'} flexWrap={'wrap'} justifyContent={'center'} gap={3} alignItems={'center'}>
+              <Button color={'primary'} variant={'outlined'} startIcon={<Mail />} onClick={() => setOpenShared(true)}>
+                Compartir
+              </Button>
+              <Button color={'primary'} variant={'contained'} startIcon={<Receipt />}>
+                Orden Fondeo
+              </Button>
             </Stack>
-
-            <Button color={'secondary'} startIcon={<Share />} onClick={() => setOpenShared(true)}>
-              Compartir
-            </Button>
           </Stack>
         </Collapse>
       </Card>

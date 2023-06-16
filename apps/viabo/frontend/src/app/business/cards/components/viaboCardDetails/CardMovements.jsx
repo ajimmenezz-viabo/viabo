@@ -30,7 +30,9 @@ export function CardMovements() {
   }, [currentMonth])
 
   useEffect(() => {
-    addInfoCard(data)
+    if (data) {
+      addInfoCard(data)
+    }
   }, [data, card?.id])
 
   const columns = [

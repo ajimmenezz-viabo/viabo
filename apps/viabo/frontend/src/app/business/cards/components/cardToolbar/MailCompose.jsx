@@ -25,6 +25,7 @@ import { FormProvider } from '@/shared/components/form'
 import * as Yup from 'yup'
 import { useSendMessageCards } from '@/app/business/cards/hooks'
 import { SendMessageCardsAdapter } from '@/app/business/cards/adapters'
+import { stringAvatar } from '@theme/utils'
 
 const RootStyle = styled(Paper)(({ theme }) => ({
   right: 0,
@@ -188,7 +189,10 @@ export default function MailCompose({ isOpenCompose, onCloseCompose }) {
                   followCursor
                   PopperProps={{ style: { zIndex: 2001 } }}
                 >
-                  <Chip avatar={<Avatar>C</Avatar>} label={card?.assignUser?.name} />
+                  <Chip
+                    avatar={<Avatar {...stringAvatar(card?.assignUser?.name ?? '')} />}
+                    label={card?.assignUser?.name}
+                  />
                 </Tooltip>
               ))}
             </Stack>

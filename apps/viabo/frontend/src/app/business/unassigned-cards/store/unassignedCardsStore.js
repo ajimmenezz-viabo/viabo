@@ -3,6 +3,8 @@ import { devtools } from 'zustand/middleware'
 
 const unassignedCards = (set, get) => ({
   cards: [],
+  rows: [],
+  openAssign: false,
   setSelectedCard: cardSelected => {
     const { cards } = get()
     const selectedIndex = cards.indexOf(cardSelected)
@@ -36,10 +38,29 @@ const unassignedCards = (set, get) => ({
       'SET_SELECTED_ALL_INACTIVE_CARDS'
     )
   },
+  setIndexCards: rows => {
+    set(
+      state => ({
+        rows
+      }),
+      false,
+      'SET_SELECTED_ALL_INACTIVE_ROWS'
+    )
+  },
+  setOpenAssign: value => {
+    set(
+      state => ({
+        openAssign: value
+      }),
+      false,
+      'SET_OPEN_ASSIGN_SIDEBAR'
+    )
+  },
   resetCards: () => {
     set(
       state => ({
-        cards: []
+        cards: [],
+        rows: []
       }),
       false,
       'RESET_SELECTED_INACTIVE_CARDS'

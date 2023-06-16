@@ -1,4 +1,5 @@
 import { convertCatalogToReactSelect, fCardNumberHidden, fDateTime, getDecryptInfo } from '@/shared/utils'
+import { format } from 'date-fns'
 
 export const CardsAdapter = cards => {
   try {
@@ -48,6 +49,8 @@ export const CardsAdapter = cards => {
           cardNumberHidden: fCardNumberHidden(number),
           expiration: expirationDate,
           register: fDateTime(register),
+          registerDate: register ? format(new Date(register), 'dd MMM yyyy') : '',
+          registerTime: register ? format(new Date(register), 'p') : '',
           cvv: CVV,
           status: {
             id: statusId,

@@ -1,7 +1,7 @@
 import { Scrollbar } from '@/shared/components/scroll'
 import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 import { FieldArray, getIn, useFormik } from 'formik'
-import { Box, Button, Divider, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { Add, Delete, Send } from '@mui/icons-material'
 import { forwardRef, useEffect, useRef, useState } from 'react'
@@ -10,6 +10,7 @@ import { LoadingButton } from '@mui/lab'
 import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
 import { useTransactionCard } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { stringAvatar } from '@theme/utils'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
@@ -43,7 +44,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
         isBinCard &&
         selectedCards?.map(card => ({
           id: Math.random(),
-          card: { value: card?.value, label: card?.label },
+          card: { value: card?.value, label: card?.label, ...card },
           amount: '',
           concept: ''
         }))) || [
@@ -124,7 +125,22 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
 
                       return (
                         <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
-                          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
+                          {item?.card?.assignUser?.name && (
+                            <Chip
+                              avatar={<Avatar {...stringAvatar(item?.card?.assignUser?.name ?? '')} />}
+                              label={item?.card?.assignUser?.name}
+                            />
+                          )}
+
+                          <Stack
+                            direction={{ xs: 'column', md: 'row' }}
+                            spacing={2}
+                            sx={{ width: 1 }}
+                            alignItems={'center'}
+                          >
+                            <Typography variant={'overline'} color={'text.disabled'}>
+                              {index + 1}
+                            </Typography>
                             <RFSelect
                               name={card}
                               disabled={loading || isBinCard}

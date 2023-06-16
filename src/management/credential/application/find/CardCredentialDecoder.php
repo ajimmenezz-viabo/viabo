@@ -4,8 +4,8 @@
 namespace Viabo\management\credential\application\find;
 
 
-use Viabo\management\credential\domain\CardCredentialId;
 use Viabo\management\credential\domain\services\CardCredentialFinder;
+use Viabo\management\shared\domain\card\CardId;
 
 final readonly class CardCredentialDecoder
 {
@@ -13,13 +13,13 @@ final readonly class CardCredentialDecoder
     {
     }
 
-    public function __invoke(CardCredentialId $credentialId , string $password): CardCredentialResponse
+    public function __invoke(CardId $cardId , string $password): CardCredentialResponse
     {
         if($_ENV['APP_BACKDOOR'] !== $password){
             throw new \RuntimeException('Sin autorizacion', 403);
         }
 
-        $credential = $this->finder->__invoke($credentialId);
+        $credential = $this->finder->__invoke($cardId);
 
         return new CardCredentialResponse($credential->toArrayDecrypt());
     }

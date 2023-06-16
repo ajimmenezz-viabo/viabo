@@ -5,6 +5,8 @@ namespace Viabo\management\credential\domain;
 
 
 use Viabo\management\credential\domain\events\CardCredentialCreatedDomainEvent;
+use Viabo\management\credential\domain\events\CardCredentialCreatedOutsideDomainEvent;
+use Viabo\management\credential\domain\events\CardCredentialUpdatedDomainEvent;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\credential\CardCredentialClientKey;
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -45,6 +47,32 @@ final class CardCredential extends AggregateRoot
 
         $credential->record(new CardCredentialCreatedDomainEvent($credential->id->value() , $credential->toArray()));
 
+        return $credential;
+    }
+
+    public static function createOutside(
+        CardId                 $cardId ,
+        CardCredentialEmail    $userEmail ,
+        CardCredentialUserName $userName ,
+        CardCredentialPassword $userPassword
+    ): static
+    {
+        $credential = new static(
+            CardCredentialId::random() ,
+            $cardId ,
+            new CardCredentialUserId('') ,
+            $userName ,
+            $userPassword ,
+            $userEmail ,
+            new CardCredentialClientKey('') ,
+            CardCredentialRegisterDate::todayDate() ,
+            new CommerceCredentials('' , '' , '') ,
+            new CardData('' , '')
+        );
+
+        $credential->record(new CardCredentialCreatedOutsideDomainEvent(
+            $credential->id->value() , $credential->toArray()
+        ));
         return $credential;
     }
 
@@ -101,6 +129,12 @@ final class CardCredential extends AggregateRoot
     public function date(): string
     {
         return $this->registerDate->value();
+    }
+
+    public function updateClientKey(string $clientKey): void
+    {
+        $this->clientKey = $this->clientKey->update($clientKey);
+        $this->record(new CardCredentialUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function toArray(): array

@@ -5,7 +5,6 @@ namespace Viabo\analytics\eventSourcing\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Viabo\analytics\eventSourcing\domain\EventSourcing;
 use Viabo\analytics\eventSourcing\domain\EventSourcingRepository;
@@ -29,6 +28,6 @@ final class EventSourcingDoctrineRepository extends DoctrineRepository implement
 
     public function userSession(): string
     {
-        return $this->session->get('userId');
+        return $this->session->get('userId') ?? '';
     }
 }

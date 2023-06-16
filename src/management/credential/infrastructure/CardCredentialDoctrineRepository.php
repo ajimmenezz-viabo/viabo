@@ -28,4 +28,9 @@ final class CardCredentialDoctrineRepository extends DoctrineRepository implemen
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(CardCredential::class)->matching($criteriaConvert)->toArray();
     }
+
+    public function update(CardCredential $credential): void
+    {
+        $this->entityManager()->flush($credential);
+    }
 }

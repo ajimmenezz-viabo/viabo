@@ -1,26 +1,25 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\management\card\application\create;
+namespace Viabo\management\card\domain\services;
 
 
+use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCVV;
 use Viabo\management\card\domain\CardExpirationDate;
 use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\card\domain\CardRecorderId;
 use Viabo\management\card\domain\CardRepository;
-use Viabo\management\card\domain\services\CardCreator as CardCreatorService;
 use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\management\shared\domain\card\CardNumber;
-use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CardCreator
 {
-    private CardCreatorService $creator;
+    private CardValidator $validator;
 
-    public function __construct(private CardRepository $repository , private EventBus $bus)
+    public function __construct(private CardRepository $repository)
     {
-        $this->creator = new CardCreatorService($repository);
+        $this->validator = new CardValidator($repository);
     }
 
     public function __invoke(
@@ -30,9 +29,9 @@ final readonly class CardCreator
         CardCVV                $cardCVV ,
         CardPaymentProcessorId $cardPaymentProcessorId ,
         CardCommerceId         $cardCommerceId
-    ): void
+    ): Card
     {
-        $card = $this->creator->__invoke(
+        $card = Card::create(
             $cardRecorderId ,
             $cardNumber ,
             $cardExpirationDate ,
@@ -41,6 +40,10 @@ final readonly class CardCreator
             $cardCommerceId
         );
 
-        $this->bus->publish(...$card->pullDomainEvents());
+        $this->validator->ensureNotExist($card);
+
+        $this->repository->save($card);
+
+        return $card;
     }
 }

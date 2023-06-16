@@ -14,7 +14,7 @@ use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CardCreator
+final readonly class CardCreatorOutside
 {
     private CardCreatorService $creator;
 
@@ -29,7 +29,10 @@ final readonly class CardCreator
         CardExpirationDate     $cardExpirationDate ,
         CardCVV                $cardCVV ,
         CardPaymentProcessorId $cardPaymentProcessorId ,
-        CardCommerceId         $cardCommerceId
+        CardCommerceId         $cardCommerceId ,
+        string                 $userEmail ,
+        string                 $userName ,
+        string                 $userPassword
     ): void
     {
         $card = $this->creator->__invoke(
@@ -40,6 +43,8 @@ final readonly class CardCreator
             $cardPaymentProcessorId ,
             $cardCommerceId
         );
+
+        $card->setEventCreatedOutside($userEmail , $userName , $userPassword);
 
         $this->bus->publish(...$card->pullDomainEvents());
     }

@@ -5,9 +5,9 @@ namespace Viabo\management\credential\domain\services;
 
 
 use Viabo\management\credential\domain\CardCredential;
-use Viabo\management\credential\domain\CardCredentialId;
 use Viabo\management\credential\domain\CardCredentialRepository;
 use Viabo\management\credential\domain\exceptions\CardCredentialNotExist;
+use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
@@ -17,10 +17,10 @@ final readonly class CardCredentialFinder
     {
     }
 
-    public function __invoke(CardCredentialId $cardCredentialId): CardCredential
+    public function __invoke(CardId $cardId): CardCredential
     {
         $filters = Filters::fromValues([
-            ['field' => 'cardId' , 'operator' => '=' , 'value' => $cardCredentialId->value()]
+            ['field' => 'cardId' , 'operator' => '=' , 'value' => $cardId->value()]
         ]);
         $credential = $this->repository->searchCriteria(new Criteria($filters));
 

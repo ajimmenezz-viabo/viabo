@@ -11,4 +11,7 @@ interface CardCredentialRepository
     public function save(CardCredential $credential): void;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function update(CardCredential $credential): void;
+
 }

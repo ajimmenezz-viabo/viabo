@@ -26,6 +26,10 @@ final readonly class MainCardInformationQueryHandler implements QueryHandler
 
         $response = ($this->finder)($cardId , $clientKey , $user , $password);
 
-        return new CardResponse(['cardId' => $cardId->value() , 'balance' => $response->cardData['balance']]);
+        return new CardResponse([
+            'cardId' => $cardId->value() ,
+            'balance' => $response->cardData['balance'] ,
+            'balanceInTransaction' => $query->balanceInTransaction
+        ]);
     }
 }

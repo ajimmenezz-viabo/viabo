@@ -29,6 +29,9 @@ final readonly class MainCardFinder
             throw new CardNotExist();
         }
 
-        return new MainCardIdResponse($card[0]->id()->value());
+        return new MainCardIdResponse([
+            'cardId' => $card[0]->id()->value() ,
+            'cardNumber' => $card[0]->number()->value()
+        ]);
     }
 }

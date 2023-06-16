@@ -8,7 +8,9 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class MainCardInformationQuery implements Query
 {
-    public function __construct(public string $cardId , public array $credentialData)
+    public function __construct(
+        public string $cardId , public array $credentialData, public string $balanceInTransaction
+    )
     {
     }
 }

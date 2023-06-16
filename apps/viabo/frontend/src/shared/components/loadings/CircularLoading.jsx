@@ -1,8 +1,8 @@
 import { Box, CircularProgress, circularProgressClasses } from '@mui/material'
 
-export function CircularLoading(props) {
+export function CircularLoading({ containerProps, ...props }) {
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box position={'relative'} sx={{ ...containerProps }}>
       <CircularProgress
         variant="determinate"
         sx={{

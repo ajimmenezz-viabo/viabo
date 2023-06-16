@@ -4,7 +4,7 @@ import { CardsSidebar } from '@/app/business/cards/components/cardsSidebar'
 
 export function CommerceCardsLayout() {
   return (
-    <Stack flexDirection={'row'} sx={{ height: '99vh', display: 'flex' }}>
+    <Stack flexDirection={'row'} sx={{ height: '99vh', display: 'flex', mt: 2 }}>
       <CardsSidebar />
       <CommerceViaboCardDetails />
     </Stack>

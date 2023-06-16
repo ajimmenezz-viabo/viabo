@@ -34,13 +34,14 @@ export function CommerceViaboCardDetails() {
     <Stack
       sx={theme => ({
         pl: { xs: 0, lg: 2 },
-        mt: 2,
         overflow: 'hidden',
         flexDirection: 'column',
         flexGrow: 1
       })}
     >
-      {isError && !data && !isLoading && <ErrorRequestPage errorMessage={error} handleButton={refetch} />}
+      {isError && !data && !isLoading && (
+        <ErrorRequestPage sx={{ justifyContent: 'flex-start' }} errorMessage={error} handleButton={refetch} />
+      )}
       {card && isLoading && <RequestLoadingComponent />}
       {card && data && (
         <>

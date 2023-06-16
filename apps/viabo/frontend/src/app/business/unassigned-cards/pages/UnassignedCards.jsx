@@ -4,22 +4,26 @@ import { HeaderPage } from '@/shared/components/layout'
 import { PATH_DASHBOARD } from '@/routes'
 import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
 import { useFindUnassignedCards } from '@/app/business/unassigned-cards/hooks'
-import { CardsList } from '@/app/shared/components'
-import { UnassignedCard, UnassignedToolbar } from '@/app/business/unassigned-cards/components'
-import { Box, Stack, Zoom } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { Scrollbar } from '@/shared/components/scroll'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Apps, FormatListBulleted } from '@mui/icons-material'
+import { useState } from 'react'
+import { UnassignedCardsList } from '@/app/business/unassigned-cards/components/UnassignedCardsList'
+import { UnassignedCardsTable } from '@/app/business/unassigned-cards/components/UnassignedCardsTable'
 import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
+import { AssignCardsSidebar } from '@/app/business/unassigned-cards/components'
 
 export default function UnassignedCards() {
   const unassignedCards = useFindUnassignedCards()
-  const theme = useTheme()
-  const cards = useUnassignedCards(state => state.cards)
 
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen
+  const [view, setView] = useState('1')
+  const handleChange = (event, newValue) => {
+    setView(newValue)
   }
+
+  const rows = useUnassignedCards(state => state.rows)
+  const openAssignCards = useUnassignedCards(state => state.openAssign)
+  const setOpenAssign = useUnassignedCards(state => state.setOpenAssign)
+  const resetCardsSelected = useUnassignedCards(state => state.resetCards)
 
   return (
     <>
@@ -32,38 +36,38 @@ export default function UnassignedCards() {
               { name: 'Administracion', href: BUSINESS_PATHS.cards },
               { name: BUSINESS_ROUTES_NAMES.unassignedCards.name }
             ]}
-          />
-          <Stack flexDirection={'row'} sx={{ height: '100vh', display: 'flex' }}>
-            <Stack
-              sx={theme => ({
-                overflow: 'hidden',
-                flexDirection: 'column',
-                flexGrow: 1
-              })}
-            >
-              <Zoom
-                in={cards?.length > 0}
-                timeout={transitionDuration}
-                style={{
-                  transitionDelay: `${cards?.length > 0 ? transitionDuration.exit : 0}ms`
-                }}
-                unmountOnExit
+            buttons={
+              <ToggleButtonGroup
+                size={'small'}
+                color="primary"
+                value={view}
+                exclusive
+                onChange={handleChange}
+                aria-label="Platform"
               >
-                <Box>
-                  <UnassignedToolbar cards={unassignedCards?.data} />
-                </Box>
-              </Zoom>
-
-              <Scrollbar>
-                <CardsList
-                  cards={unassignedCards}
-                  emptyMessage={'No hay tarjetas sin asignar'}
-                  cardComponent={UnassignedCard}
-                  my={3}
-                />
-              </Scrollbar>
-            </Stack>
-          </Stack>
+                <ToggleButton value="1">
+                  <FormatListBulleted />
+                </ToggleButton>
+                <ToggleButton value="2">
+                  <Apps />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            }
+          />
+          {view === '2' && <UnassignedCardsList unassignedCards={unassignedCards} />}
+          {view === '1' && (
+            <UnassignedCardsTable cards={unassignedCards.data} isLoading={unassignedCards.isLoading} rows={rows} />
+          )}
+          <AssignCardsSidebar
+            open={openAssignCards}
+            handleClose={() => {
+              setOpenAssign(false)
+            }}
+            handleSuccess={() => {
+              setOpenAssign(false)
+              resetCardsSelected()
+            }}
+          />
         </ContainerPage>
       </Page>
     </>

@@ -1,8 +1,7 @@
 import { Box, Divider, Stack } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
-import { CurrencyExchangeOutlined, PowerSettingsNewTwoTone, PriceChange } from '@mui/icons-material'
+import { CurrencyExchangeOutlined, PriceChange } from '@mui/icons-material'
 import { lazy, useState } from 'react'
-import { useToggleStatusCard } from '@/app/business/cards/hooks'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useIsFetching } from '@tanstack/react-query'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
@@ -15,9 +14,8 @@ const PaymentSidebar = Lodable(lazy(() => import('@/app/business/cards/component
 export function CardActions() {
   const [openTransfer, setOpenTransfer] = useState(false)
   const [openPayment, setOpenPayment] = useState(false)
-  const { mutate: changeStatusCard, isLoading: isChangingStatusCard } = useToggleStatusCard()
   const card = useCommerceDetailsCard(state => state.card)
-  const isFetchingCardDetails = useIsFetching([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id])
+  const isFetchingCardDetails = useIsFetching([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id]) === 1
 
   return (
     <>
@@ -31,7 +29,7 @@ export function CardActions() {
           >
             <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 150 }}>
               <LoadingButton
-                loading={isFetchingCardDetails === 1}
+                disabled={isFetchingCardDetails}
                 startIcon={<PriceChange />}
                 variant={'outlined'}
                 onClick={() => setOpenPayment(true)}
@@ -42,26 +40,12 @@ export function CardActions() {
 
             <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 150 }}>
               <LoadingButton
-                loading={isFetchingCardDetails === 1}
-                disabled={card?.balance === 0 || !card?.cardON}
+                disabled={card?.balance === 0 || !card?.cardON || isFetchingCardDetails}
                 startIcon={<CurrencyExchangeOutlined />}
                 variant={'outlined'}
                 onClick={() => setOpenTransfer(true)}
               >
                 Transferir
-              </LoadingButton>
-            </Stack>
-            <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 200 }}>
-              <LoadingButton
-                loading={isChangingStatusCard || isFetchingCardDetails === 1}
-                startIcon={<PowerSettingsNewTwoTone />}
-                onClick={() => {
-                  changeStatusCard({ ...card, cardON: !card?.cardON })
-                }}
-                color={card?.cardON ? 'error' : 'success'}
-                variant={'outlined'}
-              >
-                {card?.cardON ? 'Apagar Tarjeta' : 'Encender Tarjeta'}
               </LoadingButton>
             </Stack>
           </Stack>

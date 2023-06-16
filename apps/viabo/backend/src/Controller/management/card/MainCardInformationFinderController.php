@@ -30,7 +30,7 @@ final readonly class MainCardInformationFinderController extends ApiController
                 $cardData->data['cardId'] , $data->credentialData, $balanceInTransaction->total
             ));
 
-            return new JsonResponse($data->cardData);
+            return new JsonResponse($this->opensslEncrypt($data->cardData));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

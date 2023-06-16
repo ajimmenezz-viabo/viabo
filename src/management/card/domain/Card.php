@@ -7,6 +7,7 @@ namespace Viabo\management\card\domain;
 use Viabo\management\card\domain\events\AssignedCardDomaEventInCommerce;
 use Viabo\management\card\domain\events\CardBlockUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedDomainEvent;
+use Viabo\management\card\domain\events\CardCreatedOutsideDomainEvent;
 use Viabo\management\card\domain\events\CardOwnerUpdatedDomainEvent;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardCommerceId;
@@ -51,7 +52,7 @@ final class Card extends AggregateRoot
     {
         $card = new self(
             CardId::random() ,
-            new CardMain('0'),
+            new CardMain('0') ,
             $cardNumber ,
             $cardCVV ,
             $cardExpirationDate ,
@@ -147,6 +148,14 @@ final class Card extends AggregateRoot
         $this->ownerId = $ownerId;
         $this->statusId = $statusId;
         $this->record(new CardOwnerUpdatedDomainEvent($this->id->value() , $this->toArray()));
+    }
+
+    public function setEventCreatedOutside(string $userEmail , string $userName , string $userPassword): void
+    {
+        $this->record(new CardCreatedOutsideDomainEvent(
+            $this->id->value() ,
+            ['userEmail' => $userEmail , 'userName' => $userName , 'userPassword' => $userPassword]
+        ));
     }
 
     public function toArray(): array

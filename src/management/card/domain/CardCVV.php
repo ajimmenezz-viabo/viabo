@@ -10,10 +10,10 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardCVV extends StringValueObject
 {
-    public static function create(string $value): self
+    public static function create(string $value): static
     {
         self::validate($value);
-        return new self(Crypt::encrypt($value));
+        return new static(Crypt::encrypt($value));
     }
 
     public static function validate(string $value): void
@@ -21,6 +21,14 @@ final class CardCVV extends StringValueObject
         if (empty($value)) {
             throw new CarCVVEmpty();
         }
+    }
+
+    public static function empty(string $value): static
+    {
+        if (empty($value)) {
+            return new static($value);
+        }
+        return new static(Crypt::encrypt($value));
     }
 
     public function valueDecrypt(): string

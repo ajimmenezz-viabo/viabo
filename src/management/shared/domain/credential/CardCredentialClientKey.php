@@ -18,4 +18,9 @@ final class CardCredentialClientKey extends StringValueObject
     {
         return Crypt::decrypt($this->value);
     }
+
+    public function update(string $clientKey): static
+    {
+        return self::create($clientKey);
+    }
 }

@@ -19,7 +19,7 @@ final class CardValidator
     public function ensureNotExist(Card $card): void
     {
         $filters = Filters::fromValues([
-            ['field' => 'number.value' , 'operator' => '=' , 'value' => $card->number()->value() ]
+            ['field' => 'number' , 'operator' => '=' , 'value' => $card->number()->value() ]
         ]);
 
         $card = $this->repository->searchCriteria(new Criteria($filters));

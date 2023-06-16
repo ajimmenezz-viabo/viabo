@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CardCredentialDecryptQuery implements Query
 {
-    public function __construct(public string $password , public string $cardCredentialId)
+    public function __construct(public string $password , public string $cardId)
     {
     }
 }

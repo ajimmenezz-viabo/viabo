@@ -4,8 +4,8 @@
 namespace Viabo\management\credential\application\find;
 
 
-use Viabo\management\credential\domain\CardCredentialId;
 use Viabo\management\credential\domain\services\CardCredentialFinder as CardCredentialFinderService;
+use Viabo\management\shared\domain\card\CardId;
 
 final readonly class CardCredentialFinder
 {
@@ -13,7 +13,7 @@ final readonly class CardCredentialFinder
     {
     }
 
-    public function __invoke(CardCredentialId $cardId): CardCredentialResponse
+    public function __invoke(CardId $cardId): CardCredentialResponse
     {
         $credential = $this->finder->__invoke($cardId);
         return new CardCredentialResponse($credential->toArray());

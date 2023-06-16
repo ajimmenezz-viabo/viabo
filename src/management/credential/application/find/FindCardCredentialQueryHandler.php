@@ -5,6 +5,7 @@ namespace Viabo\management\credential\application\find;
 
 
 use Viabo\management\credential\domain\CardCredentialId;
+use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
@@ -16,7 +17,7 @@ final readonly class FindCardCredentialQueryHandler implements QueryHandler
 
     public function __invoke(CardCredentialQuery $query): Response
     {
-        $cardId = CardCredentialId::create($query->cardId);
+        $cardId = CardId::create($query->cardId);
         return $this->finder->__invoke($cardId);
     }
 }

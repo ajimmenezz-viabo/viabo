@@ -6,7 +6,6 @@ namespace Viabo\management\shared\domain\paymentProcessor;
 
 use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardCredentials;
-use Viabo\management\cardMovement\domain\CardMovement;
 use Viabo\management\cardMovement\domain\CardMovementFilter;
 use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\credential\domain\CardCredential;

@@ -4,7 +4,7 @@
 namespace Viabo\management\credential\application\find;
 
 
-use Viabo\management\credential\domain\CardCredentialId;
+use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
@@ -16,8 +16,8 @@ final readonly class CardCredentialDecryptQueryHandler implements QueryHandler
 
     public function __invoke(CardCredentialDecryptQuery $query): Response
     {
-        $credential = new CardCredentialId($query->cardCredentialId);
+        $cardId = new CardId($query->cardId);
 
-        return $this->decoder->__invoke($credential, $query->password);
+        return $this->decoder->__invoke($cardId, $query->password);
     }
 }

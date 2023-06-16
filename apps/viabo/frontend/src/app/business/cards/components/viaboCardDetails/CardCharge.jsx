@@ -13,6 +13,8 @@ export function CardCharge() {
   const [copiedSPEI, setCopiedSPEI] = useState(false)
   const [copiedPAYNET, setCopiedPAYNET] = useState(false)
   const [openShared, setOpenShared] = useState(false)
+  const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
+  const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
 
   const copyToClipboard = (setCopied, text) => {
     const input = document.createElement('textarea')
@@ -81,7 +83,15 @@ export function CardCharge() {
               <Button color={'primary'} variant={'outlined'} startIcon={<Mail />} onClick={() => setOpenShared(true)}>
                 Compartir
               </Button>
-              <Button color={'primary'} variant={'contained'} startIcon={<Receipt />}>
+              <Button
+                color={'primary'}
+                variant={'contained'}
+                startIcon={<Receipt />}
+                onClick={() => {
+                  setOpenFundingOrder(true)
+                  setFundingCard(card)
+                }}
+              >
                 Orden Fondeo
               </Button>
             </Stack>

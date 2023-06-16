@@ -1,7 +1,7 @@
-import { FormProvider } from '@/shared/components/form'
+import { FormProvider, InputAmount } from '@/shared/components/form'
 import { useFormik } from 'formik'
 import { Scrollbar } from '@/shared/components/scroll'
-import { Input, Slider as MuiSlider, Stack, Typography } from '@mui/material'
+import { Slider as MuiSlider, Stack, Typography } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import { Send } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
@@ -28,6 +28,12 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
 
   const { amount } = values
 
+  const handleInputClick = () => {
+    if (amount === 0) {
+      setFieldValue('amount', '')
+    }
+  }
+
   const handleInputChange = event => {
     const value = event.target.value === '' ? '' : Number(event.target.value)
     setFieldValue('amount', value)
@@ -35,7 +41,7 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
 
   const handleAutoWidth = () => {
     const getNumberLength = amount.toString().length
-    setAutoWidth(getNumberLength * 22)
+    setAutoWidth(getNumberLength * 24)
   }
 
   const handleBlur = () => {
@@ -67,13 +73,20 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
             Ingresa Cantidad
           </Typography>
 
-          <InputAmount
-            disabled={isSubmitting}
-            onBlur={handleBlur}
-            onChange={handleInputChange}
-            autoWidth={autoWidth}
-            amount={amount}
-          />
+          <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'center'}>
+            <InputAmount
+              disabled={isSubmitting}
+              onBlur={handleBlur}
+              onChange={handleInputChange}
+              onClick={handleInputClick}
+              autoWidth={autoWidth}
+              amount={amount}
+              step={STEP}
+              min={MIN_AMOUNT}
+              max={MAX_AMOUNT}
+            />
+            <Typography variant="caption">MXN</Typography>
+          </Stack>
 
           <MuiSlider
             value={typeof amount === 'number' ? amount : 0}
@@ -102,41 +115,5 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
         </Stack>
       </FormProvider>
     </Scrollbar>
-  )
-}
-
-function InputAmount({ autoWidth, amount, onBlur, onChange, sx, ...other }) {
-  return (
-    <Stack direction="row" justifyContent="center" spacing={1} sx={sx}>
-      <Typography variant="h5">$</Typography>
-      <Input
-        disableUnderline
-        value={amount}
-        onChange={onChange}
-        size={'small'}
-        onBlur={onBlur}
-        inputProps={{ step: STEP, min: MIN_AMOUNT, max: MAX_AMOUNT, type: 'number' }}
-        sx={{
-          typography: 'h3',
-          '& input': {
-            p: 0,
-            textAlign: 'center',
-            width: autoWidth,
-            '&[type=number]': {
-              MozAppearance: 'textfield',
-              '&::-webkit-outer-spin-button': {
-                margin: 0,
-                WebkitAppearance: 'none'
-              },
-              '&::-webkit-inner-spin-button': {
-                margin: 0,
-                WebkitAppearance: 'none'
-              }
-            }
-          }
-        }}
-        {...other}
-      />
-    </Stack>
   )
 }

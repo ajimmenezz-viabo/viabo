@@ -8,6 +8,7 @@ import { CardsSidebar } from '@/app/business/cards/components/cardsSidebar'
 import { CommerceViaboCardDetails } from '@/app/business/cards/components/CommerceViaboCardDetails'
 import { CardToolbar } from '@/app/business/cards/components/cardToolbar'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
+import { OrderFunding } from '@/app/business/cards/components/OrderFunding'
 
 export default function CommerceCards() {
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
@@ -46,6 +47,8 @@ export default function CommerceCards() {
           <CommerceViaboCardDetails />
         </Box>
       </Box>
+
+      <OrderFunding />
     </Page>
   )
 }

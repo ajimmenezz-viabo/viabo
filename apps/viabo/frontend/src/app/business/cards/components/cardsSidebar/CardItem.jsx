@@ -76,22 +76,22 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
           }}
         >
           <ListItemAvatar>
-            <Box sx={{ position: 'relative', pl: isOpenSidebar ? 1 : 0 }}>
+            <Box sx={{ position: 'relative', pl: 1 }}>
               <Avatar
                 sx={theme => ({
-                  width: 48,
-                  height: 48,
+                  width: 30,
+                  height: 30,
                   color: theme.palette.primary.contrastText,
                   backgroundColor: theme.palette.primary.main
                 })}
               >
                 {cardType === 'Carnet' ? (
-                  <CarnetLogo sx={{ width: 30 }} color={'white'} />
+                  <CarnetLogo sx={{ width: 20 }} color={'white'} />
                 ) : (
-                  <MasterCardLogo sx={{ width: 30 }} />
+                  <MasterCardLogo sx={{ width: 20 }} />
                 )}
               </Avatar>
-              <BadgeStatus status={status} sx={{ right: 2, bottom: 2, position: 'absolute' }} />
+              <BadgeStatus status={status} sx={{ right: 0, bottom: 0, position: 'absolute' }} />
             </Box>
           </ListItemAvatar>
 

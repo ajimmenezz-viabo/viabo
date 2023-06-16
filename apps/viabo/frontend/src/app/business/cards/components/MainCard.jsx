@@ -5,10 +5,13 @@ import { LoadingButton } from '@mui/lab'
 import { ACTIONS_PERMISSIONS } from '@/app/business/cards/adapters'
 import { useUser } from '@/shared/hooks'
 import { Receipt } from '@mui/icons-material'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
 export function MainCard() {
   const user = useUser()
   const userActions = user?.modules?.userActions ?? []
+  const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
+  const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
 
   if (!userActions.includes(ACTIONS_PERMISSIONS.COMMERCE_CARDS)) {
     return null
@@ -54,7 +57,15 @@ export function MainCard() {
               <Typography variant="h3">{data?.balanceFormatted}</Typography>
               <Typography variant="caption">MXN</Typography>
             </Stack>
-            <Button color={'primary'} variant={'contained'} startIcon={<Receipt />} onClick={() => setOpenShared(true)}>
+            <Button
+              color={'primary'}
+              variant={'contained'}
+              startIcon={<Receipt />}
+              onClick={() => {
+                setOpenFundingOrder(true)
+                setFundingCard(data)
+              }}
+            >
               Orden Fondeo
             </Button>
           </Stack>
@@ -64,7 +75,7 @@ export function MainCard() {
           <Stack spacing={1} alignItems={'center'}>
             <Typography variant="subtitle2">En Transito</Typography>
             <Stack direction={'row'} spacing={2} alignItems={'center'}>
-              <Typography variant="h3">$0.00</Typography>
+              <Typography variant="h3">{data?.inTransitFormatted}</Typography>
               <Typography variant="caption">MXN</Typography>
             </Stack>
           </Stack>

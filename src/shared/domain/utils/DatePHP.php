@@ -178,5 +178,19 @@ class DatePHP
         return $timeDiff;
     }
 
+    public function serializeDate(): int
+    {
+        $this->timeZone();
+        $date = new DateTime();
+        $timestamp = $date->getTimestamp();
+        return $timestamp % 10000000; // Obtiene los últimos 7 dígitos del timestamp
+    }
 
+    public function deserializeDate(int $serial): int
+    {
+        $timestamp = $serial + time(); // Recupera el timestamp original sumando el número serializado al timestamp actual
+        $date = new DateTime();
+        $date->setTimestamp($timestamp);
+        return $date->format('Y-m-d H:i:s');
+    }
 }

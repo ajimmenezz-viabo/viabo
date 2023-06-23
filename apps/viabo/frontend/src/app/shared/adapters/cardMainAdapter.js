@@ -10,6 +10,7 @@ export const CardMainAdapter = card => {
   if (decryptedCard) {
     return {
       id: decryptedCard?.cardId,
+      SPEI: decryptedCard?.spei,
       balance,
       balanceFormatted: fCurrency(balance),
       inTransit,

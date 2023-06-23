@@ -6,7 +6,7 @@ export const CardAdapter = card => {
 
   if (decryptedCard) {
     return {
-      SPEI: decryptedCard?.spai,
+      SPEI: decryptedCard?.spei,
       PAYNET: decryptedCard?.paynet,
       cardON: decryptedCard?.block === 'UnBlocked',
       nip: decryptedCard?.nip,

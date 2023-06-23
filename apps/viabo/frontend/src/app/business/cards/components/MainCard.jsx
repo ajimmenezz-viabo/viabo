@@ -1,17 +1,20 @@
-import { Alert, Box, Button, Card, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, Card, IconButton, Stack, Typography } from '@mui/material'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { useFindMainCard } from '@/app/business/cards/hooks/useFindMainCard'
 import { LoadingButton } from '@mui/lab'
 import { ACTIONS_PERMISSIONS } from '@/app/business/cards/adapters'
 import { useUser } from '@/shared/hooks'
-import { Receipt } from '@mui/icons-material'
+import { Check, CopyAll, Receipt } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { useState } from 'react'
+import { copyToClipboard } from '@/shared/utils'
 
 export function MainCard() {
   const user = useUser()
   const userActions = user?.modules?.userActions ?? []
   const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
   const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
+  const [copiedSPEI, setCopiedSPEI] = useState(false)
 
   if (!userActions.includes(ACTIONS_PERMISSIONS.COMMERCE_CARDS)) {
     return null
@@ -68,6 +71,29 @@ export function MainCard() {
             >
               Orden Fondeo
             </Button>
+
+            <Stack
+              flexDirection="row"
+              alignItems="center"
+              justifyContent={'center'}
+              sx={{ flexGrow: 1, flexWrap: 'wrap' }}
+              gap={1}
+            >
+              <Typography variant="body1">{data?.SPEI}</Typography>
+              <IconButton
+                variant="outlined"
+                color={copiedSPEI ? 'success' : 'inherit'}
+                onClick={() => {
+                  setCopiedSPEI(true)
+                  copyToClipboard(data?.SPEI)
+                  setTimeout(() => {
+                    setCopiedSPEI(false)
+                  }, 1000)
+                }}
+              >
+                {copiedSPEI ? <Check sx={{ color: 'success' }} /> : <CopyAll sx={{ color: 'text.disabled' }} />}
+              </IconButton>
+            </Stack>
           </Stack>
         </Card>
 

@@ -25,7 +25,7 @@ final readonly class CardMovementsQueryHandler implements QueryHandler
         $clientKey = CardClientKey::create($query->clientKey);
 
         return $this->finder->__invoke(
-            $cardNumber , $initialDate , $finalDate , $clientKey, $query->operations
+            $cardNumber , $initialDate , $finalDate , $clientKey, $query->operations, $query->cardPaymentProcessorId
         );
     }
 }

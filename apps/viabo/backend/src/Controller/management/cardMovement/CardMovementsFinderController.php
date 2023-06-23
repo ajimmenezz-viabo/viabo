@@ -25,6 +25,7 @@ final readonly class CardMovementsFinderController extends ApiController
             $operationData = $this->ask(new CardOperationsQuery($cardData->cardData['number'] , $initialDate , $finalDate));
             $data = $this->ask(new CardMovementsQuery(
                 $cardData->cardData['number'] ,
+                $cardData->cardData['paymentProcessorId'] ,
                 $initialDate ,
                 $finalDate ,
                 $credentialData->credentialData['clientKey'] ,

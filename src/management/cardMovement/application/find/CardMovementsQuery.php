@@ -10,7 +10,6 @@ final readonly class CardMovementsQuery implements Query
 {
     public function __construct(
         public string $cardNumber ,
-        public string $cardPaymentProcessorId ,
         public string $initialDate ,
         public string $finalDate ,
         public string $clientKey ,

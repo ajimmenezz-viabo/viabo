@@ -9,6 +9,7 @@ use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\qr\QRCodeAdapter;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
+use Viabo\shared\domain\utils\NumberFormat;
 
 final readonly class SendConciliationSPEI implements DomainEventSubscriber
 {
@@ -32,7 +33,7 @@ final readonly class SendConciliationSPEI implements DomainEventSubscriber
             'management/notification/emails/conciliation.spei.html.twig' ,
             [
                 'spei' => $conciliationData['spei'] ,
-                'amount' => $conciliationData['amount'] ,
+                'amount' => NumberFormat::money(floatval($conciliationData['amount'])) ,
                 'referenceNumber' => $conciliationData['referenceNumber']
             ]
         );

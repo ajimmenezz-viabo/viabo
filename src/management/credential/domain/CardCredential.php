@@ -66,8 +66,8 @@ final class CardCredential extends AggregateRoot
             $userEmail ,
             new CardCredentialClientKey('') ,
             CardCredentialRegisterDate::todayDate() ,
-            new CommerceCredentials('' , '' , '') ,
-            new CardData('' , '')
+            CommerceCredentials::empty() ,
+            CardData::empty()
         );
 
         $credential->record(new CardCredentialCreatedOutsideDomainEvent(

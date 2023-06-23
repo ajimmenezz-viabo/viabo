@@ -52,7 +52,7 @@ final class CardInformation
     public function toArray(): array
     {
         return [
-            'spai' => $this->spai->value() ,
+            'spei' => $this->spai->value() ,
             'paynet' => $this->paynet->value() ,
             'balance' => $this->balance->value() ,
             'block' => $this->block->value() ,

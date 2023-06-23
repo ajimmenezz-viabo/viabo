@@ -4,9 +4,9 @@
 namespace Viabo\management\conciliation\application\create;
 
 
-use Viabo\shared\domain\bus\command\Command;
+use Viabo\shared\domain\bus\query\Query;
 
-final readonly class CreateConciliationCommand implements Command
+final readonly class CreateConciliationQuery implements Query
 {
     public function __construct(
         public string $cardId ,

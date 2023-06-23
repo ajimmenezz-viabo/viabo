@@ -47,6 +47,11 @@ final class Conciliation extends AggregateRoot
         return $conciliation;
     }
 
+    public function referenceNumber(): ConciliationReferenceNumber
+    {
+        return $this->referenceNumber;
+    }
+
     public function toArray(): array
     {
         return [

@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\conciliation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\management\conciliation\application\create\CreateConciliationCommand;
+use Viabo\management\conciliation\application\create\CreateConciliationQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class ConciliationCreatorController extends ApiController
@@ -15,14 +15,14 @@ final readonly class ConciliationCreatorController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
             $data = $request->toArray();
-            $this->dispatch(new CreateConciliationCommand(
+            $data = $this->ask(new CreateConciliationQuery(
                 $data['cardId'] , $data['amount'] , $data['spei'] , $data['emails']
             ));
 
-            return new JsonResponse();
+            return new JsonResponse($this->opensslEncrypt($data->referenceNumber));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

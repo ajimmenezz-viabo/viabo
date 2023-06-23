@@ -6,23 +6,31 @@ namespace Viabo\management\credential\domain;
 
 use Viabo\management\credential\domain\exceptions\CardDataExpirationDateEmpty;
 use Viabo\management\credential\domain\exceptions\CardDataNumberEmpty;
-use Viabo\shared\domain\valueObjects\StringValueObject;
+use Viabo\management\credential\domain\exceptions\CardPaymentProcessorIdEmpty;
 
-final class CardData extends StringValueObject
+final class CardData
 {
-    public function __construct(private string $number , private string $expirationDate)
+    public function __construct(
+        private string $number ,
+        private string $expirationDate ,
+        private string $paymentProcessorId
+    )
     {
-        parent::__construct($this->number);
     }
 
-    public static function create(string $number , string $expirationDate): self
+    public static function create(string $number , string $expirationDate , string $paymentProcessorId): self
     {
-        self::validate($number , $expirationDate);
+        self::validate($number , $expirationDate , $paymentProcessorId);
         $expirationDate = str_replace('/' , '' , $expirationDate);
-        return new static($number , $expirationDate);
+        return new static($number , $expirationDate , $paymentProcessorId);
     }
 
-    public static function validate(string $number , string $expirationDate): void
+    public static function empty(): static
+    {
+        return new static('' , '' , '');
+    }
+
+    public static function validate(string $number , string $expirationDate , string $paymentProcessorId): void
     {
         if (empty($number)) {
             throw new CardDataNumberEmpty();
@@ -30,6 +38,10 @@ final class CardData extends StringValueObject
 
         if (empty($expirationDate)) {
             throw new CardDataExpirationDateEmpty();
+        }
+
+        if (empty($paymentProcessorId)) {
+            throw new CardPaymentProcessorIdEmpty();
         }
     }
 
@@ -42,4 +54,10 @@ final class CardData extends StringValueObject
     {
         return $this->expirationDate;
     }
+
+    public function paymentProcessorId(): string
+    {
+        return $this->paymentProcessorId;
+    }
+
 }

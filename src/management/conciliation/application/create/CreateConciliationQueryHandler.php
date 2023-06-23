@@ -8,21 +8,22 @@ use Viabo\management\conciliation\domain\ConciliationAmount;
 use Viabo\management\conciliation\domain\ConciliationEmails;
 use Viabo\management\conciliation\domain\ConciliationSpei;
 use Viabo\management\shared\domain\card\CardId;
-use Viabo\shared\domain\bus\command\CommandHandler;
+use Viabo\shared\domain\bus\query\QueryHandler;
+use Viabo\shared\domain\bus\query\Response;
 
-final readonly class CreateConciliationCommandHandler implements CommandHandler
+final readonly class CreateConciliationQueryHandler implements QueryHandler
 {
     public function __construct(private ConciliationCreator $creator)
     {
     }
 
-    public function __invoke(CreateConciliationCommand $command): void
+    public function __invoke(CreateConciliationQuery $command): Response
     {
         $cardId = CardId::create($command->cardId);
         $amount = ConciliationAmount::create($command->amount);
         $spei = ConciliationSpei::create($command->spei);
         $emails = ConciliationEmails::create($command->emails);
 
-        $this->creator->__invoke($cardId, $amount, $spei, $emails);
+        return $this->creator->__invoke($cardId, $amount, $spei, $emails);
     }
 }

@@ -6,14 +6,8 @@ namespace Viabo\management\credential\domain\exceptions;
 
 use Viabo\shared\domain\DomainError;
 
-final class CommerceCredentialsClientKeyEmpty extends DomainError
+final class CardPaymentProcessorIdEmpty extends DomainError
 {
-    public function __construct(private readonly string $clientKeyName)
-    {
-        parent::__construct();
-
-    }
-
     public function errorCode(): int
     {
         return 400;
@@ -21,6 +15,6 @@ final class CommerceCredentialsClientKeyEmpty extends DomainError
 
     public function errorMessage(): string
     {
-        return "No esta definida la client key de {$this->clientKeyName}";
+        return 'No esta definido el id del procesador de pago';
     }
 }

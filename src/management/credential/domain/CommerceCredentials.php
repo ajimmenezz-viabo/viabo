@@ -6,17 +6,16 @@ namespace Viabo\management\credential\domain;
 
 use Viabo\management\credential\domain\exceptions\CommerceCredentialsClientKeyEmpty;
 use Viabo\management\credential\domain\exceptions\CommerceCredentialsKeyCompanyEmpty;
-use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommerceCredentials extends StringValueObject
+final class CommerceCredentials
 {
     public function __construct(
-        private string $mainKey ,
+        private string $companyKey ,
         private string $masterCardKey ,
-        private string $carnetKey
+        private string $carnetKey ,
+        private string $clientKey
     )
     {
-        parent::__construct($this->mainKey);
     }
 
     public static function create(
@@ -26,7 +25,12 @@ final class CommerceCredentials extends StringValueObject
     ): static
     {
         static::validate($mainKey , $masterCardKey , $carnetKey);
-        return new static($mainKey , $masterCardKey , $carnetKey);
+        return new static($mainKey , $masterCardKey , $carnetKey , '');
+    }
+
+    public static function empty(): static
+    {
+        return new static('' , '' , '' , '');
     }
 
     private static function validate(
@@ -36,21 +40,38 @@ final class CommerceCredentials extends StringValueObject
     ): void
     {
         if (empty($mainKey)) {
-            throw new CommerceCredentialsClientKeyEmpty();
+            throw new CommerceCredentialsKeyCompanyEmpty();
         }
 
-        if (empty($masterCardKey) && empty($carnetKey)) {
-            throw new CommerceCredentialsKeyCompanyEmpty();
+        if (empty($masterCardKey)) {
+            throw new CommerceCredentialsClientKeyEmpty('mastercard');
+        }
+
+        if (empty($carnetKey)) {
+            throw new CommerceCredentialsClientKeyEmpty('carnet');
         }
     }
 
     public function clientKey(): string
     {
-        return $this->mainKey;
+        return $this->clientKey;
     }
 
     public function companyKey(): string
     {
-        return !empty($this->masterCardKey) ? $this->masterCardKey : $this->carnetKey;
+        return $this->companyKey;
+    }
+
+    public function setClientKey(string $paymentProcessorId): void
+    {
+        $masterCardId = '1';
+        if ($paymentProcessorId === $masterCardId) {
+            $this->clientKey = $this->masterCardKey;
+        }
+
+        $carnetId = '2';
+        if ($paymentProcessorId === $carnetId) {
+            $this->clientKey = $this->carnetKey;
+        }
     }
 }

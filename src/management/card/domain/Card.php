@@ -158,6 +158,11 @@ final class Card extends AggregateRoot
         ));
     }
 
+    public function isCarnet(): bool
+    {
+        return $this->paymentProcessorId->isCarnet();
+    }
+
     public function toArray(): array
     {
         return [

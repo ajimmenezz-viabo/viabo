@@ -21,6 +21,10 @@ final class CardCredentialUserId extends StringValueObject
 
     public function valueDecrypt(): string
     {
-        return Crypt::decrypt($this->value);
+        try {
+            return Crypt::decrypt($this->value);
+        } catch (\DomainException) {
+            return '';
+        }
     }
 }

@@ -8,8 +8,15 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardMovementTransactionId extends StringValueObject
 {
-    public function isSame(string $operationId): bool
+    public static function create(mixed $value): static
     {
-        return str_contains($this->value, $operationId) && !empty($operationId);
+        $value = strval($value);
+        return new static($value);
+    }
+
+    public function isSame(mixed $operationId): bool
+    {
+        $operationId = strval($operationId);
+        return str_contains($this->value , $operationId) && !empty($operationId);
     }
 }

@@ -30,9 +30,11 @@ final readonly class CredentialCreator
     public function __invoke(CardId $cardId , CommerceCredentials $commerceCredentials): void
     {
         $credential = $this->credentialFinder($cardId);
+        $cardData = $this->cardData($cardId);
+        $commerceCredentials->setClientKey($cardData->paymentProcessorId());
 
         if (empty($credential)) {
-            $credential = $this->save($cardId , $commerceCredentials);
+            $credential = $this->save($cardId , $commerceCredentials , $cardData);
         } else {
             $this->update($credential , $commerceCredentials);
         }
@@ -49,9 +51,18 @@ final readonly class CredentialCreator
         }
     }
 
-    private function save(CardId $cardId , CommerceCredentials $commerceCredentials): CardCredential
+    private function cardData(CardId $cardId): CardData
     {
-        $cardData = $this->cardData($cardId);
+        $card = $this->queryBus->ask(new CardQuery($cardId->value()));
+        return CardData::create(
+            $card->cardData['number'] ,
+            $card->cardData['expirationDate'] ,
+            $card->cardData['paymentProcessorId']
+        );
+    }
+
+    private function save(CardId $cardId , CommerceCredentials $commerceCredentials , CardData $cardData): CardCredential
+    {
         $credential = CardCredential::create(
             $cardId ,
             $commerceCredentials ,
@@ -61,12 +72,6 @@ final readonly class CredentialCreator
         $this->adapter->register($credential);
         $this->repository->save($credential);
         return $credential;
-    }
-
-    private function cardData(CardId $cardId): CardData
-    {
-        $card = $this->queryBus->ask(new CardQuery($cardId->value()));
-        return CardData::create($card->cardData['number'] , $card->cardData['expirationDate']);
     }
 
     private function update(CardCredential $credential , CommerceCredentials $commerceCredentials): void

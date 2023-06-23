@@ -19,12 +19,12 @@ final class CardMovement
     }
 
     public static function create(
-        string $transactionId ,
-        int    $typeId ,
-        mixed  $charge ,
-        mixed  $accredit ,
-        string $description ,
-        string $date
+        mixed $transactionId ,
+        mixed $typeId ,
+        mixed $charge ,
+        mixed $accredit ,
+        mixed $description ,
+        mixed $date
     ): static
     {
         $typeId = CardMovementType::create($typeId);
@@ -35,12 +35,12 @@ final class CardMovement
         }
 
         return new static(
-            new CardMovementTransactionId($transactionId) ,
+            CardMovementTransactionId::create($transactionId) ,
             $typeId ,
             $amount ,
-            new CardMovementConcept(''),
-            new CardMovementDescription($description) ,
-            new CardMovementDate($date)
+            new CardMovementConcept('') ,
+            CardMovementDescription::create($description) ,
+            CardMovementDate::create($date)
         );
     }
 

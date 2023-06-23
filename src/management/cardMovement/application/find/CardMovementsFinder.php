@@ -31,7 +31,12 @@ final readonly class CardMovementsFinder
         $cardMovements = $this->adapter->searchMovements($cardMovement);
 
         $movements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
-        return new CardMovementsResponse(array_map(function (array $movementData) use ($operations) {
+        return new CardMovementsResponse($this->movementsData($operations , $movements));
+    }
+
+    private function movementsData(array $operations , mixed $movements): array
+    {
+        return array_map(function (array $movementData) use ($operations) {
             $movement = CardMovement::create(
                 $movementData['Auth_Code'] ,
                 $movementData['Type_Id'] ,
@@ -42,6 +47,8 @@ final readonly class CardMovementsFinder
             );
             $movement->updateDescriptionWith($operations);
             return $movement->toArray();
-        } , $movements));
+        } , array_filter($movements , function (array $movementData) {
+            return !empty($movementData['Transaction_Id']);
+        }));
     }
 }

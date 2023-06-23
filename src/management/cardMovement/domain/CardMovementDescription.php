@@ -8,8 +8,15 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardMovementDescription extends StringValueObject
 {
-    public function update(string $value): static
+    public static function create(mixed $value): static
     {
+        $value = strval($value);
+        return new static($value);
+    }
+
+    public function update(mixed $value): static
+    {
+        $value = strval($value);
         return new static($value);
     }
 }

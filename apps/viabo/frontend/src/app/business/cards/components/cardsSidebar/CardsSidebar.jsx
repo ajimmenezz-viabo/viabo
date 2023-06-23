@@ -44,6 +44,7 @@ const SIDEBAR_COLLAPSE_WIDTH = 96
 
 export function CardsSidebar() {
   const selectedCardId = useCommerceDetailsCard(state => state.card?.id)
+  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
 
   const {
     data: commerceCards,
@@ -88,6 +89,12 @@ export function CardsSidebar() {
       setSearchResults(commerceCards)
     }
   }, [commerceCards])
+
+  useEffect(() => {
+    if (isMainCardSelected && selectedCardId) {
+      handleCloseSidebar()
+    }
+  }, [isMainCardSelected, selectedCardId])
 
   const handleOpenSidebar = () => {
     setOpenSidebar(true)

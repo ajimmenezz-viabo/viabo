@@ -19,6 +19,7 @@ export const useFindCardMovements = (cardId, date, options = {}) => {
     () => getCardMovements(cardId, initialDate, finalDate),
     {
       staleTime: 60000,
+      retry: false,
       onError: error => {
         const errorMessage = getErrorAPI(
           error,

@@ -23,7 +23,7 @@ export const transactionsCard = async transactions => {
 }
 
 export const getCardMovements = async (cardId, initialDate, finalDate) => {
-  const { data } = await axios.get(`/api/card/${cardId}/movements/${initialDate}/to/${finalDate}`)
+  const { data } = await axios.get(`/api/card/${cardId}/movements/${initialDate}/to/${finalDate}`, { timeout: 30000 })
   return CardMovementsAdapter(data)
 }
 

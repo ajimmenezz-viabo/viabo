@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware'
 
 const commerceCardDetailsStore = (set, get) => ({
   card: null,
+  isMainCardSelected: false,
   mainCard: null,
   selectedCards: [],
   openFundingOrder: false,
@@ -46,6 +47,15 @@ const commerceCardDetailsStore = (set, get) => ({
       }),
       false,
       'SET_MAIN_CARD'
+    )
+  },
+  setSelectedMainCard: isMainCard => {
+    set(
+      state => ({
+        isMainCardSelected: isMainCard
+      }),
+      false,
+      'SET_IS_MAIN_CARD_SELECTED'
     )
   },
   setOpenFundingOrder: open => {

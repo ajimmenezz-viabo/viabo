@@ -15,9 +15,11 @@ import { ErrorRequestPage } from '@/shared/components/notifications'
 import { useCollapseDrawer } from '@theme/hooks'
 import { useEffect } from 'react'
 import { CardDetailsHeader } from '@/app/business/cards/components/viaboCardDetails/header'
+import { MainCardDetailsHeader } from '@/app/business/cards/components/MainCardDetailsHeader'
 
 export function CommerceViaboCardDetails() {
   const card = useCommerceDetailsCard(state => state.card)
+  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const { data, isLoading, isError, error, refetch } = useFindCardDetails(card?.id, {
     enabled: !!card?.id
@@ -45,8 +47,15 @@ export function CommerceViaboCardDetails() {
       {card && isLoading && <RequestLoadingComponent />}
       {card && data && (
         <>
-          <CardDetailsHeader card={card} />
-          <CardActions />
+          {!isMainCardSelected ? (
+            <>
+              <CardDetailsHeader card={card} />
+              <CardActions />
+            </>
+          ) : (
+            <MainCardDetailsHeader card={card} />
+          )}
+
           <Scrollbar>
             <Stack pt={2} pb={4} px={2}>
               <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>
@@ -54,7 +63,7 @@ export function CommerceViaboCardDetails() {
                   <Stack spacing={3}>
                     <CardBalance />
                     <CardCharge />
-                    <CardAssignInfo />
+                    {!isMainCardSelected && <CardAssignInfo />}
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={8}>

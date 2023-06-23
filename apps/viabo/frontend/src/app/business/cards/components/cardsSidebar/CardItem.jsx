@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import {
   Avatar,
   Box,
@@ -38,7 +38,8 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
   const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
   const commerceCard = useCommerceDetailsCard(state => state.card)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
-  const theme = useTheme()
+  const setIsMainCard = useCommerceDetailsCard(state => state.setSelectedMainCard)
+  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
   const user = useUser()
   const userActions = user?.modules?.userActions ?? []
 
@@ -51,6 +52,9 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
     const type = e.target?.type
     if (!type && !isSelected) {
       setCommerceCard(card)
+      if (isMainCardSelected) {
+        setIsMainCard(false)
+      }
       addInfoCard({
         movements: [],
         expenses: '$0.00',

@@ -4,6 +4,7 @@ import { Check, CopyAll, Mail, Receipt, Visibility, VisibilityOff } from '@mui/i
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
 import { ModalSharedCharge } from '@/app/business/cards/components/viaboCardDetails/ModalSharedCharge'
+import { copyToClipboard } from '@/shared/utils'
 
 export function CardCharge() {
   const card = useCommerceDetailsCard(state => state.card)
@@ -15,20 +16,6 @@ export function CardCharge() {
   const [openShared, setOpenShared] = useState(false)
   const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
   const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
-
-  const copyToClipboard = (setCopied, text) => {
-    const input = document.createElement('textarea')
-    input.value = text
-    document.body.appendChild(input)
-    input.select()
-    document.execCommand('copy')
-    document.body.removeChild(input)
-    setCopied(true)
-
-    setTimeout(() => {
-      setCopied(false)
-    }, 1000)
-  }
 
   return (
     <>
@@ -71,7 +58,13 @@ export function CardCharge() {
                 <IconButton
                   variant="outlined"
                   color={copiedSPEI ? 'success' : 'inherit'}
-                  onClick={() => copyToClipboard(setCopiedSPEI, card?.SPEI)}
+                  onClick={() => {
+                    setCopiedSPEI(true)
+                    copyToClipboard(card?.SPEI)
+                    setTimeout(() => {
+                      setCopiedSPEI(false)
+                    }, 1000)
+                  }}
                 >
                   {copiedSPEI ? <Check sx={{ color: 'success' }} /> : <CopyAll sx={{ color: 'text.disabled' }} />}
                 </IconButton>

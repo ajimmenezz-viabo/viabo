@@ -1,5 +1,6 @@
 import { axios } from '@/shared/interceptors'
 import { CardAdapter, CardMainAdapter, CardMovementsAdapter, CardsAdapter } from '@/app/shared/adapters'
+import { CreateFundingOrderResponseAdapter } from '@/app/business/cards/adapters'
 
 export const getEnabledCommerceCards = async () => {
   const { data } = await axios.get('/api/enabled-cards/commerce')
@@ -39,4 +40,9 @@ export const sendMessageCards = async message => {
 export const sharedChargeKeys = async emails => {
   const { data } = await axios.post('/api/card/send/spei-key', emails)
   return data
+}
+
+export const createFundingOrder = async order => {
+  const { data } = await axios.post('/api/conciliation/new', order)
+  return CreateFundingOrderResponseAdapter(data)
 }

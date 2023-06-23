@@ -37,6 +37,7 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
   const { cardNumberHidden, id, expiration, cardType } = card
   const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
   const commerceCard = useCommerceDetailsCard(state => state.card)
+  const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const theme = useTheme()
   const user = useUser()
   const userActions = user?.modules?.userActions ?? []
@@ -48,8 +49,14 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
 
   const handleSelectedRow = e => {
     const type = e.target?.type
-    if (!type) {
+    if (!type && !isSelected) {
       setCommerceCard(card)
+      addInfoCard({
+        movements: [],
+        expenses: '$0.00',
+        income: '$0.00',
+        balanceMovements: '$0.00'
+      })
       onOpenDetails()
     }
   }

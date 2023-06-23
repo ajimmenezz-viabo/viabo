@@ -24,9 +24,16 @@ final readonly class CardMovementsFinder
         CardMovementInitialDate $initialDate ,
         CardMovementFinalDate   $finalDate ,
         CardClientKey           $clientKey ,
-        array                   $operations
+        array                   $operations ,
+        string                  $cardPaymentProcessorId
     ): CardMovementsResponse
     {
+        //Se ponde este validacion temporalmente hasta que ya este solucionado la api de set para mastercard
+        $mastercardId = '1';
+        if($cardPaymentProcessorId === $mastercardId){
+            return new CardMovementsResponse([]);
+        }
+
         $cardMovement = CardMovementFilter::create($cardNumber , $clientKey , $initialDate , $finalDate);
         $cardMovements = $this->adapter->searchMovements($cardMovement);
 

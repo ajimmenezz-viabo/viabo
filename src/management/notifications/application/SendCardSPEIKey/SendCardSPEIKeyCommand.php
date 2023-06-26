@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class SendCardSPEIKeyCommand implements Command
 {
-    public function __construct(public string $spei , public string $paynet , public array $emails)
+    public function __construct(public string $spei , public array $emails)
     {
     }
 }

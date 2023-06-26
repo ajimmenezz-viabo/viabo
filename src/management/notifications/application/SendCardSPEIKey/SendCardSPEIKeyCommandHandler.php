@@ -14,6 +14,6 @@ final readonly class SendCardSPEIKeyCommandHandler implements CommandHandler
 
     public function __invoke(SendCardSPEIKeyCommand $command): void
     {
-        $this->send->__invoke($command->spei , $command->paynet , $command->emails);
+        $this->send->__invoke($command->spei , $command->emails);
     }
 }

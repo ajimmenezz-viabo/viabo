@@ -18,7 +18,7 @@ final readonly class CardKeySPEISendController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
-            $this->dispatch(new SendCardSPEIKeyCommand($data['spei'] , $data['paynet'] , $data['emails']));
+            $this->dispatch(new SendCardSPEIKeyCommand($data['spei'] , $data['emails']));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

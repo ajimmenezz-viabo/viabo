@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class BalanceInTransactionQuery implements Query
 {
-    public function __construct(public string $cardNumber)
+    public function __construct(public array $cardsNumber)
     {
     }
 }

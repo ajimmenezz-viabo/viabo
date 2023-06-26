@@ -30,12 +30,8 @@ final readonly class CardInformationFinder
         $card = $this->finder->__invoke($cardId);
         $card->registerCredentials($clientKey , $user , $password);
         $data = $this->adapter->searchCardInformation($card->credentials());
-        $data['Nip'] = '';
-
-        if($card->isCarnet()){
-            $nipData = $this->adapter->searchCardNip($card);
-            $data['Nip'] = $nipData['TicketMessage'];
-        }
+        $nipData = $this->adapter->searchCardNip($card);
+        $data['Nip'] = $nipData['TicketMessage'];
 
         $card->registerInformation($data);
 

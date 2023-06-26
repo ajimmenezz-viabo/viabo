@@ -26,6 +26,7 @@ use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
+use Viabo\shared\domain\utils\NumberFormat;
 
 final readonly class CardTransactionsProcessor
 {
@@ -112,11 +113,10 @@ final readonly class CardTransactionsProcessor
 
     private function ensureOriginCardHasSufficientBalance(array $originCardData , array $destinationCardsData): void
     {
-        $originBalance = number_format(floatval($originCardData['balance']) , 2);
-
+        $originBalance = NumberFormat::float($originCardData['balance']);
         foreach ($destinationCardsData as $destinationCardData) {
-            $originBalance -= number_format(floatval($destinationCardData['amount']) , 2);
-            if (number_format(floatval($originBalance) , 2) < 0) {
+            $originBalance -= NumberFormat::float($destinationCardData['amount']);
+            if ($originBalance < 0) {
                 throw new OriginCardInsufficientBalance();
             }
         }

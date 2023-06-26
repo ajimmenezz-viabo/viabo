@@ -12,26 +12,25 @@ use Viabo\shared\domain\email\EmailRepository;
 
 final readonly class SendCardSPEI
 {
-    public function __construct(private EmailRepository $repository , private QRCodeAdapter $qrCodeAdapter)
+    public function __construct(private EmailRepository $repository)
     {
     }
 
-    public function __invoke(string $spei , string $paynet , array $emails): void
+    public function __invoke(string $spei , array $emails): void
     {
         if (empty($emails)) {
             throw new NotificationEmailEmpty();
         }
 
-        if (empty($spei) || empty($paynet)) {
+        if (empty($spei)) {
             throw new NotificationDataEmpty();
         }
 
-        $barcode = $this->qrCodeAdapter->generatorBarcode($paynet);
         $email = new Email(
             $emails ,
             "Notificación de Viabo - SPEI" ,
             'management/notification/emails/card.spei.key.html.twig' ,
-            ['spei' => $spei , 'barcode_paynet' => $barcode, 'paynet' => $paynet]
+            ['spei' => $spei ]
         );
 
         $this->repository->send($email);

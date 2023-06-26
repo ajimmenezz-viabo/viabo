@@ -16,12 +16,11 @@ final readonly class BalanceInTransactionFinder
     {
     }
 
-    public function __invoke(CardNumber $cardId): BalanceResponse
+    public function __invoke(array $cardsNumbers): BalanceResponse
     {
         $filter = Filters::fromValues([
-            ['field' => 'originCard.value' , 'operator' => '=' , 'value' => $cardId->value()] ,
-            ['field' => 'active.value' , 'operator' => '=' , 'value' => '1'] ,
-            ['field' => 'originCardMain.value' , 'operator' => '=' , 'value' => '1']
+            ['field' => 'originCard.value' , 'operator' => 'in' , 'value' => implode(',' , $cardsNumbers)] ,
+            ['field' => 'active.value' , 'operator' => '=' , 'value' => '1']
         ]);
 
         $operations = $this->repository->searchCriteria(new Criteria($filter));

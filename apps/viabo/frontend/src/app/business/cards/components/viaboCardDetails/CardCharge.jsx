@@ -16,12 +16,13 @@ export function CardCharge() {
   const [openShared, setOpenShared] = useState(false)
   const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
   const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
+  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
 
   return (
     <>
       <Card sx={{ p: 3 }}>
         <Stack display="flex" flexDirection={'row'} alignItems="center">
-          <Typography variant="h6">Fondear Tarjeta</Typography>
+          <Typography variant="h6">{isMainCardSelected ? 'Fondear Comercio' : 'Fondear Tarjeta'}</Typography>
           <Box sx={{ flex: '1 1 auto' }} />
           <IconButton
             onClick={() => {

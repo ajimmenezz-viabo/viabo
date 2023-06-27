@@ -69,7 +69,7 @@ export function Modal(props) {
         {title}
       </DialogTitle>
       <DialogContent
-        id="croll-dialog-description"
+        id="scroll-dialog-description"
         // style={{ overflowY: 'visible' }}
         dividers={scrollType === 'paper'}
       >

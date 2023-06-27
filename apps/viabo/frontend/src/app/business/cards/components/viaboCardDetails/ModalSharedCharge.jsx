@@ -51,6 +51,7 @@ export function ModalSharedCharge({ open, onClose }) {
       onSuccess={handleSubmit}
       isSubmitting={loading}
       fullWidth
+      maxWidth="sm"
       scrollType="body"
       title={'Compartir'}
       textButtonSuccess="Enviar"

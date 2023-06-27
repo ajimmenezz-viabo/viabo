@@ -10,8 +10,8 @@ export function MainCardDetailsHeader({ card }) {
         backgroundColor: theme.palette.primary.light,
         color: 'white',
         minHeight: 'auto!important',
-        height: { xs: 1, sm: 'auto' },
-        py: { xs: 0, sm: 2 }
+        height: 'auto',
+        py: 2
       })}
     >
       <Stack
@@ -30,7 +30,6 @@ export function MainCardDetailsHeader({ card }) {
             <Typography variant="caption">MXN</Typography>
           </Stack>
         </Stack>
-        <Stack justifyContent="flex-end" spacing={1} alignItems={{ xs: 'center', md: 'end' }}></Stack>
       </Stack>
     </Toolbar>
   )

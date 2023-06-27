@@ -1,0 +1,1 @@
+import{aT as o,a8 as u,aU as l,r as g,aV as h}from"./build-bd106f3f.js";function C(a,r,n){const[t,c={}]=o(a,r,n),e=u({context:c.context}),s=e.getQueryCache();return l(g.useCallback(i=>s.subscribe(h.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{C as u};

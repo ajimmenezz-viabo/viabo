@@ -12,4 +12,6 @@ const copyToClipboard = text => {
   document.body.removeChild(input)
 }
 
-export { isHTML, copyToClipboard }
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
+export { isHTML, copyToClipboard, isMobile }

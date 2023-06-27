@@ -9,6 +9,6 @@ card-transactions-reverse-find:
   methods: GET
 
 find-card-transactions-of-commerce:
-  path: '/api/card-transactions/commerce/{commerceId}'
+  path: '/api/card-transactions/commerce'
   controller: Viabo\Backend\Controller\management\cardOperation\CardTransactionsFinderOnCommerceController
   methods: GET

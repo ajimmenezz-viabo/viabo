@@ -11,6 +11,7 @@ import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapte
 import { useAssignCards } from '@/app/management/stock-cards/hooks/useAssignCards'
 import { AssignCardsAdapter } from '@/app/management/stock-cards/adapters/assignCardsAdapter'
 import { WarningAmberOutlined } from '@mui/icons-material'
+import { SHARED_CARD_KEYS } from '@/app/shared/adapters'
 
 export default function AssignCardModal() {
   const setOpenAssignCards = useAssignCardStore(state => state.setOpen)
@@ -18,7 +19,7 @@ export default function AssignCardModal() {
   const card = useAssignCardStore(state => state.card)
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
   const cardsList = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.STOCK_CARDS_LIST]) || []
-  const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
+  const cardTypes = useGetQueryData([SHARED_CARD_KEYS.CARD_TYPES_LIST]) || []
   const [openAlertConfirm, setOpenAlertConfirm] = useState(false)
 
   const { mutate: assign, isLoading: isAssigning } = useAssignCards()

@@ -1,5 +1,5 @@
 import { axios } from '@/shared/interceptors'
-import { AffiliatedCommercesAdapter, CardTypesAdapter } from '@/app/management/stock-cards/adapters'
+import { AffiliatedCommercesAdapter } from '@/app/management/stock-cards/adapters'
 import { CardsAdapter } from '@/app/shared/adapters'
 
 export const createNewStockCard = async card => {
@@ -10,11 +10,6 @@ export const createNewStockCard = async card => {
 export const getAffiliatedCommerces = async () => {
   const { data } = await axios.get(`/api/commerces/affiliates`)
   return AffiliatedCommercesAdapter(data)
-}
-
-export const getCardTypes = async () => {
-  const { data } = await axios.get('/api/payment-processors')
-  return CardTypesAdapter(data)
 }
 
 export const getStockCards = async () => {

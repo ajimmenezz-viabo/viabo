@@ -9,15 +9,18 @@ import { useSettings } from '@theme/hooks'
 import { BusinessRouter } from '@/app/business/shared/routes'
 
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
+const RegisterCards = LoadableRoute(lazy(() => import('@/app/business/register-cards/pages/RegisterCards')))
 const Login = LoadableRoute(lazy(() => import('@/app/authentication/pages/Login')))
 const NotFound = LoadableRoute(lazy(() => import('@/shared/pages/Page404')))
+
+const WHITE_THEME_LIST = ['/comercio/registro', '/registro']
 export const AppRouter = () => {
   const user = useUser()
   const { pathname } = useLocation()
   const { themeMode, onChangeMode } = useSettings()
 
   useEffect(() => {
-    if (pathname === '/comercio/registro' && themeMode !== 'light') {
+    if (WHITE_THEME_LIST.includes(pathname) && themeMode !== 'light') {
       onChangeMode({
         target: {
           value: 'light'
@@ -57,6 +60,10 @@ export const AppRouter = () => {
     {
       path: '/comercio/registro',
       element: <CommerceRegister />
+    },
+    {
+      path: '/registro',
+      element: <RegisterCards />
     },
     {
       path: '*',

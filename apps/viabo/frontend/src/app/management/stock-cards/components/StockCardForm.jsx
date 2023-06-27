@@ -13,13 +13,14 @@ import { CreateCardAdapter, MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management
 import { useCreateNewStockCard } from '@/app/management/stock-cards/hooks'
 import { useGetQueryData } from '@/shared/hooks'
 import { ModalAlert } from '@/shared/components/modals'
+import { SHARED_CARD_KEYS } from '@/app/shared/adapters'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
 export function StockCardForm({ setOpen }) {
   const { registerCard: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()
   const commerces = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.AFFILIATED_COMMERCES_LIST]) || []
-  const cardTypes = useGetQueryData([MANAGEMENT_STOCK_CARDS_KEYS.CARD_TYPES_LIST]) || []
+  const cardTypes = useGetQueryData([SHARED_CARD_KEYS.CARD_TYPES_LIST]) || []
   const [openAlertConfirm, setOpenAlertConfirm] = useState(false)
 
   const CardSchema = Yup.object().shape({

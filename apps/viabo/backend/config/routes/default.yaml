@@ -3,6 +3,11 @@ commerce-register:
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
+cards-register:
+  path: '/registro'
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+
 auth-paths:
   path: '/auth/{any}'
   controller: Viabo\Backend\Controller\RoutesFrontendController

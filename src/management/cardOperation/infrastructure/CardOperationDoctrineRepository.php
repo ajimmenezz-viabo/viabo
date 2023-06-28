@@ -37,7 +37,7 @@ final class CardOperationDoctrineRepository extends DoctrineRepository implement
     public function searchDateRange(CardNumber $cardNumber , string $initialDate , string $finalDate): array
     {
         $query = "select co from Viabo\management\cardOperation\domain\CardOperation co 
-                    where co.originCard.value = :cardNumber and
+                    where (co.originCard.value = :cardNumber or co.destinationCard.value = :cardNumber) and
                     co.registerDate.value BETWEEN :initial and :final";
         $statement = $this->entityManager()->createQuery($query);
         $statement->setParameter('cardNumber' , $cardNumber->value());

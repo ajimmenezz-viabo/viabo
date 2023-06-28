@@ -15,7 +15,6 @@ final readonly class ReverseCardTransactionsProcessorController extends ApiContr
     public function __invoke(Request $request): Response
     {
         try {
-            $this->startSession(['id' => '']);
             $this->dispatch(new ReverseCardTransactionCommand());
 
             return new JsonResponse();

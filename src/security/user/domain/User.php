@@ -6,6 +6,7 @@ namespace Viabo\security\user\domain;
 
 use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
+use Viabo\security\user\domain\events\CommerceDemoUserCreatedDomainEvent;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
@@ -66,10 +67,27 @@ final class User extends AggregateRoot
             new UserActive('1') ,
         );
 
-
         $user->record(new UserCreatedDomainEvent(
-            $user->id()->value() , $user->toArray(), UserPassword::$passwordRandom
+            $user->id()->value() , $user->toArray() , UserPassword::$passwordRandom
         ));
+        return $user;
+    }
+
+    public static function demo(UserName $name , UserEmail $email , UserPhone $phone): static
+    {
+        $user = new static(
+            UserId::random() ,
+            new UserProfile('5') ,
+            $name ,
+            new UserLastname('') ,
+            $phone ,
+            $email ,
+            UserPassword::random() ,
+            UserRegister::todayDate() ,
+            new UserActive('1') ,
+        );
+
+        $user->record(new CommerceDemoUserCreatedDomainEvent($user->id()->value() , $user->toArray()));
         return $user;
     }
 

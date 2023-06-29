@@ -22,9 +22,4 @@ final class CardPaymentProcessorId extends StringValueObject
         }
     }
 
-    public function isCarnet(): bool
-    {
-        $carnetId = '2';
-        return $this->value === $carnetId;
-    }
 }

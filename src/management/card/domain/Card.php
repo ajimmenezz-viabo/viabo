@@ -158,9 +158,9 @@ final class Card extends AggregateRoot
         ));
     }
 
-    public function isCarnet(): bool
+    public function hasOwner(): bool
     {
-        return $this->paymentProcessorId->isCarnet();
+        return $this->ownerId->isNotEmpty();
     }
 
     public function toArray(): array

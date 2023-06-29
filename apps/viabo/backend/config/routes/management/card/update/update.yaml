@@ -17,3 +17,8 @@ assign-card-to-user:
   path: '/api/assign/commerce-card/to/user'
   controller: Viabo\Backend\Controller\management\card\CommerceCardUserUpdaterController
   methods: PUT
+
+assign-card-to-user-in-commerce-demo:
+  path: '/api/assign/commerce-demo-card/to/user'
+  controller: Viabo\Backend\Controller\management\card\CommerceDemoCardUserUpdaterController
+  methods: PUT

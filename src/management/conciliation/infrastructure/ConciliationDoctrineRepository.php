@@ -6,6 +6,7 @@ namespace Viabo\management\conciliation\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\management\conciliation\domain\Conciliation;
+use Viabo\management\conciliation\domain\ConciliationReferenceNumber;
 use Viabo\management\conciliation\domain\ConciliationRepository;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 
@@ -19,5 +20,12 @@ final class ConciliationDoctrineRepository extends DoctrineRepository implements
     public function save(Conciliation $conciliation): void
     {
         $this->persist($conciliation);
+    }
+
+    public function search(ConciliationReferenceNumber $referenceNumber): ?Conciliation
+    {
+        return $this->repository(Conciliation::class)->findOneBy([
+            'referenceNumber.value' => $referenceNumber->value()
+        ]);
     }
 }

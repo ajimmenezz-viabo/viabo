@@ -22,7 +22,7 @@ final readonly class ConciliationCreatorController extends ApiController
                 $data['cardId'] , $data['amount'] , $data['spei'] , $data['emails']
             ));
 
-            return new JsonResponse($this->opensslEncrypt($data->referenceNumber));
+            return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

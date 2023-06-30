@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class ConciliationResponse implements Response
 {
-    public function __construct(public array $referenceNumber)
+    public function __construct(public array $data)
     {
     }
 }

@@ -4,6 +4,7 @@
 namespace Viabo\management\conciliation\domain;
 
 
+use Viabo\management\conciliation\domain\exceptions\ConciliationReferenceNumberEmpty;
 use Viabo\shared\domain\utils\DatePHP;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
@@ -16,4 +17,16 @@ final class ConciliationReferenceNumber extends StringValueObject
         return new static(strval($reference));
     }
 
+    public static function create(string $value): self
+    {
+        self::validate($value);
+        return new self($value);
+    }
+
+    public static function validate(string $value): void
+    {
+        if (empty($value)) {
+            throw new ConciliationReferenceNumberEmpty();
+        }
+    }
 }

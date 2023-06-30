@@ -9,11 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerceUser\application\create\CreateCommerceUserCommand;
 use Viabo\management\card\application\find\CardDemoQuery;
-use Viabo\management\card\application\find\CardInformationQuery;
-use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\card\application\update\UpdateCardOwnerCommand;
-use Viabo\security\user\application\create\CreateUserCommand;
-use Viabo\security\user\application\find\FindUserQuery;
+use Viabo\security\user\application\update\SendUserPasswordCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommerceDemoCardUserUpdaterController extends ApiController
@@ -26,6 +23,7 @@ final readonly class CommerceDemoCardUserUpdaterController extends ApiController
             $card = $this->ask(new CardDemoQuery($data['cardNumber'] , $data['cvv'] , $data['expiration']));
             $this->dispatch(new CreateCommerceUserCommand($tokenData['id'] , $card->cardData));
             $this->dispatch(new UpdateCardOwnerCommand($card->cardData , $tokenData['id']));
+            $this->dispatch(new SendUserPasswordCommand($tokenData['id']));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

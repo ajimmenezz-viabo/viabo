@@ -22,13 +22,14 @@ final readonly class CommerceDemoUserCreatorController extends ApiController
                 $data['phone'],
                 $data['email']
             ));
-            $data = $this->ask(new FindUserQuery('',$data['email']));
+            $data = $this->ask(new FindUserQuery('', $data['email']));
             $tokenData = ['id' => $data->userData['id']];
             $token = $this->encode($tokenData);
+            $this->startSession(['id' => $data->userData['id']]);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

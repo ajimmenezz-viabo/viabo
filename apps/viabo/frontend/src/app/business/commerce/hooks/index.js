@@ -1,7 +1,5 @@
 export * from './useRegisterCommerce'
 export * from './useFindCommerceToken'
-export * from './useValidateCode'
-export * from './useSendValidationCode'
 export * from './useUpdateCommerceProcess'
 export * from './useFindCommerceProcess'
 export * from './useUploadDocuments'

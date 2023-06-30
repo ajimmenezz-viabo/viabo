@@ -1,34 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { Box, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
-import { MuiOtpInput } from 'mui-one-time-password-input'
+import { Box, Button, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
 import mail from '@/shared/assets/img/mail.svg'
-import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
+import { MuiOtpInput } from 'mui-one-time-password-input'
+import { useState } from 'react'
 import { matchIsNumeric } from '@/shared/utils'
-import { useFindCommerceToken } from '@/app/business/commerce/hooks'
-import { PROCESS_LIST, PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
+import { useCardUserAssign } from '@/app/business/register-cards/store'
+import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useSendValidationCode, useValidateCode } from '@/app/business/shared/hooks'
+import { axios } from '@/shared/interceptors'
 
-ValidationCode.propTypes = {
-  store: PropTypes.shape(propTypesStore)
-}
-
-function ValidationCode({ store }) {
-  const { lastProcess, setActualProcess, setLastProcess, setToken, token, resume } = store
-  const { info } = lastProcess
+export default function FormDemoUserValidation() {
+  const setStep = useCardUserAssign(state => state.setStepAssignRegister)
+  const user = useCardUserAssign(state => state.user)
+  const token = useCardUserAssign(state => state.token)
+  const [otp, setOtp] = useState('')
   const { mutate: sendValidationCode, isLoading: isSendingCode } = useSendValidationCode()
   const { mutate: validateCode, isLoading: isValidatingCode, isError: isErrorValidatingCode, reset } = useValidateCode()
-  const { data: tokenData, isError } = useFindCommerceToken(info?.email, {
-    enabled: Boolean(info?.email)
-  })
-
-  useEffect(() => {
-    if (tokenData) {
-      setToken(tokenData?.token)
-    }
-  }, [tokenData])
-
-  const [otp, setOtp] = useState('')
 
   const handleChange = newValue => {
     setOtp(newValue)
@@ -38,18 +24,12 @@ function ValidationCode({ store }) {
   const validateChar = (value, index) => matchIsNumeric(value)
 
   const handleComplete = value => {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
     validateCode(
       { verificationCode: value, token },
       {
         onSuccess: () => {
-          if (resume?.step) {
-            setActualProcess(
-              PROCESS_LIST_STEPS.find(process => process.step === resume?.step)?.name || PROCESS_LIST.SERVICES_SELECTION
-            )
-          } else {
-            setActualProcess(PROCESS_LIST.SERVICES_SELECTION)
-          }
-          setLastProcess()
+          setStep(CARD_ASSIGN_PROCESS_LIST.CARD_REGISTER)
         },
         onError: () => {
           setOtp('')
@@ -59,11 +39,12 @@ function ValidationCode({ store }) {
   }
 
   const handleResendCode = () => {
-    sendValidationCode({ token: tokenData?.token })
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
+    sendValidationCode()
   }
 
   return (
-    <>
+    <Stack>
       <Box
         sx={{
           display: 'flex',
@@ -87,8 +68,8 @@ function ValidationCode({ store }) {
         color={'text.secondary'}
         whiteSpace="pre-line"
       >
-        Enviamos un correo electrónico a {info?.email} con el código de verificacion de tu cuenta, ingrese el código en
-        el cuadro a continuación para verificar su cuenta.
+        Enviamos un correo electrónico a {user?.email || '-'} con el código de verificacion de tu cuenta, ingrese el
+        código en el cuadro a continuación para verificar su cuenta.
       </Typography>
       <MuiOtpInput
         length={6}
@@ -106,7 +87,7 @@ function ValidationCode({ store }) {
           </Typography>
         </Box>
       )}
-      <Box mb={5}>
+      <Box>
         <Divider sx={{ my: 4 }}>
           <Stack direction={'row'} spacing={1} justifyContent={'center'}>
             {isSendingCode ? (
@@ -124,8 +105,15 @@ function ValidationCode({ store }) {
           </Stack>
         </Divider>
       </Box>
-    </>
+      <Button
+        variant={'outlined'}
+        color={'inherit'}
+        onClick={() => {
+          setStep(CARD_ASSIGN_PROCESS_LIST.USER_REGISTER)
+        }}
+      >
+        Cancelar
+      </Button>
+    </Stack>
   )
 }
-
-export default ValidationCode

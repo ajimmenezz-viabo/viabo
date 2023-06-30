@@ -5,11 +5,11 @@ import { EmailOutlined } from '@mui/icons-material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import FormSteps from '@/shared/assets/img/forms_steps.svg'
-import { useFindCommerceToken, useSendValidationCode } from '@/app/business/commerce/hooks'
+import { useFindCommerceToken } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
-import React from 'react'
+import { useSendValidationCode } from '@/app/business/shared/hooks'
 
 ProcessContinue.propTypes = {
   store: PropTypes.shape(propTypesStore)

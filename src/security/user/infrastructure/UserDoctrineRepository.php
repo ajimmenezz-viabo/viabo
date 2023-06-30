@@ -46,4 +46,9 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
     {
         return $this->repository(UserView::class)->findOneBy(['id' => $userId->value() , 'active' => '1']);
     }
+
+    public function update(User $user): void
+    {
+        $this->entityManager()->flush($user);
+    }
 }

@@ -8,6 +8,7 @@ use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\CommerceDemoUserCreatedDomainEvent;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
+use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -15,15 +16,15 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class User extends AggregateRoot
 {
     public function __construct(
-        private readonly UserId       $id ,
-        private readonly UserProfile  $profile ,
-        private readonly UserName     $name ,
-        private readonly UserLastname $lastname ,
-        private readonly UserPhone    $phone ,
-        private readonly UserEmail    $email ,
-        private readonly UserPassword $password ,
-        private readonly UserRegister $register ,
-        private readonly UserActive   $active
+        private UserId       $id ,
+        private UserProfile  $profile ,
+        private UserName     $name ,
+        private UserLastname $lastname ,
+        private UserPhone    $phone ,
+        private UserEmail    $email ,
+        private UserPassword $password ,
+        private UserRegister $register ,
+        private UserActive   $active
     )
     {
     }
@@ -114,6 +115,18 @@ final class User extends AggregateRoot
     public function isDifferent(UserPassword $passwordEntered): bool
     {
         return $this->password->isDifferent($passwordEntered->value());
+    }
+
+    public function resetPassword(UserPassword $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function setEventSendPassword(): void
+    {
+        $this->record(new SendUserPasswordDomainEvent(
+            $this->id->value(), $this->toArray(), $this->password::$passwordRandom
+        ));
     }
 
     public function setEventSessionStarted(): void

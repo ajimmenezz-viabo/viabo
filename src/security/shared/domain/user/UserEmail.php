@@ -27,6 +27,11 @@ final class UserEmail extends StringValueObject
         }
     }
 
+    public static function empty(): static
+    {
+        return new static('');
+    }
+
     public function isNotEmpty(): bool
     {
         return !empty($this->value);

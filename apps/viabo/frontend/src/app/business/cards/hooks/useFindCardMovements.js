@@ -20,6 +20,7 @@ export const useFindCardMovements = (cardId, date, options = {}) => {
     {
       staleTime: 60000,
       retry: false,
+      refetchOnWindowFocus: false,
       onError: error => {
         const errorMessage = getErrorAPI(
           error,

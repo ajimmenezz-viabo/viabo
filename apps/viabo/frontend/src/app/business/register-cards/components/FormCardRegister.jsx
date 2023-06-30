@@ -13,12 +13,14 @@ import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services
 import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { useAssignCardToDemoUser } from '@/app/business/register-cards/hooks'
 import { AssignCardDemoUserAdapter } from '@/app/business/register-cards/adapters'
+import { axios } from '@/shared/interceptors'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
 export default function FormCardRegister() {
   const setStep = useCardUserAssign(state => state.setStepAssignRegister)
   const setCard = useCardUserAssign(state => state.setCard)
+  const token = useCardUserAssign(state => state.token)
   const { mutate: assignCard, isLoading: isAssigningCard } = useAssignCardToDemoUser()
 
   const CardSchema = Yup.object().shape({
@@ -46,6 +48,7 @@ export default function FormCardRegister() {
     validationSchema: CardSchema,
     onSubmit: (values, { setSubmitting }) => {
       const data = AssignCardDemoUserAdapter(values)
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
       assignCard(data, {
         onSuccess: () => {
           setSubmitting(false)

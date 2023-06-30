@@ -32,13 +32,9 @@ final readonly class EnabledCommerceCardsFinder
         $LegalRepresentativeProfile = '3';
         if ($userProfileId === $LegalRepresentativeProfile) {
             $filters[] = ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()];
-        }
-
-        $ownerProfile = '4';
-        if ($userProfileId === $ownerProfile) {
+        }else{
             $filters[] = ['field' => 'ownerId' , 'operator' => '=' , 'value' => $ownerId->value()];
         }
-
 
         $filters = Filters::fromValuesEmpty($filters);
         $cards = $this->repository->searchView(new Criteria($filters));

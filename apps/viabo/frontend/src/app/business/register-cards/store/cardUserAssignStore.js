@@ -1,11 +1,13 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
+import { axios } from '@/shared/interceptors'
 
 const initialState = {
   step: CARD_ASSIGN_PROCESS_LIST.USER_REGISTER,
   user: null,
-  card: null
+  card: null,
+  token: null
 }
 const cardUserAssign = (set, get) => ({
   ...initialState,
@@ -36,14 +38,25 @@ const cardUserAssign = (set, get) => ({
       'SET_CARD_ASSIGN'
     )
   },
+  setToken: value => {
+    set(
+      state => ({
+        token: value
+      }),
+      false,
+      'SET_TOKEN_USER_DEMO'
+    )
+  },
   resetState: () => {
     set(
       state => ({
-        initialState
+        ...initialState
       }),
       false,
       'RESET_CARD_USER_STORE'
     )
+    localStorage.removeItem('token')
+    delete axios.defaults.headers.common.Authorization
   }
 })
 

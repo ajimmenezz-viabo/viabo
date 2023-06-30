@@ -1,24 +1,25 @@
 import { Button, InputAdornment, Stack, Typography } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { FormProvider, RFTextField } from '@/shared/components/form'
 import { AddCard, CreditCard, VpnKey } from '@mui/icons-material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { format, isAfter, isValid, parse } from 'date-fns'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { useFindCardTypes } from '@/app/shared/hooks'
 import { forwardRef } from 'react'
 import { IMaskInput } from 'react-imask'
 import { LoadingButton } from '@mui/lab'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
+import { useAssignCardToDemoUser } from '@/app/business/register-cards/hooks'
+import { AssignCardDemoUserAdapter } from '@/app/business/register-cards/adapters'
 
 const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
 export default function FormCardRegister() {
   const setStep = useCardUserAssign(state => state.setStepAssignRegister)
   const setCard = useCardUserAssign(state => state.setCard)
-  const { data: cardTypes, isLoading: isLoadingCardTypes } = useFindCardTypes()
+  const { mutate: assignCard, isLoading: isAssigningCard } = useAssignCardToDemoUser()
 
   const CardSchema = Yup.object().shape({
     cardNumber: Yup.string()
@@ -26,7 +27,6 @@ export default function FormCardRegister() {
       .min(16, 'Debe contener 16 digitos')
       .required('El número de la tarjeta es requerido'),
     cvv: Yup.string().min(3, 'Debe contener 3 digitos').required('El CVV es requerido'),
-    cardType: Yup.object().nullable().required('El tipo de tarjeta es requerido'),
     expiration: Yup.string()
       .required('La fecha de vencimiento es requerida')
       .test('is-future-date', 'La fecha  debe ser mayor que la fecha actual', function (value) {
@@ -40,21 +40,28 @@ export default function FormCardRegister() {
   const formik = useFormik({
     initialValues: {
       cardNumber: '',
-      cardType: null,
       expiration: '',
       cvv: ''
     },
     validationSchema: CardSchema,
     onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(false)
-      setCard(values)
-      setStep(CARD_ASSIGN_PROCESS_LIST.CARD_ASSIGNED)
+      const data = AssignCardDemoUserAdapter(values)
+      assignCard(data, {
+        onSuccess: () => {
+          setSubmitting(false)
+          setCard(values)
+          setStep(CARD_ASSIGN_PROCESS_LIST.CARD_ASSIGNED)
+        },
+        onError: () => {
+          setSubmitting(false)
+        }
+      })
     }
   })
 
   const { isSubmitting, values, setFieldValue, errors, handleSubmit, touched, resetForm, setSubmitting } = formik
 
-  const loading = isSubmitting || isLoadingCardTypes
+  const loading = isSubmitting || isAssigningCard
 
   return (
     <Stack
@@ -75,21 +82,6 @@ export default function FormCardRegister() {
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <FormProvider formik={formik}>
           <Stack spacing={2} p={3}>
-            <Stack>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Tipo de Tarjeta
-              </Typography>
-
-              <RFSelect
-                name={'cardType'}
-                disableClearable
-                size="small"
-                textFieldParams={{ placeholder: 'Seleccionar ...', required: true, size: 'small' }}
-                options={cardTypes || []}
-                disabled={loading}
-              />
-            </Stack>
-
             <Stack>
               <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
                 Número de Tarjeta

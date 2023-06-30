@@ -1,0 +1,1 @@
+import{a as s}from"./build-27e237f5.js";const o=async a=>{const{data:e}=await s.post("/api/security/commerce-demo/user/new",a);return e},r=async a=>{const{data:e}=await s.put("/api/assign/commerce-demo-card/to/user",a);return e};export{r as a,o as c};

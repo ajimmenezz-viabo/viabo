@@ -15,15 +15,6 @@ export const getCommerceToken = async commerceEmail => {
   return data
 }
 
-export const sendValidationCode = async () => {
-  const { data } = await axios.post('/api/code/verification/resend')
-  return data
-}
-
-export const validateCode = async validationCode => {
-  const { data } = await axios.post('/api/code/verificate', validationCode)
-  return data
-}
 export const getCommerceProcess = async () => {
   const { data } = await axios.get(`/api/commerce/legal-representative`)
   return CommerceProcessAdapter(data)

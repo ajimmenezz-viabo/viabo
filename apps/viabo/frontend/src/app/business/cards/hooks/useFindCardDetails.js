@@ -15,6 +15,7 @@ export const useFindCardDetails = (cardId, options = {}) => {
       )
       setCustomError(errorMessage)
     },
+    refetchOnWindowFocus: false,
     ...options
   })
   return {

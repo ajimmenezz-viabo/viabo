@@ -183,7 +183,7 @@ export function FundingOrder() {
                   startIcon={copied ? <Check sx={{ color: 'success' }} /> : <LinkIcon />}
                   onClick={() => {
                     setCopied(true)
-                    copyToClipboard(`${window.location.host}/registro/${data?.reference}`)
+                    copyToClipboard(`${window.location.host}/orden-fondeo/${data?.reference}`)
                     setTimeout(() => {
                       setCopied(false)
                     }, 1000)

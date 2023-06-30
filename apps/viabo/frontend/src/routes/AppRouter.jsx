@@ -3,7 +3,7 @@ import { LoadableRoute } from '@/routes/LoadableRoute'
 import { lazy, useEffect } from 'react'
 import { DashboardLayout } from '@/shared/layout/dashboard'
 import { AuthGuard, GuestGuard } from '@/shared/guards'
-import { useUser } from '@/shared/hooks'
+import { useAuth, useUser } from '@/shared/hooks'
 import { ManagementRouter } from '@/app/management/shared/routes'
 import { useSettings } from '@theme/hooks'
 import { BusinessRouter } from '@/app/business/shared/routes'
@@ -18,14 +18,18 @@ export const AppRouter = () => {
   const user = useUser()
   const { pathname } = useLocation()
   const { themeMode, onChangeMode } = useSettings()
+  const { logout: logoutContext } = useAuth()
 
   useEffect(() => {
-    if (WHITE_THEME_LIST.includes(pathname) && themeMode !== 'light') {
-      onChangeMode({
-        target: {
-          value: 'light'
-        }
-      })
+    if (WHITE_THEME_LIST.includes(pathname)) {
+      if (themeMode !== 'light') {
+        onChangeMode({
+          target: {
+            value: 'light'
+          }
+        })
+      }
+      logoutContext()
     }
   }, [pathname, themeMode])
 

@@ -7,8 +7,8 @@ export const getEnabledCommerceCards = async () => {
   return CardsAdapter(data)
 }
 
-export const getCardInfo = async cardId => {
-  const { data } = await axios.get(`/api/card/information/${cardId}`)
+export const getCardInfo = async (cardId, signal) => {
+  const { data } = await axios.get(`/api/card/information/${cardId}`, { signal })
   return CardAdapter(data)
 }
 
@@ -22,13 +22,16 @@ export const transactionsCard = async transactions => {
   return transactions
 }
 
-export const getCardMovements = async (cardId, initialDate, finalDate) => {
-  const { data } = await axios.get(`/api/card/${cardId}/movements/${initialDate}/to/${finalDate}`, { timeout: 30000 })
+export const getCardMovements = async (cardId, initialDate, finalDate, signal) => {
+  const { data } = await axios.get(`/api/card/${cardId}/movements/${initialDate}/to/${finalDate}`, {
+    timeout: 30000,
+    signal
+  })
   return CardMovementsAdapter(data)
 }
 
-export const getMainCardCommerce = async () => {
-  const { data } = await axios.get('/api/main-card/information')
+export const getMainCardCommerce = async ({ signal }) => {
+  const { data } = await axios.get('/api/main-card/information', { signal })
   return CardMainAdapter(data)
 }
 

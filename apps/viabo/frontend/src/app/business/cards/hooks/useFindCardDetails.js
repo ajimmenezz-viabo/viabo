@@ -6,7 +6,7 @@ import { getErrorAPI } from '@/shared/interceptors'
 
 export const useFindCardDetails = (cardId, options = {}) => {
   const [customError, setCustomError] = useState(null)
-  const commerces = useQuery([CARDS_COMMERCES_KEYS.CARD_INFO, cardId], () => getCardInfo(cardId), {
+  const commerces = useQuery([CARDS_COMMERCES_KEYS.CARD_INFO, cardId], ({ signal }) => getCardInfo(cardId, signal), {
     staleTime: 60000,
     onError: error => {
       const errorMessage = getErrorAPI(

@@ -16,7 +16,7 @@ export const useFindCardMovements = (cardId, date, options = {}) => {
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const commerces = useQuery(
     [CARDS_COMMERCES_KEYS.CARD_MOVEMENTS, cardId],
-    () => getCardMovements(cardId, initialDate, finalDate),
+    ({ signal }) => getCardMovements(cardId, initialDate, finalDate, signal),
     {
       staleTime: 60000,
       retry: false,

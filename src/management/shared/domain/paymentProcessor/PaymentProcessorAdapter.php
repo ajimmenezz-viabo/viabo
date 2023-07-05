@@ -20,6 +20,8 @@ interface PaymentProcessorAdapter
 
     public function searchMovements(CardMovementFilter $cardMovement): array;
 
+    public function searchCardBalance(Card $card): array;
+
     public function updateBlock(Card $card): void;
 
     public function transactionPay(CardOperations $operations): void;

@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\FormalCommerceQuery;
 use Viabo\business\credential\application\find\CommerceCredentialQuery;
 use Viabo\management\card\application\update\AssignCardCommandInCommerce;
+use Viabo\management\card\application\update\UpdateCardSETDataCommand;
 use Viabo\management\credential\application\create\CreateCardCredentialCommand;
+use Viabo\management\credential\application\find\CardCredentialQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardAssignerControllerInCommerce extends ApiController
@@ -29,6 +31,8 @@ final readonly class CardAssignerControllerInCommerce extends ApiController
                 $commerceCredentialsData->credential['masterCardKey'] ,
                 $commerceCredentialsData->credential['carnetKey']
             ));
+            $cardCredential = $this->ask(new CardCredentialQuery($data['cardId']));
+            $this->dispatch(new UpdateCardSETDataCommand($data['cardId'] , $cardCredential->credentialData));
             $this->dispatch(new AssignCardCommandInCommerce($data['cardId'] , $data['commerceId']));
 
             return new JsonResponse();

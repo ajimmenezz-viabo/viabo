@@ -13,6 +13,9 @@
         <embedded name="expirationMonth" class="CardExpirationMonth" use-column-prefix="false"/>
         <embedded name="expirationYear" class="CardExpirationYear" use-column-prefix="false"/>
         <embedded name="paymentProcessorId" class="CardPaymentProcessorId" use-column-prefix="false"/>
+        <embedded name="nip" class="CardNip" use-column-prefix="false"/>
+        <embedded name="spei" class="CardSpei" use-column-prefix="false"/>
+        <embedded name="paynet" class="CardPaynet" use-column-prefix="false"/>
         <embedded name="statusId" class="CardStatusId" use-column-prefix="false"/>
         <field name="commerceId" type="card_commerce_id" column="CommerceId"/>
         <embedded name="ownerId" class="CardOwnerId" use-column-prefix="false"/>

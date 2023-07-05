@@ -32,4 +32,13 @@ final class Crypt
             throw new \DomainException('Error de cifrado' , 406);
         }
     }
+
+    public static function isEncrypt(string $value): bool
+    {
+        $ciphertext = base64_decode($value);
+        $plaintext = openssl_decrypt(
+            $ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , static::INITIALIZATION_VECTOR
+        );
+        return $plaintext !== false ;
+    }
 }

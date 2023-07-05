@@ -29,12 +29,9 @@ final readonly class CardInformationFinder
     {
         $card = $this->finder->__invoke($cardId);
         $card->registerCredentials($clientKey , $user , $password);
-        $data = $this->adapter->searchCardInformation($card->credentials());
-        $nipData = $this->adapter->searchCardNip($card);
-        $data['Nip'] = $nipData['TicketMessage'];
+        $data = $this->adapter->searchCardBalance($card);
+        $card->updateSETData($data);
 
-        $card->registerInformation($data);
-
-        return new CardResponse($card->toInformationArray());
+        return new CardResponse($card->toArray());
     }
 }

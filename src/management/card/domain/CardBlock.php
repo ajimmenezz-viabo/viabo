@@ -9,7 +9,7 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardBlock extends StringValueObject
 {
-    private const CARD_BLOCK_STATUS = ['unblocked' => 'UnBlock', 'blocked' => 'Block'];
+    private const CARD_BLOCK_STATUS = ['unblocked' => 'UnBlock' , 'blocked' => 'Block'];
 
     public static function create(string $value): self
     {
@@ -24,7 +24,7 @@ final class CardBlock extends StringValueObject
             throw new CardBlockInvalid();
         }
 
-        if (!array_key_exists($value, self::CARD_BLOCK_STATUS)) {
+        if (!array_key_exists($value , self::CARD_BLOCK_STATUS)) {
             throw new CardBlockInvalid();
         }
     }
@@ -34,5 +34,10 @@ final class CardBlock extends StringValueObject
         return new static(self::CARD_BLOCK_STATUS['unblocked']);
     }
 
+    public function update(mixed $value): static
+    {
+        $value = empty($value) ? $this->value : strval($value);
+        return new static($value);
+    }
 
 }

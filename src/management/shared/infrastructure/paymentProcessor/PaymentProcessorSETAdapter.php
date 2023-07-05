@@ -44,7 +44,6 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
         return $this->request($data);
     }
 
-
     public function searchCardNip(Card $card): array
     {
         $credential = $card->credentials();
@@ -76,6 +75,19 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
         } catch (\DomainException) {
             return [];
         }
+    }
+
+    public function searchCardBalance(Card $card): array
+    {
+        $credential = $card->credentials();
+        $clientKey = $credential->clientKey()->valueDecrypt();
+        $data = [
+            'inCardBalance' => true ,
+            'clientKey' => $clientKey ,
+            'clientToken' => $this->token($clientKey) ,
+            'binCard' => $card->number()->last8Digits()
+        ];
+        return $this->request($data);
     }
 
     public function updateBlock(Card $card): void

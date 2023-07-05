@@ -13,8 +13,9 @@ final class CardBalance extends StringValueObject
         return empty($this->value) ? '0.00' : $this->value;
     }
 
-    public function update(string $value): static
+    public function update(mixed $value): static
     {
+        $value = empty($value) ? $this->value : strval($value);
         return new static($value);
     }
 

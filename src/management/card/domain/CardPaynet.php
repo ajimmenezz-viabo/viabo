@@ -8,4 +8,10 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardPaynet extends StringValueObject
 {
+    public function update(mixed $value): static
+    {
+        $value = empty($value) ? $this->value : strval($value);
+        return new static(empty($value) ? '' : $value);
+    }
+
 }

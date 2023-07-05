@@ -10,6 +10,7 @@ export const useFindMainCard = (options = {}) => {
   const setMainCard = useCommerceDetailsCard(state => state.setMainCard)
   const commerces = useQuery([CARDS_COMMERCES_KEYS.MAIN_CARD], getMainCardCommerce, {
     staleTime: 60000,
+    refetchOnWindowFocus: false,
     onError: error => {
       const errorMessage = getErrorAPI(error, 'No se puede obtener la informacion de la tarjeta principal')
       setCustomError(errorMessage)

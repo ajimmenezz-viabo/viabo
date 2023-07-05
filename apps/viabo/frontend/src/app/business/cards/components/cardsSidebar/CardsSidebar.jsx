@@ -146,74 +146,67 @@ export function CardsSidebar() {
     >
       <Stack px={openSidebar ? 1 : 0}>
         {openSidebar && <MainCard />}
-        {isSuccess && commerceCards?.length > 0 && (
-          <Box sx={{ p: 2, px: isDesktop ? 0 : 2 }}>
-            <Stack
-              direction="row"
-              justifyContent={openSidebar ? 'flex-end' : 'center'}
-              alignItems={'center'}
-              spacing={2}
-            >
-              {!isCollapse && (
-                <ClickAwayListener onClickAway={handleClickAwaySearch}>
-                  <InputStyle
-                    fullWidth
-                    size="small"
-                    value={searchQuery}
-                    onFocus={handleSearchFocus}
-                    onChange={handleChangeSearch}
-                    placeholder="Buscar Tarjetas..."
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Search sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </ClickAwayListener>
-              )}
-              <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
-                <IconButton
-                  size={'small'}
-                  sx={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxSizing: 'boder-box',
-                    display: 'inline-flex',
-                    outline: '0px',
-                    margin: '0px',
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                    textDecoration: 'none',
-                    textAlign: 'center',
-                    borderRadius: '50%',
-                    overflow: 'visible',
-                    color: 'rgb(145, 158, 171)',
-                    fontSize: '1.125rem',
-                    padding: '4px',
-                    zIndex: '1500',
-                    border: '1px dashed rgba(145, 158, 171, 0.24)',
-                    backdropFilter: 'blur(6px)',
-                    lineHeight: 0,
-                    ...(!openSidebar && {
-                      transform: 'rotate(180deg)'
-                    })
+        <Box sx={{ p: 2, px: isDesktop ? 0 : 2 }}>
+          <Stack direction="row" justifyContent={openSidebar ? 'flex-end' : 'center'} alignItems={'center'} spacing={2}>
+            {!isCollapse && (
+              <ClickAwayListener onClickAway={handleClickAwaySearch}>
+                <InputStyle
+                  fullWidth
+                  size="small"
+                  value={searchQuery}
+                  onFocus={handleSearchFocus}
+                  onChange={handleChangeSearch}
+                  placeholder="Buscar Tarjetas..."
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search sx={{ color: 'text.disabled', width: 20, height: 20 }} />
+                      </InputAdornment>
+                    )
                   }}
-                  onClick={handleToggleSidebar}
-                >
-                  {icon}
-                </IconButton>
-              </Stack>
+                />
+              </ClickAwayListener>
+            )}
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
+              <IconButton
+                size={'small'}
+                sx={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxSizing: 'boder-box',
+                  display: 'inline-flex',
+                  outline: '0px',
+                  margin: '0px',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  textDecoration: 'none',
+                  textAlign: 'center',
+                  borderRadius: '50%',
+                  overflow: 'visible',
+                  color: 'rgb(145, 158, 171)',
+                  fontSize: '1.125rem',
+                  padding: '4px',
+                  zIndex: '1500',
+                  border: '1px dashed rgba(145, 158, 171, 0.24)',
+                  backdropFilter: 'blur(6px)',
+                  lineHeight: 0,
+                  ...(!openSidebar && {
+                    transform: 'rotate(180deg)'
+                  })
+                }}
+                onClick={handleToggleSidebar}
+              >
+                {icon}
+              </IconButton>
             </Stack>
-          </Box>
-        )}
+          </Stack>
+        </Box>
 
-        {isError && !commerceCards && !loadingCommerces && (
+        {isError && openSidebar && !commerceCards && !loadingCommerces && (
           <ErrorRequestPage errorMessage={error} handleButton={refetch} />
         )}
 
-        {commerceCards && commerceCards?.length === 0 && (
+        {commerceCards && openSidebar && commerceCards?.length === 0 && (
           <EmptyList pt={2.5} message={'No hay tarjetas activas en este comercio'} />
         )}
 

@@ -1,7 +1,7 @@
 import { Avatar, Card, Stack, Typography } from '@mui/material'
 import { DataTable } from '@/shared/components/dataTables'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
-import { UnassignedCardsTableToolbar } from '@/app/business/unassigned-cards/components/UnassignedCardsTableToolbar'
+import { AssignCardTableToolbar } from '@/app/shared/components'
 import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
 
 export function UnassignedCardsTable({ isLoading, cards = [], rows = [] }) {
@@ -108,7 +108,7 @@ export function UnassignedCardsTable({ isLoading, cards = [], rows = [] }) {
             setIndexCards(rowsSelected)
           },
           customToolbarSelect: selectedRows => (
-            <UnassignedCardsTableToolbar
+            <AssignCardTableToolbar
               handleAssign={() => {
                 setOpenAssign(true)
               }}

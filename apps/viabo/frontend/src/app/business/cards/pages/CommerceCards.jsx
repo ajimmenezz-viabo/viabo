@@ -9,9 +9,22 @@ import { CommerceViaboCardDetails } from '@/app/business/cards/components/Commer
 import { CardToolbar } from '@/app/business/cards/components/cardToolbar'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { FundingOrder } from '@/app/business/cards/components/FundingOrder'
+import { useEffect } from 'react'
+import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function CommerceCards() {
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
+
+  const queryClient = useQueryClient()
+
+  useEffect(
+    () => () => {
+      const keysArray = Object.values(CARDS_COMMERCES_KEYS)
+      queryClient.cancelQueries(keysArray)
+    },
+    []
+  )
 
   return (
     <Page title="Tarjetas del Comercio">

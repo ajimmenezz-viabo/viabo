@@ -2,8 +2,8 @@ import { Alert, Box, Card, CardHeader, IconButton, MenuItem, Stack, Tooltip, Typ
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { useFindMainCard } from '@/app/business/cards/hooks/useFindMainCard'
 import { LoadingButton } from '@mui/lab'
-import { ACTIONS_PERMISSIONS } from '@/app/business/cards/adapters'
-import { useUser } from '@/shared/hooks'
+import { ACTIONS_PERMISSIONS, CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
+import { useGetQueryState, useUser } from '@/shared/hooks'
 import { MoreVertTwoTone, Payment } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useState } from 'react'
@@ -13,15 +13,13 @@ import { useFindTransitBalanceCommerce } from '@/app/business/cards/hooks'
 export function MainCard() {
   const user = useUser()
   const userActions = user?.modules?.userActions ?? []
-  const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
-  const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
-  const [copiedSPEI, setCopiedSPEI] = useState(false)
 
   if (!userActions.includes(ACTIONS_PERMISSIONS.COMMERCE_CARDS)) {
     return null
   }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data, isLoading, isError, error, refetch, isSuccess, isRefetching } = useFindMainCard()
+
+  const state = useGetQueryState([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST])
+
   const {
     data: transit,
     isLoading: isLoadingTransit,
@@ -31,6 +29,10 @@ export function MainCard() {
     isSuccess: isSuccessTransit,
     isRefetching: isRefetchingTransit
   } = useFindTransitBalanceCommerce()
+
+  const { data, isLoading, isError, error, refetch, isSuccess, isRefetching } = useFindMainCard({
+    enabled: Boolean(state?.status === 'success')
+  })
 
   const color = 'primary'
 

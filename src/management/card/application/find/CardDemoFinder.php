@@ -25,8 +25,7 @@ final readonly class CardDemoFinder
     {
         $filters = Filters::fromValues([
             ['field' => 'number' , 'operator' => '=' , 'value' => $cardNumber->value()] ,
-            ['field' => 'expirationDate.value' , 'operator' => '=' , 'value' => $expiration->value()] ,
-            ['field' => 'cvv.value' , 'operator' => '=' , 'value' => $cvv->value()]
+            ['field' => 'expirationDate.value' , 'operator' => '=' , 'value' => $expiration->value()]
         ]);
         $card = $this->repository->searchCriteria(new Criteria($filters));
 

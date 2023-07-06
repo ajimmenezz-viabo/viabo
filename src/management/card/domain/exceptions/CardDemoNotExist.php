@@ -15,6 +15,6 @@ final class CardDemoNotExist extends DomainError
 
     public function errorMessage(): string
     {
-        return 'La tarjeta no esta registrada, favor de revisar los datos ingresados';
+        return 'La tarjeta no esta registrada o los datos ingresados no son correctos';
     }
 }

@@ -8,6 +8,7 @@ use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
+use Viabo\shared\domain\utils\URL;
 
 final readonly class SendResetPasswordEmailByAssignedCardDemo implements DomainEventSubscriber
 {
@@ -30,7 +31,12 @@ final readonly class SendResetPasswordEmailByAssignedCardDemo implements DomainE
             [$userEmail] ,
             'Notificación de Acceso a Viabo' ,
             'security/notification/emails/user.created.by.assigned.card.html.twig' ,
-            ['name' => $userData['name'] , 'password' => $password, 'userEmail' => $userEmail]
+            [
+                'name' => $userData['name'] ,
+                'password' => $password,
+                'userEmail' => $userEmail,
+                'host' => URL::get() . "/auth/login"
+            ]
         );
         $this->repository->send($email);
     }

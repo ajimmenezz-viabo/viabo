@@ -24,6 +24,7 @@ final readonly class CardDemoUpdater
         if($card->isEmptyCVV()){
             $card->updateCVV($cvv);
             $this->repository->update($card);
+            return;
         }
 
         if($card->hasDifferentData($cvv, $expiration)){

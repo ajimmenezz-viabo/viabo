@@ -18,7 +18,7 @@ final readonly class UpdateCardDemoCommandHandler implements CommandHandler
     public function __invoke(UpdateCardDemoCommand $command): void
     {
         $cardId = CardId::create($command->cardId);
-        $cvv = new CardCVV($command->cvv);
+        $cvv = CardCVV::create($command->cvv);
         $expiration = CardExpirationDate::create($command->expiration);
 
         $this->updater->__invoke($cardId , $cvv , $expiration);

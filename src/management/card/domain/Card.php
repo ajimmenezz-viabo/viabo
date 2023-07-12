@@ -164,7 +164,7 @@ final class Card extends AggregateRoot
 
     public function hasDifferentData(CardCVV $cvv , CardExpirationDate $expiration): bool
     {
-        return $this->cvv->isDifferent($cvv->value()) || $this->expirationDate->isDifferent($expiration->value());
+        return $this->cvv->isDifferent($cvv->valueDecrypt()) || $this->expirationDate->isDifferent($expiration->value());
     }
 
     private function updateBalance(mixed $value): CardBalance

@@ -27,7 +27,7 @@ final class Crypt
             $plaintext = openssl_decrypt(
                 $ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , static::INITIALIZATION_VECTOR
             );
-            return !$plaintext ? throw new \DomainException() : $plaintext;
+            return $plaintext === false ? throw new \DomainException() : $plaintext;
         } catch (\DomainException) {
             throw new \DomainException('Error de cifrado' , 406);
         }

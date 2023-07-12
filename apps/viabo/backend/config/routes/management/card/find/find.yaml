@@ -18,6 +18,11 @@ find-card-information:
   controller: Viabo\Backend\Controller\management\card\CardInformationFinderController
   methods: GET
 
+find-card-demo-information:
+  path: '/api/card-demo/information/{cardNumber}'
+  controller: Viabo\Backend\Controller\management\card\CardDemoInformationFinderController
+  methods: GET
+
 main-card-information-find:
   path: '/api/main-card/information'
   controller: Viabo\Backend\Controller\management\card\MainCardInformationFinderController

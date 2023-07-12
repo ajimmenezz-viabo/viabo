@@ -5,6 +5,7 @@ namespace Viabo\management\shared\domain\card;
 
 
 use Viabo\management\card\domain\exceptions\CardNumberEmpty;
+use Viabo\management\card\domain\exceptions\CardNumberNot8Digits;
 use Viabo\management\card\domain\exceptions\CardNumberNotDigits;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
@@ -27,9 +28,23 @@ final class CardNumber extends StringValueObject
         }
     }
 
+    public static function createLast8Digits(string $value): static
+    {
+        if (self::hasNot8Digits($value)) {
+            throw new CardNumberNot8Digits();
+        }
+
+        return new static($value);
+    }
+
     private static function hasNot16Digits(string $value): bool
     {
         return preg_match('/\d{16}/' , $value) === 0;
+    }
+
+    private static function hasNot8Digits(string $value): bool
+    {
+        return preg_match('/^\d{8}$/' , $value) === 0;
     }
 
     public function last8Digits(): string

@@ -4,8 +4,6 @@
 namespace Viabo\management\card\application\find;
 
 
-use Viabo\management\card\domain\CardCVV;
-use Viabo\management\card\domain\CardExpirationDate;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\exceptions\CardDemoHasOwner;
 use Viabo\management\card\domain\exceptions\CardDemoNotExist;
@@ -19,13 +17,10 @@ final readonly class CardDemoFinder
     {
     }
 
-    public function __invoke(
-        CardNumber $cardNumber , CardCVV $cvv , CardExpirationDate $expiration
-    ): CardResponse
+    public function __invoke(CardNumber $cardNumber): CardResponse
     {
         $filters = Filters::fromValues([
-            ['field' => 'number' , 'operator' => '=' , 'value' => $cardNumber->value()] ,
-            ['field' => 'expirationDate.value' , 'operator' => '=' , 'value' => $expiration->value()]
+            ['field' => 'number' , 'operator' => 'like' , 'value' => $cardNumber->value()]
         ]);
         $card = $this->repository->searchCriteria(new Criteria($filters));
 
@@ -33,10 +28,9 @@ final readonly class CardDemoFinder
             throw new CardDemoNotExist();
         }
 
-        if($card[0]->hasOwner()){
-            throw new CardDemoHasOwner();
-        }
-
-        return new CardResponse([$card[0]->id()->value()]);
+        return new CardResponse([
+            'cardId' => $card[0]->id()->value() ,
+            'cardNumber' => $card[0]->number()->value()
+        ]);
     }
 }

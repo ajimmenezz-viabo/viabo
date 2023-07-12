@@ -25,9 +25,6 @@ final class CardCVV extends StringValueObject
 
     public static function empty(string $value): static
     {
-        if (empty($value)) {
-            return new static($value);
-        }
         return new static(Crypt::encrypt($value));
     }
 

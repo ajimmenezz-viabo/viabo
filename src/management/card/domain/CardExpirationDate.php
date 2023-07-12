@@ -50,4 +50,9 @@ final class CardExpirationDate extends StringValueObject
     {
         return explode('/' , $this->value)[1];
     }
+
+    public function isDifferent(string $value): bool
+    {
+        return $this->value !== $value;
+    }
 }

@@ -16,20 +16,20 @@ final readonly class CommerceDemoUserCreatorController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
+            $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $request->toArray();
             $this->dispatch(new CreateCommerceDemoUserCommand(
-                $data['name'],
-                $data['phone'],
+                $data['name'] ,
+                $data['phone'] ,
                 $data['email']
             ));
-            $data = $this->ask(new FindUserQuery('', $data['email']));
-            $tokenData = ['id' => $data->userData['id']];
-            $token = $this->encode($tokenData);
+            $data = $this->ask(new FindUserQuery('' , $data['email']));
+            $token = $this->encode(array_merge($tokenData , ['id' => $data->userData['id']]));
             $this->startSession(['id' => $data->userData['id']]);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage(), $exception->getCode());
+            return new JsonResponse($exception->getMessage() , $exception->getCode());
         }
     }
 }

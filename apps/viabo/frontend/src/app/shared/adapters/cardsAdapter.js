@@ -27,6 +27,12 @@ export const CardsAdapter = cards => {
           active
         } = card
 
+        const lastFourDigits = number?.slice(-4)
+        let assignName = ownerName ?? ''
+
+        if (assignName?.length > 10) {
+          assignName = assignName.slice(0, 13) + '...'
+        }
         return {
           id,
           cardTypeId: paymentProcessorId,
@@ -47,6 +53,7 @@ export const CardsAdapter = cards => {
           },
           cardNumber: number,
           cardNumberHidden: fCardNumberHidden(number),
+          cardUserNumber: assignName?.toUpperCase() + ' ' + lastFourDigits,
           expiration: expirationDate,
           register: fDateTime(register),
           registerDate: register ? format(new Date(register), 'dd MMM yyyy') : '',
@@ -58,7 +65,7 @@ export const CardsAdapter = cards => {
           }
         }
       })
-      return convertCatalogToReactSelect(cardsAdapter, 'id', 'cardNumberHidden') || []
+      return convertCatalogToReactSelect(cardsAdapter, 'id', 'cardUserNumber') || []
     }
     return []
   } catch (e) {

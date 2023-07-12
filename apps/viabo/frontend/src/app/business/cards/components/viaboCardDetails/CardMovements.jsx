@@ -7,6 +7,8 @@ import { lazy, useEffect, useState } from 'react'
 import { Lodable } from '@/shared/components/lodables'
 import { CardFilterMovements } from '@/app/business/cards/components/viaboCardDetails/CardFilterMovements'
 import { useFindCardMovements } from '@/app/business/cards/hooks/useFindCardMovements'
+import { getMonth } from 'date-fns'
+import { monthOptions } from '@/shared/utils'
 
 const TransactionReport = Lodable(
   lazy(() => import('@/app/business/cards/components/viaboCardDetails/incidence/TransactionReport'))
@@ -21,7 +23,7 @@ export function CardMovements() {
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
 
   const { data, isLoading, refetch, remove, isRefetching } = useFindCardMovements(card?.id, currentMonth, {
-    enabled: !!card?.id
+    enabled: false
   })
   const movements = data?.movements || []
 
@@ -30,10 +32,15 @@ export function CardMovements() {
   }, [currentMonth])
 
   useEffect(() => {
+    setCurrentMonth(new Date())
+  }, [card?.id])
+
+  useEffect(() => {
     if (data) {
-      addInfoCard(data)
+      const month = monthOptions[getMonth(currentMonth)] ?? null
+      addInfoCard({ ...data, monthBalance: month })
     }
-  }, [data, card?.id])
+  }, [data, card?.id, currentMonth])
 
   const columns = [
     {
@@ -143,7 +150,7 @@ export function CardMovements() {
   return (
     <>
       <Card>
-        <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} isLoading={isLoading} />
+        <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} isLoading={isRefetching} />
         <Divider sx={{ borderStyle: 'dashed' }} />
         <DataTable
           isLoading={isLoading || isRefetching}

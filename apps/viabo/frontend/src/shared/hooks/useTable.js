@@ -21,6 +21,10 @@ export function useTable(props) {
     }
   }
 
+  const resetSelected = () => {
+    setSelected(props?.defaultSelected || [])
+  }
+
   const onSelectRow = id => {
     const selectedIndex = selected.indexOf(id)
 
@@ -71,6 +75,7 @@ export function useTable(props) {
     //
     selected,
     setSelected,
+    resetSelected,
     onSelectRow,
     onSelectAllRows,
     //

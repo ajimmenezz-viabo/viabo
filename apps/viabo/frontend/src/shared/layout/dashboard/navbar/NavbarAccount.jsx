@@ -48,12 +48,7 @@ export default function NavbarAccount({ isCollapse }) {
           <Typography variant="subtitle2" textTransform={'capitalize'}>
             {user?.name}
           </Typography>
-          <Typography
-            textAlign={'center'}
-            variant="body2"
-            textTransform={'capitalize'}
-            sx={{ color: 'text.secondary' }}
-          >
+          <Typography variant="body2" textTransform={'capitalize'} sx={{ color: 'text.secondary' }}>
             {user?.profile}
           </Typography>
         </Box>

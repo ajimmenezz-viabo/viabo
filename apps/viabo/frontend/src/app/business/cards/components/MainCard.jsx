@@ -1,10 +1,10 @@
-import { Alert, Box, Card, CardHeader, IconButton, MenuItem, Stack, Tooltip, Typography } from '@mui/material'
-import { RequestLoadingComponent } from '@/shared/components/loadings'
+import { Card, CardHeader, IconButton, MenuItem, Stack, Tooltip, Typography } from '@mui/material'
+import { CircularLoading } from '@/shared/components/loadings'
 import { useFindMainCard } from '@/app/business/cards/hooks/useFindMainCard'
 import { LoadingButton } from '@mui/lab'
 import { ACTIONS_PERMISSIONS, CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { useGetQueryState, useUser } from '@/shared/hooks'
-import { MoreVertTwoTone, Payment } from '@mui/icons-material'
+import { Dangerous, MoreVertTwoTone, Payment, Update } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useState } from 'react'
 import { MenuPopover } from '@/shared/components/containers'
@@ -39,91 +39,82 @@ export function MainCard() {
   return (
     <Stack spacing={2} m={{ xs: 2, md: 0 }}>
       <Card sx={{ p: 2 }}>
-        {isLoading && (
-          <Box p={3}>
-            <RequestLoadingComponent open={true} width={20} height={20} />
-          </Box>
-        )}
-        {isError && !isLoading && (
-          <Box>
-            <Alert
-              severity={'error'}
-              sx={{ width: 1 }}
-              action={
-                <LoadingButton
-                  loading={isRefetching}
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    refetch()
-                  }}
-                >
-                  Recargar
-                </LoadingButton>
-              }
-            >
-              {error}
-            </Alert>
-          </Box>
-        )}
-        {isSuccess && !isLoading && (
-          <>
-            <CardHeader
-              action={<MainCardDetails mainCard={data} />}
-              title={<Typography variant="subtitle2">Global</Typography>}
-              sx={{ p: 0 }}
+        <CardHeader
+          action={isSuccess && <MainCardDetails mainCard={data} />}
+          title={<Typography variant="subtitle2">Global</Typography>}
+          sx={{ p: 0 }}
+        />
+
+        <Stack alignItems={'center'} mb={1}>
+          {isLoading && (
+            <CircularLoading
+              size={25}
+              containerProps={{
+                display: 'flex',
+                py: 1,
+                alignItems: 'center'
+              }}
             />
-            <Stack spacing={1} alignItems={'center'}>
-              <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                <Typography variant="h3">{data?.balanceFormatted}</Typography>
-                <Typography variant="caption">MXN</Typography>
-              </Stack>
+          )}
+          {isError && !isLoading && (
+            <LoadingButton
+              loading={isRefetching}
+              variant={'contained'}
+              size="small"
+              color="error"
+              sx={{ mt: 1, mb: 2 }}
+              startIcon={<Dangerous />}
+              onClick={() => {
+                refetch()
+              }}
+            >
+              Recargar
+            </LoadingButton>
+          )}
+          {isSuccess && !isLoading && (
+            <Stack direction={'row'} spacing={1} alignItems={'center'}>
+              <Typography variant="h3">{data?.balanceFormatted}</Typography>
+              <Typography variant="caption">MXN</Typography>
             </Stack>
-          </>
-        )}
-      </Card>
+          )}
 
-      <Card sx={{ p: 2 }}>
-        {isLoadingTransit && (
-          <Box p={3}>
-            <RequestLoadingComponent open={true} width={20} height={20} />
-          </Box>
-        )}
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Update sx={{ width: 30, height: 30, color: 'text.secondary' }} />
 
-        {isErrorTransit && !isLoadingTransit && (
-          <Box>
-            <Alert
-              severity={'error'}
-              sx={{ width: 1 }}
-              action={
+            <Stack alignItems={'center'}>
+              <Typography variant={'subtitle2'}>En transito</Typography>
+              {isLoadingTransit && (
+                <CircularLoading
+                  size={15}
+                  containerProps={{
+                    py: 1
+                  }}
+                />
+              )}
+              {isErrorTransit && !isLoadingTransit && (
                 <LoadingButton
                   loading={isRefetchingTransit}
-                  color="inherit"
+                  color="error"
+                  sx={{ mt: 0.5 }}
+                  startIcon={<Dangerous />}
                   size="small"
+                  variant={'contained'}
                   onClick={() => {
                     refetchTransit()
                   }}
                 >
                   Recargar
                 </LoadingButton>
-              }
-            >
-              {errorTransit}
-            </Alert>
-          </Box>
-        )}
-
-        {isSuccessTransit && !isLoadingTransit && (
-          <>
-            <CardHeader title={<Typography variant="subtitle2">En Tránsito</Typography>} sx={{ p: 0 }} />
-            <Stack spacing={1} alignItems={'center'}>
-              <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                <Typography variant="h3">{transit?.inTransitFormatted}</Typography>
-                <Typography variant="caption">MXN</Typography>
-              </Stack>
+              )}
+              {isSuccessTransit && !isLoadingTransit && (
+                <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                  <Typography variant="body1">{transit?.inTransitFormatted}</Typography>
+                  <Typography variant="caption">MXN</Typography>
+                </Stack>
+              )}
             </Stack>
-          </>
-        )}
+          </Stack>
+        </Stack>
       </Card>
     </Stack>
   )

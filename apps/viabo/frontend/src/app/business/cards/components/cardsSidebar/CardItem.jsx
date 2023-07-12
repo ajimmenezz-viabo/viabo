@@ -34,7 +34,7 @@ CardItem.propTypes = {
 }
 
 function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails }) {
-  const { cardNumberHidden, id, expiration, cardType } = card
+  const { id, cardUserNumber, cardType } = card
   const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
   const commerceCard = useCommerceDetailsCard(state => state.card)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
@@ -66,11 +66,12 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
   }
 
   return (
-    <Tooltip title={!isOpenSidebar ? cardNumberHidden : ''} arrow placement="right">
+    <Tooltip title={!isOpenSidebar ? cardUserNumber : ''} arrow placement="right">
       <ListItem
         sx={{
           mb: 1,
-          borderRadius: 1
+          borderRadius: 1,
+          '& :hover': { color: 'text.primary' }
         }}
         secondaryAction={
           isOpenSidebar &&
@@ -83,7 +84,8 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
         <RootStyle
           onClick={handleSelectedRow}
           sx={{
-            ...(isSelected && { bgcolor: 'secondary.light', color: 'black', '& :hover': { color: 'text.primary' } })
+            ...(isSelected && { bgcolor: 'secondary.light', color: 'black', '& :hover': { color: 'text.primary' } }),
+            '& :hover': { color: 'text.primary' }
           }}
         >
           <ListItemAvatar>
@@ -110,7 +112,7 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
             <>
               <Stack>
                 <Typography noWrap variant={'subtitle2'}>
-                  {cardNumberHidden}
+                  {cardUserNumber}
                 </Typography>
               </Stack>
             </>

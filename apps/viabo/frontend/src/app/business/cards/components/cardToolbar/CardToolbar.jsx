@@ -1,5 +1,5 @@
-import { Button, Stack, Toolbar, Typography } from '@mui/material'
-import { Message, PriceChange } from '@mui/icons-material'
+import { Button, IconButton, Stack, Toolbar, Typography } from '@mui/material'
+import { CloseOutlined, Message, PriceChange } from '@mui/icons-material'
 import MailCompose from '@/app/business/cards/components/cardToolbar/MailCompose'
 import { useState } from 'react'
 import { TransferSideBar } from '@/app/business/cards/components/transfer'
@@ -9,6 +9,11 @@ export function CardToolbar() {
   const [openCompose, setOpenCompose] = useState(false)
   const [openTransferBin, setOpenTransferBin] = useState(false)
   const mainCard = useCommerceDetailsCard(state => state.mainCard)
+  const setSelectedCards = useCommerceDetailsCard(state => state.setSelectedCards)
+
+  const handleClose = () => {
+    setSelectedCards([])
+  }
 
   return (
     <>
@@ -30,9 +35,15 @@ export function CardToolbar() {
           gap={2}
           alignItems={'center'}
         >
-          <Typography variant="subtitle2" color="info.main">
-            Acciones:
-          </Typography>
+          <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
+            <IconButton aria-label="close" size="small" onClick={handleClose}>
+              <CloseOutlined width={20} height={20} fontSize="inherit" color="primary" />
+            </IconButton>
+            <Typography variant="subtitle2" color="info.main">
+              Acciones:
+            </Typography>
+          </Stack>
+
           <Stack flexDirection={'row'} gap={2} justifyContent="space-between">
             <Button
               startIcon={<Message />}

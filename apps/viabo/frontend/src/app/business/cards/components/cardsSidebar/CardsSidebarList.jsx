@@ -5,6 +5,7 @@ import CardItem from '@/app/business/cards/components/cardsSidebar/CardItem'
 import { useTable } from '@/shared/hooks'
 import { useEffect } from 'react'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { shallow } from 'zustand/shallow'
 
 CardsSidebarList.propTypes = {
   cards: PropTypes.array,
@@ -16,12 +17,19 @@ CardsSidebarList.propTypes = {
 
 export default function CardsSidebarList({ cards, isOpenSidebar, isLoading, sx, onOpenDetails, ...other }) {
   const setSelectedCards = useCommerceDetailsCard(state => state.setSelectedCards)
+  const selectedCards = useCommerceDetailsCard(state => state.selectedCards, shallow)
 
-  const { selected, onSelectRow } = useTable()
+  const { selected, onSelectRow, resetSelected } = useTable()
 
   useEffect(() => {
     setSelectedCards(selected)
   }, [selected])
+
+  useEffect(() => {
+    if (selectedCards?.length === 0) {
+      resetSelected()
+    }
+  }, [selectedCards])
 
   return (
     <List disablePadding sx={sx} {...other}>
@@ -31,7 +39,7 @@ export default function CardsSidebarList({ cards, isOpenSidebar, isLoading, sx, 
             key={card?.id}
             isOpenSidebar={isOpenSidebar}
             card={card}
-            selected={selected?.some(cardSelected => cardSelected?.id === card?.id)}
+            selected={selectedCards?.some(cardSelected => cardSelected?.id === card?.id)}
             onSelectRow={() => onSelectRow(card)}
             onOpenDetails={onOpenDetails}
           />

@@ -3,7 +3,7 @@ import { path } from '@/routes'
 export const BUSINESS_ROUTES_NAMES = {
   root: { route: 'commerce', name: 'Comercio' },
   cards: { route: 'cards', name: 'Tarjetas' },
-  unassignedCards: { route: 'unassigned-cards', name: 'Tarjetas Sin Asignar' }
+  unassignedCards: { route: 'stock-cards', name: 'Stock de Tarjetas' }
 }
 
 const ROOT = `/${BUSINESS_ROUTES_NAMES.root.route}/`

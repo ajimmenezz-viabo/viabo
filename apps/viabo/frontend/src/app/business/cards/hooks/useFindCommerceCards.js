@@ -8,6 +8,7 @@ export const useFindCommerceCards = (options = {}) => {
   const [customError, setCustomError] = useState(null)
   const commerces = useQuery([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST], getEnabledCommerceCards, {
     staleTime: 60000,
+    refetchOnMount: 'always',
     onError: error => {
       const errorMessage = getErrorAPI(
         error,

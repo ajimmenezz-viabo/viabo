@@ -13,7 +13,7 @@ export function CardBalance() {
   return (
     <Card sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
-        Balance
+        Balance {card?.monthBalance && `de ${card?.monthBalance}`}
       </Typography>
 
       <Stack spacing={2}>

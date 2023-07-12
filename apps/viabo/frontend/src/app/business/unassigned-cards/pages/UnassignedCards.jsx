@@ -27,10 +27,10 @@ export default function UnassignedCards() {
 
   return (
     <>
-      <Page title="Tarjetas Sin Asignar del Comercio">
+      <Page title="Tarjetas Sin Asociar del Comercio">
         <ContainerPage sx={{ height: '100%' }}>
           <HeaderPage
-            name={'Tarjetas Sin Asignar'}
+            name={'Stock de Tarjetas'}
             links={[
               { name: 'Inicio', href: PATH_DASHBOARD.root },
               { name: 'Administracion', href: BUSINESS_PATHS.cards },

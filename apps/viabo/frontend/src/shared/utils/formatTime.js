@@ -21,6 +21,21 @@ export function fDateTimeSuffix(date) {
   return format(new Date(date), 'dd/MM/yyyy hh:mm p', { locale: es })
 }
 
+export const monthOptions = [
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre'
+]
+
 export function fToNow(date) {
   return formatDistanceToNow(new Date(date), {
     addSuffix: true,

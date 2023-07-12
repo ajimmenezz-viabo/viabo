@@ -1,7 +1,7 @@
-import { FormProvider, InputAmount } from '@/shared/components/form'
+import { FormProvider, RFTextField } from '@/shared/components/form'
 import { useFormik } from 'formik'
 import { Scrollbar } from '@/shared/components/scroll'
-import { Slider as MuiSlider, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import { Send } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
@@ -28,20 +28,9 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
 
   const { amount } = values
 
-  const handleInputClick = () => {
-    if (amount === 0) {
-      setFieldValue('amount', '')
-    }
-  }
-
   const handleInputChange = event => {
     const value = event.target.value === '' ? '' : Number(event.target.value)
     setFieldValue('amount', value)
-  }
-
-  const handleAutoWidth = () => {
-    const getNumberLength = amount.toString().length
-    setAutoWidth(getNumberLength * 24)
   }
 
   const handleBlur = () => {
@@ -52,16 +41,9 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
     }
   }
 
-  const handleSliderChange = (event, newValue) => {
-    setFieldValue('amount', newValue)
-  }
-
   useEffect(() => {
     const value = amount === '' ? 0 : amount
     setCurrentBalance(parseFloat(balance) - parseFloat(value))
-    if (amount) {
-      handleAutoWidth()
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amount])
 
@@ -70,34 +52,23 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
       <FormProvider formik={formik}>
         <Stack spacing={3} sx={{ p: 3 }}>
           <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-            Ingresa Cantidad
+            Ingresa La Cantidad (Máximo ${MAX_AMOUNT}.00)
           </Typography>
-
           <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'center'}>
-            <InputAmount
-              disabled={isSubmitting}
-              onBlur={handleBlur}
+            <RFTextField
+              fullWidth
+              placeholder={'$0.00'}
+              name={'amount'}
+              type={'number'}
               onChange={handleInputChange}
-              onClick={handleInputClick}
-              autoWidth={autoWidth}
-              amount={amount}
-              step={STEP}
-              min={MIN_AMOUNT}
-              max={MAX_AMOUNT}
+              onBlur={handleBlur}
+              InputLabelProps={{
+                shrink: true
+              }}
+              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT, step: STEP }}
             />
             <Typography variant="caption">MXN</Typography>
           </Stack>
-
-          <MuiSlider
-            value={typeof amount === 'number' ? amount : 0}
-            valueLabelDisplay="auto"
-            step={STEP}
-            marks
-            min={MIN_AMOUNT}
-            max={MAX_AMOUNT}
-            onChange={handleSliderChange}
-            disabled={isSubmitting}
-          />
 
           <Stack sx={{ pt: 3 }}>
             <LoadingButton

@@ -3,11 +3,13 @@ import { useQuery } from '@tanstack/react-query'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { getCardMovements } from '@/app/business/cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
-import { endOfMonth, format, startOfMonth } from 'date-fns'
+import { endOfMonth, format, getMonth, startOfMonth } from 'date-fns'
 import { toast } from 'react-toastify'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { monthOptions } from '@/shared/utils'
 
 export const useFindCardMovements = (cardId, date, options = {}) => {
+  const month = monthOptions[getMonth(date)] ?? null
   const primerDiaMes = startOfMonth(date)
   const ultimoDiaMes = endOfMonth(date)
   const initialDate = format(primerDiaMes, 'yyyy-MM-dd')
@@ -31,14 +33,12 @@ export const useFindCardMovements = (cardId, date, options = {}) => {
           type: getNotificationTypeByErrorCode(error)
         })
         addInfoCard({
+          monthBalance: month,
           movements: [],
           expenses: '$0.00',
           income: '$0.00',
           balanceMovements: '$0.00'
         })
-      },
-      onSuccess: data => {
-        addInfoCard(data)
       },
       ...options
     }

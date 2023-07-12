@@ -35,4 +35,14 @@ final class CardCVV extends StringValueObject
     {
         return Crypt::decrypt($this->value);
     }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->valueDecrypt());
+    }
+
+    public function isDifferent(string $value): bool
+    {
+        return $this->valueDecrypt() !== $value;
+    }
 }

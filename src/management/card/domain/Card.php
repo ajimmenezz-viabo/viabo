@@ -152,6 +152,21 @@ final class Card extends AggregateRoot
         $this->record(new CardBlockUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
+    public function isEmptyCVV(): bool
+    {
+        return $this->cvv->isEmpty();
+    }
+
+    public function updateCVV(CardCVV $cvv): void
+    {
+        $this->cvv = $cvv;
+    }
+
+    public function hasDifferentData(CardCVV $cvv , CardExpirationDate $expiration): bool
+    {
+        return $this->cvv->isDifferent($cvv->value()) || $this->expirationDate->isDifferent($expiration->value());
+    }
+
     private function updateBalance(mixed $value): CardBalance
     {
 

@@ -33,7 +33,7 @@ export default function FormSuccessAssignCard() {
         variant={'outlined'}
         color={'primary'}
         onClick={() => {
-          setStep(CARD_ASSIGN_PROCESS_LIST.USER_REGISTER)
+          setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
         }}
       >
         Regresar

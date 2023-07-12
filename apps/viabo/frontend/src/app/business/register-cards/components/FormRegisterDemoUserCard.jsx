@@ -9,13 +9,14 @@ import { Scrollbar } from '@/shared/components/scroll'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useRegisterDemoUser } from '@/app/business/register-cards/hooks'
-import { useEffect } from 'react'
+import { axios } from '@/shared/interceptors'
 
 export default function FormRegisterDemoUserCard() {
   const setStep = useCardUserAssign(state => state.setStepAssignRegister)
   const setUser = useCardUserAssign(state => state.setUser)
   const setToken = useCardUserAssign(state => state.setToken)
-  const resetState = useCardUserAssign(state => state.resetState)
+  const token = useCardUserAssign(state => state.token)
+
   const { mutate: registerDemoUser, isLoading: isRegisteringDemoUser } = useRegisterDemoUser()
 
   const registerValidation = Yup.object({
@@ -36,14 +37,15 @@ export default function FormRegisterDemoUserCard() {
     },
     validationSchema: registerValidation,
     onSubmit: values => {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
       registerDemoUser(values, {
         onSuccess: data => {
           if (data?.token) {
             setToken(data?.token)
+            setUser(values)
+            setStep(CARD_ASSIGN_PROCESS_LIST.USER_VALIDATION)
           }
           setSubmitting(false)
-          setUser(values)
-          setStep(CARD_ASSIGN_PROCESS_LIST.USER_VALIDATION)
         },
         onError: () => {
           setSubmitting(false)
@@ -55,10 +57,6 @@ export default function FormRegisterDemoUserCard() {
   const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting } = formik
 
   const loading = isSubmitting || isRegisteringDemoUser
-
-  useEffect(() => {
-    resetState()
-  }, [])
 
   return (
     <Stack
@@ -72,7 +70,7 @@ export default function FormRegisterDemoUserCard() {
           Registrar Tarjeta
         </Typography>
         <Typography paragraph align="center" variant="body1" color={'text.secondary'} whiteSpace="pre-line">
-          Ingrese la información del usuario para iniciar con el proceso de asociación de su tarjeta.
+          Ingrese la información del usuario para continuar con el proceso de asociación de su tarjeta.
         </Typography>
       </Stack>
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>

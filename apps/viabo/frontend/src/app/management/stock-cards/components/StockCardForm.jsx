@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { LoadingButton } from '@mui/lab'
@@ -6,16 +6,13 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { InputAdornment, Stack, Typography } from '@mui/material'
 import { AddCard, CreditCard, VpnKey, WarningAmberOutlined } from '@mui/icons-material'
 import { format, isAfter, isValid, parse } from 'date-fns'
-import { IMaskInput } from 'react-imask'
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 import { CreateCardAdapter, MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { useCreateNewStockCard } from '@/app/management/stock-cards/hooks'
 import { useGetQueryData } from '@/shared/hooks'
 import { ModalAlert } from '@/shared/components/modals'
 import { SHARED_CARD_KEYS } from '@/app/shared/adapters'
-
-const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
 export function StockCardForm({ setOpen }) {
   const { registerCard: createCard, isLoading: isCreatingCard } = useCreateNewStockCard()

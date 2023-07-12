@@ -4,7 +4,7 @@ import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services
 import { axios } from '@/shared/interceptors'
 
 const initialState = {
-  step: CARD_ASSIGN_PROCESS_LIST.USER_REGISTER,
+  step: CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION,
   user: null,
   card: null,
   token: null

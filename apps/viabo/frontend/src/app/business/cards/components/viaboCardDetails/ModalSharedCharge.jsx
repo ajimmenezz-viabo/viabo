@@ -7,9 +7,12 @@ import { MuiChipsInput } from 'mui-chips-input'
 import { useSharedChargeKeys } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { SharedChargeKeysCardsAdapter } from '@/app/business/cards/adapters'
+import { useState } from 'react'
+import { stringToColor } from '@theme/utils'
 
 export function ModalSharedCharge({ open, onClose }) {
   const { mutate: shared, isLoading } = useSharedChargeKeys()
+  const [chipInputValue, setChipInputValue] = useState('')
 
   const card = useCommerceDetailsCard(state => state.card)
 
@@ -42,6 +45,24 @@ export function ModalSharedCharge({ open, onClose }) {
   const { isSubmitting, handleSubmit, values, touched, errors, setFieldValue, resetForm } = formik
   const loading = isSubmitting || isLoading
 
+  const handleChipInputChange = value => {
+    if (value.trim().length > 0 && value.includes(' ')) {
+      const emailArray = value.trim().split(/[, ]+/)
+      setFieldValue('emails', [...values.emails, ...emailArray])
+      setChipInputValue('')
+    } else {
+      setChipInputValue(value)
+    }
+  }
+
+  const handleBlur = event => {
+    const value = event.target.value?.trim()
+    if (value.length > 0) {
+      setFieldValue('emails', [...values.emails, value])
+      setChipInputValue('')
+    }
+  }
+
   return (
     <Modal
       onClose={() => {
@@ -64,6 +85,7 @@ export function ModalSharedCharge({ open, onClose }) {
               Correos Electronicos:
             </Typography>
             <MuiChipsInput
+              disableEdition
               name={'emails'}
               fullWidth
               disabled={loading}
@@ -74,6 +96,22 @@ export function ModalSharedCharge({ open, onClose }) {
               onChange={value => {
                 setFieldValue('emails', value)
               }}
+              renderChip={(Component, key, props) => (
+                <Component
+                  {...props}
+                  variant={'filled'}
+                  sx={{
+                    fontWeight: 'bolder',
+                    backgroundColor: stringToColor(props?.label || ''),
+                    color: 'white',
+                    '& .MuiChip-deleteIcon': { color: 'white' }
+                  }}
+                  key={key}
+                />
+              )}
+              onBlur={handleBlur}
+              onInputChange={handleChipInputChange}
+              inputValue={chipInputValue}
             />
           </Stack>
         </Stack>

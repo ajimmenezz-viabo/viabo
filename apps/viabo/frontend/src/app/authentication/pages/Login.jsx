@@ -55,7 +55,7 @@ const Login = () => (
   //   </Box>
   // )
 
-  <Page title="Inicio Sesión | Viabo">
+  <Page title="Inicio de Sesión">
     <RegisterContainer>
       <ContainerStyle>
         <Grid component="main" container spacing={0} sx={{ height: 1, width: 1 }}>

@@ -1,18 +1,15 @@
 import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
 import { FieldArray, getIn, useFormik } from 'formik'
 import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { Add, Delete, Send } from '@mui/icons-material'
-import { forwardRef, useEffect, useRef, useState } from 'react'
-import { IMaskInput } from 'react-imask'
+import { useEffect, useRef, useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
 import { useTransactionCard } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { stringAvatar } from '@theme/utils'
-
-const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
 
 export function TransactionForm({ cards, balance, setCurrentBalance, insufficient, cardOrigin, setOpen, isBinCard }) {
   const arrayHelpersRef = useRef(null)

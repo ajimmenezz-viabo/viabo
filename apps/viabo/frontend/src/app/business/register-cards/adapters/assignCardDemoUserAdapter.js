@@ -6,7 +6,6 @@ export const AssignCardDemoUserAdapter = card => {
   const expirationFormatted = card?.expiration?.slice(0, 3) + expirationYear
 
   const cardAdapter = {
-    cardNumber: card?.cardNumber?.replace(/\s+/g, ''),
     expiration: expirationFormatted,
     cvv: card?.cvv
   }

@@ -109,7 +109,7 @@ export default function FormDemoUserValidation() {
         variant={'outlined'}
         color={'inherit'}
         onClick={() => {
-          setStep(CARD_ASSIGN_PROCESS_LIST.USER_REGISTER)
+          setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
         }}
       >
         Cancelar

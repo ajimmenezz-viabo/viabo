@@ -13,6 +13,7 @@ import LinkIcon from '@mui/icons-material/Link'
 import { copyToClipboard, fCurrency } from '@/shared/utils'
 import { useCreateFundingOrder } from '@/app/business/cards/hooks'
 import { CreateFundingOrderAdapter } from '@/app/business/cards/adapters'
+import { stringToColor } from '@theme/utils'
 
 const MIN_AMOUNT = 0
 const MAX_AMOUNT = 1000000
@@ -33,6 +34,7 @@ export function FundingOrder() {
   const [step, setStep] = useState(1)
   const [sharedType, setSharedType] = useState(null)
   const [copied, setCopied] = useState(false)
+  const [chipInputValue, setChipInputValue] = useState('')
 
   const SharedSchema = Yup.object().shape({
     emails: Yup.array()
@@ -68,6 +70,24 @@ export function FundingOrder() {
     resetFundingOrder()
     resetForm()
     setStep(1)
+  }
+
+  const handleChipInputChange = value => {
+    if (value.trim().length > 0 && value.includes(' ')) {
+      const emailArray = value.trim().split(/[, ]+/)
+      setFieldValue('emails', [...values.emails, ...emailArray])
+      setChipInputValue('')
+    } else {
+      setChipInputValue(value)
+    }
+  }
+
+  const handleBlur = event => {
+    const value = event.target.value?.trim()
+    if (value.length > 0) {
+      setFieldValue('emails', [...values.emails, value])
+      setChipInputValue('')
+    }
   }
 
   return (
@@ -114,6 +134,7 @@ export function FundingOrder() {
                 </Stack>
 
                 <MuiChipsInput
+                  disableEdition
                   name={'emails'}
                   fullWidth
                   disabled={loading}
@@ -124,6 +145,22 @@ export function FundingOrder() {
                   onChange={value => {
                     setFieldValue('emails', value)
                   }}
+                  renderChip={(Component, key, props) => (
+                    <Component
+                      {...props}
+                      variant={'filled'}
+                      sx={{
+                        fontWeight: 'bolder',
+                        backgroundColor: stringToColor(props?.label || ''),
+                        color: 'white',
+                        '& .MuiChip-deleteIcon': { color: 'white' }
+                      }}
+                      key={key}
+                    />
+                  )}
+                  onBlur={handleBlur}
+                  onInputChange={handleChipInputChange}
+                  inputValue={chipInputValue}
                 />
 
                 <LoadingButton

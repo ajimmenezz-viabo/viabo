@@ -1,5 +1,5 @@
 import { useSnackbar } from 'notistack'
-import { getErrorAPI } from '@/shared/interceptors'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { useMutation } from '@tanstack/react-query'
 import { validateCode } from '@/app/business/shared/services'
 
@@ -10,7 +10,7 @@ export const useValidateCode = (options = {}) => {
     onError: error => {
       const message = getErrorAPI(error, 'No se puede validar el código')
       enqueueSnackbar(message, {
-        variant: error?.status === 500 ? 'error' : 'warning',
+        variant: getNotificationTypeByErrorCode(error),
         autoHideDuration: 5000
       })
     },

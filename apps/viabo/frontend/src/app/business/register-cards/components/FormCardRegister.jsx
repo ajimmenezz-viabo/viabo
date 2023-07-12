@@ -1,33 +1,26 @@
-import { Button, InputAdornment, Stack, Typography } from '@mui/material'
+import { Box, Button, InputAdornment, Stack, Typography } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, RFTextField } from '@/shared/components/form'
-import { AddCard, CreditCard, VpnKey } from '@mui/icons-material'
+import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { AddCard, VpnKey } from '@mui/icons-material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { format, isAfter, isValid, parse } from 'date-fns'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { forwardRef } from 'react'
-import { IMaskInput } from 'react-imask'
 import { LoadingButton } from '@mui/lab'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { useAssignCardToDemoUser } from '@/app/business/register-cards/hooks'
 import { AssignCardDemoUserAdapter } from '@/app/business/register-cards/adapters'
 import { axios } from '@/shared/interceptors'
-
-const MaskedInput = forwardRef((props, ref) => <IMaskInput overwrite {...props} inputRef={ref} />)
+import creditCard from '@/shared/assets/img/credit-card.svg'
 
 export default function FormCardRegister() {
   const setStep = useCardUserAssign(state => state.setStepAssignRegister)
-  const setCard = useCardUserAssign(state => state.setCard)
   const token = useCardUserAssign(state => state.token)
+  const card = useCardUserAssign(state => state.card)
   const { mutate: assignCard, isLoading: isAssigningCard } = useAssignCardToDemoUser()
 
   const CardSchema = Yup.object().shape({
-    cardNumber: Yup.string()
-      .transform((value, originalValue) => originalValue.replace(/\s/g, '')) // Elimina los espacios en blanco
-      .min(16, 'Debe contener 16 digitos')
-      .required('El número de la tarjeta es requerido'),
     cvv: Yup.string().min(3, 'Debe contener 3 digitos').required('El CVV es requerido'),
     expiration: Yup.string()
       .required('La fecha de vencimiento es requerida')
@@ -41,7 +34,6 @@ export default function FormCardRegister() {
 
   const formik = useFormik({
     initialValues: {
-      cardNumber: '',
       expiration: '',
       cvv: ''
     },
@@ -52,7 +44,6 @@ export default function FormCardRegister() {
       assignCard(data, {
         onSuccess: () => {
           setSubmitting(false)
-          setCard(values)
           setStep(CARD_ASSIGN_PROCESS_LIST.CARD_ASSIGNED)
         },
         onError: () => {
@@ -74,46 +65,32 @@ export default function FormCardRegister() {
         mb: 3
       }}
     >
-      <Stack direction="column" width={1} spacing={1}>
+      <Stack direction="column" width={1} spacing={1} pb={2}>
         <Typography variant="h4" color="textPrimary" align="center">
           Registrar Tarjeta
         </Typography>
         <Typography paragraph align="center" variant="body1" color={'text.secondary'} whiteSpace="pre-line">
-          Ingrese la información de la tarjeta para asociarla a su cuenta.
+          Ingrese la información faltante de la tarjeta para asociarla a su cuenta.
         </Typography>
       </Stack>
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <FormProvider formik={formik}>
-          <Stack spacing={2} p={3}>
-            <Stack>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Número de Tarjeta
+          <Stack spacing={3} px={3}>
+            <Box
+              sx={{
+                pb: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2
+              }}
+            >
+              <img className="animate__animated animate__pulse" src={creditCard} width="25%" alt="Sent Mail" />
+              <Typography variant={'overline'} color={'primary.main'}>
+                {card?.cardNumberHidden}
               </Typography>
-              <RFTextField
-                autoFocus
-                name={'cardNumber'}
-                required={true}
-                placeholder={'5254 2700 9717 8968'}
-                fullWidth
-                size={'small'}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <CreditCard />
-                    </InputAdornment>
-                  ),
-                  inputComponent: MaskedInput,
-                  inputProps: {
-                    mask: '0000 0000 0000 0000',
-                    value: values.cardNumber,
-                    onAccept: value => {
-                      setFieldValue('cardNumber', value)
-                    }
-                  }
-                }}
-                disabled={loading}
-              />
-            </Stack>
+            </Box>
 
             <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'}>
               <Stack sx={{ width: { xs: '100%', lg: '40%' } }}>
@@ -177,30 +154,30 @@ export default function FormCardRegister() {
             </Stack>
           </Stack>
         </FormProvider>
+        <Stack spacing={3} px={3} py={4}>
+          <LoadingButton
+            loading={loading}
+            variant="contained"
+            color="primary"
+            fullWidth
+            type="submit"
+            onClick={handleSubmit}
+            disabled={loading}
+            startIcon={<AddCard />}
+          >
+            Asociar
+          </LoadingButton>
+          <Button
+            variant={'outlined'}
+            color={'inherit'}
+            onClick={() => {
+              setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
+            }}
+          >
+            Cancelar
+          </Button>
+        </Stack>
       </Scrollbar>
-      <Stack spacing={3} p={3}>
-        <LoadingButton
-          loading={loading}
-          variant="contained"
-          color="primary"
-          fullWidth
-          type="submit"
-          onClick={handleSubmit}
-          disabled={loading}
-          startIcon={<AddCard />}
-        >
-          Asociar
-        </LoadingButton>
-        <Button
-          variant={'outlined'}
-          color={'inherit'}
-          onClick={() => {
-            setStep(CARD_ASSIGN_PROCESS_LIST.USER_REGISTER)
-          }}
-        >
-          Cancelar
-        </Button>
-      </Stack>
     </Stack>
   )
 }

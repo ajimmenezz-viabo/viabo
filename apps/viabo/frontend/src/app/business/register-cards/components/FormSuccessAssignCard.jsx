@@ -1,11 +1,12 @@
 import { Box, Button, Stack, Typography } from '@mui/material'
 import mail from '@/shared/assets/img/mail.svg'
-import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
+import { Link as RouterLink } from 'react-router-dom'
+import { PATH_AUTH } from '@/routes'
 
 export default function FormSuccessAssignCard() {
-  const setStep = useCardUserAssign(state => state.setStepAssignRegister)
   const user = useCardUserAssign(state => state.user)
+  const resetState = useCardUserAssign(state => state.resetState)
 
   return (
     <Stack sx={{ height: 1, p: 3 }} spacing={3}>
@@ -30,13 +31,15 @@ export default function FormSuccessAssignCard() {
       </Stack>
 
       <Button
+        component={RouterLink}
+        to={PATH_AUTH.login}
+        onClick={() => {
+          resetState()
+        }}
         variant={'outlined'}
         color={'primary'}
-        onClick={() => {
-          setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
-        }}
       >
-        Regresar
+        Ingresar
       </Button>
     </Stack>
   )

@@ -5,6 +5,7 @@ namespace Viabo\management\card\application\find;
 
 
 use Viabo\management\card\domain\CardOwnerId;
+use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
@@ -19,9 +20,9 @@ final readonly class EnabledCommerceCardsQueryHandler implements QueryHandler
     {
         $commerceId = new CardCommerceId($query->commerceId);
         $cardOwnerId = new CardOwnerId($query->userId);
+        $paymentProcessorId = CardPaymentProcessorId::create($query->paymentProcessorId);
 
-        return $this->finder->__invoke($commerceId, $cardOwnerId, $query->userProfileId);
+        return $this->finder->__invoke($commerceId , $cardOwnerId , $paymentProcessorId , $query->userProfileId);
     }
-
 
 }

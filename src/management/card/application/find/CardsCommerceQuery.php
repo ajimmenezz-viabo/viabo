@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CardsCommerceQuery implements Query
 {
-    public function __construct(public string $commerceId)
+    public function __construct(public string $commerceId , public ?string $paymentProcessorId)
     {
     }
 }

@@ -5,6 +5,7 @@ namespace Viabo\management\card\application\find;
 
 
 use Viabo\management\card\domain\Card;
+use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\criteria\Criteria;
@@ -16,10 +17,11 @@ final readonly class CardsCommerceFinder
     {
     }
 
-    public function __invoke(CommerceId $commerceId): CardsResponse
+    public function __invoke(CommerceId $commerceId, CardPaymentProcessorId $paymentProcessorId): CardsResponse
     {
         $filter = Filters::fromValues([
-            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()]
+            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()],
+            ['field' => 'paymentProcessorId.value' , 'operator' => '=' , 'value' => $paymentProcessorId->value()]
         ]);
 
         $cards = $this->repository->searchCriteria(new Criteria($filter));

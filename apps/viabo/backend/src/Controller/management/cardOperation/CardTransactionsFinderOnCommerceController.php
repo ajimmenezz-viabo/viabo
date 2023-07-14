@@ -19,8 +19,10 @@ final readonly class CardTransactionsFinderOnCommerceController extends ApiContr
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
+            $paymentProcessorId = $request->get('paymentProcessorId');
+
             $commerce = $this->ask(new CommerceQuery($tokenData['id']));
-            $cards = $this->ask(new CardsCommerceQuery($commerce->commerce['id']));
+            $cards = $this->ask(new CardsCommerceQuery($commerce->commerce['id'] , $paymentProcessorId));
             $balanceInTransaction = $this->ask(new BalanceInTransactionQuery($cards->data));
 
             return new JsonResponse($balanceInTransaction->total);

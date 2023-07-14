@@ -5,6 +5,7 @@ namespace Viabo\management\card\application\find;
 
 
 use Viabo\management\card\domain\CardOwnerId;
+use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardView;
 use Viabo\management\shared\domain\card\CardCommerceId;
@@ -18,21 +19,23 @@ final readonly class EnabledCommerceCardsFinder
     }
 
     public function __invoke(
-        CardCommerceId $commerceId ,
-        CardOwnerId    $ownerId ,
-        string         $userProfileId
+        CardCommerceId         $commerceId ,
+        CardOwnerId            $ownerId ,
+        CardPaymentProcessorId $paymentProcessorId ,
+        string                 $userProfileId
     ): CommerceCardsResponse
     {
         $enabledStatus = '5';
         $filters = [
-            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus],
-            ['field' => 'main' , 'operator' => '=' , 'value' => '0']
+            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus] ,
+            ['field' => 'main' , 'operator' => '=' , 'value' => '0'] ,
+            ['field' => 'paymentProcessorId' , 'operator' => '=' , 'value' => $paymentProcessorId->value()]
         ];
 
         $LegalRepresentativeProfile = '3';
         if ($userProfileId === $LegalRepresentativeProfile) {
             $filters[] = ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()];
-        }else{
+        } else {
             $filters[] = ['field' => 'ownerId' , 'operator' => '=' , 'value' => $ownerId->value()];
         }
 

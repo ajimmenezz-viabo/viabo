@@ -27,3 +27,8 @@ main-card-information-find:
   path: '/api/main-card/information'
   controller: Viabo\Backend\Controller\management\card\MainCardInformationFinderController
   methods: GET
+
+find-payment-processor-of-commerce:
+  path: '/api/payment-processors/of/commerce'
+  controller: Viabo\Backend\Controller\management\card\PaymentProcessorsCommerceFinderController
+  methods: GET

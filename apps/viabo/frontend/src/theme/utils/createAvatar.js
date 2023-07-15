@@ -8,7 +8,7 @@ function getFirstCharacter(name) {
   return name && name.charAt(0).toUpperCase()
 }
 
-function getAvatarColor(name) {
+export function getAvatarColor(name) {
   if (PRIMARY_NAME.includes(getFirstCharacter(name))) return 'primary'
   if (INFO_NAME.includes(getFirstCharacter(name))) return 'info'
   if (SUCCESS_NAME.includes(getFirstCharacter(name))) return 'success'

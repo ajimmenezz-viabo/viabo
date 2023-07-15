@@ -41,6 +41,7 @@ final class CardView
     {
         return [
             'id' => $this->id ,
+            'main' => $this->main ,
             'number' => $this->number ,
             'CVV' => $this->cvv() ,
             'expirationDate' => $this->expirationDate ,

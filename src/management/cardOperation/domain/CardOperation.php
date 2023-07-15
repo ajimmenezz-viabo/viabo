@@ -36,14 +36,15 @@ final class CardOperation extends AggregateRoot
     }
 
     public static function create(
-        CardOperationOrigin       $originCard ,
-        CardOperationOriginMain   $originCardMain ,
-        CardOperationDestination  $destinationCard ,
-        CardOperationBalance      $balance ,
-        CardOperationConcept      $concept ,
-        CardOperationPayEmail     $payEmail ,
-        CardOperationReverseEmail $reverseEmail ,
-        CardCredentialClientKey   $clientKey
+        CardOperationOrigin         $originCard ,
+        CardOperationOriginMain     $originCardMain ,
+        CardOperationDestination    $destinationCard ,
+        CardOperationBalance        $balance ,
+        CardOperationConcept        $concept ,
+        CardOperationPayEmail       $payEmail ,
+        CardOperationReverseEmail   $reverseEmail ,
+        CardCredentialClientKey     $clientKey ,
+        CardOperationDescriptionPay $descriptionPay
     ): static
     {
         return new static(
@@ -54,7 +55,7 @@ final class CardOperation extends AggregateRoot
             $destinationCard ,
             new CardOperationPayTransactionId('') ,
             new CardOperationReverseTransactionId('') ,
-            CardOperationDescriptionPay::create($destinationCard->last8Digits()) ,
+            $descriptionPay ,
             new CardOperationDescriptionReverse('') ,
             $balance ,
             $concept ,
@@ -98,9 +99,9 @@ final class CardOperation extends AggregateRoot
         return $this->descriptionReverse;
     }
 
-    public function setDescriptionReverse(): void
+    public function setDescriptionReverse(string $mainCard): void
     {
-        $this->descriptionReverse = $this->descriptionReverse->update($this->originCard->last8Digits());
+        $this->descriptionReverse = $this->descriptionReverse->update($this->originCard->last8Digits() , $mainCard);
     }
 
     public function updatePayData(array $payData): void

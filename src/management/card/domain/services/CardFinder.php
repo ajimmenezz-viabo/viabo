@@ -8,6 +8,7 @@ use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\exceptions\CardNotExist;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\shared\domain\criteria\Criteria;
 
 final readonly class CardFinder
 {
@@ -24,5 +25,16 @@ final readonly class CardFinder
         }
 
         return $card;
+    }
+
+    public function searchCriteria(Criteria $criteria): Card
+    {
+        $card = $this->repository->searchCriteria($criteria);
+
+        if(empty($card)){
+            throw new CardNotExist();
+        }
+
+        return $card[0];
     }
 }

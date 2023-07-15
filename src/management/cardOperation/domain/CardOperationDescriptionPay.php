@@ -8,8 +8,14 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardOperationDescriptionPay extends StringValueObject
 {
-    public static function create(string $cardNumber): static
+    public static function create(string $cardNumber , string $mainCard): static
     {
-        return new static("Trasferencia a tarjeta $cardNumber");
+        $message = self::setMessage($cardNumber , $mainCard);
+        return new static($message);
+    }
+
+    private static function setMessage(string $cardNumber , string $mainCard): string
+    {
+        return empty($mainCard) ? "Trasferencia a tarjeta $cardNumber" : "Trasferencia a cuenta global";
     }
 }

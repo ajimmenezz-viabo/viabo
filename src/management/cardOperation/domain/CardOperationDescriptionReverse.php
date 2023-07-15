@@ -8,8 +8,14 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardOperationDescriptionReverse extends StringValueObject
 {
-    public function update(string $cardNumber): static
+    public function update(string $cardNumber , string $mainCard): static
     {
-        return new static("Trasferencia desde la tarjeta $cardNumber");
+        $message = self::setMessage($cardNumber , $mainCard);
+        return new static($message);
+    }
+
+    private static function setMessage(string $cardNumber , string $mainCard): string
+    {
+        return empty($mainCard) ? "Trasferencia desde la tarjeta $cardNumber" : "Trasferencia desde la cuenta global";
     }
 }

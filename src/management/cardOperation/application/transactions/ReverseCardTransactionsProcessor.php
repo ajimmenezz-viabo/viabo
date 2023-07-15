@@ -4,11 +4,13 @@
 namespace Viabo\management\cardOperation\application\transactions;
 
 
+use Viabo\management\card\application\find\CardDataQuery;
 use Viabo\management\cardOperation\domain\CardOperation;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
 use Viabo\management\cardOperation\domain\CardOperations;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 use Viabo\shared\domain\bus\event\EventBus;
+use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
@@ -17,7 +19,8 @@ final readonly class ReverseCardTransactionsProcessor
     public function __construct(
         private CardOperationRepository $repository ,
         private PaymentProcessorAdapter $adapter ,
-        private EventBus                $bus
+        private EventBus                $bus ,
+        private QueryBus                $queryBus
     )
     {
     }
@@ -25,7 +28,7 @@ final readonly class ReverseCardTransactionsProcessor
     public function __invoke(): void
     {
         $operations = $this->searchCardOperations();
-        $operations->setDescriptionReverse();
+        $this->setDescriptionReverse($operations);
         $this->adapter->transactionReverse($operations);
         $this->repository->update($operations);
 
@@ -40,6 +43,15 @@ final readonly class ReverseCardTransactionsProcessor
 
         $operations = $this->repository->searchCriteria(new Criteria($filters));
         return new CardOperations($operations);
+    }
+
+    private function setDescriptionReverse(CardOperations $operations): void
+    {
+        array_map(function (CardOperation $operation) {
+            $card = $this->queryBus->ask(new CardDataQuery($operation->originCard()->value()));
+            $operation->setDescriptionReverse($card->cardData['main']);
+        } , $operations->getIterator()->getArrayCopy());
+
     }
 
     private function publish(CardOperations $operations): void

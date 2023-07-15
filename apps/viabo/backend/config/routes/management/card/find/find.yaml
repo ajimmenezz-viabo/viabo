@@ -23,7 +23,7 @@ find-card-demo-information:
   controller: Viabo\Backend\Controller\management\card\CardDemoInformationFinderController
   methods: GET
 
-main-card-information-find:
+find-main-card-information:
   path: '/api/main-card/information'
   controller: Viabo\Backend\Controller\management\card\MainCardInformationFinderController
   methods: GET

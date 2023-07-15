@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\CommerceQuery;
 use Viabo\management\card\application\find\MainCardIdQuery;
 use Viabo\management\card\application\find\MainCardInformationQuery;
-use Viabo\management\cardOperation\application\find\BalanceInTransactionQuery;
 use Viabo\management\credential\application\find\CardCredentialQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -21,9 +20,10 @@ final readonly class MainCardInformationFinderController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
+            $paymentProcessorId = $request->get('paymentProcessorId');
 
             $data = $this->ask(new CommerceQuery($tokenData['id']));
-            $cardData = $this->ask(new MainCardIdQuery($data->commerce['id']));
+            $cardData = $this->ask(new MainCardIdQuery($data->commerce['id'], $paymentProcessorId));
             $data = $this->ask(new CardCredentialQuery($cardData->data['cardId']));
             $data = $this->ask(new MainCardInformationQuery($cardData->data['cardId'] , $data->credentialData));
 

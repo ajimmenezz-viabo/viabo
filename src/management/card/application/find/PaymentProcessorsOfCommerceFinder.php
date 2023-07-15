@@ -28,7 +28,7 @@ final readonly class PaymentProcessorsOfCommerceFinder
 
         return new CommerceCardsResponse(array_map(function (CardView $card) {
             $data = $card->toArray();
-            return $data['paymentProcessorId'];
+            return ['id' => $data['paymentProcessorId'] , 'name' => $data['paymentProcessorName']];
         } , $cards));
     }
 }

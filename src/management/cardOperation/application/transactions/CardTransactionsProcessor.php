@@ -9,6 +9,7 @@ use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\cardOperation\domain\CardOperation;
 use Viabo\management\cardOperation\domain\CardOperationBalance;
 use Viabo\management\cardOperation\domain\CardOperationConcept;
+use Viabo\management\cardOperation\domain\CardOperationDescriptionPay;
 use Viabo\management\cardOperation\domain\CardOperationDestination;
 use Viabo\management\cardOperation\domain\CardOperationPayEmail;
 use Viabo\management\cardOperation\domain\CardOperationOrigin;
@@ -74,12 +75,6 @@ final readonly class CardTransactionsProcessor
         return array_merge($card->cardData , $cardInformation->cardData);
     }
 
-    private function ownerEmail($ownerId): string
-    {
-        $user = $this->queryBus->ask(new FindUserQuery($ownerId , ''));
-        return $user->userData['email'];
-    }
-
     private function destinationCardsData(array $destinationCards): array
     {
         $destinationCardsData = [];
@@ -91,6 +86,12 @@ final readonly class CardTransactionsProcessor
             $destinationCardsData[] = array_merge($cardData , $destinationCard);
         }
         return $destinationCardsData;
+    }
+
+    private function ownerEmail($ownerId): string
+    {
+        $user = $this->queryBus->ask(new FindUserQuery($ownerId , ''));
+        return $user->userData['email'];
     }
 
     private function ensureHasSameCommerce(array $originCardData , array $destinationCardsData): void
@@ -132,15 +133,17 @@ final readonly class CardTransactionsProcessor
     {
         $operations = [];
         foreach ($destinationCardsData as $destinationCardData) {
+            $destinationCard = new CardOperationDestination($destinationCardData['number']);
             $operations[] = CardOperation::create(
                 new CardOperationOrigin($originCardNumber) ,
                 new CardOperationOriginMain($originCardMain) ,
-                new CardOperationDestination($destinationCardData['number']) ,
+                $destinationCard ,
                 new CardOperationBalance($destinationCardData['amount']) ,
                 new CardOperationConcept($destinationCardData['concept']) ,
                 $payEmail ,
                 new CardOperationReverseEmail($destinationCardData['ownerEmail']) ,
-                $clientKey
+                $clientKey,
+                CardOperationDescriptionPay::create($destinationCard->last8Digits(), $destinationCardData['main'])
             );
         }
 

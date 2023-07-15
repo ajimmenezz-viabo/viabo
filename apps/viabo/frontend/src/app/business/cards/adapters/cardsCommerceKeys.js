@@ -3,7 +3,8 @@ export const CARDS_COMMERCES_KEYS = {
   CARD_INFO: 'cardInfo',
   CARD_MOVEMENTS: 'cardMovements',
   MAIN_CARD: 'mainCard',
-  TRANSIT_BALANCE: 'transitBalance'
+  TRANSIT_BALANCE: 'transitBalance',
+  PAYMENT_PROCESSORS: 'paymentProcessors'
 }
 
 export const ACTIONS_PERMISSIONS = {

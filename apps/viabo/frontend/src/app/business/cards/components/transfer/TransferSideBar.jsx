@@ -16,12 +16,16 @@ export default function TransferSideBar({ open, setOpen, isBinCard }) {
   const insufficient = useMemo(() => Boolean(currentBalance < 0), [currentBalance])
 
   useEffect(() => {
-    setCurrentBalance(card?.balance)
-  }, [card?.balance])
+    if (!isBinCard) {
+      setCurrentBalance(card?.balance)
+    }
+  }, [card?.balance, isBinCard])
 
   useEffect(() => {
-    setCurrentBalance(mainCard?.balance)
-  }, [mainCard?.balance])
+    if (isBinCard) {
+      setCurrentBalance(mainCard?.balance)
+    }
+  }, [mainCard?.balance, isBinCard])
 
   const filterCards = useMemo(
     () => cardList?.filter(commerceCard => commerceCard.id !== card?.id),

@@ -2,15 +2,15 @@ import { Card, CardHeader, IconButton, MenuItem, Stack, Tooltip, Typography } fr
 import { CircularLoading } from '@/shared/components/loadings'
 import { useFindMainCard } from '@/app/business/cards/hooks/useFindMainCard'
 import { LoadingButton } from '@mui/lab'
-import { ACTIONS_PERMISSIONS, CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
-import { useGetQueryState, useUser } from '@/shared/hooks'
+import { ACTIONS_PERMISSIONS } from '@/app/business/cards/adapters'
+import { useUser } from '@/shared/hooks'
 import { Dangerous, MoreVertTwoTone, Payment, Update } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MenuPopover } from '@/shared/components/containers'
 import { useFindTransitBalanceCommerce } from '@/app/business/cards/hooks'
 
-export function MainCard() {
+export function MainCard({ openSidebar }) {
   const user = useUser()
   const userActions = user?.modules?.userActions ?? []
 
@@ -18,23 +18,38 @@ export function MainCard() {
     return null
   }
 
-  const state = useGetQueryState([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST])
+  const cardTypeSelected = useCommerceDetailsCard(state => state.cardTypeSelected)
 
   const {
     data: transit,
-    isLoading: isLoadingTransit,
     isError: isErrorTransit,
-    error: errorTransit,
     refetch: refetchTransit,
     isSuccess: isSuccessTransit,
-    isRefetching: isRefetchingTransit
-  } = useFindTransitBalanceCommerce()
-
-  const { data, isLoading, isError, error, refetch, isSuccess, isRefetching } = useFindMainCard({
-    enabled: Boolean(state?.status === 'success')
+    isFetching: isRefetchingTransit
+  } = useFindTransitBalanceCommerce(cardTypeSelected, {
+    enabled: false
   })
 
-  const color = 'primary'
+  const {
+    data,
+    isError,
+    refetch,
+    isSuccess,
+    isFetching: isRefetching
+  } = useFindMainCard(cardTypeSelected, {
+    enabled: false
+  })
+
+  useEffect(() => {
+    if (cardTypeSelected) {
+      refetchTransit()
+      refetch()
+    }
+  }, [cardTypeSelected])
+
+  if (!openSidebar) {
+    return null
+  }
 
   return (
     <Stack spacing={2} m={{ xs: 2, md: 0 }}>
@@ -46,7 +61,7 @@ export function MainCard() {
         />
 
         <Stack alignItems={'center'} mb={1}>
-          {isLoading && (
+          {isRefetching && (
             <CircularLoading
               size={25}
               containerProps={{
@@ -56,7 +71,7 @@ export function MainCard() {
               }}
             />
           )}
-          {isError && !isLoading && (
+          {isError && !isRefetching && (
             <LoadingButton
               loading={isRefetching}
               variant={'contained'}
@@ -71,7 +86,7 @@ export function MainCard() {
               Recargar
             </LoadingButton>
           )}
-          {isSuccess && !isLoading && (
+          {isSuccess && !isRefetching && (
             <Stack direction={'row'} spacing={1} alignItems={'center'}>
               <Typography variant="h3">{data?.balanceFormatted}</Typography>
               <Typography variant="caption">MXN</Typography>
@@ -83,7 +98,7 @@ export function MainCard() {
 
             <Stack alignItems={'center'}>
               <Typography variant={'subtitle2'}>En transito</Typography>
-              {isLoadingTransit && (
+              {isRefetchingTransit && (
                 <CircularLoading
                   size={15}
                   containerProps={{
@@ -91,7 +106,7 @@ export function MainCard() {
                   }}
                 />
               )}
-              {isErrorTransit && !isLoadingTransit && (
+              {isErrorTransit && !isRefetchingTransit && (
                 <LoadingButton
                   loading={isRefetchingTransit}
                   color="error"
@@ -106,7 +121,7 @@ export function MainCard() {
                   Recargar
                 </LoadingButton>
               )}
-              {isSuccessTransit && !isLoadingTransit && (
+              {isSuccessTransit && !isRefetchingTransit && (
                 <Stack direction={'row'} spacing={1} alignItems={'center'}>
                   <Typography variant="body1">{transit?.inTransitFormatted}</Typography>
                   <Typography variant="caption">MXN</Typography>

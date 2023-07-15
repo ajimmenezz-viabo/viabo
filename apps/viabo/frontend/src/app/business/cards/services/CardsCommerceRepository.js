@@ -1,9 +1,18 @@
 import { axios } from '@/shared/interceptors'
 import { CardAdapter, CardMainAdapter, CardMovementsAdapter, CardsAdapter } from '@/app/shared/adapters'
-import { CommerceTransitBalanceAdapter, CreateFundingOrderResponseAdapter } from '@/app/business/cards/adapters'
+import {
+  CommerceCardTypesAdapter,
+  CommerceTransitBalanceAdapter,
+  CreateFundingOrderResponseAdapter
+} from '@/app/business/cards/adapters'
 
-export const getEnabledCommerceCards = async () => {
-  const { data } = await axios.get('/api/enabled-cards/commerce')
+export const getCommerceCardTypes = async () => {
+  const { data } = await axios.get('/api/payment-processors/of/commerce')
+  return CommerceCardTypesAdapter(data)
+}
+
+export const getEnabledCommerceCards = async cardTypeId => {
+  const { data } = await axios.get(`/api/enabled-cards/commerce?paymentProcessorId=${cardTypeId}`)
   return CardsAdapter(data)
 }
 
@@ -30,13 +39,13 @@ export const getCardMovements = async (cardId, initialDate, finalDate, signal) =
   return CardMovementsAdapter(data)
 }
 
-export const getMainCardCommerce = async ({ signal }) => {
-  const { data } = await axios.get('/api/main-card/information', { signal })
+export const getMainCardCommerce = async (cardTypeId, signal) => {
+  const { data } = await axios.get(`/api/main-card/information?paymentProcessorId=${cardTypeId}`, { signal })
   return CardMainAdapter(data)
 }
 
-export const getTransitBalance = async () => {
-  const { data } = await axios.get(`/api/card-transactions/commerce`)
+export const getTransitBalance = async cardTypeId => {
+  const { data } = await axios.get(`/api/card-transactions/commerce?paymentProcessorId=${cardTypeId}`)
   return CommerceTransitBalanceAdapter(data)
 }
 

@@ -44,7 +44,7 @@ export default function CardsSidebarList({ cards, isOpenSidebar, isLoading, sx, 
             onOpenDetails={onOpenDetails}
           />
         ) : (
-          <SkeletonCardItem key={index} />
+          <SkeletonCardItem isOpenSideBar={isOpenSidebar} key={index} />
         )
       )}
     </List>

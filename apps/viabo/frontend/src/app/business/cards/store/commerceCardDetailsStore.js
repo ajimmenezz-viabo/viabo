@@ -1,13 +1,17 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-const commerceCardDetailsStore = (set, get) => ({
+const initialState = {
   card: null,
   isMainCardSelected: false,
+  cardTypeSelected: null,
   mainCard: null,
   selectedCards: [],
   openFundingOrder: false,
-  fundingCard: null,
+  fundingCard: null
+}
+const commerceCardDetailsStore = (set, get) => ({
+  ...initialState,
   setCard: cardSelected => {
     const { card } = get()
 
@@ -84,6 +88,15 @@ const commerceCardDetailsStore = (set, get) => ({
       }),
       false,
       'RESET_FUNDING_ORDER'
+    )
+  },
+  setCardTypeSelected: cardTypeId => {
+    set(
+      state => ({
+        cardTypeSelected: cardTypeId
+      }),
+      false,
+      'SET_CARD_TYPE_SELECTED'
     )
   }
 })

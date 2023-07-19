@@ -2,16 +2,16 @@ import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material'
 import { DataTable } from '@/shared/components/dataTables'
 import { AccountBalance, NorthEast, SouthWest } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { CustomToolBarTransactions } from '@/app/business/cards/components/viaboCardDetails/CustomToolBarTransactions'
+import { CustomToolBarTransactions } from '@/app/business/cards/components/details/CustomToolBarTransactions'
 import { lazy, useEffect, useState } from 'react'
 import { Lodable } from '@/shared/components/lodables'
-import { CardFilterMovements } from '@/app/business/cards/components/viaboCardDetails/CardFilterMovements'
+import { CardFilterMovements } from '@/app/business/cards/components/details/CardFilterMovements'
 import { useFindCardMovements } from '@/app/business/cards/hooks/useFindCardMovements'
 import { getMonth } from 'date-fns'
 import { monthOptions } from '@/shared/utils'
 
 const TransactionReport = Lodable(
-  lazy(() => import('@/app/business/cards/components/viaboCardDetails/incidence/TransactionReport'))
+  lazy(() => import('@/app/business/cards/components/details/incidence/TransactionReport'))
 )
 
 export function CardMovements() {

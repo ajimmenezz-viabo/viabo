@@ -6,7 +6,3 @@ export const CARDS_COMMERCES_KEYS = {
   TRANSIT_BALANCE: 'transitBalance',
   PAYMENT_PROCESSORS: 'paymentProcessors'
 }
-
-export const ACTIONS_PERMISSIONS = {
-  COMMERCE_CARDS: 'MP-CARDS'
-}

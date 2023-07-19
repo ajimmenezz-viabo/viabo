@@ -100,7 +100,7 @@ function AuthProvider({ children }) {
           isAuthenticated: true,
           user: {
             ...state.user,
-            modules: userModules
+            ...userModules
           }
         }
       })
@@ -132,7 +132,7 @@ function AuthProvider({ children }) {
                 profile: decoded?.profile,
                 email: decoded?.email,
                 urlInit: decoded?.urlInit ?? '',
-                modules: userModules
+                ...userModules
               }
             }
           })

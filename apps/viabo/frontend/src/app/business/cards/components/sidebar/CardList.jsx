@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import { List } from '@mui/material'
-import SkeletonCardItem from '@/app/business/cards/components/cardsSidebar/SkeletonCardItem'
-import CardItem from '@/app/business/cards/components/cardsSidebar/CardItem'
+import SkeletonCardItem from '@/app/business/cards/components/sidebar/SkeletonCardItem'
+import CardItem from '@/app/business/cards/components/sidebar/CardItem'
 import { useTable } from '@/shared/hooks'
 import { useEffect } from 'react'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { shallow } from 'zustand/shallow'
 
-CardsSidebarList.propTypes = {
+CardList.propTypes = {
   cards: PropTypes.array,
   isOpenSidebar: PropTypes.bool,
   onOpenDetails: PropTypes.func,
@@ -15,7 +15,7 @@ CardsSidebarList.propTypes = {
   sx: PropTypes.object
 }
 
-export default function CardsSidebarList({ cards, isOpenSidebar, isLoading, sx, onOpenDetails, ...other }) {
+export function CardList({ cards, isOpenSidebar, isLoading, sx, onOpenDetails, ...other }) {
   const setSelectedCards = useCommerceDetailsCard(state => state.setSelectedCards)
   const selectedCards = useCommerceDetailsCard(state => state.selectedCards, shallow)
 

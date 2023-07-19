@@ -2,7 +2,6 @@ import { Card, CardHeader, IconButton, MenuItem, Stack, Tooltip, Typography } fr
 import { CircularLoading } from '@/shared/components/loadings'
 import { useFindMainCard } from '@/app/business/cards/hooks/useFindMainCard'
 import { LoadingButton } from '@mui/lab'
-import { ACTIONS_PERMISSIONS } from '@/app/business/cards/adapters'
 import { useUser } from '@/shared/hooks'
 import { Dangerous, MoreVertTwoTone, Payment, Update } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
@@ -10,12 +9,15 @@ import { useEffect, useState } from 'react'
 import { MenuPopover } from '@/shared/components/containers'
 import { useFindTransitBalanceCommerce } from '@/app/business/cards/hooks'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
+import { useNavigate } from 'react-router-dom'
+import { BUSINESS_PATHS, BUSINESS_PERMISSIONS } from '@/app/business/shared/routes'
 
 export function MainCard({ openSidebar }) {
   const user = useUser()
-  const userActions = user?.modules?.userActions ?? []
+  const userActions = user?.permissions ?? []
+  const navigate = useNavigate()
 
-  if (!userActions.includes(ACTIONS_PERMISSIONS.COMMERCE_CARDS)) {
+  if (!userActions.includes(BUSINESS_PERMISSIONS.COMMERCE_CARDS)) {
     return null
   }
 
@@ -54,7 +56,7 @@ export function MainCard({ openSidebar }) {
 
   return (
     <Stack spacing={2} m={{ xs: 2, md: 0 }}>
-      <Card sx={{ p: 2 }}>
+      <Card sx={{ p: 2 }} onClick={() => navigate(BUSINESS_PATHS.globalCard)}>
         <CardHeader
           action={isSuccess && <MainCardDetails mainCard={data} />}
           title={

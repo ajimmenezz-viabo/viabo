@@ -3,7 +3,7 @@ import { Box, Button, Card, Collapse, IconButton, Stack, Typography } from '@mui
 import { Check, CopyAll, Mail, Receipt, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
-import { ModalSharedCharge } from '@/app/business/cards/components/viaboCardDetails/ModalSharedCharge'
+import { ModalSharedCharge } from '@/app/business/cards/components/details/ModalSharedCharge'
 import { copyToClipboard } from '@/shared/utils'
 
 export function CardCharge() {

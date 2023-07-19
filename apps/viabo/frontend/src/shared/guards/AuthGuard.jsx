@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth, useGetQueryData } from '@/shared/hooks'
-import { PATH_AUTH } from '@/routes'
+import { useAuth, useGetQueryData, useValidateUserPermissions } from '@/shared/hooks'
+import { AUTH_PERMISSION_PATHS, PATH_AUTH } from '@/routes'
 import { LoadingLogo } from '@/shared/components/loadings'
 import { useEffect, useMemo } from 'react'
 import { useSettings } from '@theme/hooks'
@@ -18,14 +18,16 @@ export function AuthGuard({ children }) {
 
   const modules = useGetQueryData([AUTHENTICATION_KEYS.USER_MODULES])
 
+  const isInPermissions = useValidateUserPermissions(modules?.permissions ?? [], AUTH_PERMISSION_PATHS)
+
   const canAccessModule = useMemo(
     () =>
       Boolean(
         modules?.menu
           ?.flatMap(category => category.modules)
           .find(module => module.path.toLowerCase() === pathname?.toLowerCase())
-      ),
-    [pathname, modules]
+      ) || isInPermissions,
+    [pathname, modules, isInPermissions]
   )
 
   localStorage.setItem('lastPath', pathname)

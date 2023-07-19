@@ -6,11 +6,11 @@ export function useUser() {
   const auth = useAuth()
   const user = auth?.user
   const modules = useGetQueryData([AUTHENTICATION_KEYS.USER_MODULES]) ?? []
-  const userActions = modules?.userActions !== '' ? modules?.userActions?.split(',') : []
   return user
     ? {
         ...user,
-        modules: { ...modules, userActions }
+        menu: modules?.menu,
+        permissions: modules?.permissions || []
       }
     : null
 }

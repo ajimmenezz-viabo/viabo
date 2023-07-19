@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles'
 import { Box, ClickAwayListener, Drawer, IconButton, InputAdornment, Stack } from '@mui/material'
-
 import { Scrollbar } from '@/shared/components/scroll'
 import { useResponsive } from '@theme/hooks'
 import { CreditCard, Search } from '@mui/icons-material'
-import CardsSidebarList from '@/app/business/cards/components/cardsSidebar/CardsSidebarList'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { InputStyle } from '@/shared/components/form'
 import { useFindCommerceCards } from '@/app/business/cards/hooks'
 import { ErrorRequestPage, SearchNotFound } from '@/shared/components/notifications'
 import EmptyList from '@/shared/components/notifications/EmptyList'
-import { MainCard } from '@/app/business/cards/components/MainCard'
+import { MainCard } from '@/app/business/cards/components/global-card'
 import { useFindCommerceCardTypes } from '@/app/business/cards/hooks/useFindCommerceCardTypes'
-import { CommerceCardTypes } from '@/app/business/cards/components/CommerceCardTypes'
+import { CardList, CommerceCardTypes } from '@/app/business/cards/components/sidebar'
 
 const ToggleButtonStyle = styled(props => <IconButton disableRipple {...props} />)(({ theme }) => ({
   left: 0,
@@ -240,7 +238,7 @@ export function CardsSidebar() {
               <EmptyList pt={2.5} message={'No hay tarjetas activas en este tipo de tarjeta'} />
             )}
 
-            <CardsSidebarList
+            <CardList
               isOpenSidebar={openSidebar}
               cards={searchResults || []}
               isLoading={loadingCommerces}

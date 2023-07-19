@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Alert, Grid, Stack } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
 import { SelectDataIllustration } from '@/shared/components/illustrations'
@@ -8,16 +9,15 @@ import {
   CardBalance,
   CardCharge,
   CardMovements
-} from '@/app/business/cards/components/viaboCardDetails'
+} from '@/app/business/cards/components/details'
 import { useFindCardDetails } from '@/app/business/cards/hooks'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { ErrorRequestPage } from '@/shared/components/notifications'
 import { useCollapseDrawer } from '@theme/hooks'
-import { useEffect } from 'react'
-import { CardDetailsHeader } from '@/app/business/cards/components/viaboCardDetails/header'
-import { MainCardDetailsHeader } from '@/app/business/cards/components/MainCardDetailsHeader'
+import { CardDetailsHeader } from '@/app/business/cards/components/details/header'
+import { MainCardDetailsHeader } from '@/app/business/cards/components/global-card'
 
-export function CommerceViaboCardDetails() {
+export function CardDetails() {
   const card = useCommerceDetailsCard(state => state.card)
   const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)

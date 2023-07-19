@@ -16,7 +16,7 @@ import { memo } from 'react'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 import { useUser } from '@/shared/hooks'
-import { ACTIONS_PERMISSIONS } from '@/app/business/cards/adapters'
+import { BUSINESS_PERMISSIONS } from '@/app/business/shared/routes'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
   padding: theme.spacing(1.5, 3),
@@ -41,7 +41,7 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
   const setIsMainCard = useCommerceDetailsCard(state => state.setSelectedMainCard)
   const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
   const user = useUser()
-  const userActions = user?.modules?.userActions ?? []
+  const userActions = user?.permissions ?? []
 
   const status =
     id === commerceCard?.id && commerceCard ? (commerceCard?.cardON === true ? 'online' : 'offline') : 'invisible'
@@ -75,7 +75,7 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
         }}
         secondaryAction={
           isOpenSidebar &&
-          userActions.includes(ACTIONS_PERMISSIONS.COMMERCE_CARDS) && (
+          userActions.includes(BUSINESS_PERMISSIONS.COMMERCE_CARDS) && (
             <Checkbox edge="start" checked={selected} onClick={onSelectRow} inputProps={{ 'aria-labelledby': id }} />
           )
         }

@@ -9,7 +9,7 @@ import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { Lodable } from '@/shared/components/lodables'
 
 const TransferSideBar = Lodable(lazy(() => import('@/app/business/cards/components/transfer/TransferSideBar')))
-const PaymentSidebar = Lodable(lazy(() => import('@/app/business/cards/components/sendPayment/PaymentSidebar')))
+const PaymentSidebar = Lodable(lazy(() => import('@/app/business/cards/components/send-payment/PaymentSidebar')))
 
 export function CardActions() {
   const [openTransfer, setOpenTransfer] = useState(false)

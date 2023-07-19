@@ -1,0 +1,1 @@
+import{aW as o,a8 as u,aX as l,r as g,aY as h}from"./build-34d4d483.js";function C(a,r,n){const[t,c={}]=o(a,r,n),e=u({context:c.context}),s=e.getQueryCache();return l(g.useCallback(i=>s.subscribe(h.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{C as u};

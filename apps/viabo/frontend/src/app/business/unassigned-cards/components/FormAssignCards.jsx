@@ -106,7 +106,7 @@ export function FormAssignCards({ cards, onSuccess }) {
               type="submit"
               startIcon={<AddCard />}
             >
-              Asignar
+              Asociar
             </LoadingButton>
           </Stack>
         </Stack>

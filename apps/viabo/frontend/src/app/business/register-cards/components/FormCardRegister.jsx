@@ -1,4 +1,4 @@
-import { Box, Button, InputAdornment, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, InputAdornment, Stack, Typography } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { AddCard, VpnKey } from '@mui/icons-material'
@@ -65,7 +65,7 @@ export default function FormCardRegister() {
         mb: 3
       }}
     >
-      <Stack direction="column" width={1} spacing={1} pb={2}>
+      <Stack direction="column" width={1} spacing={1} pb={2} px={3}>
         <Typography variant="h4" color="textPrimary" align="center">
           Registrar Tarjeta
         </Typography>
@@ -75,7 +75,7 @@ export default function FormCardRegister() {
       </Stack>
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <FormProvider formik={formik}>
-          <Stack spacing={3} px={3}>
+          <Stack px={3}>
             <Box
               sx={{
                 pb: 1,
@@ -86,11 +86,25 @@ export default function FormCardRegister() {
                 gap: 2
               }}
             >
-              <img className="animate__animated animate__pulse" src={creditCard} width="25%" alt="Sent Mail" />
+              <img className="animate__animated animate__pulse" src={creditCard} width="20%" alt="Sent Mail" />
               <Typography variant={'overline'} color={'primary.main'}>
                 {card?.cardNumberHidden}
               </Typography>
             </Box>
+            <Alert
+              sx={{
+                textAlign: 'center',
+                width: '100%',
+                justifyContent: 'center',
+                display: 'flex',
+                mb: 2
+              }}
+              severity="warning"
+            >
+              <Typography variant="caption" fontWeight={'bold'}>
+                En caso de no capturar los datos correctos de la tarjeta, la información de la misma podrá ser erronea.
+              </Typography>
+            </Alert>
 
             <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'}>
               <Stack sx={{ width: { xs: '100%', lg: '40%' } }}>

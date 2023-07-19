@@ -17,13 +17,7 @@ export function RFSelect({ options, label, name, textFieldParams = {}, ...props 
       getOptionDisabled={option => option?.isDisabled}
       isOptionEqualToValue={(option, current) => option?.value === current?.value}
       renderInput={params => (
-        <TextField
-          {...params}
-          label={label}
-          error={Boolean(meta.touched && meta.error)}
-          helperText={meta.touched && meta.error}
-          {...textFieldParams}
-        />
+        <TextField {...params} label={label} error={Boolean(meta.error)} helperText={meta.error} {...textFieldParams} />
       )}
       {...props}
     />

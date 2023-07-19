@@ -9,10 +9,11 @@ RightPanel.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
   title: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  titleElement: PropTypes.node
 }
 
-export function RightPanel({ open = false, handleClose, title, children }) {
+export function RightPanel({ open = false, handleClose, title, children, titleElement }) {
   const { varSidebar } = useRightPanel(open)
 
   return (
@@ -24,7 +25,8 @@ export function RightPanel({ open = false, handleClose, title, children }) {
           <>
             <SideBarStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
-                <Typography variant="h6">{title}</Typography>
+                {titleElement || <Typography variant="h6">{title}</Typography>}
+
                 <div>
                   <IconButton aria-label="close" size="medium" onClick={handleClose}>
                     <Close width={20} height={20} fontSize="inherit" color="primary" />

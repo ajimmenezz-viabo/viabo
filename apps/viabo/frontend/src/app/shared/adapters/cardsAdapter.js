@@ -1,4 +1,10 @@
-import { convertCatalogToReactSelect, fCardNumberHidden, fDateTime, getDecryptInfo } from '@/shared/utils'
+import {
+  convertCatalogToReactSelect,
+  fCardNumberHidden,
+  fCardNumberShowLastDigits,
+  fDateTime,
+  getDecryptInfo
+} from '@/shared/utils'
 import { format } from 'date-fns'
 
 export const CardsAdapter = cards => {
@@ -53,6 +59,7 @@ export const CardsAdapter = cards => {
           },
           cardNumber: number,
           cardNumberHidden: fCardNumberHidden(number),
+          cardNumberMoreDigits: fCardNumberShowLastDigits(number),
           cardUserNumber: assignName?.toUpperCase() + ' ' + lastFourDigits,
           expiration: expirationDate,
           register: fDateTime(register),

@@ -31,4 +31,22 @@ function fCardNumberHidden(card) {
   return formattedCard
 }
 
-export { fCurrency, fPercent, fNumber, fShortenNumber, fData, fCardNumber, fCardNumberHidden }
+function fCardNumberShowLastDigits(card) {
+  const cardNumber = card.toString()
+  const visibleDigits = cardNumber.slice(-8).replace(/\d{4}(?=\d)/g, '$& ')
+  const hiddenDigits = cardNumber.slice(0, -8).replace(/\d/g, '*')
+
+  const formattedHiddenDigits = hiddenDigits.replace(/(\*{4})/g, '$1 ')
+  return formattedHiddenDigits + visibleDigits
+}
+
+export {
+  fCurrency,
+  fPercent,
+  fNumber,
+  fShortenNumber,
+  fData,
+  fCardNumber,
+  fCardNumberHidden,
+  fCardNumberShowLastDigits
+}

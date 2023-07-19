@@ -9,6 +9,7 @@ import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useEffect, useState } from 'react'
 import { MenuPopover } from '@/shared/components/containers'
 import { useFindTransitBalanceCommerce } from '@/app/business/cards/hooks'
+import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 
 export function MainCard({ openSidebar }) {
   const user = useUser()
@@ -56,11 +57,17 @@ export function MainCard({ openSidebar }) {
       <Card sx={{ p: 2 }}>
         <CardHeader
           action={isSuccess && <MainCardDetails mainCard={data} />}
-          title={<Typography variant="subtitle2">Global</Typography>}
+          title={
+            <Stack flexDirection={'row'} gap={1} alignItems={'center'}>
+              <Typography variant="subtitle2">Global</Typography>
+            </Stack>
+          }
           sx={{ p: 0 }}
         />
 
         <Stack alignItems={'center'} mb={1}>
+          {cardTypeSelected === '1' && <MasterCardLogo />}
+          {cardTypeSelected === '2' && <CarnetLogo />}
           {isRefetching && (
             <CircularLoading
               size={25}

@@ -9,7 +9,8 @@ export const CardMainAdapter = card => {
       id: decryptedCard?.cardId,
       SPEI: decryptedCard?.spei,
       balance,
-      balanceFormatted: fCurrency(balance)
+      balanceFormatted: fCurrency(balance),
+      cardNumberHidden: 'GLOBAL'
     }
   } else {
     throw new Error('Algo fallo al obtenerla informacion')

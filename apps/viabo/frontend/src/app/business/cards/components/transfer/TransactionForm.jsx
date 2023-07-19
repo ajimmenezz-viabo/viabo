@@ -1,6 +1,6 @@
 import { Scrollbar } from '@/shared/components/scroll'
 import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
-import { FieldArray, getIn, useFormik } from 'formik'
+import { FieldArray, useFormik } from 'formik'
 import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { Add, Delete, Send } from '@mui/icons-material'
@@ -11,7 +11,16 @@ import { useTransactionCard } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { stringAvatar } from '@theme/utils'
 
-export function TransactionForm({ cards, balance, setCurrentBalance, insufficient, cardOrigin, setOpen, isBinCard }) {
+export function TransactionForm({
+  cards,
+  balance,
+  setCurrentBalance,
+  insufficient,
+  cardOriginId,
+  setOpen,
+  isBinCard,
+  setTransactionLoading
+}) {
   const arrayHelpersRef = useRef(null)
 
   const [cardsToSelect, setCardsToSelect] = useState(cards)
@@ -28,10 +37,10 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
   }, [selectedCards, isBinCard])
 
   const RegisterSchema = Yup.object().shape({
-    items: Yup.array().of(
+    transactions: Yup.array().of(
       Yup.object().shape({
         amount: Yup.string().required('La cantidad es requerida'),
-        card: Yup.object().nullable().required('El material es requerido')
+        card: Yup.object().nullable().required('La tarjeta es requerida')
       })
     )
   })
@@ -58,20 +67,23 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
       if (insufficient) {
         return setSubmitting(false)
       }
-      const dataAdapted = CardTransactionsAdapter(cardOrigin, values)
+      const dataAdapted = CardTransactionsAdapter(cardOriginId, values)
+      setTransactionLoading(true)
       transactionCard(dataAdapted, {
         onSuccess: () => {
           setSubmitting(false)
           setOpen(false)
+          setTransactionLoading(false)
         },
         onError: () => {
           setSubmitting(false)
+          setTransactionLoading(false)
         }
       })
     }
   })
 
-  const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting } = formik
+  const { isSubmitting, setFieldValue, values, setSubmitting } = formik
 
   const loading = isSubmitting || isSending
 
@@ -117,8 +129,6 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                       const card = `transactions[${index}].card`
                       const amount = `transactions[${index}].amount`
                       const concept = `transactions[${index}].concept`
-                      const touchedUnity = getIn(touched, concept)
-                      const errorUnity = getIn(errors, concept)
 
                       return (
                         <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
@@ -133,7 +143,7 @@ export function TransactionForm({ cards, balance, setCurrentBalance, insufficien
                             direction={{ xs: 'column', md: 'row' }}
                             spacing={2}
                             sx={{ width: 1 }}
-                            alignItems={'center'}
+                            alignItems={'flex-start'}
                           >
                             <Typography variant={'overline'} color={'text.disabled'}>
                               {index + 1}

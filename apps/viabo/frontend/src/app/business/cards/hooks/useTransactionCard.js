@@ -16,10 +16,10 @@ export const useTransactionCard = (options = {}) => {
         pending: 'Procesando Transferencia ...',
         success: {
           render({ data: transactions }) {
-            client.invalidateQueries([CARDS_COMMERCES_KEYS.TRANSIT_BALANCE])
+            client.fetchQuery([CARDS_COMMERCES_KEYS.TRANSIT_BALANCE])
             client.invalidateQueries([CARDS_COMMERCES_KEYS.CARD_INFO, transactions?.cardId])
-            client.invalidateQueries([CARDS_COMMERCES_KEYS.CARD_MOVEMENTS])
-            client.invalidateQueries([CARDS_COMMERCES_KEYS.MAIN_CARD])
+            client.fetchQuery([CARDS_COMMERCES_KEYS.CARD_MOVEMENTS, transactions?.cardId])
+            client.fetchQuery([CARDS_COMMERCES_KEYS.MAIN_CARD])
             onSuccess(transactions)
             return 'Se realizo la transferencia con éxito'
           }

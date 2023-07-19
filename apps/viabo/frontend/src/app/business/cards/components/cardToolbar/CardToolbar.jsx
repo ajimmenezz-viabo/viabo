@@ -73,7 +73,7 @@ export function CardToolbar() {
         </Stack>
       </Toolbar>
       <MailCompose isOpenCompose={openCompose} onCloseCompose={() => setOpenCompose(false)} />
-      <TransferSideBar open={openTransferBin} setOpen={setOpenTransferBin} isBinCard={true} />
+      <TransferSideBar open={openTransferBin} setOpen={setOpenTransferBin} isFundingCard={true} />
     </>
   )
 }

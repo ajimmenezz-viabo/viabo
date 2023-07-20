@@ -32,7 +32,7 @@ final readonly class CardAssignerControllerInCommerce extends ApiController
                 $commerceCredentialsData->credential['carnetKey']
             ));
             $cardCredential = $this->ask(new CardCredentialQuery($data['cardId']));
-            $this->dispatch(new UpdateCardSETDataCommand($data['cardId'] , $cardCredential->credentialData));
+            $this->dispatch(new UpdateCardSETDataCommand($data['cardId'] , $cardCredential->data));
             $this->dispatch(new AssignCardCommandInCommerce($data['cardId'] , $data['commerceId']));
 
             return new JsonResponse();

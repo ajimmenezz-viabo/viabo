@@ -8,8 +8,10 @@ use Viabo\management\card\domain\events\AssignedCardDomaEventInCommerce;
 use Viabo\management\card\domain\events\CardBlockUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedOutsideDomainEvent;
+use Viabo\management\card\domain\events\CardCVVUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardOwnerUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardSETDataUpdatedDomainEvent;
+use Viabo\management\card\domain\events\UpdatedCardNipDomainEvent;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\management\shared\domain\card\CardId;
@@ -160,6 +162,13 @@ final class Card extends AggregateRoot
     public function updateCVV(CardCVV $cvv): void
     {
         $this->cvv = $cvv;
+        $this->record(new CardCVVUpdatedDomainEvent($this->id->value() , $this->toArray()));
+    }
+
+    public function updateNip(mixed $newNip): void
+    {
+        $this->nip = $this->nip->update($newNip ?? '');
+        $this->record(new UpdatedCardNipDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function hasDifferentData(CardCVV $cvv , CardExpirationDate $expiration): bool

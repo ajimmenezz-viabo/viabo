@@ -16,9 +16,9 @@ final readonly class CardCredentialDecryptController extends ApiController
     {
         try {
             $data = $request->toArray();
-            $data = $this->ask(new CardCredentialDecryptQuery($data['password'] , $data['cardId']));
+            $credential = $this->ask(new CardCredentialDecryptQuery($data['password'] , $data['cardId']));
 
-            return new JsonResponse($data->credentialData);
+            return new JsonResponse($credential->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

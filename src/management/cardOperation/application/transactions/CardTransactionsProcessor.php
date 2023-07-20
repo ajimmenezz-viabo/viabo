@@ -71,7 +71,7 @@ final readonly class CardTransactionsProcessor
     {
         $card = $this->queryBus->ask(new CardQuery($cardId->value()));
         $credential = $this->queryBus->ask(new CardCredentialQuery($cardId->value()));
-        $cardInformation = $this->queryBus->ask(new CardInformationQuery($cardId->value() , $credential->credentialData));
+        $cardInformation = $this->queryBus->ask(new CardInformationQuery($cardId->value() , $credential->data));
         return array_merge($card->cardData , $cardInformation->cardData);
     }
 

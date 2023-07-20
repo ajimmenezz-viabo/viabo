@@ -24,8 +24,8 @@ final readonly class MainCardInformationFinderController extends ApiController
 
             $data = $this->ask(new CommerceQuery($tokenData['id']));
             $cardData = $this->ask(new MainCardIdQuery($data->commerce['id'], $paymentProcessorId));
-            $data = $this->ask(new CardCredentialQuery($cardData->data['cardId']));
-            $data = $this->ask(new MainCardInformationQuery($cardData->data['cardId'] , $data->credentialData));
+            $credential = $this->ask(new CardCredentialQuery($cardData->data['cardId']));
+            $data = $this->ask(new MainCardInformationQuery($cardData->data['cardId'] , $credential->data));
 
             return new JsonResponse($this->opensslEncrypt($data->cardData));
         } catch (\DomainException $exception) {

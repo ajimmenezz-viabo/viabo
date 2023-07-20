@@ -47,6 +47,21 @@ final class CommerceDoctrineRepository extends DoctrineRepository implements Com
         return $this->repository(CommerceView::class)->matching($criteria)->toArray();
     }
 
+    public function searchCommerceIdBy(string $userId , string $userProfileId): string
+    {
+        $query = "call SearchCommerceId(:userId,:userProfileId)";
+        $statement = $this->entityManager()->getConnection()->prepare($query);
+        $statement->bindValue('userId' , $userId);
+        $statement->bindValue('userProfileId' , $userProfileId);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+        if (!empty($result)) {
+            foreach ($result as $item) {
+                return $item['CommerceId'];
+            }
+        }
+        return '';
+    }
+
     public function update(Commerce $commerce): void
     {
         $this->entityManager()->flush($commerce);

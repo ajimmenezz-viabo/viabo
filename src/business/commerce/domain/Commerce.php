@@ -112,6 +112,21 @@ final class Commerce extends AggregateRoot
         $this->record(new CommerceUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
+    public function id(): CommerceId
+    {
+        return $this->id;
+    }
+
+    public function isInformal(): bool
+    {
+        return $this->type->isInformal();
+    }
+
+    public function father(): CommerceFatherId
+    {
+        return $this->fatherId;
+    }
+
     public function toArray(): array
     {
         return [
@@ -133,16 +148,6 @@ final class Commerce extends AggregateRoot
             'registerStep' => $this->registerStep->value() ,
             'active' => $this->active->value()
         ];
-    }
-
-    public function isInformal(): bool
-    {
-        return $this->type->isInformal();
-    }
-
-    public function father(): CommerceFatherId
-    {
-        return $this->fatherId;
     }
 
 }

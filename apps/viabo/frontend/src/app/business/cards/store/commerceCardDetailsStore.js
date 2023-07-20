@@ -23,6 +23,15 @@ const commerceCardDetailsStore = (set, get) => ({
       'SET_CARD'
     )
   },
+  resetCard: () => {
+    set(
+      state => ({
+        card: null
+      }),
+      false,
+      'RESET_CARD'
+    )
+  },
   setSelectedCards: cardsSelected => {
     const { card } = get()
 

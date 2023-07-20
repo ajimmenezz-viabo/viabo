@@ -12,6 +12,9 @@ import { CardDetails, CardsSidebar } from '@/app/business/cards/components'
 
 export default function CommerceCards() {
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
+  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
+  const setIsMainCard = useCommerceDetailsCard(state => state.setSelectedMainCard)
+  const resetCard = useCommerceDetailsCard(state => state.resetCard)
 
   const queryClient = useQueryClient()
 
@@ -22,6 +25,13 @@ export default function CommerceCards() {
     },
     []
   )
+
+  useEffect(() => {
+    if (isMainCardSelected) {
+      resetCard()
+      setIsMainCard(false)
+    }
+  }, [isMainCardSelected])
 
   return (
     <Page title="Lista de Tarjetas">

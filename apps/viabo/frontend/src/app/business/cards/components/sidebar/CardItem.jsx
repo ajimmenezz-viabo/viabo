@@ -21,6 +21,8 @@ import { BUSINESS_PERMISSIONS } from '@/app/business/shared/routes'
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
   padding: theme.spacing(1.5, 3),
   borderRadius: '8px!important',
+  width: 1,
+  justifyContent: 'center',
   mb: 1
   // transition: theme.transitions.create('all')
 }))
@@ -85,15 +87,17 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
           onClick={handleSelectedRow}
           sx={{
             ...(isSelected && { bgcolor: 'secondary.light', color: 'black', '& :hover': { color: 'text.primary' } }),
-            '& :hover': { color: 'text.primary' }
+            '& :hover': { color: 'text.primary' },
+            width: 1
           }}
         >
-          <ListItemAvatar>
-            <Box sx={{ position: 'relative', pl: 1 }}>
+          <ListItemAvatar sx={{ m: 0 }}>
+            <Box sx={{ position: 'relative' }}>
               <Avatar
                 sx={theme => ({
                   width: 30,
                   height: 30,
+                  m: 0,
                   color: theme.palette.primary.contrastText,
                   backgroundColor: theme.palette.primary.main
                 })}
@@ -110,7 +114,12 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
 
           {isOpenSidebar && (
             <>
-              <Stack>
+              <Stack
+                sx={{
+                  width: 1
+                }}
+                px={1}
+              >
                 <Typography noWrap variant={'subtitle2'}>
                   {cardUserNumber}
                 </Typography>

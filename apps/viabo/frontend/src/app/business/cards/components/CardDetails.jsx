@@ -15,11 +15,9 @@ import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { ErrorRequestPage } from '@/shared/components/notifications'
 import { useCollapseDrawer } from '@theme/hooks'
 import { CardDetailsHeader } from '@/app/business/cards/components/details/header'
-import { MainCardDetailsHeader } from '@/app/business/cards/components/global-card'
 
 export function CardDetails() {
   const card = useCommerceDetailsCard(state => state.card)
-  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const { data, isLoading, isError, error, refetch } = useFindCardDetails(card?.id, {
     enabled: !!card?.id
@@ -47,14 +45,8 @@ export function CardDetails() {
       {card && isLoading && <RequestLoadingComponent />}
       {card && data && (
         <>
-          {!isMainCardSelected ? (
-            <>
-              <CardDetailsHeader card={card} />
-              <CardActions />
-            </>
-          ) : (
-            <MainCardDetailsHeader card={card} />
-          )}
+          <CardDetailsHeader card={card} />
+          <CardActions />
 
           <Scrollbar>
             <Stack pt={2} pb={4} px={2}>
@@ -63,7 +55,7 @@ export function CardDetails() {
                   <Stack spacing={3}>
                     <CardBalance />
                     <CardCharge />
-                    {!isMainCardSelected && <CardAssignInfo />}
+                    <CardAssignInfo />
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={8}>

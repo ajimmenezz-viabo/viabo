@@ -1,2 +1,1 @@
-export * from './MainCard'
-export * from './MainCardDetailsHeader'
+export * from './GlobalCard'

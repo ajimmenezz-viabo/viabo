@@ -9,9 +9,9 @@ import { InputStyle } from '@/shared/components/form'
 import { useFindCommerceCards } from '@/app/business/cards/hooks'
 import { ErrorRequestPage, SearchNotFound } from '@/shared/components/notifications'
 import EmptyList from '@/shared/components/notifications/EmptyList'
-import { MainCard } from '@/app/business/cards/components/global-card'
 import { useFindCommerceCardTypes } from '@/app/business/cards/hooks/useFindCommerceCardTypes'
 import { CardList, CommerceCardTypes } from '@/app/business/cards/components/sidebar'
+import { GlobalCard } from '@/app/business/cards/components/global-card'
 
 const ToggleButtonStyle = styled(props => <IconButton disableRipple {...props} />)(({ theme }) => ({
   left: 0,
@@ -34,7 +34,6 @@ const SIDEBAR_COLLAPSE_WIDTH = 96
 
 export function CardsSidebar() {
   const selectedCardId = useCommerceDetailsCard(state => state.card?.id)
-  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
   const cardTypeSelected = useCommerceDetailsCard(state => state.cardTypeSelected)
 
   const {
@@ -99,12 +98,6 @@ export function CardsSidebar() {
     }
   }, [commerceCards])
 
-  useEffect(() => {
-    if (isMainCardSelected && selectedCardId) {
-      handleCloseSidebar()
-    }
-  }, [isMainCardSelected, selectedCardId])
-
   const handleOpenSidebar = () => {
     setOpenSidebar(true)
   }
@@ -168,7 +161,7 @@ export function CardsSidebar() {
 
         {cardTypeSelected && !isLoadingCardTypes && (
           <>
-            <MainCard openSidebar={openSidebar} />
+            <GlobalCard openSidebar={openSidebar} />
             <Box sx={{ p: 2, px: isDesktop ? 0 : 2 }}>
               <Stack
                 direction="row"

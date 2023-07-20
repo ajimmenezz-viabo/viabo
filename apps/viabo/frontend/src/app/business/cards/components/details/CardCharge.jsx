@@ -2,17 +2,13 @@ import { useState } from 'react'
 import { Box, Button, Card, Collapse, IconButton, Stack, Typography } from '@mui/material'
 import { Check, CopyAll, Mail, Receipt, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { useCollapseDrawer, useResponsive } from '@theme/hooks'
 import { ModalSharedCharge } from '@/app/business/cards/components/details/ModalSharedCharge'
 import { copyToClipboard } from '@/shared/utils'
 
-export function CardCharge() {
+export function CardCharge({ disabledExpand = false }) {
   const card = useCommerceDetailsCard(state => state.card)
-  const isDesktop = useResponsive('up', 'xl')
-  const { isCollapse } = useCollapseDrawer()
-  const [expand, setExpand] = useState(false)
+  const [expand, setExpand] = useState(disabledExpand)
   const [copiedSPEI, setCopiedSPEI] = useState(false)
-  const [copiedPAYNET, setCopiedPAYNET] = useState(false)
   const [openShared, setOpenShared] = useState(false)
   const setOpenFundingOrder = useCommerceDetailsCard(state => state.setOpenFundingOrder)
   const setFundingCard = useCommerceDetailsCard(state => state.setFundingCard)
@@ -24,17 +20,19 @@ export function CardCharge() {
         <Stack display="flex" flexDirection={'row'} alignItems="center">
           <Typography variant="h6">{isMainCardSelected ? 'Fondear Comercio' : 'Fondear Tarjeta'}</Typography>
           <Box sx={{ flex: '1 1 auto' }} />
-          <IconButton
-            onClick={() => {
-              setExpand(prev => !prev)
-            }}
-          >
-            {expand ? (
-              <VisibilityOff sx={{ color: 'text.disabled' }} />
-            ) : (
-              <Visibility sx={{ color: 'text.disabled' }} />
-            )}
-          </IconButton>
+          {!disabledExpand && (
+            <IconButton
+              onClick={() => {
+                setExpand(prev => !prev)
+              }}
+            >
+              {expand ? (
+                <VisibilityOff sx={{ color: 'text.disabled' }} />
+              ) : (
+                <Visibility sx={{ color: 'text.disabled' }} />
+              )}
+            </IconButton>
+          )}
         </Stack>
 
         <Collapse in={expand} timeout="auto">

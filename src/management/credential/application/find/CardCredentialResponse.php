@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class CardCredentialResponse implements Response
 {
-    public function __construct(public array $credentialData)
+    public function __construct(public array $data)
     {
     }
 }

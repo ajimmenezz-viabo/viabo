@@ -18,8 +18,8 @@ final readonly class CardBlockStatusUpdaterController extends ApiController
         try {
             $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
-            $data = $this->ask(new CardCredentialQuery($cardId));
-            $this->dispatch(new UpdateCardBlockStatusCommand($cardId , $blockStatus , $data->credentialData));
+            $credential = $this->ask(new CardCredentialQuery($cardId));
+            $this->dispatch(new UpdateCardBlockStatusCommand($cardId , $blockStatus , $credential->data));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

@@ -27,7 +27,7 @@ final readonly class CardMovementsFinderController extends ApiController
                 $cardData->cardData['number'] ,
                 $initialDate ,
                 $finalDate ,
-                $credentialData->credentialData['clientKey'] ,
+                $credentialData->data['clientKey'] ,
                 $operationData->operations
             ));
 

@@ -26,7 +26,7 @@ final readonly class CardTransactionsProcessorController extends ApiController
                 $tokenData['id'],
                 $data['originCardId'],
                 $data['destinationCards'],
-                $credential->credentialData,
+                $credential->data,
                 $commerce->commerce['legalRepresentativeEmail']
             ));
 

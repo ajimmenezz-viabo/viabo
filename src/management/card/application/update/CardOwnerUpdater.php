@@ -4,6 +4,7 @@
 namespace Viabo\management\card\application\update;
 
 
+use Viabo\management\card\domain\CardCVV;
 use Viabo\management\card\domain\CardOwnerId;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardStatusId;
@@ -21,11 +22,15 @@ final readonly class CardOwnerUpdater
     {
     }
 
-    public function __invoke(CardId $cardId , CardOwnerId $ownerId): void
+    public function __invoke(CardId $cardId , CardOwnerId $ownerId , CardCVV $cvv): void
     {
         $card = $this->finder->__invoke($cardId);
 
-        $card->updateOwner($ownerId, new CardStatusId('5'));
+        $card->updateOwner($ownerId , new CardStatusId('5'));
+
+        if ($card->isEmptyCVV()) {
+            $card->updateCVV($cvv);
+        }
 
         $this->repository->update($card);
 

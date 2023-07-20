@@ -18,6 +18,8 @@ interface CommerceRepository
 
     public function searchViewCriteria(Criteria $criteria): array;
 
+    public function searchCommerceIdBy(string $userId , string $userProfileId): string;
+
     public function update(Commerce $commerce): void;
 
 }

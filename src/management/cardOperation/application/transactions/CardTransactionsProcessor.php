@@ -80,9 +80,11 @@ final readonly class CardTransactionsProcessor
         $destinationCardsData = [];
         foreach ($destinationCards as $destinationCard) {
             $cardData = $this->cardData(new CardId($destinationCard['cardId']));
-            $ownerEmail = $this->ownerEmail($cardData['ownerId']);
+            $cardData['ownerEmail'] = '';
+            if($cardData['main'] !== '1'){
+                $cardData['ownerEmail'] = $this->ownerEmail($cardData['ownerId']);
+            }
             unset($destinationCard['cardId']);
-            $cardData['ownerEmail'] = $ownerEmail;
             $destinationCardsData[] = array_merge($cardData , $destinationCard);
         }
         return $destinationCardsData;

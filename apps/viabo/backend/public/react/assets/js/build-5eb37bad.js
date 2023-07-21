@@ -1,0 +1,1 @@
+import{j as o,D as n,P as t}from"./build-25e7e2eb.js";import{C as r}from"./build-43a055c7.js";function i({children:e,...a}){return o.jsx(r,{component:n,className:"animate__animated animate__fadeIn",maxWidth:!1,...a,style:{overflowY:"auto"},children:e})}i.propTypes={children:t.node.isRequired};export{i as C};

@@ -27,7 +27,7 @@ export default function UnassignedCards() {
 
   return (
     <>
-      <Page title="Tarjetas Sin Asociar del Comercio">
+      <Page title="Stock de Tarjetas del Comercio">
         <ContainerPage sx={{ height: '100%' }}>
           <HeaderPage
             name={'Stock de Tarjetas'}

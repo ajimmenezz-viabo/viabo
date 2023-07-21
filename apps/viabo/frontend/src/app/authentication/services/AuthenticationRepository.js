@@ -1,4 +1,5 @@
 import { axios } from '@/shared/interceptors'
+import { UserModulesAdapter } from '@/app/authentication/adapters'
 
 export const signIn = async user => {
   const { data } = await axios.post('/api/login', user)
@@ -12,5 +13,5 @@ export const logout = async () => {
 
 export const getUserModules = async () => {
   const { data } = await axios.get('/api/modules/user')
-  return data
+  return UserModulesAdapter(data)
 }

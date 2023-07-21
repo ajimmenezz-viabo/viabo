@@ -1,20 +1,20 @@
+import { useEffect } from 'react'
 import { Page } from '@/shared/components/containers'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { Box, Stack } from '@mui/material'
 import { HeaderPage } from '@/shared/components/layout'
+import { CardToolbar, FundingOrder } from '@/app/business/cards/components/toolbar-actions'
+import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { useQueryClient } from '@tanstack/react-query'
 import { PATH_DASHBOARD } from '@/routes'
 import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
-import { CardsSidebar } from '@/app/business/cards/components/cardsSidebar'
-import { CommerceViaboCardDetails } from '@/app/business/cards/components/CommerceViaboCardDetails'
-import { CardToolbar } from '@/app/business/cards/components/cardToolbar'
-import { ContainerPage } from '@/shared/components/containers/ContainerPage'
-import { FundingOrder } from '@/app/business/cards/components/FundingOrder'
-import { useEffect } from 'react'
-import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
-import { useQueryClient } from '@tanstack/react-query'
+import { CardDetails, CardsSidebar } from '@/app/business/cards/components'
 
 export default function CommerceCards() {
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
+  const isMainCardSelected = useCommerceDetailsCard(state => state.isMainCardSelected)
+  const setIsMainCard = useCommerceDetailsCard(state => state.setSelectedMainCard)
+  const resetCard = useCommerceDetailsCard(state => state.resetCard)
 
   const queryClient = useQueryClient()
 
@@ -26,19 +26,26 @@ export default function CommerceCards() {
     []
   )
 
+  useEffect(() => {
+    if (isMainCardSelected) {
+      resetCard()
+      setIsMainCard(false)
+    }
+  }, [isMainCardSelected])
+
   return (
-    <Page title="Tarjetas del Comercio">
+    <Page title="Lista de Tarjetas">
       <Box display={'flex'} overflow={'hidden'} sx={{ height: '100vH', maxHeight: '100%', flexDirection: 'column' }}>
-        <ContainerPage>
+        <Box px={1}>
           <HeaderPage
-            name={'Tarjetas del Comercio'}
+            name={'Lista de Tarjetas'}
             links={[
               { name: 'Inicio', href: PATH_DASHBOARD.root },
               { name: 'Administracion', href: BUSINESS_PATHS.cards },
               { name: BUSINESS_ROUTES_NAMES.cards.name }
             ]}
           />
-        </ContainerPage>
+        </Box>
 
         <Stack flexDirection={'row'} sx={{ display: 'flex' }}>
           <Stack
@@ -57,7 +64,7 @@ export default function CommerceCards() {
           <Box display={'block'} width={1} position={'absolute'}></Box>
           <CardsSidebar />
 
-          <CommerceViaboCardDetails />
+          <CardDetails />
         </Box>
       </Box>
 

@@ -125,7 +125,7 @@ export function DataTable({
   const initOptions = {
     search: true,
     download: true,
-    print: true,
+    print: false,
     viewColumns: true,
     filter: true,
     filterType: 'dropdown',

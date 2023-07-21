@@ -36,7 +36,7 @@ export default function GlobalCardDetails() {
             { name: BUSINESS_ROUTES_NAMES.globalCard.name }
           ]}
         />
-        <Stack spacing={2}>
+        <Stack spacing={3}>
           <Box>
             <Button variant={'outlined'} startIcon={<ReplyAll />} component={RouterLink} to={BUSINESS_PATHS.cards}>
               Lista de Tarjetas

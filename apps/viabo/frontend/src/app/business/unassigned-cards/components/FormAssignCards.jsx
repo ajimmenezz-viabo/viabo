@@ -1,16 +1,19 @@
 import { useFormik } from 'formik'
 import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, RFTextField } from '@/shared/components/form'
-import { InputAdornment, Stack, Typography } from '@mui/material'
+import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { Alert, InputAdornment, Stack, Typography } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
-import { AddCard, EmailOutlined } from '@mui/icons-material'
+import { AddCard, EmailOutlined, VpnKey } from '@mui/icons-material'
 import { MuiTelInput } from 'mui-tel-input'
 import * as Yup from 'yup'
 import { AssignCardsAdapter } from '@/app/business/unassigned-cards/adapters'
 import { useAssignCards } from '@/app/business/unassigned-cards/hooks'
+import { useMemo } from 'react'
 
 export function FormAssignCards({ cards, onSuccess }) {
   const { mutate: assignCards, isLoading: isAssigning } = useAssignCards()
+
+  const emptyCVV = useMemo(() => Boolean(cards?.length > 0 && cards[0].cvv === ''), [cards])
 
   const registerValidation = Yup.object({
     name: Yup.string().required('El nombre es requerido'),
@@ -19,18 +22,24 @@ export function FormAssignCards({ cards, onSuccess }) {
       'longitud',
       'El telefono es muy corto',
       value => !(value && value.replace(/[\s+]/g, '').length < 10)
-    )
+    ),
+    ...(emptyCVV && {
+      cvv: Yup.string().min(3, 'Debe contener 3 digitos').required('El CVV es requerido')
+    })
   })
 
   const formik = useFormik({
     initialValues: {
       name: '',
       phone: '',
-      email: ''
+      email: '',
+      ...(emptyCVV && {
+        cvv: ''
+      })
     },
     validationSchema: registerValidation,
     onSubmit: values => {
-      const data = AssignCardsAdapter(values, cards)
+      const data = AssignCardsAdapter(values, cards, emptyCVV)
       assignCards(data, {
         onSuccess: () => {
           setSubmitting(false)
@@ -51,6 +60,21 @@ export function FormAssignCards({ cards, onSuccess }) {
     <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
       <FormProvider formik={formik}>
         <Stack spacing={3} sx={{ p: 3 }}>
+          {emptyCVV && (
+            <Alert
+              sx={{
+                textAlign: 'center',
+                width: '100%',
+                justifyContent: 'center',
+                display: 'flex'
+              }}
+              severity="warning"
+            >
+              <Typography variant="caption" fontWeight={'bold'}>
+                En caso de no capturar los datos correctos de la tarjeta, la información de la misma podrá ser erronea.
+              </Typography>
+            </Alert>
+          )}
           <Stack>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Nombre
@@ -96,6 +120,35 @@ export function FormAssignCards({ cards, onSuccess }) {
               helperText={touched.phone && errors.phone}
             />
           </Stack>
+          {emptyCVV && (
+            <Stack>
+              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                CVV
+              </Typography>
+              <RFTextField
+                name={'cvv'}
+                fullWidth
+                required={true}
+                placeholder={'123'}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <VpnKey />
+                    </InputAdornment>
+                  ),
+                  inputComponent: MaskedInput,
+                  inputProps: {
+                    mask: '000',
+                    onAccept: value => {
+                      setFieldValue('cvv', value)
+                    },
+                    value: values.cvv
+                  }
+                }}
+                disabled={loading}
+              />
+            </Stack>
+          )}
 
           <Stack sx={{ pt: 3 }}>
             <LoadingButton

@@ -3,22 +3,39 @@ import { DataTable } from '@/shared/components/dataTables'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 import { AssignCardTableToolbar } from '@/app/shared/components'
 import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
+import { toast } from 'react-toastify'
+import { ClearTwoTone, Done } from '@mui/icons-material'
 
 export function UnassignedCardsTable({ isLoading, cards = [], rows = [] }) {
   const setAllCards = useUnassignedCards(state => state.setAllCards)
+  const selectedCards = useUnassignedCards(state => state.cards)
   const setOpenAssign = useUnassignedCards(state => state.setOpenAssign)
   const setIndexCards = useUnassignedCards(state => state.setIndexCards)
 
+  const handleValidateCards = () => {
+    const someWithoutCVV = selectedCards.some(card => card?.cvv === '') && selectedCards?.length > 1
+    const allEmptyCVV = selectedCards.every(card => card?.cvv === '') && selectedCards?.length > 1
+    if (allEmptyCVV) {
+      toast.warn('Las tarjetas seleccionadas no tiene cvv , debe asignar una por una')
+    } else if (someWithoutCVV) {
+      toast.warn('Existe al menos una tarjeta seleccionada que no tiene cvv')
+    } else {
+      setOpenAssign(true)
+    }
+  }
+
+  console.log(cards)
+
   const columns = [
     {
-      name: 'cardNumberHidden',
+      name: 'cardNumberMoreDigits',
       label: 'Tarjeta',
       options: {
         customBodyRenderLite: (dataIndex, rowIndex) => {
           const rowData = cards[dataIndex]
           return (
             <Typography variant="subtitle2" fontWeight="bold">
-              {rowData?.cardNumberHidden}
+              {rowData?.cardNumberMoreDigits}
             </Typography>
           )
         }
@@ -60,8 +77,22 @@ export function UnassignedCardsTable({ isLoading, cards = [], rows = [] }) {
       }
     },
     {
+      name: 'emptyCVV',
+      label: 'CVV',
+      options: {
+        filterType: 'checkbox',
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+          const row = cards[dataIndex]
+          if (row?.cvv === '' || !row?.cvv) {
+            return <ClearTwoTone color={'error'} />
+          }
+          return <Done color={'success'} />
+        }
+      }
+    },
+    {
       name: 'register',
-      label: 'Fecha',
+      label: 'Fecha de Registro',
       options: {
         filterType: 'textField',
         customBodyRenderLite: (dataIndex, rowIndex) => {
@@ -107,13 +138,7 @@ export function UnassignedCardsTable({ isLoading, cards = [], rows = [] }) {
             setAllCards(selectedCards)
             setIndexCards(rowsSelected)
           },
-          customToolbarSelect: selectedRows => (
-            <AssignCardTableToolbar
-              handleAssign={() => {
-                setOpenAssign(true)
-              }}
-            />
-          )
+          customToolbarSelect: selectedRows => <AssignCardTableToolbar handleAssign={handleValidateCards} />
         }}
       />
     </Card>

@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, Divider, Stack, Typography } from '@mui/material'
+import { Button, Card, CardHeader, Divider, Link, Stack, Typography } from '@mui/material'
 import { CircularLoading } from '@/shared/components/loadings'
 import { useFindMainCard } from '@/app/business/cards/hooks/useFindMainCard'
 import { LoadingButton } from '@mui/lab'
@@ -11,6 +11,7 @@ import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 import { useNavigate } from 'react-router-dom'
 import { BUSINESS_PATHS, BUSINESS_PERMISSIONS } from '@/app/business/shared/routes'
 import { CardBalance, CardCharge } from '@/app/business/cards/components/details'
+import { alpha } from '@mui/material/styles'
 
 export function GlobalCard({ openSidebar }) {
   const user = useUser()
@@ -75,7 +76,14 @@ export function GlobalCard({ openSidebar }) {
 
   return (
     <Stack spacing={3}>
-      <Card sx={{ p: 0 }} onClick={handleOpenDetails}>
+      <Card
+        sx={{
+          p: 0,
+          ...(isMainCard && {
+            boxShadow: theme => `0px 0px 20px 5px ${alpha(theme.palette.primary.main, 0.4)}`
+          })
+        }}
+      >
         <CardHeader
           title={
             <Stack flexDirection={'row'} gap={1} alignItems={'center'}>
@@ -115,7 +123,24 @@ export function GlobalCard({ openSidebar }) {
           )}
           {isSuccess && !isRefetching && (
             <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Typography variant="h3">{data?.balanceFormatted}</Typography>
+              {!isMainCard ? (
+                <Link
+                  underline={'none'}
+                  color={'text.primary'}
+                  sx={{
+                    cursor: 'pointer',
+                    '& :hover': {
+                      color: 'primary.main'
+                    }
+                  }}
+                  onClick={handleOpenDetails}
+                >
+                  <Typography variant="h3">{data?.balanceFormatted}</Typography>
+                </Link>
+              ) : (
+                <Typography variant="h3">{data?.balanceFormatted}</Typography>
+              )}
+
               <Typography variant="caption">MXN</Typography>
             </Stack>
           )}

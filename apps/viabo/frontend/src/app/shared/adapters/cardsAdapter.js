@@ -66,6 +66,7 @@ export const CardsAdapter = cards => {
           registerDate: register ? format(new Date(register), 'dd MMM yyyy') : '',
           registerTime: register ? format(new Date(register), 'p') : '',
           cvv: CVV,
+          emptyCVV: CVV === '' || !CVV ? 'SIN CVV' : 'CON CVV',
           status: {
             id: statusId,
             name: statusName

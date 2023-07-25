@@ -1,7 +1,6 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { axios } from '@/shared/interceptors'
+import { createStore } from '@/app/shared/store'
 
 const initialState = {
   step: CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION,
@@ -60,4 +59,4 @@ const cardUserAssign = (set, get) => ({
   }
 })
 
-export const useCardUserAssign = create(devtools(cardUserAssign))
+export const useCardUserAssign = createStore(cardUserAssign)

@@ -1,5 +1,4 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { createStore } from '@/app/shared/store'
 
 const initialState = {
   card: null,
@@ -110,4 +109,4 @@ const commerceCardDetailsStore = (set, get) => ({
   }
 })
 
-export const useCommerceDetailsCard = create(devtools(commerceCardDetailsStore))
+export const useCommerceDetailsCard = createStore(commerceCardDetailsStore)

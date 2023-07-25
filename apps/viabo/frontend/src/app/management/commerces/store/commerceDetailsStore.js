@@ -1,8 +1,10 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { createStore } from '@/app/shared/store'
 
+const initialState = {
+  commerce: null
+}
 const commerceDetailsStore = (set, get) => ({
-  commerce: null,
+  ...initialState,
   setCommerce: commerce => {
     set(state => ({
       commerce
@@ -10,4 +12,4 @@ const commerceDetailsStore = (set, get) => ({
   }
 })
 
-export const useCommerce = create(devtools(commerceDetailsStore))
+export const useCommerce = createStore(commerceDetailsStore)

@@ -1,10 +1,12 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { createStore } from '@/app/shared/store'
 
-const unassignedCards = (set, get) => ({
+const initialState = {
   cards: [],
   rows: [],
-  openAssign: false,
+  openAssign: false
+}
+const unassignedCards = (set, get) => ({
+  ...initialState,
   setSelectedCard: cardSelected => {
     const { cards } = get()
     const selectedIndex = cards.indexOf(cardSelected)
@@ -68,4 +70,4 @@ const unassignedCards = (set, get) => ({
   }
 })
 
-export const useUnassignedCards = create(devtools(unassignedCards))
+export const useUnassignedCards = createStore(unassignedCards)

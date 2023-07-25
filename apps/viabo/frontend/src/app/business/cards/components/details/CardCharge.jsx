@@ -71,11 +71,18 @@ export function CardCharge({ disabledExpand = false }) {
               <Typography variant="body1">{card?.SPEI}</Typography>
             </Stack>
 
-            <Stack flexDirection={'row'} flexWrap={'wrap'} justifyContent={'center'} gap={3} alignItems={'center'}>
-              <Button color={'primary'} variant={'outlined'} startIcon={<Mail />} onClick={() => setOpenShared(true)}>
+            <Stack flexDirection={'row'} flexWrap={'wrap'} gap={3} alignItems={'center'}>
+              <Button
+                fullWidth
+                color={'primary'}
+                variant={'outlined'}
+                startIcon={<Mail />}
+                onClick={() => setOpenShared(true)}
+              >
                 Compartir
               </Button>
               <Button
+                fullWidth
                 color={'primary'}
                 variant={'contained'}
                 startIcon={<Receipt />}

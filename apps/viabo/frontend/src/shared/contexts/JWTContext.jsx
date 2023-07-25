@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode'
 import { UseFindModulesByUser } from '@/app/authentication/hooks'
 import { axios } from '@/shared/interceptors'
 import { useQueryClient } from '@tanstack/react-query'
+import { resetAllStores } from '@/app/shared/store'
 
 const initialState = {
   isAuthenticated: false,
@@ -80,7 +81,7 @@ function AuthProvider({ children }) {
     response => response,
     error => {
       if (error?.response?.status === 401) {
-        logout()
+        logout(true)
       }
       return Promise.reject(error)
     }
@@ -88,7 +89,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     if (error && state.isAuthenticated) {
-      logout()
+      logout(true)
     }
   }, [error, state.isAuthenticated])
 
@@ -174,11 +175,14 @@ function AuthProvider({ children }) {
     initialize()
   }, [isLoading])
 
-  const logout = async () => {
+  const logout = async (auto = false) => {
     setSession(null)
     dispatch({ type: 'LOGOUT' })
     client.removeQueries()
     remove()
+    if (!auto) {
+      resetAllStores()
+    }
   }
 
   const login = async () => {

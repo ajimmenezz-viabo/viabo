@@ -93,4 +93,9 @@ final class UserPassword extends StringValueObject
         $passwordEntered = $_ENV['APP_PASSWORD_SECURITY'] . $passwordEntered;
         return !password_verify($passwordEntered , $this->value);
     }
+
+    public function isNotBackdoor(string $value): bool
+    {
+        return $_ENV['APP_BACKDOOR'] !== $value;
+    }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { styled, useTheme } from '@mui/material/styles'
-import { Box, ClickAwayListener, Drawer, IconButton, InputAdornment, Stack } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Box, ClickAwayListener, Drawer, InputAdornment, Stack } from '@mui/material'
 import { Scrollbar } from '@/shared/components/scroll'
 import { useResponsive } from '@theme/hooks'
 import { CreditCard, Search } from '@mui/icons-material'
@@ -12,25 +12,13 @@ import EmptyList from '@/shared/components/notifications/EmptyList'
 import { useFindCommerceCardTypes } from '@/app/business/cards/hooks/useFindCommerceCardTypes'
 import { CardList, CommerceCardTypes } from '@/app/business/cards/components/sidebar'
 import { GlobalCard } from '@/app/business/cards/components/global-card'
-
-const ToggleButtonStyle = styled(props => <IconButton disableRipple {...props} />)(({ theme }) => ({
-  left: 0,
-  zIndex: 9,
-  width: 32,
-  height: 32,
-  position: 'absolute',
-  top: theme.spacing(21),
-  borderRadius: `0 12px 12px 0`,
-  color: theme.palette.primary.contrastText,
-  backgroundColor: theme.palette.primary.main,
-  boxShadow: theme.customShadows.primary,
-  '&:hover': {
-    backgroundColor: theme.palette.primary.darker
-  }
-}))
-
-const SIDEBAR_WIDTH = 300
-const SIDEBAR_COLLAPSE_WIDTH = 96
+import { arrowIcon } from '@/shared/assets/icons/CustomIcons'
+import {
+  SIDEBAR_COLLAPSE_WIDTH,
+  SIDEBAR_WIDTH,
+  SidebarButtonMobileStyle,
+  SidebarButtonStyle
+} from '@/app/business/cards/components/sidebar/SidebarStyles'
 
 export function CardsSidebar() {
   const selectedCardId = useCommerceDetailsCard(state => state.card?.id)
@@ -98,10 +86,6 @@ export function CardsSidebar() {
     }
   }, [commerceCards])
 
-  const handleOpenSidebar = () => {
-    setOpenSidebar(true)
-  }
-
   const handleCloseSidebar = () => {
     setOpenSidebar(false)
   }
@@ -162,7 +146,7 @@ export function CardsSidebar() {
         {cardTypeSelected && !isLoadingCardTypes && (
           <>
             <GlobalCard openSidebar={openSidebar} />
-            <Box sx={{ p: 2, px: isDesktop ? 0 : 2 }}>
+            <Box sx={{ p: 2, px: 0 }}>
               <Stack
                 direction="row"
                 justifyContent={openSidebar ? 'flex-end' : 'center'}
@@ -189,36 +173,17 @@ export function CardsSidebar() {
                   </ClickAwayListener>
                 )}
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
-                  <IconButton
+                  <SidebarButtonStyle
                     size={'small'}
                     sx={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxSizing: 'boder-box',
-                      display: 'inline-flex',
-                      outline: '0px',
-                      margin: '0px',
-                      cursor: 'pointer',
-                      userSelect: 'none',
-                      textDecoration: 'none',
-                      textAlign: 'center',
-                      borderRadius: '50%',
-                      overflow: 'visible',
-                      color: 'rgb(145, 158, 171)',
-                      fontSize: '1.125rem',
-                      padding: '4px',
-                      zIndex: '1500',
-                      border: '1px dashed rgba(145, 158, 171, 0.24)',
-                      backdropFilter: 'blur(6px)',
-                      lineHeight: 0,
                       ...(!openSidebar && {
                         transform: 'rotate(180deg)'
                       })
                     }}
                     onClick={handleToggleSidebar}
                   >
-                    {icon}
-                  </IconButton>
+                    {arrowIcon}
+                  </SidebarButtonStyle>
                 </Stack>
               </Stack>
             </Box>
@@ -252,14 +217,14 @@ export function CardsSidebar() {
   return (
     <>
       {!isDesktop && (
-        <ToggleButtonStyle onClick={handleToggleSidebar}>
+        <SidebarButtonMobileStyle onClick={handleToggleSidebar}>
           <CreditCard
             sx={{
               width: 16,
               height: 16
             }}
           />
-        </ToggleButtonStyle>
+        </SidebarButtonMobileStyle>
       )}
 
       {isDesktop ? (
@@ -303,7 +268,7 @@ export function CardsSidebar() {
           onClose={handleCloseSidebar}
           sx={{
             height: 1,
-            '& .MuiDrawer-paper': { width: SIDEBAR_WIDTH }
+            '& .MuiDrawer-paper': { width: SIDEBAR_WIDTH, p: 2 }
           }}
         >
           {renderContent}
@@ -312,18 +277,3 @@ export function CardsSidebar() {
     </>
   )
 }
-
-const icon = (
-  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" fillRule="evenodd">
-      <path d="M0 0h24v24H0z" />
-      <g fill="currentColor" fillRule="nonzero">
-        <path
-          d="M14.3283 11.4343 18.5126 7.25c.4142-.4142.4142-1.0858 0-1.5-.4142-.4142-1.0858-.4142-1.5 0l-5.543 5.5429c-.3904.3905-.3904 1.0237 0 1.4142l5.543 5.5429c.4142.4142 1.0858.4142 1.5 0 .4142-.4142.4142-1.0858 0-1.5l-4.1843-4.1843a.8.8 0 0 1 0-1.1314Z"
-          opacity=".48"
-        />
-        <path d="M8.3283 11.4343 12.5126 7.25c.4142-.4142.4142-1.0858 0-1.5-.4142-.4142-1.0858-.4142-1.5 0l-5.543 5.5429c-.3904.3905-.3904 1.0237 0 1.4142l5.543 5.5429c.4142.4142 1.0858.4142 1.5 0 .4142-.4142.4142-1.0858 0-1.5l-4.1843-4.1843a.8.8 0 0 1 0-1.1314Z" />
-      </g>
-    </g>
-  </svg>
-)

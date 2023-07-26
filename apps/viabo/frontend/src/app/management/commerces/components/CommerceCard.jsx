@@ -6,17 +6,7 @@ import { createAvatar } from '@theme/utils'
 import { Label } from '@/shared/components/form'
 import { useCommerce } from '@/app/management/commerces/store'
 import { shallow } from 'zustand/shallow'
-import { alpha, styled } from '@mui/material/styles'
 import { getColorStatusCommerceById } from '@/app/management/commerces/services'
-
-const IconWrapperStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  borderRadius: '50%',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: theme.palette.primary.main,
-  backgroundColor: alpha(theme.palette.primary.main, 0.08)
-}))
 
 function CommerceCard({ commerce }) {
   const { commerce: selectedCommerce } = useCommerce(state => state, shallow)

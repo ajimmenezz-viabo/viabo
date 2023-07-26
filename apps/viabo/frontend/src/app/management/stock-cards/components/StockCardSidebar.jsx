@@ -6,7 +6,7 @@ import { useSettings } from '@theme/hooks'
 import { Close } from '@mui/icons-material'
 import { AnimatePresence } from 'framer-motion'
 import { StockCardForm } from '@/app/management/stock-cards/components/StockCardForm'
-import { SideBarStyle } from '@/app/shared/components'
+import { RightPanelStyle } from '@/app/shared/components'
 
 export function StockCardSidebar({ open, setOpen }) {
   const { themeDirection } = useSettings()
@@ -47,7 +47,7 @@ export function StockCardSidebar({ open, setOpen }) {
       <AnimatePresence>
         {open && (
           <>
-            <SideBarStyle {...varSidebar}>
+            <RightPanelStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
                 <Typography variant="subtitle1">Nueva Tarjeta</Typography>
                 <div>
@@ -60,7 +60,7 @@ export function StockCardSidebar({ open, setOpen }) {
               <Divider sx={{ borderStyle: 'dashed' }} />
 
               <StockCardForm setOpen={setOpen} />
-            </SideBarStyle>
+            </RightPanelStyle>
           </>
         )}
       </AnimatePresence>

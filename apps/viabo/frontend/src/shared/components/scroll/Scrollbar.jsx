@@ -3,7 +3,7 @@ import SimpleBarReact from 'simplebar-react'
 import { alpha, styled } from '@mui/material/styles'
 import { Box } from '@mui/material'
 
-const RootStyle = styled('div')(() => ({
+const RootStyle = styled(Box)(() => ({
   flexGrow: 1,
   height: '100%',
   overflow: 'hidden'

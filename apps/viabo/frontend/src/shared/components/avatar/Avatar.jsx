@@ -1,7 +1,9 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
+
 import PropTypes from 'prop-types'
-import { useTheme } from '@mui/material/styles'
+
 import { Avatar as MUIAvatar } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 export const Avatar = forwardRef(({ color = 'default', children, sx, ...other }, ref) => {
   const theme = useTheme()

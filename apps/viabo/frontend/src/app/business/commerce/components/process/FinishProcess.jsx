@@ -1,8 +1,10 @@
-import { Box, Button, Stack, Typography } from '@mui/material'
-import support from '@/shared/assets/img/support.svg'
 import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
+
+import { Box, Button, Stack, Typography } from '@mui/material'
+
 import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { propTypesStore } from '@/app/business/commerce/store'
+import support from '@/shared/assets/img/support.svg'
 
 FinishProcess.propTypes = {
   store: PropTypes.shape(propTypesStore)

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import { alpha, styled } from '@mui/material/styles'
 
 const RootStyle = styled('span')(({ theme, ownerState }) => {

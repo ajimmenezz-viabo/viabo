@@ -1,10 +1,13 @@
-import { Grid, Stack, Typography } from '@mui/material'
-import { Image } from '@/shared/components/images'
-import ViaboPay from '@/shared/assets/img/viabo-pay.png'
-import ViaboCard from '@/shared/assets/img/viabo-card.png'
 import { useMemo } from 'react'
-import { ErrorIconDetails, SuccessIconDetails } from './DetailsComponents'
+
+import { Grid, Stack, Typography } from '@mui/material'
+
 import { DetailsCardLayout } from './DetailsCardLayout'
+import { ErrorIconDetails, SuccessIconDetails } from './DetailsComponents'
+
+import ViaboCard from '@/shared/assets/img/viabo-card.png'
+import ViaboPay from '@/shared/assets/img/viabo-pay.png'
+import { Image } from '@/shared/components/images'
 
 export function ServicesInfo({ services, expanded, handleChange, status }) {
   const available = Boolean(services?.available)

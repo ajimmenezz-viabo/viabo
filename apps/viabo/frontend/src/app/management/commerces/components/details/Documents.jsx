@@ -1,8 +1,21 @@
+import PropTypes from 'prop-types'
+
+import { InsertDriveFile } from '@mui/icons-material'
 import { CardHeader, Link, List, ListItem, Stack, Typography } from '@mui/material'
 import { AnimatePresence, m } from 'framer-motion'
-import { varFade } from '@/shared/components/animate'
-import { InsertDriveFile } from '@mui/icons-material'
+
 import { DetailsCardLayout } from './DetailsCardLayout'
+
+import { varFade } from '@/shared/components/animate'
+
+Documents.propTypes = {
+  documents: PropTypes.array,
+  expanded: PropTypes.string,
+  handleChange: PropTypes.func,
+  status: PropTypes.shape({
+    step: PropTypes.string
+  })
+}
 
 export function Documents({ documents, expanded, handleChange, status }) {
   const available = Boolean(documents?.length > 0)
@@ -37,6 +50,13 @@ export function Documents({ documents, expanded, handleChange, status }) {
       </>
     </DetailsCardLayout>
   )
+}
+
+FileItem.propTypes = {
+  file: PropTypes.shape({
+    name: PropTypes.string,
+    path: PropTypes.string
+  })
 }
 
 function FileItem({ file }) {

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
-import { alpha } from '@mui/material/styles'
+
 import { Box, Paper, Typography } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+
 import { fData } from '@/shared/utils'
 
 RejectionFiles.propTypes = {

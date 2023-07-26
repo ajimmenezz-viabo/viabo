@@ -1,18 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
+
+import { Search } from '@mui/icons-material'
 import { Box, InputAdornment, Pagination, Stack, TextField } from '@mui/material'
 import { motion } from 'framer-motion'
+import { shallow } from 'zustand/shallow'
+
 import CommerceCard from '@/app/management/commerces/components/CommerceCard'
-import { usePagination } from '@/shared/hooks'
-import { Search } from '@mui/icons-material'
 import { useFindCommerceList } from '@/app/management/commerces/hooks/useFindCommerceList'
+import { getColorStatusCommerceById } from '@/app/management/commerces/services'
+import { useCommerce } from '@/app/management/commerces/store'
+import { searchByTerm } from '@/app/shared/utils'
+import { Label } from '@/shared/components/form'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { ErrorRequestPage } from '@/shared/components/notifications'
-import { useCommerce } from '@/app/management/commerces/store'
 import EmptyList from '@/shared/components/notifications/EmptyList'
-import { shallow } from 'zustand/shallow'
-import { Label } from '@/shared/components/form'
-import { getColorStatusCommerceById } from '@/app/management/commerces/services'
-import { searchByTerm } from '@/app/shared/utils'
+import { usePagination } from '@/shared/hooks'
 
 export function CommerceList() {
   const { data: commerces, isLoading: loadingCommerces, isError, error, refetch, isSuccess } = useFindCommerceList()

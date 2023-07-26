@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+
 import { LoadingLogo } from '@/shared/components/loadings/LoadingLogo'
 
 export const LoadableRoute = Component =>

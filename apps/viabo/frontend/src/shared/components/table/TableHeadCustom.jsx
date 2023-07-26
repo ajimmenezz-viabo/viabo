@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material'
 
 const visuallyHidden = {

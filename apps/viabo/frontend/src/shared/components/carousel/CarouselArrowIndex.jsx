@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
-import { alpha, styled, useTheme } from '@mui/material/styles'
-import { Box, IconButton, Typography } from '@mui/material'
+
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
+import { Box, IconButton, Typography } from '@mui/material'
+import { alpha, styled, useTheme } from '@mui/material/styles'
 
 const RootStyle = styled(Box)(({ theme }) => ({
   zIndex: 9,

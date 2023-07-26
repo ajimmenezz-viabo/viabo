@@ -1,5 +1,5 @@
-import { fDateTime } from '@/shared/utils'
 import { PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
+import { fDateTime } from '@/shared/utils'
 
 const CardAdapter = services => {
   const viaboCard = services?.find(service => service?.type === '2')

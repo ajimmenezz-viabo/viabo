@@ -1,9 +1,11 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
-import { useRegisterProcessStore } from '@/app/business/commerce/store'
+
 import { Box, Button, CircularProgress, Stack } from '@mui/material'
-import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { shallow } from 'zustand/shallow'
+
 import { useFindCommerceProcess } from '@/app/business/commerce/hooks'
+import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { useRegisterProcessStore } from '@/app/business/commerce/store'
 
 export const RegisterProcess = () => {
   const component = useRegisterProcessStore(state => state.getComponent)

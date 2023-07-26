@@ -1,11 +1,11 @@
-import React from 'react'
-import Dialog from '@mui/material/Dialog'
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import Button from '@mui/material/Button'
-import DialogTitle from '@mui/material/DialogTitle'
 import PropTypes from 'prop-types'
+
 import LoadingButton from '@mui/lab/LoadingButton'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
 
 ModalAlert.propTypes = {
   onClose: PropTypes.func,

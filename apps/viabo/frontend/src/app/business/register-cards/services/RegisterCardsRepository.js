@@ -1,5 +1,5 @@
-import { axios } from '@/shared/interceptors'
 import { DemoCardValidationResponseAdapter } from '@/app/business/register-cards/adapters'
+import { axios } from '@/shared/interceptors'
 
 export const createNewDemoUser = async user => {
   const { data } = await axios.post('/api/security/commerce-demo/user/new', user)

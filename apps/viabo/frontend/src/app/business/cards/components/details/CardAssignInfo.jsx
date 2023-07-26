@@ -1,4 +1,5 @@
 import { Card, Stack, Typography } from '@mui/material'
+
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
 export function CardAssignInfo() {

@@ -1,7 +1,7 @@
-import React from 'react'
 import { DarkMode, LightMode } from '@mui/icons-material'
-import { IconButtonAnimate } from '@/shared/components/animate'
 import { useSettings } from '@theme/hooks'
+
+import { IconButtonAnimate } from '@/shared/components/animate'
 
 export function ThemeMode() {
   const { themeMode, onChangeMode } = useSettings()

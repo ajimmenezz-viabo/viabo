@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+
 import { RequestLoading } from '@/shared/components/loadings'
 
 const Lodable = Component =>

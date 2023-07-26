@@ -1,8 +1,9 @@
-import { useSnackbar } from 'notistack'
-import { getCommerceToken } from '@/app/business/commerce/services'
-import { COMMERCE_KEYS } from '@/app/business/commerce/adapters'
-import { getErrorAPI } from '@/shared/interceptors'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSnackbar } from 'notistack'
+
+import { COMMERCE_KEYS } from '@/app/business/commerce/adapters'
+import { getCommerceToken } from '@/app/business/commerce/services'
+import { getErrorAPI } from '@/shared/interceptors'
 
 export const useFindCommerceToken = (email, options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

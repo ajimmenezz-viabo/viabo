@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import { Alert, AlertTitle, Container } from '@mui/material'
 
 RoleBasedGuard.propTypes = {

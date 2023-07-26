@@ -1,7 +1,8 @@
-import { Button, Checkbox, Stack, Toolbar, Typography } from '@mui/material'
 import { AssignmentIndRounded } from '@mui/icons-material'
-import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
+import { Button, Checkbox, Stack, Toolbar, Typography } from '@mui/material'
 import { toast } from 'react-toastify'
+
+import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
 
 export function UnassignedToolbar({ cards }) {
   const cardsSelected = useUnassignedCards(state => state.cards)

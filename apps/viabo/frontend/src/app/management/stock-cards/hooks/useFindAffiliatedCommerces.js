@@ -1,9 +1,11 @@
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
-import { getErrorAPI } from '@/shared/interceptors'
+import { useSnackbar } from 'notistack'
+
 import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { getAffiliatedCommerces } from '@/app/management/stock-cards/services'
+import { getErrorAPI } from '@/shared/interceptors'
 
 export const useFindAffiliatedCommerces = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

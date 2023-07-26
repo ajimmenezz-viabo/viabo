@@ -1,12 +1,13 @@
-import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
-import { Chip, Stack } from '@mui/material'
 import { CreditCard, Send } from '@mui/icons-material'
-import { useFormik } from 'formik'
 import { LoadingButton } from '@mui/lab'
-import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
+import { Chip, Stack } from '@mui/material'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
+
+import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
 import { useTransactionCard } from '@/app/business/cards/hooks'
+import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 
 export function TransferToGlobalForm({
   balance,

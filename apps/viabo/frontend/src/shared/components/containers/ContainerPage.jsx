@@ -1,6 +1,7 @@
-import React from 'react'
-import { Container } from '@mui/material'
 import PropTypes from 'prop-types'
+
+import { Container } from '@mui/material'
+
 import MotionContainer from '../animate/MotionContainer'
 
 export function ContainerPage({ children, ...others }) {

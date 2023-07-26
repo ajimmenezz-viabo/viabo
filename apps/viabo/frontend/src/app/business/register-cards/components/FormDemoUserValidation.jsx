@@ -1,12 +1,14 @@
-import { Box, Button, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
-import mail from '@/shared/assets/img/mail.svg'
-import { MuiOtpInput } from 'mui-one-time-password-input'
 import { useState } from 'react'
-import { matchIsNumeric } from '@/shared/utils'
-import { useCardUserAssign } from '@/app/business/register-cards/store'
+
+import { Box, Button, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
+import { MuiOtpInput } from 'mui-one-time-password-input'
+
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
+import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { useSendValidationCode, useValidateCode } from '@/app/business/shared/hooks'
+import mail from '@/shared/assets/img/mail.svg'
 import { axios } from '@/shared/interceptors'
+import { matchIsNumeric } from '@/shared/utils'
 
 export default function FormDemoUserValidation() {
   const setStep = useCardUserAssign(state => state.setStepAssignRegister)

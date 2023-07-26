@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { sendMessageCards } from '@/app/business/cards/services'
 import { toast } from 'react-toastify'
+
+import { sendMessageCards } from '@/app/business/cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useSendMessageCards = (options = {}) => {

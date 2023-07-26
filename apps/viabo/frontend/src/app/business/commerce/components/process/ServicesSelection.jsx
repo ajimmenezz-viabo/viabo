@@ -1,14 +1,17 @@
-import { AlertTitle, Box, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material'
-import { LoadingButton } from '@mui/lab'
-import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
-import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+
+import PropTypes from 'prop-types'
+
+import { LoadingButton } from '@mui/lab'
+import { AlertTitle, Box, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
-import { AlertWithFocus } from '@/shared/components/alerts'
+import { motion } from 'framer-motion'
+
+import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
 import { useUpdateCommerceProcess } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST, SERVICES_LIST } from '@/app/business/commerce/services'
-import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
+import { propTypesStore } from '@/app/business/commerce/store'
+import { AlertWithFocus } from '@/shared/components/alerts'
 
 ServicesSelection.propTypes = {
   store: PropTypes.shape(propTypesStore)

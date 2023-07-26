@@ -1,7 +1,9 @@
-import { Button, IconButton, Stack, Toolbar, Typography } from '@mui/material'
-import { CloseOutlined, Message, PriceChange } from '@mui/icons-material'
-import MailCompose from '@/app/business/cards/components/toolbar-actions/MailCompose'
 import { useState } from 'react'
+
+import { CloseOutlined, Message, PriceChange } from '@mui/icons-material'
+import { Button, IconButton, Stack, Toolbar, Typography } from '@mui/material'
+
+import MailCompose from '@/app/business/cards/components/toolbar-actions/MailCompose'
 import { TransferSideBar } from '@/app/business/cards/components/transfer'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 

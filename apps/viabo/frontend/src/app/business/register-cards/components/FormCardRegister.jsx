@@ -1,18 +1,19 @@
-import { Alert, Box, Button, InputAdornment, Stack, Typography } from '@mui/material'
-import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { AddCard, VpnKey } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
+import { Alert, Box, Button, InputAdornment, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { format, isAfter, isValid, parse } from 'date-fns'
-import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { LoadingButton } from '@mui/lab'
+import * as Yup from 'yup'
+
+import { AssignCardDemoUserAdapter } from '@/app/business/register-cards/adapters'
+import { useAssignCardToDemoUser } from '@/app/business/register-cards/hooks'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
-import { useAssignCardToDemoUser } from '@/app/business/register-cards/hooks'
-import { AssignCardDemoUserAdapter } from '@/app/business/register-cards/adapters'
-import { axios } from '@/shared/interceptors'
 import creditCard from '@/shared/assets/img/credit-card.svg'
+import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
+import { axios } from '@/shared/interceptors'
 
 export default function FormCardRegister() {
   const setStep = useCardUserAssign(state => state.setStepAssignRegister)

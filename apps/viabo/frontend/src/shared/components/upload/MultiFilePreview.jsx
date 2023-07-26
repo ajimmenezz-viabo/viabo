@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types'
-import isString from 'lodash/isString'
-import { AnimatePresence, m } from 'framer-motion'
-import { alpha } from '@mui/material/styles'
-import { Button, IconButton, List, ListItem, ListItemText, Stack } from '@mui/material'
+
 import { Close, InsertDriveFile } from '@mui/icons-material'
+import { Button, IconButton, List, ListItem, ListItemText, Stack } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+import { AnimatePresence, m } from 'framer-motion'
+import isString from 'lodash/isString'
+
 import { varFade } from '../animate'
+
 import { Image } from '@/shared/components/images'
 import { fData } from '@/shared/utils'
 

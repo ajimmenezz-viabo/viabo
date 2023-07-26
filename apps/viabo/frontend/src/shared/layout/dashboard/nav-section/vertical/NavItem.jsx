@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types'
-import { NavLink as RouterLink } from 'react-router-dom'
-import { Box, Icon, Link, ListItemText, Tooltip } from '@mui/material'
+
 import { ArrowDropDown, ArrowRight } from '@mui/icons-material'
+import { Box, Icon, Link, ListItemText, Tooltip } from '@mui/material'
+import { NavLink as RouterLink } from 'react-router-dom'
+
 import { ListItemIconStyle, ListItemStyle, ListItemTextStyle } from './style'
+
 import { isExternalLink } from '../index'
 
 NavItemRoot.propTypes = {

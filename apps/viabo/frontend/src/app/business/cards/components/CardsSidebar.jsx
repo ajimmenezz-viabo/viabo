@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react'
-import { useTheme } from '@mui/material/styles'
-import { Box, ClickAwayListener, Drawer, InputAdornment, Stack } from '@mui/material'
-import { Scrollbar } from '@/shared/components/scroll'
-import { useResponsive } from '@theme/hooks'
+
 import { CreditCard, Search } from '@mui/icons-material'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { InputStyle } from '@/shared/components/form'
-import { useFindCommerceCards } from '@/app/business/cards/hooks'
-import { ErrorRequestPage, SearchNotFound } from '@/shared/components/notifications'
-import EmptyList from '@/shared/components/notifications/EmptyList'
-import { useFindCommerceCardTypes } from '@/app/business/cards/hooks/useFindCommerceCardTypes'
-import { CardList, CommerceCardTypes } from '@/app/business/cards/components/sidebar'
+import { Box, ClickAwayListener, Drawer, InputAdornment, Stack } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { useResponsive } from '@theme/hooks'
+
 import { GlobalCard } from '@/app/business/cards/components/global-card'
-import { arrowIcon } from '@/shared/assets/icons/CustomIcons'
+import { CardList, CommerceCardTypes } from '@/app/business/cards/components/sidebar'
 import {
   SIDEBAR_COLLAPSE_WIDTH,
   SIDEBAR_WIDTH,
   SidebarButtonMobileStyle,
   SidebarButtonStyle
 } from '@/app/business/cards/components/sidebar/SidebarStyles'
+import { useFindCommerceCards } from '@/app/business/cards/hooks'
+import { useFindCommerceCardTypes } from '@/app/business/cards/hooks/useFindCommerceCardTypes'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { arrowIcon } from '@/shared/assets/icons/CustomIcons'
+import { InputStyle } from '@/shared/components/form'
+import { ErrorRequestPage, SearchNotFound } from '@/shared/components/notifications'
+import EmptyList from '@/shared/components/notifications/EmptyList'
+import { Scrollbar } from '@/shared/components/scroll'
 
 export function CardsSidebar() {
   const selectedCardId = useCommerceDetailsCard(state => state.card?.id)

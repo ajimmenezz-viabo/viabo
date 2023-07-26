@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
-import { Page } from '@/shared/components/containers'
+
 import { Box, Stack } from '@mui/material'
-import { HeaderPage } from '@/shared/components/layout'
-import { CardToolbar, FundingOrder } from '@/app/business/cards/components/toolbar-actions'
-import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { useQueryClient } from '@tanstack/react-query'
-import { PATH_DASHBOARD } from '@/routes'
-import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
+
+import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { CardDetails, CardsSidebar } from '@/app/business/cards/components'
+import { CardToolbar, FundingOrder } from '@/app/business/cards/components/toolbar-actions'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
+import { PATH_DASHBOARD } from '@/routes'
+import { Page } from '@/shared/components/containers'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
+import { HeaderPage } from '@/shared/components/layout'
 
 export default function CommerceCards() {
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)

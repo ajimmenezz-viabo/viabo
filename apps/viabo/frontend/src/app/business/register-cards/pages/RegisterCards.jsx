@@ -1,10 +1,12 @@
-import { Page } from '@/shared/components/containers'
+import { Suspense, useMemo } from 'react'
+
 import { Box, CircularProgress, Container, Grid, Paper } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useResponsive } from '@theme/hooks'
-import { Suspense, useMemo } from 'react'
-import { useCardUserAssign } from '@/app/business/register-cards/store'
+
 import { CARD_ASSIGN_STEPS } from '@/app/business/register-cards/services'
+import { useCardUserAssign } from '@/app/business/register-cards/store'
+import { Page } from '@/shared/components/containers'
 
 export default function RegisterCards() {
   const theme = useTheme()

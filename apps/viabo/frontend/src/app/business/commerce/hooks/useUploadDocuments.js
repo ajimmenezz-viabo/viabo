@@ -1,7 +1,8 @@
-import { useSnackbar } from 'notistack'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { uploadDocuments } from '@/app/business/commerce/services'
+import { useSnackbar } from 'notistack'
+
 import { COMMERCE_KEYS } from '@/app/business/commerce/adapters'
+import { uploadDocuments } from '@/app/business/commerce/services'
 import { getErrorAPI } from '@/shared/interceptors'
 
 export const useUploadDocuments = (options = {}) => {

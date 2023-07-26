@@ -1,8 +1,10 @@
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { assignCards } from '@/app/management/stock-cards/services'
+import { useSnackbar } from 'notistack'
+
 import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
+import { assignCards } from '@/app/management/stock-cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useAssignCards = (options = {}) => {

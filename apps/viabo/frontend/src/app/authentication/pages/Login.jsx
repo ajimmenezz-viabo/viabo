@@ -1,9 +1,9 @@
-import React from 'react'
 import { Card, Grid, Stack } from '@mui/material'
-import { Page } from '@/shared/components/containers'
 import { styled } from '@mui/material/styles'
+
 import { LoginForm } from '@/app/authentication/components'
 import { Carousel } from '@/app/authentication/components/Carousel'
+import { Page } from '@/shared/components/containers'
 
 const ContainerStyle = styled(Card)(({ theme }) => ({
   width: '100%',

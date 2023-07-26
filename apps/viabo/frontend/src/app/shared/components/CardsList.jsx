@@ -1,12 +1,14 @@
 import { createElement, useEffect, useMemo, useState } from 'react'
-import { Box, InputAdornment, Pagination, TextField } from '@mui/material'
+
 import { Search } from '@mui/icons-material'
-import { usePagination } from '@/shared/hooks'
-import { StockCard, StockCardSkeleton } from '@/app/management/stock-cards/components/stock-card'
+import { Box, InputAdornment, Pagination, TextField } from '@mui/material'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
-import EmptyList from '@/shared/components/notifications/EmptyList'
-import { ErrorRequestPage } from '@/shared/components/notifications'
+
+import { StockCard, StockCardSkeleton } from '@/app/management/stock-cards/components/stock-card'
 import { searchByTerm } from '@/app/shared/utils'
+import { ErrorRequestPage } from '@/shared/components/notifications'
+import EmptyList from '@/shared/components/notifications/EmptyList'
+import { usePagination } from '@/shared/hooks'
 
 export function CardsList({
   cards,

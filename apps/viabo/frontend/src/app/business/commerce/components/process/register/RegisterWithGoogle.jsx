@@ -1,5 +1,5 @@
-import { Button, Divider, Stack, Typography } from '@mui/material'
 import { Google } from '@mui/icons-material'
+import { Button, Divider, Stack, Typography } from '@mui/material'
 
 function RegisterWithGoogle() {
   return (

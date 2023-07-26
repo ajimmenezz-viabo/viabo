@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
+
 import { IconButton } from '@mui/material'
+
 import { arrowIcon } from '@/shared/assets/icons'
 
 CollapseButtonNew.propTypes = {

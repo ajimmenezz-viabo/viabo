@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
+
 import { Box, Link, Typography } from '@mui/material'
-import { MyAvatar } from '@/shared/layout/dashboard/header'
+import { styled } from '@mui/material/styles'
+
 import { useAuth } from '@/shared/hooks'
+import { MyAvatar } from '@/shared/layout/dashboard/header'
 
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',

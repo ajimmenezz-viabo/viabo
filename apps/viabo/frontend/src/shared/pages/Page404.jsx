@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+
+import { Button, Container, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { m } from 'framer-motion'
-import { Page } from '@/shared/components/containers'
-import { Button, Container, Stack, Typography } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
+
 import { MotionContainer, varBounce } from '../components/animate'
+
+import { Page } from '@/shared/components/containers'
 import { PageNotFoundIllustration } from '@/shared/components/illustrations'
 
 const RootStyle = styled('div')(({ theme }) => ({

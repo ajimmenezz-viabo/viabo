@@ -1,9 +1,11 @@
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+import { useSnackbar } from 'notistack'
+
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { changeStatusCard } from '@/app/business/cards/services'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useToggleStatusCard = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

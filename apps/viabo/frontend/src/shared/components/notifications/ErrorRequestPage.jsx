@@ -1,6 +1,7 @@
-import React from 'react'
-import { Alert, AlertTitle, Box, Button } from '@mui/material'
 import PropTypes from 'prop-types'
+
+import { Alert, AlertTitle, Box, Button } from '@mui/material'
+
 import { ErrorRequestIllustration } from '@/shared/components/illustrations'
 
 ErrorRequestPage.propTypes = {

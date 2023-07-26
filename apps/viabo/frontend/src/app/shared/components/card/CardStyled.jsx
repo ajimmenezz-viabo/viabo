@@ -1,5 +1,6 @@
-import { styled } from '@mui/material/styles'
 import { Card } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
 import overlay from '@/shared/assets/img/overlay_2.jpg'
 
 const HEIGHT = 230

@@ -1,12 +1,14 @@
-import { useRef, useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
-import { alpha } from '@mui/material/styles'
-import { Box, Divider, IconButton, ListItemIcon, ListItemText, MenuItem, Tooltip, Typography } from '@mui/material'
-import { useUser } from '@/shared/hooks'
-import { MenuPopover } from '@/shared/components/containers'
-import { MyAvatar } from '@/shared/layout/dashboard/header'
-import { useLogout } from '@/app/authentication/hooks'
+import { useRef, useState, createElement } from 'react'
+
 import { LoadingButton } from '@mui/lab'
+import { Box, Divider, IconButton, ListItemIcon, ListItemText, MenuItem, Tooltip, Typography } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+import { Link as RouterLink } from 'react-router-dom'
+
+import { useLogout } from '@/app/authentication/hooks'
+import { MenuPopover } from '@/shared/components/containers'
+import { useUser } from '@/shared/hooks'
+import { MyAvatar } from '@/shared/layout/dashboard/header'
 
 const MENU_OPTIONS = [
   // {
@@ -82,7 +84,7 @@ export default function AccountPopover() {
             onClick={handleClose}
             sx={{ typography: 'body2', py: 1, px: 2.5 }}
           >
-            <ListItemIcon>{React.createElement(option.icon)}</ListItemIcon>
+            <ListItemIcon>{createElement(option.icon)}</ListItemIcon>
             <ListItemText> {option.label}</ListItemText>
           </MenuItem>
         ))}

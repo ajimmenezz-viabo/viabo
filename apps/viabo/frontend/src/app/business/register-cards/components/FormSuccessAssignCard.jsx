@@ -1,8 +1,9 @@
 import { Box, Button, Stack, Typography } from '@mui/material'
-import mail from '@/shared/assets/img/mail.svg'
-import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { Link as RouterLink } from 'react-router-dom'
+
+import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { PATH_AUTH } from '@/routes'
+import mail from '@/shared/assets/img/mail.svg'
 
 export default function FormSuccessAssignCard() {
   const user = useCardUserAssign(state => state.user)

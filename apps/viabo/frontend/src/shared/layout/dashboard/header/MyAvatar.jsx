@@ -1,6 +1,6 @@
-import React from 'react'
-import { Avatar } from '@/shared/components/avatar/Avatar'
 import { createAvatar } from '@theme/utils'
+
+import { Avatar } from '@/shared/components/avatar/Avatar'
 import { useUser } from '@/shared/hooks'
 
 export function MyAvatar({ ...other }) {

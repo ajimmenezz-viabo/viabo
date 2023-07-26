@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material'
+
 import { UploadIllustration } from '@/shared/components/illustrations'
 
 export default function BlockContent() {

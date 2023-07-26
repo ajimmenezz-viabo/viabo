@@ -1,5 +1,5 @@
-import { axios } from '@/shared/interceptors'
 import { CommerceProcessAdapter } from '@/app/business/commerce/adapters'
+import { axios } from '@/shared/interceptors'
 
 export const createNewCommerce = async commerce => {
   const { data } = await axios.post('/api/security/legalRepresentative/new', commerce)

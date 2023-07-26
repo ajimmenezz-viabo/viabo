@@ -1,6 +1,6 @@
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
-import { axios } from '@/shared/interceptors'
 import { createStore } from '@/app/shared/store'
+import { axios } from '@/shared/interceptors'
 
 const initialState = {
   step: CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION,

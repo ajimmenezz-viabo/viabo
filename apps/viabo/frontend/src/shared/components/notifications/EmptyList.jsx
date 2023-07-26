@@ -1,6 +1,7 @@
-import React from 'react'
-import { Box, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
+
+import { Box, Typography } from '@mui/material'
+
 import { EmptyDataIllustration } from '@/shared/components/illustrations'
 
 EmptyList.propTypes = {

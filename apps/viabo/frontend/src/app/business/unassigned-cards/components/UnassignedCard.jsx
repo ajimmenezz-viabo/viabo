@@ -1,7 +1,8 @@
 import { Checkbox, Stack, Typography } from '@mui/material'
-import { CardCVV, CardNumber, CardStyled } from '@/app/shared/components/card'
-import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
 import { motion } from 'framer-motion'
+
+import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
+import { CardCVV, CardNumber, CardStyled } from '@/app/shared/components/card'
 
 export default function UnassignedCard({ card }) {
   const setSelectedCard = useUnassignedCards(state => state.setSelectedCard)

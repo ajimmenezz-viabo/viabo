@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 import {
   convertCatalogToReactSelect,
   fCardNumberHidden,
@@ -5,7 +7,6 @@ import {
   fDateTime,
   getDecryptInfo
 } from '@/shared/utils'
-import { format } from 'date-fns'
 
 export const CardsAdapter = cards => {
   try {

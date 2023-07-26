@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
+
 import { Box } from '@mui/material'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 Image.propTypes = {
   disabledEffect: PropTypes.bool,

@@ -1,7 +1,9 @@
-import { useSettings } from '@theme/hooks'
-import { varFade } from '@/shared/components/animate'
-import { NAVBAR } from '@theme/overrides/options'
 import { useEffect } from 'react'
+
+import { useSettings } from '@theme/hooks'
+import { NAVBAR } from '@theme/overrides/options'
+
+import { varFade } from '@/shared/components/animate'
 
 export const useRightPanel = open => {
   const { themeDirection } = useSettings()

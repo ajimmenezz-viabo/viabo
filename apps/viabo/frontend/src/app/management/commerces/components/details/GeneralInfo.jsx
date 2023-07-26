@@ -1,5 +1,25 @@
+import PropTypes from 'prop-types'
+
 import { Grid, Typography } from '@mui/material'
+
 import { DetailsCardLayout } from './DetailsCardLayout'
+
+GeneralInfo.propTypes = {
+  expanded: PropTypes.any,
+  handleChange: PropTypes.any,
+  info: PropTypes.shape({
+    available: PropTypes.any,
+    branchesNumber: PropTypes.any,
+    commercialName: PropTypes.any,
+    employeesNumber: PropTypes.any,
+    fiscalName: PropTypes.any,
+    fiscalTypePerson: PropTypes.any,
+    rfc: PropTypes.any
+  }),
+  status: PropTypes.shape({
+    step: PropTypes.any
+  })
+}
 
 export function GeneralInfo({ info, expanded, handleChange, status }) {
   const available = Boolean(info?.available)

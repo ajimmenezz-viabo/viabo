@@ -1,10 +1,10 @@
-import { axios } from '@/shared/interceptors'
-import { CardAdapter, CardMainAdapter, CardMovementsAdapter, CardsAdapter } from '@/app/shared/adapters'
 import {
   CommerceCardTypesAdapter,
   CommerceTransitBalanceAdapter,
   CreateFundingOrderResponseAdapter
 } from '@/app/business/cards/adapters'
+import { CardAdapter, CardMainAdapter, CardMovementsAdapter, CardsAdapter } from '@/app/shared/adapters'
+import { axios } from '@/shared/interceptors'
 
 export const getCommerceCardTypes = async () => {
   const { data } = await axios.get('/api/payment-processors/of/commerce')

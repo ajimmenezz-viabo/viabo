@@ -1,14 +1,16 @@
-import { Modal } from '@/shared/components/modals'
-import { FormProvider } from '@/shared/components/form'
+import { useState } from 'react'
+
 import { Stack, Typography } from '@mui/material'
+import { stringToColor } from '@theme/utils'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
 import { MuiChipsInput } from 'mui-chips-input'
+import * as Yup from 'yup'
+
+import { SharedChargeKeysCardsAdapter } from '@/app/business/cards/adapters'
 import { useSharedChargeKeys } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { SharedChargeKeysCardsAdapter } from '@/app/business/cards/adapters'
-import { useState } from 'react'
-import { stringToColor } from '@theme/utils'
+import { FormProvider } from '@/shared/components/form'
+import { Modal } from '@/shared/components/modals'
 
 export function ModalSharedCharge({ open, onClose }) {
   const { mutate: shared, isLoading } = useSharedChargeKeys()

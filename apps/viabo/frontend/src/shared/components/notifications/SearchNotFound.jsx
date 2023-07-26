@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
+
 import { Paper, Typography } from '@mui/material'
+
 import { EmptyDataIllustration } from '@/shared/components/illustrations'
-import React from 'react'
 
 SearchNotFound.propTypes = {
   searchQuery: PropTypes.string

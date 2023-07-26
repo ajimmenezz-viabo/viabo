@@ -1,8 +1,9 @@
+import { useQuery } from '@tanstack/react-query'
 import { useSnackbar } from 'notistack'
+
 import { COMMERCE_KEYS } from '@/app/business/commerce/adapters'
 import { getCommerceProcess } from '@/app/business/commerce/services'
 import { getErrorAPI } from '@/shared/interceptors'
-import { useQuery } from '@tanstack/react-query'
 
 export const useFindCommerceProcess = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

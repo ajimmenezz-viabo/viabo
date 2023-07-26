@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode'
+
 import { axios } from '@/shared/interceptors'
 
 const isValidToken = accessToken => {

@@ -1,10 +1,18 @@
 import { useState } from 'react'
+
 import { Alert, Button, Grid, Stack, Typography } from '@mui/material'
 import { m } from 'framer-motion'
-import { AccountInfo, Documents, GeneralInfo, ServicesInfo } from '@/app/management/commerces/components/details'
-import { varFade } from '@/shared/components/animate'
-import { useCommerce } from '@/app/management/commerces/store'
 import { shallow } from 'zustand/shallow'
+
+import {
+  AccountInfo,
+  Commissions,
+  Documents,
+  GeneralInfo,
+  ServicesInfo
+} from '@/app/management/commerces/components/details'
+import { useCommerce } from '@/app/management/commerces/store'
+import { varFade } from '@/shared/components/animate'
 import { SelectDataIllustration } from '@/shared/components/illustrations'
 
 export function CommerceDetails() {
@@ -78,6 +86,12 @@ export function CommerceDetails() {
                   handleChange={handleChange}
                   status={commerce?.status}
                 />
+              </m.div>
+            </Grid>
+
+            <Grid item xs={12} xl={6}>
+              <m.div {...varFade().in}>
+                <Commissions expanded={expanded} handleChange={handleChange} />
               </m.div>
             </Grid>
           </Grid>

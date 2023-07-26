@@ -1,10 +1,12 @@
-import { FormProvider, RFTextField } from '@/shared/components/form'
-import { useFormik } from 'formik'
-import { Scrollbar } from '@/shared/components/scroll'
-import { Stack, Typography } from '@mui/material'
-import { LoadingButton } from '@mui/lab'
-import { Send } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
+
+import { Send } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
+import { Stack, Typography } from '@mui/material'
+import { useFormik } from 'formik'
+
+import { FormProvider, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 
 const MIN_AMOUNT = 0
 const MAX_AMOUNT = 2000

@@ -1,9 +1,11 @@
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { useState } from 'react'
+
 import { useIsFetching, useMutation, useQuery } from '@tanstack/react-query'
-import { useAuth } from '@/shared/hooks'
-import { getUserModules, signIn } from '@/app/authentication/services'
+
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
+import { getUserModules, signIn } from '@/app/authentication/services'
+import { useAuth } from '@/shared/hooks'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { setSession } from '@/shared/utils'
 
 export const useSignIn = (options = {}) => {

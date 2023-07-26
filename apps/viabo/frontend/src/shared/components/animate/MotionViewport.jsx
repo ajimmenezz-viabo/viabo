@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
-import { m } from 'framer-motion'
+
 import { Box } from '@mui/material'
-import { varContainer } from './index'
 import { useResponsive } from '@theme/hooks'
+import { m } from 'framer-motion'
+
+import { varContainer } from './index'
 
 MotionViewport.propTypes = {
   children: PropTypes.node.isRequired,

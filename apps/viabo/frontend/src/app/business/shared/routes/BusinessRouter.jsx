@@ -1,7 +1,9 @@
-import { Navigate } from 'react-router-dom'
-import { Lodable } from '@/shared/components/lodables'
 import { lazy } from 'react'
+
+import { Navigate } from 'react-router-dom'
+
 import { BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes/businessPaths'
+import { Lodable } from '@/shared/components/lodables'
 
 const CommerceCards = Lodable(lazy(() => import('@/app/business/cards/pages/CommerceCards')))
 const UnassignedCards = Lodable(lazy(() => import('@/app/business/unassigned-cards/pages/UnassignedCards')))

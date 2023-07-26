@@ -1,4 +1,5 @@
 import { CardHeader, Stack, Typography } from '@mui/material'
+
 import { StockCardMenu } from '@/app/management/stock-cards/components/stock-card/StockCardMenu'
 import { CardCVV, CardNumber, CardStyled } from '@/app/shared/components/card'
 

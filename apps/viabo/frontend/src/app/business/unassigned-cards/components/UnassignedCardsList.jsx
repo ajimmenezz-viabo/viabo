@@ -1,12 +1,14 @@
-import { Box, Stack, Zoom } from '@mui/material'
-import { UnassignedToolbar } from '@/app/business/unassigned-cards/components/UnassignedToolbar'
-import { Scrollbar } from '@/shared/components/scroll'
-import { CardsList } from '@/app/shared/components'
-import { UnassignedCard } from '@/app/business/unassigned-cards/components/index'
-import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
-import { useTheme } from '@mui/material/styles'
 import { useEffect, useMemo } from 'react'
+
+import { Box, Stack, Zoom } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { shallow } from 'zustand/shallow'
+
+import { UnassignedCard } from '@/app/business/unassigned-cards/components/index'
+import { UnassignedToolbar } from '@/app/business/unassigned-cards/components/UnassignedToolbar'
+import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
+import { CardsList } from '@/app/shared/components'
+import { Scrollbar } from '@/shared/components/scroll'
 
 export function UnassignedCardsList({ unassignedCards }) {
   const data = unassignedCards?.data

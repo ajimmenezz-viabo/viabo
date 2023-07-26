@@ -1,8 +1,10 @@
 import { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
-import { getErrorAPI } from '@/shared/interceptors'
+
 import { UNASSIGNED_CARDS_KEYS } from '@/app/business/unassigned-cards/adapters'
 import { getUnassignedCommerceCards } from '@/app/business/unassigned-cards/services'
+import { getErrorAPI } from '@/shared/interceptors'
 
 export const useFindUnassignedCards = (options = {}) => {
   const [customError, setCustomError] = useState(null)

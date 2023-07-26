@@ -1,5 +1,5 @@
-import { path } from '@/routes'
 import { BUSINESS_PERMISSIONS } from '@/app/business/shared/routes/businessPermissions'
+import { path } from '@/routes'
 
 export const BUSINESS_ROUTES_NAMES = {
   root: { route: 'commerce', name: 'Comercio' },

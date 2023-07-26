@@ -1,7 +1,8 @@
+import { Box } from '@mui/material'
 import { alpha, styled } from '@mui/material/styles'
 import { motion } from 'framer-motion'
+
 import { Logo } from '@/shared/components/images'
-import { Box } from '@mui/material'
 
 const RootStyle = styled('div')(({ theme }) => ({
   right: 0,

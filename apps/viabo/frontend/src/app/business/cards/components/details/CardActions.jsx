@@ -1,12 +1,14 @@
-import { Box, Divider, Stack } from '@mui/material'
-import { Scrollbar } from '@/shared/components/scroll'
-import { CurrencyExchangeOutlined, PriceChange } from '@mui/icons-material'
 import { lazy, useState } from 'react'
+
+import { CurrencyExchangeOutlined, PriceChange } from '@mui/icons-material'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { Box, Divider, Stack } from '@mui/material'
 import { useIsFetching } from '@tanstack/react-query'
+
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { Lodable } from '@/shared/components/lodables'
+import { Scrollbar } from '@/shared/components/scroll'
 
 const TransferSideBar = Lodable(lazy(() => import('@/app/business/cards/components/transfer/TransferSideBar')))
 const PaymentSidebar = Lodable(lazy(() => import('@/app/business/cards/components/send-payment/PaymentSidebar')))

@@ -1,9 +1,9 @@
-import { Page } from '@/shared/components/containers'
-import { ContainerPage } from '@/shared/components/containers/ContainerPage'
-import { HeaderPage } from '@/shared/components/layout'
 import { CommerceLayout } from '@/app/management/commerces/components'
 import { MANAGEMENT_PATHS, MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes'
 import { PATH_DASHBOARD } from '@/routes'
+import { Page } from '@/shared/components/containers'
+import { ContainerPage } from '@/shared/components/containers/ContainerPage'
+import { HeaderPage } from '@/shared/components/layout'
 
 export default function ManagementCommerces() {
   return (

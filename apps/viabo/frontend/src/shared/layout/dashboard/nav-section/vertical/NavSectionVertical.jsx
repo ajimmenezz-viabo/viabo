@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
-import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material'
+
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
+import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
 import { NavListRoot } from './NavList'
 import { ListItemTextStyle } from './style'
-import { useAuth, useGetQueryData } from '@/shared/hooks'
+
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
+import { useAuth, useGetQueryData } from '@/shared/hooks'
 
 export const ListSubheaderStyle = styled(props => <ListItemButton {...props} />)(({ theme }) => ({
   ...theme.typography.overline,

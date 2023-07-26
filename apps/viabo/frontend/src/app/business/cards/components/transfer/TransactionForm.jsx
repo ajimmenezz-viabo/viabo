@@ -68,6 +68,7 @@ export function TransactionForm({
         return setSubmitting(false)
       }
       const dataAdapted = CardTransactionsAdapter(cardOriginId, values)
+      console.log(dataAdapted)
       setTransactionLoading(true)
       transactionCard(dataAdapted, {
         onSuccess: () => {

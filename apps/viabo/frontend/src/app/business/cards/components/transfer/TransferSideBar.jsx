@@ -109,9 +109,10 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
           balance={isFundingCard ? mainCard?.balance : card?.balance}
           setCurrentBalance={setCurrentBalance}
           insufficient={insufficient}
-          cardOrigin={isFundingCard ? mainCard?.id : card?.id}
+          cardOriginId={isFundingCard ? mainCard?.id : card?.id}
           setOpen={setOpen}
           isBinCard={isFundingCard}
+          setTransactionLoading={setTransactionLoading}
         />
       )}
       {!isFundingCard && (

@@ -3,7 +3,7 @@ import { m } from 'framer-motion'
 import { cssStyles } from '@theme/utils'
 import { NAVBAR } from '@theme/overrides/options'
 
-export const SideBarStyle = styled(m.div)(({ theme, width }) => ({
+export const RightPanelStyle = styled(m.div)(({ theme, width }) => ({
   ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),
   top: 0,
   right: 0,

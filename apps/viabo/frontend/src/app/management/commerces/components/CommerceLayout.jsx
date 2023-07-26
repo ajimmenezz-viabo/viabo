@@ -1,45 +1,50 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { CommerceList } from '@/app/management/commerces/components/CommerceList'
 import { useCollapseDrawer } from '@theme/hooks'
 import { CommerceDetails } from '@/app/management/commerces/components/CommerceDetails'
+import { styled } from '@mui/material/styles'
+
+const Container = styled('div')({
+  display: 'flex',
+  height: '100vh'
+})
+
+const FixedDiv = styled(Box)({
+  flex: '1',
+  height: '100%',
+  overflow: 'auto',
+  scrollSnapType: 'x mandatory',
+  display: 'flex'
+})
+
+const ColumnsContainer = styled('div')({
+  display: 'flex',
+  flex: '1'
+})
+
+const Column = styled(props => <Stack {...props} />)(({ theme }) => ({
+  height: '100%',
+  overflow: 'auto',
+  scrollSnapAlign: 'start',
+  padding: theme.spacing(2)
+}))
 
 export const CommerceLayout = () => {
   const { isCollapse } = useCollapseDrawer()
 
   return (
-    <Grid container sx={{ height: '100vH' }}>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sm={6}
-        lg={isCollapse ? 4 : 5}
-        xl={3}
-        sx={theme => ({
-          borderRight: {
-            sm: `1px solid ${theme.palette.divider}`
-          },
-          borderRightStyle: { xs: 'none', sm: 'dashed!important' }
-        })}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <CommerceList />
-        </Box>
-      </Grid>
+    <Container>
+      <FixedDiv>
+        <ColumnsContainer>
+          <Column sx={{ minWidth: { xs: 350, md: 400 } }}>
+            <CommerceList />
+          </Column>
 
-      <Grid
-        item
-        xs={false}
-        sm={6}
-        md={6}
-        lg={isCollapse ? 8 : 7}
-        xl={9}
-        sx={{ px: 2, flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <CommerceDetails />
-        </Box>
-      </Grid>
-    </Grid>
+          <Column sx={{ flexGrow: 1, minWidth: { xs: 350, md: 400 } }}>
+            <CommerceDetails />
+          </Column>
+        </ColumnsContainer>
+      </FixedDiv>
+    </Container>
   )
 }

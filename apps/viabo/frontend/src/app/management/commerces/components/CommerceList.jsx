@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Box, InputAdornment, Pagination, Stack, TextField } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Scrollbar } from '@/shared/components/scroll'
 import CommerceCard from '@/app/management/commerces/components/CommerceCard'
 import { usePagination } from '@/shared/hooks'
 import { Search } from '@mui/icons-material'
@@ -15,7 +14,7 @@ import { Label } from '@/shared/components/form'
 import { getColorStatusCommerceById } from '@/app/management/commerces/services'
 import { searchByTerm } from '@/app/shared/utils'
 
-export function CommerceList({ minHeight }) {
+export function CommerceList() {
   const { data: commerces, isLoading: loadingCommerces, isError, error, refetch, isSuccess } = useFindCommerceList()
   const setCommerce = useCommerce(state => state.setCommerce)
   const { commerce: commerceSelected } = useCommerce(state => state, shallow)
@@ -88,7 +87,7 @@ export function CommerceList({ minHeight }) {
     setSearchResultStatus(filteredModels)
   }
   return (
-    <Stack sx={{ pr: { sm: 2 } }}>
+    <>
       {loadingCommerces && <RequestLoadingComponent />}
       {commerces?.length > 0 && (
         <>
@@ -141,35 +140,26 @@ export function CommerceList({ minHeight }) {
             <Box sx={{ flex: '1 1 auto', mb: { xs: 3 } }} />
             <Pagination count={count} page={page} onChange={handleChange} />
           </Box>
-          <Box sx={{ maxHeight: 1, minHeight: '100%', overflow: 'auto' }}>
-            <Scrollbar
-              sx={
-                {
-                  // height: 1,
-                  // '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' }
-                }
-              }
-            >
-              <Stack direction="column" spacing={2} sx={{ p: 2, cursor: 'pointer' }}>
-                {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
-                {_DATA?.currentData()?.map((commerce, index) => (
-                  <motion.div
-                    onClick={() => {
-                      setCommerce(commerce)
-                    }}
-                    key={index}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.8 }}
-                  >
-                    <CommerceCard commerce={commerce} selected={index === 0} />
-                  </motion.div>
-                ))}
-              </Stack>
-            </Scrollbar>
-          </Box>
+
+          <Stack direction="column" spacing={2}>
+            {_DATA?.currentData()?.length === 0 && <EmptyList pt={2.5} message={'Sin resultados '} />}
+            {_DATA?.currentData()?.map((commerce, index) => (
+              <motion.div
+                onClick={() => {
+                  setCommerce(commerce)
+                }}
+                key={index}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.8 }}
+                style={{ cursor: 'pointer' }}
+              >
+                <CommerceCard commerce={commerce} selected={index === 0} />
+              </motion.div>
+            ))}
+          </Stack>
         </>
       )}
       {commerces && commerces?.length === 0 && <EmptyList pt={2.5} message={'No hay comercios Registrados'} />}
-    </Stack>
+    </>
   )
 }

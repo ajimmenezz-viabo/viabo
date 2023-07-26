@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { Alert, Box, Button, Grid, Stack, Toolbar, Typography } from '@mui/material'
-import { Scrollbar } from '@/shared/components/scroll'
+import { Alert, Button, Grid, Stack, Typography } from '@mui/material'
 import { m } from 'framer-motion'
 import { AccountInfo, Documents, GeneralInfo, ServicesInfo } from '@/app/management/commerces/components/details'
 import { varFade } from '@/shared/components/animate'
@@ -20,88 +19,71 @@ export function CommerceDetails() {
     }
   }
 
-  const minHeight = 700
   return (
     <>
-      <Toolbar
-        sx={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 1
-        }}
+      <Stack
+        spacing={3}
+        direction={'row'}
+        justifyContent="space-between"
+        sx={{ width: 1, mb: 2 }}
+        alignItems={{ sm: 'center' }}
       >
-        <Stack
-          spacing={3}
-          direction={'row'}
-          justifyContent="space-between"
-          sx={{ width: 1 }}
-          alignItems={{ sm: 'center' }}
-        >
-          <Stack direction="row" spacing={1}>
-            <Typography variant="h5">Detalles</Typography>
-          </Stack>
-          {commerce && commerce?.status?.id === '2' && <Button variant="contained">Afiliación</Button>}
+        <Stack direction="row" spacing={1}>
+          <Typography variant="h5">Detalles</Typography>
         </Stack>
-      </Toolbar>
+        {commerce && commerce?.status?.id === '2' && <Button variant="contained">Afiliación</Button>}
+      </Stack>
+
       {commerce ? (
-        <Box sx={{ maxHeight: minHeight, minHeight: '100vh', overflow: 'auto' }}>
-          <Scrollbar
-            sx={
-              {
-                // height: 1,
-                // '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' }
-              }
-            }
-          >
-            <Grid container sx={{ p: 2 }} spacing={3}>
-              <Grid item xs={12} xl={6}>
-                <m.div {...varFade().in}>
-                  <AccountInfo
-                    account={commerce?.account}
-                    expanded={expanded}
-                    handleChange={handleChange}
-                    status={commerce?.status}
-                  />
-                </m.div>
-              </Grid>
-
-              <Grid item xs={12} xl={6}>
-                <m.div {...varFade().in}>
-                  <GeneralInfo
-                    info={commerce?.information}
-                    expanded={expanded}
-                    handleChange={handleChange}
-                    status={commerce?.status}
-                  />
-                </m.div>
-              </Grid>
-
-              <Grid item xs={12} xl={6}>
-                <m.div {...varFade().in}>
-                  <ServicesInfo
-                    services={commerce?.services}
-                    expanded={expanded}
-                    handleChange={handleChange}
-                    status={commerce?.status}
-                  />
-                </m.div>
-              </Grid>
-
-              <Grid item xs={12} xl={6}>
-                <m.div {...varFade().in}>
-                  <Documents
-                    documents={commerce?.documents}
-                    expanded={expanded}
-                    handleChange={handleChange}
-                    status={commerce?.status}
-                  />
-                </m.div>
-              </Grid>
+        <Stack>
+          <Grid container spacing={3}>
+            <Grid item xs={12} xl={6}>
+              <m.div {...varFade().in}>
+                <AccountInfo
+                  account={commerce?.account}
+                  expanded={expanded}
+                  handleChange={handleChange}
+                  status={commerce?.status}
+                />
+              </m.div>
             </Grid>
-          </Scrollbar>
-        </Box>
+
+            <Grid item xs={12} xl={6}>
+              <m.div {...varFade().in}>
+                <GeneralInfo
+                  info={commerce?.information}
+                  expanded={expanded}
+                  handleChange={handleChange}
+                  status={commerce?.status}
+                />
+              </m.div>
+            </Grid>
+
+            <Grid item xs={12} xl={6}>
+              <m.div {...varFade().in}>
+                <ServicesInfo
+                  services={commerce?.services}
+                  expanded={expanded}
+                  handleChange={handleChange}
+                  status={commerce?.status}
+                />
+              </m.div>
+            </Grid>
+
+            <Grid item xs={12} xl={6}>
+              <m.div {...varFade().in}>
+                <Documents
+                  documents={commerce?.documents}
+                  expanded={expanded}
+                  handleChange={handleChange}
+                  status={commerce?.status}
+                />
+              </m.div>
+            </Grid>
+          </Grid>
+        </Stack>
       ) : (
-        <Stack px={2} spacing={3} sx={{ height: '100%', width: '100%' }}>
+        <Stack spacing={3} sx={{ height: '100%', width: '100%' }}>
           <Alert variant="filled" severity="info">
             Debe seleccionar un comercio para ver sus detalles!
           </Alert>

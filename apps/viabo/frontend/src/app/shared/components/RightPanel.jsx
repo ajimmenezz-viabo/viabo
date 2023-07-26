@@ -1,6 +1,6 @@
 import { Backdrop, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { AnimatePresence } from 'framer-motion'
-import { SideBarStyle } from '@/app/shared/components/index'
+import { RightPanelStyle } from '@/app/shared/components/index'
 import { Close } from '@mui/icons-material'
 import { useRightPanel } from '@/app/shared/hooks'
 import PropTypes from 'prop-types'
@@ -23,7 +23,7 @@ export function RightPanel({ open = false, handleClose, title, children, titleEl
       <AnimatePresence>
         {open && (
           <>
-            <SideBarStyle {...varSidebar}>
+            <RightPanelStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
                 {titleElement || <Typography variant="h6">{title}</Typography>}
 
@@ -36,7 +36,7 @@ export function RightPanel({ open = false, handleClose, title, children, titleEl
 
               <Divider sx={{ borderStyle: 'dashed' }} />
               {children}
-            </SideBarStyle>
+            </RightPanelStyle>
           </>
         )}
       </AnimatePresence>

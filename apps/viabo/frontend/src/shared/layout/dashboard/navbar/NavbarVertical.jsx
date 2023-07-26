@@ -45,12 +45,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   }, [pathname])
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 1,
-        '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' }
-      }}
-    >
+    <>
       <Stack
         spacing={3}
         sx={{
@@ -66,10 +61,18 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         </Stack>
         {!isCollapse && <NavbarAccount isCollapse={isCollapse} />}
       </Stack>
-      <NavSectionVertical isCollapse={isCollapse} />
+      <Scrollbar
+        sx={{
+          height: 1,
+          overflowX: 'hidden',
+          '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' }
+        }}
+      >
+        <NavSectionVertical isCollapse={isCollapse} />
 
-      <Box sx={{ flexGrow: 1 }} />
-    </Scrollbar>
+        <Box sx={{ flexGrow: 1 }} />
+      </Scrollbar>
+    </>
   )
 
   return (

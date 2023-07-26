@@ -1,10 +1,11 @@
-import { motion } from 'framer-motion'
-import { Label } from '@/shared/components/form'
 import { Box } from '@mui/material'
+import { getAvatarColor } from '@theme/utils'
+import { motion } from 'framer-motion'
+
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { Label } from '@/shared/components/form'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { ErrorRequestPage } from '@/shared/components/notifications'
-import { getAvatarColor } from '@theme/utils'
 
 export function CommerceCardTypes({ cardTypes, isLoading, isError, refetch }) {
   const setCardTypeSelected = useCommerceDetailsCard(state => state.setCardTypeSelected)

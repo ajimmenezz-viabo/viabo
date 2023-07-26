@@ -1,5 +1,7 @@
+import { memo } from 'react'
+
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
+
 import {
   Avatar,
   Box,
@@ -11,12 +13,13 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import { BadgeStatus } from '@/shared/components/notifications'
-import { memo } from 'react'
+import { styled } from '@mui/material/styles'
+
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
-import { useUser } from '@/shared/hooks'
 import { BUSINESS_PERMISSIONS } from '@/app/business/shared/routes'
+import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
+import { BadgeStatus } from '@/shared/components/notifications'
+import { useUser } from '@/shared/hooks'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
   borderRadius: '8px!important',

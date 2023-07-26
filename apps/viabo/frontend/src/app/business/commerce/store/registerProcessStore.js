@@ -1,7 +1,8 @@
-import { PROCESS_LIST } from '@/app/business/commerce/services'
 import PropTypes from 'prop-types'
-import { axios } from '@/shared/interceptors'
+
+import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { createStore } from '@/app/shared/store'
+import { axios } from '@/shared/interceptors'
 
 export const propTypesStore = {
   actualProcess: PropTypes.string,

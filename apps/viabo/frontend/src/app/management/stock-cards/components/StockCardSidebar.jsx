@@ -1,12 +1,14 @@
-import { Backdrop, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { useEffect } from 'react'
-import { varFade } from '@/shared/components/animate'
-import { NAVBAR } from '@theme/overrides/options'
-import { useSettings } from '@theme/hooks'
+
 import { Close } from '@mui/icons-material'
+import { Backdrop, Divider, IconButton, Stack, Typography } from '@mui/material'
+import { useSettings } from '@theme/hooks'
+import { NAVBAR } from '@theme/overrides/options'
 import { AnimatePresence } from 'framer-motion'
+
 import { StockCardForm } from '@/app/management/stock-cards/components/StockCardForm'
 import { RightPanelStyle } from '@/app/shared/components'
+import { varFade } from '@/shared/components/animate'
 
 export function StockCardSidebar({ open, setOpen }) {
   const { themeDirection } = useSettings()

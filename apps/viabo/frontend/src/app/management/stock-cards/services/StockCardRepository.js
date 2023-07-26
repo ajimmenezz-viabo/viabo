@@ -1,6 +1,6 @@
-import { axios } from '@/shared/interceptors'
 import { AffiliatedCommercesAdapter } from '@/app/management/stock-cards/adapters'
 import { CardsAdapter } from '@/app/shared/adapters'
+import { axios } from '@/shared/interceptors'
 
 export const createNewStockCard = async card => {
   const { data } = await axios.post('/api/card/new', card)

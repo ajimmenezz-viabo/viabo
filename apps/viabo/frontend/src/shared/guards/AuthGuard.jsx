@@ -1,13 +1,16 @@
-import PropTypes from 'prop-types'
-import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth, useGetQueryData, useValidateUserPermissions } from '@/shared/hooks'
-import { PATH_AUTH } from '@/routes'
-import { LoadingLogo } from '@/shared/components/loadings'
 import { useEffect, useMemo } from 'react'
+
+import PropTypes from 'prop-types'
+
 import { useSettings } from '@theme/hooks'
+import { Navigate, useLocation } from 'react-router-dom'
+
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 import { BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
 import { MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes'
+import { PATH_AUTH } from '@/routes'
+import { LoadingLogo } from '@/shared/components/loadings'
+import { useAuth, useGetQueryData, useValidateUserPermissions } from '@/shared/hooks'
 
 AuthGuard.propTypes = {
   children: PropTypes.node

@@ -1,11 +1,13 @@
+import { useRef, useState } from 'react'
+
 import { Box, useTheme } from '@mui/material'
-import React, { useRef, useState } from 'react'
+import { alpha, styled } from '@mui/material/styles'
+import Slider from 'react-slick'
+
 import INTEGRATION from '@/shared/assets/img/integracion-tecnologica.png'
 import PAY from '@/shared/assets/img/movil-pay.png'
-import Slider from 'react-slick'
-import { alpha, styled } from '@mui/material/styles'
-import { Image } from '@/shared/components/images'
 import { CarouselDots } from '@/shared/components/carousel'
+import { Image } from '@/shared/components/images'
 
 const OverlayStyle = styled('div')(({ theme }) => ({
   top: 0,

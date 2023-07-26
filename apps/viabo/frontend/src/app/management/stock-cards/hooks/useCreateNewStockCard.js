@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+
 import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { createNewStockCard } from '@/app/management/stock-cards/services'
-import { toast } from 'react-toastify'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useCreateNewStockCard = (options = {}) => {

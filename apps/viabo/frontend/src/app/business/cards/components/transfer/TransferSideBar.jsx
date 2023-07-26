@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import { Avatar, Chip, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { TransactionForm } from '@/app/business/cards/components/transfer/TransactionForm'
-import { useGetQueryData } from '@/shared/hooks'
-import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
-import { fCurrency } from '@/shared/utils'
-import { RightPanel } from '@/app/shared/components'
-import { TransferToGlobalForm } from '@/app/business/cards/components/transfer/TransferToGlobalForm'
 import { stringAvatar } from '@theme/utils'
+
+import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
+import { TransactionForm } from '@/app/business/cards/components/transfer/TransactionForm'
+import { TransferToGlobalForm } from '@/app/business/cards/components/transfer/TransferToGlobalForm'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { RightPanel } from '@/app/shared/components'
+import { useGetQueryData } from '@/shared/hooks'
+import { fCurrency } from '@/shared/utils'
 
 export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   const card = useCommerceDetailsCard(state => state.card)

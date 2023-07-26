@@ -1,7 +1,7 @@
 import { alpha, styled } from '@mui/material/styles'
-import { m } from 'framer-motion'
-import { cssStyles } from '@theme/utils'
 import { NAVBAR } from '@theme/overrides/options'
+import { cssStyles } from '@theme/utils'
+import { m } from 'framer-motion'
 
 export const RightPanelStyle = styled(m.div)(({ theme, width }) => ({
   ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),

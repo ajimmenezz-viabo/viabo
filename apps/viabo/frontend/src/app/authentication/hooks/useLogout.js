@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { useAuth } from '@/shared/hooks'
+
 import { useMutation } from '@tanstack/react-query'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+
 import { logout } from '@/app/authentication/services'
+import { useAuth } from '@/shared/hooks'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useLogout = (options = {}) => {
   const [customError, setCustomError] = useState(null)

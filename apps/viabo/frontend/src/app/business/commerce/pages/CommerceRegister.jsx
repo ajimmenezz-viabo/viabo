@@ -1,10 +1,10 @@
-import { alpha, styled } from '@mui/material/styles'
 import { Box, Grid, Paper } from '@mui/material'
-import { RegisterProcess } from '@/app/business/commerce/components'
-import { Page } from '@/shared/components/containers'
-import React from 'react'
+import { alpha, styled } from '@mui/material/styles'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+
+import { RegisterProcess } from '@/app/business/commerce/components'
 import INTEGRATION from '@/shared/assets/img/integracion-tecnologica.png'
+import { Page } from '@/shared/components/containers'
 
 const OverlayStyle = styled('div')(({ theme }) => ({
   top: 0,

@@ -1,13 +1,15 @@
-import { RightPanel } from '@/app/shared/components'
-import { Collapse, IconButton, Stack, Typography } from '@mui/material'
-import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, RFSelect, RFTextField, RFUploadMultiFile } from '@/shared/components/form'
-import { useFormik } from 'formik'
-import { LoadingButton } from '@mui/lab'
+import { memo, useState } from 'react'
+
 import { Send } from '@mui/icons-material'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
-import { memo, useState } from 'react'
+import { LoadingButton } from '@mui/lab'
+import { Collapse, IconButton, Stack, Typography } from '@mui/material'
+import { useFormik } from 'formik'
+
+import { RightPanel } from '@/app/shared/components'
+import { FormProvider, RFSelect, RFTextField, RFUploadMultiFile } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 
 function TransactionReport({ open, setOpen, selectedMovement }) {
   const isIncome = selectedMovement?.type === 'ingreso'

@@ -1,16 +1,21 @@
 import { useEffect } from 'react'
+
 import PropTypes from 'prop-types'
-import { useLocation } from 'react-router-dom'
-import { styled, useTheme } from '@mui/material/styles'
+
 import { Box, Drawer, Stack } from '@mui/material'
-import { NavSectionVertical } from '../nav-section'
-import NavbarAccount from './NavbarAccount'
-import { NAVBAR } from '@theme/overrides/options'
+import { styled, useTheme } from '@mui/material/styles'
 import { useResponsive } from '@theme/hooks'
 import { useCollapseDrawer } from '@theme/hooks/useCollapseDrawer'
-import { Scrollbar } from '@/shared/components/scroll'
+import { NAVBAR } from '@theme/overrides/options'
 import { cssStyles } from '@theme/utils'
+import { useLocation } from 'react-router-dom'
+
+import NavbarAccount from './NavbarAccount'
+
+import { NavSectionVertical } from '../nav-section'
+
 import { Logo } from '@/shared/components/images'
+import { Scrollbar } from '@/shared/components/scroll'
 import CollapseButtonNew from '@/shared/layout/dashboard/navbar/CollapseButtonNew'
 
 const RootStyle = styled(Box)(({ theme }) => ({

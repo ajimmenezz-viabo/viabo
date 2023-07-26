@@ -1,9 +1,11 @@
-import { useSnackbar } from 'notistack'
+import { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
-import { getErrorAPI } from '@/shared/interceptors'
+import { useSnackbar } from 'notistack'
+
 import { MANAGEMENT_COMMERCES_KEYS } from '@/app/management/commerces/adapters'
 import { getCommerceList } from '@/app/management/commerces/services'
-import { useState } from 'react'
+import { getErrorAPI } from '@/shared/interceptors'
 
 export const useFindCommerceList = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

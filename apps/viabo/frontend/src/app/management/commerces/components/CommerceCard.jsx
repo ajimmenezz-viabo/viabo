@@ -1,12 +1,14 @@
 import { memo } from 'react'
-import { Box, Card, Stack, Typography } from '@mui/material'
-import { Avatar } from '@/shared/components/avatar'
+
 import { PendingTwoTone, Person, QueryBuilderTwoTone } from '@mui/icons-material'
+import { Box, Card, Stack, Typography } from '@mui/material'
 import { createAvatar } from '@theme/utils'
-import { Label } from '@/shared/components/form'
-import { useCommerce } from '@/app/management/commerces/store'
 import { shallow } from 'zustand/shallow'
+
 import { getColorStatusCommerceById } from '@/app/management/commerces/services'
+import { useCommerce } from '@/app/management/commerces/store'
+import { Avatar } from '@/shared/components/avatar'
+import { Label } from '@/shared/components/form'
 
 function CommerceCard({ commerce }) {
   const { commerce: selectedCommerce } = useCommerce(state => state, shallow)

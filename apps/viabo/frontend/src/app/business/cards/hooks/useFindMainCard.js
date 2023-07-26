@@ -1,10 +1,12 @@
 import { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { getMainCardCommerce } from '@/app/business/cards/services'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { toast } from 'react-toastify'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useFindMainCard = (cardTypeId, options = {}) => {
   const [customError, setCustomError] = useState(null)

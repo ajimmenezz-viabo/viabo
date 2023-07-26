@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import { Link as RouterLink } from 'react-router-dom'
+
 import { Box, Breadcrumbs, Link, Typography } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 
 SimpleBreadcrumbs.propTypes = {
   activeLast: PropTypes.bool,

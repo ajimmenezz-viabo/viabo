@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { styled } from '@mui/material/styles'
+
 import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useCollapseDrawer, useResponsive, useSettings } from '@theme/hooks'
+import { HEADER, NAVBAR } from '@theme/overrides/options'
 import { Outlet } from 'react-router-dom'
+
 import DashboardHeader from './header/DashboardHeader'
 import NavbarVertical from './navbar/NavbarVertical'
-import { HEADER, NAVBAR } from '@theme/overrides/options'
-import { useCollapseDrawer, useResponsive, useSettings } from '@theme/hooks'
 
 const MainStyle = styled('main', {
   shouldForwardProp: prop => prop !== 'collapseClick'

@@ -1,9 +1,11 @@
-import { IconButton, MenuItem, Tooltip } from '@mui/material'
-import { MenuPopover } from '@/shared/components/containers'
-import { AddBusiness, MoreVertTwoTone } from '@mui/icons-material'
 import { useState } from 'react'
-import { useAssignCardStore } from '@/app/management/stock-cards/store'
+
+import { AddBusiness, MoreVertTwoTone } from '@mui/icons-material'
+import { IconButton, MenuItem, Tooltip } from '@mui/material'
 import { useSnackbar } from 'notistack'
+
+import { useAssignCardStore } from '@/app/management/stock-cards/store'
+import { MenuPopover } from '@/shared/components/containers'
 
 export function StockCardMenu({ card }) {
   const isReadyToAssign = useAssignCardStore(state => state.isReadyToAssign)

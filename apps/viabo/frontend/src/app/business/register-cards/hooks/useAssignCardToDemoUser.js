@@ -1,6 +1,8 @@
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+
 import { useMutation } from '@tanstack/react-query'
+import { useSnackbar } from 'notistack'
+
 import { assignCardToDemoUser } from '@/app/business/register-cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 

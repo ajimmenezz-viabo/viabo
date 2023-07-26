@@ -1,5 +1,14 @@
+import PropTypes from 'prop-types'
+
 import { Grid, Typography } from '@mui/material'
+
 import { DetailsCardLayout } from './DetailsCardLayout'
+
+AccountInfo.propTypes = {
+  account: PropTypes.object,
+  expanded: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired
+}
 
 export function AccountInfo({ account, expanded, handleChange }) {
   return (

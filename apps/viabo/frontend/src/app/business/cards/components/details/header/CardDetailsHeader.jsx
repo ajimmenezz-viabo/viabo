@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Box, Button, CircularProgress, Divider, Stack, Switch, Toolbar, Typography } from '@mui/material'
-import { CardNumber } from '@/app/shared/components/card'
+
 import { PasswordTwoTone } from '@mui/icons-material'
-import { useToggleStatusCard } from '@/app/business/cards/hooks'
-import { CircularLoading } from '@/shared/components/loadings'
+import { Box, Button, CircularProgress, Divider, Stack, Switch, Toolbar, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useIsFetching } from '@tanstack/react-query'
+
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
+import { useToggleStatusCard } from '@/app/business/cards/hooks'
+import { CardNumber } from '@/app/shared/components/card'
+import { CircularLoading } from '@/shared/components/loadings'
 
 const IOSSwitch = styled(props => <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />)(
   ({ theme }) => ({

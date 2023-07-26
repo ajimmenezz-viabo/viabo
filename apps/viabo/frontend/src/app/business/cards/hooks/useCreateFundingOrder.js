@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { createFundingOrder } from '@/app/business/cards/services'
 import { toast } from 'react-toastify'
+
+import { createFundingOrder } from '@/app/business/cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useCreateFundingOrder = (options = {}) => {

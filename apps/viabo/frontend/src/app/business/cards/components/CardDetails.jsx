@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
+
 import { Alert, Grid, Stack } from '@mui/material'
-import { Scrollbar } from '@/shared/components/scroll'
-import { SelectDataIllustration } from '@/shared/components/illustrations'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { useCollapseDrawer } from '@theme/hooks'
+
 import {
   CardActions,
   CardAssignInfo,
@@ -10,11 +10,13 @@ import {
   CardCharge,
   CardMovements
 } from '@/app/business/cards/components/details'
+import { CardDetailsHeader } from '@/app/business/cards/components/details/header'
 import { useFindCardDetails } from '@/app/business/cards/hooks'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { SelectDataIllustration } from '@/shared/components/illustrations'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { ErrorRequestPage } from '@/shared/components/notifications'
-import { useCollapseDrawer } from '@theme/hooks'
-import { CardDetailsHeader } from '@/app/business/cards/components/details/header'
+import { Scrollbar } from '@/shared/components/scroll'
 
 export function CardDetails() {
   const card = useCommerceDetailsCard(state => state.card)

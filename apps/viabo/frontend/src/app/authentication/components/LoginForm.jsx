@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+
+import { AccountCircleTwoTone } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import { AlertTitle, Box, InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { FormProvider, RFPasswordField, RFTextField } from '@/shared/components/form'
-import { AccountCircleTwoTone } from '@mui/icons-material'
-import { MotionViewport } from '@/shared/components/animate'
+
 import { useSignIn } from '@/app/authentication/hooks'
-import { LoadingButton } from '@mui/lab'
-import { AlertWithFocus } from '@/shared/components/alerts'
 import ViaboLogo from '@/shared/assets/img/logo-big.png'
+import { AlertWithFocus } from '@/shared/components/alerts'
+import { MotionViewport } from '@/shared/components/animate'
+import { FormProvider, RFPasswordField, RFTextField } from '@/shared/components/form'
 
 export function LoginForm() {
   const { mutate: login, error, isError, isLoading, isSuccess, setCustomError } = useSignIn()

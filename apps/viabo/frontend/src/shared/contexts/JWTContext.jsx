@@ -1,11 +1,14 @@
 import { createContext, useEffect, useReducer } from 'react'
+
 import PropTypes from 'prop-types'
-import { isValidToken, setSession } from '@/shared/utils'
-import jwtDecode from 'jwt-decode'
-import { UseFindModulesByUser } from '@/app/authentication/hooks'
-import { axios } from '@/shared/interceptors'
+
 import { useQueryClient } from '@tanstack/react-query'
+import jwtDecode from 'jwt-decode'
+
+import { UseFindModulesByUser } from '@/app/authentication/hooks'
 import { resetAllStores } from '@/app/shared/store'
+import { axios } from '@/shared/interceptors'
+import { isValidToken, setSession } from '@/shared/utils'
 
 const initialState = {
   isAuthenticated: false,

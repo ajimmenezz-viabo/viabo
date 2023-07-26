@@ -1,5 +1,6 @@
-import { styled } from '@mui/material/styles'
 import { Card, Stack, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
 const RowStyle = styled('div')({

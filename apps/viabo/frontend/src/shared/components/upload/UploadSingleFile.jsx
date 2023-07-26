@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types'
+
+import { Close } from '@mui/icons-material'
+import { Box, IconButton } from '@mui/material'
+import { alpha, styled } from '@mui/material/styles'
 import isString from 'lodash/isString'
 import { useDropzone } from 'react-dropzone'
-import { alpha, styled } from '@mui/material/styles'
-import { Box, IconButton } from '@mui/material'
-import { Close } from '@mui/icons-material'
+
 import RejectionFiles from './RejectionFiles'
-import { Image } from '@/shared/components/images'
-import { UploadIllustration } from '@/shared/components/illustrations'
+
 import pdf from '@/shared/assets/img/pdf.png'
+import { UploadIllustration } from '@/shared/components/illustrations'
+import { Image } from '@/shared/components/images'
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
   outline: 'none',

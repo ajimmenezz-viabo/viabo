@@ -1,5 +1,8 @@
-import { Alert, Box, Card, Collapse, Stack, Typography } from '@mui/material'
+import PropTypes from 'prop-types'
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Alert, Box, Card, Collapse, Stack, Typography } from '@mui/material'
+
 import { DetailsComponents, SuccessIconDetails, WarningIconDetails } from './DetailsComponents'
 
 export function DetailsCardLayout({
@@ -64,4 +67,15 @@ export function DetailsCardLayout({
       </Collapse>
     </Card>
   )
+}
+
+DetailsCardLayout.propTypes = {
+  alertText: PropTypes.string,
+  available: PropTypes.bool,
+  children: PropTypes.node,
+  expanded: PropTypes.string,
+  expandedText: PropTypes.string,
+  handleChange: PropTypes.func,
+  headerText: PropTypes.string,
+  step: PropTypes.string
 }

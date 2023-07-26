@@ -1,11 +1,14 @@
-import PropTypes from 'prop-types'
-import { List } from '@mui/material'
-import SkeletonCardItem from '@/app/business/cards/components/sidebar/SkeletonCardItem'
-import CardItem from '@/app/business/cards/components/sidebar/CardItem'
-import { useTable } from '@/shared/hooks'
 import { useEffect } from 'react'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
+
+import PropTypes from 'prop-types'
+
+import { List } from '@mui/material'
 import { shallow } from 'zustand/shallow'
+
+import CardItem from '@/app/business/cards/components/sidebar/CardItem'
+import SkeletonCardItem from '@/app/business/cards/components/sidebar/SkeletonCardItem'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { useTable } from '@/shared/hooks'
 
 CardList.propTypes = {
   cards: PropTypes.array,

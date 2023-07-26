@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
-import { AnimatePresence, m } from 'framer-motion'
+
 import { Box, Dialog, Paper } from '@mui/material'
+import { AnimatePresence, m } from 'framer-motion'
+
 import { varFade } from './variants'
 
 DialogAnimate.propTypes = {

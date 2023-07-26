@@ -1,9 +1,11 @@
+import { useMemo } from 'react'
+
+import PropTypes from 'prop-types'
+
 import { createTheme, CssBaseline, styled, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { useSettings } from '@theme/hooks/useSettings'
-import { useMemo } from 'react'
-import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
 import { ComponentsOverrides } from '@theme/overrides/components'
-import PropTypes from 'prop-types'
+import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
 import { Bounce, ToastContainer } from 'react-toastify'
 
 const StyledToastContainer = styled(ToastContainer)(({ theme }) => ({

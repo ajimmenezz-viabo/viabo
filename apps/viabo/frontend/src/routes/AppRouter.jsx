@@ -1,12 +1,14 @@
-import { Navigate, useLocation, useRoutes } from 'react-router-dom'
-import { LoadableRoute } from '@/routes/LoadableRoute'
 import { lazy, useEffect } from 'react'
-import { DashboardLayout } from '@/shared/layout/dashboard'
+
+import { useSettings } from '@theme/hooks'
+import { Navigate, useLocation, useRoutes } from 'react-router-dom'
+
+import { BusinessRouter } from '@/app/business/shared/routes'
+import { ManagementRouter } from '@/app/management/shared/routes'
+import { LoadableRoute } from '@/routes/LoadableRoute'
 import { AuthGuard, GuestGuard } from '@/shared/guards'
 import { useAuth, useUser } from '@/shared/hooks'
-import { ManagementRouter } from '@/app/management/shared/routes'
-import { useSettings } from '@theme/hooks'
-import { BusinessRouter } from '@/app/business/shared/routes'
+import { DashboardLayout } from '@/shared/layout/dashboard'
 
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
 const RegisterCards = LoadableRoute(lazy(() => import('@/app/business/register-cards/pages/RegisterCards')))

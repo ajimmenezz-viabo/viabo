@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { isHTML } from '@/shared/utils'
 
 const axiosInstance = axios.create({

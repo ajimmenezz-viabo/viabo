@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode'
+
 import { fCardNumberHidden } from '@/shared/utils'
 
 export const DemoCardValidationResponseAdapter = dataResponse => {

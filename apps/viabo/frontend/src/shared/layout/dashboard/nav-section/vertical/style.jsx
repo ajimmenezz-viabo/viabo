@@ -1,5 +1,5 @@
-import { alpha, styled } from '@mui/material/styles'
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { alpha, styled } from '@mui/material/styles'
 import { ICON, NAVBAR } from '@theme/overrides/options/config'
 
 export const ListItemStyle = styled(ListItemButton, {

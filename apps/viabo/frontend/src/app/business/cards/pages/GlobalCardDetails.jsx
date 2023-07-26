@@ -1,17 +1,19 @@
 import { useEffect } from 'react'
+
+import { ReplyAll } from '@mui/icons-material'
+import { Box, Button, Grid, Stack } from '@mui/material'
+import { useCollapseDrawer } from '@theme/hooks'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+
+import { CardMovements } from '@/app/business/cards/components/details'
+import { GlobalCard } from '@/app/business/cards/components/global-card'
+import { FundingOrder } from '@/app/business/cards/components/toolbar-actions'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
+import { PATH_DASHBOARD } from '@/routes'
 import { Page } from '@/shared/components/containers'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { HeaderPage } from '@/shared/components/layout'
-import { PATH_DASHBOARD } from '@/routes'
-import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
-import { Box, Button, Grid, Stack } from '@mui/material'
-import { CardMovements } from '@/app/business/cards/components/details'
-import { useCollapseDrawer } from '@theme/hooks'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { ReplyAll } from '@mui/icons-material'
-import { GlobalCard } from '@/app/business/cards/components/global-card'
-import { FundingOrder } from '@/app/business/cards/components/toolbar-actions'
 
 export default function GlobalCardDetails() {
   const { isCollapse } = useCollapseDrawer()

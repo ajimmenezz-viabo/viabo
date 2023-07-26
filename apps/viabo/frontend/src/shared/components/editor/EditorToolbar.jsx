@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
-import { Quill } from 'react-quill'
 
 import RedoIcon from '@mui/icons-material/Redo'
 import UndoIcon from '@mui/icons-material/Undo'
+import { Quill } from 'react-quill'
+
 import EditorToolbarStyle from './EditorToolbarStyle'
 
 const FONT_FAMILY = ['Arial', 'Tahoma', 'Georgia', 'Impact', 'Verdana']

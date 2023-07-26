@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 import { getUserModules } from '@/app/authentication/services'
 

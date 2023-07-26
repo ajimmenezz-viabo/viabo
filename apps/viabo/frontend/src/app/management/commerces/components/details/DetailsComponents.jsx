@@ -1,6 +1,6 @@
-import { alpha, styled } from '@mui/material/styles'
-import { IconButton } from '@mui/material'
 import { CheckTwoTone, ClearTwoTone, Warning } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
+import { alpha, styled } from '@mui/material/styles'
 
 export const DetailsComponents = styled(props => {
   const { expand, ...other } = props

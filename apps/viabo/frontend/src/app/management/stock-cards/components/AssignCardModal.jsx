@@ -1,17 +1,19 @@
 import { useMemo, useState } from 'react'
+
+import { WarningAmberOutlined } from '@mui/icons-material'
+import { Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Stack, Typography } from '@mui/material'
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
-import { useGetQueryData } from '@/shared/hooks'
-import { Modal, ModalAlert } from '@/shared/components/modals'
-import { CardNumber } from '@/app/shared/components/card'
-import { useAssignCardStore } from '@/app/management/stock-cards/store'
+
 import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
-import { useAssignCards } from '@/app/management/stock-cards/hooks/useAssignCards'
 import { AssignCardsAdapter } from '@/app/management/stock-cards/adapters/assignCardsAdapter'
-import { WarningAmberOutlined } from '@mui/icons-material'
+import { useAssignCards } from '@/app/management/stock-cards/hooks/useAssignCards'
+import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { SHARED_CARD_KEYS } from '@/app/shared/adapters'
+import { CardNumber } from '@/app/shared/components/card'
+import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { Modal, ModalAlert } from '@/shared/components/modals'
+import { useGetQueryData } from '@/shared/hooks'
 
 export default function AssignCardModal() {
   const setOpenAssignCards = useAssignCardStore(state => state.setOpen)

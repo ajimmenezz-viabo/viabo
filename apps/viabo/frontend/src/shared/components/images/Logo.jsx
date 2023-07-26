@@ -1,5 +1,6 @@
-import { Box, useTheme } from '@mui/material'
 import PropTypes from 'prop-types'
+
+import { Box, useTheme } from '@mui/material'
 
 Logo.propTypes = {
   disabledLink: PropTypes.bool,

@@ -1,8 +1,9 @@
-import { RightPanel } from '@/app/shared/components'
+import { CreditCard } from '@mui/icons-material'
+import { Chip, Stack } from '@mui/material'
+
 import { FormAssignCards } from '@/app/business/unassigned-cards/components/FormAssignCards'
 import { useUnassignedCards } from '@/app/business/unassigned-cards/store'
-import { Chip, Stack } from '@mui/material'
-import { CreditCard } from '@mui/icons-material'
+import { RightPanel } from '@/app/shared/components'
 
 export function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
   const cardsSelected = useUnassignedCards(state => state.cards)

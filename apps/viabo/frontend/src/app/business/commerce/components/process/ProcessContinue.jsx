@@ -1,15 +1,17 @@
-import { Box, InputAdornment, Stack, TextField, Typography } from '@mui/material'
-import { motion } from 'framer-motion'
-import { LoadingButton } from '@mui/lab'
+import PropTypes from 'prop-types'
+
 import { EmailOutlined } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
+import { Box, InputAdornment, Stack, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { motion } from 'framer-motion'
 import * as Yup from 'yup'
-import FormSteps from '@/shared/assets/img/forms_steps.svg'
+
 import { useFindCommerceToken } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
-import PropTypes from 'prop-types'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { useSendValidationCode } from '@/app/business/shared/hooks'
+import FormSteps from '@/shared/assets/img/forms_steps.svg'
 
 ProcessContinue.propTypes = {
   store: PropTypes.shape(propTypesStore)

@@ -1,7 +1,8 @@
-import { useSnackbar } from 'notistack'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { useMutation } from '@tanstack/react-query'
+import { useSnackbar } from 'notistack'
+
 import { sendValidationCode } from '@/app/business/shared/services/ValidationUserRepository'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useSendValidationCode = (options = {}) => {
   const { enqueueSnackbar } = useSnackbar()

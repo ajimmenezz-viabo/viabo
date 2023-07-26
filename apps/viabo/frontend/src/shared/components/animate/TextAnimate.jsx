@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
-import { m } from 'framer-motion'
+
 import { Box } from '@mui/material'
+import { m } from 'framer-motion'
+
 import { varFade } from './variants'
 
 TextAnimate.propTypes = {

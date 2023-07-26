@@ -1,7 +1,8 @@
 import { Backdrop, Box } from '@mui/material'
-import { NAVBAR } from '@theme/overrides/options'
-import { CircularLoading } from '@/shared/components/loadings/CircularLoading'
 import { useCollapseDrawer } from '@theme/hooks'
+import { NAVBAR } from '@theme/overrides/options'
+
+import { CircularLoading } from '@/shared/components/loadings/CircularLoading'
 
 export function RequestLoading({ ...rest }) {
   const { isCollapse } = useCollapseDrawer()

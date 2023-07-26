@@ -1,5 +1,7 @@
 import { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
+
 import { MANAGEMENT_STOCK_CARDS_KEYS } from '@/app/management/stock-cards/adapters'
 import { getStockCards } from '@/app/management/stock-cards/services'
 import { getErrorAPI } from '@/shared/interceptors'

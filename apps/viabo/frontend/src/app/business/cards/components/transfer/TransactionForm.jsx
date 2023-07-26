@@ -1,15 +1,17 @@
-import { Scrollbar } from '@/shared/components/scroll'
-import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
-import { FieldArray, useFormik } from 'formik'
-import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
-import * as Yup from 'yup'
-import { Add, Delete, Send } from '@mui/icons-material'
 import { useEffect, useRef, useState } from 'react'
+
+import { Add, Delete, Send } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
+import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
+import { stringAvatar } from '@theme/utils'
+import { FieldArray, useFormik } from 'formik'
+import * as Yup from 'yup'
+
 import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
 import { useTransactionCard } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { stringAvatar } from '@theme/utils'
+import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 
 export function TransactionForm({
   cards,

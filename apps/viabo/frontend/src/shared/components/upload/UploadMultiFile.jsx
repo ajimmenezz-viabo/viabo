@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
-import { useDropzone } from 'react-dropzone'
-import { styled } from '@mui/material/styles'
+
 import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useDropzone } from 'react-dropzone'
+
 import BlockContent from './BlockContent'
-import RejectionFiles from './RejectionFiles'
 import MultiFilePreview from './MultiFilePreview'
+import RejectionFiles from './RejectionFiles'
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
   outline: 'none',

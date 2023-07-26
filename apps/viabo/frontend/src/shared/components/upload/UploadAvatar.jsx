@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types'
-import isString from 'lodash/isString'
-import { useDropzone } from 'react-dropzone'
+
+import { AddAPhotoRounded } from '@mui/icons-material'
 import { Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { AddAPhotoRounded } from '@mui/icons-material'
+import isString from 'lodash/isString'
+import { useDropzone } from 'react-dropzone'
+
 import RejectionFiles from './RejectionFiles'
+
 import { Image } from '@/shared/components/images'
 
 const RootStyle = styled('div')(({ theme }) => ({

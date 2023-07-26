@@ -1,14 +1,15 @@
-import { InputAdornment, Stack, Typography } from '@mui/material'
-import { FormProvider, RFTextField } from '@/shared/components/form'
 import { EmailOutlined, VerifiedUser } from '@mui/icons-material'
-import { MuiTelInput } from 'mui-tel-input'
 import { LoadingButton } from '@mui/lab'
-import * as Yup from 'yup'
+import { InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { Scrollbar } from '@/shared/components/scroll'
-import { useCardUserAssign } from '@/app/business/register-cards/store'
-import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
+import { MuiTelInput } from 'mui-tel-input'
+import * as Yup from 'yup'
+
 import { useRegisterDemoUser } from '@/app/business/register-cards/hooks'
+import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
+import { useCardUserAssign } from '@/app/business/register-cards/store'
+import { FormProvider, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 import { axios } from '@/shared/interceptors'
 
 export default function FormRegisterDemoUserCard() {

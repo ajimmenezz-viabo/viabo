@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import { Box, IconButton } from '@mui/material'
 
 CollapseButton.propTypes = {

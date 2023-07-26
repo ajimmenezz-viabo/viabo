@@ -1,6 +1,9 @@
-import PropTypes from 'prop-types'
 import { useMemo, useState } from 'react'
-import { styled } from '@mui/material/styles'
+
+import PropTypes from 'prop-types'
+
+import { Close, CloseFullscreen, OpenInFull } from '@mui/icons-material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Alert,
   Avatar,
@@ -15,17 +18,17 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { useResponsive } from '@theme/hooks'
-import { Editor } from '@/shared/components/editor'
-import { Close, CloseFullscreen, OpenInFull } from '@mui/icons-material'
-import LoadingButton from '@mui/lab/LoadingButton'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { useFormik } from 'formik'
-import { FormProvider } from '@/shared/components/form'
-import * as Yup from 'yup'
-import { useSendMessageCards } from '@/app/business/cards/hooks'
-import { SendMessageCardsAdapter } from '@/app/business/cards/adapters'
 import { stringAvatar } from '@theme/utils'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
+import { SendMessageCardsAdapter } from '@/app/business/cards/adapters'
+import { useSendMessageCards } from '@/app/business/cards/hooks'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { Editor } from '@/shared/components/editor'
+import { FormProvider } from '@/shared/components/form'
 
 const RootStyle = styled(Paper)(({ theme }) => ({
   right: 0,

@@ -1,7 +1,9 @@
-import PropTypes from 'prop-types'
-import { Helmet } from 'react-helmet-async'
 import { forwardRef } from 'react'
+
+import PropTypes from 'prop-types'
+
 import { Box } from '@mui/material'
+import { Helmet } from 'react-helmet-async'
 
 export const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => (
   <>

@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import PropTypes from 'prop-types'
+
 import { Box, CircularProgress, Divider, Link, Stack, Typography } from '@mui/material'
 import { MuiOtpInput } from 'mui-one-time-password-input'
-import mail from '@/shared/assets/img/mail.svg'
-import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
-import { matchIsNumeric } from '@/shared/utils'
+
 import { useFindCommerceToken } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST, PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
+import { propTypesStore } from '@/app/business/commerce/store'
 import { useSendValidationCode, useValidateCode } from '@/app/business/shared/hooks'
+import mail from '@/shared/assets/img/mail.svg'
+import { matchIsNumeric } from '@/shared/utils'
 
 ValidationCode.propTypes = {
   store: PropTypes.shape(propTypesStore)
@@ -35,7 +38,7 @@ function ValidationCode({ store }) {
     reset()
   }
 
-  const validateChar = (value, index) => matchIsNumeric(value)
+  const validateChar = value => matchIsNumeric(value)
 
   const handleComplete = value => {
     validateCode(

@@ -1,5 +1,6 @@
-import { fCurrency, fDateTime, getDecryptInfo } from '@/shared/utils'
 import { format } from 'date-fns'
+
+import { fCurrency, fDateTime, getDecryptInfo } from '@/shared/utils'
 
 export const CardMovementsAdapter = movements => {
   const decryptedMovements = getDecryptInfo(movements?.ciphertext, movements?.iv)

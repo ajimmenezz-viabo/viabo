@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
-import { closeSnackbar, SnackbarProvider } from 'notistack'
-import { alpha } from '@mui/material/styles'
-import { Box, IconButton, styled } from '@mui/material'
 
 import { Cancel, CheckCircle, Close, Warning } from '@mui/icons-material'
+import { Box, IconButton, styled } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 import { InfoIcon } from '@theme/overrides/components/CustomIcons'
+import { closeSnackbar, SnackbarProvider } from 'notistack'
 
 NotistackProvider.propTypes = {
   children: PropTypes.node

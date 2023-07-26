@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types'
+
+import { Close } from '@mui/icons-material'
 import { Backdrop, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { AnimatePresence } from 'framer-motion'
+
 import { RightPanelStyle } from '@/app/shared/components/index'
-import { Close } from '@mui/icons-material'
 import { useRightPanel } from '@/app/shared/hooks'
-import PropTypes from 'prop-types'
 
 RightPanel.propTypes = {
   open: PropTypes.bool,

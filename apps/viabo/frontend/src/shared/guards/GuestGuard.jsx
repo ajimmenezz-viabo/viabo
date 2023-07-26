@@ -1,9 +1,12 @@
-import PropTypes from 'prop-types'
-import { Navigate } from 'react-router-dom'
-import { useAuth, useGetQueryData } from '@/shared/hooks'
 import { useEffect, useMemo } from 'react'
+
+import PropTypes from 'prop-types'
+
 import { useSettings } from '@theme/hooks'
+import { Navigate } from 'react-router-dom'
+
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
+import { useAuth, useGetQueryData } from '@/shared/hooks'
 
 GuestGuard.propTypes = {
   children: PropTypes.node

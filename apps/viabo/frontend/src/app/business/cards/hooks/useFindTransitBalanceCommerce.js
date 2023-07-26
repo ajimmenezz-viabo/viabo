@@ -1,9 +1,11 @@
 import { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { getTransitBalance } from '@/app/business/cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
-import { toast } from 'react-toastify'
 
 export const useFindTransitBalanceCommerce = (cardTypeId, options = {}) => {
   const [customError, setCustomError] = useState(null)

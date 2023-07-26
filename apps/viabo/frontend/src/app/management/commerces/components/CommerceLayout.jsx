@@ -1,8 +1,9 @@
 import { Box, Stack } from '@mui/material'
-import { CommerceList } from '@/app/management/commerces/components/CommerceList'
-import { useCollapseDrawer } from '@theme/hooks'
-import { CommerceDetails } from '@/app/management/commerces/components/CommerceDetails'
 import { styled } from '@mui/material/styles'
+import { useCollapseDrawer } from '@theme/hooks'
+
+import { CommerceDetails } from '@/app/management/commerces/components/CommerceDetails'
+import { CommerceList } from '@/app/management/commerces/components/CommerceList'
 
 const Container = styled('div')({
   display: 'flex',

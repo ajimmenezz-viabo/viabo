@@ -1,15 +1,18 @@
+import { useMemo } from 'react'
+
 import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
+
+import { LoadingButton } from '@mui/lab'
 import { Alert, Box, Card, Grid, Link, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { documentList, documentTypes, PROCESS_LIST } from '@/app/business/commerce/services'
-import DocumentDropzone from '@/app/business/commerce/components/process/documentation/DocumentDropZone'
-import { LoadingButton } from '@mui/lab'
-import { useMemo } from 'react'
-import { CommerceUploadDocumentsAdapter } from '@/app/business/commerce/adapters'
 import { useSnackbar } from 'notistack'
-import { useDeleteDocuments, useUpdateCommerceProcess, useUploadDocuments } from '@/app/business/commerce/hooks'
+
+import { CommerceUploadDocumentsAdapter } from '@/app/business/commerce/adapters'
 import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
+import DocumentDropzone from '@/app/business/commerce/components/process/documentation/DocumentDropZone'
+import { useDeleteDocuments, useUpdateCommerceProcess, useUploadDocuments } from '@/app/business/commerce/hooks'
+import { documentList, documentTypes, PROCESS_LIST } from '@/app/business/commerce/services'
+import { propTypesStore } from '@/app/business/commerce/store'
 
 CommerceDocumentation.propTypes = {
   store: PropTypes.shape(propTypesStore)

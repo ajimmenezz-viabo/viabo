@@ -1,7 +1,9 @@
-import PropTypes from 'prop-types'
-import { motion } from 'framer-motion'
 import { forwardRef } from 'react'
+
+import PropTypes from 'prop-types'
+
 import { Box, IconButton } from '@mui/material'
+import { motion } from 'framer-motion'
 
 const IconButtonAnimate = forwardRef(({ children, size = 'medium', ...other }, ref) => (
   <AnimateWrap size={size}>

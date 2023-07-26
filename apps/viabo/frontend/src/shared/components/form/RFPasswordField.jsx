@@ -1,7 +1,8 @@
-import { Field } from 'formik'
-import { IconButton, InputAdornment, TextField } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useState } from 'react'
+
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
+import { Field } from 'formik'
 
 export function RFPasswordField({ name, InputProps, ...rest }) {
   const [showPassword, setShowPassword] = useState(false)

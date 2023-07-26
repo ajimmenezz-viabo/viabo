@@ -1,15 +1,17 @@
-import { Box, InputAdornment, Stack, Typography } from '@mui/material'
-import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { useEffect } from 'react'
+
 import { CardMembershipTwoTone, CreditCard } from '@mui/icons-material'
-import { Scrollbar } from '@/shared/components/scroll'
+import { LoadingButton } from '@mui/lab'
+import { Box, InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useCardUserAssign } from '@/app/business/register-cards/store'
-import { LoadingButton } from '@mui/lab'
-import creditCard from '@/shared/assets/img/credit-card.svg'
+
 import { useValidateDemoCard } from '@/app/business/register-cards/hooks'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
-import { useEffect } from 'react'
+import { useCardUserAssign } from '@/app/business/register-cards/store'
+import creditCard from '@/shared/assets/img/credit-card.svg'
+import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { Scrollbar } from '@/shared/components/scroll'
 
 export default function FormDemoCardValidation() {
   const setToken = useCardUserAssign(state => state.setToken)

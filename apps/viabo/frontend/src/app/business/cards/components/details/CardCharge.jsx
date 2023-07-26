@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { Box, Button, Card, Collapse, IconButton, Stack, Typography } from '@mui/material'
+
 import { Check, CopyAll, Mail, Receipt, Visibility, VisibilityOff } from '@mui/icons-material'
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { Box, Button, Card, Collapse, IconButton, Stack, Typography } from '@mui/material'
+
 import { ModalSharedCharge } from '@/app/business/cards/components/details/ModalSharedCharge'
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { copyToClipboard } from '@/shared/utils'
 
 export function CardCharge({ disabledExpand = false }) {

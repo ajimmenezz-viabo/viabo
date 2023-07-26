@@ -1,10 +1,12 @@
 import { useState } from 'react'
+
 import { Avatar, Card, Stack, Typography } from '@mui/material'
-import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
-import { DataTable } from '@/shared/components/dataTables'
-import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { useSnackbar } from 'notistack'
+
+import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { AssignCardTableToolbar } from '@/app/shared/components'
+import { DataTable } from '@/shared/components/dataTables'
+import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 
 export function StockCardTable({ isLoading, cards = [] }) {
   const isReadyToAssign = useAssignCardStore(state => state.isReadyToAssign)

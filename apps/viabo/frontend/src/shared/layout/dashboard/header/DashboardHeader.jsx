@@ -1,15 +1,16 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
-import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material'
-import { Menu } from '@mui/icons-material'
 
-import AccountPopover from './AccountPopover'
-import { ThemeMode } from '@/shared/layout/dashboard/header/ThemeMode'
-import { Logo } from '@/shared/components/images'
+import { Menu } from '@mui/icons-material'
+import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useOffSetTop, useResponsive } from '@theme/hooks'
 import { HEADER, NAVBAR } from '@theme/overrides/options'
 import { cssStyles } from '@theme/utils'
-import { useOffSetTop, useResponsive } from '@theme/hooks'
+
+import AccountPopover from './AccountPopover'
+
+import { Logo } from '@/shared/components/images'
+import { ThemeMode } from '@/shared/layout/dashboard/header/ThemeMode'
 
 const RootStyle = styled(AppBar, {
   shouldForwardProp: prop => prop !== 'isCollapse' && prop !== 'isOffset' && prop !== 'verticalLayout'

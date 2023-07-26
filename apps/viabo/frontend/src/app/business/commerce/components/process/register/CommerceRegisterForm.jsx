@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'react'
-import { useFormik } from 'formik'
+
+import PropTypes from 'prop-types'
+
+import { EmailOutlined, Visibility, VisibilityOff } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import {
   AlertTitle,
   Box,
@@ -12,17 +16,16 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import { EmailOutlined, Visibility, VisibilityOff } from '@mui/icons-material'
-import { commerceRegisterValidation } from '@/app/business/commerce/validations'
-import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { useFormik } from 'formik'
 import { MuiTelInput } from 'mui-tel-input'
 import { Link as RouterLink } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
-import { useRegisterCommerce } from '@/app/business/commerce/hooks'
-import { LoadingButton } from '@mui/lab'
-import { AlertWithFocus } from '@/shared/components/alerts'
+
 import { NewCommerceAdapter } from '@/app/business/commerce/adapters'
+import { useRegisterCommerce } from '@/app/business/commerce/hooks'
+import { PROCESS_LIST } from '@/app/business/commerce/services'
+import { propTypesStore } from '@/app/business/commerce/store'
+import { commerceRegisterValidation } from '@/app/business/commerce/validations'
+import { AlertWithFocus } from '@/shared/components/alerts'
 
 CommerceRegisterForm.propTypes = {
   store: PropTypes.shape(propTypesStore)

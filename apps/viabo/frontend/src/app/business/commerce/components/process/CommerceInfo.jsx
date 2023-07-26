@@ -1,13 +1,16 @@
+import { useMemo } from 'react'
+
+import PropTypes from 'prop-types'
+
+import { LoadingButton } from '@mui/lab'
 import { Box, Checkbox, FormControlLabel, MenuItem, Stack, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { useMemo } from 'react'
-import { getCommerceValidationByService } from '@/app/business/commerce/validations/commerceInfoValidation'
-import PropTypes from 'prop-types'
-import { propTypesStore } from '@/app/business/commerce/store'
-import { LoadingButton } from '@mui/lab'
-import { CARD_USES, PROCESS_LIST } from '@/app/business/commerce/services'
+
 import { CommerceUpdateAdapter } from '@/app/business/commerce/adapters/commerceUpdateAdapter'
 import { useUpdateCommerceProcess } from '@/app/business/commerce/hooks'
+import { CARD_USES, PROCESS_LIST } from '@/app/business/commerce/services'
+import { propTypesStore } from '@/app/business/commerce/store'
+import { getCommerceValidationByService } from '@/app/business/commerce/validations/commerceInfoValidation'
 
 CommerceInfo.propTypes = {
   store: PropTypes.shape(propTypesStore)

@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+
+import PropTypes from 'prop-types'
+
 import { Collapse, List } from '@mui/material'
+import { useLocation } from 'react-router-dom'
+
 import { NavItemRoot, NavItemSub } from './NavItem'
+
 import { getActive } from '../index'
 
 NavListRoot.propTypes = {

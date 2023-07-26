@@ -1,19 +1,21 @@
-import { Page } from '@/shared/components/containers'
-import { HeaderPage } from '@/shared/components/layout'
-import { ContainerPage } from '@/shared/components/containers/ContainerPage'
-import { StockCardSidebar, StockCardTable } from '@/app/management/stock-cards/components'
-import React, { lazy, useEffect, useState } from 'react'
-import { useSnackbar } from 'notistack'
-import { useFindAffiliatedCommerces, useFindStockCards } from '@/app/management/stock-cards/hooks'
-import { Button, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { lazy, useEffect, useState } from 'react'
+
 import { Add, AddBusinessTwoTone, Apps, FormatListBulleted } from '@mui/icons-material'
-import { useAssignCardStore } from '@/app/management/stock-cards/store'
-import { Lodable } from '@/shared/components/lodables'
+import { LoadingButton } from '@mui/lab'
+import { Button, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { useSnackbar } from 'notistack'
+
 import { MANAGEMENT_PATHS, MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes'
-import { PATH_DASHBOARD } from '@/routes'
+import { StockCardSidebar, StockCardTable } from '@/app/management/stock-cards/components'
+import { useFindAffiliatedCommerces, useFindStockCards } from '@/app/management/stock-cards/hooks'
+import { useAssignCardStore } from '@/app/management/stock-cards/store'
 import { CardsList } from '@/app/shared/components'
 import { useFindCardTypes } from '@/app/shared/hooks'
-import { LoadingButton } from '@mui/lab'
+import { PATH_DASHBOARD } from '@/routes'
+import { Page } from '@/shared/components/containers'
+import { ContainerPage } from '@/shared/components/containers/ContainerPage'
+import { HeaderPage } from '@/shared/components/layout'
+import { Lodable } from '@/shared/components/lodables'
 
 const AssignCardModal = Lodable(lazy(() => import('@/app/management/stock-cards/components/AssignCardModal')))
 

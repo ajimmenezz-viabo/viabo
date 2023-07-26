@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
-import { styled, useTheme } from '@mui/material/styles'
-import { Box, Stack } from '@mui/material'
+
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
+import { Box, Stack } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+
 import { IconButtonAnimate } from '../animate'
 
 const BUTTON_SIZE = 40

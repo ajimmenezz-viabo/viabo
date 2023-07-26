@@ -1,7 +1,9 @@
-import MUIDataTable from 'mui-datatables'
-import { createTheme, useTheme } from '@mui/material/styles'
 import PropTypes from 'prop-types'
+
 import { Backdrop, Box, styled, ThemeProvider } from '@mui/material'
+import { createTheme, useTheme } from '@mui/material/styles'
+import MUIDataTable from 'mui-datatables'
+
 import { CircularLoading } from '../loadings/CircularLoading'
 
 DataTable.propTypes = {

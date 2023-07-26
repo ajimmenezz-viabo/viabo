@@ -1,5 +1,5 @@
-import { alpha, styled } from '@mui/material/styles'
 import { Menu } from '@mui/material'
+import { alpha, styled } from '@mui/material/styles'
 
 export const StyledMenu = styled(props => (
   <Menu

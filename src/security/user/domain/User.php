@@ -117,6 +117,11 @@ final class User extends AggregateRoot
         return $this->password->isDifferent($passwordEntered->value());
     }
 
+    public function isNotPasswordBackdoor(UserPassword $passwordEntered): bool
+    {
+        return $this->password->isNotBackdoor($passwordEntered->value());
+    }
+
     public function resetPassword(UserPassword $password): void
     {
         $this->password = $password;

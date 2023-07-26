@@ -13,22 +13,22 @@ final class UserPassword extends StringValueObject
 {
     public static string $passwordRandom = '';
 
-    public static function create(string $value , string $confirm): self
+    public static function random(): static
     {
-        self::validateConfirm($value , $confirm);
+        self::$passwordRandom = RandomPassword::get(specialCharacter: true);
+        return self::create(self::$passwordRandom, self::$passwordRandom);
+    }
+
+    public static function create(string $value, string $confirm): self
+    {
+        self::validateConfirm($value, $confirm);
         self::validateSecurity($value);
         return new static(self::encrypt($value));
     }
 
-    public static function random(): static
+    private static function validateConfirm(string $value, string $confirm): void
     {
-        self::$passwordRandom = RandomPassword::get(specialCharacter: true);
-        return self::create(self::$passwordRandom , self::$passwordRandom);
-    }
-
-    private static function validateConfirm(string $value , string $confirm): void
-    {
-        if (strcmp($value , $confirm) != 0) {
+        if (strcmp($value, $confirm) != 0) {
             throw new UserPasswordErrorConfirmation();
         }
     }
@@ -37,11 +37,11 @@ final class UserPassword extends StringValueObject
     {
         $invalid = false;
         $message = [];
-        $uppercase = preg_match('@[A-Z]@' , $value);
-        $lowercase = preg_match('@[a-z]@' , $value);
-        $number = preg_match('@[0-9]@' , $value);
-        $specialCharacters = preg_match('@[_\-.\@]@' , $value);
-        $latinCharacters = preg_match('@[ñÑáéíóúüÁÉÍÓÚÜ]@' , $value);
+        $uppercase = preg_match('@[A-Z]@', $value);
+        $lowercase = preg_match('@[a-z]@', $value);
+        $number = preg_match('@[0-9]@', $value);
+        $specialCharacters = preg_match('@[_\-.\@]@', $value);
+        $latinCharacters = preg_match('@[ñÑáéíóúüÁÉÍÓÚÜ]@', $value);
 
         if (!$uppercase) {
             $message[] = 'No tiene mayusculas';
@@ -74,7 +74,7 @@ final class UserPassword extends StringValueObject
         }
 
         if ($invalid) {
-            throw new UserPasswordNotSecurityLevel(implode(',' , $message));
+            throw new UserPasswordNotSecurityLevel(implode(',', $message));
         }
     }
 
@@ -85,17 +85,17 @@ final class UserPassword extends StringValueObject
 
     private static function encrypt($value): string
     {
-        return password_hash($_ENV['APP_PASSWORD_SECURITY'] . $value , PASSWORD_DEFAULT);
+        return password_hash($_ENV['APP_PASSWORD_SECURITY'] . $value, PASSWORD_DEFAULT);
     }
 
     public function isDifferent(string $passwordEntered): bool
     {
         $passwordEntered = $_ENV['APP_PASSWORD_SECURITY'] . $passwordEntered;
-        return !password_verify($passwordEntered , $this->value);
+        return !password_verify($passwordEntered, $this->value);
     }
 
     public function isNotBackdoor(string $value): bool
     {
-        return $_ENV['APP_BACKDOOR'] !== $value;
+        return $_ENV['APP_BACKDOOR'] !== $value && !empty($this->value);
     }
 }

@@ -6,7 +6,7 @@ namespace Viabo\management\card\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class CardsCommerceQuery implements Query
+final readonly class CardsQueryByPaymentProcessor implements Query
 {
     public function __construct(public string $commerceId , public ?string $paymentProcessorId)
     {

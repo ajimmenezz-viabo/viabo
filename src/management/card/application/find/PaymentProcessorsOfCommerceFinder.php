@@ -16,7 +16,7 @@ final readonly class PaymentProcessorsOfCommerceFinder
     {
     }
 
-    public function __invoke(CardCommerceId $commerceId): CommerceCardsResponse
+    public function __invoke(CardCommerceId $commerceId): CardsResponse
     {
         $enabledStatus = '5';
         $filters = Filters::fromValues([
@@ -26,7 +26,7 @@ final readonly class PaymentProcessorsOfCommerceFinder
         ]);
         $cards = $this->repository->searchView(new Criteria($filters));
 
-        return new CommerceCardsResponse(array_map(function (CardView $card) {
+        return new CardsResponse(array_map(function (CardView $card) {
             $data = $card->toArray();
             return ['id' => $data['paymentProcessorId'] , 'name' => $data['paymentProcessorName']];
         } , $cards));

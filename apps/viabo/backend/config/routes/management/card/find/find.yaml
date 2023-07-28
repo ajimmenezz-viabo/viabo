@@ -8,9 +8,9 @@ find-enabled-cards-of-commerce:
   controller: Viabo\Backend\Controller\management\card\EnabledCommerceCardsFinderController
   methods: GET
 
-find-disabled-cards-of-commerce:
-  path: '/api/disabled-cards/commerce'
-  controller: Viabo\Backend\Controller\management\card\DisabledCommerceCardsFinderController
+find-cards-of-commerce:
+  path: '/api/cards/commerce'
+  controller: Viabo\Backend\Controller\management\card\CommerceCardsFinderController
   methods: GET
 
 find-card-information:

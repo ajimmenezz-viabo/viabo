@@ -10,13 +10,13 @@ use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class EnabledCommerceCardsQueryHandler implements QueryHandler
+final readonly class EnabledCardsQueryHandler implements QueryHandler
 {
-    public function __construct(private EnabledCommerceCardsFinder $finder)
+    public function __construct(private EnabledCardsFinder $finder)
     {
     }
 
-    public function __invoke(EnabledCommerceCardsQuery $query): Response
+    public function __invoke(EnabledCardsQuery $query): Response
     {
         $commerceId = new CardCommerceId($query->commerceId);
         $cardOwnerId = new CardOwnerId($query->userId);

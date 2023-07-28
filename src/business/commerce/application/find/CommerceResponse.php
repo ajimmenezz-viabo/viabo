@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class CommerceResponse implements Response
 {
-    public function __construct(public array $commerce)
+    public function __construct(public array $data)
     {
     }
 }

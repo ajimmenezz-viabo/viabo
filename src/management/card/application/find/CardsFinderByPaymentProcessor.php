@@ -11,7 +11,7 @@ use Viabo\management\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class CardsCommerceFinder
+final readonly class CardsFinderByPaymentProcessor
 {
     public function __construct(private CardRepository $repository)
     {

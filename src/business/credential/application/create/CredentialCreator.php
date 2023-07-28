@@ -50,7 +50,7 @@ final readonly class CredentialCreator
         $legalRepresentative = '';
         $data = $this->queryBus->ask(new FindCommerceQuery($commerceId->value() , $legalRepresentative));
 
-        if ($this->isInformal($data->commerce)) {
+        if ($this->isInformal($data->data)) {
             throw new CredentialCommerceInformal();
         }
     }

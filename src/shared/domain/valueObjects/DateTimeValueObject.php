@@ -10,7 +10,7 @@ abstract class DateTimeValueObject
 {
     public function __construct(protected ?string $value , protected $date = new DatePHP())
     {
-        $this->value = $this->validate($value);
+        $this->value = $this->setValue($value);
     }
 
     public static function todayDate(): static
@@ -30,7 +30,7 @@ abstract class DateTimeValueObject
         $this->date = new DatePHP();
     }
 
-    private function validate(?string $value): ?string
+    private function setValue(?string $value): ?string
     {
         if ($value === '0000-00-00 00:00:00') {
             $value = '';

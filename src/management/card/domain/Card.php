@@ -40,6 +40,7 @@ final class Card extends AggregateRoot
         private CardCommerceId         $commerceId ,
         private CardOwnerId            $ownerId ,
         private CardRecorderId         $recorderId ,
+        private CardAssignmentDate     $assignmentDate ,
         private CardRegisterDate       $registerDate ,
         private CardActive             $active
     )
@@ -74,6 +75,7 @@ final class Card extends AggregateRoot
             $cardCommerceId ,
             new CardOwnerId('') ,
             $cardRecorderId ,
+            new CardAssignmentDate(''),
             CardRegisterDate::todayDate() ,
             new CardActive('1')
         );
@@ -178,15 +180,14 @@ final class Card extends AggregateRoot
 
     private function updateBalance(mixed $value): CardBalance
     {
-
         return $this->balance->update($value);
-
     }
 
     public function updateOwner(CardOwnerId $ownerId , CardStatusId $statusId): void
     {
         $this->ownerId = $ownerId;
         $this->statusId = $statusId;
+        $this->assignmentDate = CardAssignmentDate::todayDate();
         $this->record(new CardOwnerUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
@@ -226,6 +227,7 @@ final class Card extends AggregateRoot
             'commerceId' => $this->commerceId->value() ,
             'ownerId' => $this->ownerId->value() ,
             'recorderId' => $this->recorderId->value() ,
+            'assignmentDate' => $this->assignmentDate->value() ,
             'register' => $this->registerDate->value() ,
             'active' => $this->active->value()
         ];

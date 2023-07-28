@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\CommerceQuery;
-use Viabo\management\card\application\find\CardsCommerceQuery;
+use Viabo\management\card\application\find\CardsQueryByPaymentProcessor;
 use Viabo\management\cardOperation\application\find\BalanceInTransactionQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -22,7 +22,7 @@ final readonly class CardTransactionsFinderOnCommerceController extends ApiContr
             $paymentProcessorId = $request->get('paymentProcessorId');
 
             $commerce = $this->ask(new CommerceQuery($tokenData['id']));
-            $cards = $this->ask(new CardsCommerceQuery($commerce->commerce['id'] , $paymentProcessorId));
+            $cards = $this->ask(new CardsQueryByPaymentProcessor($commerce->data['id'] , $paymentProcessorId));
             $balanceInTransaction = $this->ask(new BalanceInTransactionQuery($cards->data));
 
             return new JsonResponse($balanceInTransaction->total);

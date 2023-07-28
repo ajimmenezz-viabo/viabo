@@ -20,6 +20,7 @@
         <field name="commerceId" type="card_commerce_id" column="CommerceId"/>
         <embedded name="ownerId" class="CardOwnerId" use-column-prefix="false"/>
         <embedded name="recorderId" class="CardRecorderId" use-column-prefix="false"/>
+        <embedded name="assignmentDate" class="CardAssignmentDate" use-column-prefix="false"/>
         <embedded name="registerDate" class="CardRegisterDate" use-column-prefix="false"/>
         <embedded name="active" class="CardActive" use-column-prefix="false"/>
     </entity>

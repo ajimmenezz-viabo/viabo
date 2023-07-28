@@ -12,7 +12,7 @@ use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class EnabledCommerceCardsFinder
+final readonly class EnabledCardsFinder
 {
     public function __construct(private CardRepository $repository)
     {
@@ -23,7 +23,7 @@ final readonly class EnabledCommerceCardsFinder
         CardOwnerId            $ownerId ,
         CardPaymentProcessorId $paymentProcessorId ,
         string                 $userProfileId
-    ): CommerceCardsResponse
+    ): CardsResponse
     {
         $enabledStatus = '5';
         $filters = [
@@ -42,7 +42,7 @@ final readonly class EnabledCommerceCardsFinder
         $filters = Filters::fromValuesEmpty($filters);
         $cards = $this->repository->searchView(new Criteria($filters));
 
-        return new CommerceCardsResponse(array_map(function (CardView $card) {
+        return new CardsResponse(array_map(function (CardView $card) {
             return $card->toArray();
         } , $cards));
     }

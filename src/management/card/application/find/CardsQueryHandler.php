@@ -8,13 +8,13 @@ use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class DisabledCommerceCardsQueryHandler implements QueryHandler
+final readonly class CardsQueryHandler implements QueryHandler
 {
-    public function __construct(private DisabledCommerceCardsFinder $finder)
+    public function __construct(private CardsFinder $finder)
     {
     }
 
-    public function __invoke(DisabledCommerceCardsQuery $query): Response
+    public function __invoke(CardsQuery $query): Response
     {
         $commerceId = new CardCommerceId($query->commerceId);
         return $this->finder->__invoke($commerceId);

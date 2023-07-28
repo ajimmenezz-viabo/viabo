@@ -23,7 +23,7 @@ final readonly class MainCardInformationFinderController extends ApiController
             $paymentProcessorId = $request->get('paymentProcessorId');
 
             $data = $this->ask(new CommerceQuery($tokenData['id']));
-            $cardData = $this->ask(new MainCardIdQuery($data->commerce['id'], $paymentProcessorId));
+            $cardData = $this->ask(new MainCardIdQuery($data->data['id'], $paymentProcessorId));
             $credential = $this->ask(new CardCredentialQuery($cardData->data['cardId']));
             $data = $this->ask(new MainCardInformationQuery($cardData->data['cardId'] , $credential->data));
 

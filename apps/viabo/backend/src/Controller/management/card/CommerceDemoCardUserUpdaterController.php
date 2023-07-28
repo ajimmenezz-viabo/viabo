@@ -20,15 +20,15 @@ final readonly class CommerceDemoCardUserUpdaterController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $this->opensslDecrypt($request->toArray());
-            $cardId = [$tokenData['cardId']];
-            $this->dispatch(new UpdateCardDemoCommand($tokenData['cardId'], $data['cvv'], $data['expiration']));
-            $this->dispatch(new CreateCommerceUserCommand($tokenData['id'], $cardId));
-            $this->dispatch(new UpdateCardOwnerCommand($cardId, $tokenData['id']));
+            $cardId = [['id' => $tokenData['cardId'] , 'cvv' => $data['cvv']]];
+            $this->dispatch(new UpdateCardDemoCommand($tokenData['cardId'] , $data['cvv'] , $data['expiration']));
+            $this->dispatch(new CreateCommerceUserCommand($tokenData['id'] , $cardId));
+            $this->dispatch(new UpdateCardOwnerCommand($cardId , $tokenData['id']));
             $this->dispatch(new SendUserPasswordCommand($tokenData['id']));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage(), $exception->getCode());
+            return new JsonResponse($exception->getMessage() , $exception->getCode());
         }
     }
 }

@@ -9,13 +9,13 @@ use Viabo\management\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class CardsCommerceQueryHandler implements QueryHandler
+final readonly class CardsQueryHandlerByPaymentProcessor implements QueryHandler
 {
-    public function __construct(private CardsCommerceFinder $finder)
+    public function __construct(private CardsFinderByPaymentProcessor $finder)
     {
     }
 
-    public function __invoke(CardsCommerceQuery $query): Response
+    public function __invoke(CardsQueryByPaymentProcessor $query): Response
     {
         $commerceId = new CommerceId($query->commerceId);
         $paymentProcessorId = CardPaymentProcessorId::create($query->paymentProcessorId);

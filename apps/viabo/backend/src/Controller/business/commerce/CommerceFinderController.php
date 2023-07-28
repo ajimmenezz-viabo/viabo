@@ -19,7 +19,7 @@ final readonly class CommerceFinderController extends ApiController
             $this->validateSession();
             $data = $this->ask(new FindCommerceViewQuery($tokenData['id']));
 
-            return new JsonResponse($data->commerce);
+            return new JsonResponse($data->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

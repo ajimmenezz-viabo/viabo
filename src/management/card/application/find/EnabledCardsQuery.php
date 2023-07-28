@@ -6,7 +6,7 @@ namespace Viabo\management\card\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class EnabledCommerceCardsQuery implements Query
+final readonly class EnabledCardsQuery implements Query
 {
     public function __construct(
         public string  $commerceId ,

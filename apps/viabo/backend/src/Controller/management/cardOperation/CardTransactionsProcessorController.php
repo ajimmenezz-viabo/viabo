@@ -27,7 +27,7 @@ final readonly class CardTransactionsProcessorController extends ApiController
                 $data['originCardId'],
                 $data['destinationCards'],
                 $credential->data,
-                $commerce->commerce['legalRepresentativeEmail']
+                $commerce->data['legalRepresentativeEmail']
             ));
 
             return new JsonResponse();

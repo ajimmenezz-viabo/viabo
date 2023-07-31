@@ -1,1 +1,1 @@
-export * from './CardsCommerceRepository'
+export * from './CommerceCardsRepository'

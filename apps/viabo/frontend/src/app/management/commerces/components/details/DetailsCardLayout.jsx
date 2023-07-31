@@ -5,6 +5,17 @@ import { Alert, Box, Card, Collapse, Stack, Typography } from '@mui/material'
 
 import { DetailsComponents, SuccessIconDetails, WarningIconDetails } from './DetailsComponents'
 
+DetailsCardLayout.propTypes = {
+  alertText: PropTypes.string,
+  available: PropTypes.bool,
+  children: PropTypes.node,
+  expanded: PropTypes.string,
+  expandedText: PropTypes.string,
+  handleChange: PropTypes.func,
+  headerText: PropTypes.string,
+  step: PropTypes.string
+}
+
 export function DetailsCardLayout({
   children,
   expandedText,
@@ -20,7 +31,7 @@ export function DetailsCardLayout({
   return (
     <Card
       sx={theme => ({
-        p: isExpanded ? 5 : 3,
+        p: 3,
         border: isExpanded ? 3 : 0,
         borderColor: isExpanded
           ? theme.palette.mode === 'dark'
@@ -67,15 +78,4 @@ export function DetailsCardLayout({
       </Collapse>
     </Card>
   )
-}
-
-DetailsCardLayout.propTypes = {
-  alertText: PropTypes.string,
-  available: PropTypes.bool,
-  children: PropTypes.node,
-  expanded: PropTypes.string,
-  expandedText: PropTypes.string,
-  handleChange: PropTypes.func,
-  headerText: PropTypes.string,
-  step: PropTypes.string
 }

@@ -31,6 +31,7 @@ export const CardsAdapter = cards => {
           ownerEmail,
           recorderId,
           recorderName,
+          assignmentDate,
           active
         } = card
 
@@ -50,9 +51,12 @@ export const CardsAdapter = cards => {
           },
           assignUser: {
             id: ownerId,
-            name: ownerName,
+            name: ownerName === '' ? '-' : ownerName,
             phone: ownerPhone,
-            email: ownerEmail
+            email: ownerEmail,
+            dateTime: assignmentDate === '' ? '-' : fDateTime(assignmentDate),
+            date: assignmentDate === '' ? '-' : format(new Date(register), 'dd MMM yyyy'),
+            time: assignmentDate === '' ? '-' : format(new Date(register), 'p')
           },
           staffRegister: {
             id: recorderId,

@@ -6,7 +6,7 @@ import { BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes/businessPath
 import { Lodable } from '@/shared/components/lodables'
 
 const CommerceCards = Lodable(lazy(() => import('@/app/business/cards/pages/CommerceCards')))
-const UnassignedCards = Lodable(lazy(() => import('@/app/business/unassigned-cards/pages/UnassignedCards')))
+const AllCommerceCards = Lodable(lazy(() => import('@/app/business/all-commerce-cards/pages/AllCommerceCards')))
 const GlobalCard = Lodable(lazy(() => import('@/app/business/cards/pages/GlobalCardDetails')))
 
 export const BusinessRouter = {
@@ -19,7 +19,7 @@ export const BusinessRouter = {
     },
     {
       path: BUSINESS_ROUTES_NAMES.unassignedCards.route,
-      element: <UnassignedCards />
+      element: <AllCommerceCards />
     },
     {
       path: BUSINESS_ROUTES_NAMES.globalCard.route,

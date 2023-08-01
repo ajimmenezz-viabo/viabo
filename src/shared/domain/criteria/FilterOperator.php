@@ -33,4 +33,9 @@ final class FilterOperator extends StringValueObject
         return $this->value === 'LIKE' || $this->value === 'NOT LIKE';
     }
 
+    public function isTypeEndWith(): bool
+    {
+        return $this->value === 'END_WITH';
+    }
+
 }

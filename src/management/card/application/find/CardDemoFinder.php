@@ -20,7 +20,7 @@ final readonly class CardDemoFinder
     public function __invoke(CardNumber $cardNumber): CardResponse
     {
         $filters = Filters::fromValues([
-            ['field' => 'number' , 'operator' => 'like' , 'value' => $cardNumber->value()]
+            ['field' => 'number' , 'operator' => 'end_with' , 'value' => $cardNumber->value()]
         ]);
         $card = $this->repository->searchCriteria(new Criteria($filters));
 

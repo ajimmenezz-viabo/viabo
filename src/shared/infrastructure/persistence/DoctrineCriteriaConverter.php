@@ -98,6 +98,10 @@ final class DoctrineCriteriaConverter
             return Comparison::IN;
         }
 
+        if ($filter->getOperator()->isTypeEndWith()) {
+            return Comparison::ENDS_WITH;
+        }
+
         return $filter->getOperator()->value();
     }
 }

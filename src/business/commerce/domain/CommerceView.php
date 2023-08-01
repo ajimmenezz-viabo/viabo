@@ -68,7 +68,7 @@ final class CommerceView extends AggregateRoot
             'registerStep' => $this->registerStep ,
             'services' => empty($this->services) ? [] : json_decode("[$this->services]") ,
             'documents' => empty($this->documents) ? [] : json_decode("[$this->documents]") ,
-            'commissions' => empty($this->commissions) ? [] : json_decode("[$this->commissions]") ,
+            'commissions' => empty($this->commissions) ? null : json_decode("$this->commissions") ,
             'active' => $this->active
         ];
     }

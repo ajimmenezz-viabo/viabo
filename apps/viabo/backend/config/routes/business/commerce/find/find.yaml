@@ -1,14 +1,14 @@
-commerce-finder:
+finder-commerce:
   path: '/api/commerce/legal-representative'
   controller: Viabo\Backend\Controller\business\commerce\CommerceFinderController
   methods: GET
 
-new-commerces-finder:
-  path: '/api/new-commerces'
-  controller: Viabo\Backend\Controller\business\commerce\NewCommercesFinderController
+finder-commerces:
+  path: '/api/commerces'
+  controller: Viabo\Backend\Controller\business\commerce\CommercesFinderController
   methods: GET
 
-commerce-affiliates-finder:
+finder-commerce-affiliates:
   path: '/api/commerces/affiliates'
   controller: Viabo\Backend\Controller\business\commerce\CommerceAffiliatesFinderController
   methods: GET

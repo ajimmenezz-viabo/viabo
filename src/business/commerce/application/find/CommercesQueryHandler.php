@@ -7,13 +7,13 @@ namespace Viabo\business\commerce\application\find;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class FindNewCommercesQueryHandler implements QueryHandler
+final readonly class CommercesQueryHandler implements QueryHandler
 {
-    public function __construct(private NewCommercesFinder $finder)
+    public function __construct(private CommercesFinder $finder)
     {
     }
 
-    public function __invoke(FindNewCommercesQuery $command): Response
+    public function __invoke(CommercesQuery $command): Response
     {
         return ($this->finder)();
     }

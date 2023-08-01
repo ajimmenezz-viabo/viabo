@@ -19,7 +19,9 @@ export default function AllCommerceCards() {
 
   const [view, setView] = useState('1')
   const handleChange = (event, newValue) => {
-    setView(newValue)
+    if (newValue) {
+      setView(newValue)
+    }
   }
 
   const rows = useCommerceCards(state => state.rows)

@@ -13,7 +13,8 @@ DetailsCardLayout.propTypes = {
   expandedText: PropTypes.string,
   handleChange: PropTypes.func,
   headerText: PropTypes.string,
-  step: PropTypes.string
+  step: PropTypes.string,
+  showIfNotAvailable: PropTypes.bool
 }
 
 export function DetailsCardLayout({
@@ -24,7 +25,8 @@ export function DetailsCardLayout({
   headerText,
   alertText,
   available = true,
-  step
+  step,
+  showIfNotAvailable = false
 }) {
   const isExpanded = Boolean(expanded === expandedText)
 
@@ -65,7 +67,7 @@ export function DetailsCardLayout({
         </DetailsComponents>
       </Stack>
       <Collapse in={isExpanded} timeout="auto">
-        {!available ? (
+        {!available && !showIfNotAvailable ? (
           <Alert sx={{ mt: 3 }} severity="warning" variant={'filled'}>
             <Typography variant="body2">{alertText}</Typography>
             <Typography variant="caption">

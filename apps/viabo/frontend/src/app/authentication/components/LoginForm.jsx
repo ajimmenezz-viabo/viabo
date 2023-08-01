@@ -71,6 +71,9 @@ export function LoginForm() {
               placeholder={'usuario@dominio.com'}
               type={'email'}
               fullWidth
+              InputLabelProps={{
+                shrink: true
+              }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -80,7 +83,16 @@ export function LoginForm() {
               }}
             />
 
-            <RFPasswordField disabled={loading} name="password" label="Contraseña" placeholder={'********'} fullWidth />
+            <RFPasswordField
+              InputLabelProps={{
+                shrink: true
+              }}
+              disabled={loading}
+              name="password"
+              label="Contraseña"
+              placeholder={'********'}
+              fullWidth
+            />
 
             <LoadingButton
               loading={loading}

@@ -28,6 +28,15 @@ const DocumentsAdapter = documents =>
     }
   }) ?? []
 
+const CommisionsAdapter = comissions => ({
+  available: Boolean(comissions),
+  speiInCarnet: parseFloat(comissions?.SpeiInCarnet ?? '0.0'),
+  speiOutCarnet: parseFloat(comissions?.SpeiOutCarnet ?? '0.0'),
+  speiInMasterCard: parseFloat(comissions?.SpeiInMasterCard ?? '0.0'),
+  speiOutMasterCard: parseFloat(comissions?.SpeiOutMasterCard ?? '0.0'),
+  viaboPay: parseFloat(comissions?.Pay ?? '0.0')
+})
+
 export const ManagementCommercesAdapter = commerces =>
   commerces.map((commerce, index) => {
     const {
@@ -50,7 +59,8 @@ export const ManagementCommercesAdapter = commerces =>
       registerStep,
       statusName,
       services,
-      documents
+      documents,
+      commissions
     } = commerce
 
     return {
@@ -86,6 +96,7 @@ export const ManagementCommercesAdapter = commerces =>
         name: statusName,
         step: PROCESS_LIST_STEPS.find(step => step.step.toString() === registerStep)?.name ?? ''
       },
-      documents: DocumentsAdapter(documents)
+      documents: DocumentsAdapter(documents),
+      commissions: CommisionsAdapter(commissions)
     }
   })

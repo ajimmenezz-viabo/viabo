@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { ALL_COMMERCE_CARDS_KEYS } from '@/app/business/all-commerce-cards/adapters'
 import { assignCards } from '@/app/business/all-commerce-cards/services'
+import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useAssignCards = (options = {}) => {

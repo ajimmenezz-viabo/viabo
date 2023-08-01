@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import { ClearTwoTone, Done } from '@mui/icons-material'
-import { Avatar, Card, Stack, Typography } from '@mui/material'
+import { Card, Stack, Typography } from '@mui/material'
 import { toast } from 'react-toastify'
 
 import { useCommerceCards } from '@/app/business/all-commerce-cards/store'
@@ -55,21 +55,7 @@ export function CommerceCardsTable({ isLoading, cards = [], rows = [] }) {
           const row = cards[dataIndex]
           return (
             <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-              <Avatar
-                sx={theme => ({
-                  width: 45,
-                  height: 45,
-                  color: theme.palette.primary.contrastText,
-                  backgroundColor: theme.palette.primary.light
-                })}
-              >
-                {row?.cardType === 'Carnet' ? (
-                  <CarnetLogo sx={{ width: 30 }} color={'white'} />
-                ) : (
-                  <MasterCardLogo sx={{ width: 30 }} />
-                )}
-              </Avatar>
-              <Typography variant="subtitle2">{row?.cardType}</Typography>
+              {row?.cardType === 'Carnet' ? <CarnetLogo sx={{ width: 25 }} /> : <MasterCardLogo sx={{ width: 25 }} />}
             </Stack>
           )
         }
@@ -118,7 +104,7 @@ export function CommerceCardsTable({ isLoading, cards = [], rows = [] }) {
           return (
             <Stack>
               <Typography variant="subtitle2">{row?.assignUser?.date}</Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography variant="body2" fontSize={'12px'} sx={{ color: 'text.secondary' }}>
                 {row?.assignUser?.time}
               </Typography>
             </Stack>
@@ -136,7 +122,7 @@ export function CommerceCardsTable({ isLoading, cards = [], rows = [] }) {
           return (
             <Stack>
               <Typography variant="subtitle2">{row?.registerDate}</Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography variant="body2" fontSize={'12px'} sx={{ color: 'text.secondary' }}>
                 {row?.registerTime}
               </Typography>
             </Stack>
@@ -175,6 +161,9 @@ export function CommerceCardsTable({ isLoading, cards = [], rows = [] }) {
             setAllCards(selectedCards)
             setIndexCards(rowsSelected)
           },
+          setTableProps: () => ({
+            size: 'small'
+          }),
           customToolbarSelect: selectedRows => <AssignCardTableToolbar handleAssign={handleValidateCards} />
         }}
       />

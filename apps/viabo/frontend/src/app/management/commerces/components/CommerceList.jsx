@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { shallow } from 'zustand/shallow'
 
 import CommerceCard from '@/app/management/commerces/components/CommerceCard'
-import { useFindCommerceList } from '@/app/management/commerces/hooks/useFindCommerceList'
+import { useFindCommerceList } from '@/app/management/commerces/hooks'
 import { getColorStatusCommerceById } from '@/app/management/commerces/services'
 import { useCommerce } from '@/app/management/commerces/store'
 import { searchByTerm } from '@/app/shared/utils'

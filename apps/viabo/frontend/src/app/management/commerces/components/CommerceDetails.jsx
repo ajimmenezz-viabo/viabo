@@ -91,7 +91,7 @@ export function CommerceDetails() {
 
             <Grid item xs={12} xl={6}>
               <m.div {...varFade().in}>
-                <Commissions expanded={expanded} handleChange={handleChange} />
+                <Commissions expanded={expanded} handleChange={handleChange} commerce={commerce} />
               </m.div>
             </Grid>
           </Grid>

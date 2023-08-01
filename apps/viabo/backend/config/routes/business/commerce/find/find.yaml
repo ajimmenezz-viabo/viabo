@@ -1,6 +1,6 @@
-finder-commerce:
+finder-commerce-to-register:
   path: '/api/commerce/legal-representative'
-  controller: Viabo\Backend\Controller\business\commerce\CommerceFinderController
+  controller: Viabo\Backend\Controller\business\commerce\CommerceFinderByLegalRepresentativeController
   methods: GET
 
 finder-commerces:
@@ -11,4 +11,9 @@ finder-commerces:
 finder-commerce-affiliates:
   path: '/api/commerces/affiliates'
   controller: Viabo\Backend\Controller\business\commerce\CommerceAffiliatesFinderController
+  methods: GET
+
+finder-commerce:
+  path: '/api/commerce/{commerceId}'
+  controller: Viabo\Backend\Controller\business\commerce\CommerceFinderController
   methods: GET

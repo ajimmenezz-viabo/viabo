@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\cardOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\card\application\find\CardsQueryByPaymentProcessor;
 use Viabo\management\cardOperation\application\find\BalanceInTransactionQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
@@ -21,7 +21,7 @@ final readonly class CardTransactionsFinderOnCommerceController extends ApiContr
             $this->validateSession();
             $paymentProcessorId = $request->get('paymentProcessorId');
 
-            $commerce = $this->ask(new CommerceQuery($tokenData['id']));
+            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $cards = $this->ask(new CardsQueryByPaymentProcessor($commerce->data['id'] , $paymentProcessorId));
             $balanceInTransaction = $this->ask(new BalanceInTransactionQuery($cards->data));
 

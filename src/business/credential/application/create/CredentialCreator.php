@@ -4,7 +4,7 @@
 namespace Viabo\business\credential\application\create;
 
 
-use Viabo\business\commerce\application\find\FindCommerceQuery;
+use Viabo\business\commerce\application\find\CommerceQuery;
 use Viabo\business\credential\domain\Credential;
 use Viabo\business\credential\domain\CredentialCarnetKey;
 use Viabo\business\credential\domain\CredentialMainKey;
@@ -47,8 +47,7 @@ final readonly class CredentialCreator
 
     private function ensureExist(CommerceId $commerceId): void
     {
-        $legalRepresentative = '';
-        $data = $this->queryBus->ask(new FindCommerceQuery($commerceId->value() , $legalRepresentative));
+        $data = $this->queryBus->ask(new CommerceQuery($commerceId->value()));
 
         if ($this->isInformal($data->data)) {
             throw new CredentialCommerceInformal();

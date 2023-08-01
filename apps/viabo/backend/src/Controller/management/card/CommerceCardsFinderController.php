@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\find\FindCommerceQuery;
+use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\card\application\find\CardsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -19,8 +19,7 @@ final readonly class CommerceCardsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
 
-            $commerceId = '';
-            $commerce = $this->ask(new FindCommerceQuery($commerceId , $tokenData['id']));
+            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $cards = $this->ask(new CardsQuery($commerce->data['id']));
 
             return new JsonResponse($this->opensslEncrypt($cards->data));

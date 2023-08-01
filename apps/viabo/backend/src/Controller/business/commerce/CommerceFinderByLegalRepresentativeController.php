@@ -6,20 +6,20 @@ namespace Viabo\Backend\Controller\business\commerce;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
-final readonly class CommerceFinderController extends ApiController
+final readonly class CommerceFinderByLegalRepresentativeController extends ApiController
 {
 
-    public function __invoke(string $commerceId , Request $request): Response
+    public function __invoke(Request $request): Response
     {
         try {
-            $this->decode($request->headers->get('Authorization'));
+            $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
-            $commerce = $this->ask(new CommerceQuery($commerceId));
+            $data = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
 
-            return new JsonResponse($commerce->data);
+            return new JsonResponse($data->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

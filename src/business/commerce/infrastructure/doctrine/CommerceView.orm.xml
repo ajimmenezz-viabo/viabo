@@ -6,6 +6,7 @@
 
     <entity name="Viabo\business\commerce\domain\CommerceView" table="v_business_commerces">
         <id name="id" column="Id"/>
+        <field name="fatherId" column="CommerceId"/>
         <field name="legalRepresentative" column="LegalRepresentative"/>
         <field name="legalRepresentativeName" column="LegalRepresentativeName"/>
         <field name="legalRepresentativeEmail" column="LegalRepresentativeEmail"/>
@@ -21,12 +22,16 @@
         <field name="pointSaleTerminal" column="PointSaleTerminal"/>
         <field name="paymentApi" column="PaymentApi"/>
         <field name="register" column="Register"/>
+        <field name="type" column="Type"/>
+        <field name="typeName" column="TypeName"/>
+        <field name="allowTransactions" column="AllowTransactions"/>
         <field name="statusId" column="StatusId"/>
-        <field name="registerStep" column="RegisterStep"/>
-        <field name="active" column="Active"/>
         <field name="statusName" column="StatusName"/>
+        <field name="registerStep" column="RegisterStep"/>
         <field name="services" column="Services"/>
         <field name="documents" column="Documents"/>
+        <field name="commissions" column="Commissions"/>
+        <field name="active" column="Active"/>
     </entity>
 
 </doctrine-mapping>

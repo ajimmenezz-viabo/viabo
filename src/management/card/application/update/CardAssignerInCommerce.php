@@ -4,12 +4,11 @@
 namespace Viabo\management\card\application\update;
 
 
-use Viabo\business\commerce\application\find\FindCommerceQuery;
+use Viabo\business\commerce\application\find\CommerceQuery;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\services\CardFinder;
 use Viabo\management\shared\domain\card\CardCommerceId;
 use Viabo\management\shared\domain\card\CardId;
-use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 
@@ -38,10 +37,8 @@ final readonly class CardAssignerInCommerce
 
     private function ensureExist(CardCommerceId $commerceId): void
     {
-
         if ($commerceId->isNotEmpty()) {
-            $legalRepresentative = '';
-            $this->queryBus->ask(new FindCommerceQuery($commerceId->value() , $legalRepresentative));
+            $this->queryBus->ask(new CommerceQuery($commerceId->value()));
         }
     }
 }

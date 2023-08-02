@@ -1,0 +1,4 @@
+commerce-terminals-finder:
+  path: '/api/commerces/terminals'
+  controller: Viabo\Backend\Controller\management\terminals\CommerceTerminalsFinderController
+  methods: GET

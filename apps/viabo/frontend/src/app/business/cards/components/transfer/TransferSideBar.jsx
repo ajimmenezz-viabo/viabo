@@ -44,7 +44,9 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   }
 
   const handleChangeView = (event, newValue) => {
-    setView(newValue)
+    if (newValue) {
+      setView(newValue)
+    }
   }
 
   return (

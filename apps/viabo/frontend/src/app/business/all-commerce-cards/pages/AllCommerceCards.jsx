@@ -3,9 +3,10 @@ import { useState } from 'react'
 import { Apps, FormatListBulleted } from '@mui/icons-material'
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material'
 
+import { CommerceCardsTable } from '../components/CommerceCardsTable'
+
 import { AssignCardsSidebar } from '@/app/business/all-commerce-cards/components'
 import { CommerceCardsList } from '@/app/business/all-commerce-cards/components/CommerceCardsList'
-import { CommerceCardsTable } from '@/app/business/all-commerce-cards/components/CommerceCardsTable'
 import { useFindAllCommerceCards } from '@/app/business/all-commerce-cards/hooks'
 import { useCommerceCards } from '@/app/business/all-commerce-cards/store'
 import { BUSINESS_PATHS, BUSINESS_ROUTES_NAMES } from '@/app/business/shared/routes'
@@ -61,9 +62,7 @@ export default function AllCommerceCards() {
             }
           />
           {view === '2' && <CommerceCardsList commerceCards={unassignedCards} />}
-          {view === '1' && (
-            <CommerceCardsTable cards={unassignedCards.data} isLoading={unassignedCards.isLoading} rows={rows} />
-          )}
+          {view === '1' && <CommerceCardsTable cards={unassignedCards} rows={rows} />}
           <AssignCardsSidebar
             open={openAssignCards}
             handleClose={() => {

@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { camelCase, startCase } from 'lodash'
 
 import {
   convertCatalogToReactSelect,
@@ -51,7 +52,7 @@ export const CardsAdapter = cards => {
           },
           assignUser: {
             id: ownerId,
-            name: ownerName === '' ? '-' : ownerName,
+            name: ownerName === '' ? '-' : startCase(camelCase(ownerName)),
             phone: ownerPhone,
             email: ownerEmail,
             dateTime: assignmentDate === '' ? '-' : fDateTime(assignmentDate),

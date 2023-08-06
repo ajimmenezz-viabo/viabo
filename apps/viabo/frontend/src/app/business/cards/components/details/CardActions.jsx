@@ -53,8 +53,8 @@ export function CardActions() {
           </Stack>
         </Scrollbar>
       </Box>
-      <TransferSideBar setOpen={setOpenTransfer} open={openTransfer} />
-      <PaymentSidebar setOpen={setOpenPayment} open={openPayment} />
+      {openTransfer && <TransferSideBar setOpen={setOpenTransfer} open={openTransfer} />}
+      {openPayment && <PaymentSidebar setOpen={setOpenPayment} open={openPayment} />}
     </>
   )
 }

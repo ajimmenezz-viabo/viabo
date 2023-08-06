@@ -20,7 +20,7 @@ export function RightPanel({ open = false, handleClose, title, children, titleEl
 
   return (
     <>
-      <Backdrop open={Boolean(open)} onClick={handleClose} sx={{ zIndex: theme => theme.zIndex.drawer + 1 }} />
+      <Backdrop open={Boolean(open)} sx={{ zIndex: theme => theme.zIndex.drawer + 1 }} />
 
       <AnimatePresence>
         {open && (

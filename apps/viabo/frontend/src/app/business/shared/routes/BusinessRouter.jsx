@@ -8,6 +8,7 @@ import { Lodable } from '@/shared/components/lodables'
 const CommerceCards = Lodable(lazy(() => import('@/app/business/cards/pages/CommerceCards')))
 const AllCommerceCards = Lodable(lazy(() => import('@/app/business/all-commerce-cards/pages/AllCommerceCards')))
 const GlobalCard = Lodable(lazy(() => import('@/app/business/cards/pages/GlobalCardDetails')))
+const ViaboPay = Lodable(lazy(() => import('@/app/business/terminals/pages/POSTerminals')))
 
 export const BusinessRouter = {
   path: BUSINESS_ROUTES_NAMES.root.route,
@@ -18,12 +19,16 @@ export const BusinessRouter = {
       element: <CommerceCards />
     },
     {
-      path: BUSINESS_ROUTES_NAMES.unassignedCards.route,
+      path: BUSINESS_ROUTES_NAMES.allCards.route,
       element: <AllCommerceCards />
     },
     {
       path: BUSINESS_ROUTES_NAMES.globalCard.route,
       element: <GlobalCard />
+    },
+    {
+      path: BUSINESS_ROUTES_NAMES.terminals.route,
+      element: <ViaboPay />
     }
   ]
 }

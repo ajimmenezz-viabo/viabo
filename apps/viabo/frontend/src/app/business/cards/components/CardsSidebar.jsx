@@ -218,7 +218,7 @@ export function CardsSidebar() {
 
   return (
     <>
-      {!isDesktop && (
+      {!isDesktop && !openSidebar && (
         <SidebarButtonMobileStyle onClick={handleToggleSidebar}>
           <CreditCard
             sx={{

@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 
 export const SidebarButtonMobileStyle = styled(props => <IconButton disableRipple {...props} />)(({ theme }) => ({
   left: 0,
-  zIndex: 9,
+  zIndex: 12000,
   width: 32,
   height: 32,
   position: 'absolute',

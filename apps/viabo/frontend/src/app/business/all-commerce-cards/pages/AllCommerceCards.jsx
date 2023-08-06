@@ -38,8 +38,8 @@ export default function AllCommerceCards() {
             name={'Stock de Tarjetas'}
             links={[
               { name: 'Inicio', href: PATH_DASHBOARD.root },
-              { name: 'Administracion', href: BUSINESS_PATHS.cards },
-              { name: BUSINESS_ROUTES_NAMES.unassignedCards.name }
+              { name: 'Administracion', href: BUSINESS_PATHS.allCards },
+              { name: BUSINESS_ROUTES_NAMES.allCards.name }
             ]}
             buttons={
               <Box display={'flex'} justifyContent={'center'} mt={{ xs: 2, md: 0 }}>

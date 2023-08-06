@@ -3,7 +3,7 @@
 namespace Viabo\management\shared\infrastructure\paymentGateway;
 
 use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
-use Viabo\management\terminals\domain\TerminalCommerceId;
+use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 
 final class PaymentGatewayPharosAdapter implements PaymentGatewayAdapter
 {
@@ -19,7 +19,7 @@ final class PaymentGatewayPharosAdapter implements PaymentGatewayAdapter
 
     private function request(array $data):array
     {
-        $url = 'https://o3tkmwsybj.execute-api.us-west-2.amazonaws.com/v1_3/chains/merchants/' . $data['commerceId'] . '/terminals';
+        $url = "https://o3tkmwsybj.execute-api.us-west-2.amazonaws.com/v1_3/chains/merchants/{$data['commerceId']}/terminals";
 
         $ch = curl_init($url);
 

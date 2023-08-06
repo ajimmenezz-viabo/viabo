@@ -2,7 +2,7 @@
 
 namespace Viabo\management\shared\domain\paymentGateway;
 
-use Viabo\management\terminals\domain\TerminalCommerceId;
+use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 
 interface PaymentGatewayAdapter
 {

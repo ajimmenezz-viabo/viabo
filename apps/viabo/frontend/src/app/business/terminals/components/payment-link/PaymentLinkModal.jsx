@@ -7,6 +7,7 @@ import LinkIcon from '@mui/icons-material/Link'
 import { IconButton, Link, Stack, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { Link as RouterLink } from 'react-router-dom'
 
 import { PaymentLinkForm } from './PaymentLinkForm'
 
@@ -47,7 +48,7 @@ const PaymentLinkModal = ({ open, setOpen }) => {
           <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0}>
             <Stack justifyContent={'center'} alignItems={'center'} direction="row" spacing={1}>
               <LinkIcon />
-              <Link href={path} target="_blank" color="info.main">
+              <Link component={RouterLink} underline="always" to={path} href={path} target="_blank" color="info.main">
                 {path}
               </Link>
               <IconButton

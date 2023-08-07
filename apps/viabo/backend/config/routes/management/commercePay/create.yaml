@@ -1,0 +1,4 @@
+create-commerce-pay-url:
+  path: '/api/commerce/pay/new'
+  controller: Viabo\Backend\Controller\management\commercePay\CommercePayCreatorController
+  methods: POST

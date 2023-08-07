@@ -1,40 +1,52 @@
 commerce-register:
-  path: '/comercio/registro'
+  path: "/comercio/registro"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
 cards-register:
-  path: '/registro'
+  path: "/registro"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
 auth-paths:
-  path: '/auth/{any}'
+  path: "/auth/{any}"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
   requirements:
-    any: '.+'
+    any: ".+"
 
 commerce:
-  path: '/commerce'
+  path: "/commerce"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
 commerce-paths:
-  path: '/commerce/{any}'
+  path: "/commerce/{any}"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
   requirements:
-    any: '.+'
+    any: ".+"
 
 management:
-  path: '/management'
+  path: "/management"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
 management-paths:
-  path: '/management/{any}'
+  path: "/management/{any}"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
   requirements:
-    any: '.+'
+    any: ".+"
+
+charge:
+  path: "/cobro"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+
+charge-paths:
+  path: "/cobro/{any}"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"

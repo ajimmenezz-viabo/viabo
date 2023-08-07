@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Dangerous, Update } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { Button, Card, CardHeader, Divider, Link, Stack, Typography } from '@mui/material'
+import { Button, CardHeader, Divider, Link, Paper, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 
@@ -78,7 +78,7 @@ export function GlobalCard({ openSidebar }) {
 
   return (
     <Stack spacing={3}>
-      <Card
+      <Paper
         sx={{
           p: 0,
           ...(isMainCard && {
@@ -193,7 +193,7 @@ export function GlobalCard({ openSidebar }) {
             </Stack>
           </>
         )}
-      </Card>
+      </Paper>
 
       {view === '1' && isMainCard && <CardBalance />}
       {view === '2' && isMainCard && <CardCharge disabledExpand={true} />}

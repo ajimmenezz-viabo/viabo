@@ -5,7 +5,7 @@ namespace Viabo\management\commercePay\infrastructure;
 use Doctrine\ORM\EntityManager;
 use Viabo\management\commercePay\domain\CommercePay;
 use Viabo\management\commercePay\domain\CommercePayCommerceId;
-use Viabo\management\commercePay\domain\CommercePayReferenceId;
+use Viabo\management\commercePay\domain\CommercePayReference;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayUrlCode;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
@@ -28,7 +28,7 @@ final class CommercePayDoctrineRepository extends DoctrineRepository implements 
 
     }
 
-    public function searchBy (CommercePayReferenceId $referenceId): CommercePay|null
+    public function searchBy (CommercePayReference $referenceId): CommercePay|null
     {
         return $this->repository(CommercePay::class)->findOneBy(['referenceId.value'=> $referenceId->value()]);
     }

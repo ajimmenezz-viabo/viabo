@@ -5,7 +5,7 @@ namespace Viabo\management\commercePay\domain;
 use Viabo\management\commercePay\domain\exceptions\CommercePayFullNameEmpty;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommercePayFullName extends StringValueObject
+final class CommercePayClientName extends StringValueObject
 {
     public static function create(string $value): self
     {

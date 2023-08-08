@@ -9,7 +9,7 @@ use Viabo\management\commercePay\domain\CommercePayEmail;
 use Viabo\management\commercePay\domain\CommercePayFullName;
 use Viabo\management\commercePay\domain\CommercePayPhone;
 use Viabo\management\commercePay\domain\CommercePayTerminalId;
-use Viabo\management\commercePay\domain\CommercePayUserId;
+use Viabo\management\commercePay\domain\CommercePayCreatedByUser;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateCommercePayCommandHandler implements CommandHandler
@@ -20,7 +20,7 @@ final readonly class CreateCommercePayCommandHandler implements CommandHandler
 
     public function __invoke (CreateCommercePayCommand $command):void
     {
-        $userId = CommercePayUserId::create($command->userId);
+        $userId = CommercePayCreatedByUser::create($command->userId);
         $commerceId = CommercePayCommerceId::create($command->commerceId);
         $terminalId = CommercePayTerminalId::create($command->terminalId);
         $fullName = CommercePayFullName::create($command->fullName);

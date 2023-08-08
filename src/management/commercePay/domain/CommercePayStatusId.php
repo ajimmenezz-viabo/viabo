@@ -4,7 +4,7 @@ namespace Viabo\management\commercePay\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommercePayActive extends StringValueObject
+final class CommercePayStatusId extends StringValueObject
 {
 
 }

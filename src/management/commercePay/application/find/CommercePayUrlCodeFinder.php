@@ -17,8 +17,6 @@ final readonly class CommercePayUrlCodeFinder
         $commercePayData = $commercePay->toArray();
 
         return new FindCommercePayUrlCodeResponse([
-            'fullName' => $commercePayData['fullName'],
-            'email' => $commercePayData['email'],
             'urlCode' => $commercePayData['urlCode']
         ]);
     }

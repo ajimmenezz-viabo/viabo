@@ -10,6 +10,7 @@ final class CommercePayAmount extends StringValueObject
     public static function create(string $value): self
     {
         self::validate($value);
+        $value = number_format(floatval($value) , 2 , "." , "");
         return new self($value);
     }
 

@@ -9,9 +9,10 @@
         <embedded name="commerceId" class="TerminalCommerceId" use-column-prefix="false"/>
         <embedded name="terminalId" class="TerminalValueId" use-column-prefix="false"/>
         <embedded name="createdByUser" class="TerminalCreatedByUser" use-column-prefix="false"/>
+        <embedded name="apiData" class="TerminalApiData" use-column-prefix="false"/>
+        <embedded name="name" class="TerminalName" use-column-prefix="false"/>
         <embedded name="registerDate" class="TerminalRegisterDate" use-column-prefix="false"/>
         <embedded name="active" class="TerminalActive" use-column-prefix="false"/>
-        <embedded name="apiData" class="TerminalApiData" use-column-prefix="false"/>
     </entity>
 
 </doctrine-mapping>

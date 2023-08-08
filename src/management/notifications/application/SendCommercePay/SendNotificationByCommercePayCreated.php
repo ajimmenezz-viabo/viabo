@@ -25,8 +25,9 @@ final readonly class SendNotificationByCommercePayCreated implements DomainEvent
         $host = $this->host::get();
         $data['url'] = $host."/viabo-pay/".$data['urlCode'];
         $data['privacityUrl'] = $host;
+        $email = [$data['email']];
         $email = new Email(
-            [$data['email']] ,
+             $email,
             "Notificación de ViaboPay - Enlace de pago" ,
             'management/notification/emails/commerce.pay.notification.html.twig' ,
             $data

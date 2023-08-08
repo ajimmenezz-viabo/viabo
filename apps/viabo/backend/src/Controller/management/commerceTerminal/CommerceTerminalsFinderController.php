@@ -14,11 +14,13 @@ final readonly class CommerceTerminalsFinderController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            //$tokenData = $this->decode($request->headers->get('Authorization'));
-            //$this->validateSession();
-            //$commerce = $this->ask(new CommerceQuery(1441));
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
 
-            $data = $this->ask(new FindTerminalsQuery('17ea6538-f2df-4700-9180-457fc0d4ed3c'));
+            $commerce = $this->ask(new CommerceQuery($tokenData['id']));
+            $commerceData = $commerce->data;
+
+            $data = $this->ask(new FindTerminalsQuery($commerceData['id']));
 
             return new JsonResponse($data->data);
         } catch (\DomainException $exception) {

@@ -15,14 +15,13 @@ final readonly class CommerceTerminalsPayFinderController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            //$tokenData = $this->decode($request->headers->get('Authorization'));
-            //$this->validateSession();
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
 
-            //$commerce = $this->ask(new CommerceQuery('1aae86a4-2a22-4b81-be2b-a331d0ed4da4'));
-            //$commerceData =  $commerce->data();
-            $commercePayCredential = $this->ask(new FindCommercePayCredentialsQuery('17ea6538-f2df-4700-9180-457fc0d4ed3c'));
+            $commerce = $this->ask(new CommerceQuery($tokenData['id']));
+            $commerceData =  $commerce->data;
+            $commercePayCredential = $this->ask(new FindCommercePayCredentialsQuery($commerceData['id']));
             $commercePayCredentialData = $commercePayCredential->data;
-//            var_dump($commercePayCredentialData);
             $data = $this->ask(new FindTerminalsCommercePayQuery($commercePayCredentialData['merchantId'],$commercePayCredentialData['apiKey']));
             return new JsonResponse($data->data);
         } catch (\DomainException $exception) {

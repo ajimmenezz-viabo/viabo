@@ -8,5 +8,5 @@ interface CommercePayRepository
 
     public function search(CommercePayUrlCode $urlCode):CommercePay|null;
 
-    public function searchBy (CommercePayCommerceId $commerceId):CommercePay|null;
+    public function searchBy (CommercePayReferenceId $referenceId):CommercePay|null;
 }

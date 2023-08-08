@@ -17,9 +17,9 @@ final readonly class CommercePayCreatorController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
-
             $this->dispatch(new CreateCommercePayCommand(
-                $tokenData['id'] ,
+                $tokenData['id'],
+                $data['referenceId'],
                 $data['commerceId'],
                 $data['terminalId'],
                 $data['fullName'],
@@ -29,7 +29,7 @@ final readonly class CommercePayCreatorController extends ApiController
                 $data['amount']
             ));
 
-            $commercePayUrlCode = $this->ask(new FindCommercePayUrlCodeQuery($data['commerceId']));
+            $commercePayUrlCode = $this->ask(new FindCommercePayUrlCodeQuery($data['referenceId']));
 
             return new JsonResponse($commercePayUrlCode->data);
         } catch (\DomainException $exception) {

@@ -2,7 +2,7 @@
 
 namespace Viabo\management\commercePay\application\find;
 
-use Viabo\management\commercePay\domain\CommercePayCommerceId;
+use Viabo\management\commercePay\domain\CommercePayReferenceId;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 
 final readonly class CommercePayUrlCodeFinder
@@ -11,9 +11,9 @@ final readonly class CommercePayUrlCodeFinder
     {
     }
 
-    public function __invoke(CommercePayCommerceId $commerceId): FindCommercePayUrlCodeResponse
+    public function __invoke(CommercePayReferenceId $referenceId): FindCommercePayUrlCodeResponse
     {
-        $commercePay = $this->repository->searchBy($commerceId);
+        $commercePay = $this->repository->searchBy($referenceId);
         $commercePayData = $commercePay->toArray();
 
         return new FindCommercePayUrlCodeResponse([

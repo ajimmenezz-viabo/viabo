@@ -9,6 +9,7 @@ use Viabo\management\commercePay\domain\CommercePayDescription;
 use Viabo\management\commercePay\domain\CommercePayEmail;
 use Viabo\management\commercePay\domain\CommercePayFullName;
 use Viabo\management\commercePay\domain\CommercePayPhone;
+use Viabo\management\commercePay\domain\CommercePayReferenceId;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayTerminalId;
 use Viabo\management\commercePay\domain\CommercePayCreatedByUser;
@@ -22,6 +23,7 @@ final readonly class CommercePayCreator
 
     public function __invoke (
         CommercePayCreatedByUser $userId,
+        CommercePayReferenceId   $referenceId,
         CommercePayCommerceId    $commerceId,
         CommercePayTerminalId    $terminalId,
         CommercePayFullName      $fullName,
@@ -33,6 +35,7 @@ final readonly class CommercePayCreator
     {
         $commercePay = CommercePay::create(
             $userId,
+            $referenceId,
             $commerceId,
             $terminalId,
             $fullName,

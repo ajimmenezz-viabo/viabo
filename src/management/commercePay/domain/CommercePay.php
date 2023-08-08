@@ -9,6 +9,7 @@ final class CommercePay extends AggregateRoot
 {
     public function __construct (
         private CommercePayId            $id,
+        private CommercePayReferenceId   $referenceId,
         private CommercePayCommerceId    $commerceId,
         private CommercePayTerminalId    $terminalId,
         private CommercePayFullName      $fullName,
@@ -16,7 +17,7 @@ final class CommercePay extends AggregateRoot
         private CommercePayPhone         $phone,
         private CommercePayDescription   $description,
         private CommercePayAmount        $amount,
-        private CommercePayStatusId $statusId,
+        private CommercePayStatusId      $statusId,
         private CommercePayUrlCode       $urlCode,
         private CommercePayCreatedByUser $createdByUser,
         private CommercePayRegisterDate  $registerDate,
@@ -26,6 +27,7 @@ final class CommercePay extends AggregateRoot
 
     public static function create(
         CommercePayCreatedByUser $createdByUser,
+        CommercePayReferenceId   $referenceId,
         CommercePayCommerceId    $commerceId,
         CommercePayTerminalId    $terminalId,
         CommercePayFullName      $fullName,
@@ -37,6 +39,7 @@ final class CommercePay extends AggregateRoot
     {
         $commercePay = new self(
             CommercePayId::random(),
+            $referenceId,
             $commerceId,
             $terminalId,
             $fullName,
@@ -49,7 +52,10 @@ final class CommercePay extends AggregateRoot
             $createdByUser,
             CommercePayRegisterDate::todayDate()
         );
-        $commercePay->record(new CommercePayCreatedDomainEvent($commercePay->id->value(),$commercePay->toArray()));
+        $commercePay->record(new CommercePayCreatedDomainEvent(
+            $commercePay->id->value(),
+            $commercePay->toArray(),
+            $commercePay->email->value()));
         return $commercePay;
     }
 
@@ -61,18 +67,19 @@ final class CommercePay extends AggregateRoot
     public function toArray ():array
     {
         return [
-          'id'  => $this->id->value(),
-          'commerceId'  => $this->commerceId->value(),
-            'terminalId'  => $this->terminalId->value(),
-            'fullName'  => $this->fullName->value(),
-            'email'  => $this->email->valueDecrypt(),
-            'phone'  => $this->phone->value(),
-            'description'  => $this->description->value(),
-            'amount'  => $this->amount->value(),
-            'urlCode'  => substr($this->urlCode->value(),0,8),
-            'statusId'  => $this->statusId->value(),
-            'createdByUser'  => $this->createdByUser->value(),
-            'registerDate'  => $this->registerDate->value()
+            'id' => $this->id->value(),
+            'referenceId' => $this->referenceId->value(),
+            'commerceId' => $this->commerceId->value(),
+            'terminalId' => $this->terminalId->value(),
+            'fullName' => $this->fullName->value(),
+            'email' => $this->email->value(),
+            'phone' => $this->phone->value(),
+            'description' => $this->description->value(),
+            'amount' => $this->amount->value(),
+            'urlCode' => $this->urlCode->value(),
+            'statusId' => $this->statusId->value(),
+            'createdByUser' => $this->createdByUser->value(),
+            'registerDate' => $this->registerDate->value()
         ];
     }
 }

@@ -8,6 +8,7 @@ final readonly class CreateCommercePayCommand implements Command
 {
     public function __construct (
         public string $userId,
+        public string $referenceId,
         public string $commerceId,
         public string $terminalId,
         public string $fullName,

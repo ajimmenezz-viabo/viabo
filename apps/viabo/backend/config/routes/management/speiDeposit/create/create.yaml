@@ -1,0 +1,4 @@
+webhook-deposits-to-cards:
+  path: '/api/register/pays'
+  controller: Viabo\Backend\Controller\management\speiDeposit\DepositCreatorController
+  methods: POST

@@ -59,7 +59,9 @@ abstract readonly class ApiController
         try {
             $ciphertext = base64_decode($requestData['ciphertext']);
             $initializationVector = base64_decode($requestData['iv']);
-            $plaintext = openssl_decrypt($ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector);
+            $plaintext = openssl_decrypt(
+                $ciphertext , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector
+            );
             return !$plaintext ? throw new \DomainException() : json_decode($plaintext , true);
         } catch (\DomainException) {
             throw new \DomainException('Error de cifrado' , 406);
@@ -97,5 +99,15 @@ abstract readonly class ApiController
             $this->session->invalidate();
             throw new \DomainException('Sin acceso por session' , 401);
         }
+    }
+
+    protected function formatResponse(mixed $data , bool $success = true , int $code = 200): array
+    {
+        return [
+            'success' => $success ,
+            'code' => $code ,
+            'data' => $success ? $data : null ,
+            'errorMessage' => !$success ? $data : null
+        ];
     }
 }

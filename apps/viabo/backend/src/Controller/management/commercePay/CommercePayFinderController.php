@@ -16,7 +16,7 @@ final readonly class CommercePayFinderController extends ApiController
 
             $commercePay = $this->ask(new FindCommercePayQuery($urlCode));
 
-            return new JsonResponse($this->encode($commercePay->data));
+            return new JsonResponse($this->opensslEncrypt($commercePay->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

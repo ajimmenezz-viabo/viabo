@@ -15,7 +15,7 @@ final readonly class CommercePayCreatorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            //$this->validateSession();
+            $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
 
             $this->dispatch(new CreateCommercePayCommand(

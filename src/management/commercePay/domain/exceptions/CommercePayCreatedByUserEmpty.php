@@ -4,7 +4,7 @@ namespace Viabo\management\commercePay\domain\exceptions;
 
 use Viabo\shared\domain\DomainError;
 
-final class CommercePayUserIdEmpty extends  DomainError
+final class CommercePayCreatedByUserEmpty extends  DomainError
 {
 
     public function errorCode (): int

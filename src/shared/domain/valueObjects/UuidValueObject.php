@@ -3,7 +3,6 @@
 
 namespace Viabo\shared\domain\valueObjects;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use Stringable;
 
@@ -38,7 +37,7 @@ class UuidValueObject implements Stringable
     private function ensureIsValidUuid(string $id): void
     {
         if (!RamseyUuid::isValid($id)) {
-            throw new InvalidArgumentException(sprintf('<%s> does not allow the value <%s>.', static::class, $id));
+            throw new \DomainException('Error Internal 263' , 400);
         }
     }
 }

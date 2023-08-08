@@ -8,7 +8,10 @@ use Viabo\management\commercePay\domain\CommercePayCommerceId;
 use Viabo\management\commercePay\domain\CommercePayReference;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayUrlCode;
+use Viabo\management\commercePay\domain\CommercePayView;
+use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
+use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 
 final class CommercePayDoctrineRepository extends DoctrineRepository implements CommercePayRepository
 {
@@ -22,9 +25,10 @@ final class CommercePayDoctrineRepository extends DoctrineRepository implements 
         $this->persist($commercePay);
     }
 
-    public function search(CommercePayUrlCode $urlCode):CommercePay|null
+    public function searchCriteriaView(Criteria $criteria): array
     {
-        return $this->repository(CommercePay::class)->findOneBy(['urlCode.value'=> $urlCode->value()]);
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(CommercePayView::class)->matching($criteriaConvert)->toArray();
 
     }
 

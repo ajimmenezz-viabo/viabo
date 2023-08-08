@@ -1,4 +1,0 @@
-register-pay-of-cards:
-  path: '/api/register/pays'
-  controller: Viabo\Backend\Controller\management\webhook\PaymentRecorderController
-  methods: POST

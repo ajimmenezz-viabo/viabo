@@ -9,8 +9,9 @@ import * as Yup from 'yup'
 
 import { PaymentLinkAdapter } from '../../adapters'
 import { useCreatePaymentLink } from '../../hooks'
+import { useTerminalDetails } from '../../store'
 
-import { FormProvider, RFTextField } from '@/shared/components/form'
+import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
 const MIN_AMOUNT = 1
@@ -19,12 +20,10 @@ const STEP = 100
 
 export const PaymentLinkForm = ({ onSuccess }) => {
   const { mutate, isLoading } = useCreatePaymentLink()
+  const terminal = useTerminalDetails(state => state.terminal)
 
   const registerValidation = Yup.object({
-    amount: Yup.number()
-      .min(MIN_AMOUNT, `El monto mínimo es ${MIN_AMOUNT}.00`)
-      .max(MAX_AMOUNT, `El monto máximo es ${MAX_AMOUNT}.00`)
-      .required('El monto es requerido'),
+    amount: Yup.string().required('El monto es requerido'),
     name: Yup.string().required('El nombre es requerido'),
     email: Yup.string().email('Ingresa un correo valido').required('El correo es requerido'),
     phone: Yup.string()
@@ -34,7 +33,7 @@ export const PaymentLinkForm = ({ onSuccess }) => {
 
   const formik = useFormik({
     initialValues: {
-      amount: 0,
+      amount: '',
       name: '',
       email: '',
       phone: '',
@@ -42,11 +41,11 @@ export const PaymentLinkForm = ({ onSuccess }) => {
     },
     validationSchema: registerValidation,
     onSubmit: (values, { setSubmitting }) => {
-      const data = PaymentLinkAdapter(values)
+      const data = PaymentLinkAdapter(terminal, values)
       mutate(data, {
-        onSuccess: () => {
+        onSuccess: data => {
           setSubmitting(false)
-          onSuccess({ id: '123', amount: values.amount })
+          onSuccess({ id: data?.urlCode, amount: values.amount })
         },
         onError: () => {
           setSubmitting(false)
@@ -59,11 +58,6 @@ export const PaymentLinkForm = ({ onSuccess }) => {
 
   const loading = isSubmitting || isLoading
 
-  const handleInputChange = event => {
-    const value = event.target.value === '' ? '' : Number(event.target.value)
-    setFieldValue('amount', value)
-  }
-
   return (
     <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
       <FormProvider formik={formik}>
@@ -75,17 +69,29 @@ export const PaymentLinkForm = ({ onSuccess }) => {
 
             <RFTextField
               fullWidth
-              placeholder={'$0.00'}
               name={'amount'}
-              type="number"
+              required={true}
+              placeholder={'0.00'}
+              disabled={loading}
+              autoComplete={'off'}
               InputProps={{
-                endAdornment: <InputAdornment position="end">MXN</InputAdornment>
+                startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
+                endAdornment: <InputAdornment position="end">MXN</InputAdornment>,
+                inputComponent: MaskedInput,
+                inputProps: {
+                  mask: Number,
+                  radix: '.',
+                  thousandsSeparator: ',',
+                  padFractionalZeros: true,
+                  min: MIN_AMOUNT,
+                  max: MAX_AMOUNT,
+                  scale: 2,
+                  value: values.amount,
+                  onAccept: value => {
+                    setFieldValue('amount', value)
+                  }
+                }
               }}
-              onChange={handleInputChange}
-              InputLabelProps={{
-                shrink: true
-              }}
-              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT }}
             />
           </Stack>
 

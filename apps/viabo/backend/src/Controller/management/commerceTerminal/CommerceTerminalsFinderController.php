@@ -2,12 +2,12 @@
 
 namespace Viabo\Backend\Controller\management\commerceTerminal;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\commerceTerminal\application\find\FindTerminalsQuery;
+use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommerceTerminalsFinderController extends ApiController
 {
@@ -17,7 +17,7 @@ final readonly class CommerceTerminalsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
 
-            $commerce = $this->ask(new CommerceQuery($tokenData['id']));
+            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $commerceData = $commerce->data;
 
             $data = $this->ask(new FindTerminalsQuery($commerceData['id']));

@@ -50,7 +50,7 @@ export const TerminalItem = ({ terminal }) => {
   }
 
   return (
-    <Tooltip title={'terminal'} arrow placement="right">
+    <Tooltip title={terminal?.name} arrow placement="right">
       <ListItem
         sx={{
           mb: 1,
@@ -94,7 +94,7 @@ export const TerminalItem = ({ terminal }) => {
                 }}
               >
                 <Typography noWrap variant={'subtitle2'}>
-                  {terminal?.alias}
+                  {terminal?.name}
                 </Typography>
               </Stack>
             </>

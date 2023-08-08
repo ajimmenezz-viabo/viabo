@@ -2,10 +2,10 @@
 
 namespace Viabo\management\commercePay\domain;
 
-use Viabo\management\commercePay\domain\exceptions\CommercePayEmailEmpty;
+use Viabo\management\commercePay\domain\exceptions\CommercePayReferenceIdEmpty;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommercePayEmail extends StringValueObject
+final class CommercePayReferenceId extends StringValueObject
 {
     public static function create(string $value): self
     {
@@ -16,7 +16,7 @@ final class CommercePayEmail extends StringValueObject
     public static function validate(string $value): void
     {
         if (empty($value)) {
-            throw new CommercePayEmailEmpty();
+            throw new CommercePayReferenceIdEmpty();
         }
     }
 }

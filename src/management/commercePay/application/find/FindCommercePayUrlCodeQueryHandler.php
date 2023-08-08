@@ -2,7 +2,7 @@
 
 namespace Viabo\management\commercePay\application\find;
 
-use Viabo\management\commercePay\domain\CommercePayCommerceId;
+use Viabo\management\commercePay\domain\CommercePayReferenceId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
@@ -14,8 +14,8 @@ final readonly class FindCommercePayUrlCodeQueryHandler implements QueryHandler
 
     public function __invoke (FindCommercePayUrlCodeQuery $query):Response
     {
-        $commerceId = CommercePayCommerceId::create($query->commerceId);
+        $referenceId = CommercePayReferenceId::create($query->referenceId);
 
-        return ($this->finder)($commerceId);
+        return ($this->finder)($referenceId);
     }
 }

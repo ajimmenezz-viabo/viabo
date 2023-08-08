@@ -16,7 +16,7 @@ export const useCreatePaymentLink = (options = {}) => {
         success: {
           render({ data }) {
             onSuccess(data)
-            return 'Se creó la liga de pago con éxito'
+            return 'Se creó y envió la liga de pago con éxito'
           }
         }
       })

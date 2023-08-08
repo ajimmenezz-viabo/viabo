@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { CreditCard, EmailOutlined, Lock, Person, VpnKey } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { InputAdornment, Link, Paper, Stack, Typography } from '@mui/material'
@@ -8,10 +10,15 @@ import { MuiTelInput } from 'mui-tel-input'
 import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
+import { ChargePaymentAdapter } from '../adapters'
+import { useCreatePaymentCharge } from '../hooks'
+
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { MasterCardLogo, VisaLogo } from '@/shared/components/images'
 
-export const ChargePaymentForm = () => {
+export const ChargePaymentForm = ({ details }) => {
+  const { mutate } = useCreatePaymentCharge(details?.id)
+
   const CardSchema = Yup.object().shape({
     cardNumber: Yup.string()
       .transform((value, originalValue) => originalValue.replace(/\s/g, '')) // Elimina los espacios en blanco
@@ -39,11 +46,22 @@ export const ChargePaymentForm = () => {
       expiration: '',
       cvv: '',
       name: '',
-      email: '',
-      phone: ''
+      email: details?.email || '',
+      phone: details?.phone || ''
     },
+    enableReinitialize: true,
     validationSchema: CardSchema,
-    onSubmit: (values, { setSubmitting }) => {}
+    onSubmit: (values, { setSubmitting }) => {
+      const data = ChargePaymentAdapter(values, details)
+      mutate(data, {
+        onSuccess: () => {
+          setSubmitting(false)
+        },
+        onError: () => {
+          setSubmitting(false)
+        }
+      })
+    }
   })
 
   const { errors, touched, isSubmitting, setFieldValue, values } = formik
@@ -242,4 +260,12 @@ export const ChargePaymentForm = () => {
       </Stack>
     </FormProvider>
   )
+}
+
+ChargePaymentForm.propTypes = {
+  details: PropTypes.shape({
+    email: PropTypes.string,
+    id: PropTypes.any,
+    phone: PropTypes.string
+  })
 }

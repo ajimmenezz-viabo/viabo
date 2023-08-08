@@ -45,7 +45,7 @@ export const PaymentLinkForm = ({ onSuccess }) => {
       mutate(data, {
         onSuccess: data => {
           setSubmitting(false)
-          onSuccess({ id: data?.urlCode, amount: values.amount })
+          onSuccess({ id: data?.code, amount: values.amount })
         },
         onError: () => {
           setSubmitting(false)
@@ -143,10 +143,12 @@ export const PaymentLinkForm = ({ onSuccess }) => {
             <MuiTelInput
               name="phone"
               fullWidth
+              defaultCountry="MX"
               langOfCountryName="es"
               preferredCountries={['MX', 'US']}
               continents={['NA', 'SA']}
-              value={values.phone || '+52'}
+              forceCallingCode
+              value={values.phone}
               disabled={loading}
               onChange={(value, info) => {
                 setFieldValue('phone', value)
@@ -164,7 +166,7 @@ export const PaymentLinkForm = ({ onSuccess }) => {
             <RFTextField name={'concept'} multiline disabled={loading} rows={2} placeholder={'Pago por ..'} />
           </Stack>
 
-          <Stack sx={{ pt: 3 }}>
+          <Stack>
             <LoadingButton
               loading={isSubmitting}
               variant="contained"

@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
+
 namespace Viabo\management\commercePay\domain\exceptions;
+
 
 use Viabo\shared\domain\DomainError;
 
-final class CommercePayNotAvailable extends DomainError
+final class CommercePayUrlCodeNotExist extends DomainError
 {
-
     public function errorCode(): int
     {
         return 400;

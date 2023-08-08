@@ -3,9 +3,10 @@
 namespace Viabo\management\commercePay\domain;
 
 use Viabo\management\commercePay\domain\exceptions\CommercePayReferenceIdEmpty;
+use Viabo\shared\domain\utils\DatePHP;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommercePayReferenceId extends StringValueObject
+final class CommercePayReference extends StringValueObject
 {
     public static function create(string $value): self
     {
@@ -18,5 +19,12 @@ final class CommercePayReferenceId extends StringValueObject
         if (empty($value)) {
             throw new CommercePayReferenceIdEmpty();
         }
+    }
+
+    public static function random(): static
+    {
+        $date = new DatePHP();
+        $reference = $date->serializeDate();
+        return new static(strval($reference));
     }
 }

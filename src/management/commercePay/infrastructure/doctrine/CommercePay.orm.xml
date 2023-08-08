@@ -6,10 +6,10 @@
 
     <entity name="Viabo\management\commercePay\domain\CommercePay" table="t_management_commerces_pay">
         <embedded name="id" class="CommercePayId" use-column-prefix="false"/>
-        <embedded name="referenceId" class="CommercePayReferenceId" use-column-prefix="false"/>
         <embedded name="commerceId" class="CommercePayCommerceId" use-column-prefix="false"/>
         <embedded name="terminalId" class="CommercePayTerminalId" use-column-prefix="false"/>
-        <embedded name="fullName" class="CommercePayFullName" use-column-prefix="false"/>
+        <embedded name="reference" class="CommercePayReference" use-column-prefix="false"/>
+        <embedded name="clientName" class="CommercePayClientName" use-column-prefix="false"/>
         <embedded name="email" class="CommercePayEmail" use-column-prefix="false"/>
         <embedded name="phone" class="CommercePayPhone" use-column-prefix="false"/>
         <embedded name="description" class="CommercePayDescription" use-column-prefix="false"/>

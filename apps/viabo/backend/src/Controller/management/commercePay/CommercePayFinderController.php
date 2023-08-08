@@ -13,7 +13,6 @@ final readonly class CommercePayFinderController extends ApiController
     public function __invoke(string $urlCode, Request $request): Response
     {
         try {
-
             $commercePay = $this->ask(new FindCommercePayQuery($urlCode));
 
             return new JsonResponse($this->opensslEncrypt($commercePay->data));

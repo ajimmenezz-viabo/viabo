@@ -10,7 +10,7 @@ use Viabo\shared\domain\utils\URL;
 
 final readonly class SendNotificationByCommercePayCreated implements DomainEventSubscriber
 {
-    public function __construct(private EmailRepository $repository, private URL $host)
+    public function __construct(private EmailRepository $repository)
     {
     }
 
@@ -22,11 +22,11 @@ final readonly class SendNotificationByCommercePayCreated implements DomainEvent
     public function __invoke(CommercePayCreatedDomainEvent $event):void
     {
         $data = $event->toPrimitives();
-        $host = $this->host::get();
-        $data['url'] = $host."/viabo-pay/".$data['urlCode'];
+        $host = URL::get();
+        $data['url'] = $host."/cobro/".$data['urlCode'];
         $data['privacityUrl'] = $host;
-
         $emails = $event->email();
+
         $email = new Email(
              [$emails],
             "Notificación de ViaboPay - Enlace de pago" ,

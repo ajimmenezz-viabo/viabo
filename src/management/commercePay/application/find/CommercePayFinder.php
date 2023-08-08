@@ -4,7 +4,10 @@ namespace Viabo\management\commercePay\application\find;
 
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayUrlCode;
-use Viabo\management\commercePay\domain\exceptions\CommercePayNotAvailable;
+use Viabo\management\commercePay\domain\CommercePayView;
+use Viabo\management\commercePay\domain\exceptions\CommercePayUrlCodeNotExist;
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CommercePayFinder
 {
@@ -12,14 +15,21 @@ final readonly class CommercePayFinder
     {
     }
 
-    public function __invoke(CommercePayUrlCode $urlCode):FindCommercePayResponse
+    public function __invoke(CommercePayUrlCode $urlCode): FindCommercePayResponse
     {
-        $commercePay = $this->repository->search($urlCode);
-        $commercePayActive = $commercePay->active()->value();
+        $filter = Filters::fromValues([
+            ['field' => 'urlCode' , 'operator' => '=' , 'value' => $urlCode->value() ]
+        ]);
+        $commercePay = $this->repository->searchCriteriaView(new Criteria($filter));
 
-        if (empty($commercePay) || empty($commercePayActive)){
-            throw new CommercePayNotAvailable();
+        if (empty($commercePay)) {
+            throw new CommercePayUrlCodeNotExist();
         }
-        return new FindCommercePayResponse($commercePay->toArray());
+
+        $commercePay = array_map(function (CommercePayView $pay) {
+            return $pay->toLinkDataArray();
+        } , $commercePay);
+
+        return new FindCommercePayResponse($commercePay[0]);
     }
 }

@@ -56,7 +56,7 @@ export const AppRouter = () => {
 
   return useRoutes([
     {
-      path: '/cobro/:payamentId',
+      path: '/cobro/:paymentId',
       element: <ChargePaymentLink />
     },
     {

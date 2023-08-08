@@ -100,7 +100,7 @@ export const ChargePaymentForm = () => {
               disabled={loading}
               views={['year', 'month']}
               name={'expiration'}
-              value={new Date(values.expiration) ?? null}
+              value={values?.expiration ? new Date(values.expiration) : null}
               required={true}
               onChange={newValue => {
                 const isDateValid = isValid(newValue)

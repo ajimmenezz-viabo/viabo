@@ -1,12 +1,14 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { CHARGE_PAYMENT_LINK } from '../adapters'
 import { generateChargeFromPaymentLink } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useCreatePaymentCharge = (options = {}) => {
+export const useCreatePaymentCharge = (paymentId, options = {}) => {
   const paymenLink = useMutation(generateChargeFromPaymentLink, options)
+  const client = useQueryClient()
   const payment = async (formData, options) => {
     const { onSuccess, onError, mutationOptions } = options
 
@@ -15,6 +17,7 @@ export const useCreatePaymentCharge = (options = {}) => {
         pending: 'Realizando cargo ...',
         success: {
           render({ data }) {
+            client.invalidateQueries([CHARGE_PAYMENT_LINK.INFO, paymentId])
             onSuccess(data)
             return 'Se realizo el pago con éxito'
           }

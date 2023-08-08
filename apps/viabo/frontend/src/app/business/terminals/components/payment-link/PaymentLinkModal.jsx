@@ -48,7 +48,13 @@ const PaymentLinkModal = ({ open, setOpen }) => {
           <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0}>
             <Stack justifyContent={'center'} alignItems={'center'} direction="row" spacing={1}>
               <LinkIcon />
-              <Link component={RouterLink} underline="always" to={path} href={path} target="_blank" color="info.main">
+              <Link
+                component={RouterLink}
+                underline="always"
+                to={`/cobro/${payLink?.id}`}
+                target="_blank"
+                color="info.main"
+              >
                 {path}
               </Link>
               <IconButton

@@ -6,12 +6,11 @@ import { useFindPaymentLinkInfo } from '../hooks'
 
 import { Page } from '@/shared/components/containers'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
-import { ErrorRequestPage } from '@/shared/components/notifications'
 
 const ChargePaymentLink = () => {
   const { paymentId } = useParams()
 
-  const { data, isLoading, error, isError, refetch } = useFindPaymentLinkInfo(paymentId, {
+  const { data, isLoading } = useFindPaymentLinkInfo(paymentId, {
     enabled: !!paymentId
   })
 
@@ -22,11 +21,10 @@ const ChargePaymentLink = () => {
           {isLoading && <RequestLoadingComponent />}
           {!isLoading && data && (
             <Stack width={{ xs: 1, sm: 0.5, md: '0.4' }} spacing={3}>
-              <ChargePaymenLinkDetails />
-              <ChargePaymentForm />
+              <ChargePaymenLinkDetails details={data} />
+              {data?.status?.id === '6' && <ChargePaymentForm details={data} />}
             </Stack>
           )}
-          {isError && !isLoading && <ErrorRequestPage width={1} errorMessage={error} handleButton={() => refetch()} />}
         </Stack>
       </Box>
     </Page>

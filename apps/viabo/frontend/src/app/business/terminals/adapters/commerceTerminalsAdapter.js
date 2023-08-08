@@ -12,7 +12,7 @@ export const CommerceTerminalsAdapter = terminals =>
       updated: terminal?.apiData?.updated_at,
       register: terminal?.registerDate
     },
-    name: terminal?.name,
+    name: terminal?.name !== '' ? terminal?.name.toString().toUpperCase() : `TERMINAL-${terminal?.terminalId}`,
     active: terminal?.active === '1',
     balanceFormatted: fCurrency('0')
   })) || []

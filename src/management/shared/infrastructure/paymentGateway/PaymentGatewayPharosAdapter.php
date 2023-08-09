@@ -2,52 +2,98 @@
 
 namespace Viabo\management\shared\infrastructure\paymentGateway;
 
+use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
 use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 
 final class PaymentGatewayPharosAdapter implements PaymentGatewayAdapter
 {
-    public function searchTerminalsBy(TerminalCommerceId $commerceId, string $pharosKey): array
-    {
-        $data = [
-            'commerceId' => $commerceId->value(),
-            'pharosKey' => $pharosKey
-        ];
+    private const TRANSFER_SALE = 'SALE';
 
-        return $this->request($data);
+    public function searchTerminalsBy(TerminalCommerceId $commerceId , string $apiKey): array
+    {
+        $url = "https://o3tkmwsybj.execute-api.us-west-2.amazonaws.com/v1_3/chains/merchants/{$commerceId->value()}/terminals";
+        return $this->request([] , $url , $apiKey);
     }
 
-    private function request(array $data):array
+    public function collectMoney(CommercePayTransaction $transaction): array
     {
-        $url = "https://o3tkmwsybj.execute-api.us-west-2.amazonaws.com/v1_3/chains/merchants/{$data['commerceId']}/terminals";
-
-        $ch = curl_init($url);
-
-        $headers = array(
-            'Accept: application/json' ,
-            'X-API-Key: '.$data['pharosKey']
+        $commercePayData = $transaction->commercePayData();
+        $data = array(
+            'tran_type' => self::TRANSFER_SALE ,
+            'stan' => $commercePayData['reference'] ,
+            'date' => $transaction->date() ,
+            'pos_environment' => 'ecommerce' ,
+            'amount' => $commercePayData['amount'] ,
+            'currency' => '484' ,
+            'order_number' => $commercePayData['reference'] ,
+            'terminal_code' => $commercePayData['terminalId'] ,
+            'merchant_code' => $commercePayData['merchantId'] ,
+            'source_ip' => $this->clientIp() ,
+            'notify_url' => '' ,
+            'cancel_url' => '' ,
+            'return_url' => '' ,
+            'email' => $commercePayData['email'] ,
+            'phone' => $commercePayData['phone'] ,
+            'language' => 'es' ,
+            'Card' => $transaction->cardData()
         );
 
-        $ch = curl_init();
-        curl_setopt($ch , CURLOPT_SSL_VERIFYPEER , 0);
-        curl_setopt($ch , CURLOPT_URL , $url);
-        curl_setopt($ch , CURLOPT_RETURNTRANSFER , 1);
-        curl_setopt($ch , CURLOPT_HEADER , 0);
-        curl_setopt($ch , CURLOPT_FAILONERROR , true);
-        curl_setopt($ch , CURLOPT_HTTPHEADER , $headers);
+        $url = 'https://api.pharospayments.com/payments/v1/charge';
+        return $this->request($data , $url , $commercePayData['apiKey']);
+    }
 
-        $response = json_decode(curl_exec($ch) , true);
+    private function clientIp(): string
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        }
 
-        $curlErrno = curl_errno($ch);
-        $curlError = curl_error($ch);
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
 
-        curl_close($ch);
+        return $_SERVER['REMOTE_ADDR'];
+    }
 
-        if ($curlErrno) {
-            throw new \DomainException("Error de API PHAROS: {Error: ". $curlError . "(" . $curlErrno . ")}" , 403);
+    public function request(array $inputData , string $url , string $apiKey)
+    {
+        $headers = [
+            'Accept: application/json' ,
+            'Authorization: Basic fOzlSy1JUWCp71S' ,
+            "X-API-Key: $apiKey"
+        ];
 
+        $curl = curl_init();
+        if (!empty($inputData)) {
+            curl_setopt($curl , CURLOPT_CUSTOMREQUEST , 'POST');
+            curl_setopt($curl , CURLOPT_POSTFIELDS , json_encode($inputData));
+            $headers[] = 'Content-Type: text/plain';
+            $headers[] = 'Content-length: ' . strlen(json_encode($inputData));
+        }
+        curl_setopt($curl , CURLOPT_SSL_VERIFYPEER , false);
+        curl_setopt($curl , CURLOPT_URL , $url);
+        curl_setopt($curl , CURLOPT_HTTPHEADER , $headers);
+        curl_setopt($curl , CURLOPT_RETURNTRANSFER , true);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        if (!$response) {
+            throw new \DomainException("Error de API Pharos: Invalid API" , 403);
+        }
+
+        $response = json_decode($response , true);
+        if ($this->hasError($response)) {
+            $message = $response['message'] ?? $response['Message'];
+            throw new \DomainException("Error de API Pharos: $message" , 403);
         }
 
         return $response;
+    }
+
+    private function hasError(array $response): bool
+    {
+        return array_key_exists('code' , $response) || array_key_exists('Message' , $response);
     }
 }

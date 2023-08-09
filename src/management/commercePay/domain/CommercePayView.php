@@ -49,6 +49,9 @@ final class CommercePayView
     {
         return [
             'id' => $this->id ,
+            'commerceId' => $this->commerceId ,
+            'terminalId' => $this->reference ,
+            'reference' => $this->reference ,
             'clientName' => $this->clientName ,
             'email' => $this->email ,
             'phone' => $this->phone ,

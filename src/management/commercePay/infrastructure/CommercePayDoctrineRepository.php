@@ -4,11 +4,10 @@ namespace Viabo\management\commercePay\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\management\commercePay\domain\CommercePay;
-use Viabo\management\commercePay\domain\CommercePayCommerceId;
 use Viabo\management\commercePay\domain\CommercePayReference;
 use Viabo\management\commercePay\domain\CommercePayRepository;
-use Viabo\management\commercePay\domain\CommercePayUrlCode;
 use Viabo\management\commercePay\domain\CommercePayView;
+use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -20,9 +19,19 @@ final class CommercePayDoctrineRepository extends DoctrineRepository implements 
         parent::__construct($ManagementEntityManager);
     }
 
-    public function save (CommercePay $commercePay): void
+    public function save(CommercePay $commercePay): void
     {
         $this->persist($commercePay);
+    }
+
+    public function search(CommercePayId $id): CommercePay|null
+    {
+        return $this->repository(CommercePay::class)->find($id->value());
+    }
+
+    public function searchView(CommercePayId $commercePayId): CommercePayView|null
+    {
+        return $this->repository(CommercePayView::class)->find($commercePayId->value());
     }
 
     public function searchCriteriaView(Criteria $criteria): array
@@ -32,8 +41,13 @@ final class CommercePayDoctrineRepository extends DoctrineRepository implements 
 
     }
 
-    public function searchBy (CommercePayReference $referenceId): CommercePay|null
+    public function searchBy(CommercePayReference $referenceId): CommercePay|null
     {
-        return $this->repository(CommercePay::class)->findOneBy(['referenceId.value'=> $referenceId->value()]);
+        return $this->repository(CommercePay::class)->findOneBy(['referenceId.value' => $referenceId->value()]);
+    }
+
+    public function update(CommercePay $commercePay): void
+    {
+        $this->entityManager()->flush($commercePay);
     }
 }

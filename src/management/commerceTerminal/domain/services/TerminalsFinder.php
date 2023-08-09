@@ -16,7 +16,7 @@ final readonly class TerminalsFinder
         $terminals = $this->repository->searchBy($commerceId);
 
         if (empty($terminals)) {
-            throw new TerminalsNotFound();
+            return [];
         }
 
         return $terminals;

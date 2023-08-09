@@ -6,13 +6,13 @@ use Viabo\management\commercePayCredentials\domain\CommercePayCredentialsCommerc
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class FindCommercePayCredentialsQueryHandler implements QueryHandler
+final readonly class CommercePayCredentialsQueryHandler implements QueryHandler
 {
     public function __construct (private CommercePayCredentialsFinder $finder)
     {
     }
 
-    public function __invoke (FindCommercePayCredentialsQuery $query):Response
+    public function __invoke (CommercePayCredentialsQuery $query):Response
     {
         return ($this->finder)(new CommercePayCredentialsCommerceId($query->commerceId));
     }

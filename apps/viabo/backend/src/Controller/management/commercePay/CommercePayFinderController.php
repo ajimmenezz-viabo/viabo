@@ -5,15 +5,15 @@ namespace Viabo\Backend\Controller\management\commercePay;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\management\commercePay\application\find\FindCommercePayQuery;
+use Viabo\management\commercePay\application\find\CommercePayQueryByUrlCode;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommercePayFinderController extends ApiController
 {
-    public function __invoke(string $urlCode, Request $request): Response
+    public function __invoke(string $urlCode , Request $request): Response
     {
         try {
-            $commercePay = $this->ask(new FindCommercePayQuery($urlCode));
+            $commercePay = $this->ask(new CommercePayQueryByUrlCode($urlCode));
 
             return new JsonResponse($this->opensslEncrypt($commercePay->data));
         } catch (\DomainException $exception) {

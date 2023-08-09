@@ -17,7 +17,7 @@ export const useCreatePaymentCharge = (paymentId, options = {}) => {
         pending: 'Realizando cargo ...',
         success: {
           render({ data }) {
-            client.invalidateQueries([CHARGE_PAYMENT_LINK.INFO, paymentId])
+            client.invalidateQueries([CHARGE_PAYMENT_LINK.INFO])
             onSuccess(data)
             return 'Se realizo el pago con éxito'
           }

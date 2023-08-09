@@ -22,7 +22,7 @@ const ChargePaymentLink = () => {
           {!isLoading && data && (
             <Stack width={{ xs: 1, sm: 0.5, md: '0.4' }} spacing={3}>
               <ChargePaymenLinkDetails details={data} />
-              {data?.status?.id === '6' && <ChargePaymentForm details={data} />}
+              {['6', '8'].includes(data?.status?.id) && <ChargePaymentForm details={data} />}
             </Stack>
           )}
         </Stack>

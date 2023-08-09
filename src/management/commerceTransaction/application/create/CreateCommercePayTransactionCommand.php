@@ -6,7 +6,12 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class CreateCommercePayTransactionCommand implements Command
 {
-    public function __construct(public string $operationId, public array $transaction)
+    public function __construct(
+        public array  $commercePayData ,
+        public string $merchantId ,
+        public string $apiKey ,
+        public array  $cardData
+    )
     {
     }
 }

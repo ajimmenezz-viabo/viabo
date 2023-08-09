@@ -4,7 +4,7 @@ namespace Viabo\management\commercePayCredentials\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class FindCommercePayCredentialsQuery implements Query
+final readonly class CommercePayCredentialsQuery implements Query
 {
     public function __construct (public string $commerceId)
     {

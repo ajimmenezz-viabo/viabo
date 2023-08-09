@@ -7,4 +7,8 @@ use Viabo\shared\domain\valueObjects\DateTimeValueObject;
 final class CommercePayTransactionDate extends DateTimeValueObject
 {
 
+    public function now(): string
+    {
+        return $this->date->formatDateTime($this->value , 'YmdHis');
+    }
 }

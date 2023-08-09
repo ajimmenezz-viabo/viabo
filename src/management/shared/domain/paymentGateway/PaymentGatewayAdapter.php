@@ -3,10 +3,12 @@
 namespace Viabo\management\shared\domain\paymentGateway;
 
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
+use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
 
 interface PaymentGatewayAdapter
 {
-    public function searchTerminalsBy(TerminalCommerceId $commerceId,string $pharosKey):array;
+    public function searchTerminalsBy(TerminalCommerceId $commerceId,string $apiKey):array;
 
-    public function transactionProcessor(string $merchantId, array $cardBank, array $commercePay):array;
+    public function collectMoney(CommercePayTransaction $transaction): array;
+
 }

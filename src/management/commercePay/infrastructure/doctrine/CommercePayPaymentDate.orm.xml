@@ -4,8 +4,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <embeddable name="Viabo\management\commerceTransaction\domain\CommercePayTransactionOperationId">
-        <field name="value" column="OperationPayId"/>
+    <embeddable name="Viabo\management\commercePay\domain\CommercePayPaymentDate">
+        <field name="value" column="PaymentDate"/>
     </embeddable>
 
 </doctrine-mapping>

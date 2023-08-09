@@ -7,13 +7,13 @@ use Viabo\management\commercePay\domain\exceptions\CommercePayUrlCodeNotExist;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class FindCommercePayQueryHandler implements QueryHandler
+final readonly class CommercePayQueryHandlerByUrlCode implements QueryHandler
 {
-    public function __construct(private CommercePayFinder $finder)
+    public function __construct(private CommercePayFinderByUrlCode $finder)
     {
     }
 
-    public function __invoke(FindCommercePayQuery $query): Response
+    public function __invoke(CommercePayQueryByUrlCode $query): Response
     {
         try {
             $urlCode = new CommercePayUrlCode($query->urlCode);

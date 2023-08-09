@@ -4,7 +4,7 @@ namespace Viabo\management\commercePay\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class FindCommercePayQuery implements Query
+final readonly class CommercePayQueryByUrlCode implements Query
 {
     public function __construct(public string $urlCode)
     {

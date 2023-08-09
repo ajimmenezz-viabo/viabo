@@ -3,10 +3,14 @@
 namespace Viabo\management\commercePay\domain;
 
 use Viabo\management\commercePay\domain\events\CommercePayCreatedDomainEvent;
+use Viabo\management\commercePay\domain\events\CommercePayUpdatedDomainEvent;
+use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class CommercePay extends AggregateRoot
 {
+
+
     public function __construct(
         private CommercePayId            $id ,
         private CommercePayReference     $reference ,
@@ -21,6 +25,7 @@ final class CommercePay extends AggregateRoot
         private CommercePayUrlCode       $urlCode ,
         private CommercePayCreatedByUser $createdByUser ,
         private CommercePayRegisterDate  $registerDate ,
+        private CommercePayPaymentDate   $paymentDate
     )
     {
     }
@@ -49,7 +54,8 @@ final class CommercePay extends AggregateRoot
             new CommercePayStatusId('6') ,
             CommercePayUrlCode::random() ,
             $createdByUser ,
-            CommercePayRegisterDate::todayDate()
+            CommercePayRegisterDate::todayDate() ,
+            CommercePayPaymentDate::empty()
         );
         $commercePay->record(new CommercePayCreatedDomainEvent(
                 $commercePay->id->value() ,
@@ -59,6 +65,10 @@ final class CommercePay extends AggregateRoot
         return $commercePay;
     }
 
+    private function id(): CommercePayId
+    {
+        return $this->id;
+    }
 
     public function active(): CommercePayStatusId
     {
@@ -68,6 +78,17 @@ final class CommercePay extends AggregateRoot
     public function urlCode(): CommercePayUrlCode
     {
         return $this->urlCode;
+    }
+
+    public function update(CommercePayStatusId $statusId): void
+    {
+        $this->statusId = $statusId;
+        if ($this->statusId->isApproved()) {
+            $this->paymentDate = $this->paymentDate->update();
+            $this->urlCode = $this->urlCode->update();
+        }
+
+        $this->record(new CommercePayUpdatedDomainEvent($this->id()->value(), $this->toArray()));
     }
 
     public function toArray(): array

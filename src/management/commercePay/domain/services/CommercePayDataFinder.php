@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 namespace Viabo\management\commercePay\domain\services;
-use Viabo\management\commercePay\domain\CommercePayId;
 use Viabo\management\commercePay\domain\CommercePayRepository;
+use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 

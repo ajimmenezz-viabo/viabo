@@ -3,25 +3,40 @@
 namespace Viabo\management\commerceTransaction\application\create;
 
 use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
-use Viabo\management\commerceTransaction\domain\CommercePayTransactionOperationId;
 use Viabo\management\commerceTransaction\domain\CommercePayTransactionRepository;
-use Viabo\management\commerceTransaction\domain\CommercePayTransactionStatusId;
+use Viabo\management\shared\domain\commercePay\CommercePayId;
+use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
+use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CommercePayTransactionCreator
 {
-    public function __construct(private CommercePayTransactionRepository $repository)
+    public function __construct(
+        private CommercePayTransactionRepository $repository ,
+        private PaymentGatewayAdapter            $adapter ,
+        private EventBus                         $bus
+    )
     {
     }
 
     public function __invoke(
-        CommercePayTransactionOperationId $operationId,
-        CommercePayTransactionStatusId $statusId):void
+        CommercePayId $commercePayId ,
+        array         $commercePayData ,
+        array         $cardData
+    ): void
     {
-        $commerceTransaction = CommercePayTransaction::create(
-            $operationId,
-            $statusId,
-        );
+        $transaction = CommercePayTransaction::create($commercePayId);
+        $transaction->setCardData($cardData);
+        $transaction->setCommercePayData($commercePayData);
 
-        $this->repository->save($commerceTransaction);
+        $paymentGatewayData = $this->adapter->collectMoney($transaction);
+
+        $transaction->addPaymentGateway($paymentGatewayData);
+        $transaction->updateStatus();
+
+        $this->repository->save($transaction);
+
+        $transaction->setEventCreated();
+        $this->bus->publish(...$transaction->pullDomainEvents());
     }
+
 }

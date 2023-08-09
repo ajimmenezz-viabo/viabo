@@ -4,7 +4,7 @@ namespace Viabo\management\commerceTransaction\domain\events;
 
 use Viabo\shared\domain\bus\event\DomainEvent;
 
-final readonly class CommercePaytransactionCreatedDomainEvent extends DomainEvent
+final readonly class CommercePayTransactionCreatedDomainEvent extends DomainEvent
 {
     public function __construct(
         string        $aggregateId,

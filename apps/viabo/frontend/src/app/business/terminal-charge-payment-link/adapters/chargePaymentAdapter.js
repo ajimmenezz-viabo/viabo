@@ -5,12 +5,15 @@ export const ChargePaymentAdapter = (payment, details) => {
 
   const expirationFormatted = payment?.expiration?.slice(0, 3) + expirationYear
   const paymentData = {
-    paymentId: details?.id,
-    name: payment?.name,
+    payId: details?.id,
+    cardHolder: payment?.name,
     phone: payment?.phone,
     cardNumber: payment?.cardNumber.replace(/\s+/g, ''),
     expirationDate: expirationFormatted,
-    cvv: payment?.cvv
+    expMonth: payment?.expiration?.slice(0, 2),
+    expYear: payment?.expiration?.slice(-2),
+    security: payment?.cvv,
+    email: payment?.email
   }
 
   return getCryptInfo(paymentData)

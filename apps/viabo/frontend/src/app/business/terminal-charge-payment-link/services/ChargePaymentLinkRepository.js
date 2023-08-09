@@ -8,6 +8,6 @@ export const getPaymentLinkInfo = async paymentId => {
 }
 
 export const generateChargeFromPaymentLink = async charge => {
-  const { data } = await axios.post(`/api/commerce/pay/transaction`, charge)
+  const { data } = await axios.post('/api/commerce/pay/generate/transaction', charge)
   return data
 }

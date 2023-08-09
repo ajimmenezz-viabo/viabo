@@ -6,6 +6,10 @@ const PAYMENT_TERMINAL_STATUS = [
   {
     id: '7',
     color: 'success'
+  },
+  {
+    id: '8',
+    color: 'error'
   }
 ]
 

@@ -98,6 +98,16 @@ final class CommercePayTransaction extends AggregateRoot
         }
     }
 
+    public function isNotApproved(): bool
+    {
+        return !$this->apiCode->isApproved();
+    }
+
+    public function apiMessage(): CommercePayTransactionAPIMessage
+    {
+        return $this->apiMessage;
+    }
+
     public function setEventCreated(): void
     {
         $this->record(new CommercePayTransactionCreatedDomainEvent($this->id()->value() , $this->toArray()));

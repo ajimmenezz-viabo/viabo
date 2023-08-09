@@ -15,7 +15,7 @@ final readonly class CommerceTransactionCreatorController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $data = $request->toArray();
+            $data = $this->opensslDecrypt($request->toArray());
             $commercePay = $this->ask(new CommercePayQuery($data['payId']));
             $commercePayCredentials = $this->ask(new CommercePayCredentialsQuery($commercePay->data['commerceId']));
             $this->dispatch(new CreateCommercePayTransactionCommand(

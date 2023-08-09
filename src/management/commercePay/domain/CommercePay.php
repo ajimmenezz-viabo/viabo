@@ -85,7 +85,6 @@ final class CommercePay extends AggregateRoot
         $this->statusId = $statusId;
         if ($this->statusId->isApproved()) {
             $this->paymentDate = $this->paymentDate->update();
-            $this->urlCode = $this->urlCode->update();
         }
 
         $this->record(new CommercePayUpdatedDomainEvent($this->id()->value(), $this->toArray()));

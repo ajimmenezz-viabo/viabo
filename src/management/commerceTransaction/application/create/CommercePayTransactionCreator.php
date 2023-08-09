@@ -4,6 +4,7 @@ namespace Viabo\management\commerceTransaction\application\create;
 
 use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
 use Viabo\management\commerceTransaction\domain\CommercePayTransactionRepository;
+use Viabo\management\commerceTransaction\domain\exceptions\CommercePayTransactionNotApproved;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
 use Viabo\shared\domain\bus\event\EventBus;
@@ -37,6 +38,10 @@ final readonly class CommercePayTransactionCreator
 
         $transaction->setEventCreated();
         $this->bus->publish(...$transaction->pullDomainEvents());
+
+        if($transaction->isNotApproved()){
+            throw new CommercePayTransactionNotApproved($transaction->apiMessage()->value());
+        }
     }
 
 }

@@ -16,6 +16,7 @@ import {
 import { useFindCommerceCards } from '@/app/business/cards/hooks'
 import { useFindCommerceCardTypes } from '@/app/business/cards/hooks/useFindCommerceCardTypes'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
+import { searchByTerm } from '@/app/shared/utils'
 import { arrowIcon } from '@/shared/assets/icons/CustomIcons'
 import { InputStyle } from '@/shared/components/form'
 import { ErrorRequestPage, SearchNotFound } from '@/shared/components/notifications'
@@ -111,8 +112,7 @@ export function CardsSidebar() {
       const { value } = event.target
       setSearchQuery(value)
       if (value) {
-        const results =
-          commerceCards?.filter(item => item?.cardNumber.toLowerCase().indexOf(value.toLowerCase()) !== -1) || []
+        const results = searchByTerm(commerceCards, value) || []
         setSearchResults(results)
       } else {
         setSearchResults(commerceCards)

@@ -112,7 +112,7 @@ export const ChargePaymentForm = ({ details }) => {
         <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'}>
           <Stack flex={1} spacing={1}>
             <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Vence
+              Vence *
             </Typography>
             <DatePicker
               disabled={loading}
@@ -143,7 +143,7 @@ export const ChargePaymentForm = ({ details }) => {
           </Stack>
           <Stack spacing={1}>
             <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              CVV
+              CVV *
             </Typography>
             <RFTextField
               name={'cvv'}

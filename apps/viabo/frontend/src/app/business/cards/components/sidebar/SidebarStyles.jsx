@@ -33,7 +33,7 @@ export const SidebarButtonStyle = styled(props => <IconButton disableRipple {...
   color: 'rgb(145, 158, 171)',
   fontSize: '1.125rem',
   padding: '4px',
-  zIndex: '1500',
+  zIndex: theme.zIndex.drawer - 1,
   border: '1px dashed rgba(145, 158, 171, 0.24)',
   backdropFilter: 'blur(6px)',
   lineHeight: 0

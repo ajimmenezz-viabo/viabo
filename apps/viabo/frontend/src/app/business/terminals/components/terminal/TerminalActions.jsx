@@ -4,16 +4,13 @@ import { Apps, Link } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Box, Divider, Stack } from '@mui/material'
 
-import { useTerminalDetails } from '../../store'
-
 import { Lodable } from '@/shared/components/lodables'
 import { Scrollbar } from '@/shared/components/scroll'
 
 const PaymentLinkModal = Lodable(lazy(() => import('../payment-link/PaymentLinkModal')))
+const VirtualTerminalModal = Lodable(lazy(() => import('../virtual-terminal/VirtualTerminalModal')))
 
 export const TerminalActions = () => {
-  const terminal = useTerminalDetails(state => state.terminal)
-
   const [openPaymentLink, setOpenPaymentLink] = useState(false)
   const [openVirtualTerminal, setOpenVirtualTerminal] = useState(false)
 
@@ -52,6 +49,7 @@ export const TerminalActions = () => {
         </Scrollbar>
       </Box>
       {openPaymentLink && <PaymentLinkModal open={openPaymentLink} setOpen={setOpenPaymentLink} />}
+      {openVirtualTerminal && <VirtualTerminalModal open={openVirtualTerminal} setOpen={setOpenVirtualTerminal} />}
     </>
   )
 }

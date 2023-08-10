@@ -20,9 +20,7 @@ export function HeaderPage({ name, buttonName, to = '', onClick, loading = false
   return (
     <Box display="flex" mb={2} spacing={3} flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }}>
       <Box sx={{ flexGrow: 1, mb: { xs: buttonName ? 3 : 0, sm: 0 } }}>
-        <Typography variant="h4" gutterBottom>
-          {name}
-        </Typography>
+        <Typography variant="h4">{name}</Typography>
         <SimpleBreadcrumbs links={links} />
       </Box>
       <Box sx={{ flex: '1 1 auto' }} />

@@ -32,7 +32,7 @@ export const TerminalsSearch = ({ commerceTerminals = [] }) => {
       if (value) {
         const results =
           commerceTerminals?.filter(
-            item => item?.alias && item?.alias?.toLowerCase().indexOf(value.toLowerCase()) !== -1
+            item => item?.name && item?.name?.toLowerCase().indexOf(value.toLowerCase()) !== -1
           ) || []
 
         setTerminals(results)

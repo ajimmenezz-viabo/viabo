@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { Send } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { Stack, Typography } from '@mui/material'
+import { InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 
 import { FormProvider, RFTextField } from '@/shared/components/form'
@@ -13,11 +13,9 @@ const MAX_AMOUNT = 2000
 const STEP = 100
 
 export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQR }) {
-  const [autoWidth, setAutoWidth] = useState(30)
-
   const formik = useFormik({
     initialValues: {
-      amount: 0
+      amount: ''
     },
     onSubmit: values => {
       setTimeout(() => {
@@ -26,22 +24,9 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
     }
   })
 
-  const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting } = formik
+  const { isSubmitting, values } = formik
 
   const { amount } = values
-
-  const handleInputChange = event => {
-    const value = event.target.value === '' ? '' : Number(event.target.value)
-    setFieldValue('amount', value)
-  }
-
-  const handleBlur = () => {
-    if (amount < 0 || amount === '') {
-      setFieldValue('amount', 0)
-    } else if (amount > MAX_AMOUNT) {
-      setFieldValue('amount', MAX_AMOUNT)
-    }
-  }
 
   useEffect(() => {
     const value = amount === '' ? 0 : amount
@@ -59,25 +44,26 @@ export function PaymentForm({ balance, setCurrentBalance, insufficient, setShowQ
           <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'center'}>
             <RFTextField
               fullWidth
-              placeholder={'$0.00'}
+              placeholder={'0.00'}
               name={'amount'}
               type={'number'}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
               InputLabelProps={{
                 shrink: true
               }}
-              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT, step: STEP }}
+              InputProps={{
+                startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
+                endAdornment: <InputAdornment position="end">MXN</InputAdornment>
+              }}
+              inputProps={{ inputMode: 'numeric', step: 'any', min: MIN_AMOUNT }}
             />
-            <Typography variant="caption">MXN</Typography>
           </Stack>
 
-          <Stack sx={{ pt: 3 }}>
+          <Stack>
             <LoadingButton
               loading={isSubmitting}
               variant="contained"
               color="primary"
-              disabled={amount === 0 || insufficient}
+              disabled={amount <= 0 || insufficient}
               fullWidth
               type="submit"
               startIcon={<Send />}

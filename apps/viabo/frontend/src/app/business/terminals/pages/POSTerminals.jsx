@@ -17,7 +17,7 @@ const POSTerminals = () => (
             name={'Terminales Punto de Venta'}
             links={[
               { name: 'Inicio', href: PATH_DASHBOARD.root },
-              { name: 'Administracion', href: BUSINESS_PATHS.cards },
+              { name: 'Administracion', href: BUSINESS_PATHS.terminals },
               { name: BUSINESS_ROUTES_NAMES.terminals.name }
             ]}
           />

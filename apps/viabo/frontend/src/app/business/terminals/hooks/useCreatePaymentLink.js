@@ -6,12 +6,12 @@ import { createPaymentLink } from '../services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useCreatePaymentLink = (options = {}) => {
-  const paymenLink = useMutation(createPaymentLink, options)
+  const paymentLink = useMutation(createPaymentLink, options)
   const payment = async (formData, options) => {
     const { onSuccess, onError, mutationOptions } = options
 
     try {
-      await toast.promise(paymenLink.mutateAsync(formData, mutationOptions), {
+      await toast.promise(paymentLink.mutateAsync(formData, mutationOptions), {
         pending: 'generando Liga de Pago ...',
         success: {
           render({ data }) {
@@ -33,7 +33,7 @@ export const useCreatePaymentLink = (options = {}) => {
   }
 
   return {
-    ...paymenLink,
+    ...paymentLink,
     mutate: payment
   }
 }

@@ -6,7 +6,8 @@ import { arrowIcon } from '@/shared/assets/icons'
 
 CollapseButtonNew.propTypes = {
   collapseClick: PropTypes.bool,
-  onToggleCollapse: PropTypes.func
+  onToggleCollapse: PropTypes.func,
+  isCollapse: PropTypes.bool
 }
 
 export default function CollapseButtonNew({ onToggleCollapse, collapseClick, isCollapse }) {
@@ -32,7 +33,7 @@ export default function CollapseButtonNew({ onToggleCollapse, collapseClick, isC
         top: '28px',
         position: 'fixed',
         left: !isCollapse ? '263px' : '71px',
-        zIndex: '1500',
+        zIndex: theme => theme.zIndex.drawer + 1,
         border: '1px dashed rgba(145, 158, 171, 0.24)',
         backdropFilter: 'blur(6px)',
         lineHeight: 0,

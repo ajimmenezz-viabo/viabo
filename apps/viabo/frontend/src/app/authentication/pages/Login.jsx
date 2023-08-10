@@ -1,5 +1,8 @@
+import { useEffect } from 'react'
+
 import { Card, Grid, Stack } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { LoginForm } from '@/app/authentication/components'
 import { Carousel } from '@/app/authentication/components/Carousel'
@@ -39,45 +42,51 @@ const RegisterContainer = styled('div')(({ theme }) => ({
   // }
 }))
 
-const Login = () => (
-  // const carousel = (
-  //   <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-  //     <Box sx={{ position: 'relative', display: 'flex', height: 1, backgroundColor: '#161C24' }}>
-  //       <Box
-  //         component={LazyLoadImage}
-  //         wrapperClassName="wrapper"
-  //         effect={'blur'}
-  //         placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
-  //         sx={{ width: 1, height: 1, objectFit: 'cover' }}
-  //         src={INTEGRATION}
-  //       />
-  //     </Box>
-  //   </Box>
-  // )
+const Login = () => {
+  const client = useQueryClient()
+  useEffect(() => {
+    client.removeQueries()
+  }, [])
+  return (
+    // const carousel = (
+    //   <Box sx={{ position: 'relative', overflow: 'hidden' }}>
+    //     <Box sx={{ position: 'relative', display: 'flex', height: 1, backgroundColor: '#161C24' }}>
+    //       <Box
+    //         component={LazyLoadImage}
+    //         wrapperClassName="wrapper"
+    //         effect={'blur'}
+    //         placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
+    //         sx={{ width: 1, height: 1, objectFit: 'cover' }}
+    //         src={INTEGRATION}
+    //       />
+    //     </Box>
+    //   </Box>
+    // )
 
-  <Page title="Inicio de Sesión">
-    <RegisterContainer>
-      <ContainerStyle>
-        <Grid component="main" container spacing={0} sx={{ height: 1, width: 1 }}>
-          <Grid
-            item
-            elevation={0}
-            xs={false}
-            sm={false}
-            md={7}
-            sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
-          >
-            <Carousel />
+    <Page title="Inicio de Sesión">
+      <RegisterContainer>
+        <ContainerStyle>
+          <Grid component="main" container spacing={0} sx={{ height: 1, width: 1 }}>
+            <Grid
+              item
+              elevation={0}
+              xs={false}
+              sm={false}
+              md={7}
+              sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
+            >
+              <Carousel />
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Stack justifyContent={'center'} width={1} height={1} sx={{ overflow: 'auto' }}>
+                <LoginForm />
+              </Stack>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={5}>
-            <Stack justifyContent={'center'} width={1} height={1} sx={{ overflow: 'auto' }}>
-              <LoginForm />
-            </Stack>
-          </Grid>
-        </Grid>
-      </ContainerStyle>
-    </RegisterContainer>
-  </Page>
-)
+        </ContainerStyle>
+      </RegisterContainer>
+    </Page>
+  )
+}
 
 export default Login

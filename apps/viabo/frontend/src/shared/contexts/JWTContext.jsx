@@ -2,7 +2,6 @@ import { createContext, useEffect, useReducer } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { useQueryClient } from '@tanstack/react-query'
 import jwtDecode from 'jwt-decode'
 
 import { UseFindModulesByUser } from '@/app/authentication/hooks'
@@ -66,7 +65,6 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const client = useQueryClient()
 
   const {
     data: userModules,
@@ -179,13 +177,11 @@ function AuthProvider({ children }) {
   }, [isLoading])
 
   const logout = async (auto = false) => {
-    setSession(null)
     dispatch({ type: 'LOGOUT' })
-    client.removeQueries()
-    remove()
     if (!auto) {
       resetAllStores()
     }
+    setSession(null)
   }
 
   const login = async () => {

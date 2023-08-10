@@ -2,6 +2,7 @@ import path from 'path'
 
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
+import { compression } from 'vite-plugin-compression2'
 
 const { readFileSync } = require('fs')
 
@@ -34,7 +35,7 @@ export default defineConfig({
     'process.env': loadEnv()
   },
 
-  plugins: [react()],
+  plugins: [react(), compression()],
   server: {
     port: 3000,
     hmr: {

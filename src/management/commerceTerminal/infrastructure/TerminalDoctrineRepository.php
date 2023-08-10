@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 use Viabo\management\commerceTerminal\domain\Terminal;
 use Viabo\management\commerceTerminal\domain\TerminalRepository;
+use Viabo\management\commerceTerminal\domain\TerminalView;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 
 final class TerminalDoctrineRepository extends DoctrineRepository implements TerminalRepository
@@ -20,6 +21,6 @@ final class TerminalDoctrineRepository extends DoctrineRepository implements Ter
     }
     public function searchBy(TerminalCommerceId $commerceId): array
     {
-        return $this->repository(Terminal::class)->findBy(['commerceId.value' => $commerceId->value()]);
+        return $this->repository(TerminalView::class)->findBy(['commerceId' => $commerceId->value()]);
     }
 }

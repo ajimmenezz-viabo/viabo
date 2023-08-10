@@ -3,9 +3,8 @@
 namespace Viabo\management\commerceTerminal\application\find;
 
 use Viabo\management\commerceTerminal\domain\services\TerminalsFinder as TerminalsFinderService ;
-use Viabo\management\commerceTerminal\domain\Terminal;
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
-use Viabo\management\commerceTerminal\domain\TerminalRepository;
+use Viabo\management\commerceTerminal\domain\TerminalView;
 
 final readonly class TerminalFinder
 {
@@ -17,7 +16,7 @@ final readonly class TerminalFinder
     {
         $terminals =($this->finder)($commerceId);
 
-        return new FindTerminalResponse(array_map(function(Terminal $terminal){
+        return new FindTerminalResponse(array_map(function(TerminalView $terminal){
             return $terminal->toArray();
         },$terminals));
     }

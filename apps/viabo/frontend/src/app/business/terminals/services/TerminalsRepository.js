@@ -11,3 +11,8 @@ export const createPaymentLink = async paymentLink => {
   const { data } = await axios.post(`/api/commerce/pay/new`, paymentLink)
   return data
 }
+
+export const generatePaymentByVirtualTerminal = async payment => {
+  const { data } = await axios.post(`/api/commerce/virtual-terminal/generate/transaction`, payment)
+  return data
+}

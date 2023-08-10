@@ -1,22 +1,22 @@
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { createPaymentLink } from '../services'
+import { generatePaymentByVirtualTerminal } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useCreatePaymentLink = (options = {}) => {
-  const paymentLink = useMutation(createPaymentLink, options)
-  const payment = async (formData, options) => {
+export const useGeneratePaymentByVirtualTerminal = (options = {}) => {
+  const payment = useMutation(generatePaymentByVirtualTerminal, options)
+  const transaction = async (formData, options) => {
     const { onSuccess, onError, mutationOptions } = options
 
     try {
-      await toast.promise(paymentLink.mutateAsync(formData, mutationOptions), {
-        pending: 'generando Liga de Pago ...',
+      await toast.promise(payment.mutateAsync(formData, mutationOptions), {
+        pending: 'Realizando Pago ...',
         success: {
           render({ data }) {
             onSuccess(data)
-            return 'Se creó y envió la liga de pago con éxito'
+            return 'Se completó la transacción y se envió el comprobante con éxito'
           }
         }
       })
@@ -33,7 +33,7 @@ export const useCreatePaymentLink = (options = {}) => {
   }
 
   return {
-    ...paymentLink,
-    mutate: payment
+    ...payment,
+    mutate: transaction
   }
 }

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { ContactlessSharp } from '@mui/icons-material'
+import { ContactlessSharp, PointOfSale } from '@mui/icons-material'
 import {
   Avatar,
   Box,
@@ -77,11 +77,23 @@ export const TerminalItem = ({ terminal }) => {
                   width: 32,
                   height: 32,
                   m: 0,
-                  color: theme.palette.primary.contrastText,
-                  backgroundColor: theme.palette.primary.main
+                  backgroundColor: theme.palette.primary.main,
+                  '& :hover': {
+                    color: 'white'
+                  }
                 })}
               >
-                <ContactlessSharp sx={{ width: 20, height: 20 }} color={'white'} />
+                {terminal?.isVirtual ? (
+                  <ContactlessSharp sx={{ width: 20, height: 20, color: 'white' }} />
+                ) : (
+                  <PointOfSale
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      color: 'white'
+                    }}
+                  />
+                )}
               </Avatar>
             </Box>
           </ListItemAvatar>
@@ -108,6 +120,8 @@ export const TerminalItem = ({ terminal }) => {
 TerminalItem.propTypes = {
   terminal: PropTypes.shape({
     alias: PropTypes.any,
-    id: PropTypes.any
+    id: PropTypes.any,
+    isVirtual: PropTypes.any,
+    name: PropTypes.any
   })
 }

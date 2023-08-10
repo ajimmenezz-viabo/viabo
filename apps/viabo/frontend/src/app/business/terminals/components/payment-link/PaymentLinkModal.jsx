@@ -11,12 +11,15 @@ import { Link as RouterLink } from 'react-router-dom'
 
 import { PaymentLinkForm } from './PaymentLinkForm'
 
+import { useTerminalDetails } from '../../store'
+
 import { RightPanel } from '@/app/shared/components'
 import { copyToClipboard, fCurrency } from '@/shared/utils'
 
 const PaymentLinkModal = ({ open, setOpen }) => {
   const [payLink, setPayLink] = useState(null)
   const [copied, setCopied] = useState(false)
+  const terminal = useTerminalDetails(state => state.terminal)
   const path = `${window.location.host}/cobro/${payLink?.id}`
 
   const handleClose = () => {
@@ -28,10 +31,12 @@ const PaymentLinkModal = ({ open, setOpen }) => {
     <RightPanel
       open={open}
       handleClose={handleClose}
-      title={'Liga de Pago'}
-      onSuccess={paylink => {
-        setPayLink(paylink)
-      }}
+      titleElement={
+        <Stack>
+          <Typography variant={'h6'}>Liga de Pago</Typography>
+          <Typography variant={'subtitle2'}>{terminal?.name}</Typography>
+        </Stack>
+      }
     >
       {payLink ? (
         <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={2} p={5}>

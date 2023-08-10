@@ -10,16 +10,24 @@ import { MuiTelInput } from 'mui-tel-input'
 import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
-import { ChargePaymentAdapter } from '../adapters'
-import { useCreatePaymentCharge } from '../hooks'
+import { PaymentByVirtualTerminalAdapter } from '../../adapters'
+import { useGeneratePaymentByVirtualTerminal } from '../../hooks'
+import { useTerminalDetails } from '../../store'
 
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { MasterCardLogo, VisaLogo } from '@/shared/components/images'
 
-export const ChargePaymentForm = ({ details }) => {
-  const { mutate } = useCreatePaymentCharge(details?.id)
+const MIN_AMOUNT = 1
+const MAX_AMOUNT = 100000
 
-  const CardSchema = Yup.object().shape({
+export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
+  const terminal = useTerminalDetails(state => state.terminal)
+
+  const { mutate } = useGeneratePaymentByVirtualTerminal()
+
+  const TerminalSchema = Yup.object().shape({
+    amount: Yup.string().required('El monto es requerido'),
+    concept: Yup.string().required('El concepto es requerido'),
     cardNumber: Yup.string()
       .transform((value, originalValue) => originalValue.replace(/\s/g, '')) // Elimina los espacios en blanco
       .min(16, 'Debe contener 16 digitos')
@@ -42,20 +50,23 @@ export const ChargePaymentForm = ({ details }) => {
 
   const formik = useFormik({
     initialValues: {
+      amount: '',
       cardNumber: '',
       expiration: '',
       cvv: '',
       name: '',
-      email: details?.email || '',
-      phone: details?.phone || ''
+      email: '',
+      phone: '',
+      concept: ''
     },
     enableReinitialize: true,
-    validationSchema: CardSchema,
+    validationSchema: TerminalSchema,
     onSubmit: (values, { setSubmitting }) => {
-      const data = ChargePaymentAdapter(values, details)
+      const data = PaymentByVirtualTerminalAdapter(terminal, values)
       mutate(data, {
         onSuccess: () => {
           setSubmitting(false)
+          onSuccessTransaction()
         },
         onError: () => {
           setSubmitting(false)
@@ -70,15 +81,63 @@ export const ChargePaymentForm = ({ details }) => {
 
   return (
     <FormProvider formik={formik}>
-      <Stack spacing={3}>
+      <Stack spacing={2} p={3}>
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          <Typography variant="h6">Forma de Pago</Typography>
-          <Paper sx={{ px: 1 }}>
+          <Typography variant="subtitle1">Forma de Pago</Typography>
+          <Paper sx={{ px: 1, backgroundColor: 'background.default' }}>
             <MasterCardLogo sx={{ width: 30, height: 30 }} />
           </Paper>
-          <Paper sx={{ px: 1 }}>
+          <Paper sx={{ px: 1, backgroundColor: 'background.default' }}>
             <VisaLogo sx={{ width: 30, height: 30 }} />
           </Paper>
+        </Stack>
+        <Stack spacing={1}>
+          <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Monto *
+          </Typography>
+
+          <RFTextField
+            fullWidth
+            name={'amount'}
+            required={true}
+            placeholder={'0.00'}
+            disabled={loading}
+            size={'small'}
+            autoComplete={'off'}
+            InputProps={{
+              startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
+              endAdornment: <InputAdornment position="end">MXN</InputAdornment>,
+              inputComponent: MaskedInput,
+              inputProps: {
+                mask: Number,
+                radix: '.',
+                thousandsSeparator: ',',
+                padFractionalZeros: true,
+                min: MIN_AMOUNT,
+                max: MAX_AMOUNT,
+                scale: 2,
+                value: values.amount,
+                onAccept: value => {
+                  setFieldValue('amount', value)
+                }
+              }
+            }}
+          />
+        </Stack>
+
+        <Stack spacing={1}>
+          <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Concepto *
+          </Typography>
+
+          <RFTextField
+            size={'small'}
+            name={'concept'}
+            multiline
+            disabled={loading}
+            rows={2}
+            placeholder={'Pago por ..'}
+          />
         </Stack>
 
         <Stack spacing={1}>
@@ -89,6 +148,7 @@ export const ChargePaymentForm = ({ details }) => {
             autoFocus
             name={'cardNumber'}
             required={true}
+            size={'small'}
             placeholder={'5254 2700 9717 8968'}
             fullWidth
             InputProps={{
@@ -116,6 +176,7 @@ export const ChargePaymentForm = ({ details }) => {
             </Typography>
             <DatePicker
               disabled={loading}
+              size={'small'}
               views={['year', 'month']}
               name={'expiration'}
               value={values?.expiration ? new Date(values.expiration) : null}
@@ -131,6 +192,7 @@ export const ChargePaymentForm = ({ details }) => {
               slotProps={{
                 textField: {
                   fullWidth: true,
+                  size: 'small',
                   error: Boolean(touched.expiration && errors.expiration),
                   required: true,
                   helperText: touched.expiration && errors.expiration ? errors.expiration : ''
@@ -149,6 +211,7 @@ export const ChargePaymentForm = ({ details }) => {
               name={'cvv'}
               required={true}
               placeholder={'123'}
+              size={'small'}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -177,6 +240,7 @@ export const ChargePaymentForm = ({ details }) => {
           <RFTextField
             name={'name'}
             required={true}
+            size={'small'}
             placeholder={'Nombre del Titular de la Tarjeta'}
             disabled={loading}
             InputProps={{
@@ -197,6 +261,7 @@ export const ChargePaymentForm = ({ details }) => {
           <RFTextField
             name={'email'}
             required={true}
+            size={'small'}
             placeholder={'usuario@dominio.com'}
             disabled={loading}
             InputProps={{
@@ -225,6 +290,7 @@ export const ChargePaymentForm = ({ details }) => {
             value={values.phone}
             disabled={loading}
             required={true}
+            size={'small'}
             onChange={(value, info) => {
               setFieldValue('phone', value)
             }}
@@ -262,10 +328,6 @@ export const ChargePaymentForm = ({ details }) => {
   )
 }
 
-ChargePaymentForm.propTypes = {
-  details: PropTypes.shape({
-    email: PropTypes.string,
-    id: PropTypes.any,
-    phone: PropTypes.string
-  })
+VirtualTerminalForm.propTypes = {
+  onSuccessTransaction: PropTypes.func
 }

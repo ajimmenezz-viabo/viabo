@@ -73,6 +73,7 @@ function NavSectionVertical({ isCollapse, ...other }) {
               {!isCollapse && (
                 <ListSubheaderStyle
                   sx={{
+                    py: 1,
                     ...(isCollapse && {
                       opacity: 0
                     })

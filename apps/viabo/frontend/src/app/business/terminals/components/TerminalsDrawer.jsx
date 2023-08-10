@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { useTheme } from '@emotion/react'
-import { PointOfSale } from '@mui/icons-material'
+import { ContactlessSharp } from '@mui/icons-material'
 import { Drawer, Stack } from '@mui/material'
 
 import { TerminalsList } from './terminals/TerminalsList'
@@ -69,12 +69,7 @@ export const TerminalsDrawer = () => {
     <>
       {!isDesktop && !openSidebar && (
         <SidebarButtonMobileStyle onClick={handleToggleSidebar}>
-          <PointOfSale
-            sx={{
-              width: 16,
-              height: 16
-            }}
-          />
+          <ContactlessSharp sx={{ width: 20, height: 20 }} />
         </SidebarButtonMobileStyle>
       )}
 

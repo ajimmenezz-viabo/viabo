@@ -1,19 +1,15 @@
 import { Alert, Stack } from '@mui/material'
 
 import { TerminalActions } from './terminal/TerminalActions'
-import { TerminalHeader } from './terminal/TerminalHeader'
 import { TerminalMovements } from './terminal/TerminalMovements'
 
 import { useTerminalDetails } from '../store'
 
 import { SelectDataIllustration } from '@/shared/components/illustrations'
 import { Scrollbar } from '@/shared/components/scroll'
-import { useCollapseDrawer } from '@/theme/hooks'
 
 export const TerminalDetails = () => {
   const terminal = useTerminalDetails(state => state.terminal)
-
-  const { isCollapse } = useCollapseDrawer()
 
   return (
     <Stack
@@ -26,8 +22,7 @@ export const TerminalDetails = () => {
     >
       {terminal && (
         <>
-          <TerminalHeader />
-          <TerminalActions />
+          {terminal?.isVirtual && <TerminalActions />}
 
           <Scrollbar>
             <Stack pt={0} pb={4} px={2}>

@@ -54,7 +54,15 @@ export default function PaymentSidebar({ open, setOpen }) {
         </Scrollbar>
       ) : (
         <>
-          <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0} p={5}>
+          <Stack
+            flexDirection="column"
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            spacing={0}
+            px={3}
+            pt={3}
+            pb={0}
+          >
             <Typography variant="subtitle1">Saldo</Typography>
             <Stack direction={'row'} spacing={2} alignItems={'center'}>
               <Typography variant="h3" color={insufficient ? 'error' : 'success.main'}>

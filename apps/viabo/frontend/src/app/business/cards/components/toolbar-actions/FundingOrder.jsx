@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Check, Email, Sms } from '@mui/icons-material'
 import LinkIcon from '@mui/icons-material/Link'
 import { LoadingButton } from '@mui/lab'
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, InputAdornment, Stack, Typography } from '@mui/material'
 import { stringToColor } from '@theme/utils'
 import { useFormik } from 'formik'
 import { MuiChipsInput } from 'mui-chips-input'
@@ -106,15 +106,18 @@ export function FundingOrder() {
                   <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'center'}>
                     <RFTextField
                       fullWidth
-                      placeholder={'$0.00'}
+                      placeholder={'0.00'}
                       name={'amount'}
                       type={'number'}
                       InputLabelProps={{
                         shrink: true
                       }}
+                      InputProps={{
+                        startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
+                        endAdornment: <InputAdornment position="end">MXN</InputAdornment>
+                      }}
                       inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, step: STEP }}
                     />
-                    <Typography variant="caption">MXN</Typography>
                   </Stack>
                 </Stack>
                 <Button

@@ -4,22 +4,24 @@
 namespace Viabo\security\api\application\find;
 
 
-use Viabo\security\api\domain\APIRepository;
-use Viabo\security\api\domain\APIToken;
+use Viabo\security\api\domain\ApiName;
+use Viabo\security\api\domain\ApiRepository;
+use Viabo\security\api\domain\ApiKey;
 use Viabo\security\api\domain\exceptions\APINotAuthorized;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class APITokenFinder
+final readonly class ApiKeyFinder
 {
-    public function __construct(private APIRepository $repository)
+    public function __construct(private ApiRepository $repository)
     {
     }
 
-    public function __invoke(APIToken $token): void
+    public function __invoke(ApiName $name , ApiKey $key): void
     {
         $filter = Filters::fromValues([
-            ['field' => 'token.value' , 'operator' => '=' , 'value' => $token->value()] ,
+            ['field' => 'name.value' , 'operator' => '=' , 'value' => $name->value()] ,
+            ['field' => 'key.value' , 'operator' => '=' , 'value' => $key->value()] ,
             ['field' => 'active.value' , 'operator' => '=' , 'value' => '1']
         ]);
 

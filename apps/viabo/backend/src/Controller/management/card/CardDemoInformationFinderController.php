@@ -16,7 +16,7 @@ final readonly class CardDemoInformationFinderController extends ApiController
     {
         try {
             $data = $this->ask(new CardDemoQuery($cardNumber));
-            $token = $this->encode($data->cardData);
+            $token = $this->encode($data->data);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {

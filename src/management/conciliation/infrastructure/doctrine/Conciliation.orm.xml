@@ -10,6 +10,7 @@
         <field name="cardId" type="card_id" column="CardId"/>
         <embedded name="amount" class="ConciliationAmount" use-column-prefix="false"/>
         <embedded name="spei" class="ConciliationSpei" use-column-prefix="false"/>
+        <embedded name="referencePayCash" class="ConciliationReferencePayCash" use-column-prefix="false"/>
         <embedded name="movementNumber" class="ConciliationMovementNumber" use-column-prefix="false"/>
         <embedded name="emails" class="ConciliationEmails" use-column-prefix="false"/>
         <embedded name="registerDate" class="ConciliationRegisterDate" use-column-prefix="false"/>

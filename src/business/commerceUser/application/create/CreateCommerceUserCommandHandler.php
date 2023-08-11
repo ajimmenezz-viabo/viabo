@@ -22,7 +22,7 @@ final readonly class CreateCommerceUserCommandHandler implements CommandHandler
 
         foreach ($command->cards as $card) {
             $cardData = $this->queryBus->ask(new CardQuery($card['id']));
-            $commerceId = CommerceId::create($cardData->cardData['commerceId']);
+            $commerceId = CommerceId::create($cardData->data['commerceId']);
             $this->creator->__invoke($commerceId , $userId);
         }
 

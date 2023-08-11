@@ -6,14 +6,13 @@ namespace Viabo\management\notifications\application\SendConciliationSPEI;
 
 use Viabo\management\conciliation\domain\events\ConciliationCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
-use Viabo\shared\domain\qr\QRCodeAdapter;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 use Viabo\shared\domain\utils\NumberFormat;
 
 final readonly class SendConciliationSPEI implements DomainEventSubscriber
 {
-    public function __construct(private EmailRepository $repository , private QRCodeAdapter $qrCodeAdapter)
+    public function __construct(private EmailRepository $repository)
     {
     }
 
@@ -34,7 +33,8 @@ final readonly class SendConciliationSPEI implements DomainEventSubscriber
             [
                 'spei' => $conciliationData['spei'] ,
                 'amount' => NumberFormat::money(floatval($conciliationData['amount'])) ,
-                'referenceNumber' => $conciliationData['referenceNumber']
+                'referenceNumber' => $conciliationData['referenceNumber'],
+                'referencePayCash' => $conciliationData['referencePayCash']
             ]
         );
 

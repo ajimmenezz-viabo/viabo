@@ -6,6 +6,6 @@ namespace Viabo\security\api\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class APIUrl extends StringValueObject
+final class ApiUrl extends StringValueObject
 {
 }

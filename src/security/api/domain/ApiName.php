@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\management\conciliation\domain;
+namespace Viabo\security\api\domain;
 
 
-use Viabo\management\conciliation\domain\exceptions\ConciliationSpeiEmpty;
+use Viabo\security\api\domain\exceptions\ApiNameEmpty;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class ConciliationSpei extends StringValueObject
+final class ApiName extends StringValueObject
 {
     public static function create(string $value): self
     {
@@ -18,13 +18,7 @@ final class ConciliationSpei extends StringValueObject
     public static function validate(string $value): void
     {
         if (empty($value)) {
-            throw new ConciliationSpeiEmpty();
+            throw new ApiNameEmpty();
         }
     }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->value);
-    }
-
 }

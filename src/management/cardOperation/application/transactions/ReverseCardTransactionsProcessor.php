@@ -49,7 +49,7 @@ final readonly class ReverseCardTransactionsProcessor
     {
         array_map(function (CardOperation $operation) {
             $card = $this->queryBus->ask(new CardDataQuery($operation->originCard()->value()));
-            $operation->setDescriptionReverse($card->cardData['main']);
+            $operation->setDescriptionReverse($card->data['main']);
         } , $operations->getIterator()->getArrayCopy());
 
     }

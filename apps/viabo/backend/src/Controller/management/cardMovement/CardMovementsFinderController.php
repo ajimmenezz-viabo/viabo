@@ -22,9 +22,9 @@ final readonly class CardMovementsFinderController extends ApiController
             $this->validateSession();
             $credentialData = $this->ask(new CardCredentialQuery($cardId));
             $cardData = $this->ask(new CardQuery($cardId));
-            $operationData = $this->ask(new CardOperationsQuery($cardData->cardData['number'] , $initialDate , $finalDate));
+            $operationData = $this->ask(new CardOperationsQuery($cardData->data['number'] , $initialDate , $finalDate));
             $data = $this->ask(new CardMovementsQuery(
-                $cardData->cardData['number'] ,
+                $cardData->data['number'] ,
                 $initialDate ,
                 $finalDate ,
                 $credentialData->data['clientKey'] ,

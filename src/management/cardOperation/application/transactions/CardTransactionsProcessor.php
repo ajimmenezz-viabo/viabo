@@ -47,7 +47,9 @@ final readonly class CardTransactionsProcessor
         array                   $destinationCards
     ): void
     {
-        if (empty($destinationCards)) return;
+        if (empty($destinationCards)) {
+            return;
+        }
 
         $originCardData = $this->cardData($originCardId);
         $destinationCardsData = $this->destinationCardsData($destinationCards);
@@ -72,7 +74,7 @@ final readonly class CardTransactionsProcessor
         $card = $this->queryBus->ask(new CardQuery($cardId->value()));
         $credential = $this->queryBus->ask(new CardCredentialQuery($cardId->value()));
         $cardInformation = $this->queryBus->ask(new CardInformationQuery($cardId->value() , $credential->data));
-        return array_merge($card->cardData , $cardInformation->cardData);
+        return array_merge($card->data , $cardInformation->data);
     }
 
     private function destinationCardsData(array $destinationCards): array
@@ -81,7 +83,7 @@ final readonly class CardTransactionsProcessor
         foreach ($destinationCards as $destinationCard) {
             $cardData = $this->cardData(new CardId($destinationCard['cardId']));
             $cardData['ownerEmail'] = '';
-            if($cardData['main'] !== '1'){
+            if ($cardData['main'] !== '1') {
                 $cardData['ownerEmail'] = $this->ownerEmail($cardData['ownerId']);
             }
             unset($destinationCard['cardId']);
@@ -144,8 +146,8 @@ final readonly class CardTransactionsProcessor
                 new CardOperationConcept($destinationCardData['concept']) ,
                 $payEmail ,
                 new CardOperationReverseEmail($destinationCardData['ownerEmail']) ,
-                $clientKey,
-                CardOperationDescriptionPay::create($destinationCard->last8Digits(), $destinationCardData['main'])
+                $clientKey ,
+                CardOperationDescriptionPay::create($destinationCard->last8Digits() , $destinationCardData['main'])
             );
         }
 

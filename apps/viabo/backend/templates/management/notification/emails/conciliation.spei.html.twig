@@ -68,12 +68,22 @@
                     </tr>
                     <tr style="align-items: center;vertical-align: middle;border-bottom-style: groove;">
                         <td style="width:50%">
-                            <p style="  font-size: 18px;
+                            {% if spei %}
+                                <p style="  font-size: 18px;
                 	            text-align: center;
       		                    font-weight:bold;
        		                    color:white">
-                                SPEI : {{ spei }}
-                            </p>
+                                    SPEI : {{ spei }}
+                                </p>
+                            {% endif %}
+                            {% if referencePayCash %}
+                                <p style="  font-size: 18px;
+                	            text-align: center;
+      		                    font-weight:bold;
+       		                    color:white">
+                                    PayCash : {{ referencePayCash }}
+                                </p>
+                            {% endif %}
                             <p style="  font-size: 18px;
                 	            text-align: center;
       		                    font-weight:bold;

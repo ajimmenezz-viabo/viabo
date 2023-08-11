@@ -55,9 +55,9 @@ final readonly class CredentialCreator
     {
         $card = $this->queryBus->ask(new CardQuery($cardId->value()));
         return CardData::create(
-            $card->cardData['number'] ,
-            $card->cardData['expirationDate'] ,
-            $card->cardData['paymentProcessorId']
+            $card->data['number'] ,
+            $card->data['expirationDate'] ,
+            $card->data['paymentProcessorId']
         );
     }
 

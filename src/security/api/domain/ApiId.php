@@ -6,6 +6,6 @@ namespace Viabo\security\api\domain;
 
 use Viabo\shared\domain\valueObjects\UuidValueObject;
 
-final class APIId extends UuidValueObject
+final class ApiId extends UuidValueObject
 {
 }

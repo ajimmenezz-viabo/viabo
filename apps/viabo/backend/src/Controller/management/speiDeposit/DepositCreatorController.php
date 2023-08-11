@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\speiDeposit\application\find\DepositReferenceQuery;
 use Viabo\management\speiDeposit\application\create\CreateDepositCommand;
-use Viabo\security\api\application\find\ValidateTokenCommand;
+use Viabo\security\api\application\find\ValidateApiKeyCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class DepositCreatorController extends ApiController
@@ -19,7 +19,7 @@ final readonly class DepositCreatorController extends ApiController
         try {
             $token = $request->headers->get('Authorization');
             $data = $request->toArray();
-            $this->dispatch(new ValidateTokenCommand($token));
+            $this->dispatch(new ValidateApiKeyCommand('Viabo_Register_Pays' , $token));
             $this->dispatch(new CreateDepositCommand($data));
             $depositReference = $this->ask(new DepositReferenceQuery($data['key'] ?? null));
 

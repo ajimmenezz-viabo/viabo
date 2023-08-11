@@ -6,7 +6,7 @@ namespace Viabo\security\api\domain;
 
 use Viabo\shared\domain\criteria\Criteria;
 
-interface APIRepository
+interface ApiRepository
 {
     public function searchCriteria(Criteria $criteria): array|null;
 }

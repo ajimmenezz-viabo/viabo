@@ -5,9 +5,10 @@ namespace Viabo\security\api\domain;
 
 
 use Viabo\security\api\domain\exceptions\APITokenEmpty;
+use Viabo\shared\domain\utils\Crypt;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class APIToken extends StringValueObject
+final class ApiKey extends StringValueObject
 {
     public static function create(string $value): self
     {
@@ -29,5 +30,10 @@ final class APIToken extends StringValueObject
             $token = substr($token , 7);
         }
         return $token;
+    }
+
+    public function valueDecrypt(): string
+    {
+        return Crypt::decrypt($this->value);
     }
 }

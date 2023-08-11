@@ -4,6 +4,7 @@ namespace Viabo\management\commerceTransaction\application\create;
 
 use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
 use Viabo\management\commerceTransaction\domain\CommercePayTransactionRepository;
+use Viabo\management\commerceTransaction\domain\CommercePayTransactionTypeId;
 use Viabo\management\commerceTransaction\domain\exceptions\CommercePayTransactionNotApproved;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
@@ -20,12 +21,13 @@ final readonly class CommercePayTransactionCreator
     }
 
     public function __invoke(
-        CommercePayId $commercePayId ,
-        array         $commercePayData ,
-        array         $cardData
+        CommercePayId                $commercePayId ,
+        CommercePayTransactionTypeId $transactionTypeId,
+        array                        $commercePayData ,
+        array                        $cardData
     ): void
     {
-        $transaction = CommercePayTransaction::create($commercePayId);
+        $transaction = CommercePayTransaction::create($commercePayId,$transactionTypeId);
         $transaction->setCardData($cardData);
         $transaction->setCommercePayData($commercePayData);
 

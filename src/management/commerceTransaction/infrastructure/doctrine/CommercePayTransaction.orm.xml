@@ -11,6 +11,7 @@
         <embedded name="apiMessage" class="CommercePayTransactionAPIMessage" use-column-prefix="false"/>
         <embedded name="apiCode" class="CommercePayTransactionAPICode" use-column-prefix="false"/>
         <embedded name="apiData" class="CommercePayTransactionAPIData" use-column-prefix="false"/>
+        <embedded name="typeId" class="CommercePayTransactionTypeId" use-column-prefix="false"/>
         <embedded name="date" class="CommercePayTransactionDate" use-column-prefix="false"/>
     </entity>
 

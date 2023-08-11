@@ -4,6 +4,7 @@ namespace Viabo\management\commercePay\domain;
 
 use Viabo\management\commercePay\domain\events\CommercePayCreatedDomainEvent;
 use Viabo\management\commercePay\domain\events\CommercePayUpdatedDomainEvent;
+use Viabo\management\commercePay\domain\events\CommercePayVirtualTerminalCreatedDomainEvent;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -45,7 +46,7 @@ final class CommercePay extends AggregateRoot
         CommercePayApiReferenceNumber $referenceNumber
     ): self
     {
-        $commercePay = new self(
+        return new self(
             CommercePayId::random() ,
             CommercePayReference::random() ,
             $commerceId ,
@@ -63,12 +64,7 @@ final class CommercePay extends AggregateRoot
             CommercePayRegisterDate::todayDate() ,
             CommercePayPaymentDate::empty()
         );
-        $commercePay->record(new CommercePayCreatedDomainEvent(
-                $commercePay->id->value() ,
-                $commercePay->toArray() ,
-                $commercePay->email->value())
-        );
-        return $commercePay;
+
     }
 
     private function id(): CommercePayId
@@ -101,6 +97,20 @@ final class CommercePay extends AggregateRoot
         }
 
         $this->record(new CommercePayUpdatedDomainEvent($this->id()->value(), $this->toArray()));
+    }
+
+    public function setPayEventCreated()
+    {
+        $this->record(new CommercePayCreatedDomainEvent($this->id->value(), $this->toArray(), $this->email->value()));
+    }
+
+    public function setVirtualTerminalEventCreated(array $cardData)
+    {
+        $this->record(new CommercePayVirtualTerminalCreatedDomainEvent(
+            $this->id->value(),
+            $this->toArray(),
+            $cardData
+        ));
     }
 
     public function toArray(): array

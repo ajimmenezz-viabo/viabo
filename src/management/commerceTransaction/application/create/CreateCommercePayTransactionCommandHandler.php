@@ -2,6 +2,7 @@
 
 namespace Viabo\management\commerceTransaction\application\create;
 
+use Viabo\management\commerceTransaction\domain\CommercePayTransactionTypeId;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
@@ -18,8 +19,12 @@ final readonly class CreateCommercePayTransactionCommandHandler implements Comma
         $commercePayData['merchantId'] = $command->merchantId;
         $commercePayData['apiKey'] = $command->apiKey;
 
+        $transactionPayType = "1";
+        $transactionTypeId = new CommercePayTransactionTypeId($transactionPayType);
+
         $this->creator->__invoke(
             $commercePayId ,
+            $transactionTypeId,
             $commercePayData ,
             $command->cardData
         );

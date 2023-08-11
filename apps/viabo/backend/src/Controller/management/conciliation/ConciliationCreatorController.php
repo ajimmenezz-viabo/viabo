@@ -32,7 +32,7 @@ final readonly class ConciliationCreatorController extends ApiController
                 $api->data
             ));
 
-            return new JsonResponse($data->data);
+            return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

@@ -13,14 +13,12 @@ import {
   SidebarButtonMobileStyle
 } from '../../cards/components/sidebar/SidebarStyles'
 import { useFindCommerceTerminals } from '../hooks'
-import { useTerminalDetails, useTerminals } from '../store'
+import { useTerminals } from '../store'
 
 import { Scrollbar } from '@/shared/components/scroll'
 import { useResponsive } from '@/theme/hooks'
 
 export const TerminalsDrawer = () => {
-  const selectedTerminalId = useTerminalDetails(state => state.terminal?.id)
-
   const setOpenSidebar = useTerminals(state => state.setOpenList)
   const setCollapse = useTerminals(state => state.setCollapse)
   const openSidebar = useTerminals(state => state.isOpenList)
@@ -43,10 +41,10 @@ export const TerminalsDrawer = () => {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (!isDesktop) {
-      return handleCloseSidebar()
+    if (isDesktop) {
+      setOpenSidebar(true)
     }
-  }, [isDesktop, selectedTerminalId])
+  }, [isDesktop])
 
   useEffect(() => {
     setCollapse(isCollapse)

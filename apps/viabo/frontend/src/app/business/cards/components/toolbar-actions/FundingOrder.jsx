@@ -1,19 +1,22 @@
 import { useState } from 'react'
 
-import { Check, Email, Sms } from '@mui/icons-material'
+import { Check, CheckCircle, CopyAll, Email, Sms } from '@mui/icons-material'
 import LinkIcon from '@mui/icons-material/Link'
 import { LoadingButton } from '@mui/lab'
-import { Button, InputAdornment, Stack, Typography } from '@mui/material'
+import { Button, IconButton, InputAdornment, Link, Stack, Typography } from '@mui/material'
 import { stringToColor } from '@theme/utils'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { useFormik } from 'formik'
 import { MuiChipsInput } from 'mui-chips-input'
+import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { CreateFundingOrderAdapter } from '@/app/business/cards/adapters'
 import { useCreateFundingOrder } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { RightPanel } from '@/app/shared/components'
-import { FormProvider, RFTextField } from '@/shared/components/form'
+import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 import { copyToClipboard, fCurrency } from '@/shared/utils'
 
@@ -26,12 +29,17 @@ const SHARED_TYPES = {
   SMS: 'sms'
 }
 
+const FUNDING_PROCESSORS_TYPES = [
+  { label: 'SPEI', value: '1' },
+  { label: 'PAYCASH', value: '2' }
+]
+
 export function FundingOrder() {
   const openFundingOrder = useCommerceDetailsCard(state => state.openFundingOrder)
   const resetFundingOrder = useCommerceDetailsCard(state => state.resetFundingOrder)
   const fundingCard = useCommerceDetailsCard(state => state.fundingCard)
 
-  const { mutate: fundingOrder, isLoading: isCreatingFundingOrder, data, isSuccess } = useCreateFundingOrder()
+  const { mutate: fundingOrder, isLoading: isCreatingFundingOrder, data } = useCreateFundingOrder()
 
   const [step, setStep] = useState(1)
   const [sharedType, setSharedType] = useState(null)
@@ -41,13 +49,15 @@ export function FundingOrder() {
   const SharedSchema = Yup.object().shape({
     emails: Yup.array()
       .of(Yup.string().email('Deben ser direcciones de correo válidos'))
-      .min(1, 'Las correos son requeridos')
+      .min(1, 'Las correos son requeridos'),
+    processorTypes: Yup.array().of(Yup.object()).min(1, 'Al menos un tipo de procesador es requerido')
   })
 
   const formik = useFormik({
     initialValues: {
       amount: '',
-      emails: []
+      emails: [],
+      processorTypes: [FUNDING_PROCESSORS_TYPES[0]]
     },
     validationSchema: SharedSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -116,7 +126,7 @@ export function FundingOrder() {
                         startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
                         endAdornment: <InputAdornment position="end">MXN</InputAdornment>
                       }}
-                      inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, step: STEP }}
+                      inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, step: 'any' }}
                     />
                   </Stack>
                 </Stack>
@@ -137,6 +147,17 @@ export function FundingOrder() {
                 <Stack justifyContent={'center'} alignItems={'center'}>
                   <Typography variant="h3">{fCurrency(amount)}</Typography>
                 </Stack>
+
+                <RFSelect
+                  multiple
+                  name={'processorTypes'}
+                  options={FUNDING_PROCESSORS_TYPES}
+                  textFieldParams={{
+                    label: 'Procesador',
+                    placeholder: 'Selecciona los procesadores del fondeo'
+                  }}
+                  required={true}
+                />
 
                 <MuiChipsInput
                   disableEdition
@@ -215,25 +236,48 @@ export function FundingOrder() {
 
             {step === 3 && (
               <>
-                <Stack justifyContent={'center'} alignItems={'center'} spacing={3}>
-                  <Typography variant="h3">{fCurrency(amount)}</Typography>
-                  <Typography variant="h6">{`Orden de Fondeo: ${data?.reference}`}</Typography>
-                </Stack>
+                <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+                  <Stack flexDirection="column" alignItems={'center'} spacing={2}>
+                    <CheckCircle sx={{ width: 40, height: 40 }} color={'success'} />
+                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                      <Typography variant="h3"> {fCurrency(amount)}</Typography>
+                      <Typography variant="caption">MXN</Typography>
+                    </Stack>
 
-                <Button
-                  color={copied ? 'success' : 'inherit'}
-                  startIcon={copied ? <Check sx={{ color: 'success' }} /> : <LinkIcon />}
-                  onClick={() => {
-                    setCopied(true)
-                    copyToClipboard(`${window.location.host}/orden-fondeo/${data?.reference}`)
-                    setTimeout(() => {
-                      setCopied(false)
-                    }, 1000)
-                  }}
-                  fullWidth
-                >
-                  Copiar Liga
-                </Button>
+                    <Typography variant="h6">{`Orden de Fondeo: ${data?.reference}`}</Typography>
+                  </Stack>
+                  <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0}>
+                    <Stack justifyContent={'center'} alignItems={'center'} direction="row" spacing={1}>
+                      <LinkIcon />
+                      <Link
+                        component={RouterLink}
+                        underline="always"
+                        to={`/orden-fondeo/${data?.reference}`}
+                        target="_blank"
+                        color="info.main"
+                      >
+                        {`${window.location.host}/orden-fondeo/${data?.reference}`}
+                      </Link>
+                      <IconButton
+                        variant="outlined"
+                        size="small"
+                        color={copied ? 'success' : 'inherit'}
+                        onClick={() => {
+                          setCopied(true)
+                          copyToClipboard(`${window.location.host}/orden-fondeo/${data?.reference}`)
+                          setTimeout(() => {
+                            setCopied(false)
+                          }, 1000)
+                        }}
+                      >
+                        {copied ? <Check sx={{ color: 'success' }} /> : <CopyAll sx={{ color: 'text.disabled' }} />}
+                      </IconButton>
+                    </Stack>
+                  </Stack>
+                  <Typography variant="caption" color={'text.disabled'}>
+                    {format(new Date(), 'dd MMM yyyy hh:mm a', { locale: es })}
+                  </Typography>
+                </Stack>
               </>
             )}
           </Stack>

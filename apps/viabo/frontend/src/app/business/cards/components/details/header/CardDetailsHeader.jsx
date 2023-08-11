@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { PasswordTwoTone } from '@mui/icons-material'
 import { Box, Button, CircularProgress, Divider, Stack, Switch, Toolbar, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
@@ -137,21 +139,33 @@ export function CardDetailsHeader({ card }) {
               startIcon={openCVV ? <CircularStatic handleFinish={() => setOpenCVV(false)} /> : <PasswordTwoTone />}
               color={'inherit'}
               onClick={() => setOpenCVV(prev => !prev)}
+              sx={{ px: 0, mx: 0 }}
             >
-              {openCVV ? `${card?.cvv}` : 'CVV'}
+              {openCVV ? <Stack px={1}>{card?.cvv}</Stack> : 'CVV'}
             </Button>
             <Button
               startIcon={openNIP ? <CircularStatic handleFinish={() => setOpenNIP(false)} /> : <PasswordTwoTone />}
               color={'inherit'}
               onClick={() => setOpenNIP(prev => !prev)}
             >
-              {openNIP ? card?.nip : 'NIP'}
+              {openNIP ? <Stack px={1}>{card?.nip}</Stack> : 'NIP'}
             </Button>
           </Stack>
         </Stack>
       </Stack>
     </Toolbar>
   )
+}
+
+CardDetailsHeader.propTypes = {
+  card: PropTypes.shape({
+    balanceFormatted: PropTypes.any,
+    cardON: PropTypes.bool,
+    cvv: PropTypes.any,
+    expiration: PropTypes.any,
+    id: PropTypes.any,
+    nip: PropTypes.any
+  })
 }
 
 function CircularStatic({ handleFinish, duration = 10 }) {
@@ -170,14 +184,14 @@ function CircularStatic({ handleFinish, duration = 10 }) {
   }, [progress, duration])
 
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex', minWidth: 60 }}>
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
       <CircularProgress variant="determinate" value={progress} />
       <Box
         sx={{
           top: 0,
           left: 0,
           bottom: 0,
-          right: 20,
+          right: 0,
           position: 'absolute',
           display: 'flex',
           alignItems: 'center',
@@ -190,4 +204,9 @@ function CircularStatic({ handleFinish, duration = 10 }) {
       </Box>
     </Box>
   )
+}
+
+CircularStatic.propTypes = {
+  duration: PropTypes.number,
+  handleFinish: PropTypes.func
 }

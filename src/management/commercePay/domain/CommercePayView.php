@@ -7,19 +7,21 @@ namespace Viabo\management\commercePay\domain;
 final class CommercePayView
 {
     public function __construct(
-        private string $id ,
-        private string $reference ,
-        private string $commerceId ,
-        private string $terminalId ,
-        private string $clientName ,
-        private string $email ,
-        private string $phone ,
-        private string $description ,
-        private string $amount ,
-        private string $statusId ,
-        private string $statusName ,
-        private string $urlCode ,
-        private string $createdByUser ,
+        private string $id,
+        private string $reference,
+        private string $commerceId,
+        private string $terminalId,
+        private string $clientName,
+        private string $email,
+        private string $phone,
+        private string $description,
+        private string $amount,
+        private string $statusId,
+        private string $statusName,
+        private string $apiAuthCode,
+        private string $apiReferenceNumber,
+        private string $urlCode,
+        private string $createdByUser,
         private string $registerDate
     )
     {
@@ -50,7 +52,7 @@ final class CommercePayView
         return [
             'id' => $this->id ,
             'commerceId' => $this->commerceId ,
-            'terminalId' => $this->reference ,
+            'terminalId' => $this->terminalId ,
             'reference' => $this->reference ,
             'clientName' => $this->clientName ,
             'email' => $this->email ,
@@ -58,6 +60,8 @@ final class CommercePayView
             'description' => $this->description ,
             'amount' => $this->amount ,
             'statusId' => $this->statusId ,
+            'apiAuthCode' => $this->apiAuthCode ,
+            'apiReferenceNumber' => $this->apiReferenceNumber ,
             'statusName' => $this->statusName
         ];
     }

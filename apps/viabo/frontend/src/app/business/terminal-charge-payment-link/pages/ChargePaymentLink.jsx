@@ -1,7 +1,7 @@
 import { Box, Stack } from '@mui/material'
 import { useParams } from 'react-router-dom'
 
-import { ChargePaymenLinkDetails, ChargePaymentForm } from '../components'
+import { ChargePaymentForm, ChargePaymentLinkDetails } from '../components'
 import { useFindPaymentLinkInfo } from '../hooks'
 
 import { Page } from '@/shared/components/containers'
@@ -20,8 +20,8 @@ const ChargePaymentLink = () => {
         <Stack p={4} alignItems={'center'} justifyContent={'center'} minHeight={'100vH'}>
           {isLoading && <RequestLoadingComponent />}
           {!isLoading && data && (
-            <Stack width={{ xs: 1, sm: 0.5, md: '0.4' }} spacing={3}>
-              <ChargePaymenLinkDetails details={data} />
+            <Stack width={{ xs: 1, sm: 0.5, md: '0.4' }} spacing={3} maxWidth={data?.status?.id === '7' ? 400 : 'sm'}>
+              <ChargePaymentLinkDetails details={data} />
               {['6', '8'].includes(data?.status?.id) && <ChargePaymentForm details={data} />}
             </Stack>
           )}

@@ -18,6 +18,7 @@ final class CommercePayTransaction extends AggregateRoot
         public CommercePayTransactionAPIMessage $apiMessage ,
         public CommercePayTransactionAPICode    $apiCode ,
         public CommercePayTransactionAPIData    $apiData ,
+        public CommercePayTransactionTypeId     $typeId,
         public CommercePayTransactionDate       $date
     )
     {
@@ -25,7 +26,7 @@ final class CommercePayTransaction extends AggregateRoot
         $this->commercePayData = CommercePayData::empty();
     }
 
-    public static function create(CommercePayId $commercePayId): self
+    public static function create(CommercePayId $commercePayId, CommercePayTransactionTypeId $typeId): self
     {
         return new self(
             CommercePayTransactionId::random() ,
@@ -34,6 +35,7 @@ final class CommercePayTransaction extends AggregateRoot
             new CommercePayTransactionAPIMessage('') ,
             new CommercePayTransactionAPICode('') ,
             new CommercePayTransactionAPIData('') ,
+            $typeId,
             CommercePayTransactionDate::todayDate()
         );
     }
@@ -122,6 +124,7 @@ final class CommercePayTransaction extends AggregateRoot
             'apiMessage' => $this->apiMessage->value() ,
             'apiCode' => $this->apiCode->value() ,
             'apiData' => json_decode($this->apiData->value(),true) ,
+            'typeId' => $this->typeId->value(),
             'date' => $this->date->value()
         ];
     }

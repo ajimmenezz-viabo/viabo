@@ -2,22 +2,21 @@
 
 namespace Viabo\management\commercePay\application\create;
 
-use Viabo\management\commercePay\application\find\CommercePayUrlCodeResponse;
 use Viabo\management\commercePay\domain\CommercePay;
 use Viabo\management\commercePay\domain\CommercePayAmount;
 use Viabo\management\commercePay\domain\CommercePayApiAuthCode;
 use Viabo\management\commercePay\domain\CommercePayApiReferenceNumber;
+use Viabo\management\commercePay\domain\CommercePayClientName;
 use Viabo\management\commercePay\domain\CommercePayCommerceId;
+use Viabo\management\commercePay\domain\CommercePayCreatedByUser;
 use Viabo\management\commercePay\domain\CommercePayDescription;
 use Viabo\management\commercePay\domain\CommercePayEmail;
-use Viabo\management\commercePay\domain\CommercePayClientName;
 use Viabo\management\commercePay\domain\CommercePayPhone;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayTerminalId;
-use Viabo\management\commercePay\domain\CommercePayCreatedByUser;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CommercePayCreator
+final readonly class CommercePayVirtualTerminalCreator
 {
     public function __construct(private CommercePayRepository $repository , private EventBus $bus)
     {
@@ -31,10 +30,11 @@ final readonly class CommercePayCreator
         CommercePayEmail         $email ,
         CommercePayPhone         $phone ,
         CommercePayDescription   $description ,
-        CommercePayAmount        $amount
-    ): CommercePayUrlCodeResponse
+        CommercePayAmount        $amount,
+        array $transactionData
+    ): void
     {
-        $commercePay = CommercePay::create(
+        $commercePayVirtualTerminal = CommercePay::create(
             $userId ,
             $commerceId ,
             $terminalId ,
@@ -47,12 +47,11 @@ final readonly class CommercePayCreator
             new CommercePayApiReferenceNumber('')
         );
 
-        $this->repository->save($commercePay);
+        $this->repository->save($commercePayVirtualTerminal);
 
-        $commercePay->setPayEventCreated();
+        $commercePayVirtualTerminal->setVirtualTerminalEventCreated($transactionData);
 
-        $this->bus->publish(...$commercePay->pullDomainEvents());
+        $this->bus->publish(...$commercePayVirtualTerminal->pullDomainEvents());
 
-        return new CommercePayUrlCodeResponse(['code' => $commercePay->urlCode()->value()]);
     }
 }

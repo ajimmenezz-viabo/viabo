@@ -26,7 +26,7 @@ export default defineConfig({
           }
           return `assets/${extType}/build-[hash][extname]`
         },
-        entryFileNames: 'assets/js/build-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/build-[hash].js'
       }
     }

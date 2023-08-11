@@ -2,7 +2,7 @@ import { createStore } from '@/app/shared/store'
 
 const initialState = {
   terminals: [],
-  isOpenList: true,
+  isOpenList: false,
   isCollapse: false
 }
 

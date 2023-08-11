@@ -17,6 +17,8 @@
         <field name="urlCode" column="UrlCode"/>
         <field name="statusId" column="StatusId"/>
         <field name="statusName" column="StatusName"/>
+        <field name="apiAuthCode" column="ApiAuthCode"/>
+        <field name="apiReferenceNumber" column="ApiReferenceNumber"/>
         <field name="createdByUser" column="CreatedByUser"/>
         <field name="registerDate" column="RegisterDate"/>
     </entity>

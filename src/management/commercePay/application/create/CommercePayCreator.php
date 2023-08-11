@@ -5,6 +5,8 @@ namespace Viabo\management\commercePay\application\create;
 use Viabo\management\commercePay\application\find\CommercePayUrlCodeResponse;
 use Viabo\management\commercePay\domain\CommercePay;
 use Viabo\management\commercePay\domain\CommercePayAmount;
+use Viabo\management\commercePay\domain\CommercePayApiAuthCode;
+use Viabo\management\commercePay\domain\CommercePayApiReferenceNumber;
 use Viabo\management\commercePay\domain\CommercePayCommerceId;
 use Viabo\management\commercePay\domain\CommercePayDescription;
 use Viabo\management\commercePay\domain\CommercePayEmail;
@@ -40,7 +42,9 @@ final readonly class CommercePayCreator
             $email ,
             $phone ,
             $description ,
-            $amount
+            $amount,
+            new CommercePayApiAuthCode(''),
+            new CommercePayApiReferenceNumber('')
         );
 
         $this->repository->save($commercePay);

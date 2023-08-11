@@ -12,33 +12,37 @@ final class CommercePay extends AggregateRoot
 
 
     public function __construct(
-        private CommercePayId            $id ,
-        private CommercePayReference     $reference ,
-        private CommercePayCommerceId    $commerceId ,
-        private CommercePayTerminalId    $terminalId ,
-        private CommercePayClientName    $clientName ,
-        private CommercePayEmail         $email ,
-        private CommercePayPhone         $phone ,
-        private CommercePayDescription   $description ,
-        private CommercePayAmount        $amount ,
-        private CommercePayStatusId      $statusId ,
-        private CommercePayUrlCode       $urlCode ,
-        private CommercePayCreatedByUser $createdByUser ,
-        private CommercePayRegisterDate  $registerDate ,
-        private CommercePayPaymentDate   $paymentDate
+        private CommercePayId               $id,
+        private CommercePayReference          $reference,
+        private CommercePayCommerceId         $commerceId,
+        private CommercePayTerminalId         $terminalId,
+        private CommercePayClientName         $clientName,
+        private CommercePayEmail              $email,
+        private CommercePayPhone              $phone,
+        private CommercePayDescription        $description,
+        private CommercePayAmount             $amount,
+        private CommercePayStatusId           $statusId,
+        private CommercePayUrlCode            $urlCode,
+        private CommercePayApiAuthCode        $apiAuthCode,
+        private CommercePayApiReferenceNumber $apiReferenceNumber,
+        private CommercePayCreatedByUser      $createdByUser,
+        private CommercePayRegisterDate       $registerDate,
+        private CommercePayPaymentDate        $paymentDate
     )
     {
     }
 
     public static function create(
-        CommercePayCreatedByUser $createdByUser ,
-        CommercePayCommerceId    $commerceId ,
-        CommercePayTerminalId    $terminalId ,
-        CommercePayClientName    $clientName ,
-        CommercePayEmail         $email ,
-        CommercePayPhone         $phone ,
-        CommercePayDescription   $description ,
-        CommercePayAmount        $amount
+        CommercePayCreatedByUser      $createdByUser,
+        CommercePayCommerceId         $commerceId,
+        CommercePayTerminalId         $terminalId,
+        CommercePayClientName         $clientName,
+        CommercePayEmail              $email,
+        CommercePayPhone              $phone,
+        CommercePayDescription        $description,
+        CommercePayAmount             $amount,
+        CommercePayApiAuthCode        $authCode,
+        CommercePayApiReferenceNumber $referenceNumber
     ): self
     {
         $commercePay = new self(
@@ -53,7 +57,9 @@ final class CommercePay extends AggregateRoot
             $amount ,
             new CommercePayStatusId('6') ,
             CommercePayUrlCode::random() ,
-            $createdByUser ,
+            $authCode,
+            $referenceNumber,
+            $createdByUser,
             CommercePayRegisterDate::todayDate() ,
             CommercePayPaymentDate::empty()
         );
@@ -80,9 +86,16 @@ final class CommercePay extends AggregateRoot
         return $this->urlCode;
     }
 
-    public function update(CommercePayStatusId $statusId): void
+    public function update(
+        CommercePayStatusId $statusId,
+        CommercePayApiAuthCode $authCode,
+        CommercePayApiReferenceNumber $referenceNumber
+    ): void
     {
         $this->statusId = $statusId;
+        $this->apiAuthCode = $authCode;
+        $this->apiReferenceNumber = $referenceNumber;
+
         if ($this->statusId->isApproved()) {
             $this->paymentDate = $this->paymentDate->update();
         }
@@ -103,6 +116,8 @@ final class CommercePay extends AggregateRoot
             'description' => $this->description->value() ,
             'amount' => $this->amount->value() ,
             'urlCode' => $this->urlCode->value() ,
+            'apiAuthCode' => $this->apiAuthCode->value(),
+            'apiReferenceCode' => $this->apiReferenceNumber->value(),
             'statusId' => $this->statusId->value() ,
             'createdByUser' => $this->createdByUser->value() ,
             'registerDate' => $this->registerDate->value()

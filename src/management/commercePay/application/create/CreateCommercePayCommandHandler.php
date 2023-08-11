@@ -30,6 +30,15 @@ final readonly class CreateCommercePayCommandHandler implements QueryHandler
         $description = new CommercePayDescription($command->description);
         $amount = CommercePayAmount::create($command->amount);
 
-        return ($this->creator)($userId , $commerceId , $terminalId , $clientName , $email , $phone , $description , $amount);
+        return ($this->creator)(
+            $userId,
+            $commerceId,
+            $terminalId,
+            $clientName,
+            $email,
+            $phone,
+            $description,
+            $amount
+        );
     }
 }

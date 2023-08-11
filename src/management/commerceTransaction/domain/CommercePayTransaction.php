@@ -121,7 +121,7 @@ final class CommercePayTransaction extends AggregateRoot
             'statusId' => $this->statusId->value() ,
             'apiMessage' => $this->apiMessage->value() ,
             'apiCode' => $this->apiCode->value() ,
-            'apiData' => $this->apiData->value() ,
+            'apiData' => json_decode($this->apiData->value(),true) ,
             'date' => $this->date->value()
         ];
     }

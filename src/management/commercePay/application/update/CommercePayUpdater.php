@@ -4,6 +4,8 @@
 namespace Viabo\management\commercePay\application\update;
 
 
+use Viabo\management\commercePay\domain\CommercePayApiAuthCode;
+use Viabo\management\commercePay\domain\CommercePayApiReferenceNumber;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayStatusId;
 use Viabo\management\commercePay\domain\exceptions\CommercePayNotExist;
@@ -16,7 +18,12 @@ final readonly class CommercePayUpdater
     {
     }
 
-    public function __invoke(CommercePayId $id , CommercePayStatusId $statusId): void
+    public function __invoke(
+        CommercePayId                 $id,
+        CommercePayStatusId           $statusId,
+        CommercePayApiAuthCode        $authCode,
+        CommercePayApiReferenceNumber $referenceNumber
+    ): void
     {
         $commercePay = $this->repository->search($id);
 
@@ -24,7 +31,7 @@ final readonly class CommercePayUpdater
             throw new CommercePayNotExist();
         }
 
-        $commercePay->update($statusId);
+        $commercePay->update($statusId,$authCode,$referenceNumber);
         $this->repository->update($commercePay);
 
         $this->bus->publish(...$commercePay->pullDomainEvents());

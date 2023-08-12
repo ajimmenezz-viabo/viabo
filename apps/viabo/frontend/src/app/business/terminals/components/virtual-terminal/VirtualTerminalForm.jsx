@@ -97,6 +97,7 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
           </Typography>
 
           <RFTextField
+            autoFocus
             fullWidth
             name={'amount'}
             required={true}
@@ -145,7 +146,6 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
             Número de Tarjeta *
           </Typography>
           <RFTextField
-            autoFocus
             name={'cardNumber'}
             required={true}
             size={'small'}

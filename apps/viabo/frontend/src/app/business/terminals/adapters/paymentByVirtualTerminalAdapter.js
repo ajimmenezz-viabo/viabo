@@ -7,8 +7,8 @@ export const PaymentByVirtualTerminalAdapter = (terminal, payment) => {
     amount: parseFloat(
       payment?.amount?.toString() === '' ? '0' : payment?.amount?.toString().replace(/,/g, '')
     ).toString(),
-    concept: payment?.concept,
-    cardHolder: payment?.name,
+    description: payment?.concept,
+    clientName: payment?.name,
     phone: payment?.phone,
     cardNumber: payment?.cardNumber.replace(/\s+/g, ''),
     expMonth: payment?.expiration?.slice(0, 2),

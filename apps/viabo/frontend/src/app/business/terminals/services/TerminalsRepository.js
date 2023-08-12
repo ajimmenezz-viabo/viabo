@@ -13,6 +13,6 @@ export const createPaymentLink = async paymentLink => {
 }
 
 export const generatePaymentByVirtualTerminal = async payment => {
-  const { data } = await axios.post(`/api/commerce/virtual-terminal/generate/transaction`, payment)
+  const { data } = await axios.post(`/api/commerce/virtual/pay`, payment)
   return data
 }

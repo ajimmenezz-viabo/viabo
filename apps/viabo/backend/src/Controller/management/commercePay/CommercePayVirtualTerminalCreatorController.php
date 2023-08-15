@@ -17,17 +17,14 @@ final readonly class CommercePayVirtualTerminalCreatorController extends ApiCont
     public function __invoke(Request $request): Response
     {
         try {
-//            $tokenData = $this->decode($request->headers->get('Authorization'));
-//            $this->validateSession();
-//
-//            $data = $this->opensslDecrypt($request->toArray());
-
-            $data = $request->toArray();
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $this->validateSession();
+            $data = $this->opensslDecrypt($request->toArray());
 
             $commercePayCredentials = $this->ask(new CommercePayCredentialsQuery($data['commerceId']));
 
             $commercePay = $this->ask(new CommercePayVirtualTerminalCommand(
-                '1aae86a4-2a22-4b81-be2b-a331d0ed4da4',
+                $tokenData['id'] ,
                 $data['commerceId'] ,
                 $data['terminalId'] ,
                 $data['clientName'] ,

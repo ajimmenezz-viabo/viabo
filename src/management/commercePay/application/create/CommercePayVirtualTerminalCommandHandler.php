@@ -10,15 +10,16 @@ use Viabo\management\commercePay\domain\CommercePayDescription;
 use Viabo\management\commercePay\domain\CommercePayEmail;
 use Viabo\management\commercePay\domain\CommercePayPhone;
 use Viabo\management\commercePay\domain\CommercePayTerminalId;
-use Viabo\shared\domain\bus\command\CommandHandler;
+use Viabo\shared\domain\bus\query\QueryHandler;
+use Viabo\shared\domain\bus\query\Response;
 
-final readonly class CommercePayVirtualTerminalCommandHandler implements CommandHandler
+final readonly class CommercePayVirtualTerminalCommandHandler implements QueryHandler
 {
     public function __construct(private CommercePayVirtualTerminalCreator $creator)
     {
     }
 
-    public function __invoke(CommercePayVirtualTerminalCommand $command)
+    public function __invoke(CommercePayVirtualTerminalCommand $command):Response
     {
         $userId = CommercePayCreatedByUser::create($command->userId);
         $commerceId = CommercePayCommerceId::create($command->commerceId);
@@ -29,17 +30,7 @@ final readonly class CommercePayVirtualTerminalCommandHandler implements Command
         $description = new CommercePayDescription($command->description);
         $amount = CommercePayAmount::create($command->amount);
 
-        $transactionData = [
-            'cardNumber' => $command->cardNumber ,
-            'expMonth' => $command->expMonth,
-            'expYear' => $command->expYear,
-            'security' => $command->security,
-            'merchantId' => $command->merchantId,
-            'apiKey' => $command->apiKey,
-            'cardHolder' => $command->clientName
-        ];
-
-        $this->creator->__invoke(
+        return $this->creator->__invoke(
             $userId,
             $commerceId,
             $terminalId,
@@ -47,8 +38,7 @@ final readonly class CommercePayVirtualTerminalCommandHandler implements Command
             $email,
             $phone,
             $description,
-            $amount,
-            $transactionData
+            $amount
         );
     }
 }

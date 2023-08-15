@@ -104,15 +104,6 @@ final class CommercePay extends AggregateRoot
         $this->record(new CommercePayCreatedDomainEvent($this->id->value(), $this->toArray(), $this->email->value()));
     }
 
-    public function setVirtualTerminalEventCreated(array $cardData)
-    {
-        $this->record(new CommercePayVirtualTerminalCreatedDomainEvent(
-            $this->id->value(),
-            $this->toArray(),
-            $cardData
-        ));
-    }
-
     public function toArray(): array
     {
         return [

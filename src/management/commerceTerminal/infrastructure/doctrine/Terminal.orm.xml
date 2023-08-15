@@ -7,6 +7,7 @@
     <entity name="Viabo\management\commerceTerminal\domain\Terminal" table="t_management_commerces_terminals">
         <embedded name="id" class="TerminalId" use-column-prefix="false"/>
         <embedded name="commerceId" class="TerminalCommerceId" use-column-prefix="false"/>
+        <embedded name="merchantId" class="TerminalMerchantId" use-column-prefix="false"/>
         <embedded name="terminalId" class="TerminalValueId" use-column-prefix="false"/>
         <embedded name="createdByUser" class="TerminalCreatedByUser" use-column-prefix="false"/>
         <embedded name="apiData" class="TerminalApiData" use-column-prefix="false"/>

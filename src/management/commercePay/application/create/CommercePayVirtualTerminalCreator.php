@@ -2,6 +2,7 @@
 
 namespace Viabo\management\commercePay\application\create;
 
+use Viabo\management\commercePay\application\find\CommercePayResponse;
 use Viabo\management\commercePay\domain\CommercePay;
 use Viabo\management\commercePay\domain\CommercePayAmount;
 use Viabo\management\commercePay\domain\CommercePayApiAuthCode;
@@ -14,11 +15,10 @@ use Viabo\management\commercePay\domain\CommercePayEmail;
 use Viabo\management\commercePay\domain\CommercePayPhone;
 use Viabo\management\commercePay\domain\CommercePayRepository;
 use Viabo\management\commercePay\domain\CommercePayTerminalId;
-use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CommercePayVirtualTerminalCreator
 {
-    public function __construct(private CommercePayRepository $repository , private EventBus $bus)
+    public function __construct(private CommercePayRepository $repository)
     {
     }
 
@@ -30,9 +30,8 @@ final readonly class CommercePayVirtualTerminalCreator
         CommercePayEmail         $email ,
         CommercePayPhone         $phone ,
         CommercePayDescription   $description ,
-        CommercePayAmount        $amount,
-        array $transactionData
-    ): void
+        CommercePayAmount        $amount
+    ): CommercePayResponse
     {
         $commercePayVirtualTerminal = CommercePay::create(
             $userId ,
@@ -49,9 +48,7 @@ final readonly class CommercePayVirtualTerminalCreator
 
         $this->repository->save($commercePayVirtualTerminal);
 
-        $commercePayVirtualTerminal->setVirtualTerminalEventCreated($transactionData);
-
-        $this->bus->publish(...$commercePayVirtualTerminal->pullDomainEvents());
+        return new CommercePayResponse($commercePayVirtualTerminal->toArray());
 
     }
 }

@@ -6,4 +6,6 @@ interface CommercePayTransactionRepository
 {
     public function save(CommercePayTransaction $transaction):void;
 
+    public function searchBy(CommercePayTransactionId $transactionId):CommercePayTransaction;
+
 }

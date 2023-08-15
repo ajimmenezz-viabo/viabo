@@ -9,7 +9,6 @@ use Viabo\management\commercePay\application\create\CommercePayVirtualTerminalCo
 use Viabo\management\commercePayCredentials\application\find\CommercePayCredentialsQuery;
 use Viabo\management\commerceTerminal\application\find\CommerceTerminalMerchantIdQuery;
 use Viabo\management\commerceTransaction\application\create\CreateCommerceVirtualTerminalTransactionCommand;
-use Viabo\management\commerceTransaction\application\find\CommerceTransactionQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommercePayVirtualTerminalCreatorController extends ApiController

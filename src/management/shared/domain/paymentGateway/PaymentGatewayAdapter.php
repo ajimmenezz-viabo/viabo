@@ -11,4 +11,6 @@ interface PaymentGatewayAdapter
 
     public function collectMoney(CommercePayTransaction $transaction): array;
 
+    public function searchTerminalTransactions(string $queryParams, string $apiKey):array;
+
 }

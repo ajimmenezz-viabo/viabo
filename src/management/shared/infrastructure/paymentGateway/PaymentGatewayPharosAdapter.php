@@ -56,6 +56,13 @@ final class PaymentGatewayPharosAdapter implements PaymentGatewayAdapter
         return $_SERVER['REMOTE_ADDR'];
     }
 
+    public function searchTerminalTransactions(string $queryParams, string $apiKey): array
+    {
+        $url = "https://o3tkmwsybj.execute-api.us-west-2.amazonaws.com/v1_3/chains/transactions?$queryParams";
+
+        return $this->request([],$url,$apiKey);
+    }
+
     public function request(array $inputData , string $url , string $apiKey)
     {
         $headers = [
@@ -96,4 +103,6 @@ final class PaymentGatewayPharosAdapter implements PaymentGatewayAdapter
     {
         return array_key_exists('code' , $response) || array_key_exists('Message' , $response);
     }
+
+
 }

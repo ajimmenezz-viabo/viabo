@@ -7,6 +7,7 @@ final readonly class TerminalView
     public function __construct(
         public string $id,
         public string $commerceId,
+        public string $merchantId,
         public string $terminalId,
         public string $apiData,
         public string $createdByUser,
@@ -24,10 +25,12 @@ final readonly class TerminalView
         return [
             'id' => $this->id,
             'commerceId' => $this->commerceId,
+            'merchantId' => $this->merchantId,
             'terminalId' => $this->terminalId,
             'name' => $this->name,
             'typeId' => $this->typeId,
             'typeName' => $this->typeName,
         ];
     }
+
 }

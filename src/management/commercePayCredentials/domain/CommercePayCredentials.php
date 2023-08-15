@@ -2,12 +2,13 @@
 
 namespace Viabo\management\commercePayCredentials\domain;
 
+use Viabo\management\commerceTerminal\domain\TerminalMerchantId;
+
 final readonly class CommercePayCredentials
 {
     private function __construct(
         private CommercePayCredentialsId         $id ,
         private CommercePayCredentialsCommerceId $commerceId ,
-        private CommercePayCredentialsMerchantId $merchantId ,
         private CommercePayCredentialsApiKey     $apiKey ,
     )
     {
@@ -19,7 +20,6 @@ final readonly class CommercePayCredentials
             'id' => $this->id->value() ,
             'commerceId' => $this->commerceId->value() ,
             'apiKey' => $this->apiKey->valueDecrypt() ,
-            'merchantId' => $this->merchantId->value()
         ];
     }
 }

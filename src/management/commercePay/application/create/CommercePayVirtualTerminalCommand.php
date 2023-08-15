@@ -2,25 +2,19 @@
 
 namespace Viabo\management\commercePay\application\create;
 
-use Viabo\shared\domain\bus\command\Command;
+use Viabo\shared\domain\bus\query\Query;
 
-final readonly class CommercePayVirtualTerminalCommand implements Command
+final readonly class CommercePayVirtualTerminalCommand implements Query
 {
     public function __construct(
         public string $userId,
         public string $commerceId,
         public string $terminalId,
-        public string $amount,
-        public string $description,
-        public string $cardNumber,
-        public string $expMonth,
-        public string $expYear,
-        public string $security,
         public string $clientName,
         public string $email,
         public string $phone,
-        public string $merchantId,
-        public string $apiKey
+        public string $description,
+        public string $amount
     ){
     }
 }

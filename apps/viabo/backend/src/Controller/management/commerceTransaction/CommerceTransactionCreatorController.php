@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\commercePay\application\find\CommercePayQuery;
 use Viabo\management\commercePayCredentials\application\find\CommercePayCredentialsQuery;
+use Viabo\management\commerceTerminal\application\find\CommerceTerminalMerchantIdQuery;
 use Viabo\management\commerceTransaction\application\create\CreateCommercePayTransactionCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -18,9 +19,12 @@ final readonly class CommerceTransactionCreatorController extends ApiController
             $data = $this->opensslDecrypt($request->toArray());
             $commercePay = $this->ask(new CommercePayQuery($data['payId']));
             $commercePayCredentials = $this->ask(new CommercePayCredentialsQuery($commercePay->data['commerceId']));
+
+            $terminalData = $this->ask(new CommerceTerminalMerchantIdQuery($commercePay->data['terminalId']));
+
             $this->dispatch(new CreateCommercePayTransactionCommand(
                 $commercePay->data ,
-                $commercePayCredentials->data['merchantId'] ,
+                $terminalData->data['merchantId'],
                 $commercePayCredentials->data['apiKey'] ,
                 $data
             ));

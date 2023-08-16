@@ -1,3 +1,4 @@
 export const TERMINALS_KEYS = {
-  LIST: 'commerce-terminals'
+  LIST: 'commerce-terminals',
+  MOVEMENTS: 'terminal-movements'
 }

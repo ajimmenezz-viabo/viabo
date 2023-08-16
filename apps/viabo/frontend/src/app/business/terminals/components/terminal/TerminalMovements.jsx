@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { AccountBalance, NorthEast, SouthWest } from '@mui/icons-material'
+import { AccountBalance, Check, Clear } from '@mui/icons-material'
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material'
 
+import { useFindTerminalMovements } from '../../hooks'
 import { useTerminalDetails } from '../../store'
 
 import { CardFilterMovements } from '@/app/business/cards/components/details/CardFilterMovements'
@@ -11,56 +12,53 @@ import { DataTable } from '@/shared/components/dataTables'
 export const TerminalMovements = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
-  const card = useTerminalDetails(state => state.terminal)
-  const addInfoCard = useTerminalDetails(state => state.addTerminalInfo)
-  const movements = []
-  const data = []
+  const terminal = useTerminalDetails(state => state.terminal)
 
-  //   useEffect(() => {
-  //     // refetch()
-  //   }, [currentMonth])
+  const {
+    data: movements,
+    isFetching,
+    refetch,
+    isError
+  } = useFindTerminalMovements(terminal?.terminalId, currentMonth, { enabled: !!terminal?.terminalId })
 
-  //   useEffect(() => {
-  //     setCurrentMonth(new Date())
-  //   }, [card?.id])
+  useEffect(() => {
+    refetch()
+  }, [currentMonth])
 
-  //   useEffect(() => {
-  //     if (data) {
-  //       const month = monthOptions[getMonth(currentMonth)] ?? null
-  //       addInfoCard({ ...data, monthBalance: month })
-  //     }
-  //   }, [data, card?.id, currentMonth])
+  useEffect(() => {
+    setCurrentMonth(new Date())
+  }, [terminal?.id])
 
   const columns = [
     {
       name: 'description',
-      label: 'Descripcion',
+      label: 'Descripción',
 
       options: {
         filterType: 'textField',
         filterOptions: { fullWidth: true },
         customBodyRenderLite: (dataIndex, rowIndex) => {
           const rowData = movements[dataIndex]
-          const isIncome = rowData?.type === 'ingreso'
+          const approved = rowData?.approved
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box sx={{ position: 'relative' }}>
                 <Avatar
                   sx={{
-                    width: 48,
-                    height: 48,
+                    width: 40,
+                    height: 40,
                     color: 'text.secondary',
                     bgcolor: 'background.neutral'
                   }}
                 >
-                  <AccountBalance width={24} height={24} />
+                  <AccountBalance width={25} height={25} />
                 </Avatar>
                 <Box
                   sx={{
                     right: 0,
                     bottom: 0,
-                    width: 20,
-                    height: 20,
+                    width: 15,
+                    height: 15,
                     display: 'flex',
                     borderRadius: '50%',
                     position: 'absolute',
@@ -68,28 +66,19 @@ export const TerminalMovements = () => {
                     color: 'common.white',
                     bgcolor: 'error.main',
                     justifyContent: 'center',
-                    ...(isIncome && {
+                    ...(approved && {
                       bgcolor: 'success.main'
                     })
                   }}
                 >
-                  {isIncome ? (
-                    <SouthWest sx={{ width: 15, height: 15 }} />
-                  ) : (
-                    <NorthEast sx={{ width: 15, height: 15 }} />
-                  )}
+                  {approved ? <Check sx={{ width: 12, height: 12 }} /> : <Clear sx={{ width: 12, height: 12 }} />}
                 </Box>
               </Box>
               <Box sx={{ ml: 2 }}>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {isIncome ? 'Recibe dinero de: ' : 'Retiro de dinero en:'}
-                </Typography>
                 <Typography variant="subtitle2"> {rowData?.description}</Typography>
-                {rowData?.concept !== '' && (
-                  <Typography variant="overline" color={'text.disabled'} fontStyle={'italic'}>
-                    concepto : {rowData?.concept}
-                  </Typography>
-                )}
+                <Typography variant="body2" sx={{ color: approved ? 'success.main' : 'error.main' }}>
+                  {approved ? 'Aprobada' : 'No Aprobada'}
+                </Typography>
               </Box>
             </Box>
           )
@@ -97,7 +86,45 @@ export const TerminalMovements = () => {
       }
     },
     {
-      name: 'date',
+      name: 'cardType',
+      label: 'Tarjeta',
+
+      options: {
+        filterOptions: { fullWidth: true },
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+          const rowData = movements[dataIndex]
+          return <Typography variant="body2">{rowData?.cardType}</Typography>
+        }
+      }
+    },
+    {
+      name: 'authNumber',
+      label: 'Autorización',
+
+      options: {
+        filterType: 'textField',
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+          const rowData = movements[dataIndex]
+
+          return <Typography variant="subtitle2">{rowData?.authNumber}</Typography>
+        }
+      }
+    },
+    {
+      name: 'referenceNumber',
+      label: 'Referencia',
+
+      options: {
+        filterType: 'textField',
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+          const rowData = movements[dataIndex]
+
+          return <Typography variant="subtitle2">{rowData?.referenceNumber}</Typography>
+        }
+      }
+    },
+    {
+      name: 'transactionDate.fullDate',
       label: 'Fecha',
 
       options: {
@@ -107,9 +134,9 @@ export const TerminalMovements = () => {
           const row = movements[dataIndex]
           return (
             <Stack>
-              <Typography variant="subtitle2">{row?.date}</Typography>
+              <Typography variant="subtitle2">{row?.transactionDate?.date}</Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {row?.time}
+                {row?.transactionDate?.time}
               </Typography>
             </Stack>
           )
@@ -117,7 +144,7 @@ export const TerminalMovements = () => {
       }
     },
     {
-      name: 'amount',
+      name: 'amountFormat',
       label: 'Cantidad',
 
       options: {
@@ -125,28 +152,30 @@ export const TerminalMovements = () => {
         filterOptions: { fullWidth: true },
         customBodyRenderLite: (dataIndex, rowIndex) => {
           const rowData = movements[dataIndex]
-          const isIncome = rowData?.type === 'ingreso'
+
           return (
-            <Typography variant="subtitle2" fontWeight="bold" color={isIncome ? 'success.main' : 'error'}>
-              {isIncome ? `+ ${rowData?.amount}` : `- ${rowData?.amount}`}
+            <Typography variant="subtitle2" fontWeight="bold">
+              {rowData?.amountFormat}
             </Typography>
           )
         }
       }
     }
   ]
+
   return (
     <Card>
-      <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} isLoading={false} />
+      <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} isLoading={isFetching} />
       <Divider sx={{ borderStyle: 'dashed' }} />
       <DataTable
         title={'Movimientos'}
         data={movements || []}
         columns={columns}
+        isLoading={isFetching}
         options={{
           responsive: 'simple',
           rowHover: true,
-          selectableRows: 'single',
+          selectableRows: 'none',
           selectableRowsOnClick: false,
           selectToolbarPlacement: 'replace',
           sortOrder: {
@@ -154,7 +183,7 @@ export const TerminalMovements = () => {
             direction: 'desc'
           },
           downloadOptions: {
-            filename: 'movimientos.csv',
+            filename: `movimientos_terminal_${terminal?.name}.csv`,
             filterOptions: {
               useDisplayedColumnsOnly: false // it was true
             }

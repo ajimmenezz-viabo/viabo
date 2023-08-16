@@ -1,4 +1,4 @@
-import { CommerceTerminalsAdapter } from '../adapters'
+import { CommerceTerminalsAdapter, TerminalMovementsAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
@@ -15,4 +15,11 @@ export const createPaymentLink = async paymentLink => {
 export const generatePaymentByVirtualTerminal = async payment => {
   const { data } = await axios.post(`/api/commerce/virtual/pay`, payment)
   return data
+}
+
+export const getTerminalMovements = async (terminalId, initialDate, finalDate) => {
+  const { data } = await axios.get(
+    `/api/commerces-pay/transactions?fromDate=${initialDate}&toDate=${finalDate}&terminalId=${terminalId}`
+  )
+  return TerminalMovementsAdapter(data)
 }

@@ -78,10 +78,15 @@
                             {% endif %}
                             {% if referencePayCash %}
                                 <p style="  font-size: 18px;
-                	            text-align: center;
-      		                    font-weight:bold;
-       		                    color:white">
-                                    PayCash : {{ referencePayCash }}
+                                        text-align: center;
+                                        font-weight:bold;
+                                        color:white;
+                                    ">
+                                <div style="text-align:center;font-weight:bold;font-size:18px;">PayCash</div>
+                                <div style="text-align:center;font-weight:bold;font-size:18px;">
+                                    <img style="width:20rem;" src="{{ barcodePayCash }}" alt="barcode"/>
+                                </div>
+                                <div style="text-align:center;font-weight:bold;font-size:18px;">{{ referencePayCash }}</div>
                                 </p>
                             {% endif %}
                             <p style="  font-size: 18px;
@@ -100,7 +105,8 @@
                 	            text-align: center;
       		                    font-weight:bold;
        		                    color:white">
-                                En caso de enviar los a través de SPEI, por favor agregue la referencia de este correo
+                                En caso de enviar los a través de SPEI, por favor agregue la referencia de este
+                                correo
                             </p>
                         </td>
                     </tr>

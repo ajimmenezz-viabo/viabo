@@ -21,15 +21,12 @@ export const TerminalDetails = () => {
       })}
     >
       {terminal && (
-        <>
+        <Scrollbar>
           {terminal?.isVirtual && <TerminalActions />}
-
-          <Scrollbar>
-            <Stack pt={0} pb={4} px={2}>
-              <TerminalMovements />
-            </Stack>
-          </Scrollbar>
-        </>
+          <Stack pt={0} pb={4} px={2}>
+            <TerminalMovements />
+          </Stack>
+        </Scrollbar>
       )}
 
       {!terminal && (

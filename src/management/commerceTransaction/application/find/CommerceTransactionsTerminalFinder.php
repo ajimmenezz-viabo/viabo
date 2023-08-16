@@ -39,7 +39,7 @@ final readonly class CommerceTransactionsTerminalFinder
 
         $filteredItems = $this->filtered($response);
 
-        $result = ["movimientos" => $filteredItems, "pager" => $response["pager"]];
+        $result = ["movements" => $filteredItems, "pager" => $response["pager"]];
 
         return new CommerceTransactionsTerminalResponse($result);
     }

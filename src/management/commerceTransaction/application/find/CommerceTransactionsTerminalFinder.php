@@ -2,6 +2,7 @@
 
 namespace Viabo\management\commerceTransaction\application\find;
 
+use Viabo\management\commerceTransaction\domain\CommercePayTransactionResultMessage;
 use Viabo\management\commerceTransaction\domain\exceptions\CommerceTransactionsResponseNotFound;
 use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
 
@@ -67,7 +68,9 @@ final readonly class CommerceTransactionsTerminalFinder
 
     private function filtered(array $response): array
     {
-        return array_map(function ($item) {
+        $resultMessage = new CommercePayTransactionResultMessage('');
+
+        return array_map(function ($item) use ($resultMessage) {
             return [
                 "id" => $item["id"],
                 "transaction_date" => $item["transaction_date"],
@@ -75,6 +78,7 @@ final readonly class CommerceTransactionsTerminalFinder
                 "authorization_number" => $item["authorization_number"],
                 "reference" => $item["reference"],
                 "approved" => $item["approved"],
+                "result_message" => $resultMessage->message($item["result_code"]),
                 "reversed" => $item["reversed"],
                 "card_number" => $item["card_number"],
                 "issuer" => $item["issuer"],

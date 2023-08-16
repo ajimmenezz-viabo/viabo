@@ -1,12 +1,15 @@
 import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 
-import { fCurrency, fDateTime } from '@/shared/utils'
+import { fCurrency, normalizeDateString } from '@/shared/utils'
 
 export const TerminalMovementsAdapter = data =>
   data?.movements?.map(movement => {
     const amount = parseFloat(movement?.amount || '0')
-    const date = movement?.transaction_date ? format(new Date(movement?.transaction_date), 'dd MMM yyyy') : ''
-    const time = movement?.transaction_date ? format(new Date(movement?.transaction_date), 'p') : ''
+    const date = movement?.transaction_date
+      ? format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy', { locale: es })
+      : ''
+    const time = movement?.transaction_date ? format(normalizeDateString(movement?.transaction_date), 'p') : ''
 
     return {
       id: movement?.id,
@@ -19,12 +22,13 @@ export const TerminalMovementsAdapter = data =>
       cardBank: movement?.issuer,
       referenceNumber: movement?.reference,
       transactionDate: {
-        fullDate: fDateTime(movement?.transaction_date),
+        fullDate: format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy HH:mm', { locale: es }),
         date,
         time
       },
       description: `${movement?.issuer === '' ? movement?.card_brand : movement?.issuer}-${
         movement?.card_number
-      }`.toUpperCase()
+      }`.toUpperCase(),
+      transactionMessage: movement?.result_message
     }
   }) ?? []

@@ -1,4 +1,4 @@
-import { format, formatDistanceToNow, getTime } from 'date-fns'
+import { addMinutes, format, formatDistanceToNow, getTime, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 
 export function fDate(date) {
@@ -19,6 +19,16 @@ export function fTimestamp(date) {
 
 export function fDateTimeSuffix(date) {
   return format(new Date(date), 'dd/MM/yyyy hh:mm p', { locale: es })
+}
+
+export function normalizeDateString(dateString) {
+  const dateObj = parseISO(dateString)
+
+  const timeZoneOffset = new Date().getTimezoneOffset()
+
+  const adjustedDateObj = addMinutes(dateObj, timeZoneOffset)
+
+  return adjustedDateObj
 }
 
 export const monthOptions = [

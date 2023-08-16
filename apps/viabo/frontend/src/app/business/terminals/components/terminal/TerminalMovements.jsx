@@ -76,8 +76,12 @@ export const TerminalMovements = () => {
               </Box>
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2"> {rowData?.description}</Typography>
-                <Typography variant="body2" sx={{ color: approved ? 'success.main' : 'error.main' }}>
-                  {approved ? 'Aprobada' : 'No Aprobada'}
+                <Typography
+                  variant="body2"
+                  textTransform={'capitalize'}
+                  sx={{ color: approved ? 'success.main' : 'error.main' }}
+                >
+                  {rowData?.transactionMessage}
                 </Typography>
               </Box>
             </Box>

@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types'
 
-import { CreditCard, EmailOutlined, Lock, Person, VpnKey } from '@mui/icons-material'
+import { CreditCard, EmailOutlined, Lock, Person, Phone, VpnKey } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { InputAdornment, Link, Paper, Stack, Typography } from '@mui/material'
-import { DatePicker } from '@mui/x-date-pickers'
-import { format, isAfter, isValid, parse } from 'date-fns'
+import { InputAdornment, Link, MenuItem, Paper, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { MuiTelInput } from 'mui-tel-input'
 import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
@@ -14,11 +11,18 @@ import { PaymentByVirtualTerminalAdapter } from '../../adapters'
 import { useGeneratePaymentByVirtualTerminal } from '../../hooks'
 import { useTerminalDetails } from '../../store'
 
-import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
+import { FormProvider, MaskedInput, RFSimpleSelect, RFTextField } from '@/shared/components/form'
 import { MasterCardLogo, VisaLogo } from '@/shared/components/images'
+import { monthOptions } from '@/shared/utils'
 
 const MIN_AMOUNT = 1
 const MAX_AMOUNT = 100000
+
+const currentYear = new Date().getFullYear()
+const currentMonth = new Date().getMonth()
+const yearsToAdd = 10
+
+const yearOptions = Array.from({ length: yearsToAdd }, (_, index) => currentYear + index)
 
 export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
   const terminal = useTerminalDetails(state => state.terminal)
@@ -30,29 +34,22 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
     concept: Yup.string().required('El concepto es requerido'),
     cardNumber: Yup.string()
       .transform((value, originalValue) => originalValue.replace(/\s/g, '')) // Elimina los espacios en blanco
-      .min(16, 'Debe contener 16 digitos')
+      .min(16, 'Debe contener 16 dígitos')
       .required('El número de la tarjeta es requerido'),
-    cvv: Yup.string().min(3, 'Debe contener 3 digitos').required('El CVV es requerido'),
-    expiration: Yup.string()
-      .required('La fecha de vencimiento es requerida')
-      .test('is-future-date', 'La fecha  debe ser mayor que la fecha actual', function (value) {
-        const date = parse(`01/${value}`, 'dd/MM/yyyy', new Date())
-        const currentDate = new Date()
-        const isDateValid = isValid(date)
-        return isDateValid && isAfter(date, currentDate)
-      }),
+    cvv: Yup.string().min(3, 'Debe contener 3 dígitos').required('El CVV es requerido'),
     name: Yup.string().required('El nombre es requerido'),
     email: Yup.string().email('Ingresa un correo valido').required('El correo es requerido'),
     phone: Yup.string()
-      .test('longitud', 'El telefono es muy corto', value => !(value && value.replace(/[\s+]/g, '').length < 10))
-      .required('El telefono es requerido')
+      .test('longitud', 'El teléfono es muy corto', value => !(value && value.replace(/\s/g, '').length < 10))
+      .required('El teléfono es requerido')
   })
 
   const formik = useFormik({
     initialValues: {
       amount: '',
       cardNumber: '',
-      expiration: '',
+      month: currentMonth,
+      year: currentYear,
       cvv: '',
       name: '',
       email: '',
@@ -169,41 +166,32 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
             disabled={loading}
           />
         </Stack>
-        <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'}>
+        <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'} flexWrap={'wrap'}>
           <Stack flex={1} spacing={1}>
             <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Vence *
+              Mes *
             </Typography>
-            <DatePicker
-              disabled={loading}
-              size={'small'}
-              views={['year', 'month']}
-              name={'expiration'}
-              value={values?.expiration ? new Date(values.expiration) : null}
-              required={true}
-              onChange={newValue => {
-                const isDateValid = isValid(newValue)
-                if (isDateValid) {
-                  return formik.setFieldValue('expiration', format(newValue, 'MM/yyyy'))
-                } else {
-                  return formik.setFieldValue('expiration', '')
-                }
-              }}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  size: 'small',
-                  error: Boolean(touched.expiration && errors.expiration),
-                  required: true,
-                  helperText: touched.expiration && errors.expiration ? errors.expiration : ''
-                }
-              }}
-              disablePast={true}
-              minDate={new Date()}
-              format="MM/yy"
-            />
+            <RFSimpleSelect size={'small'} name={'month'} disabled={loading}>
+              {monthOptions.map((month, index) => (
+                <MenuItem key={index} value={index}>
+                  {month}
+                </MenuItem>
+              ))}
+            </RFSimpleSelect>
           </Stack>
-          <Stack spacing={1}>
+          <Stack flex={1} spacing={1}>
+            <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+              Año *
+            </Typography>
+            <RFSimpleSelect size={'small'} name={'year'} disabled={loading}>
+              {yearOptions.map(year => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </RFSimpleSelect>
+          </Stack>
+          <Stack flex={1} spacing={1}>
             <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               CVV *
             </Typography>
@@ -276,33 +264,39 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
 
         <Stack spacing={1}>
           <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Telefono *
+            Teléfono *
           </Typography>
 
-          <MuiTelInput
-            name="phone"
-            fullWidth
-            langOfCountryName="es"
-            defaultCountry="MX"
-            preferredCountries={['MX', 'US']}
-            continents={['NA', 'SA']}
-            forceCallingCode
-            value={values.phone}
-            disabled={loading}
+          <RFTextField
+            name={'phone'}
             required={true}
+            type={'phone'}
             size={'small'}
-            onChange={(value, info) => {
-              setFieldValue('phone', value)
+            placeholder={'55 5555 5555'}
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Phone />
+                </InputAdornment>
+              ),
+              inputComponent: MaskedInput,
+              inputProps: {
+                mask: '00 0000 0000',
+                value: values.phone,
+                onAccept: value => {
+                  setFieldValue('phone', value)
+                }
+              }
             }}
-            error={touched.phone && Boolean(errors.phone)}
-            helperText={touched.phone && errors.phone}
+            disabled={loading}
           />
         </Stack>
 
         <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
           Al hacer clic en el botón de Pagar, accedo a los &nbsp;
           <Link component={RouterLink} underline="always" target="_blank" color="info.main">
-            Terminos y condiciones
+            Términos y condiciones
           </Link>
           &nbsp; & &nbsp;
           <Link component={RouterLink} underline="always" target="_blank" color="info.main">

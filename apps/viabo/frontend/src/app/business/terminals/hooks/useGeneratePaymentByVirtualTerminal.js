@@ -1,11 +1,13 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { TERMINALS_KEYS } from '../adapters'
 import { generatePaymentByVirtualTerminal } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
 export const useGeneratePaymentByVirtualTerminal = (options = {}) => {
+  const client = useQueryClient()
   const payment = useMutation(generatePaymentByVirtualTerminal, options)
   const transaction = async (formData, options) => {
     const { onSuccess, onError, mutationOptions } = options
@@ -16,6 +18,7 @@ export const useGeneratePaymentByVirtualTerminal = (options = {}) => {
         success: {
           render({ data }) {
             onSuccess(data)
+            client.invalidateQueries([TERMINALS_KEYS.MOVEMENTS])
             return 'Se completó la transacción y se envió el comprobante con éxito'
           }
         }
@@ -29,6 +32,7 @@ export const useGeneratePaymentByVirtualTerminal = (options = {}) => {
       toast.error(errorFormatted, {
         type: getNotificationTypeByErrorCode(error)
       })
+      client.invalidateQueries([TERMINALS_KEYS.MOVEMENTS])
     }
   }
 

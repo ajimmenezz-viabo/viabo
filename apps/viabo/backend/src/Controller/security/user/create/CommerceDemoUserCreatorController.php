@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\security\user\application\create\CreateCommerceDemoUserCommand;
 use Viabo\security\user\application\find\FindUserQuery;
+use Viabo\security\user\application\update\DemoUserValidateCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 
@@ -18,6 +19,7 @@ final readonly class CommerceDemoUserCreatorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $request->toArray();
+            $this->dispatch(new DemoUserValidateCommand($data['email']));
             $this->dispatch(new CreateCommerceDemoUserCommand(
                 $data['name'] ,
                 $data['phone'] ,

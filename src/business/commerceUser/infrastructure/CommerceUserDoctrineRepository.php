@@ -28,4 +28,9 @@ final class CommerceUserDoctrineRepository extends DoctrineRepository implements
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(CommerceUser::class)->matching($criteriaConvert)->toArray();
     }
+
+    public function delete(CommerceUser $commerceUser): void
+    {
+        $this->remove($commerceUser);
+    }
 }

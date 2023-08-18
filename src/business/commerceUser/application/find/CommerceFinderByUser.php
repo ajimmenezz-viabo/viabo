@@ -4,7 +4,7 @@
 namespace Viabo\business\commerceUser\application\find;
 
 
-use Viabo\business\commerceUser\domain\CommerceUserId;
+use Viabo\business\commerceUser\domain\CommerceUserKey;
 use Viabo\business\commerceUser\domain\CommerceUserRepository;
 use Viabo\business\commerceUser\domain\exceptions\CommerceUserNotExist;
 use Viabo\shared\domain\criteria\Criteria;
@@ -16,7 +16,7 @@ final readonly class CommerceFinderByUser
     {
     }
 
-    public function __invoke(CommerceUserId $userId): CommerceUserResponse
+    public function __invoke(CommerceUserKey $userId): CommerceUserResponse
     {
         $filter = Filters::fromValues([
             ['field' => 'userId.value' , 'operator' => '=' , 'value' => $userId->value() ]

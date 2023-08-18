@@ -51,4 +51,9 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
     {
         $this->entityManager()->flush($user);
     }
+
+    public function delete(User $user): void
+    {
+        $this->remove($user);
+    }
 }

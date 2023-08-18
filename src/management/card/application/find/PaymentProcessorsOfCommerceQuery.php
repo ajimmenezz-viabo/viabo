@@ -8,7 +8,11 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class PaymentProcessorsOfCommerceQuery implements Query
 {
-    public function __construct(public string $commerceId)
+    public function __construct(
+        public string $commerceId ,
+        public string $userId ,
+        public string $userProfileId
+    )
     {
     }
 }

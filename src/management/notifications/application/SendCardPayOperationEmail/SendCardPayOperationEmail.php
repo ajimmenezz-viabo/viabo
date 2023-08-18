@@ -25,7 +25,7 @@ final readonly class SendCardPayOperationEmail implements DomainEventSubscriber
         $transactionData = $event->toPrimitives();
         $emails = $event->emails();
 
-        if (!empty($transactionData['originCardMain'])) {
+        if (!empty($transactionData['originCardMain']) || empty($emails)) {
             return;
         }
 

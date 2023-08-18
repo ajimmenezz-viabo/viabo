@@ -11,6 +11,8 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Commission extends AggregateRoot
 {
+    private CommissionCharge $commissionCharge;
+
     public function __construct(
         private CommissionId                $id ,
         private CommerceId                  $commerceId ,
@@ -23,6 +25,7 @@ final class Commission extends AggregateRoot
         private CommissionUpdateDate        $updateDate
     )
     {
+        $this->commissionCharge = CommissionCharge::empty();
     }
 
     public static function create(
@@ -44,6 +47,25 @@ final class Commission extends AggregateRoot
             $speiOutMasterCard ,
             $pay ,
             $updateByUser ,
+            CommissionUpdateDate::todayDate()
+        );
+
+        $commission->record(new CommissionCreatedDomainEvent($commission->id()->value() , $commission->toArray()));
+
+        return $commission;
+    }
+
+    public static function empty(CommerceId $commerceId): static
+    {
+        $commission = new static(
+            CommissionId::random() ,
+            $commerceId ,
+            new CommissionSpeiInCarnet(0) ,
+            new CommissionSpeiInMasterCard(0) ,
+            new CommissionSpeiOutCarnet(0) ,
+            new CommissionSpeiOutMasterCard(0) ,
+            new CommissionPay(0) ,
+            CommissionUpdateByUser::empty() ,
             CommissionUpdateDate::todayDate()
         );
 
@@ -75,6 +97,24 @@ final class Commission extends AggregateRoot
         $this->updateDate = CommissionUpdateDate::todayDate();
 
         $this->record(new CommissionUpdatedDomainEvent($this->id()->value() , $this->toArray()));
+    }
+
+    public function calculateInputFor(string $paymentProcessor , float $amount): void
+    {
+        $this->commissionCharge = $this->commissionCharge ?? CommissionCharge::empty();
+
+        if ($this->speiInCarnet->isType($paymentProcessor)) {
+            $this->commissionCharge->calculate($this->speiInCarnet->value() , $amount , 'speiInCarnet');
+        }
+
+        if ($this->speiInMasterCard->isType($paymentProcessor)) {
+            $this->commissionCharge->calculate($this->speiInMasterCard->value() , $amount , 'speiInMasterCard');
+        }
+    }
+
+    public function charge(): CommissionCharge
+    {
+        return $this->commissionCharge;
     }
 
     public function toArray(): array

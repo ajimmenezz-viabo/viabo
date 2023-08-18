@@ -17,4 +17,10 @@ final class NumberFormat
         $number = number_format(floatval($value) , 2);
         return floatval(str_replace(',' , '' , $number));
     }
+
+    public static function floatString(mixed $value): string
+    {
+        $number = number_format(floatval($value) , 2);
+        return str_replace(',' , '' , $number);
+    }
 }

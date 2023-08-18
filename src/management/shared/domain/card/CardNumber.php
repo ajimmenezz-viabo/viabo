@@ -47,6 +47,19 @@ final class CardNumber extends StringValueObject
         return preg_match('/^\d{8}$/' , $value) === 0;
     }
 
+    public static function createNotEmpty(string $value): static
+    {
+        self::validateNotEmpty($value);
+        return new static($value);
+    }
+
+    private static function validateNotEmpty(string $value): void
+    {
+        if (empty($value)) {
+            throw new CardNumberEmpty();
+        }
+    }
+
     public function last8Digits(): string
     {
         return substr($this->value , -8);

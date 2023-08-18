@@ -7,6 +7,7 @@ namespace Viabo\management\cardOperation\application\transactions;
 use Viabo\management\card\application\find\CardInformationQuery;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\cardOperation\domain\CardOperation;
+use Viabo\management\cardOperation\domain\CardOperationActive;
 use Viabo\management\cardOperation\domain\CardOperationBalance;
 use Viabo\management\cardOperation\domain\CardOperationConcept;
 use Viabo\management\cardOperation\domain\CardOperationDescriptionPay;
@@ -17,6 +18,7 @@ use Viabo\management\cardOperation\domain\CardOperationOriginMain;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
 use Viabo\management\cardOperation\domain\CardOperationReverseEmail;
 use Viabo\management\cardOperation\domain\CardOperations;
+use Viabo\management\cardOperation\domain\CardOperationTypeId;
 use Viabo\management\cardOperation\domain\exceptions\CardOperationCardBlocked;
 use Viabo\management\cardOperation\domain\exceptions\CardOperationCommerceDifferent;
 use Viabo\management\cardOperation\domain\exceptions\OriginCardInsufficientBalance;
@@ -139,6 +141,7 @@ final readonly class CardTransactionsProcessor
         foreach ($destinationCardsData as $destinationCardData) {
             $destinationCard = new CardOperationDestination($destinationCardData['number']);
             $operations[] = CardOperation::create(
+                new CardOperationTypeId('1') ,
                 new CardOperationOrigin($originCardNumber) ,
                 new CardOperationOriginMain($originCardMain) ,
                 $destinationCard ,
@@ -147,7 +150,8 @@ final readonly class CardTransactionsProcessor
                 $payEmail ,
                 new CardOperationReverseEmail($destinationCardData['ownerEmail']) ,
                 $clientKey ,
-                CardOperationDescriptionPay::create($destinationCard->last8Digits() , $destinationCardData['main'])
+                CardOperationDescriptionPay::create($destinationCard->last8Digits() , $destinationCardData['main']),
+                new CardOperationActive('1')
             );
         }
 

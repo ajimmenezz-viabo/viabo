@@ -19,7 +19,9 @@ final readonly class PaymentProcessorsCommerceFinderController extends ApiContro
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
             $commerceId = $this->ask(new CommerceIdQuery($tokenData['id'], $tokenData['profileId']));
-            $data = $this->ask(new PaymentProcessorsOfCommerceQuery($commerceId->data));
+            $data = $this->ask(new PaymentProcessorsOfCommerceQuery(
+                $commerceId->data, $tokenData['id'], $tokenData['profileId']
+            ));
 
             return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {

@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardOperationBalance extends StringValueObject
 {
+    public function hasBalance(): bool
+    {
+        return !empty(floatval($this->value));
+    }
 }

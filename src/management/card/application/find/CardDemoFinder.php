@@ -5,7 +5,6 @@ namespace Viabo\management\card\application\find;
 
 
 use Viabo\management\card\domain\CardRepository;
-use Viabo\management\card\domain\exceptions\CardDemoHasOwner;
 use Viabo\management\card\domain\exceptions\CardDemoNotExist;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\criteria\Criteria;

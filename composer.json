@@ -27,7 +27,8 @@
     "lambdish/phunctional": "^2.1",
     "ramsey/uuid": "^4.7",
     "endroid/qr-code": "^4.8",
-    "picqer/php-barcode-generator": "^2.2"
+    "picqer/php-barcode-generator": "^2.2",
+    "symfony/monolog-bundle": "^3.8"
   },
   "require-dev": {
     "behat/behat": "^3.12",

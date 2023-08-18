@@ -23,8 +23,7 @@ apps/viabo/backend/public/storage
 /apps/viabo/backend/var/
 ###< Symfony ###
 
-
-# Logs
+###> Logs ###
 /apps/viabo/frontend/logs
 /apps/viabo/frontend/*.log
 /apps/viabo/frontend/npm-debug.log*
@@ -38,6 +37,8 @@ apps/viabo/backend/public/storage
 /apps/viabo/frontend/dist-ssr
 /apps/viabo/frontend/*.local
 /apps/viabo/frontend/pnpm-lock.yaml
+/apps/viabo/backend/log/
+###< Logs ###
 
 # Editor directories and files
 .vscode/*

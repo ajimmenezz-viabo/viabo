@@ -22,4 +22,9 @@ abstract class AggregateRoot
     {
         $this->domainEvents[] = $domainEvent;
     }
+
+    final protected function clearDomainEvents(): void
+    {
+        $this->domainEvents = [];
+    }
 }

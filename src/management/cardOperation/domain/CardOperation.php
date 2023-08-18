@@ -6,6 +6,7 @@ namespace Viabo\management\cardOperation\domain;
 
 use Viabo\management\cardOperation\domain\events\CardOperationCreatedDomainEvent;
 use Viabo\management\cardOperation\domain\events\CardOperationUpdateDomainEvent;
+use Viabo\management\cardOperation\domain\events\OperationFailedDomainEvent;
 use Viabo\management\shared\domain\credential\CardCredentialClientKey;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -36,6 +37,7 @@ final class CardOperation extends AggregateRoot
     }
 
     public static function create(
+        CardOperationTypeId         $operationTypeId ,
         CardOperationOrigin         $originCard ,
         CardOperationOriginMain     $originCardMain ,
         CardOperationDestination    $destinationCard ,
@@ -44,12 +46,13 @@ final class CardOperation extends AggregateRoot
         CardOperationPayEmail       $payEmail ,
         CardOperationReverseEmail   $reverseEmail ,
         CardCredentialClientKey     $clientKey ,
-        CardOperationDescriptionPay $descriptionPay
+        CardOperationDescriptionPay $descriptionPay ,
+        CardOperationActive         $active
     ): static
     {
         return new static(
             CardOperationId::random() ,
-            new CardOperationTypeId('1') ,
+            $operationTypeId ,
             $originCard ,
             $originCardMain ,
             $destinationCard ,
@@ -65,7 +68,7 @@ final class CardOperation extends AggregateRoot
             $reverseEmail ,
             $clientKey ,
             CardOperationRegisterDate::todayDate() ,
-            new CardOperationActive('1') ,
+            $active
         );
     }
 
@@ -117,6 +120,11 @@ final class CardOperation extends AggregateRoot
         $this->active = $this->active->update('0');
     }
 
+    public function hasBalance(): bool
+    {
+        return $this->balance->hasBalance();
+    }
+
     public function setEventCreated(): void
     {
         $this->record(new CardOperationCreatedDomainEvent(
@@ -129,6 +137,14 @@ final class CardOperation extends AggregateRoot
         $this->record(new CardOperationUpdateDomainEvent(
             $this->id->value() , $this->toArray() , $this->reverseEmail->value()
         ));
+    }
+
+    public function setEventOperationFailed(string $billingId): void
+    {
+        $this->clearDomainEvents();
+        $data = $this->toArray();
+        $data['billingId'] = $billingId;
+        $this->record(new OperationFailedDomainEvent($this->id->value() , $data));
     }
 
     public function toArray(): array

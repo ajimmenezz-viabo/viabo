@@ -11,6 +11,7 @@ use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
+use Viabo\security\user\domain\events\UserDeletedDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class User extends AggregateRoot
@@ -137,6 +138,11 @@ final class User extends AggregateRoot
     public function setEventSessionStarted(): void
     {
         $this->record(new SessionStartedDomainEvent($this->id->value()));
+    }
+
+    public function setEventDeleted(): void
+    {
+        $this->record(new UserDeletedDomainEvent($this->id->value(), $this->toArray()));
     }
 
     public function toArray(): array

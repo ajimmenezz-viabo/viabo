@@ -11,4 +11,6 @@ interface CommerceUserRepository
     public function save(CommerceUser $commerceUser): void;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function delete(CommerceUser $commerceUser): void;
 }

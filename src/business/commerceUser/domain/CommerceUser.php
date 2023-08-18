@@ -5,6 +5,7 @@ namespace Viabo\business\commerceUser\domain;
 
 
 use Viabo\business\commerceUser\domain\events\CommerceUserCreatedDomainEvent;
+use Viabo\business\commerceUser\domain\events\CommerceUserDeleted;
 use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -39,6 +40,11 @@ final class CommerceUser extends AggregateRoot
     public function isDifferent(CommerceId $commerceId): bool
     {
         return $this->commerceId->isDifferent($commerceId->value());
+    }
+
+    public function setEvenDelete(): void
+    {
+        $this->record(new CommerceUserDeleted($this->id->value(), $this->toArray()));
     }
 
     public function toArray(): array

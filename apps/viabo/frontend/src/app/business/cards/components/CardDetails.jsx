@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Alert, Grid, Stack } from '@mui/material'
+import { Alert, Box, Grid, Stack } from '@mui/material'
 import { useCollapseDrawer } from '@theme/hooks'
 
 import {
@@ -16,7 +16,6 @@ import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { SelectDataIllustration } from '@/shared/components/illustrations'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { ErrorRequestPage } from '@/shared/components/notifications'
-import { Scrollbar } from '@/shared/components/scroll'
 
 export function CardDetails() {
   const card = useCommerceDetailsCard(state => state.card)
@@ -37,7 +36,7 @@ export function CardDetails() {
       {isLoading && card && <RequestLoadingComponent />}
       <Stack
         sx={theme => ({
-          pl: { xs: 0, lg: 2 },
+          pl: { xs: 0, sm: 2, lg: 2 },
           overflow: 'hidden',
           flexDirection: 'column',
           flexGrow: 1
@@ -46,12 +45,12 @@ export function CardDetails() {
         {isError && !data && !isLoading && (
           <ErrorRequestPage sx={{ justifyContent: 'flex-start' }} errorMessage={error} handleButton={refetch} />
         )}
-        {card && !isLoading && data && (
+        {card && !isLoading && !isError && data && (
           <>
             <CardDetailsHeader card={card} />
             <CardActions />
 
-            <Scrollbar>
+            <Box sx={{ overflowY: 'auto' }}>
               <Stack pt={2} pb={4} px={2}>
                 <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>
                   <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 4 : 12} xl={4}>
@@ -66,7 +65,7 @@ export function CardDetails() {
                   </Grid>
                 </Grid>
               </Stack>
-            </Scrollbar>
+            </Box>
           </>
         )}
         {!card && (

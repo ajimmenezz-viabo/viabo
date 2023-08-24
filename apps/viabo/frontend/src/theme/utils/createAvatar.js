@@ -44,12 +44,15 @@ export function stringToColor(string) {
   return color
 }
 
+export function getNameAvatar(name = '') {
+  return name.split(' ')?.length > 1 ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}` : `${name.split(' ')[0][0]}`
+}
+
 export function stringAvatar(name) {
   if (name === '') {
     return {}
   }
-  const nameChildren =
-    name.split(' ')?.length > 1 ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}` : `${name.split(' ')[0][0]}`
+  const nameChildren = getNameAvatar(name)
   return {
     sx: {
       bgcolor: stringToColor(name),

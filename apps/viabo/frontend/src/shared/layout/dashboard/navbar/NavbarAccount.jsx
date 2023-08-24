@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { Box, Link, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 import { useAuth } from '@/shared/hooks'
@@ -24,37 +24,35 @@ NavbarAccount.propTypes = {
 export default function NavbarAccount({ isCollapse }) {
   const { user } = useAuth()
   return (
-    <Link underline="none" color="inherit" href="/">
-      <RootStyle
+    <RootStyle
+      sx={{
+        ...(isCollapse && {
+          bgcolor: 'transparent'
+        })
+      }}
+    >
+      <MyAvatar />
+
+      <Box
         sx={{
+          ml: 2,
+          transition: theme =>
+            theme.transitions.create('width', {
+              duration: theme.transitions.duration.shorter
+            }),
           ...(isCollapse && {
-            bgcolor: 'transparent'
+            ml: 0,
+            width: 0
           })
         }}
       >
-        <MyAvatar />
-
-        <Box
-          sx={{
-            ml: 2,
-            transition: theme =>
-              theme.transitions.create('width', {
-                duration: theme.transitions.duration.shorter
-              }),
-            ...(isCollapse && {
-              ml: 0,
-              width: 0
-            })
-          }}
-        >
-          <Typography variant="subtitle2" textTransform={'capitalize'}>
-            {user?.name}
-          </Typography>
-          <Typography variant="body2" textTransform={'capitalize'} sx={{ color: 'text.secondary' }}>
-            {user?.profile}
-          </Typography>
-        </Box>
-      </RootStyle>
-    </Link>
+        <Typography variant="subtitle2" textTransform={'capitalize'}>
+          {user?.name}
+        </Typography>
+        <Typography variant="body2" textTransform={'capitalize'} sx={{ color: 'text.secondary' }}>
+          {user?.profile}
+        </Typography>
+      </Box>
+    </RootStyle>
   )
 }

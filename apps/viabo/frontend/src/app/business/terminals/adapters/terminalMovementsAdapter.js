@@ -16,11 +16,9 @@ export const TerminalMovementsAdapter = data =>
       amount,
       amountFormat: fCurrency(amount),
       approved: movement?.approved,
-      authNumber: movement?.authorization_number === '' ? '-' : movement?.authorization_number,
       cardType: movement?.card_brand,
       cardNumber: movement?.card_number,
       cardBank: movement?.issuer,
-      referenceNumber: movement?.reference,
       transactionDate: {
         fullDate: format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy HH:mm', { locale: es }),
         date,

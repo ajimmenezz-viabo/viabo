@@ -58,8 +58,9 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
     },
     enableReinitialize: true,
     validationSchema: TerminalSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: (values, { setSubmitting, setFieldTouched }) => {
       const data = PaymentByVirtualTerminalAdapter(terminal, values)
+
       mutate(data, {
         onSuccess: () => {
           setSubmitting(false)
@@ -67,12 +68,15 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
         },
         onError: () => {
           setSubmitting(false)
+          setFieldValue('cvv', '').then(() => {
+            setFieldTouched('cvv', false, false)
+          })
         }
       })
     }
   })
 
-  const { errors, touched, isSubmitting, setFieldValue, values } = formik
+  const { isSubmitting, setFieldValue, values } = formik
 
   const loading = isSubmitting
 
@@ -81,10 +85,10 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
       <Stack spacing={2} p={3}>
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
           <Typography variant="subtitle1">Forma de Pago</Typography>
-          <Paper sx={{ px: 1, backgroundColor: 'background.default' }}>
+          <Paper sx={{ px: 1, backgroundColor: 'background.neutral' }}>
             <MasterCardLogo sx={{ width: 30, height: 30 }} />
           </Paper>
-          <Paper sx={{ px: 1, backgroundColor: 'background.default' }}>
+          <Paper sx={{ px: 1, backgroundColor: 'background.neutral' }}>
             <VisaLogo sx={{ width: 30, height: 30 }} />
           </Paper>
         </Stack>
@@ -295,11 +299,11 @@ export const VirtualTerminalForm = ({ onSuccessTransaction }) => {
 
         <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
           Al hacer clic en el botón de Pagar, accedo a los &nbsp;
-          <Link component={RouterLink} underline="always" target="_blank" color="info.main">
+          <Link component={RouterLink} underline="always" color="info.main">
             Términos y condiciones
           </Link>
           &nbsp; & &nbsp;
-          <Link component={RouterLink} underline="always" target="_blank" color="info.main">
+          <Link component={RouterLink} underline="always" color="info.main">
             Acuerdos de privacidad
           </Link>
           .

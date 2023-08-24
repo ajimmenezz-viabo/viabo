@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 
 import { AccountBalance, Check, Clear } from '@mui/icons-material'
-import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Card, Divider, Stack, Tooltip, Typography } from '@mui/material'
 
 import { useFindTerminalMovements } from '../../hooks'
 import { useTerminalDetails } from '../../store'
 
 import { CardFilterMovements } from '@/app/business/cards/components/details/CardFilterMovements'
+import { getCardTypeByName } from '@/app/shared/services'
 import { DataTable } from '@/shared/components/dataTables'
 
 export const TerminalMovements = () => {
@@ -17,8 +18,7 @@ export const TerminalMovements = () => {
   const {
     data: movements,
     isFetching,
-    refetch,
-    isError
+    refetch
   } = useFindTerminalMovements(terminal?.terminalId, currentMonth, { enabled: !!terminal?.terminalId })
 
   useEffect(() => {
@@ -40,19 +40,27 @@ export const TerminalMovements = () => {
         customBodyRenderLite: (dataIndex, rowIndex) => {
           const rowData = movements[dataIndex]
           const approved = rowData?.approved
+          const cardLogo = getCardTypeByName(rowData?.cardType)
+          const CardLogoComponent = cardLogo?.component
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box sx={{ position: 'relative' }}>
-                <Avatar
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    color: 'text.secondary',
-                    bgcolor: 'background.neutral'
-                  }}
-                >
-                  <AccountBalance width={25} height={25} />
-                </Avatar>
+                <Tooltip title={rowData?.cardType}>
+                  <Avatar
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      color: 'text.secondary',
+                      bgcolor: 'background.neutral'
+                    }}
+                  >
+                    {cardLogo ? (
+                      <CardLogoComponent sx={{ width: 25, height: 25 }} />
+                    ) : (
+                      <AccountBalance width={25} height={25} />
+                    )}
+                  </Avatar>
+                </Tooltip>
                 <Box
                   sx={{
                     right: 0,
@@ -86,44 +94,6 @@ export const TerminalMovements = () => {
               </Box>
             </Box>
           )
-        }
-      }
-    },
-    {
-      name: 'cardType',
-      label: 'Tarjeta',
-
-      options: {
-        filterOptions: { fullWidth: true },
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          const rowData = movements[dataIndex]
-          return <Typography variant="body2">{rowData?.cardType}</Typography>
-        }
-      }
-    },
-    {
-      name: 'authNumber',
-      label: 'Autorización',
-
-      options: {
-        filterType: 'textField',
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          const rowData = movements[dataIndex]
-
-          return <Typography variant="subtitle2">{rowData?.authNumber}</Typography>
-        }
-      }
-    },
-    {
-      name: 'referenceNumber',
-      label: 'Referencia',
-
-      options: {
-        filterType: 'textField',
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          const rowData = movements[dataIndex]
-
-          return <Typography variant="subtitle2">{rowData?.referenceNumber}</Typography>
         }
       }
     },

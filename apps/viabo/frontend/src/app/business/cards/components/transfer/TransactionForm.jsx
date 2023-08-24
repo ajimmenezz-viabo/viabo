@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { Add, Delete, Send } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
@@ -25,18 +27,17 @@ export function TransactionForm({
 }) {
   const arrayHelpersRef = useRef(null)
 
+  const crypto = window.crypto || window.msCrypto
+
+  const array = new Uint32Array(1)
+
+  const random = crypto.getRandomValues(array)[0]
+
   const [cardsToSelect, setCardsToSelect] = useState(cards)
 
   const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
 
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
-
-  useEffect(() => {
-    if (selectedCards && isBinCard) {
-      const filterCards = selectedCards?.map(card => ({ ...card, isDisabled: true }))
-      setCardsToSelect(filterCards)
-    }
-  }, [selectedCards, isBinCard])
 
   const RegisterSchema = Yup.object().shape({
     transactions: Yup.array().of(
@@ -46,6 +47,7 @@ export function TransactionForm({
       })
     )
   })
+
   const formik = useFormik({
     initialValues: {
       transactions: (selectedCards?.length > 0 &&
@@ -57,7 +59,7 @@ export function TransactionForm({
           concept: ''
         }))) || [
         {
-          id: 1 || '',
+          id: random,
           card: null,
           amount: '',
           concept: ''
@@ -89,6 +91,29 @@ export function TransactionForm({
 
   const loading = isSubmitting || isSending
 
+  useEffect(() => {
+    if (selectedCards && isBinCard) {
+      const filterCards = selectedCards?.map(card => ({ ...card, isDisabled: true }))
+      setCardsToSelect(filterCards)
+    }
+  }, [selectedCards, isBinCard])
+
+  useEffect(() => {
+    const totalAmount = values.transactions?.reduce((accumulator, currentObject) => {
+      const amountValue = currentObject.amount.trim() !== '' ? parseFloat(currentObject.amount.replace(/,/g, '')) : 0
+
+      if (!isNaN(amountValue)) {
+        return accumulator + amountValue
+      } else {
+        return accumulator
+      }
+    }, 0)
+
+    const currentBalance = totalAmount.toFixed(2)
+
+    setCurrentBalance(currentBalance)
+  }, [values.transactions])
+
   return (
     <>
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
@@ -108,7 +133,7 @@ export function TransactionForm({
                   disabled={loading}
                   onClick={() =>
                     arrayHelpersRef.current.push({
-                      id: Math.random(),
+                      id: random,
                       card: null,
                       amount: '',
                       concept: ''
@@ -202,11 +227,6 @@ export function TransactionForm({
                                   scale: 2,
                                   value: item.amount,
                                   onAccept: value => {
-                                    setCurrentBalance(
-                                      (
-                                        parseFloat(balance) - parseFloat(value === '' ? '0' : value.replace(/,/g, ''))
-                                      ).toFixed(2)
-                                    )
                                     setFieldValue(amount, value)
                                   }
                                 }
@@ -247,6 +267,7 @@ export function TransactionForm({
                 variant="contained"
                 color="primary"
                 loading={loading}
+                disabled={insufficient}
                 fullWidth
                 type="submit"
                 startIcon={<Send />}
@@ -259,4 +280,15 @@ export function TransactionForm({
       </Scrollbar>
     </>
   )
+}
+
+TransactionForm.propTypes = {
+  balance: PropTypes.any,
+  cardOriginId: PropTypes.any,
+  cards: PropTypes.any,
+  insufficient: PropTypes.any,
+  isBinCard: PropTypes.any,
+  setCurrentBalance: PropTypes.func,
+  setOpen: PropTypes.func,
+  setTransactionLoading: PropTypes.func
 }

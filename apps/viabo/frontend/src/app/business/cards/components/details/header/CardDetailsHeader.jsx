@@ -117,7 +117,7 @@ export function CardDetailsHeader({ card }) {
               />
             )}
           </Stack>
-          <Stack direction={'row'} spacing={2} alignItems={'center'}>
+          <Stack direction={'row'} spacing={1} alignItems={'center'}>
             <Typography variant="h3">{card?.balanceFormatted}</Typography>
             <Typography variant="caption">MXN</Typography>
           </Stack>

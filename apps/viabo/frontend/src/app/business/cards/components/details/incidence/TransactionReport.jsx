@@ -13,10 +13,11 @@ import { Scrollbar } from '@/shared/components/scroll'
 
 function TransactionReport({ open, setOpen, selectedMovement }) {
   const isIncome = selectedMovement?.type === 'ingreso'
-  const [openEvidences, setOpenEvidences] = useState(true)
+  const [openEvidences, setOpenEvidences] = useState(false)
 
   const handleClose = () => {
     setOpen(false)
+    setOpenEvidences(false)
   }
 
   const formik = useFormik({

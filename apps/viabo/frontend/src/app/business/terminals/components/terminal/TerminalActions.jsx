@@ -16,7 +16,7 @@ export const TerminalActions = () => {
 
   return (
     <>
-      <Box sx={{ mb: 2 }}>
+      <Box>
         <Scrollbar>
           <Stack
             direction="row"
@@ -48,8 +48,8 @@ export const TerminalActions = () => {
           </Stack>
         </Scrollbar>
       </Box>
-      {openPaymentLink && <PaymentLinkModal open={openPaymentLink} setOpen={setOpenPaymentLink} />}
-      {openVirtualTerminal && <VirtualTerminalModal open={openVirtualTerminal} setOpen={setOpenVirtualTerminal} />}
+      <PaymentLinkModal open={openPaymentLink} setOpen={setOpenPaymentLink} />
+      <VirtualTerminalModal open={openVirtualTerminal} setOpen={setOpenVirtualTerminal} />
     </>
   )
 }

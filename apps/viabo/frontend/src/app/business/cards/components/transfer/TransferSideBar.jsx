@@ -1,37 +1,33 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { Avatar, Chip, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { stringAvatar } from '@theme/utils'
+import PropTypes from 'prop-types'
+
+import { Box, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { TransactionForm } from '@/app/business/cards/components/transfer/TransactionForm'
 import { TransferToGlobalForm } from '@/app/business/cards/components/transfer/TransferToGlobalForm'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { RightPanel } from '@/app/shared/components'
-import { useGetQueryData } from '@/shared/hooks'
+import { Label } from '@/shared/components/form'
+import { useGetQueryData, useUser } from '@/shared/hooks'
 import { fCurrency } from '@/shared/utils'
 
 export default function TransferSideBar({ open, setOpen, isFundingCard }) {
+  const user = useUser()
   const card = useCommerceDetailsCard(state => state.card)
   const mainCard = useCommerceDetailsCard(state => state.mainCard)
   const cardList = useGetQueryData([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST]) || []
-  const [currentBalance, setCurrentBalance] = useState(isFundingCard ? mainCard?.balance : card?.balance)
+  const [currentBalance, setCurrentBalance] = useState(0)
+  const balance = useMemo(() => (isFundingCard ? mainCard?.balance : card?.balance), [mainCard?.balance, card?.balance])
   const [view, setView] = useState('1')
   const [transactionLoading, setTransactionLoading] = useState(false)
 
-  const insufficient = useMemo(() => Boolean(currentBalance < 0), [currentBalance])
-
-  useEffect(() => {
-    if (!isFundingCard) {
-      setCurrentBalance(card?.balance)
-    }
-  }, [card?.balance, isFundingCard])
-
-  useEffect(() => {
-    if (isFundingCard) {
-      setCurrentBalance(mainCard?.balance)
-    }
-  }, [mainCard?.balance, isFundingCard])
+  const insufficient = useMemo(
+    () => Boolean((parseFloat(balance) - currentBalance).toFixed(2) < 0),
+    [currentBalance, balance]
+  )
+  const isLegalRepresentative = useMemo(() => user?.profile?.toLowerCase() === 'representante legal', [user])
 
   const filterCards = useMemo(
     () => cardList?.filter(commerceCard => commerceCard.id !== card?.id),
@@ -39,7 +35,7 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   )
 
   const handleClose = () => {
-    setCurrentBalance(isFundingCard ? mainCard?.balance : card?.balance)
+    setCurrentBalance(0)
     setOpen(false)
   }
 
@@ -49,6 +45,10 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
     }
   }
 
+  useEffect(() => {
+    setCurrentBalance(0)
+  }, [view])
+
   return (
     <RightPanel
       open={open}
@@ -57,17 +57,17 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
         isFundingCard ? (
           <Typography variant="h6">Fondear</Typography>
         ) : (
-          <Stack>
-            <Stack spacing={1} alignItems={'center'} direction={'row'}>
+          <Box>
+            <Stack spacing={1} alignItems={'center'} direction={'row'} mb={0.5}>
               <Typography variant="subtitle2">Origen: </Typography>
               <Typography variant="subtitle2">{card?.cardNumberMoreDigits} </Typography>
             </Stack>
-            <Chip avatar={<Avatar {...stringAvatar(card?.assignUser?.name ?? '')} />} label={card?.assignUser?.name} />
-          </Stack>
+            <Label color={'info'}>{card?.assignUser?.name}</Label>
+          </Box>
         )
       }
     >
-      {!isFundingCard && (
+      {!isFundingCard && isLegalRepresentative && (
         <Stack alignItems={'flex-end'} sx={{ py: 1, px: 3 }}>
           <ToggleButtonGroup
             size={'small'}
@@ -90,23 +90,32 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
         justifyContent={'space-between'}
         spacing={0}
         px={3}
-        py={isFundingCard ? 3 : 1}
+        pt={isFundingCard ? 2 : 1}
       >
         <Typography variant="subtitle1">Saldo</Typography>
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <Typography variant="h3" color={insufficient ? 'error' : 'success.main'}>
-            {fCurrency(currentBalance)}
+        <Stack direction={'row'} spacing={1} alignItems={'center'}>
+          <Typography variant="h3" color={'success.main'}>
+            {fCurrency(balance)}
           </Typography>
-          <Typography variant="caption" color={insufficient ? 'error' : 'success.main'}>
+          <Typography variant="caption" color={'success.main'}>
+            MXN
+          </Typography>
+        </Stack>
+        <Stack direction={'row'} spacing={1} alignItems={'center'}>
+          <Typography variant="subtitle1" color={'error'}>
+            - {fCurrency(currentBalance)}
+          </Typography>
+          <Typography variant="caption" color={'error'}>
             MXN
           </Typography>
         </Stack>
         {insufficient && (
           <Typography variant="caption" color={'warning.main'} textAlign={'center'}>
-            No cuenta con suficiente saldo para realizar la(s) operacion(es)
+            Saldo insuficiente para realizar la(s) operacion(es)
           </Typography>
         )}
       </Stack>
+
       {isFundingCard && (
         <TransactionForm
           cards={isFundingCard ? cardList : filterCards}
@@ -119,12 +128,13 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
           setTransactionLoading={setTransactionLoading}
         />
       )}
-      {!isFundingCard && (
+
+      {!isFundingCard && isLegalRepresentative && (
         <>
           {view === '1' && (
             <TransactionForm
               cards={isFundingCard ? cardList : filterCards}
-              balance={isFundingCard ? mainCard?.balance : card?.balance}
+              balance={currentBalance}
               setCurrentBalance={setCurrentBalance}
               insufficient={insufficient}
               cardOriginId={isFundingCard ? mainCard?.id : card?.id}
@@ -146,6 +156,24 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
           )}
         </>
       )}
+      {!isFundingCard && !isLegalRepresentative && (
+        <TransactionForm
+          cards={isFundingCard ? cardList : filterCards}
+          balance={currentBalance}
+          setCurrentBalance={setCurrentBalance}
+          insufficient={insufficient}
+          cardOriginId={isFundingCard ? mainCard?.id : card?.id}
+          setOpen={setOpen}
+          isBinCard={isFundingCard}
+          setTransactionLoading={setTransactionLoading}
+        />
+      )}
     </RightPanel>
   )
+}
+
+TransferSideBar.propTypes = {
+  isFundingCard: PropTypes.bool,
+  open: PropTypes.bool,
+  setOpen: PropTypes.func
 }

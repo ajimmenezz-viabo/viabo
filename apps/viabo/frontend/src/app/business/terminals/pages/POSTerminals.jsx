@@ -17,14 +17,13 @@ const POSTerminals = () => (
             name={'Terminales Punto de Venta'}
             links={[
               { name: 'Inicio', href: PATH_DASHBOARD.root },
-              { name: 'Administracion', href: BUSINESS_PATHS.terminals },
+              { name: 'Administración', href: BUSINESS_PATHS.terminals },
               { name: BUSINESS_ROUTES_NAMES.terminals.name }
             ]}
           />
         </Box>
 
-        <Box display={'flex'} overflow={'hidden'} sx={{ flex: '1 1 0%' }}>
-          <Box display={'block'} width={1} position={'absolute'}></Box>
+        <Box display={'flex'} overflow={'hidden'} flex={1}>
           <TerminalsDrawer />
           <TerminalDetails />
         </Box>

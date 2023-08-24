@@ -21,7 +21,7 @@ export function CardActions() {
 
   return (
     <>
-      <Box sx={{ mb: 2 }}>
+      <Box>
         <Scrollbar>
           <Stack
             direction="row"
@@ -53,8 +53,8 @@ export function CardActions() {
           </Stack>
         </Scrollbar>
       </Box>
-      {openTransfer && <TransferSideBar setOpen={setOpenTransfer} open={openTransfer} />}
-      {openPayment && <PaymentSidebar setOpen={setOpenPayment} open={openPayment} />}
+      <TransferSideBar setOpen={setOpenTransfer} open={openTransfer} />
+      <PaymentSidebar setOpen={setOpenPayment} open={openPayment} />
     </>
   )
 }

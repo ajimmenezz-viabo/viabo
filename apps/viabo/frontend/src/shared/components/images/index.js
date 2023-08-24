@@ -1,3 +1,4 @@
+export * from './AmexLogo'
 export * from './CarnetLogo'
 export * from './Image'
 export * from './Logo'

@@ -1,4 +1,4 @@
-import { Alert, Stack } from '@mui/material'
+import { Alert, Box, Stack } from '@mui/material'
 
 import { TerminalActions } from './terminal/TerminalActions'
 import { TerminalMovements } from './terminal/TerminalMovements'
@@ -6,7 +6,6 @@ import { TerminalMovements } from './terminal/TerminalMovements'
 import { useTerminalDetails } from '../store'
 
 import { SelectDataIllustration } from '@/shared/components/illustrations'
-import { Scrollbar } from '@/shared/components/scroll'
 
 export const TerminalDetails = () => {
   const terminal = useTerminalDetails(state => state.terminal)
@@ -21,12 +20,13 @@ export const TerminalDetails = () => {
       })}
     >
       {terminal && (
-        <Scrollbar>
+        <Box sx={{ overflowY: 'auto' }}>
           {terminal?.isVirtual && <TerminalActions />}
+
           <Stack pt={0} pb={4} px={2}>
             <TerminalMovements />
           </Stack>
-        </Scrollbar>
+        </Box>
       )}
 
       {!terminal && (

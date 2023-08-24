@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { CreditCard, Send } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Chip, Stack } from '@mui/material'
@@ -90,9 +92,7 @@ export function TransferToGlobalForm({
                   scale: 2,
                   value: values.amount,
                   onAccept: value => {
-                    setCurrentBalance(
-                      (parseFloat(balance) - parseFloat(value === '' ? '0' : value.replace(/,/g, ''))).toFixed(2)
-                    )
+                    setCurrentBalance(parseFloat(value === '' ? '0' : value.replace(/,/g, '')).toFixed(2))
                     setFieldValue('amount', value)
                   }
                 }
@@ -126,4 +126,18 @@ export function TransferToGlobalForm({
       </FormProvider>
     </Scrollbar>
   )
+}
+
+TransferToGlobalForm.propTypes = {
+  balance: PropTypes.any,
+  cardOriginId: PropTypes.any,
+  insufficient: PropTypes.any,
+  mainCard: PropTypes.shape({
+    cardNumberHidden: PropTypes.any,
+    id: PropTypes.any,
+    label: PropTypes.any
+  }),
+  setCurrentBalance: PropTypes.func,
+  setOpen: PropTypes.func,
+  setTransactionLoading: PropTypes.func
 }

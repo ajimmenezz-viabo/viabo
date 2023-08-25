@@ -24,4 +24,9 @@ final class CommercePayTransactionFilterTag extends StringValueObject
 
         return $cardBrand;
     }
+
+    public function isApproved(bool $value): string
+    {
+        return $value ? 'APROBADO': 'RECHAZADO';
+    }
 }

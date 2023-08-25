@@ -26,12 +26,9 @@ final readonly class FinderCommerceTransactions
         ?string $pageSize
     ):CommerceTransactionsResponse
     {
-
         $terminals = $this->extractTerminalData($terminalsData);
 
-
         $response = $this->getMovements($fromDate, $toDate, $apiKey,$terminalId,$page, $pageSize, $terminals);
-
 
         return new CommerceTransactionsResponse($response);
     }
@@ -61,7 +58,10 @@ final readonly class FinderCommerceTransactions
     ): array
     {
         $filtered = [];
-
+        $movements = [];
+        $tags = [];
+        $total = 0;
+        $amount = 0;
         foreach ($terminals as $terminalId=>$value) {
             $queryParams = $this->createQueryParams(
                 $fromDate,
@@ -72,17 +72,23 @@ final readonly class FinderCommerceTransactions
             );
 
             $data = $this->adapter->searchTerminalTransactions($queryParams, $apiKey);
-            if (!empty($data['items'])){
-                $filtered += $this->filteredData($data,$terminals);
+            if(!empty($data['items'])){
+                $filtered = [$this->filteredData($data['items'],$terminals)];
+                $movements[] = $filtered[0]['items'];
+                $total += count($filtered[0]['items']);
+                $amount += intval($this->globalAmount->total());
+                $tags[] = [$filtered[0]['tags']];
             }
-
         }
-        $movements = array_values($filtered['items']);
-        $total = empty($movements) ? "" : count($movements);
+
+        $tagsCompressed = $this->compressedTags($tags);
+
+        $mergeMovements = $this->mergeMovements($movements);
+
         return  [
-            "movements" => $movements,
-            "tags" => $filtered['tags'],
-            "balance" => ['amount'=>$this->globalAmount->total(),'month' => $this->getMonthBalance($fromDate)],
+            "movements" => $mergeMovements,
+            "tags" => $tagsCompressed,
+            "balance" => ['amount'=> number_format($amount,2),'month' => $this->getMonthBalance($fromDate)],
             "pager" => ["total" => $total]
         ];
 
@@ -109,7 +115,7 @@ final readonly class FinderCommerceTransactions
 
         $data = $this->adapter->searchTerminalTransactions($queryParams, $apiKey);
 
-        $response = $this->filteredData($data,$terminals);
+        $response = $this->filteredData($data['items'],$terminals);
 
 
         return [
@@ -147,8 +153,7 @@ final readonly class FinderCommerceTransactions
         $filteredData = [];
         $tags = [];
 
-
-        foreach ($response["items"] as $item) {
+        foreach ($response as $item) {
 
             if ($item["approved"]) {
                 $this->globalAmount->sum(floatval($item["amount"]));
@@ -174,7 +179,6 @@ final readonly class FinderCommerceTransactions
 
         $cardBrand = empty($tags) ? [] : Utils::removeDuplicateElements($tags['card_brand']);
         $approved = empty($tags) ? [] : Utils::removeDuplicateElements($tags['approved']);
-
         return [
             'items' => array_filter($filteredData),
             'tags' => ['card_brand' => $cardBrand,'approved'=>$approved],
@@ -212,6 +216,36 @@ final readonly class FinderCommerceTransactions
             '12' => 'DICIEMBRE',
         ];
         return $meses[$month];
+    }
+
+    private function compressedTags(array $tags): array
+    {
+        $compressedTags = [];
+
+        foreach ($tags as $group) {
+            foreach ($group[0] as $category => $values) {
+                if (!isset($compressedTags[$category])) {
+                    $compressedTags[$category] = $values;
+                } else {
+                    $compressedTags[$category] = array_unique(array_merge($compressedTags[$category], $values));
+                }
+            }
+        }
+        $compressedArray = [];
+        foreach ($compressedTags as $category => $values) {
+            $compressedArray[] = [$category => array_values($values)];
+        }
+        return $compressedArray;
+    }
+
+    private function mergeMovements(array $movements): array
+    {
+        $mergedArray = [];
+
+        foreach ($movements as $sourceArray) {
+            $mergedArray = array_merge($mergedArray, $sourceArray);
+        }
+        return $mergedArray;
     }
 
 }

@@ -20,7 +20,7 @@ const TerminalDetailsStore = (set, get) => ({
   resetTerminal: () => {
     set(
       state => ({
-        pos: null
+        terminal: null
       }),
       false,
       'RESET_TERMINAL_SELECTED'

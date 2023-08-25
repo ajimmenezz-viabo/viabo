@@ -13,11 +13,11 @@ export const PRIMARY = {
   darker: '#361778'
 }
 const SECONDARY = {
-  lighter: '#eaff99',
-  light: '#d4ff33',
-  main: '#caff00',
-  dark: '#c1f400',
-  darker: '#8db200'
+  lighter: '#dcff99',
+  light: '#c1fc42',
+  main: '#B9FF00',
+  dark: '#b1eb00',
+  darker: '#96bc00'
 }
 const INFO = {
   lighter: '#D0F2FF',

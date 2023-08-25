@@ -19,6 +19,6 @@ const CARD_TYPES = [
   }
 ]
 
-const getCardTypeByName = name => CARD_TYPES.find(card => card?.name === name.toUpperCase().trim())
+const getCardTypeByName = name => CARD_TYPES.find(card => card?.name === name?.toUpperCase().trim())
 
 export { getCardTypeByName }

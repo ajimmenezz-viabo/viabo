@@ -21,10 +21,16 @@ export const TerminalActions = () => {
           <Stack
             direction="row"
             divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-            sx={{ py: 3 }}
+            sx={{ pb: 3 }}
             spacing={1}
           >
-            <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 150 }}>
+            <Stack
+              direction="row"
+              flexWrap={'nowrap'}
+              alignItems="center"
+              justifyContent="center"
+              sx={{ width: 1, minWidth: 150 }}
+            >
               <LoadingButton
                 startIcon={<Link />}
                 variant={'contained'}
@@ -35,11 +41,18 @@ export const TerminalActions = () => {
               </LoadingButton>
             </Stack>
 
-            <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 150 }}>
+            <Stack
+              direction="row"
+              flexWrap={'nowrap'}
+              alignItems="center"
+              justifyContent="center"
+              sx={{ width: 1, minWidth: 150 }}
+            >
               <LoadingButton
                 startIcon={<Apps />}
                 color={'info'}
                 variant={'contained'}
+                sx={{ textWrap: 'nowrap' }}
                 onClick={() => setOpenVirtualTerminal(true)}
               >
                 Terminal Virtual

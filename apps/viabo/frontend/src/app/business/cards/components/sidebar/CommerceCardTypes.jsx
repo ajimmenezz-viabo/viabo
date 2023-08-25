@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { Box } from '@mui/material'
 import { getAvatarColor } from '@theme/utils'
 import { motion } from 'framer-motion'
@@ -21,6 +23,7 @@ export function CommerceCardTypes({ cardTypes, isLoading, isError, refetch }) {
         <ErrorRequestPage errorMessage={'No existen tipos de tarjetas para este comercio'} handleButton={refetch} />
       )}
       {!isLoading &&
+        !isError &&
         cardTypes?.map(cardType => {
           const selected = cardTypeSelected === cardType?.id
           return (
@@ -49,4 +52,11 @@ export function CommerceCardTypes({ cardTypes, isLoading, isError, refetch }) {
         })}
     </Box>
   )
+}
+
+CommerceCardTypes.propTypes = {
+  cardTypes: PropTypes.array,
+  isError: PropTypes.any,
+  isLoading: PropTypes.any,
+  refetch: PropTypes.any
 }

@@ -3,7 +3,8 @@ import { createStore } from '@/app/shared/store'
 const initialState = {
   terminals: [],
   isOpenList: false,
-  isCollapse: false
+  isCollapse: false,
+  balance: { amount: '$0.00', month: null }
 }
 
 const TerminalsStore = (set, get) => ({
@@ -14,7 +15,7 @@ const TerminalsStore = (set, get) => ({
         terminals
       }),
       false,
-      'SET_TERMINAL'
+      'SET_TERMINALS'
     )
   },
   setOpenList: open => {
@@ -33,6 +34,24 @@ const TerminalsStore = (set, get) => ({
       }),
       false,
       'SET_COLLAPSE'
+    )
+  },
+  setBalance: balance => {
+    set(
+      state => ({
+        balance
+      }),
+      false,
+      'SET_BALANCE'
+    )
+  },
+  resetBalance: () => {
+    set(
+      state => ({
+        balance: initialState.balance
+      }),
+      false,
+      'RESET_BALANCE'
     )
   }
 })

@@ -4,6 +4,7 @@ import { useTheme } from '@emotion/react'
 import { ContactlessSharp } from '@mui/icons-material'
 import { Drawer, Stack } from '@mui/material'
 
+import { TerminalBalance } from './terminal-balance/TerminalBalance'
 import { TerminalsList } from './terminals/TerminalsList'
 import { TerminalsSearch } from './terminals/TerminalsSearch'
 
@@ -51,16 +52,22 @@ export const TerminalsDrawer = () => {
   }, [isCollapse])
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 0.98
-      }}
-    >
-      <Stack px={openSidebar ? 1 : 0}>
+    <>
+      {openSidebar && <TerminalBalance />}
+
+      <Stack>
         <TerminalsSearch commerceTerminals={terminalsQuery?.data || []} />
-        <TerminalsList terminalsQuery={terminalsQuery} />
       </Stack>
-    </Scrollbar>
+      <Scrollbar
+        sx={{
+          height: 0.98
+        }}
+      >
+        <Stack>
+          <TerminalsList terminalsQuery={terminalsQuery} />
+        </Stack>
+      </Scrollbar>
+    </>
   )
 
   return (

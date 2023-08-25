@@ -29,7 +29,8 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/build-[hash].js'
       }
-    }
+    },
+    cssMinify: true
   },
   define: {
     'process.env': loadEnv()

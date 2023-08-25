@@ -3,30 +3,45 @@ import { es } from 'date-fns/locale'
 
 import { fCurrency, normalizeDateString } from '@/shared/utils'
 
-export const TerminalMovementsAdapter = data =>
-  data?.movements?.map(movement => {
-    const amount = parseFloat(movement?.amount || '0')
-    const date = movement?.transaction_date
-      ? format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy', { locale: es })
-      : ''
-    const time = movement?.transaction_date ? format(normalizeDateString(movement?.transaction_date), 'p') : ''
+export const TerminalMovementsAdapter = data => {
+  const movements =
+    data?.movements?.map(movement => {
+      const amount = parseFloat(movement?.amount || '0')
+      const date = movement?.transaction_date
+        ? format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy', { locale: es })
+        : ''
+      const time = movement?.transaction_date ? format(normalizeDateString(movement?.transaction_date), 'p') : ''
 
-    return {
-      id: movement?.id,
-      amount,
-      amountFormat: fCurrency(amount),
-      approved: movement?.approved,
-      cardType: movement?.card_brand,
-      cardNumber: movement?.card_number,
-      cardBank: movement?.issuer,
-      transactionDate: {
-        fullDate: format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy HH:mm', { locale: es }),
-        date,
-        time
-      },
-      description: `${movement?.issuer === '' ? movement?.card_brand : movement?.issuer}-${
-        movement?.card_number
-      }`.toUpperCase(),
-      transactionMessage: movement?.result_message
-    }
-  }) ?? []
+      return {
+        id: movement?.id,
+        terminalName: movement?.terminal_name,
+        amount,
+        amountFormat: fCurrency(amount),
+        approved: movement?.approved,
+        cardType: movement?.card_brand,
+        cardNumber: movement?.card_number,
+        cardBank: movement?.issuer,
+        transactionDate: {
+          fullDate: format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy HH:mm', { locale: es }),
+          date,
+          time
+        },
+        description: `${movement?.issuer === '' ? movement?.card_brand : movement?.issuer}-${
+          movement?.card_number
+        }`.toUpperCase(),
+        transactionMessage: movement?.result_message
+      }
+    }) ?? []
+
+  const balance = {
+    amount: fCurrency(data?.balance?.amount),
+    month: data?.balance?.month?.toLowerCase()
+  }
+  const tags = data?.tags
+
+  return {
+    movements,
+    balance,
+    tags
+  }
+}

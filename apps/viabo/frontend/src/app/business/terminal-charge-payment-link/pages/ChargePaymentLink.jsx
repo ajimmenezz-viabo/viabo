@@ -8,6 +8,8 @@ import { Page } from '@/shared/components/containers'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 
 const ChargePaymentLink = () => {
+  const origin = typeof window === 'undefined' ? '' : window.location.origin
+
   const { paymentId } = useParams()
 
   const { data, isLoading } = useFindPaymentLinkInfo(paymentId, {
@@ -15,7 +17,21 @@ const ChargePaymentLink = () => {
   })
 
   return (
-    <Page title="Cobro">
+    <Page
+      title="Cobro"
+      meta={
+        <>
+          <meta name="description" content={`Liga de Pago para el servicio Viabo Pay`} />
+          <meta name="keywords" content={`viabo pay, liga de pago, pago en linea,servició de pago,paypal,viabo card`} />
+          <meta property="og:title" content={`Liga de Pago Generada de Viabo Pay de un monto de : ${data?.amount}`} />
+          <meta
+            property="og:description"
+            content={`Esta es la página sobre  el cobro mediante una liga de pago generada para el servició viabo pay`}
+          />
+          <meta property="og:image" content={`/landingPage/img/instagram-3.jpg`} />
+        </>
+      }
+    >
       <Box component={'main'} height={1} m={0} p={0}>
         <Stack p={4} alignItems={'center'} justifyContent={'center'} minHeight={'100vH'}>
           {isLoading && <RequestLoadingComponent />}

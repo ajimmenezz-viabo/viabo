@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\commercePayCredentials\application\find\CommercePayCredentialsQuery;
-use Viabo\management\commerceTerminal\application\find\CommerceTerminalMerchantIdQuery;
-use Viabo\management\commerceTransaction\application\find\CommerceTransactionsTerminalQuery;
+use Viabo\management\commerceTerminal\application\find\FindTerminalsQuery;
+use Viabo\management\commerceTransaction\application\find\CommerceTransactionsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommerceTransactionsFinderController extends ApiController
@@ -28,14 +28,14 @@ final readonly class CommerceTransactionsFinderController extends ApiController
 
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
 
-            $terminalData = $this->ask(new CommerceTerminalMerchantIdQuery($terminalId));
+            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id']));
 
-            $transactions = $this->ask(new CommerceTransactionsTerminalQuery(
+            $transactions = $this->ask(new CommerceTransactionsQuery(
                 $fromDate,
                 $toDate,
-                $terminalData->data['merchantId'],
-                $terminalId,
                 $commercePayCredential->data['apiKey'],
+                $terminalId,
+                $terminalsData->data,
                 $page,
                 $pageSize
             ));

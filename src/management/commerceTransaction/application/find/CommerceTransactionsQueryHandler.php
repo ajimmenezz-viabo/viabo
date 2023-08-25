@@ -21,6 +21,7 @@ final readonly class CommerceTransactionsQueryHandler implements QueryHandler
             $fromDate->format($query->fromDate),
             $toDate->format($query->toDate),
             $query->apiKey,
+            $query->terminalId,
             $query->terminalsData,
             $query->page,
             $query->pageSize

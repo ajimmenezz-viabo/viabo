@@ -4,7 +4,7 @@ namespace Viabo\management\commerceTransaction\application\find;
 
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class CommerceTransactionsTerminalResponse implements Response
+final readonly class CommerceTransactionsResponse implements Response
 {
     public function __construct(public array $data)
     {

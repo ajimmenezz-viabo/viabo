@@ -10,6 +10,7 @@ final readonly class CommerceTransactionsQuery implements Query
         public string  $fromDate,
         public string  $toDate,
         public string  $apiKey,
+        public ?string  $terminalId,
         public array   $terminalsData,
         public ?string $page,
         public ?string $pageSize

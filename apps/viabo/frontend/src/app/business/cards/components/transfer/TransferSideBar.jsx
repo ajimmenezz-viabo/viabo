@@ -3,6 +3,9 @@ import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { Box, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import { motion } from 'framer-motion'
+
+import { ResumeTransactionForm } from './ResumeTransactionForm'
 
 import { CARDS_COMMERCES_KEYS } from '@/app/business/cards/adapters'
 import { TransactionForm } from '@/app/business/cards/components/transfer/TransactionForm'
@@ -21,6 +24,8 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   const [currentBalance, setCurrentBalance] = useState(0)
   const balance = useMemo(() => (isFundingCard ? mainCard?.balance : card?.balance), [mainCard?.balance, card?.balance])
   const [view, setView] = useState('1')
+  const [showResume, setShowResume] = useState(false)
+  const [transactionData, setTransactionData] = useState(null)
   const [transactionLoading, setTransactionLoading] = useState(false)
 
   const insufficient = useMemo(
@@ -35,8 +40,11 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   )
 
   const handleClose = () => {
-    setCurrentBalance(0)
     setOpen(false)
+    setCurrentBalance(0)
+    setShowResume(false)
+    setTransactionData(null)
+    setTransactionLoading(false)
   }
 
   const handleChangeView = (event, newValue) => {
@@ -49,24 +57,43 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
     setCurrentBalance(0)
   }, [view])
 
-  return (
-    <RightPanel
-      open={open}
-      handleClose={handleClose}
-      titleElement={
-        isFundingCard ? (
-          <Typography variant="h6">Fondear</Typography>
-        ) : (
-          <Box>
-            <Stack spacing={1} alignItems={'center'} direction={'row'} mb={0.5}>
-              <Typography variant="subtitle2">Origen: </Typography>
-              <Typography variant="subtitle2">{card?.cardNumberMoreDigits} </Typography>
-            </Stack>
-            <Label color={'info'}>{card?.assignUser?.name}</Label>
-          </Box>
-        )
-      }
-    >
+  const handleSuccessForm = values => {
+    const isGlobal = view === '2'
+    let cardOriginId = isFundingCard ? mainCard?.id : card?.id
+    isGlobal && (cardOriginId = card?.id)
+
+    setTransactionData({
+      cardOriginId,
+      isGlobal,
+      transactions: isGlobal ? values : values?.transactions || [],
+      balance,
+      currentBalance
+    })
+    setShowResume(true)
+  }
+
+  const handleBackResume = () => {
+    setShowResume(false)
+  }
+
+  const titleTransaction = (
+    <>
+      {isFundingCard ? (
+        <Typography variant="h6">Fondear</Typography>
+      ) : (
+        <Box>
+          <Stack spacing={1} alignItems={'center'} direction={'row'} mb={0.5}>
+            <Typography variant="subtitle2">Origen: </Typography>
+            <Typography variant="subtitle2">{card?.cardNumberMoreDigits} </Typography>
+          </Stack>
+          <Label color={'info'}>{card?.assignUser?.name}</Label>
+        </Box>
+      )}
+    </>
+  )
+
+  const renderContentTransaction = (
+    <>
       {!isFundingCard && isLegalRepresentative && (
         <Stack alignItems={'flex-end'} sx={{ py: 1, px: 3 }}>
           <ToggleButtonGroup
@@ -119,13 +146,10 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
       {isFundingCard && (
         <TransactionForm
           cards={isFundingCard ? cardList : filterCards}
-          balance={isFundingCard ? mainCard?.balance : card?.balance}
           setCurrentBalance={setCurrentBalance}
           insufficient={insufficient}
-          cardOriginId={isFundingCard ? mainCard?.id : card?.id}
-          setOpen={setOpen}
           isBinCard={isFundingCard}
-          setTransactionLoading={setTransactionLoading}
+          onSuccess={handleSuccessForm}
         />
       )}
 
@@ -134,40 +158,69 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
           {view === '1' && (
             <TransactionForm
               cards={isFundingCard ? cardList : filterCards}
-              balance={currentBalance}
               setCurrentBalance={setCurrentBalance}
               insufficient={insufficient}
-              cardOriginId={isFundingCard ? mainCard?.id : card?.id}
-              setOpen={setOpen}
               isBinCard={isFundingCard}
-              setTransactionLoading={setTransactionLoading}
+              onSuccess={handleSuccessForm}
             />
           )}
           {view === '2' && (
             <TransferToGlobalForm
               mainCard={mainCard}
-              balance={card?.balance}
               setCurrentBalance={setCurrentBalance}
               insufficient={insufficient}
-              cardOriginId={card?.id}
-              setOpen={setOpen}
-              setTransactionLoading={setTransactionLoading}
+              onSuccess={handleSuccessForm}
             />
           )}
         </>
       )}
+
       {!isFundingCard && !isLegalRepresentative && (
         <TransactionForm
           cards={isFundingCard ? cardList : filterCards}
-          balance={currentBalance}
           setCurrentBalance={setCurrentBalance}
           insufficient={insufficient}
-          cardOriginId={isFundingCard ? mainCard?.id : card?.id}
-          setOpen={setOpen}
           isBinCard={isFundingCard}
-          setTransactionLoading={setTransactionLoading}
+          onSuccess={handleSuccessForm}
         />
       )}
+    </>
+  )
+
+  return (
+    <RightPanel open={open} handleClose={handleClose} titleElement={titleTransaction}>
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: showResume ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          display: showResume ? 'none' : 'flex',
+          flex: 1,
+          overflow: 'hidden',
+          flexDirection: 'column'
+        }}
+      >
+        {renderContentTransaction}
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showResume ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          display: showResume ? 'flex' : 'none',
+          flexDirection: 'column',
+          flex: 1,
+          overflow: 'hidden'
+        }}
+      >
+        <ResumeTransactionForm
+          data={transactionData}
+          onBack={handleBackResume}
+          setTransactionLoading={setTransactionLoading}
+          transactionLoading={transactionLoading}
+          onClose={handleClose}
+        />
+      </motion.div>
     </RightPanel>
   )
 }

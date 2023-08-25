@@ -2,29 +2,17 @@ import { useEffect, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { Add, Delete, Send } from '@mui/icons-material'
-import { LoadingButton } from '@mui/lab'
+import { Add, ArrowForwardIos, Delete } from '@mui/icons-material'
 import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
 import { stringAvatar } from '@theme/utils'
 import { FieldArray, useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
-import { useTransactionCard } from '@/app/business/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/cards/store'
 import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
-export function TransactionForm({
-  cards,
-  balance,
-  setCurrentBalance,
-  insufficient,
-  cardOriginId,
-  setOpen,
-  isBinCard,
-  setTransactionLoading
-}) {
+export function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, onSuccess }) {
   const arrayHelpersRef = useRef(null)
 
   const crypto = window.crypto || window.msCrypto
@@ -34,8 +22,6 @@ export function TransactionForm({
   const random = crypto.getRandomValues(array)[0]
 
   const [cardsToSelect, setCardsToSelect] = useState(cards)
-
-  const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
 
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
 
@@ -71,25 +57,14 @@ export function TransactionForm({
       if (insufficient) {
         return setSubmitting(false)
       }
-      const dataAdapted = CardTransactionsAdapter(cardOriginId, values)
-      setTransactionLoading(true)
-      transactionCard(dataAdapted, {
-        onSuccess: () => {
-          setSubmitting(false)
-          setOpen(false)
-          setTransactionLoading(false)
-        },
-        onError: () => {
-          setSubmitting(false)
-          setTransactionLoading(false)
-        }
-      })
+      setSubmitting(false)
+      return onSuccess(values)
     }
   })
 
   const { isSubmitting, setFieldValue, values, setSubmitting } = formik
 
-  const loading = isSubmitting || isSending
+  const loading = isSubmitting
 
   useEffect(() => {
     if (selectedCards && isBinCard) {
@@ -262,18 +237,17 @@ export function TransactionForm({
               }}
             />
             <Divider sx={{ my: 3, borderStyle: 'dashed' }} />
-            <Stack sx={{ px: 3, pt: 3 }}>
-              <LoadingButton
-                variant="contained"
+            <Stack sx={{ pt: 3 }}>
+              <Button
+                variant="outlined"
                 color="primary"
-                loading={loading}
                 disabled={insufficient}
                 fullWidth
                 type="submit"
-                startIcon={<Send />}
+                startIcon={<ArrowForwardIos />}
               >
-                Enviar
-              </LoadingButton>
+                Siguiente
+              </Button>
             </Stack>
           </Box>
         </FormProvider>
@@ -283,12 +257,9 @@ export function TransactionForm({
 }
 
 TransactionForm.propTypes = {
-  balance: PropTypes.any,
-  cardOriginId: PropTypes.any,
   cards: PropTypes.any,
   insufficient: PropTypes.any,
   isBinCard: PropTypes.any,
-  setCurrentBalance: PropTypes.func,
-  setOpen: PropTypes.func,
-  setTransactionLoading: PropTypes.func
+  onSuccess: PropTypes.func,
+  setCurrentBalance: PropTypes.func
 }

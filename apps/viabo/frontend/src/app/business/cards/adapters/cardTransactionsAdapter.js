@@ -1,7 +1,6 @@
 import { getCryptInfo } from '@/shared/utils'
 
 export const CardTransactionsAdapter = (originCardId, data, isGlobal) => {
-  const { transactions } = data
   let adaptedData
   if (isGlobal) {
     adaptedData = {
@@ -19,7 +18,7 @@ export const CardTransactionsAdapter = (originCardId, data, isGlobal) => {
   } else {
     adaptedData = {
       originCardId,
-      destinationCards: transactions?.map(transaction => ({
+      destinationCards: data?.map(transaction => ({
         cardId: transaction?.card?.value?.toString(),
         concept: transaction?.concept?.toString(),
         amount: parseFloat(

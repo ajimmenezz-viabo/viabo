@@ -29,7 +29,7 @@ export const useTransactionCard = (options = {}) => {
     } catch (error) {
       const errorFormatted = getErrorAPI(
         error,
-        `No se puede realizar esta operacion en este momento. Intente nuevamente o reporte a sistemas`
+        `No se puede realizar esta operación en este momento. Intente nuevamente o reporte a sistemas`
       )
       onError(errorFormatted)
       toast.error(errorFormatted, {

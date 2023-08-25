@@ -1,27 +1,14 @@
 import PropTypes from 'prop-types'
 
-import { CreditCard, Send } from '@mui/icons-material'
-import { LoadingButton } from '@mui/lab'
-import { Chip, Stack } from '@mui/material'
+import { ArrowForwardIos, CreditCard } from '@mui/icons-material'
+import { Button, Chip, Stack } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { CardTransactionsAdapter } from '@/app/business/cards/adapters'
-import { useTransactionCard } from '@/app/business/cards/hooks'
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
-export function TransferToGlobalForm({
-  balance,
-  setCurrentBalance,
-  insufficient,
-  cardOriginId,
-  setOpen,
-  mainCard,
-  setTransactionLoading
-}) {
-  const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
-
+export function TransferToGlobalForm({ setCurrentBalance, insufficient, mainCard, onSuccess }) {
   const RegisterSchema = Yup.object().shape({
     amount: Yup.string().required('La cantidad es requerida')
   })
@@ -37,24 +24,13 @@ export function TransferToGlobalForm({
       if (insufficient) {
         return setSubmitting(false)
       }
-      const dataAdapted = CardTransactionsAdapter(cardOriginId, values, true)
-      setTransactionLoading(true)
-      transactionCard(dataAdapted, {
-        onSuccess: () => {
-          setSubmitting(false)
-          setOpen(false)
-          setTransactionLoading(false)
-        },
-        onError: () => {
-          setSubmitting(false)
-          setTransactionLoading(false)
-        }
-      })
+      setSubmitting(false)
+      return onSuccess(values)
     }
   })
   const { isSubmitting, setFieldValue, values } = formik
 
-  const loading = isSubmitting || isSending
+  const loading = isSubmitting
 
   return (
     <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
@@ -111,16 +87,16 @@ export function TransferToGlobalForm({
           </Stack>
 
           <Stack sx={{ px: 3, pt: 3 }}>
-            <LoadingButton
-              variant="contained"
+            <Button
+              variant="outlined"
               color="primary"
-              loading={loading}
+              disabled={insufficient}
               fullWidth
               type="submit"
-              startIcon={<Send />}
+              startIcon={<ArrowForwardIos />}
             >
-              Enviar
-            </LoadingButton>
+              Siguiente
+            </Button>
           </Stack>
         </Stack>
       </FormProvider>
@@ -129,15 +105,12 @@ export function TransferToGlobalForm({
 }
 
 TransferToGlobalForm.propTypes = {
-  balance: PropTypes.any,
-  cardOriginId: PropTypes.any,
   insufficient: PropTypes.any,
   mainCard: PropTypes.shape({
     cardNumberHidden: PropTypes.any,
     id: PropTypes.any,
     label: PropTypes.any
   }),
-  setCurrentBalance: PropTypes.func,
-  setOpen: PropTypes.func,
-  setTransactionLoading: PropTypes.func
+  onSuccess: PropTypes.func,
+  setCurrentBalance: PropTypes.func
 }

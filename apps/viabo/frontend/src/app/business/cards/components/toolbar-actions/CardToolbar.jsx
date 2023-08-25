@@ -1,13 +1,13 @@
-import { lazy, useState } from 'react'
+import { useState } from 'react'
 
 import { CloseOutlined, Message, PriceChange } from '@mui/icons-material'
 import { Button, IconButton, Stack, Toolbar, Typography } from '@mui/material'
 
-import { useCommerceDetailsCard } from '@/app/business/cards/store'
-import { Lodable } from '@/shared/components/lodables'
+import MailCompose from './MailCompose'
 
-const TransferSideBar = Lodable(lazy(() => import('@/app/business/cards/components/transfer/TransferSideBar')))
-const MailCompose = Lodable(lazy(() => import('@/app/business/cards/components/toolbar-actions/MailCompose')))
+import TransferSideBar from '../transfer/TransferSideBar'
+
+import { useCommerceDetailsCard } from '@/app/business/cards/store'
 
 export function CardToolbar() {
   const [openCompose, setOpenCompose] = useState(false)

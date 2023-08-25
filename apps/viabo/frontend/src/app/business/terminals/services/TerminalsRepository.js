@@ -18,8 +18,9 @@ export const generatePaymentByVirtualTerminal = async payment => {
 }
 
 export const getTerminalMovements = async (terminalId, initialDate, finalDate) => {
-  const { data } = await axios.get(
-    `/api/commerces-pay/transactions?fromDate=${initialDate}&toDate=${finalDate}&terminalId=${terminalId}`
-  )
+  const terminal = terminalId
+    ? `?fromDate=${initialDate}&toDate=${finalDate}&terminalId=${terminalId}`
+    : `?fromDate=${initialDate}&toDate=${finalDate}`
+  const { data } = await axios.get(`/api/commerces-pay/transactions/all${terminal}`)
   return TerminalMovementsAdapter(data)
 }

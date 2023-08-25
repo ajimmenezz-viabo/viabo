@@ -15,11 +15,9 @@ export const TerminalMovements = () => {
 
   const terminal = useTerminalDetails(state => state.terminal)
 
-  const {
-    data: movements,
-    isFetching,
-    refetch
-  } = useFindTerminalMovements(terminal?.terminalId, currentMonth, { enabled: !!terminal?.terminalId })
+  const { data, isFetching, refetch } = useFindTerminalMovements(terminal?.terminalId, currentMonth, { enabled: false })
+
+  const movements = data?.movements
 
   useEffect(() => {
     refetch()
@@ -27,7 +25,7 @@ export const TerminalMovements = () => {
 
   useEffect(() => {
     setCurrentMonth(new Date())
-  }, [terminal?.id])
+  }, [terminal])
 
   const columns = [
     {
@@ -97,6 +95,27 @@ export const TerminalMovements = () => {
         }
       }
     },
+    ...(terminal
+      ? []
+      : [
+          {
+            name: 'terminalName',
+            label: 'Terminal',
+
+            options: {
+              filterOptions: { fullWidth: true },
+              customBodyRenderLite: (dataIndex, rowIndex) => {
+                const rowData = movements[dataIndex]
+
+                return (
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    {rowData?.terminalName}
+                  </Typography>
+                )
+              }
+            }
+          }
+        ]),
     {
       name: 'transactionDate.fullDate',
       label: 'Fecha',
@@ -142,7 +161,7 @@ export const TerminalMovements = () => {
       <CardFilterMovements currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} isLoading={isFetching} />
       <Divider sx={{ borderStyle: 'dashed' }} />
       <DataTable
-        title={'Movimientos'}
+        title={`${terminal ? terminal?.name : 'Global'}`}
         data={movements || []}
         columns={columns}
         isLoading={isFetching}
@@ -152,6 +171,7 @@ export const TerminalMovements = () => {
           selectableRows: 'none',
           selectableRowsOnClick: false,
           selectToolbarPlacement: 'replace',
+          rowsPerPage: 100,
           sortOrder: {
             name: 'date',
             direction: 'desc'

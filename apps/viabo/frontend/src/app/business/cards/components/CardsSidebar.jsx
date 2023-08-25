@@ -127,12 +127,8 @@ export function CardsSidebar() {
   }
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 0.98
-      }}
-    >
-      <Stack px={openSidebar ? 1 : 0}>
+    <>
+      <Stack>
         {openSidebar && (
           <CommerceCardTypes
             cardTypes={cardTypes}
@@ -144,76 +140,85 @@ export function CardsSidebar() {
         {!cardTypeSelected && openSidebar && !isLoadingCardTypes && (
           <EmptyList pt={2.5} message={'Seleccione un tipo de tarjeta para obtener la lista de tarjetas'} />
         )}
-
-        {cardTypeSelected && !isLoadingCardTypes && (
-          <>
-            <GlobalCard openSidebar={openSidebar} />
-            <Box sx={{ p: 2, px: 0 }}>
-              <Stack
-                direction="row"
-                justifyContent={openSidebar ? 'flex-end' : 'center'}
-                alignItems={'center'}
-                spacing={2}
-              >
-                {!isCollapse && (
-                  <ClickAwayListener onClickAway={handleClickAwaySearch}>
-                    <InputStyle
-                      fullWidth
-                      size="small"
-                      value={searchQuery}
-                      onFocus={handleSearchFocus}
-                      onChange={handleChangeSearch}
-                      placeholder="Buscar Tarjetas..."
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Search sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </ClickAwayListener>
-                )}
-                <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
-                  <SidebarButtonStyle
-                    size={'small'}
-                    sx={{
-                      ...(!openSidebar && {
-                        transform: 'rotate(180deg)'
-                      })
-                    }}
-                    onClick={handleToggleSidebar}
-                  >
-                    {arrowIcon}
-                  </SidebarButtonStyle>
-                </Stack>
-              </Stack>
-            </Box>
-
-            {isError && openSidebar && !commerceCards && !loadingCommerces && (
-              <ErrorRequestPage errorMessage={error} handleButton={refetch} />
-            )}
-
-            {commerceCards && openSidebar && commerceCards?.length === 0 && !loadingCommerces && (
-              <EmptyList pt={2.5} message={'No hay tarjetas activas en este tipo de tarjeta'} />
-            )}
-
-            <CardList
-              isOpenSidebar={openSidebar}
-              cards={searchResults || []}
-              isLoading={loadingCommerces}
-              onOpenDetails={handleCloseSidebar}
-            />
-            {displayResults && searchResults?.length === 0 && commerceCards?.length > 0 && (
-              <SearchNotFound
-                sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-                searchQuery={searchQuery}
-              />
-            )}
-          </>
-        )}
       </Stack>
-    </Scrollbar>
+
+      {cardTypeSelected && !isLoadingCardTypes && !isErrorCardTypes && (
+        <>
+          <GlobalCard openSidebar={openSidebar} />
+
+          <Box sx={{ p: 2, px: 0 }}>
+            <Stack
+              direction="row"
+              justifyContent={openSidebar ? 'flex-end' : 'center'}
+              alignItems={'center'}
+              spacing={2}
+            >
+              {!isCollapse && (
+                <ClickAwayListener onClickAway={handleClickAwaySearch}>
+                  <InputStyle
+                    fullWidth
+                    size="small"
+                    value={searchQuery}
+                    onFocus={handleSearchFocus}
+                    onChange={handleChangeSearch}
+                    placeholder="Buscar Tarjetas..."
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Search sx={{ color: 'text.disabled', width: 20, height: 20 }} />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </ClickAwayListener>
+              )}
+              <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
+                <SidebarButtonStyle
+                  size={'small'}
+                  sx={{
+                    ...(!openSidebar && {
+                      transform: 'rotate(180deg)'
+                    })
+                  }}
+                  onClick={handleToggleSidebar}
+                >
+                  {arrowIcon}
+                </SidebarButtonStyle>
+              </Stack>
+            </Stack>
+          </Box>
+
+          {isError && openSidebar && !commerceCards && !loadingCommerces && (
+            <ErrorRequestPage errorMessage={error} handleButton={refetch} />
+          )}
+
+          {commerceCards && openSidebar && commerceCards?.length === 0 && !loadingCommerces && (
+            <EmptyList pt={2.5} message={'No hay tarjetas activas en este tipo de tarjeta'} />
+          )}
+
+          <Scrollbar
+            sx={{
+              height: 0.98
+            }}
+          >
+            <>
+              <CardList
+                isOpenSidebar={openSidebar}
+                cards={searchResults || []}
+                isLoading={loadingCommerces}
+                onOpenDetails={handleCloseSidebar}
+              />
+              {displayResults && searchResults?.length === 0 && commerceCards?.length > 0 && (
+                <SearchNotFound
+                  sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                  searchQuery={searchQuery}
+                />
+              )}
+            </>
+          </Scrollbar>
+        </>
+      )}
+    </>
   )
 
   return (

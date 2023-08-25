@@ -79,7 +79,12 @@ export function CardFilterMovements({ setCurrentMonth, currentMonth, isLoading }
   }
 
   return (
-    <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" sx={{ py: 2.5, px: 3 }}>
+    <Stack
+      spacing={2}
+      direction={{ xs: 'column', sm: 'row', md: 'row' }}
+      justifyContent="space-between"
+      sx={{ py: 2.5, px: 3 }}
+    >
       <LoadingButton
         loading={isFetching}
         variant="outlined"

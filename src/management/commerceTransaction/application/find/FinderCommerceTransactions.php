@@ -87,7 +87,7 @@ final readonly class FinderCommerceTransactions
         return  [
             "movements" => $mergeMovements,
             "tags" => $tagsCompressed,
-            "balance" => ['amount'=> number_format($amount,2),'month' => $this->getMonthBalance($fromDate)],
+            "balance" => ['amount'=> number_format($this->globalAmount->total(),2),'month' => $this->getMonthBalance($fromDate)],
             "pager" => ["total" => $total]
         ];
 

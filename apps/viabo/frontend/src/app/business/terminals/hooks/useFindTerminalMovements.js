@@ -13,7 +13,9 @@ import { monthOptions } from '@/shared/utils'
 
 export const useFindTerminalMovements = (terminalId, date, options = {}) => {
   const setBalance = useTerminals(state => state.setBalance)
+  const setGlobalBalance = useTerminals(state => state.setGlobalBalance)
   const resetBalance = useTerminals(state => state.resetBalance)
+  const resetGlobalBalance = useTerminals(state => state.resetGlobalBalance)
   const month = monthOptions[getMonth(date)] ?? null
   const primerDiaMes = startOfMonth(date)
   const ultimoDiaMes = endOfMonth(date)
@@ -27,7 +29,7 @@ export const useFindTerminalMovements = (terminalId, date, options = {}) => {
     retry: false,
     refetchOnWindowFocus: false,
     onSuccess: data => {
-      setBalance(data?.balance)
+      terminalId ? setBalance(data?.balance) : setGlobalBalance(data?.balance)
     },
     onError: error => {
       const errorMessage = getErrorAPI(
@@ -38,7 +40,7 @@ export const useFindTerminalMovements = (terminalId, date, options = {}) => {
       toast.error(errorMessage, {
         type: getNotificationTypeByErrorCode(error)
       })
-      resetBalance()
+      terminalId ? resetBalance() : resetGlobalBalance()
     },
     ...options
   })

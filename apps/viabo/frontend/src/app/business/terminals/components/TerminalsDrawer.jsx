@@ -5,6 +5,7 @@ import { ContactlessSharp } from '@mui/icons-material'
 import { Drawer, Stack } from '@mui/material'
 
 import { TerminalBalance } from './terminal-balance/TerminalBalance'
+import { TerminalGlobalBalance } from './terminal-balance/TerminalGlobalBalance'
 import { TerminalsList } from './terminals/TerminalsList'
 import { TerminalsSearch } from './terminals/TerminalsSearch'
 
@@ -53,7 +54,13 @@ export const TerminalsDrawer = () => {
 
   const renderContent = (
     <>
-      {openSidebar && <TerminalBalance />}
+      {openSidebar && (
+        <Stack spacing={2} p={2}>
+          <TerminalGlobalBalance />
+
+          <TerminalBalance />
+        </Stack>
+      )}
 
       <Stack>
         <TerminalsSearch commerceTerminals={terminalsQuery?.data || []} />

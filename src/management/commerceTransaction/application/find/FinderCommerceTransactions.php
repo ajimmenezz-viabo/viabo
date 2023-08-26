@@ -76,11 +76,10 @@ final readonly class FinderCommerceTransactions
                 $filtered = [$this->filteredData($data['items'],$terminals)];
                 $movements[] = $filtered[0]['items'];
                 $total += count($filtered[0]['items']);
-                $amount += intval($this->globalAmount->total());
+                $amount += $this->globalAmount->total();
                 $tags[] = [$filtered[0]['tags']];
             }
         }
-
         $tagsCompressed = $this->compressedTags($tags);
 
         $mergeMovements = $this->mergeMovements($movements);
@@ -121,7 +120,7 @@ final readonly class FinderCommerceTransactions
         return [
             "movements" => $response['items'],
             "tags" => $response['tags'],
-            "balance" => ['amount'=>$this->globalAmount->total(),'month' => $this->getMonthBalance($fromDate)],
+            "balance" => ['amount'=>number_format($this->globalAmount->total(),2),'month' => $this->getMonthBalance($fromDate)],
             "pager" => $data['pager']
         ];
     }

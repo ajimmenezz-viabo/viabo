@@ -14,8 +14,8 @@ final class CommercePayTransactionGlobalAmount
         $this->amount += $value;
     }
 
-    public function total(): string
+    public function total(): float
     {
-        return empty($this->amount)? '0.00' : number_format($this->amount,2);
+        return empty($this->amount)? 0 : $this->amount;
     }
 }

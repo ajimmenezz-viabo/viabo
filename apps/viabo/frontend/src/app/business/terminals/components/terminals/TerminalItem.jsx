@@ -45,7 +45,6 @@ export const TerminalItem = ({ terminal }) => {
     const type = e.target?.type
     if (!type && !isSelected) {
       setCommerceTerminal(terminal)
-      setOpenSidebar(false)
     }
   }
 

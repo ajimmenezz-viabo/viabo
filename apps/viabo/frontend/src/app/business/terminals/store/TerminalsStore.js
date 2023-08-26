@@ -4,7 +4,8 @@ const initialState = {
   terminals: [],
   isOpenList: false,
   isCollapse: false,
-  balance: { amount: '$0.00', month: null }
+  balance: { amount: '$0.00', month: null },
+  globalBalance: { amount: '$0.00', month: null }
 }
 
 const TerminalsStore = (set, get) => ({
@@ -45,10 +46,29 @@ const TerminalsStore = (set, get) => ({
       'SET_BALANCE'
     )
   },
+  setGlobalBalance: globalBalance => {
+    set(
+      state => ({
+        globalBalance
+      }),
+      false,
+      'SET_GLOBAL_BALANCE'
+    )
+  },
+
   resetBalance: () => {
     set(
       state => ({
         balance: initialState.balance
+      }),
+      false,
+      'RESET_BALANCE'
+    )
+  },
+  resetGlobalBalance: () => {
+    set(
+      state => ({
+        globalBalance: initialState.globalBalance
       }),
       false,
       'RESET_BALANCE'

@@ -1,5 +1,4 @@
-import { Close } from '@mui/icons-material'
-import { Box, IconButton, Stack, Tooltip } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { TerminalActions } from './terminal/TerminalActions'
@@ -9,11 +8,6 @@ import { useTerminalDetails } from '../store'
 
 export const TerminalDetails = () => {
   const terminal = useTerminalDetails(state => state.terminal)
-  const resetTerminal = useTerminalDetails(state => state.resetTerminal)
-
-  const handleClose = () => {
-    resetTerminal()
-  }
 
   return (
     <Stack
@@ -35,20 +29,6 @@ export const TerminalDetails = () => {
               transition={{ duration: 1 }}
             >
               <Stack pt={0} pb={4} px={2}>
-                <Stack alignItems={'flex-end'} pb={2}>
-                  <Tooltip title={'Ver Global'}>
-                    <IconButton
-                      color="secondary"
-                      sx={{ bgcolor: 'secondary.main', ':hover': { bgcolor: 'secondary.light' } }}
-                      aria-label="close"
-                      size="small"
-                      onClick={handleClose}
-                    >
-                      <Close width={20} height={20} fontSize="inherit" color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-
                 {terminal?.isVirtual && <TerminalActions />}
 
                 <TerminalMovements />

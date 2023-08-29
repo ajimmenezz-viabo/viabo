@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Viabo\management\billing\domain\Billing;
 use Viabo\management\billing\domain\BillingId;
 use Viabo\management\billing\domain\BillingRepository;
+use Viabo\management\billing\domain\PayCashBilling;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -22,6 +23,11 @@ final class BillingDoctrineRepository extends DoctrineRepository implements Bill
     public function save(Billing $deposit): void
     {
         $this->persist($deposit);
+    }
+
+    public function savePayCashBilling(PayCashBilling $billing): void
+    {
+        $this->persist($billing);
     }
 
     public function search(BillingId $billingId): Billing|null

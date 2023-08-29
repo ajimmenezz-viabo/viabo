@@ -28,7 +28,7 @@ final class RandomPassword
     private static function setFistLowerCase(): void
     {
         for ($i = 0; $i < 1; $i++) {
-            $n = rand(0 , 26);
+            $n = random_int(0 , 26);
             self::$password[] = self::$alphabet[$n];
         }
     }
@@ -36,7 +36,7 @@ final class RandomPassword
     private static function setFistUpperCase(): void
     {
         for ($i = 0; $i < 1; $i++) {
-            $n = rand(26 , 52);
+            $n = random_int(26 , 52);
             self::$password[] = self::$alphabet[$n];
         }
     }
@@ -45,7 +45,7 @@ final class RandomPassword
     {
         $alphaLength = strlen(self::$alphabet) - 1;
         for ($i = 0; $i < 1; $i++) {
-            $n = rand(52 , $alphaLength);
+            $n = random_int(52 , $alphaLength);
             self::$password[] = self::$alphabet[$n];
         }
     }
@@ -54,7 +54,7 @@ final class RandomPassword
     {
         $alphaLength = strlen(self::$alphabet) - 1;
         for ($i = 0; $i < 5; $i++) {
-            $n = rand(0 , $alphaLength);
+            $n = random_int(0 , $alphaLength);
             self::$password[] = self::$alphabet[$n];
         }
     }
@@ -62,7 +62,7 @@ final class RandomPassword
     private static function setSpecialCharacter(): void
     {
         for ($i = 0; $i < 1; $i++) {
-            $n = rand(0 , 3);
+            $n = random_int(0 , 3);
             self::$password[] = self::$specialCharacter[$n];
         }
     }

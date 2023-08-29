@@ -11,6 +11,8 @@ interface BillingRepository
 {
     public function save(Billing $deposit): void;
 
+    public function savePayCashBilling(PayCashBilling $billing): void;
+
     public function search(BillingId $billingId): Billing|null;
 
     public function searchCriteria(Criteria $criteria): array|null;

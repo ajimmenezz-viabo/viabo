@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
-import { endOfMonth, format, getMonth, startOfMonth } from 'date-fns'
+import { endOfMonth, format, startOfMonth } from 'date-fns'
 import { toast } from 'react-toastify'
 
 import { TERMINALS_KEYS } from '../adapters'
@@ -9,14 +9,10 @@ import { getTerminalMovements } from '../services'
 import { useTerminals } from '../store'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
-import { monthOptions } from '@/shared/utils'
 
 export const useFindTerminalMovements = (terminalId, date, options = {}) => {
-  const setBalance = useTerminals(state => state.setBalance)
-  const setGlobalBalance = useTerminals(state => state.setGlobalBalance)
   const resetBalance = useTerminals(state => state.resetBalance)
   const resetGlobalBalance = useTerminals(state => state.resetGlobalBalance)
-  const month = monthOptions[getMonth(date)] ?? null
   const primerDiaMes = startOfMonth(date)
   const ultimoDiaMes = endOfMonth(date)
   const initialDate = format(primerDiaMes, 'yyyy-MM-dd')
@@ -28,9 +24,6 @@ export const useFindTerminalMovements = (terminalId, date, options = {}) => {
     staleTime: 60000,
     retry: false,
     refetchOnWindowFocus: false,
-    onSuccess: data => {
-      terminalId ? setBalance(data?.balance) : setGlobalBalance(data?.balance)
-    },
     onError: error => {
       const errorMessage = getErrorAPI(
         error,

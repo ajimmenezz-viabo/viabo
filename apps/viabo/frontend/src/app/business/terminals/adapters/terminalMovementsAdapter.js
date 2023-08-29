@@ -37,11 +37,17 @@ export const TerminalMovementsAdapter = data => {
     amount: fCurrency(data?.balance?.amount),
     month: data?.balance?.month?.toLowerCase()
   }
-  const tags = data?.tags
+  const filters = {
+    status: {
+      all: movements?.length || 0,
+      approved: movements?.filter(movement => movement?.approved)?.length || 0,
+      rejected: movements?.filter(movement => !movement?.approved)?.length || 0
+    }
+  }
 
   return {
     movements,
     balance,
-    tags
+    filters
   }
 }

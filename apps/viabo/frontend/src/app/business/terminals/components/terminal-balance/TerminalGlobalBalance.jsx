@@ -12,11 +12,11 @@ export const TerminalGlobalBalance = () => {
 
   return (
     <AnimatePresence>
-      <motion.div onClick={handleClose} whileTap={{ scale: 0.8 }}>
+      <motion.div onClick={handleClose} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.8 }}>
         <Paper
           sx={theme => ({
             cursor: 'pointer',
-            backgroundColor: { sm: 'background.neutral', md: 'background.paper' },
+            backgroundColor: { xs: 'background.neutral', md: 'background.paper' },
             '& :hover': {
               color: 'primary.main'
             }

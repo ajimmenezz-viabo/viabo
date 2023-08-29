@@ -75,7 +75,7 @@ final class Card extends AggregateRoot
             $cardCommerceId ,
             new CardOwnerId('') ,
             $cardRecorderId ,
-            new CardAssignmentDate(''),
+            CardAssignmentDate::empty(),
             CardRegisterDate::todayDate() ,
             new CardActive('1')
         );

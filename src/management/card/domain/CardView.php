@@ -53,10 +53,18 @@ final class CardView
             'ownerPhone' => $this->ownerPhone ?? '' ,
             'recorderId' => $this->recorderId ,
             'recorderName' => $this->recorderName ,
-            'assignmentDate' => $this->assignmentDate ?? '' ,
+            'assignmentDate' => $this->assigmentDate() ,
             'register' => $this->registerDate ,
             'active' => $this->active
         ];
+    }
+
+    private function assigmentDate(): string
+    {
+        if($this->assignmentDate === '0000-00-00 00:00:00'){
+            return '';
+        }
+        return $this->assignmentDate ?? '';
     }
 
 }

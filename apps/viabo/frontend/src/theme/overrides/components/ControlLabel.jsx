@@ -12,14 +12,14 @@ export default function ControlLabel(theme) {
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          marginTop: theme.spacing(1)
+          marginTop: theme.spacing(0.5)
         }
       }
     },
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          color: theme.palette.text.disabled
+          color: theme.palette.text.secondary
         }
       }
     }

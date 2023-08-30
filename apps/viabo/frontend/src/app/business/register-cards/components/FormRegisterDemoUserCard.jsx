@@ -1,15 +1,15 @@
 import { EmailOutlined, VerifiedUser } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { InputAdornment, Stack, Typography } from '@mui/material'
+import { Checkbox, FormControlLabel, InputAdornment, InputLabel, Link, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { MuiTelInput } from 'mui-tel-input'
+import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { useRegisterDemoUser } from '@/app/business/register-cards/hooks'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { FormProvider, RFTextField } from '@/shared/components/form'
-import { Scrollbar } from '@/shared/components/scroll'
 import { axios } from '@/shared/interceptors'
 
 export default function FormRegisterDemoUserCard() {
@@ -34,7 +34,8 @@ export default function FormRegisterDemoUserCard() {
     initialValues: {
       name: '',
       phone: '',
-      email: ''
+      email: '',
+      privacy: false
     },
     validationSchema: registerValidation,
     onSubmit: values => {
@@ -55,89 +56,106 @@ export default function FormRegisterDemoUserCard() {
     }
   })
 
-  const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting } = formik
+  const { errors, touched, isSubmitting, setFieldValue, values, setSubmitting, getFieldProps } = formik
 
   const loading = isSubmitting || isRegisteringDemoUser
 
   return (
-    <Stack
-      sx={{
-        display: 'flex',
-        overflow: 'hidden'
-      }}
-    >
-      <Stack direction="column" width={1} spacing={1}>
+    <Stack>
+      <Stack direction="column" width={1} spacing={0}>
         <Typography variant="h4" color="textPrimary" align="center">
-          Registrar Tarjeta
+          Crear Cuenta
         </Typography>
-        <Typography paragraph align="center" variant="body1" color={'text.secondary'} whiteSpace="pre-line">
-          Ingrese la información del usuario para continuar con el proceso de asociación de su tarjeta.
+        <Typography paragraph align="center" variant="subtitle1" color={'text.primary'} whiteSpace="pre-line">
+          ¡Es tiempo de transformar tu negocio!
         </Typography>
       </Stack>
-      <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-        <FormProvider formik={formik}>
-          <Stack spacing={2} sx={{ p: 3 }}>
-            <Stack>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Nombre Completo*
-              </Typography>
-              <RFTextField name={'name'} required={true} placeholder={'Usuario'} disabled={loading} />
-            </Stack>
 
-            <Stack>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Correo Electrónico*
-              </Typography>
-              <RFTextField
-                name={'email'}
-                required={true}
-                placeholder={'usuario@dominio.com'}
-                disabled={loading}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailOutlined />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Stack>
-
-            <Stack>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Telefono
-              </Typography>
-              <MuiTelInput
-                name="phone"
-                fullWidth
-                langOfCountryName="es"
-                preferredCountries={['MX', 'US']}
-                continents={['NA', 'SA']}
-                value={values.phone || '+52'}
-                disabled={loading}
-                onChange={(value, info) => {
-                  setFieldValue('phone', value)
-                }}
-                error={touched.phone && Boolean(errors.phone)}
-                helperText={touched.phone && errors.phone}
-              />
-            </Stack>
-
-            <Stack sx={{ pt: 3 }}>
-              <LoadingButton
-                loading={isSubmitting}
-                variant="contained"
-                color="primary"
-                fullWidth
-                type="submit"
-                startIcon={<VerifiedUser />}
-              >
-                Registrar
-              </LoadingButton>
-            </Stack>
+      <FormProvider formik={formik}>
+        <Stack spacing={2} sx={{ p: 3, px: 5 }}>
+          <Stack spacing={1}>
+            <InputLabel>Nombre Completo*</InputLabel>
+            <RFTextField name={'name'} required={true} placeholder={'Usuario'} disabled={loading} size={'small'} />
           </Stack>
-        </FormProvider>
-      </Scrollbar>
+
+          <Stack spacing={1}>
+            <InputLabel>Correo Electrónico*</InputLabel>
+            <RFTextField
+              name={'email'}
+              required={true}
+              placeholder={'usuario@dominio.com'}
+              disabled={loading}
+              size={'small'}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailOutlined />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Stack>
+
+          <Stack spacing={1}>
+            <InputLabel>Teléfono</InputLabel>
+            <MuiTelInput
+              name="phone"
+              fullWidth
+              langOfCountryName="es"
+              preferredCountries={['MX', 'US']}
+              continents={['NA', 'SA']}
+              value={values.phone || '+52'}
+              disabled={loading}
+              onChange={(value, info) => {
+                setFieldValue('phone', value)
+              }}
+              size={'small'}
+              error={touched.phone && Boolean(errors.phone)}
+              helperText={touched.phone && errors.phone}
+            />
+          </Stack>
+          <Stack justifyContent={'center'} alignItems={'center'}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="small"
+                  {...getFieldProps('privacy')}
+                  disabled={loading}
+                  checked={values?.apiRequired}
+                  value={values?.apiRequired}
+                />
+              }
+              label={
+                <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
+                  He leído y acepto los &nbsp;
+                  <Link component={RouterLink} color="primary" href=".#">
+                    Términos
+                  </Link>
+                  &nbsp; & &nbsp;
+                  <Link component={RouterLink} color="primary" href=".#">
+                    Acuerdos de privacidad
+                  </Link>
+                  .
+                </Typography>
+              }
+            />
+          </Stack>
+
+          <Stack sx={{ px: 5 }}>
+            <LoadingButton
+              size="large"
+              loading={isSubmitting}
+              variant="contained"
+              color="primary"
+              fullWidth
+              type="submit"
+              startIcon={<VerifiedUser />}
+            >
+              Registrar
+            </LoadingButton>
+          </Stack>
+        </Stack>
+      </FormProvider>
     </Stack>
   )
 }

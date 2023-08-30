@@ -8,7 +8,7 @@ function createGradient(color1, color2) {
 export const PRIMARY = {
   lighter: '#D7C3FE',
   light: '#844BFF',
-  main: '#661FFF',
+  main: '#5C34F5',
   dark: '#4715B2',
   darker: '#361778'
 }
@@ -112,7 +112,7 @@ export const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
+    text: { primary: '#303030', secondary: GREY[600], disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action }
   },

@@ -35,6 +35,10 @@ final class QRCodeEndroidAdapter implements QRCodeAdapter
 
     public function generatorBarcode(string $value): string
     {
+        if(empty($value)){
+            return '';
+        }
+
         $generator = new BarcodeGeneratorPNG();
         $barcodeImage = $generator->getBarcode($value , $generator::TYPE_CODE_128 , 2 , 30 , [255 , 255 , 255]);
         $filename = "temp_barcode_$value.png";

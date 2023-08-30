@@ -1,46 +1,13 @@
 import { useEffect } from 'react'
 
-import { Card, Grid, Stack } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Box, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { LoginForm } from '@/app/authentication/components'
-import { Carousel } from '@/app/authentication/components/Carousel'
+import { LoginForm } from '../components'
+
+import LoginImage from '@/shared/assets/img/login-image-2x.webp'
 import { Page } from '@/shared/components/containers'
-
-const ContainerStyle = styled(Card)(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-  maxWidth: theme.breakpoints.values.md,
-  [theme.breakpoints.down('md')]: {
-    maxWidth: '100%',
-    borderRadius: 0,
-    height: '100vh'
-  },
-
-  margin: '0 auto',
-  backgroundColor: theme.palette.background.paper
-}))
-
-const RegisterContainer = styled('div')(({ theme }) => ({
-  padding: '0px',
-  minHeight: '100vH',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center'
-  // [theme.breakpoints.up('sm')]: {
-  //   padding: '0px'
-  // },
-  // [theme.breakpoints.up('md')]: {
-  //   padding: '50px'
-  // },
-  // [theme.breakpoints.up('lg')]: {
-  //   padding: '50px'
-  // },
-  // [theme.breakpoints.up('xl')]: {
-  //   padding: '100px'
-  // }
-}))
+import { FullLogo } from '@/shared/components/images'
 
 const Login = () => {
   const client = useQueryClient()
@@ -48,43 +15,49 @@ const Login = () => {
     client.removeQueries()
   }, [])
   return (
-    // const carousel = (
-    //   <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-    //     <Box sx={{ position: 'relative', display: 'flex', height: 1, backgroundColor: '#161C24' }}>
-    //       <Box
-    //         component={LazyLoadImage}
-    //         wrapperClassName="wrapper"
-    //         effect={'blur'}
-    //         placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
-    //         sx={{ width: 1, height: 1, objectFit: 'cover' }}
-    //         src={INTEGRATION}
-    //       />
-    //     </Box>
-    //   </Box>
-    // )
-
     <Page title="Inicio de Sesión">
-      <RegisterContainer>
-        <ContainerStyle>
-          <Grid component="main" container spacing={0} sx={{ height: 1, width: 1 }}>
-            <Grid
-              item
-              elevation={0}
-              xs={false}
-              sm={false}
-              md={7}
-              sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
-            >
-              <Carousel />
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Stack justifyContent={'center'} width={1} height={1} sx={{ overflow: 'auto' }}>
-                <LoginForm />
-              </Stack>
-            </Grid>
-          </Grid>
-        </ContainerStyle>
-      </RegisterContainer>
+      <Stack alignItems={'center'} justifyContent={'center'} minHeight={'100vH'}>
+        <Stack px={{ sm: 10, xl: 20 }} width={1} height={1} direction={'row'}>
+          <Stack
+            flexGrow={1}
+            width={1}
+            height={1}
+            minHeight={'70vh'}
+            overflow={'auto'}
+            maxHeight={'90vH'}
+            position={'relative'}
+            px={{ xs: 5 }}
+            justifyContent={'space-between'}
+          >
+            <Stack direction={'row'} spacing={1} alignItems={'center'}>
+              <FullLogo sx={{ width: 100 }} />
+              <Typography fontWeight={'600'} variant="subtitle1">
+                Agilidad en pagos
+              </Typography>
+            </Stack>
+            <Box flexGrow={1} />
+            <Stack flex={1} px={{ xs: 0, sm: 5, xl: 20 }}>
+              <LoginForm />
+            </Stack>
+          </Stack>
+          <Stack
+            width={1}
+            justifyContent={'center'}
+            height={1}
+            flexGrow={1}
+            sx={{ display: { xs: 'none', sm: 'none', lg: 'flex' } }}
+          >
+            <Box
+              component={'img'}
+              height={1}
+              maxHeight={'90vH'}
+              sx={{ objectFit: 'fill' }}
+              borderRadius={4}
+              src={LoginImage}
+            />
+          </Stack>
+        </Stack>
+      </Stack>
     </Page>
   )
 }

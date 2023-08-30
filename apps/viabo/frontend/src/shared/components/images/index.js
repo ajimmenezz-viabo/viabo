@@ -1,5 +1,6 @@
 export * from './AmexLogo'
 export * from './CarnetLogo'
+export * from './FullLogo'
 export * from './Image'
 export * from './Logo'
 export * from './MasterCardLogo'

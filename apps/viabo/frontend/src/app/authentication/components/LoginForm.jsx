@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 
-import { AccountCircleTwoTone } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { AlertTitle, Box, InputAdornment, Stack, Typography } from '@mui/material'
+import { AlertTitle, InputLabel, Link, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { useSignIn } from '@/app/authentication/hooks'
-import ViaboLogo from '@/shared/assets/img/logo-big.png'
 import { AlertWithFocus } from '@/shared/components/alerts'
 import { MotionViewport } from '@/shared/components/animate'
 import { FormProvider, RFPasswordField, RFTextField } from '@/shared/components/form'
@@ -47,13 +46,13 @@ export function LoginForm() {
 
   return (
     <MotionViewport>
-      <Stack spacing={3} p={4} justifyContent={'center'}>
-        <Box sx={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
-          <img src={ViaboLogo} alt={'viabo-logo'} />
-        </Box>
+      <Stack spacing={3} p={4} justifyContent={'center'} height={1}>
+        <Typography color={'primary'} align="center" component={'h1'} variant="h3">
+          Aquí comienza tu agilidad en pagos.
+        </Typography>
 
-        <Typography variant="h5" align="center" gutterBottom>
-          ¡Bienvenido!
+        <Typography variant="h6" align="center">
+          ¡Es tiempo de transformar tu negocio!
         </Typography>
         {error && (
           <AlertWithFocus listenElement={error} sx={{ mt: 3, textAlign: 'initial' }} severity={error?.code}>
@@ -62,48 +61,55 @@ export function LoginForm() {
           </AlertWithFocus>
         )}
         <FormProvider formik={formik}>
-          <Stack spacing={3}>
-            <RFTextField
-              autoFocus
-              disabled={loading}
-              name={'email'}
-              label="Usuario"
-              placeholder={'usuario@dominio.com'}
-              type={'email'}
-              fullWidth
-              InputLabelProps={{
-                shrink: true
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircleTwoTone />
-                  </InputAdornment>
-                )
-              }}
-            />
+          <Stack spacing={2} flex={1}>
+            <Stack spacing={1}>
+              <InputLabel>Email</InputLabel>
+              <RFTextField
+                autoFocus
+                disabled={loading}
+                name={'email'}
+                placeholder={'usuario@dominio.com'}
+                type={'email'}
+                fullWidth
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </Stack>
 
-            <RFPasswordField
-              InputLabelProps={{
-                shrink: true
-              }}
-              disabled={loading}
-              name="password"
-              label="Contraseña"
-              placeholder={'********'}
-              fullWidth
-            />
+            <Stack spacing={1}>
+              <InputLabel>Contraseña</InputLabel>
+              <RFPasswordField
+                InputLabelProps={{
+                  shrink: true
+                }}
+                disabled={loading}
+                name="password"
+                placeholder={'********'}
+                fullWidth
+              />
+            </Stack>
 
-            <LoadingButton
-              loading={loading}
-              variant="contained"
-              color="primary"
-              fullWidth
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Iniciar Sesión
-            </LoadingButton>
+            <Stack pt={1}>
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                color="primary"
+                fullWidth
+                type="submit"
+                size={'large'}
+                disabled={isSubmitting}
+              >
+                Accesar a mi cuenta
+              </LoadingButton>
+            </Stack>
+
+            <Typography variant="body2" fontWeight={600} align="center" sx={{ color: 'text.secondary' }}>
+              ¿No tienes una cuenta? &nbsp;
+              <Link color="primary" component={RouterLink} to={'/registro'}>
+                Inscribete.
+              </Link>
+            </Typography>
           </Stack>
         </FormProvider>
       </Stack>

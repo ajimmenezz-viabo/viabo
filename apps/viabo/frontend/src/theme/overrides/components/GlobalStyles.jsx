@@ -29,8 +29,7 @@ export default function GlobalStyles() {
         },
         body: {
           width: '100%',
-          height: '100%',
-          backgroundColor: theme.palette.mode === 'light' && `${theme.palette.background.neutral}!important`
+          height: '100%'
         },
         '#root': {
           width: '100%',

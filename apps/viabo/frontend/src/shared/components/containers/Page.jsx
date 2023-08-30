@@ -12,7 +12,7 @@ export const Page = forwardRef(({ children, title = '', meta, ...other }, ref) =
       {meta}
     </Helmet>
 
-    <Box ref={ref} {...other}>
+    <Box height={1} ref={ref} {...other}>
       {children}
     </Box>
   </>

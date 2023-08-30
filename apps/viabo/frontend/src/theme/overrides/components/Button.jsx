@@ -3,13 +3,13 @@ export default function Button(theme) {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: theme.spacing(3),
+          borderRadius: theme.spacing(2),
           '&:hover': {
             boxShadow: 'none'
           }
         },
         sizeLarge: {
-          height: 48
+          height: 42
         },
         // contained
         containedInherit: {

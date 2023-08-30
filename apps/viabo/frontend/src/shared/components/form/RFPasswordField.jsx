@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { IconButton, InputAdornment, TextField } from '@mui/material'
 import { Field } from 'formik'
+import { PiEyeBold, PiEyeClosedBold } from 'react-icons/pi'
 
 export function RFPasswordField({ name, InputProps, ...rest }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -19,7 +19,7 @@ export function RFPasswordField({ name, InputProps, ...rest }) {
             endAdornment: (
               <InputAdornment position="end" sx={{ mr: 0.5 }}>
                 <IconButton size={'small'} edge="end" onClick={() => setShowPassword(prev => !prev)}>
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <PiEyeBold /> : <PiEyeClosedBold />}
                 </IconButton>
               </InputAdornment>
             )

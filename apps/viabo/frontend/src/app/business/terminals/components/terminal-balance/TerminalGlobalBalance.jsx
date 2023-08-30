@@ -1,4 +1,4 @@
-import { CardHeader, Paper, Stack, Typography } from '@mui/material'
+import { Card, CardHeader, Stack, Typography } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { useTerminalDetails, useTerminals } from '../../store'
@@ -13,7 +13,7 @@ export const TerminalGlobalBalance = () => {
   return (
     <AnimatePresence>
       <motion.div onClick={handleClose} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.8 }}>
-        <Paper
+        <Card
           sx={theme => ({
             cursor: 'pointer',
             backgroundColor: { xs: 'background.neutral', md: 'background.paper' },
@@ -39,7 +39,7 @@ export const TerminalGlobalBalance = () => {
 
             {balance?.month && <Typography variant="subtitle2">Balance de {balance.month}</Typography>}
           </Stack>
-        </Paper>
+        </Card>
       </motion.div>
     </AnimatePresence>
   )

@@ -10,9 +10,7 @@ import { AssignCardDemoUserAdapter } from '@/app/business/register-cards/adapter
 import { useAssignCardToDemoUser } from '@/app/business/register-cards/hooks'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
-import creditCard from '@/shared/assets/img/credit-card.svg'
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
-import { Scrollbar } from '@/shared/components/scroll'
 import { axios } from '@/shared/interceptors'
 
 export default function FormCardRegister() {
@@ -61,138 +59,135 @@ export default function FormCardRegister() {
   return (
     <Stack
       sx={{
-        display: 'flex',
-        overflow: 'hidden',
         mb: 3
       }}
     >
-      <Stack direction="column" width={1} spacing={1} pb={2} px={3}>
+      <Stack direction="column" width={1} spacing={1} pb={2}>
         <Typography variant="h4" color="textPrimary" align="center">
-          Registrar Tarjeta
+          Estamos a un paso de completar su registro
         </Typography>
-        <Typography paragraph align="center" variant="body1" color={'text.secondary'} whiteSpace="pre-line">
+        <Typography paragraph align="center" variant="body1" color={'text.primary'} whiteSpace="pre-line">
           Ingrese la información faltante de la tarjeta para asociarla a su cuenta.
         </Typography>
       </Stack>
-      <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-        <FormProvider formik={formik}>
-          <Stack px={3}>
-            <Box
-              sx={{
-                pb: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 2
-              }}
-            >
-              <img className="animate__animated animate__pulse" src={creditCard} width="20%" alt="Sent Mail" />
-              <Typography variant={'overline'} color={'primary.main'}>
-                {card?.cardNumberHidden}
-              </Typography>
-            </Box>
-            <Alert
-              sx={{
-                textAlign: 'center',
-                width: '100%',
-                justifyContent: 'center',
-                display: 'flex',
-                mb: 2
-              }}
-              severity="warning"
-            >
-              <Typography variant="caption" fontWeight={'bold'}>
-                En caso de no capturar los datos correctos de la tarjeta, la información de la misma podrá ser erronea.
-              </Typography>
-            </Alert>
-
-            <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'}>
-              <Stack sx={{ width: { xs: '100%', lg: '40%' } }}>
-                <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                  CVV
-                </Typography>
-                <RFTextField
-                  name={'cvv'}
-                  required={true}
-                  placeholder={'123'}
-                  size="small"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VpnKey />
-                      </InputAdornment>
-                    ),
-                    inputComponent: MaskedInput,
-                    inputProps: {
-                      mask: '000',
-                      onAccept: value => {
-                        setFieldValue('cvv', value)
-                      },
-                      value: values.cvv
-                    }
-                  }}
-                  disabled={loading}
-                />
-              </Stack>
-              <Stack>
-                <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                  Vence
-                </Typography>
-                <DatePicker
-                  disabled={loading}
-                  views={['year', 'month']}
-                  size="small"
-                  name={'expiration'}
-                  value={new Date(values.expiration) ?? null}
-                  onChange={newValue => {
-                    const isDateValid = isValid(newValue)
-                    if (isDateValid) {
-                      return formik.setFieldValue('expiration', format(newValue, 'MM/yyyy'))
-                    } else {
-                      return formik.setFieldValue('expiration', '')
-                    }
-                  }}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: 'small',
-                      error: Boolean(touched.expiration && errors.expiration),
-                      required: true,
-                      helperText: touched.expiration && errors.expiration ? errors.expiration : ''
-                    }
-                  }}
-                  disablePast={true}
-                  format="MM/yy"
-                />
-              </Stack>
-            </Stack>
-          </Stack>
-        </FormProvider>
-        <Stack spacing={3} px={3} py={4}>
-          <LoadingButton
-            loading={loading}
-            variant="contained"
-            color="primary"
-            fullWidth
-            type="submit"
-            onClick={handleSubmit}
-            disabled={loading}
-            startIcon={<AddCard />}
-          >
-            Asociar
-          </LoadingButton>
-          <Button
-            variant={'outlined'}
-            color={'inherit'}
-            onClick={() => {
-              setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
+      <FormProvider formik={formik}>
+        <Stack px={5}>
+          <Box
+            sx={{
+              pb: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 2
             }}
           >
-            Cancelar
-          </Button>
+            <Typography variant={'overline'} color={'primary.main'}>
+              {card?.cardNumberHidden}
+            </Typography>
+          </Box>
+          <Alert
+            sx={{
+              textAlign: 'center',
+              width: '100%',
+              justifyContent: 'center',
+              display: 'flex',
+              mb: 2
+            }}
+            severity="warning"
+          >
+            <Typography variant="caption" fontWeight={'bold'}>
+              En caso de no capturar los datos correctos de la tarjeta, la información de la misma podrá ser erronea.
+            </Typography>
+          </Alert>
+
+          <Stack direction={{ xs: 'column', lg: 'row' }} spacing={3} display={'flex'}>
+            <Stack sx={{ width: { xs: '100%', lg: '40%' } }}>
+              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                CVV
+              </Typography>
+              <RFTextField
+                name={'cvv'}
+                required={true}
+                placeholder={'123'}
+                size="small"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <VpnKey />
+                    </InputAdornment>
+                  ),
+                  inputComponent: MaskedInput,
+                  inputProps: {
+                    mask: '000',
+                    onAccept: value => {
+                      setFieldValue('cvv', value)
+                    },
+                    value: values.cvv
+                  }
+                }}
+                disabled={loading}
+              />
+            </Stack>
+            <Stack>
+              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                Vence
+              </Typography>
+              <DatePicker
+                disabled={loading}
+                views={['year', 'month']}
+                size="small"
+                name={'expiration'}
+                value={new Date(values.expiration) ?? null}
+                onChange={newValue => {
+                  const isDateValid = isValid(newValue)
+                  if (isDateValid) {
+                    return formik.setFieldValue('expiration', format(newValue, 'MM/yyyy'))
+                  } else {
+                    return formik.setFieldValue('expiration', '')
+                  }
+                }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small',
+                    error: Boolean(touched.expiration && errors.expiration),
+                    required: true,
+                    helperText: touched.expiration && errors.expiration ? errors.expiration : ''
+                  }
+                }}
+                disablePast={true}
+                format="MM/yy"
+              />
+            </Stack>
+          </Stack>
         </Stack>
-      </Scrollbar>
+      </FormProvider>
+      <Stack spacing={3} px={5} py={4}>
+        <LoadingButton
+          size="large"
+          loading={loading}
+          variant="contained"
+          color="primary"
+          fullWidth
+          type="submit"
+          onClick={handleSubmit}
+          disabled={loading}
+          startIcon={<AddCard />}
+        >
+          Asociar
+        </LoadingButton>
+        <Button
+          size="large"
+          variant={'outlined'}
+          color={'inherit'}
+          onClick={() => {
+            setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
+          }}
+        >
+          Cancelar
+        </Button>
+      </Stack>
     </Stack>
   )
 }

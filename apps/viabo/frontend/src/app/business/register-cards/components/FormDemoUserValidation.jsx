@@ -6,7 +6,7 @@ import { MuiOtpInput } from 'mui-one-time-password-input'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/register-cards/services'
 import { useCardUserAssign } from '@/app/business/register-cards/store'
 import { useSendValidationCode, useValidateCode } from '@/app/business/shared/hooks'
-import mail from '@/shared/assets/img/mail.svg'
+import { LogoSphere } from '@/shared/components/images'
 import { axios } from '@/shared/interceptors'
 import { matchIsNumeric } from '@/shared/utils'
 
@@ -47,31 +47,21 @@ export default function FormDemoUserValidation() {
 
   return (
     <Stack>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          my: 4
-        }}
-      >
-        <img className="animate__animated animate__pulse" src={mail} width="25%" alt="Sent Mail" />
-      </Box>
+      <LogoSphere />
+
       <Typography variant="h4" color="textPrimary" align="center">
-        Verificación de Cuenta
+        Estamos a un paso de validar tu identidad
       </Typography>
 
       <Typography
         paragraph
-        sx={{ mb: 4, mt: 2 }}
+        sx={{ mb: 4 }}
         align="center"
         variant="body2"
         color={'text.secondary'}
         whiteSpace="pre-line"
       >
-        Enviamos un correo electrónico a {user?.email || '-'} con el código de verificacion de tu cuenta, ingrese el
-        código en el cuadro a continuación para verificar su cuenta.
+        Revisa tu correo electrónico {user?.email || '-'} e ingresa el código de verificación.
       </Typography>
       <MuiOtpInput
         length={6}
@@ -107,15 +97,18 @@ export default function FormDemoUserValidation() {
           </Stack>
         </Divider>
       </Box>
-      <Button
-        variant={'outlined'}
-        color={'inherit'}
-        onClick={() => {
-          setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
-        }}
-      >
-        Cancelar
-      </Button>
+      <Stack px={5}>
+        <Button
+          size="large"
+          variant={'outlined'}
+          color={'inherit'}
+          onClick={() => {
+            setStep(CARD_ASSIGN_PROCESS_LIST.CARD_VALIDATION)
+          }}
+        >
+          Cancelar
+        </Button>
+      </Stack>
     </Stack>
   )
 }

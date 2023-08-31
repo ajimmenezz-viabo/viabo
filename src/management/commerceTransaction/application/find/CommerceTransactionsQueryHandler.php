@@ -12,18 +12,18 @@ final readonly class CommerceTransactionsQueryHandler implements QueryHandler
     {
     }
 
-    public function __invoke(CommerceTransactionsQuery $query):Response
+    public function __invoke(CommerceTransactionsQuery $query): Response
     {
         $fromDate = new CommercePayTransactionDate('');
         $toDate = new CommercePayTransactionDate('');
 
         return $this->finder->__invoke(
-            $fromDate->format($query->fromDate),
-            $toDate->format($query->toDate),
-            $query->apiKey,
-            $query->terminalId,
-            $query->terminalsData,
-            $query->page,
+            $fromDate->format("$query->fromDate 00:00:00") ,
+            $toDate->format("$query->toDate 23:59:59") ,
+            $query->apiKey ,
+            $query->terminalId ,
+            $query->terminalsData ,
+            $query->page ,
             $query->pageSize
         );
 

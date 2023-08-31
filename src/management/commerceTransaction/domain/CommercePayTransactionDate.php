@@ -14,6 +14,6 @@ final class CommercePayTransactionDate extends DateTimeValueObject
 
     public function format($value):string
     {
-        return $this->date->formatDateTime($value . " 00:00:00" , 'Y-m-d H:i:s');
+        return $this->date->formatDateTime($value, 'Y-m-d H:i:s');
     }
 }

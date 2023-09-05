@@ -12,6 +12,7 @@ final readonly class Terminal
         private TerminalApiData       $apiData,
         private TerminalCreatedByUser $createdByUser,
         private TerminalName          $name,
+        private TerminalSpeiCard      $speiCard,
         private TerminalTypeId        $type,
         private TerminalRegisterDate  $registerDate,
         private TerminalActive        $active
@@ -28,6 +29,7 @@ final readonly class Terminal
             'apiData' => json_decode($this->apiData->value(),true),
             'createdByUser' => $this->createdByUser->value(),
             'name' => $this->name->value(),
+            'speiCard' => $this->speiCard->value(),
             'typeId' => $this->type->value(),
             'registerDate' => $this->registerDate->value(),
             'active' => $this->active->value()

@@ -59,6 +59,11 @@ final class CardMovement
         }
     }
 
+    public function isNotConsolidated(mixed $mainCardTransactionsId): bool
+    {
+        return !in_array($this->transactionId->value(), $mainCardTransactionsId);
+    }
+
     public function typeOperation(array $operations): string
     {
         foreach ($operations as $operation) {
@@ -77,11 +82,13 @@ final class CardMovement
     public function toArray(): array
     {
         return [
-            'date' => $this->date->value() ,
+            'transactionId' => $this->transactionId->value() ,
             'description' => $this->description->value() ,
             'concept' => $this->concept->value() ,
             'amount' => $this->amount->value() ,
-            'type' => $this->type->value()
+            'type' => $this->type->value(),
+            'date' => $this->date->value()
         ];
     }
+
 }

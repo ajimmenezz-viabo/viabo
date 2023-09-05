@@ -10,4 +10,7 @@ interface TerminalRepository
     public function searchBy(TerminalCommerceId $commerceId):array;
 
     public function searchView(Criteria $criteria):array;
+
+    public function searchSpeiCardsView(Criteria $criteria): array;
+
 }

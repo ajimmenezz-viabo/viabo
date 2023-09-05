@@ -3,6 +3,7 @@
 namespace Viabo\management\commerceTerminal\infrastructure;
 
 use Doctrine\ORM\EntityManager;
+use Viabo\management\commerceTerminal\domain\TerminalSpeiCardsView;
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 use Viabo\management\commerceTerminal\domain\Terminal;
 use Viabo\management\commerceTerminal\domain\TerminalRepository;
@@ -30,5 +31,11 @@ final class TerminalDoctrineRepository extends DoctrineRepository implements Ter
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(TerminalView::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function searchSpeiCardsView(Criteria $criteria): array
+    {
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(TerminalSpeiCardsView::class)->matching($criteriaConvert)->toArray();
     }
 }

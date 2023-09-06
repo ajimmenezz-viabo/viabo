@@ -108,6 +108,11 @@ final class User extends AggregateRoot
         return $this->password->value();
     }
 
+    public function name(): UserName
+    {
+        return $this->name;
+    }
+
     public function tokenData(): array
     {
         return ['id' => $this->id->value()];

@@ -97,7 +97,7 @@ final readonly class CardTransactionsProcessor
     private function ownerEmail($ownerId): string
     {
         $user = $this->queryBus->ask(new FindUserQuery($ownerId , ''));
-        return $user->userData['email'];
+        return $user->data['email'];
     }
 
     private function ensureHasSameCommerce(array $originCardData , array $destinationCardsData): void

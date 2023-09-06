@@ -1,6 +1,9 @@
-card-movements-find:
+find-card-movements:
   path: '/api/card/{cardId}/movements/{initialDate}/to/{finalDate}'
   controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsFinderController
   methods: GET
 
-
+notifications-card-movements:
+  path: '/api/notifications/cards/movements'
+  controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsNotifierController
+  methods: GET

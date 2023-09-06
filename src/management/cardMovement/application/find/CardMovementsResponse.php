@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class CardMovementsResponse implements Response
 {
-    public function __construct(public array $movements)
+    public function __construct(public array $data)
     {
     }
 }

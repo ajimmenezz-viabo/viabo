@@ -17,7 +17,7 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
     public function register(CardCredential $credential): void
     {
         $this->registerUser($credential);
-        $clientKey = $credential->clientKey();
+        $clientKey = $credential->clientKey()->valueDecrypt();
         $data = [
             'inCardPlatform' => true ,
             'clientKey' => $clientKey ,
@@ -160,8 +160,8 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
     {
         $data = [
             'inRegisterPlatform' => true ,
-            'clientKey' => $credential->clientKey() ,
-            'clientToken' => $this->token($credential->clientKey()) ,
+            'clientKey' => $credential->clientKey()->valueDecrypt() ,
+            'clientToken' => $this->token($credential->clientKey()->valueDecrypt()) ,
             'userCard' => $credential->userName()->valueDecrypt() ,
             'passCard' => $credential->password()->valueDecrypt() ,
             'emailCard' => $credential->email()->valueDecrypt() ,

@@ -96,9 +96,9 @@ final class CardCredential extends AggregateRoot
         return $this->email;
     }
 
-    public function clientKey(): string
+    public function clientKey(): CardCredentialClientKey
     {
-        return $this->clientKey->valueDecrypt();
+        return $this->clientKey;
     }
 
     public function companyKey(): string

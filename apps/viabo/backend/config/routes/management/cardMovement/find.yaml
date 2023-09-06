@@ -3,7 +3,12 @@ find-card-movements:
   controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsFinderController
   methods: GET
 
-notifications-card-movements:
+notifications-cards-movements:
   path: '/api/notifications/cards/movements'
   controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsNotifierController
+  methods: GET
+
+notifications-cards-masters-movements:
+  path: '/api/notifications/cards-masters/movements'
+  controller: Viabo\Backend\Controller\management\cardMovement\CardsMastersMovementsNotifierController
   methods: GET

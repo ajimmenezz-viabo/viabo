@@ -27,14 +27,15 @@ final readonly class SendMastersCardsMovements
                 return;
             }
 
+            $todayDate = $this->date->now();
             $email = new Email(
                 [$card['ownerEmail']] ,
-                "Notificación de Viabo - Resumen de Movimientos de Tarjeta Maestras" ,
+                "Notificación de Viabo - Resumen de Movimientos de Cuentas Maestras - {$todayDate}" ,
                 'management/notification/emails/summary.masters.cards.movements.today.html.twig' ,
                 [
                     'ownerName' => $card['ownerName'] ,
                     'cardsMovements' => $card['cardsMovements'] ,
-                    'date' => $this->date->now()
+                    'date' => $todayDate
                 ]
             );
 
@@ -54,6 +55,7 @@ final readonly class SendMastersCardsMovements
             }
             if (!empty($card['movements'])) {
                 $commerceMasterCards[$commerceId]['cardsMovements'][] = [
+                    'paymentProcessor' => $card['paymentProcessor'] ,
                     'cardNumber' => $card['number'] ,
                     'movements' => $card['movements']
                 ];

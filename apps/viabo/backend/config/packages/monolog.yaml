@@ -1,13 +1,17 @@
 # config/packages/prod/monolog.yaml
 monolog:
-    channels: ['commission']
+    channels: ['commission','notifications']
     handlers:
         management_billing_commission:
             level: error
             type: stream
             path: "%kernel.project_dir%/log/%kernel.environment%/management/CommissionBilling.log"
             channels: ['commission']
-
+        management_notifications:
+            level: error
+            type: stream
+            path: "%kernel.project_dir%/log/%kernel.environment%/management/Notifications.log"
+            channels: ['notifications']
         file_log:
             type: stream
             path: "%kernel.project_dir%/log/%kernel.environment%/%kernel.environment%.log"

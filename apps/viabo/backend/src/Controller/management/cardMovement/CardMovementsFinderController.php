@@ -28,10 +28,10 @@ final readonly class CardMovementsFinderController extends ApiController
                 $initialDate ,
                 $finalDate ,
                 $credentialData->data['clientKey'] ,
-                $operationData->operations
+                $operationData->data
             ));
 
-            return new JsonResponse($this->opensslEncrypt($data->movements));
+            return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Notificación de Viabo</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 10px;
+            }
+
+            td {
+                padding-left: 5px;
+                text-align: left;
+            }
+
+            img {
+                width: 150px;
+            }
+        </style>
+    </head>
+    <body style="font-family: Arial,Helvetica,sans-serif;font-size: 14px;line-height: 1.5;color:white">
+        <div style="margin: 0 auto;
+            max-width: 600px;
+            padding: 20px;
+            box-shadow: 0 1px 20px rgb(0,0,0.1);
+            border-bottom: 10px solid #4715B2;
+            background-color:black;">
+            <table>
+                <caption></caption>
+                <tr><th></th></tr>
+                <tr>
+                    <td>
+                        <img src="https://viabo.com/img/logo.png" alt="Logo viabo">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="font-size:20px;font-weight:bold;text-align:center;text-transform:capitalize;color:white">
+                            Resumen de Movimientos de la Tarjeta
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="font-size:20px;font-weight:bold;text-align:center;text-transform:capitalize;color:white">
+                            {{ cardNumber }}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <table> <caption></caption><tr><th></th></tr></table>
+            <table style="font-size:14px;font-weight:bold;text-align:center;color:white">
+                <caption></caption>
+                <tr><th></th></tr>
+                <tr>
+                    <td>
+                        <p style="text-align:center">
+                            Hola {{ ownerName }} este el resumen de los movimientos de la fecha {{ date }}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <table style="font-size:12px;text-align:left;color:white">
+                <caption></caption>
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom-style: groove;"></tr>
+                    {% for movement in movements %}
+                        <tr style="border-bottom-style: groove;">
+                            <td style="width:40%"> {{ movement.description }} </td>
+                            <td style="width:40%">{{ movement.date }} </td>
+                            <td style="width:20%">{{ movement.amount }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table>
+                <caption></caption>
+                <tr><th></th></tr>
+                <tr>
+                    <td style="font-size:12px;text-align:center;color:white;opacity:0.5;padding:0;">
+                        <p>Gracias por no responder este correo</p>
+                        <p>Dudas o aclaraciones dirigirse al área correspondiente de la empresa.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -27,9 +27,9 @@ final readonly class CardAssignerControllerInCommerce extends ApiController
             $commerceCredentialsData = $this->ask(new CommerceCredentialQuery($formalCommerceData->formalCommerce['id']));
             $this->dispatch(new CreateCardCredentialCommand(
                 $data['cardId'] ,
-                $commerceCredentialsData->credential['mainKey'] ,
-                $commerceCredentialsData->credential['masterCardKey'] ,
-                $commerceCredentialsData->credential['carnetKey']
+                $commerceCredentialsData->data['mainKey'] ,
+                $commerceCredentialsData->data['masterCardKey'] ,
+                $commerceCredentialsData->data['carnetKey']
             ));
             $cardCredential = $this->ask(new CardCredentialQuery($data['cardId']));
             $this->dispatch(new UpdateCardSETDataCommand($data['cardId'] , $cardCredential->data));

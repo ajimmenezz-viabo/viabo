@@ -6,7 +6,6 @@ namespace Viabo\management\notifications\application\SendCardSPEIKey;
 
 use Viabo\management\notifications\domain\exceptions\NotificationDataEmpty;
 use Viabo\management\notifications\domain\exceptions\NotificationEmailEmpty;
-use Viabo\shared\domain\qr\QRCodeAdapter;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 

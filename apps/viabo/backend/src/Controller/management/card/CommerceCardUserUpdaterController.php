@@ -25,7 +25,7 @@ final readonly class CommerceCardUserUpdaterController extends ApiController
             $this->dispatch(new CreateUserCommand($data['name'] , $data['email'] , $data['phone']));
             $userData = $this->ask(new FindUserQuery('' , $data['email']));
 
-            $userId = $userData->userData['id'];
+            $userId = $userData->data['id'];
             $this->dispatch(new CreateCommerceUserCommand($userId , $data['cards']));
 
             $this->dispatch(new UpdateCardOwnerCommand($data['cards'] , $userId));

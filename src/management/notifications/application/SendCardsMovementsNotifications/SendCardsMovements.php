@@ -25,15 +25,16 @@ final readonly class SendCardsMovements
             return;
         }
 
+        $todayDate = $this->date->now();
         $email = new Email(
             [$ownerEmail] ,
-            "Notificación de Viabo - Resumen de Movimientos de Tarjeta" ,
+            "Notificación de Viabo - Resumen de Movimientos de Tarjeta - {$todayDate}" ,
             'management/notification/emails/summary.card.movements.today.html.twig' ,
             [
                 'ownerName' => $ownerName ,
                 'cardNumber' => $cardNumber ,
                 'movements' => $movements ,
-                'date' => $this->date->now()
+                'date' => $todayDate
             ]
         );
 

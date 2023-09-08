@@ -178,6 +178,14 @@ final class Card extends AggregateRoot
         return $this->cvv->isDifferent($cvv->valueDecrypt()) || $this->expirationDate->isDifferent($expiration->value());
     }
 
+    /**
+     * @return CardPaymentProcessorId
+     */
+    public function paymentProcessorId(): CardPaymentProcessorId
+    {
+        return $this->paymentProcessorId;
+    }
+
     private function updateBalance(mixed $value): CardBalance
     {
         return $this->balance->update($value);

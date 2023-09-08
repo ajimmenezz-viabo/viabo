@@ -15,6 +15,8 @@ interface CardRepository
 
     public function searchCriteria(Criteria $criteria): array;
 
+    public function searchCardInformationView(Criteria $criteria):array;
+
     public function searchView(Criteria $criteria): array;
 
     public function update(Card $card): void;

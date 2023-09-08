@@ -6,6 +6,7 @@ namespace Viabo\management\card\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\management\card\domain\Card;
+use Viabo\management\card\domain\CardInformationView;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\CardView;
 use Viabo\management\shared\domain\card\CardId;
@@ -40,6 +41,12 @@ final class CardDoctrineRepository extends DoctrineRepository implements CardRep
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(CardView::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function searchCardInformationView(Criteria $criteria): array
+    {
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(CardInformationView::class)->matching($criteriaConvert)->toArray();
     }
 
     public function update(Card $card): void

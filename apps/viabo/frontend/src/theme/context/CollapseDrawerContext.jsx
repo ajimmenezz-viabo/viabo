@@ -10,7 +10,8 @@ const initialState = {
   collapseHover: false,
   onToggleCollapse: () => {},
   onHoverEnter: () => {},
-  onHoverLeave: () => {}
+  onHoverLeave: () => {},
+  setCollapse: () => {}
 }
 
 const CollapseDrawerContext = createContext(initialState)
@@ -54,6 +55,11 @@ function CollapseDrawerProvider({ children }) {
     <CollapseDrawerContext.Provider
       value={{
         isCollapse: Boolean(collapse.click && !collapse.hover),
+        setCollapse: value =>
+          setCollapse({
+            click: value,
+            hover: false
+          }),
         collapseClick: collapse.click,
         collapseHover: collapse.hover,
         onToggleCollapse: handleToggleCollapse,
@@ -66,4 +72,4 @@ function CollapseDrawerProvider({ children }) {
   )
 }
 
-export { CollapseDrawerProvider, CollapseDrawerContext }
+export { CollapseDrawerContext, CollapseDrawerProvider }

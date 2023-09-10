@@ -39,7 +39,7 @@ export function AuthGuard({ children }) {
         modules?.menu
           ?.flatMap(category => category.modules)
           .find(module => module.path.toLowerCase() === pathname?.toLowerCase())
-      ) || isInPermissions,
+      ),
     [pathname, modules, isInPermissions]
   )
 

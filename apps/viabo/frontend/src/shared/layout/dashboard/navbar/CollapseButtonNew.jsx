@@ -10,7 +10,7 @@ CollapseButtonNew.propTypes = {
   isCollapse: PropTypes.bool
 }
 
-export default function CollapseButtonNew({ onToggleCollapse, collapseClick, isCollapse }) {
+export default function CollapseButtonNew({ onToggleCollapse, isCollapse }) {
   return (
     <IconButton
       size={'small'}
@@ -32,16 +32,16 @@ export default function CollapseButtonNew({ onToggleCollapse, collapseClick, isC
         padding: '4px',
         top: '28px',
         position: 'fixed',
-        left: !isCollapse ? '263px' : '71px',
+        left: !isCollapse ? '262px' : '62px',
         zIndex: theme => theme.zIndex.drawer + 1,
         border: '1px dashed rgba(145, 158, 171, 0.24)',
         backdropFilter: 'blur(6px)',
         lineHeight: 0,
         transition: theme =>
-          theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shorter
+          theme.transitions.create(['transform', 'left'], {
+            duration: 500
           }),
-        ...(collapseClick && {
+        ...(isCollapse && {
           transform: 'rotate(180deg)'
         })
       }}

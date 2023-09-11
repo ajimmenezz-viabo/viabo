@@ -13,5 +13,6 @@ export const PATH_AUTH = {
 }
 
 export const PATH_DASHBOARD = {
-  root: ROOTS_DASHBOARD
+  root: ROOTS_DASHBOARD,
+  'dashboard-master': path(ROOTS_DASHBOARD, '/dashboard-master')
 }

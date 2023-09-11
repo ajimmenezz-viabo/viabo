@@ -2,7 +2,6 @@ import { Backdrop, Box } from '@mui/material'
 import { useCollapseDrawer } from '@theme/hooks'
 
 import { CircularLoading } from '@/shared/components/loadings/CircularLoading'
-import { NAVBAR } from '@/theme/overrides/options'
 
 export function RequestLoading({ ...rest }) {
   const { isCollapse } = useCollapseDrawer()
@@ -10,14 +9,16 @@ export function RequestLoading({ ...rest }) {
   return (
     <Backdrop
       sx={theme => ({
-        position: 'absolute',
         height: '100vH',
-        left: {
-          lg: isCollapse ? NAVBAR.DASHBOARD_COLLAPSE_WIDTH : NAVBAR.DASHBOARD_WIDTH
-        },
+        display: 'flex',
+        position: 'relative',
+        alignItems: 'center',
+        top: 0,
+        left: 0,
+        justifyContent: 'center',
         backgroundColor: theme => theme.palette.mode === 'light' && 'rgba(244, 247, 252, 0.72)',
         backdropFilter: 'blur(40px)',
-        zIndex: theme => theme.zIndex.drawer - 1,
+        zIndex: theme => theme.zIndex.appBar - 1,
         transition: theme.transitions.create(['left', 'margin-left', 'width'], {
           duration: theme.transitions.duration.shorter
         })

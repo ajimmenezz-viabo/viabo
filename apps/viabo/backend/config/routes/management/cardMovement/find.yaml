@@ -12,3 +12,8 @@ notifications-cards-masters-movements:
   path: '/api/notifications/cards-masters/movements'
   controller: Viabo\Backend\Controller\management\cardMovement\CardsMastersMovementsNotifierController
   methods: GET
+
+find-cards-master-movements:
+  path: '/api/cards/movements/{initialDate}/to/{finalDate}'
+  controller: Viabo\Backend\Controller\management\cardMovement\CardsMasterMovementsFinderController
+  methods: GET

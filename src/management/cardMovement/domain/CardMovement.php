@@ -65,8 +65,17 @@ final class CardMovement
         foreach ($operations as $operation) {
             if ($this->transactionId->isSame($operation['payTransactionId'])) {
                 $type = "VIABO CARD";
-            } elseif ($this->type->isSpent()) {
+                break;
+            }
+
+            if ($this->transactionId->isSame($operation['reverseTransactionId'])) {
+                $type = "VIABO CARD";
+                break;
+            }
+
+            if ($this->type->isSpent()) {
                 $type = "OTROS CARGOS";
+                break;
             }
         }
         return $type;

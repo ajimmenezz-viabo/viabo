@@ -11,8 +11,12 @@ final readonly class CardsOperationsQueryHandler implements QueryHandler
     {
     }
 
-    public function __invoke(CardsOperationsQuery $query):Response
+    public function __invoke(CardsOperationsQuery $query): Response
     {
-        return $this->finder->__invoke($query->cardsInformation,$query->initialDate,$query->finalDate);
+        return $this->finder->__invoke(
+            $query->cardsInformation ,
+            "$query->initialDate 00:00:00" ,
+            "$query->finalDate 23:59:59"
+        );
     }
 }

@@ -10,6 +10,7 @@ export const GlobalCardsAdapter = cards => {
     return {
       ...card,
       id: card?.cardId,
+      SPEI: card?.spei,
       balanceFormatted: fCurrency(card?.balance),
       inTransitFormatted: fCurrency(card?.inTransit)
     }

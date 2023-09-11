@@ -1,1 +1,0 @@
-import{u as r,m as n,g as s,n as i}from"./index-6aaca417.js";import{v as u}from"./build-c7986fa8.js";const m=(e={})=>{const{enqueueSnackbar:o}=r();return n({mutationFn:u,onError:a=>{const t=s(a,"No se puede validar el código");o(t,{variant:i(a),autoHideDuration:5e3})},...e})};export{m as u};

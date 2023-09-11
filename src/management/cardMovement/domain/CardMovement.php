@@ -59,6 +59,18 @@ final class CardMovement
         }
     }
 
+    public function typeOperation(array $operations): string
+    {
+        $type = "SPEI";
+        foreach ($operations as $operation) {
+            if ($this->transactionId->isSame($operation['payTransactionId'])) {
+                $type = "VIABO CARD";
+            } elseif ($this->type->isSpent()) {
+                $type = "OTROS CARGOS";
+            }
+        }
+        return $type;
+    }
     public function toArray(): array
     {
         return [
@@ -69,5 +81,4 @@ final class CardMovement
             'type' => $this->type->value()
         ];
     }
-
 }

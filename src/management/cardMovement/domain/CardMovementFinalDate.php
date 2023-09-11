@@ -12,7 +12,7 @@ final class CardMovementFinalDate extends DateTimeValueObject
     public static function create(string $value): self
     {
         self::validate($value);
-        return new self($value);
+        return new self("$value 23:59:59");
     }
 
     public static function validate(string $value): void

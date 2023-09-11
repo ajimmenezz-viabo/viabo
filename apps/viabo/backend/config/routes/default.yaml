@@ -20,8 +20,22 @@ commerce:
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
 
-commerce-paths:
-  path: "/commerce/{any}"
+viabo-card-paths:
+  path: "/viabo-card/{any}"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"
+
+viabo-pay-paths:
+  path: "/viabo-pay/{any}"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"
+
+dashboard-master:
+  path: "/dashboard-master"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
   requirements:

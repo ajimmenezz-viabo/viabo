@@ -2,169 +2,187 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Transferencia en Proceso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferencia en proceso</title>
     <style>
-        table {
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .background-container {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
+            background-image: url('https://viabo.com/production_images/green_degradate.jpg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
         }
 
-        td {
-            padding-left: 5px;
+        .card-container {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background: transparent;
+            padding: 20px 35px;
+            max-width: 80%;
+            margin: auto;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .inner-card {
+            background-image: url('https://viabo.com/production_images/white_bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 85%;
+            margin: auto;
+            position: relative;
+        }
+
+        .logo {
+            height: 27px;
+            width: auto;
+            margin-right: 20px;
+            margin-bottom: 25px;
+        }
+
+        .title {
+            font-size: 24px;
+            color: #5C34F5;
             text-align: left;
+            margin: 0;
         }
 
-        img {
-            width: 150px;
+        .text {
+            font-size: 16px;
+            color: #808285;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #5C34F5;
+            color: #fff;
+            border: none;
+            padding: 7px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: justify;
+            margin-top: 20px;
+        }
+
+        .footer p {
+            font-size: 10px;
+            color: #808285;
+        }
+
+        .footer hr {
+            border: none;
+            border-top: 1px solid #808285;
+            margin: 10px 0;
+        }
+
+        .card-body-mail{
+            background:url('https://viabo.com/production_images/money_hand.jpg'); 
+            background-size:40%; 
+            background-repeat:no-repeat; 
+            background-position: top 30px right 0px;
+        }
+
+        .subtitle{
+            max-width:70%;
+            font-size:12px;
+            color:#808285;
+        }
+
+        .footer-table{
+            font-size:11px;
+            color:#808285;
+            text-align:center;
+            margin-top:25px;
+        }
+
+        .details-title{
+            font-weight:600;
+            font-size:13px;
+            margin-top:25px;
+            color: #5C34F5;
+        }
+
+        .details-table{
+            width:100%;
+            font-size:12px;
+        }
+
+        .details-table tr td{
+            padding: 8px 0px;
+            margin:0px;
+            border-bottom:1px solid #D0D0D0;            
+        }
+
+        .details-table tr td:first-child{
+            color:#808285;
+        }
+
+        .purple{
+            color: #5C34F5;
+            font-weight:600;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
-<body style="font-family: Arial,Helvetica,sans-serif;
-            font-size: 14px;
-            line-height: 1.5;
-            color:white">
-<div style="margin: 0 auto;
-            max-width: 500px;
-            padding: 20px;
-            box-shadow: 0 1px 20px rgb(0,0,0.1);
-            border-bottom: 10px solid #4715B2;
-            background-color:black;">
-    <table>
-        <tr>
-            <td>
-                <img src="https://viabo.com/img/logo.png" alt="Logo viabo">
-            </td>
-        </tr>
-        <tr>
-            <td style="vertical-align: middle;">
-                <p style="font-size: 20px; font-weight: bold; text-transform: capitalize; color: white; text-align: center;">
-                    Transferencia en Proceso
-                    <img data-emoji="⏳"
-                         alt="⏳"
-                         aria-label="⏳"
-                         style="width: auto !important; vertical-align: middle;"
-                         src="https://fonts.gstatic.com/s/e/notoemoji/15.0/23f3/32.png"
-                         loading="lazy">
-                </p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div style="
-
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            color: gray;
-      		">Se recibio una solicitud para realizar una transferencia, te compartimos los detalles.
+<body>
+    <div class="background-container">
+        <div class="card-container">
+            <div class="inner-card">
+                <div class="card-body-mail">
+                    <img src="https://viabo.com/production_images/viabo_purple_agil.jpg" alt="Logo de la empresa" class="logo">
+                    <h1 class="title">¡Transferencia<br>en proceso!</h1>
+                    <p class="subtitle">Hay una transferencia en tránsito, te compartimos los detalles:</p>
+                    <p class="details-title">Detalles de la operación:</p>
+                    <table class="details-table">
+                        <tr>
+                            <td>Fecha:</td>
+                            <td class="purple">{{ registerDate }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cuenta origen:</td>
+                            <td class="purple">{{ originCard }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cuenta destino:</td>
+                            <td class="purple">{{ destinationCard }}</td>
+                        </tr>
+                        <tr>
+                            <td>Monto:</td>
+                            <td class="purple">${{ balance }}</td>
+                        </tr>
+                    </table>
+                    <p class="footer-table">Gracias por no responder este correo.<br>Dudas o aclaraciones dirigirse al área correspondiente de la empresa.</p>                    
+                    <hr>
+                    <p class="footer-table">ayuda@viabo.com</p>
                 </div>
-            </td>
-        </tr>
-    </table>
-    <table></table>
-    <table>
-        <thead>
-        <tr>
-            <td>
-                <p style="  font-size: 18px;
-      		font-weight:bold;
-       		text-align: left;color:white"> Detalles de Operación: </p>
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="align-items: center;vertical-align: middle;border-bottom-style: groove;">
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-      		font-weight:bold;
-       		text-align: center;color:gray"> Fecha: </p>
-            </td>
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-                	text-align: center;
-      		font-weight:bold;
-       		;color:white">
-                    {{ registerDate }}
-                </p>
-            </td>
-        </tr>
-        <tr style="align-items: center;vertical-align: middle;border-bottom-style: groove;">
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-      		font-weight:bold;
-       		text-align: center;color:gray"> Cuenta Origen: </p>
-            </td>
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-                	text-align: center;
-      		font-weight:bold;
-       		;color:white">
-                    {{ originCard }}
-                </p>
-            </td>
-        </tr>
-        <tr style="align-items: center;vertical-align: middle;border-bottom-style: groove;">
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-      		font-weight:bold;
-       		text-align: center;color:gray"> Cuenta Destino: </p>
-            </td>
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-                	text-align: center;
-      		font-weight:bold;
-       		;color:white">
-                    {{ destinationCard }}
-                </p>
-            </td>
-        </tr>
-        <tr style="align-items: center;vertical-align: middle;border-bottom-style: groove;">
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-      		font-weight:bold;
-       		text-align: center;color:gray"> Monto: </p>
-            </td>
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-                	text-align: center;
-      		font-weight:bold;
-       		;color:white"> ${{ balance }}
-                </p>
-            </td>
-        </tr>
-        <tr style="align-items: center;vertical-align: middle;">
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-      		font-weight:bold;
-       		text-align: center;color:gray"> Referencia: </p>
-            </td>
-            <td style="width:50%">
-                <p style="  font-size: 14px;
-                	text-align: center;
-      		font-weight:bold;
-       		;color:white">
-                    {{ referencia }}
-                </p>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <table>
-        <tr>
-            <td style="	font-size: 12px;
-      		text-align: center;
-      		color:white;
-      		opacity:0.5;
-      		padding:0;">
-                <p>Gracias por no responder este correo</p>
-                <p>Dudas o aclaraciones dirigirse al área correspondiente de la empresa.</p>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-    </table>
-</div>
+            </div>
+            <div class="footer">
+                <hr>
+                <p>Aviso legal: Esta Alerta es para su referencia únicamente y ha sido generada automáticamente por viabo.com | Nosotros no hemos verificado el contenido de esta Alerta y por ello no tenemos responsabilidad sobre la misma. Usted debe efectuar su propia verificación y confirmación de la información, incluyendo sin limitación, el estatus de cualquier transacción señalada en la misma. Debido a que esta Alerta es enviada a través de Internet o por mensaje de texto SMS, por favor note que cualquier comunicación puede estar retrasada, interrumpida o podría fallar. En particular, los mensajes electrónicos enviados vía Internet no pueden garantizar ser entregados en tiempo, en forma segura o libre de error o virus, debido a que esta información puede ser interceptada, alterada, perdida, llegar retrasada o contener virus. Viabo Pay y los miembros del SE Transaccionales S.A.P.I. de C.V. (SET) no asumen ninguna responsabilidad por daños directos, indirectos o pérdidas derivadas de la utilización de esta Alerta sea causada por el banco o por terceras partes. La información contenida en esta Alerta es confidencial y puede estar legalmente protegida. Si usted no es el destinatario no puede copiar, enviar, revelar o usar ninguna parte de ella. Si usted ha recibido esta Alerta por error, por favor bórrela, elimine todas las copias de su sistema y notifique al remitente inmediatamente. Emitido por Viabo Pay.</p>
+                <hr>
+                <p>This e-mail is confidential. It may also be legally privileged. If you are not the addressee you may not copy, forward, disclose or use any part of it. If you have received this message in error, please delete it and all copies from your system and notify the sender immediately by return e-mail. Internet communications cannot be guaranteed to be timely, secure, error or virus-free. The sender does not accept liability for any errors or omissions.</p>
+                <hr>
+                <p>SAVE PAPER - THINK BEFORE YOU PRINT!</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

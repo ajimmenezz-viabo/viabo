@@ -1,7 +1,13 @@
 import { createStore } from '@/app/shared/store'
 
 const initialState = {
-  card: null
+  card: null,
+  isMaster: true,
+  movements: [],
+  balanceMovements: '$0.00',
+  income: '$0.00',
+  expenses: '$0.00',
+  filterPaymentProcessor: null
 }
 
 const masterGlobalsStore = (set, get) => ({
@@ -11,7 +17,7 @@ const masterGlobalsStore = (set, get) => ({
 
     set(
       state => ({
-        card: { ...card, ...cardSelected }
+        card: cardSelected
       }),
       false,
       'SET_GLOBAL_CARD'
@@ -26,14 +32,42 @@ const masterGlobalsStore = (set, get) => ({
       'RESET_GLOBAL_CARD'
     )
   },
-  addInfoGlobalCard: info => {
-    const { card } = get()
+  setIsMaster: isMaster => {
     set(
       state => ({
-        card: { ...card, ...info }
+        isMaster
       }),
       false,
-      'SET_INFO_GLOBAL_CARD'
+      'SET_IS_MASTER'
+    )
+  },
+  setMovements: movements => {
+    set(
+      state => ({
+        movements: movements?.movements || [],
+        balanceMovements: movements?.balanceMovements || '$0.00',
+        expenses: movements?.expenses || '$0.00',
+        income: movements?.income || '$0.00'
+      }),
+      false,
+      'SET_MASTER_MOVEMENTS'
+    )
+  },
+  getBalance: () => {
+    const { balanceMovements, income, expenses } = get()
+    return {
+      balanceMovements,
+      income,
+      expenses
+    }
+  },
+  setFilterPaymentProcessor: filterPaymentProcessor => {
+    set(
+      state => ({
+        filterPaymentProcessor
+      }),
+      false,
+      'SET_FILTER_PAYMENT_PROCESSOR'
     )
   }
 })

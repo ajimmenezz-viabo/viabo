@@ -31,6 +31,7 @@
     "material-react-table": "1.14.0",
     "mui-chips-input": "2.0.2",
     "mui-datatables": "4.3.0",
+    "mui-daterange-picker-orient": "^1.0.1",
     "mui-one-time-password-input": "1.2.5",
     "mui-tel-input": "3.2.2",
     "notistack": "3.0.1",

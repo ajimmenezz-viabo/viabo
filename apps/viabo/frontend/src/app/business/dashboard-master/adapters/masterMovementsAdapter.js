@@ -13,7 +13,13 @@ export const MasterMovementsAdapter = movements => {
     movements:
       decryptedMovements?.map(movement => {
         const amount = parseFloat(movement?.amount || '0')
-        movement?.type.toLowerCase() === 'gasto' ? (expenses += amount) : (income += amount)
+        if (movement?.type.toLowerCase() === 'gasto') {
+          expenses += amount
+        }
+        if (movement?.type.toLowerCase() === 'ingreso') {
+          income += amount
+        }
+
         const date = movement?.date ? format(new Date(movement?.date), 'dd MMM yyyy', { locale: es }) : ''
         const time = movement?.date ? format(new Date(movement?.date), 'p') : ''
         return {

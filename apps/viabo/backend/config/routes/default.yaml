@@ -1,3 +1,12 @@
+privacy:
+  path: "/privacy"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+policies:
+  path: "/policies"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+
 commerce-register:
   path: "/comercio/registro"
   controller: Viabo\Backend\Controller\RoutesFrontendController

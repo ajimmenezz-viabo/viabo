@@ -1,1 +1,0 @@
-import{b7 as o,x as u,b8 as l,r as b,b9 as g}from"./index-ce4036dc.js";function x(r,n,a){const[t,c={}]=o(r,n,a),e=u({context:c.context}),s=e.getQueryCache();return l(b.useCallback(i=>s.subscribe(g.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{x as u};

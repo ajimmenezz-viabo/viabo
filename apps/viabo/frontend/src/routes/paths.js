@@ -16,3 +16,8 @@ export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   'dashboard-master': path(ROOTS_DASHBOARD, '/dashboard-master')
 }
+
+export const PUBLIC_PATHS = {
+  privacy: '/privacy',
+  policies: '/policies'
+}

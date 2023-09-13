@@ -71,7 +71,7 @@ final readonly class FinderCardsMasterMovements
             return [
                 'date' => $date->formatDateTime($transaction['transaction_date']),
                 'description' => $description,
-                'concept' => $transaction['result_message'],
+                'concept' => '',
                 'amount' => $transaction['amount'],
                 'type' => "Terminal",
                 'typeOperation' => "VIABO PAY",

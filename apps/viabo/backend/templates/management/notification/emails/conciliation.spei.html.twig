@@ -157,13 +157,15 @@
             padding:10px;
         }
 
-        .btn-api a{
+        .btn-api-format{
+            display: inline-block;
             background-color: #5C34F5;
             padding: 10px 20px;
             color: #fff;
             text-decoration:none;
             font-size:13px;
             border-radius: 10px;
+            margin-bottom: 10px;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -183,13 +185,15 @@
                     <hr>
                     {% endif %}
 
-                    {% if urlPayCash|default %}
+                    {% if urlPayCashFormat|default %}
                     <div class="btn-api">
-                        <a href="{{ urlPayCash }}" target="_blank">Pago en efectivo</a>
+                        <a class="btn-api-format" style="color:#f6f6f6" href="{{ urlPayCashFormat }}" target="_blank">Pago en efectivo</a>
+                        <br>
+                        <a href="{{ urlPayCashDownload }}" target="_blank">Descargar Instrucciones</a>
                     </div>
                     <hr>
                     {% endif %}
-                    <table class="details-table">           
+                    <table class="details-table">
                         <tr>
                             <td class="fist-td">Monto:</td>
                             <td class="purple">{{ amount }}</td>
@@ -201,8 +205,8 @@
                     </table>
                     <p class="footer-table">En caso de enviar los fondos a través de SPEI, por favor agregue la referencia de
                         este correo.</p>
-                    {% if urlPayCash|default %}
-                    <p class="footer-table">Copie y pegue la siguiente url en su navegador si el botón para pago en efectivo no funciona: <br>{{ urlPayCash }}</p>
+                    {% if urlPayCashFormat|default %}
+                    <p class="footer-table">Copie y pegue la siguiente url en su navegador si el botón para pago en efectivo no funciona: <br>{{ urlPayCashFormat }}</p>
                     {% endif %}
                     <p class="footer-table">Gracias por no responder este correo.<br>Dudas o aclaraciones dirigirse al área correspondiente de la empresa.
                     </p>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { AccountBalance, NorthEast, SouthWest } from '@mui/icons-material'
+import { AccountBalance, Contactless, NorthEast, SouthWest } from '@mui/icons-material'
 import { Avatar, Box, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { MobileDatePicker } from '@mui/x-date-pickers'
 import { endOfMonth, startOfMonth } from 'date-fns'
@@ -77,6 +77,8 @@ export function MasterMovements() {
                 >
                   {cardLogo ? (
                     <CardLogoComponent sx={{ width: 25, height: 25 }} />
+                  ) : rowData?.type === 'terminal' ? (
+                    <Contactless color="primary" width={24} height={24} />
                   ) : (
                     <AccountBalance width={24} height={24} />
                   )}

@@ -9,6 +9,7 @@ use Viabo\management\cardMovement\domain\CardMovementInitialDate;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
+use Viabo\shared\domain\utils\DatePHP;
 
 final readonly class FinderCardsMasterMovements
 {
@@ -19,10 +20,12 @@ final readonly class FinderCardsMasterMovements
     public function __invoke(
         array                   $cardsInformation,
         array                   $operations,
+        array                   $payTransactions,
         CardMovementInitialDate $initialDate ,
         CardMovementFinalDate   $finalDate
     ): CardsMovementsResponse
     {
+        $payTransactions = $this->payTransactionsApproved($payTransactions);
         $allMovements = [];
         foreach ($cardsInformation as $card) {
             $cardNumber = CardNumber::create($card['cardNumber']);
@@ -32,7 +35,10 @@ final readonly class FinderCardsMasterMovements
             $movements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
             $allMovements = array_merge($allMovements,$this->movementsData($operations , $movements,$card['paymentProcessor']));
         }
-        return new CardsMovementsResponse($allMovements);
+
+        $masterAllMovements = array_merge($allMovements,$payTransactions);
+
+        return new CardsMovementsResponse($masterAllMovements);
     }
 
     private function movementsData(array $operations , mixed $movements,string $paymentProcessor): array
@@ -54,5 +60,27 @@ final readonly class FinderCardsMasterMovements
         } , array_filter($movements , function (array $movementData) {
             return !empty($movementData['Transaction_Id']);
         }));
+    }
+
+    private function payTransactionsApproved(array $payTransactions): array
+    {
+        $data = array_map(function (array $transaction){
+            $description = "{$transaction['result_message']} en {$transaction['terminal_name']}";
+            $date = new DatePHP();
+
+            return [
+                'date' => $date->formatDateTime($transaction['transaction_date']),
+                'description' => $description,
+                'concept' => $transaction['result_message'],
+                'amount' => $transaction['amount'],
+                'type' => "Terminal",
+                'typeOperation' => "VIABO PAY",
+                'paymentProcessor' => "Terminal",
+            ];
+        }  , array_filter($payTransactions , function (array $payTransactionsData) {
+            return $payTransactionsData['approved'];
+        }));
+
+        return array_values($data);
     }
 }

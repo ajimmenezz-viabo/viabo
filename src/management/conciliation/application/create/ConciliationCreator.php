@@ -11,7 +11,9 @@ use Viabo\management\conciliation\domain\ConciliationReferencePayCash;
 use Viabo\management\conciliation\domain\ConciliationRepository;
 use Viabo\management\conciliation\domain\ConciliationSpei;
 use Viabo\management\conciliation\domain\exceptions\ConciliationTypeChargeNotDefine;
+use Viabo\management\conciliation\domain\PayCashData;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\management\shared\domain\paymentCash\PaymentCashAdapter;
 use Viabo\shared\domain\bus\event\EventBus;
 
@@ -30,20 +32,29 @@ final readonly class ConciliationCreator
         ConciliationSpei             $spei ,
         ConciliationEmails           $emails ,
         ConciliationReferencePayCash $referencePayCash ,
-        string                       $cardNumber ,
-        array                        $apiData
+        CardNumber                   $cardNumber ,
+        PayCashData                  $payCashData
     ): ConciliationResponse
     {
-        $conciliation = Conciliation::create($cardId , $amount , $spei , $emails , $referencePayCash);
+        $conciliation = Conciliation::create(
+            $cardId ,
+            $cardNumber ,
+            $amount ,
+            $spei ,
+            $emails ,
+            $referencePayCash ,
+            $payCashData
+        );
 
         if ($conciliation->isNotTypeCharge()) {
             throw new ConciliationTypeChargeNotDefine();
         }
 
         if ($conciliation->isDefineTypeChargePayCash()) {
-            $conciliation->setCardNumber($cardNumber);
-            $reference = $this->adapter->reference($conciliation , $apiData);
+            $reference = $this->adapter->createReference($conciliation);
             $conciliation->updateReferencePayCash($reference);
+            $referenceData = $this->adapter->searchReference($conciliation);
+            $conciliation->setPayCashInstructionsUrl($referenceData);
         }
 
         $this->repository->save($conciliation);

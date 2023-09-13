@@ -25,9 +25,9 @@ final readonly class SendConciliationSPEI implements DomainEventSubscriber
     public function __invoke(ConciliationCreatedDomainEvent $event): void
     {
         $conciliationData = $event->toPrimitives();
+        $payCashUrls = $event->payCashUrls();
         $emails = explode(',' , $conciliationData['emails']);
 
-        $barcode = $this->adapter->generatorBarcode($conciliationData['referencePayCash']);
         $email = new Email(
             $emails ,
             "Notificación de Viabo - Orden de Fondeo" ,
@@ -37,7 +37,8 @@ final readonly class SendConciliationSPEI implements DomainEventSubscriber
                 'amount' => NumberFormat::money(floatval($conciliationData['amount'])) ,
                 'referenceNumber' => $conciliationData['referenceNumber'] ,
                 'referencePayCash' => $conciliationData['referencePayCash'] ,
-                'barcodePayCash' => $barcode
+                'urlPayCashFormat' => $payCashUrls['format'] ,
+                'urlPayCashDownload' => $payCashUrls['download']
             ]
         );
 

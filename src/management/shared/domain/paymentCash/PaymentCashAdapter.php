@@ -8,5 +8,7 @@ use Viabo\management\conciliation\domain\Conciliation;
 
 interface PaymentCashAdapter
 {
-    public function reference(Conciliation $conciliation, array $apiData): string;
+    public function createReference(Conciliation $conciliation): string;
+
+    public function searchReference(Conciliation $conciliation): array;
 }

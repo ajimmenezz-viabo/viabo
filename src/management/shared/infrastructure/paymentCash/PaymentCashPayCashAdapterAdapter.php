@@ -9,18 +9,14 @@ use Viabo\management\shared\domain\paymentCash\PaymentCashAdapter;
 
 final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
 {
-    private string $key = '';
-    private string $url = '';
 
-    public function reference(Conciliation $conciliation , array $apiData): string
+    public function createReference(Conciliation $conciliation): string
     {
-        $this->key = $apiData['key'];
-        $this->url = $apiData['url'];
-
+        $payCashData = $conciliation->payCashData();
         $data = [
-            'url' => "$this->url/v1/reference" ,
+            'url' => "{$payCashData['url']}/v1/reference" ,
             'method' => 'POST' ,
-            'token' => $this->token() ,
+            'token' => $this->token($payCashData['key'] , $payCashData['url']) ,
             'fields' => [
                 'Amount' => $conciliation->amount()->value() ,
                 'ExpirationDate' => '' ,
@@ -32,9 +28,26 @@ final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
         return $response['Reference'];
     }
 
-    private function token(): string
+    public function searchReference(Conciliation $conciliation): array
     {
-        $data = ['url' => "$this->url/v1/authre?key=$this->key" , 'method' => 'GET'];
+        $payCashData = $conciliation->payCashData();
+        $reference = $conciliation->payCashReference();
+        $data = [
+            'url' => "{$payCashData['url']}/v1/search?Reference={$reference->value()}" ,
+            'method' => 'GET' ,
+            'token' => $this->token($payCashData['key'] , $payCashData['url'])
+        ];
+        $response = $this->request($data);
+        if (array_key_exists('paging' , $response)) {
+            return empty($response['paging']['results']) ? [] : $response['paging']['results'][0];
+        }
+
+        return [];
+    }
+
+    private function token(string $key , string $url): string
+    {
+        $data = ['url' => "$url/v1/authre?key=$key" , 'method' => 'GET'];
         $response = $this->request($data);
         return $response['Authorization'];
     }
@@ -84,7 +97,6 @@ final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
 
     private function hasError(array $response): bool
     {
-        return !array_key_exists('ErrorCode' , $response) || !empty($response['ErrorCode']);
+        return !array_key_exists('ErrorCode' , $response) && !empty($response['ErrorCode']);
     }
-
 }

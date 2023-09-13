@@ -20,19 +20,21 @@ final readonly class ConciliationCreatorController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             $this->validateSession();
             $data = $request->toArray();
-            $api = $this->ask(new ApiQuery('Pay_Cash'));
+            $payCash = $this->ask(new ApiQuery('Pay_Cash'));
+            $payCashInstructions = $this->ask(new ApiQuery('Pay_Cash_Instructions'));
             $card = $this->ask(new CardQuery($data['cardId']));
-            $data = $this->ask(new CreateConciliationCommand(
+            $conciliation = $this->ask(new CreateConciliationCommand(
                 $data['cardId'] ,
                 $card->data['number'] ,
                 $data['amount'] ,
                 $data['emails'] ,
                 $data['spei'] ,
                 $data['payCash'] ,
-                $api->data
+                $payCash->data,
+                $payCashInstructions->data
             ));
 
-            return new JsonResponse($this->opensslEncrypt($data->data));
+            return new JsonResponse($this->opensslEncrypt($conciliation->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

@@ -14,8 +14,9 @@ final readonly class CreateConciliationCommand implements Query
         public string $amount ,
         public array  $emails ,
         public string $spei ,
-        public string $payCash ,
-        public array  $apiData
+        public string $payCashOption ,
+        public array  $payCashData,
+        public array  $payCashInstructionsData
     )
     {
     }

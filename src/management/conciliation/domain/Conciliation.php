@@ -6,47 +6,52 @@ namespace Viabo\management\conciliation\domain;
 
 use Viabo\management\conciliation\domain\events\ConciliationCreatedDomainEvent;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Conciliation extends AggregateRoot
 {
-    private string $cardNumber;
 
     public function __construct(
         private ConciliationId               $id ,
         private ConciliationReferenceNumber  $referenceNumber ,
         private CardId                       $cardId ,
+        private CardNumber                   $cardNumber ,
         private ConciliationAmount           $amount ,
         private ConciliationSpei             $spei ,
         private ConciliationReferencePayCash $referencePayCash ,
         private ConciliationMovementNumber   $movementNumber ,
         private ConciliationEmails           $emails ,
         private ConciliationRegisterDate     $registerDate ,
-        private ConciliationActive           $active
+        private ConciliationActive           $active ,
+        private PayCashData                  $payCashData
     )
     {
-        $this->cardNumber = '';
     }
 
     public static function create(
         CardId                       $cardId ,
+        CardNumber                   $cardNumber ,
         ConciliationAmount           $amount ,
         ConciliationSpei             $spei ,
         ConciliationEmails           $emails ,
-        ConciliationReferencePayCash $referencePayCash
+        ConciliationReferencePayCash $referencePayCash ,
+        PayCashData                  $payCashData
     ): static
     {
         return new static(
             ConciliationId::random() ,
             ConciliationReferenceNumber::random() ,
             $cardId ,
+            $cardNumber ,
             $amount ,
             $spei ,
             $referencePayCash ,
             new ConciliationMovementNumber('') ,
             $emails ,
             ConciliationRegisterDate::todayDate() ,
-            new ConciliationActive('1')
+            new ConciliationActive('1') ,
+            $payCashData
         );
     }
 
@@ -58,6 +63,11 @@ final class Conciliation extends AggregateRoot
     public function referenceNumber(): ConciliationReferenceNumber
     {
         return $this->referenceNumber;
+    }
+
+    public function payCashReference(): ConciliationReferencePayCash
+    {
+        return $this->referencePayCash;
     }
 
     public function isNotTypeCharge(): bool
@@ -77,22 +87,36 @@ final class Conciliation extends AggregateRoot
 
     public function setEventCreated(): void
     {
-        $this->record(new ConciliationCreatedDomainEvent($this->id->value() , $this->toArray()));
+        $this->record(new ConciliationCreatedDomainEvent(
+            $this->id->value() , $this->payCashInstructionsUrls() , $this->toArray()
+        ));
     }
 
     public function payCashKey(): string
     {
-        return "SETVIABO-{$this->referenceNumber->value()}-{$this->cardNumberLast8Digits()}";
+        return "SETVIABO-{$this->referenceNumber->value()}-{$this->cardNumber->last8Digits()}";
     }
 
-    public function setCardNumber(string $cardNumber): void
+    public function payCashData(): array
     {
-        $this->cardNumber = $cardNumber;
+        return $this->payCashData->toArray();
     }
 
-    private function cardNumberLast8Digits(): string
+    public function setPayCashInstructionsUrl(array $referenceData): void
     {
-        return substr($this->cardNumber , -8);
+        if (empty($referenceData)) {
+            return;
+        }
+
+        $this->payCashData->setInstructionsUrls(
+            strval($referenceData['SenderId']) ,
+            $this->referencePayCash->base64Encode()
+        );
+    }
+
+    private function payCashInstructionsUrls(): array
+    {
+        return $this->payCashData->instructionsUrls();
     }
 
     public function toArray(): array

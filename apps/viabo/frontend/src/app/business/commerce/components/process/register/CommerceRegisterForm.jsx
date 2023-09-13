@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   IconButton,
   InputAdornment,
+  Link,
   Stack,
   TextField,
   Typography
@@ -25,6 +26,7 @@ import { useRegisterCommerce } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { propTypesStore } from '@/app/business/commerce/store'
 import { commerceRegisterValidation } from '@/app/business/commerce/validations'
+import { PUBLIC_PATHS } from '@/routes'
 import { AlertWithFocus } from '@/shared/components/alerts'
 
 CommerceRegisterForm.propTypes = {
@@ -226,13 +228,25 @@ function CommerceRegisterForm({ store }) {
               label={
                 <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
                   He leído y acepto los &nbsp;
-                  <RouterLink underline="always" color="primary" href=".#">
-                    Terminos
-                  </RouterLink>
-                  &nbsp; y &nbsp;
-                  <RouterLink underline="always" color="text.secondary" href=".#">
+                  <Link
+                    component={RouterLink}
+                    underline="always"
+                    color="info.main"
+                    to={PUBLIC_PATHS.policies}
+                    target="_blank"
+                  >
+                    Términos y condiciones
+                  </Link>
+                  &nbsp; & &nbsp;
+                  <Link
+                    component={RouterLink}
+                    underline="always"
+                    color="info.main"
+                    to={PUBLIC_PATHS.privacy}
+                    target="_blank"
+                  >
                     Acuerdos de privacidad
-                  </RouterLink>
+                  </Link>
                   .
                 </Typography>
               }

@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import { useRegisterDemoUser } from '@/app/business/viabo-card/register-cards/hooks'
 import { CARD_ASSIGN_PROCESS_LIST } from '@/app/business/viabo-card/register-cards/services'
 import { useCardUserAssign } from '@/app/business/viabo-card/register-cards/store'
+import { PUBLIC_PATHS } from '@/routes'
 import { FormProvider, RFTextField } from '@/shared/components/form'
 import { axios } from '@/shared/interceptors'
 
@@ -128,11 +129,23 @@ export default function FormRegisterDemoUserCard() {
               label={
                 <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
                   He leído y acepto los &nbsp;
-                  <Link component={RouterLink} color="primary" href="#">
-                    Términos
+                  <Link
+                    component={RouterLink}
+                    underline="always"
+                    color="info.main"
+                    to={PUBLIC_PATHS.policies}
+                    target="_blank"
+                  >
+                    Términos y condiciones
                   </Link>
                   &nbsp; & &nbsp;
-                  <Link component={RouterLink} color="primary" href="#">
+                  <Link
+                    component={RouterLink}
+                    underline="always"
+                    color="info.main"
+                    to={PUBLIC_PATHS.privacy}
+                    target="_blank"
+                  >
                     Acuerdos de privacidad
                   </Link>
                   .

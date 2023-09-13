@@ -13,6 +13,7 @@ import * as Yup from 'yup'
 import { ChargePaymentAdapter } from '../adapters'
 import { useCreatePaymentCharge } from '../hooks'
 
+import { PUBLIC_PATHS } from '@/routes'
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { MasterCardLogo, VisaLogo } from '@/shared/components/images'
 
@@ -237,11 +238,11 @@ export const ChargePaymentForm = ({ details }) => {
 
         <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
           Al hacer clic en el botón de Pagar, accedo a los &nbsp;
-          <Link component={RouterLink} underline="always" color="info.main">
-            Terminos y condiciones
+          <Link component={RouterLink} underline="always" color="info.main" to={PUBLIC_PATHS.policies} target="_blank">
+            Términos y condiciones
           </Link>
           &nbsp; & &nbsp;
-          <Link component={RouterLink} underline="always" color="info.main">
+          <Link component={RouterLink} underline="always" color="info.main" to={PUBLIC_PATHS.privacy} target="_blank">
             Acuerdos de privacidad
           </Link>
           .

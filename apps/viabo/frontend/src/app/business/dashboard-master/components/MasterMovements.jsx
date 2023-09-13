@@ -62,6 +62,7 @@ export function MasterMovements() {
         Cell: ({ cell, column, row }) => {
           const { original: rowData } = row
           const isIncome = rowData?.type === 'ingreso'
+          const isViaboPay = rowData?.type === 'terminal'
           const cardLogo = getCardTypeByName(rowData?.paymentProcessor)
           const CardLogoComponent = cardLogo?.component
           return (
@@ -77,7 +78,7 @@ export function MasterMovements() {
                 >
                   {cardLogo ? (
                     <CardLogoComponent sx={{ width: 25, height: 25 }} />
-                  ) : rowData?.type === 'terminal' ? (
+                  ) : isViaboPay ? (
                     <Contactless color="primary" width={24} height={24} />
                   ) : (
                     <AccountBalance width={24} height={24} />
@@ -96,12 +97,12 @@ export function MasterMovements() {
                     color: 'common.white',
                     bgcolor: 'error.main',
                     justifyContent: 'center',
-                    ...(isIncome && {
+                    ...((isIncome || isViaboPay) && {
                       bgcolor: 'success.main'
                     })
                   }}
                 >
-                  {isIncome ? (
+                  {isIncome || isViaboPay ? (
                     <SouthWest sx={{ width: 10, height: 10 }} />
                   ) : (
                     <NorthEast sx={{ width: 10, height: 10 }} />
@@ -110,7 +111,7 @@ export function MasterMovements() {
               </Box>
               <Stack flexWrap={'wrap'} sx={{ ml: 2 }}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {isIncome ? 'Recibe dinero de: ' : 'Retiro de dinero en:'}
+                  {isIncome || isViaboPay ? 'Recibe dinero de: ' : 'Retiro de dinero en:'}
                 </Typography>
                 <Typography variant="subtitle2" sx={{ textWrap: 'wrap' }}>
                   {rowData?.description}
@@ -164,9 +165,10 @@ export function MasterMovements() {
         Cell: ({ cell, column, row }) => {
           const { original: rowData } = row
           const isIncome = rowData?.type === 'ingreso'
+          const isViaboPay = rowData?.type === 'terminal'
           return (
-            <Typography variant="subtitle2" fontWeight="bold" color={isIncome ? 'success.main' : 'error'}>
-              {isIncome ? `+ ${rowData?.amountFormatted}` : `- ${rowData?.amountFormatted}`}
+            <Typography variant="subtitle2" fontWeight="bold" color={isIncome || isViaboPay ? 'success.main' : 'error'}>
+              {isIncome || isViaboPay ? `+ ${rowData?.amountFormatted}` : `- ${rowData?.amountFormatted}`}
             </Typography>
           )
         }

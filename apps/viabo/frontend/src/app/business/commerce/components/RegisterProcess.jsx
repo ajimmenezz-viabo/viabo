@@ -41,14 +41,12 @@ export const RegisterProcess = () => {
   return (
     <Box
       sx={{
-        height: { xs: '100%', sm: '100%', md: '100%', lg: '100vh', xl: 'calc(100vh - 100px)' },
-        minHeight: { xs: '100vH', sm: '100vh', md: '100vh', lg: '100vh', xl: '600px' },
+        height: { xs: '100%', sm: '100%', md: '100%', lg: '100vh', xl: '100vh' },
         display: 'flex',
         flexDirection: 'column',
         overflow: 'auto',
         zIndex: 1
       }}
-      className="animate__animated animate__fadeIn"
     >
       <Suspense fallback={<LoadingSuspense />}>
         {actualProcess !== PROCESS_LIST.REGISTER && (

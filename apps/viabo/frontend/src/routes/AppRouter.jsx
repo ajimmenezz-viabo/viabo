@@ -8,19 +8,14 @@ import { ViaboPayRouter } from '@/app/business/viabo-pay/routes'
 import { ManagementRouter } from '@/app/management/shared/routes'
 import { GeneralRouter } from '@/routes/GeneralRouter'
 import { LoadableRoute } from '@/routes/LoadableRoute'
+import { PublicRouter, WHITE_THEME_LIST } from '@/routes/PublicRouter'
 import { AuthGuard, GuestGuard } from '@/shared/guards'
 import { useAuth, useUser } from '@/shared/hooks'
 import { DashboardLayout } from '@/shared/layout/dashboard'
 
-const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
-const RegisterCards = LoadableRoute(lazy(() => import('@/app/business/viabo-card/register-cards/pages/RegisterCards')))
 const Login = LoadableRoute(lazy(() => import('@/app/authentication/pages/Login')))
-const ChargePaymentLink = LoadableRoute(
-  lazy(() => import('@/app/business/viabo-pay/terminal-charge-payment-link/pages/ChargePaymentLink'))
-)
-const NotFound = LoadableRoute(lazy(() => import('@/shared/pages/Page404')))
 
-const WHITE_THEME_LIST = ['/comercio/registro', '/registro', '/cobro/*']
+const NotFound = LoadableRoute(lazy(() => import('@/shared/pages/Page404')))
 
 const isWhiteThemePath = path => {
   // Use the map method to transform the WHITE_THEME_LIST into an array of boolean values
@@ -57,18 +52,7 @@ export const AppRouter = () => {
   }, [pathname, themeMode])
 
   return useRoutes([
-    {
-      path: '/cobro/:paymentId',
-      element: <ChargePaymentLink />
-    },
-    {
-      path: '/comercio/registro',
-      element: <CommerceRegister />
-    },
-    {
-      path: '/registro',
-      element: <RegisterCards />
-    },
+    ...PublicRouter,
     {
       path: '/auth',
       children: [

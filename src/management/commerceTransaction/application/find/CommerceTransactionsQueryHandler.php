@@ -20,9 +20,9 @@ final readonly class CommerceTransactionsQueryHandler implements QueryHandler
         return $this->finder->__invoke(
             $fromDate->format("$query->fromDate 00:00:00") ,
             $toDate->format("$query->toDate 23:59:59") ,
-            $query->apiKey ,
+            $query->apiData ,
             $query->terminalId ,
-            $query->terminalsData ,
+            $query->terminalsData,
             $query->page ,
             $query->pageSize
         );

@@ -13,18 +13,19 @@ final class Conciliation extends AggregateRoot
 {
 
     public function __construct(
-        private ConciliationId               $id ,
-        private ConciliationReferenceNumber  $referenceNumber ,
-        private CardId                       $cardId ,
-        private CardNumber                   $cardNumber ,
-        private ConciliationAmount           $amount ,
-        private ConciliationSpei             $spei ,
-        private ConciliationReferencePayCash $referencePayCash ,
-        private ConciliationMovementNumber   $movementNumber ,
-        private ConciliationEmails           $emails ,
-        private ConciliationRegisterDate     $registerDate ,
-        private ConciliationActive           $active ,
-        private PayCashData                  $payCashData
+        private ConciliationId                      $id ,
+        private ConciliationReferenceNumber         $referenceNumber ,
+        private CardId                              $cardId ,
+        private CardNumber                          $cardNumber ,
+        private ConciliationAmount                  $amount ,
+        private ConciliationSpei                    $spei ,
+        private ConciliationReferencePayCash        $referencePayCash ,
+        private ConciliationPayCashInstructionsUrls $instructionsUrls ,
+        private ConciliationMovementNumber          $movementNumber ,
+        private ConciliationEmails                  $emails ,
+        private ConciliationRegisterDate            $registerDate ,
+        private ConciliationActive                  $active ,
+        private PayCashData                         $payCashData
     )
     {
     }
@@ -47,6 +48,7 @@ final class Conciliation extends AggregateRoot
             $amount ,
             $spei ,
             $referencePayCash ,
+            ConciliationPayCashInstructionsUrls::empty() ,
             new ConciliationMovementNumber('') ,
             $emails ,
             ConciliationRegisterDate::todayDate() ,
@@ -87,9 +89,7 @@ final class Conciliation extends AggregateRoot
 
     public function setEventCreated(): void
     {
-        $this->record(new ConciliationCreatedDomainEvent(
-            $this->id->value() , $this->payCashInstructionsUrls() , $this->toArray()
-        ));
+        $this->record(new ConciliationCreatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function payCashKey(): string
@@ -107,16 +107,11 @@ final class Conciliation extends AggregateRoot
         if (empty($referenceData)) {
             return;
         }
-
         $this->payCashData->setInstructionsUrls(
             strval($referenceData['SenderId']) ,
             $this->referencePayCash->base64Encode()
         );
-    }
-
-    private function payCashInstructionsUrls(): array
-    {
-        return $this->payCashData->instructionsUrls();
+        $this->instructionsUrls = $this->instructionsUrls->update($this->payCashData->instructionsUrls());
     }
 
     public function toArray(): array
@@ -126,8 +121,10 @@ final class Conciliation extends AggregateRoot
             'referenceNumber' => $this->referenceNumber->value() ,
             'cardId' => $this->cardId->value() ,
             'amount' => $this->amount->value() ,
+            'amountFormat' => $this->amount->format() ,
             'spei' => $this->spei->value() ,
             'referencePayCash' => $this->referencePayCash->value() ,
+            'instructionsUrls' => $this->instructionsUrls->toArray() ,
             'movementNumber' => $this->movementNumber->value() ,
             'emails' => $this->emails->value() ,
             'registerDate' => $this->registerDate->value() ,

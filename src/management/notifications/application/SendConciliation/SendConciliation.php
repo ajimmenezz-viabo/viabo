@@ -1,19 +1,17 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\management\notifications\application\SendConciliationSPEI;
+namespace Viabo\management\notifications\application\SendConciliation;
 
 
 use Viabo\management\conciliation\domain\events\ConciliationCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
-use Viabo\shared\domain\utils\NumberFormat;
-use Viabo\shared\infrastructure\qr\QRCodeEndroidAdapter;
 
-final readonly class SendConciliationSPEI implements DomainEventSubscriber
+final readonly class SendConciliation implements DomainEventSubscriber
 {
-    public function __construct(private EmailRepository $repository , private QRCodeEndroidAdapter $adapter)
+    public function __construct(private EmailRepository $repository)
     {
     }
 
@@ -25,7 +23,6 @@ final readonly class SendConciliationSPEI implements DomainEventSubscriber
     public function __invoke(ConciliationCreatedDomainEvent $event): void
     {
         $conciliationData = $event->toPrimitives();
-        $payCashUrls = $event->payCashUrls();
         $emails = explode(',' , $conciliationData['emails']);
 
         $email = new Email(
@@ -34,11 +31,11 @@ final readonly class SendConciliationSPEI implements DomainEventSubscriber
             'management/notification/emails/conciliation.spei.html.twig' ,
             [
                 'spei' => $conciliationData['spei'] ,
-                'amount' => NumberFormat::money(floatval($conciliationData['amount'])) ,
+                'amount' => $conciliationData['amountFormat'] ,
                 'referenceNumber' => $conciliationData['referenceNumber'] ,
                 'referencePayCash' => $conciliationData['referencePayCash'] ,
-                'urlPayCashFormat' => $payCashUrls['format'] ,
-                'urlPayCashDownload' => $payCashUrls['download']
+                'urlPayCashFormat' => $conciliationData['instructionsUrls']['format'] ?? '' ,
+                'urlPayCashDownload' => $conciliationData['instructionsUrls']['download'] ?? ''
             ]
         );
 

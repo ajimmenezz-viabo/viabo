@@ -6,7 +6,7 @@ namespace Viabo\management\conciliation\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class ConciliationQuery implements Query
+final readonly class ConciliationLeagueDataQuery implements Query
 {
     public function __construct(public int $referenceNumber)
     {

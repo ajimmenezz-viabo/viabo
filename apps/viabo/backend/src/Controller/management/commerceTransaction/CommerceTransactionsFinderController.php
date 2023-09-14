@@ -33,7 +33,7 @@ final readonly class CommerceTransactionsFinderController extends ApiController
             $transactions = $this->ask(new CommerceTransactionsQuery(
                 $fromDate,
                 $toDate,
-                $commercePayCredential->data['apiKey'],
+                $commercePayCredential->data,
                 $terminalId,
                 $terminalsData->data,
                 $page,

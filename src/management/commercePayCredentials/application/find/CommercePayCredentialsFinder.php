@@ -16,11 +16,9 @@ final readonly class CommercePayCredentialsFinder
     {
         $commercePayCredentials = $this->repository->searchBy($commerceId);
 
-        if(empty($commercePayCredentials)){
-            throw new CommercePayCredentialsNotExist();
-        }
+        $data = empty($commercePayCredentials)? []:$commercePayCredentials->toArray();
 
-        return new CommercePayCredentialsResponse($commercePayCredentials->toArray());
+        return new CommercePayCredentialsResponse($data);
 
     }
 }

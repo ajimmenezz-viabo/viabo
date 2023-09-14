@@ -25,7 +25,9 @@ final readonly class FinderCardsMasterMovements
         CardMovementFinalDate   $finalDate
     ): CardsMovementsResponse
     {
-        $payTransactions = $this->payTransactionsApproved($payTransactions);
+        if(!empty($payTransactions)){
+            $payTransactions = $this->payTransactionsApproved($payTransactions['movements']);
+        }
         $allMovements = [];
         foreach ($cardsInformation as $card) {
             $cardNumber = CardNumber::create($card['cardNumber']);

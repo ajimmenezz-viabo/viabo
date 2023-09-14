@@ -8,13 +8,13 @@ use Viabo\management\conciliation\domain\ConciliationReferenceNumber;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class ConciliationQueryHandler implements QueryHandler
+final readonly class ConciliationLeagueDataQueryHandler implements QueryHandler
 {
-    public function __construct(private ConciliationFinder $finder)
+    public function __construct(private ConciliationLeagueDataFinder $finder)
     {
     }
 
-    public function __invoke(ConciliationQuery $query): Response
+    public function __invoke(ConciliationLeagueDataQuery $query): Response
     {
         $referenceNumber = ConciliationReferenceNumber::create(strval($query->referenceNumber));
 

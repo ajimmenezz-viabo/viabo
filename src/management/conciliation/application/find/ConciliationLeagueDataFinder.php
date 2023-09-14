@@ -9,7 +9,7 @@ use Viabo\management\conciliation\domain\ConciliationReferenceNumber;
 use Viabo\management\conciliation\domain\ConciliationRepository;
 use Viabo\management\conciliation\domain\exceptions\ConciliationNotExist;
 
-final readonly class ConciliationFinder
+final readonly class ConciliationLeagueDataFinder
 {
     public function __construct(private ConciliationRepository $repository)
     {
@@ -19,10 +19,18 @@ final readonly class ConciliationFinder
     {
         $conciliation = $this->repository->search($referenceNumber);
 
-        if(empty($conciliation)){
+        if (empty($conciliation)) {
             throw new ConciliationNotExist();
         }
 
-        return new ConciliationResponse($conciliation->toArray());
+        $data = $conciliation->toArray();
+        return new ConciliationResponse([
+            'spei' => $data['spei'] ,
+            'amount' => $data['amountFormat'] ,
+            'referenceNumber' => $data['referenceNumber'] ,
+            'referencePayCash' => $data['referencePayCash'] ,
+            'urlPayCashFormat' => $data['instructionsUrls']['format'] ?? '' ,
+            'urlPayCashDownload' => $data['instructionsUrls']['download'] ?? ''
+        ]);
     }
 }

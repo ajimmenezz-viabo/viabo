@@ -5,6 +5,7 @@ namespace Viabo\management\conciliation\domain;
 
 
 use Viabo\management\conciliation\domain\exceptions\ConciliationAmountEmpty;
+use Viabo\shared\domain\utils\NumberFormat;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class ConciliationAmount extends StringValueObject
@@ -20,5 +21,10 @@ final class ConciliationAmount extends StringValueObject
         if (empty($value)) {
             throw new ConciliationAmountEmpty();
         }
+    }
+
+    public function format(): string
+    {
+        return NumberFormat::money(floatval($this->value));
     }
 }

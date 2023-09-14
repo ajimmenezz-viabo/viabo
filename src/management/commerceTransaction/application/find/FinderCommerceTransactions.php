@@ -15,16 +15,17 @@ final readonly class FinderCommerceTransactions
     public function __invoke(
         string  $fromDate,
         string  $toDate,
-        string  $apiKey,
-        ?string  $terminalId,
+        array   $apiData,
+        ?string $terminalId,
         array   $terminalsData,
         ?string $page,
         ?string $pageSize
     ):CommerceTransactionsResponse
     {
+        if(empty($apiData)){ return new CommerceTransactionsResponse([]);}
         $terminals = $this->extractTerminalData($terminalsData);
 
-        $response = $this->getMovements($fromDate, $toDate, $apiKey,$terminalId,$page, $pageSize, $terminals);
+        $response = $this->getMovements($fromDate, $toDate, $apiData['apiKey'],$terminalId,$page, $pageSize, $terminals);
 
         return new CommerceTransactionsResponse($response);
     }

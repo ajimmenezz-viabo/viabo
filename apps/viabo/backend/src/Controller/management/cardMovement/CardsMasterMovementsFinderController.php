@@ -36,7 +36,7 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
             $payTransaction = $this->ask(new CommerceTransactionsQuery(
                 $initialDate,
                 $finalDate,
-                $commercePayCredential->data['apiKey'],
+                $commercePayCredential->data,
                 "",
                 $terminalsData->data,
                 "",
@@ -46,7 +46,7 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
             $data = $this->ask(new CardsMasterMovementsQuery(
                 $cardsInformation->data,
                 $operationData->data,
-                $payTransaction->data['movements'],
+                $payTransaction->data,
                 $initialDate ,
                 $finalDate
             ));

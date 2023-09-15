@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { Update } from '@mui/icons-material'
 import { Box, Button, Card, CardHeader, Divider, Stack, Typography } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -8,9 +10,10 @@ import { FundingGlobalCard } from '@/app/business/dashboard-master/components/Fu
 import { useMasterGlobalStore } from '@/app/business/dashboard-master/store'
 import { CardBalance } from '@/app/business/viabo-card/cards/components/details'
 import { getCardTypeByName } from '@/app/shared/services'
+import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { Scrollbar } from '@/shared/components/scroll'
 
-export function MasterGlobalCards({ data }) {
+export function MasterGlobalCards({ data, isLoading }) {
   const [view, setView] = useState('1')
   const cardSelected = useMasterGlobalStore(state => state.card)
   const setGlobalCard = useMasterGlobalStore(state => state.setGlobalCard)
@@ -74,26 +77,29 @@ export function MasterGlobalCards({ data }) {
               }
               sx={{ px: 2, py: 2 }}
             />
+            {isLoading ? (
+              <RequestLoadingComponent mb={3} />
+            ) : (
+              <Stack alignItems={'center'} pb={2} px={2}>
+                <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                  <Typography variant="h3">{master?.balanceFormatted}</Typography>
+                  <Typography variant="caption">MXN</Typography>
+                </Stack>
 
-            <Stack alignItems={'center'} pb={2} px={2}>
-              <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                <Typography variant="h3">{master?.balanceFormatted}</Typography>
-                <Typography variant="caption">MXN</Typography>
-              </Stack>
+                <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                  <Update sx={{ width: 30, height: 30, color: 'text.secondary' }} />
 
-              <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                <Update sx={{ width: 30, height: 30, color: 'text.secondary' }} />
+                  <Stack alignItems={'center'}>
+                    <Typography variant={'subtitle2'}>En transito</Typography>
 
-                <Stack alignItems={'center'}>
-                  <Typography variant={'subtitle2'}>En transito</Typography>
-
-                  <Stack direction={'row'} spacing={1} alignItems={'center'}>
-                    <Typography variant="body1">{master?.inTransitFormatted}</Typography>
-                    <Typography variant="caption">MXN</Typography>
+                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                      <Typography variant="body1">{master?.inTransitFormatted}</Typography>
+                      <Typography variant="caption">MXN</Typography>
+                    </Stack>
                   </Stack>
                 </Stack>
               </Stack>
-            </Stack>
+            )}
           </Card>
         </motion.div>
 
@@ -179,4 +185,15 @@ export function MasterGlobalCards({ data }) {
       </Stack>
     </AnimatePresence>
   )
+}
+
+MasterGlobalCards.propTypes = {
+  data: PropTypes.shape({
+    globals: PropTypes.array,
+    master: PropTypes.shape({
+      balanceFormatted: PropTypes.any,
+      inTransitFormatted: PropTypes.any
+    })
+  }),
+  isLoading: PropTypes.any
 }

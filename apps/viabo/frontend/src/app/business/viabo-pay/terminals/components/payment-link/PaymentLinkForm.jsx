@@ -15,7 +15,7 @@ import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form
 import { Scrollbar } from '@/shared/components/scroll'
 
 const MIN_AMOUNT = 1
-const MAX_AMOUNT = 20000
+const MAX_AMOUNT = 100000
 const STEP = 100
 
 export const PaymentLinkForm = ({ onSuccess }) => {
@@ -64,7 +64,7 @@ export const PaymentLinkForm = ({ onSuccess }) => {
         <Stack spacing={3} sx={{ p: 3 }}>
           <Stack spacing={1}>
             <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Monto *
+              Monto * (Máximo $100,000 por liga de pago)
             </Typography>
 
             <RFTextField

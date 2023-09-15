@@ -1,7 +1,6 @@
 import { Box, Stack } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { TerminalActions } from './terminal/TerminalActions'
 import { TerminalMovements } from './terminal/TerminalMovements'
 
 import { useTerminalDetails } from '../store'
@@ -28,9 +27,7 @@ export const TerminalDetails = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
             >
-              <Stack pt={0} pb={4} px={2}>
-                {terminal?.isVirtual && <TerminalActions />}
-
+              <Stack p={2}>
                 <TerminalMovements />
               </Stack>
             </motion.div>
@@ -43,7 +40,7 @@ export const TerminalDetails = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
             >
-              <Stack pt={0} pb={4} px={2}>
+              <Stack p={2}>
                 <TerminalMovements />
               </Stack>
             </motion.div>

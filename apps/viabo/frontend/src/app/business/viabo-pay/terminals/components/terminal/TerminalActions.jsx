@@ -1,14 +1,10 @@
-import { lazy, useState } from 'react'
+import { Suspense, lazy, useState } from 'react'
 
 import { Apps, Link } from '@mui/icons-material'
-import { LoadingButton } from '@mui/lab'
-import { Box, Divider, Stack } from '@mui/material'
+import { Button, Divider, Stack } from '@mui/material'
 
-import { Lodable } from '@/shared/components/lodables'
-import { Scrollbar } from '@/shared/components/scroll'
-
-const PaymentLinkModal = Lodable(lazy(() => import('../payment-link/PaymentLinkModal')))
-const VirtualTerminalModal = Lodable(lazy(() => import('../virtual-terminal/VirtualTerminalModal')))
+const PaymentLinkModal = lazy(() => import('../payment-link/PaymentLinkModal'))
+const VirtualTerminalModal = lazy(() => import('../virtual-terminal/VirtualTerminalModal'))
 
 export const TerminalActions = () => {
   const [openPaymentLink, setOpenPaymentLink] = useState(false)
@@ -16,53 +12,21 @@ export const TerminalActions = () => {
 
   return (
     <>
-      <Box>
-        <Scrollbar>
-          <Stack
-            direction="row"
-            divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-            sx={{ pb: 3 }}
-            spacing={1}
-          >
-            <Stack
-              direction="row"
-              flexWrap={'nowrap'}
-              alignItems="center"
-              justifyContent="center"
-              sx={{ width: 1, minWidth: 150 }}
-            >
-              <LoadingButton
-                startIcon={<Link />}
-                variant={'contained'}
-                color={'info'}
-                onClick={() => setOpenPaymentLink(true)}
-              >
-                Liga de Pago
-              </LoadingButton>
-            </Stack>
-
-            <Stack
-              direction="row"
-              flexWrap={'nowrap'}
-              alignItems="center"
-              justifyContent="center"
-              sx={{ width: 1, minWidth: 150 }}
-            >
-              <LoadingButton
-                startIcon={<Apps />}
-                color={'info'}
-                variant={'contained'}
-                sx={{ textWrap: 'nowrap' }}
-                onClick={() => setOpenVirtualTerminal(true)}
-              >
-                Terminal Virtual
-              </LoadingButton>
-            </Stack>
-          </Stack>
-        </Scrollbar>
-      </Box>
-      <PaymentLinkModal open={openPaymentLink} setOpen={setOpenPaymentLink} />
-      <VirtualTerminalModal open={openVirtualTerminal} setOpen={setOpenVirtualTerminal} />
+      <Divider sx={{ borderStyle: 'dashed' }} />
+      <Stack px={2} py={1} flexDirection={'row'} justifyContent={'space-between'}>
+        <Button startIcon={<Link />} onClick={() => setOpenPaymentLink(true)}>
+          Liga de Pago
+        </Button>
+        <Button startIcon={<Apps />} sx={{ textWrap: 'nowrap' }} onClick={() => setOpenVirtualTerminal(true)}>
+          Terminal Virtual
+        </Button>
+      </Stack>
+      <Suspense>
+        <PaymentLinkModal open={openPaymentLink} setOpen={setOpenPaymentLink} />
+      </Suspense>
+      <Suspense>
+        <VirtualTerminalModal open={openVirtualTerminal} setOpen={setOpenVirtualTerminal} />
+      </Suspense>
     </>
   )
 }

@@ -266,16 +266,16 @@ export function MasterMovements() {
         }}
         muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
         renderRowActionMenuItems={({ row }) => [
-          <MenuItem key="concilation" onClick={() => console.info('Edit')}>
+          <MenuItem key="conciliation" onClick={() => console.info('conciliation')}>
             Conciliación
           </MenuItem>,
-          <MenuItem key="incidence" onClick={() => console.info('Delete')}>
-            Incidendencia
+          <MenuItem key="incidence" onClick={() => console.info('incidence')}>
+            Incidencia
           </MenuItem>,
-          <MenuItem key="comunication" onClick={() => console.info('Delete')}>
+          <MenuItem key="communication" onClick={() => console.info('communication')}>
             Comunicación
           </MenuItem>,
-          <MenuItem key="tag" onClick={() => console.info('Delete')}>
+          <MenuItem key="tag" onClick={() => console.info('tag')}>
             Tag
           </MenuItem>
         ]}

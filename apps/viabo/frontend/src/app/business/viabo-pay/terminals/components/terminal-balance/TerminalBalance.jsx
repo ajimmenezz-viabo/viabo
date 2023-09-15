@@ -2,6 +2,7 @@ import { alpha, CardHeader, Paper, Stack, Typography } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { useTerminalDetails, useTerminals } from '../../store'
+import { TerminalActions } from '../terminal/TerminalActions'
 
 import { varSlide } from '@/shared/components/animate'
 
@@ -36,6 +37,8 @@ export const TerminalBalance = () => {
 
               {balance?.month && <Typography variant="subtitle2">Balance de {balance.month}</Typography>}
             </Stack>
+
+            {terminal?.isVirtual && <TerminalActions />}
           </Paper>
         </motion.div>
       )}

@@ -13,7 +13,7 @@ import { HeaderPage } from '@/shared/components/layout'
 export default function DashboardMaster() {
   const { isCollapse } = useCollapseDrawer()
 
-  const { data } = useFindGlobalCards()
+  const { data, isLoading } = useFindGlobalCards()
 
   return (
     <Page title="Dashboard Master">
@@ -24,10 +24,20 @@ export default function DashboardMaster() {
         />
         <Box pb={4}>
           <Grid container flex={1} spacing={2}>
-            <Grid item xs={12} md={data?.globals?.length > 1 ? 5 : 4} xl={4}>
-              <MasterGlobalCards data={data} />
+            <Grid
+              item
+              xs={12}
+              md={data?.globals?.length > 1 ? (isCollapse ? 4 : 5) : isCollapse ? 3 : 4}
+              xl={isCollapse ? 3 : 4}
+            >
+              <MasterGlobalCards data={data} isLoading={isLoading} />
             </Grid>
-            <Grid item xs={12} md={data?.globals?.length > 1 ? 7 : 8} xl={8}>
+            <Grid
+              item
+              xs={12}
+              md={data?.globals?.length > 1 ? (isCollapse ? 8 : 7) : isCollapse ? 9 : 8}
+              xl={isCollapse ? 9 : 8}
+            >
               <MasterMovements />
             </Grid>
           </Grid>

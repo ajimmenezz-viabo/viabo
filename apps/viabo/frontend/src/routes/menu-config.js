@@ -15,6 +15,12 @@ export const MENU_CONFIG = [
         path: '/dashboard-master',
         icon: 'leaderboard',
         roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
+      },
+      {
+        name: 'Ordenes de Fondeo',
+        path: '/funding-orders',
+        icon: 'receipt_long',
+        roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
       }
     ]
   },

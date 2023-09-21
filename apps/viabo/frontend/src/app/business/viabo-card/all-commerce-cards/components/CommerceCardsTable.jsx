@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { AssignmentIndRounded, ClearTwoTone, Done, FileDownload } from '@mui/icons-material'
-import { alpha, Box, Button, Card, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Card, IconButton, Stack, Tooltip, Typography, alpha } from '@mui/material'
 import { toast } from 'react-toastify'
 
 import { useCommerceCards } from '../store'
@@ -65,9 +65,9 @@ export const CommerceCardsTable = ({ cards, rows }) => {
           return (
             <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
               {dataRow?.cardType === 'Carnet' ? (
-                <CarnetLogo sx={{ width: 25 }} />
+                <CarnetLogo sx={{ width: 25, height: 25 }} />
               ) : (
-                <MasterCardLogo sx={{ width: 25 }} />
+                <MasterCardLogo sx={{ width: 25, height: 25 }} />
               )}
             </Stack>
           )

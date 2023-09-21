@@ -1,4 +1,4 @@
-import { SpeiLogo, ViaboCardLogo, ViaboPayLogo } from '@/shared/components/images'
+import { PayCashLogo, SpeiLogo, ViaboCardLogo, ViaboPayLogo } from '@/shared/components/images'
 
 const OPERATION_TYPES = [
   {
@@ -12,6 +12,10 @@ const OPERATION_TYPES = [
   {
     name: 'SPEI',
     component: SpeiLogo
+  },
+  {
+    name: 'PAYCASH',
+    component: PayCashLogo
   }
 ]
 
@@ -19,4 +23,4 @@ const getOperationTypeByName = name => OPERATION_TYPES.find(card => card?.name =
 
 const getNameOperationTypes = () => OPERATION_TYPES.map(cardType => cardType?.name) || []
 
-export { getOperationTypeByName, getNameOperationTypes }
+export { getNameOperationTypes, getOperationTypeByName }

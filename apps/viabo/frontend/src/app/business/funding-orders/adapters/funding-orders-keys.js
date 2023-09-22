@@ -1,3 +1,4 @@
 export const FUNDING_ORDERS_KEYS = {
-  LIST: 'funding-orders-list'
+  LIST: 'funding-orders-list',
+  MOVEMENTS: 'conciliate-movements'
 }

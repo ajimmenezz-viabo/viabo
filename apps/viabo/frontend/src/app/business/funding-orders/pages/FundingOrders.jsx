@@ -1,4 +1,5 @@
 import { FundingOrdersTable } from '../components'
+import ConciliateModal from '../components/ConciliateModal'
 
 import { PATH_DASHBOARD } from '@/routes'
 import { Page } from '@/shared/components/containers'
@@ -16,6 +17,7 @@ const FundingOrders = () => {
           links={[{ name: 'Inicio', href: PATH_DASHBOARD.root }, { name: 'Ordenes de Fondeo' }]}
         />
         <FundingOrdersTable />
+        <ConciliateModal />
       </ContainerPage>
     </Page>
   )

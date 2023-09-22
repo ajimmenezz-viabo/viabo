@@ -57,7 +57,8 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
         : {
             sx: theme => ({
               backgroundColor: theme.palette.primary.lighter,
-              color: theme.palette.primary.main
+              color: theme.palette.primary.main,
+              fontSize: 12
             })
           }
     }

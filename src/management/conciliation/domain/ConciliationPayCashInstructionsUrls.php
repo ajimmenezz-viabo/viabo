@@ -21,6 +21,6 @@ final class ConciliationPayCashInstructionsUrls extends StringValueObject
 
     public function toArray(): array
     {
-        return json_decode($this->value , true);
+        return empty($this->value) ? [] : json_decode($this->value , true);
     }
 }

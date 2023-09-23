@@ -7,6 +7,7 @@
     <entity name="Viabo\management\conciliation\domain\Conciliation" table="t_management_conciliation">
         <embedded name="id" class="ConciliationId" use-column-prefix="false"/>
         <embedded name="referenceNumber" class="ConciliationReferenceNumber" use-column-prefix="false"/>
+        <embedded name="status" class="ConciliationStatusId" use-column-prefix="false"/>
         <field name="cardId" type="card_id" column="CardId"/>
         <embedded name="amount" class="ConciliationAmount" use-column-prefix="false"/>
         <embedded name="spei" class="ConciliationSpei" use-column-prefix="false"/>

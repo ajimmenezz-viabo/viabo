@@ -15,6 +15,7 @@ final class Conciliation extends AggregateRoot
     public function __construct(
         private ConciliationId                      $id ,
         private ConciliationReferenceNumber         $referenceNumber ,
+        private ConciliationStatusId                $status ,
         private CardId                              $cardId ,
         private CardNumber                          $cardNumber ,
         private ConciliationAmount                  $amount ,
@@ -43,6 +44,7 @@ final class Conciliation extends AggregateRoot
         return new static(
             ConciliationId::random() ,
             ConciliationReferenceNumber::random() ,
+            new ConciliationStatusId('6') ,
             $cardId ,
             $cardNumber ,
             $amount ,
@@ -119,6 +121,7 @@ final class Conciliation extends AggregateRoot
         return [
             'id' => $this->id->value() ,
             'referenceNumber' => $this->referenceNumber->value() ,
+            'status' => $this->status->value() ,
             'cardId' => $this->cardId->value() ,
             'amount' => $this->amount->value() ,
             'amountFormat' => $this->amount->format() ,

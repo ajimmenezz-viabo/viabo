@@ -2,3 +2,8 @@ find-conciliation:
   path: '/orden-fondeo/{referenceNumber}'
   controller: Viabo\Backend\Controller\management\conciliation\ConciliationViewController
   methods: GET
+
+find-anchoring-orders:
+  path: '/anchoring-orders'
+  controller: Viabo\Backend\Controller\management\conciliation\AnchoringOrdersFinderController
+  methods: GET

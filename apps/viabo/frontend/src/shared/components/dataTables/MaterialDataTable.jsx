@@ -52,7 +52,10 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
       isError
         ? {
             color: 'error',
-            children: textError
+            children: textError,
+            sx: {
+              fontSize: 12
+            }
           }
         : {
             sx: theme => ({

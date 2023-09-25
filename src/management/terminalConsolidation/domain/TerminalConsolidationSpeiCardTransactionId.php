@@ -4,7 +4,7 @@ namespace Viabo\management\terminalConsolidation\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class TerminalConsolidationMainCardTransactionId extends StringValueObject
+final class TerminalConsolidationSpeiCardTransactionId extends StringValueObject
 {
 
 }

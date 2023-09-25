@@ -10,7 +10,7 @@ final readonly class TerminalConsolidation
     public function __construct(
         private TerminalConsolidationId                    $id,
         private CommerceId                                 $commerceId,
-        private TerminalConsolidationMainCardTransactionId $mainCardTransactionId,
+        private TerminalConsolidationSpeiCardTransactionId $speiCardTransactionId,
         private TerminalConsolidationTransactionId         $transactionId,
         private TerminalConsolidationAmount                $amount,
         private TerminalConsolidationTerminalId            $terminalId,
@@ -25,7 +25,7 @@ final readonly class TerminalConsolidation
         return [
             'id' => $this->id->value(),
             'commerceId' => $this->commerceId->value(),
-            'mainCardTransactionId' => $this->mainCardTransactionId->value(),
+            'speiCardTransactionId' => $this->speiCardTransactionId->value(),
             'transactionId' => $this->transactionId->value(),
             'amount' => $this->amount->value(),
             'terminalId' => $this->terminalId->value(),

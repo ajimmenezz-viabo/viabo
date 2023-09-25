@@ -79,11 +79,6 @@ final class CardMovement
         return $this->type->isSpent() ? "OTROS CARGOS" : "SPEI";
     }
 
-    public function isNotConsolidated(mixed $mainCardTransactionsId): bool
-    {
-        return !in_array($this->transactionId->value(), $mainCardTransactionsId);
-    }
-
     public function toArray(): array
     {
         return [

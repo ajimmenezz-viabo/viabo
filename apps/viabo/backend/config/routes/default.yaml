@@ -50,6 +50,13 @@ dashboard-master:
   requirements:
     any: ".+"
 
+funding-orders:
+  path: "/funding-orders"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"
+
 management:
   path: "/management"
   controller: Viabo\Backend\Controller\RoutesFrontendController

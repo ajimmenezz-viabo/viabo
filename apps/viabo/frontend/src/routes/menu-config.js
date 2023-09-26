@@ -17,7 +17,7 @@ export const MENU_CONFIG = [
         roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
       },
       {
-        name: 'Ordenes de Fondeo',
+        name: 'Órdenes de Fondeo',
         path: '/funding-orders',
         icon: 'receipt_long',
         roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]

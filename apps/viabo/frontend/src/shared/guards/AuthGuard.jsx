@@ -43,8 +43,6 @@ export function AuthGuard({ children }) {
     [pathname, modules, isInPermissions]
   )
 
-  localStorage.setItem('lastPath', pathname)
-
   useEffect(() => {
     const dashboardMode = localStorage.getItem('dashboardTheme')
     if (dashboardMode && themeMode !== dashboardMode) {
@@ -63,6 +61,10 @@ export function AuthGuard({ children }) {
       })
     }
   }, [])
+
+  if (isAuthenticated && canAccessModule) {
+    localStorage.setItem('lastPath', pathname)
+  }
 
   if (!isInitialized || isFetchingModules) {
     return <LoadingLogo />

@@ -1,23 +1,31 @@
+import { lazy } from 'react'
+
 import { FundingOrdersTable } from '../components'
-import ConciliateModal from '../components/ConciliateModal'
+import { useFundingOrderStore } from '../store'
 
 import { PATH_DASHBOARD } from '@/routes'
 import { Page } from '@/shared/components/containers'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { HeaderPage } from '@/shared/components/layout'
+import { Lodable } from '@/shared/components/lodables'
+
+const ConciliateModal = Lodable(lazy(() => import('../components/ConciliateModal')))
+const CancelFundingOrder = Lodable(lazy(() => import('../components/CancelFundingOrder')))
 
 const FundingOrders = () => {
-  const orders = []
+  const openConciliateModal = useFundingOrderStore(state => state.openConciliateModal)
+  const openCancelFundingOrder = useFundingOrderStore(state => state.openCancelFundingOrder)
 
   return (
-    <Page title="Ordenes de Fondeo">
+    <Page title="Órdenes de Fondeo">
       <ContainerPage>
         <HeaderPage
-          name={'Ordenes de Fondeo'}
-          links={[{ name: 'Inicio', href: PATH_DASHBOARD.root }, { name: 'Ordenes de Fondeo' }]}
+          name={'Órdenes de Fondeo'}
+          links={[{ name: 'Inicio', href: PATH_DASHBOARD.root }, { name: 'Órdenes de Fondeo' }]}
         />
         <FundingOrdersTable />
-        <ConciliateModal />
+        {openConciliateModal && <ConciliateModal />}
+        {openCancelFundingOrder && <CancelFundingOrder />}
       </ContainerPage>
     </Page>
   )

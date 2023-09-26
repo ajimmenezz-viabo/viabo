@@ -16,3 +16,8 @@ export const conciliateFundingOrder = async conciliateOrder => {
   const { data } = await axios.get(`/api/main-cards/information`)
   return data
 }
+
+export const cancelFundingOrder = async fundingOrder => {
+  const { data } = await axios.get(`/api/main-cards/information`)
+  return data
+}

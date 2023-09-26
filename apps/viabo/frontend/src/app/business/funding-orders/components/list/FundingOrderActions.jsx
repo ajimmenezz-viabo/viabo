@@ -8,8 +8,9 @@ export function getFundingOrderActions(row, closeMenu) {
   const { status } = rowData
   const hasPending = status === 'Pendiente'
   const hasPayed = status === 'Pagada'
-  const setOpenConciliateModal = useFundingOrderStore(state => state.setOpenConciliateModal)
   const setFundingOrder = useFundingOrderStore(state => state.setFundingOrder)
+  const setOpenConciliateModal = useFundingOrderStore(state => state.setOpenConciliateModal)
+  const setOpenCancelFundingOrder = useFundingOrderStore(state => state.setOpenCancelFundingOrder)
 
   const menuItems = [
     <MenuItem
@@ -52,6 +53,7 @@ export function getFundingOrderActions(row, closeMenu) {
         key={2}
         onClick={() => {
           setFundingOrder(rowData)
+          setOpenCancelFundingOrder(true)
           closeMenu()
         }}
         sx={{ m: 0 }}

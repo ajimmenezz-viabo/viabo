@@ -11,10 +11,12 @@ import { Lodable } from '@/shared/components/lodables'
 
 const ConciliateModal = Lodable(lazy(() => import('../components/ConciliateModal')))
 const CancelFundingOrder = Lodable(lazy(() => import('../components/CancelFundingOrder')))
+const FundingOrderDetails = Lodable(lazy(() => import('../components/FundingOrderDetails')))
 
 const FundingOrders = () => {
   const openConciliateModal = useFundingOrderStore(state => state.openConciliateModal)
   const openCancelFundingOrder = useFundingOrderStore(state => state.openCancelFundingOrder)
+  const openDetailsFundingOrder = useFundingOrderStore(state => state.openDetailsFundingOrder)
 
   return (
     <Page title="Órdenes de Fondeo">
@@ -26,6 +28,7 @@ const FundingOrders = () => {
         <FundingOrdersTable />
         {openConciliateModal && <ConciliateModal />}
         {openCancelFundingOrder && <CancelFundingOrder />}
+        <FundingOrderDetails />
       </ContainerPage>
     </Page>
   )

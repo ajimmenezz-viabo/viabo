@@ -11,12 +11,14 @@ export function getFundingOrderActions(row, closeMenu) {
   const setFundingOrder = useFundingOrderStore(state => state.setFundingOrder)
   const setOpenConciliateModal = useFundingOrderStore(state => state.setOpenConciliateModal)
   const setOpenCancelFundingOrder = useFundingOrderStore(state => state.setOpenCancelFundingOrder)
+  const setOpenDetailsFundingOrder = useFundingOrderStore(state => state.setOpenDetailsFundingOrder)
 
   const menuItems = [
     <MenuItem
       key={0}
       onClick={() => {
         setFundingOrder(rowData)
+        setOpenDetailsFundingOrder(true)
         closeMenu()
       }}
       sx={{ m: 0 }}

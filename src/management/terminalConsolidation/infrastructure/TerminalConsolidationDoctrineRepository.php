@@ -16,10 +16,14 @@ final class TerminalConsolidationDoctrineRepository extends DoctrineRepository i
         parent::__construct($ManagementEntityManager);
     }
 
+    public function save(TerminalConsolidation $terminalConsolidation): void
+    {
+        $this->persist($terminalConsolidation);
+    }
+
     public function searchCriteria(Criteria $criteria):array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(TerminalConsolidation::class)->matching($criteriaConvert)->toArray();
     }
-
 }

@@ -3,6 +3,7 @@ import { createStore } from '@/app/shared/store'
 const initialState = {
   openConciliateModal: false,
   openCancelFundingOrder: false,
+  openDetailsFundingOrder: false,
   fundingOrder: null
 }
 
@@ -33,6 +34,15 @@ const fundingOrderStore = (set, get) => ({
       }),
       false,
       'SET_OPEN_CANCEL_FUNDING_ORDER'
+    )
+  },
+  setOpenDetailsFundingOrder: open => {
+    set(
+      state => ({
+        openDetailsFundingOrder: open
+      }),
+      false,
+      'SET_OPEN_DETAILS_FUNDING_ORDER'
     )
   }
 })

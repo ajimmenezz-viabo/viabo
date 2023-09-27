@@ -34,6 +34,7 @@ export const FundingOrdersAdapter = orders =>
       },
       spei: order?.spei,
       payCash: order?.referencePayCash,
+      payCashURLS: order?.instructionsUrls,
       emails: order?.emails?.split(','),
       conciliatedName: order?.conciliated !== 'No' ? 'Conciliada' : 'Sin Conciliar',
       conciliated: order?.conciliated !== 'No'

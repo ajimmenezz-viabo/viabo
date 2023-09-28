@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import {
   MRT_FullScreenToggleButton,
+  MRT_GlobalFilterTextField,
   MRT_ShowHideColumnsButton,
   MRT_ToggleFiltersButton,
   MRT_ToggleGlobalFilterButton,
@@ -45,7 +46,10 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
     }}
     muiTopToolbarProps={{
       sx: theme => ({
-        backgroundColor: theme.palette.background.paper
+        backgroundColor: theme.palette.background.paper,
+        '>div': {
+          alignItems: 'center'
+        }
       })
     }}
     muiToolbarAlertBannerProps={
@@ -93,5 +97,13 @@ const FullScreenAction = MRT_FullScreenToggleButton
 const ShowHideColumnsAction = MRT_ShowHideColumnsButton
 const FiltersAction = MRT_ToggleFiltersButton
 const SearchAction = MRT_ToggleGlobalFilterButton
+const SearchGlobalTextField = MRT_GlobalFilterTextField
 
-export { FiltersAction, FullScreenAction, MaterialDataTable, SearchAction, ShowHideColumnsAction }
+export {
+  FiltersAction,
+  FullScreenAction,
+  MaterialDataTable,
+  SearchAction,
+  SearchGlobalTextField,
+  ShowHideColumnsAction
+}

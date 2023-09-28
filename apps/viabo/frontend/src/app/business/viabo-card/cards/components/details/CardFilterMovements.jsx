@@ -1,9 +1,10 @@
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { Box, InputBase, MenuItem, Select, Stack } from '@mui/material'
+import { Box, IconButton, InputBase, MenuItem, Select, Stack } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 import { monthOptions } from '@/shared/utils'
+import { useResponsive } from '@/theme/hooks'
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -21,6 +22,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 export function CardFilterMovements({ setCurrentMonth, currentMonth, isLoading }) {
   const startYear = 2020
   const currentYear = new Date().getFullYear()
+  const isDesktop = useResponsive('up', 'lg')
 
   const yearOptions = Array.from({ length: currentYear - startYear + 1 }, (_, index) => startYear + index).reverse()
 
@@ -79,20 +81,21 @@ export function CardFilterMovements({ setCurrentMonth, currentMonth, isLoading }
   }
 
   return (
-    <Stack
-      spacing={2}
-      direction={{ xs: 'column', sm: 'row', md: 'row' }}
-      justifyContent="space-between"
-      sx={{ py: 2.5, px: 3 }}
-    >
-      <LoadingButton
-        loading={isFetching}
-        variant="outlined"
-        startIcon={<KeyboardArrowLeft />}
-        onClick={handlePreviousMonth}
-      >
-        anterior
-      </LoadingButton>
+    <Stack spacing={2} direction={'row'} justifyContent="space-between" sx={{ py: 2.5, px: 3 }}>
+      {isDesktop ? (
+        <LoadingButton
+          loading={isFetching}
+          variant="outlined"
+          startIcon={<KeyboardArrowLeft />}
+          onClick={handlePreviousMonth}
+        >
+          anterior
+        </LoadingButton>
+      ) : (
+        <IconButton disabled={isFetching} variant="outlined" onClick={handlePreviousMonth}>
+          <KeyboardArrowLeft />
+        </IconButton>
+      )}
 
       <Box display="flex" alignItems="center" justifyContent={'center'} spacing={1} gap={1}>
         <Select
@@ -130,15 +133,21 @@ export function CardFilterMovements({ setCurrentMonth, currentMonth, isLoading }
         </Select>
       </Box>
 
-      <LoadingButton
-        loading={isFetching}
-        variant="outlined"
-        endIcon={<KeyboardArrowRight />}
-        disabled={isCurrentMonth()}
-        onClick={handleNextMonth}
-      >
-        siguiente
-      </LoadingButton>
+      {isDesktop ? (
+        <LoadingButton
+          loading={isFetching}
+          variant="outlined"
+          endIcon={<KeyboardArrowRight />}
+          disabled={isCurrentMonth()}
+          onClick={handleNextMonth}
+        >
+          siguiente
+        </LoadingButton>
+      ) : (
+        <IconButton disabled={isFetching} variant="outlined" onClick={handleNextMonth}>
+          <KeyboardArrowRight />
+        </IconButton>
+      )}
     </Stack>
   )
 }

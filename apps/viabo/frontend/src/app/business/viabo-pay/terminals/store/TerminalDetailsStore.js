@@ -1,7 +1,9 @@
 import { createStore } from '@/app/shared/store'
 
 const initialState = {
-  terminal: null
+  terminal: null,
+  conciliateMovements: null,
+  openConciliate: false
 }
 
 const TerminalDetailsStore = (set, get) => ({
@@ -35,6 +37,24 @@ const TerminalDetailsStore = (set, get) => ({
       }),
       false,
       'SET_TERMINAL_INFO'
+    )
+  },
+  setOpenConciliate: open => {
+    set(
+      state => ({
+        openConciliate: open
+      }),
+      false,
+      'SET_OPEN_CONCILIATE'
+    )
+  },
+  setConciliateMovements: movements => {
+    set(
+      state => ({
+        conciliateMovements: movements
+      }),
+      false,
+      'SET_CONCILIATE_MOVEMENTS'
     )
   }
 })

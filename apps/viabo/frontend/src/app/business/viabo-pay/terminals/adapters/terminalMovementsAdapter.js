@@ -26,6 +26,7 @@ export const TerminalMovementsAdapter = data => {
           date,
           time
         },
+        date: normalizeDateString(movement?.transaction_date),
         description: `${movement?.issuer === '' ? movement?.card_brand : movement?.issuer}-${
           movement?.card_number
         }`.toUpperCase(),

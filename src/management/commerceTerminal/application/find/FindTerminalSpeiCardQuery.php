@@ -4,9 +4,9 @@ namespace Viabo\management\commerceTerminal\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class FindTerminalsQuery implements Query
+final readonly class FindTerminalSpeiCardQuery implements Query
 {
-    public function __construct(public string $commerceId, public mixed $speiCards)
+    public function __construct(public string $terminalId)
     {
     }
 }

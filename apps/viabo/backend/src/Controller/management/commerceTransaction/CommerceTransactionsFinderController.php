@@ -28,7 +28,7 @@ final readonly class CommerceTransactionsFinderController extends ApiController
 
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
 
-            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id']));
+            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'],[]));
 
             $transactions = $this->ask(new CommerceTransactionsQuery(
                 $fromDate,

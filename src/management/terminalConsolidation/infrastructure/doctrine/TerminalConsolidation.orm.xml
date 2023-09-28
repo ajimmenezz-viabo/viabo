@@ -11,6 +11,7 @@
         <embedded name="transactionId" class="TerminalConsolidationTransactionId" use-column-prefix="false"/>
         <embedded name="amount" class="TerminalConsolidationAmount" use-column-prefix="false"/>
         <embedded name="terminalId" class="TerminalConsolidationTerminalId" use-column-prefix="false"/>
+        <embedded name="referenceNumber" class="TerminalConsolidationReferenceNumber" use-column-prefix="false"/>
         <embedded name="userId" class="TerminalConsolidationUserId" use-column-prefix="false"/>
         <embedded name="registerDate" class="TerminalConsolidationRegisterDate" use-column-prefix="false"/>
     </entity>

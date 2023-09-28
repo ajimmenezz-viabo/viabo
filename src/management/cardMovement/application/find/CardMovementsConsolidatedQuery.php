@@ -7,9 +7,8 @@ use Viabo\shared\domain\bus\query\Query;
 final readonly class CardMovementsConsolidatedQuery implements Query
 {
     public function __construct(
-        public array  $speiCards,
+        public array  $speiCard,
         public string $initialDate,
-        public string $finalDate,
         public ?array $movementsConsolitaded
     )
     {

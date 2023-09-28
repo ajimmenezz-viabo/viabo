@@ -2,9 +2,9 @@
 
 namespace Viabo\management\terminalConsolidation\domain;
 
-use Viabo\shared\domain\valueObjects\StringValueObject;
+use Viabo\shared\domain\valueObjects\UuidValueObject;
 
-final class TerminalConsolidationId extends StringValueObject
+final class TerminalConsolidationId extends UuidValueObject
 {
 
 }

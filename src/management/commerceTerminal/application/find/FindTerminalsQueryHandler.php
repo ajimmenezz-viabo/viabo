@@ -10,13 +10,12 @@ final readonly class FindTerminalsQueryHandler implements QueryHandler
 {
     public function __construct(private TerminalFinder $finder)
     {
-
     }
 
     public function __invoke(FindTerminalsQuery $query):Response
     {
         $commerceId = TerminalCommerceId::create($query->commerceId);
 
-        return ($this->finder)($commerceId);
+        return $this->finder->__invoke($commerceId,$query->speiCards);
     }
 }

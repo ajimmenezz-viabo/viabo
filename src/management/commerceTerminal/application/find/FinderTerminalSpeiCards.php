@@ -23,12 +23,10 @@ final readonly class FinderTerminalSpeiCards
 
         $card = $this->repository->searchSpeiCardsView(new Criteria($filters));
 
-        if (empty($card)) {
-            throw new CardNotExist();
-        }
-
-        return new TerminalSpeiCardsResponse(array_map(function (TerminalSpeiCardsView $view){
+        $cardsViewData = array_map(function (TerminalSpeiCardsView $view){
             return $view->toArray();
-        }, $card));
+        }, $card) ?? [];
+
+        return new TerminalSpeiCardsResponse($cardsViewData);
     }
 }

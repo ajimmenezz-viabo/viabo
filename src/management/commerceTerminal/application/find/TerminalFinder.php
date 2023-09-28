@@ -12,12 +12,28 @@ final readonly class TerminalFinder
     {
     }
 
-    public function __invoke(TerminalCommerceId $commerceId):FindTerminalResponse
+    public function __invoke(TerminalCommerceId $commerceId, mixed $speiCardsData):FindTerminalResponse
     {
         $terminals =($this->finder)($commerceId);
 
-        return new FindTerminalResponse(array_map(function(TerminalView $terminal){
-            return $terminal->toArray();
+        $speiCards = $this->getSpeiCards($speiCardsData);
+
+        return new FindTerminalResponse(array_map(function(TerminalView $terminal) use($speiCards){
+             $data = $terminal->toArray();
+             $data['isConciliationExternal'] = $terminal->isConciliationExternal($speiCards);
+            return $data;
         },$terminals));
+    }
+
+    private function getSpeiCards(mixed $speiCardsData): array
+    {
+        $speiCards = [];
+
+        foreach ($speiCardsData as $item) {
+            if (isset($item['speiCard'])) {
+                $speiCards[] = $item['speiCard'];
+            }
+        }
+        return $speiCards;
     }
 }

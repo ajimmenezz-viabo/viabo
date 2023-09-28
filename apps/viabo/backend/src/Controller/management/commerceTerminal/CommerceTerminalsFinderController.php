@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\commerceTerminal\application\find\FindTerminalsQuery;
+use Viabo\management\commerceTerminal\application\find\TerminalSpeiCardsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommerceTerminalsFinderController extends ApiController
@@ -19,8 +20,9 @@ final readonly class CommerceTerminalsFinderController extends ApiController
 
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $commerceData = $commerce->data;
+            $speiCards = $this->ask(new TerminalSpeiCardsQuery($commerce->data['id']));
 
-            $data = $this->ask(new FindTerminalsQuery($commerceData['id']));
+            $data = $this->ask(new FindTerminalsQuery($commerceData['id'],$speiCards->data));
 
             return new JsonResponse($data->data);
         } catch (\DomainException $exception) {

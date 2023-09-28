@@ -28,7 +28,6 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
                 $finalDate ,
                 $movementsConsolitaded->data
             ));
-            var_dump($data->data);
             return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());

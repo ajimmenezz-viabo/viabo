@@ -31,7 +31,7 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
 
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
 
-            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id']));
+            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'],[]));
 
             $payTransaction = $this->ask(new CommerceTransactionsQuery(
                 $initialDate,

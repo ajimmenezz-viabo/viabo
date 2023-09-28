@@ -15,6 +15,7 @@
         <field name="typeId" column="TypeId" />
         <field name="typeName" column="TypeName" />
         <field name="registerDate" column="RegisterDate" />
+        <field name="speiCard" column="SpeiCard" />
         <field name="active" column="Active" />
     </entity>
 

@@ -17,7 +17,7 @@ final readonly class ConciliationLeagueDataFinder
 
     public function __invoke(ConciliationReferenceNumber $referenceNumber): ConciliationResponse
     {
-        $conciliation = $this->repository->search($referenceNumber);
+        $conciliation = $this->repository->searchReferenceNumber($referenceNumber);
 
         if (empty($conciliation)) {
             throw new ConciliationNotExist();

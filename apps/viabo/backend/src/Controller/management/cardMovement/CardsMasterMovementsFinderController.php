@@ -24,15 +24,10 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
             $this->validateSession();
 
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
-
             $cardsInformation = $this->ask(new MainCardsInformationQuery($commerce->data['id']));
-
             $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data , $initialDate , $finalDate));
-
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
-
             $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id']));
-
             $payTransaction = $this->ask(new CommerceTransactionsQuery(
                 $initialDate,
                 $finalDate,
@@ -42,7 +37,6 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
                 "",
                 ""
             ));
-
             $data = $this->ask(new CardsMasterMovementsQuery(
                 $cardsInformation->data,
                 $operationData->data,

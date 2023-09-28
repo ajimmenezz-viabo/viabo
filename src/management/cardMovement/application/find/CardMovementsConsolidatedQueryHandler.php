@@ -16,8 +16,8 @@ final readonly class CardMovementsConsolidatedQueryHandler implements QueryHandl
     public function __invoke(CardMovementsConsolidatedQuery $query): Response
     {
         $initialDate = CardMovementInitialDate::create($query->initialDate);
-        $finalDate = CardMovementFinalDate::create($query->finalDate);
+        $finalDate = CardMovementFinalDate::todayDate();
 
-        return $this->finder->__invoke($initialDate , $finalDate,$query->speiCards, $query->movementsConsolitaded);
+        return $this->finder->__invoke($initialDate , $finalDate,$query->speiCard, $query->movementsConsolitaded);
     }
 }

@@ -20,26 +20,23 @@ final readonly class FinderCardMovementsConsolidated
     public function __invoke(
         CardMovementInitialDate $initialDate,
         CardMovementFinalDate   $finalDate,
-        array                   $speiCards,
+        array                   $speiCard,
         ?array                  $movementsConsolitaded
     ): CardMovementsConsolidatedResponse
     {
         $mainCardTransactionsId = $this->filteredMainTransactionId($movementsConsolitaded);
-        $mainCardsMovements = [];
 
-        foreach ($speiCards as $speiCard) {
-            $cardNumber = new CardNumber($speiCard['cardNumber']);
-            $cardClientKey = new CardClientKey($speiCard['clientKey']);
+        $cardNumber = new CardNumber($speiCard['cardNumber']);
+        $cardClientKey = new CardClientKey($speiCard['clientKey']);
 
-            $cardMovement = CardMovementFilter::create($cardNumber,$cardClientKey, $initialDate , $finalDate);
+        $cardMovement = CardMovementFilter::create($cardNumber,$cardClientKey, $initialDate , $finalDate);
 
-            $cardMovements = $this->adapter->searchMovements($cardMovement);
-            $movements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
+        $cardMovements = $this->adapter->searchMovements($cardMovement);
+        $movements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
 
-            $mainCardsMovements[] = $this->movementsData($movements,$mainCardTransactionsId,$cardNumber->value());
-        }
+        $mainCardsMovements = $this->movementsData($movements,$mainCardTransactionsId,$cardNumber->value());
 
-        return new CardMovementsConsolidatedResponse(array_filter($mainCardsMovements[0]));
+        return new CardMovementsConsolidatedResponse(array_filter($mainCardsMovements));
     }
 
     private function movementsData(mixed $movements,mixed $mainCardTransactionsId ,string $cardNumber): array

@@ -3,6 +3,7 @@
 namespace Viabo\management\terminalConsolidation\application\create;
 
 use Viabo\management\shared\domain\commerce\CommerceId;
+use Viabo\management\terminalConsolidation\domain\TerminalConsolidationSpeiCardTransactionAmount;
 use Viabo\management\terminalConsolidation\domain\TerminalConsolidationSpeiCardTransactionId;
 use Viabo\management\terminalConsolidation\domain\TerminalConsolidationTerminalId;
 use Viabo\management\terminalConsolidation\domain\TerminalConsolidationUserId;
@@ -20,7 +21,10 @@ final readonly class CreatorTerminalConsolidationCommandHandler implements Comma
         $userId = new TerminalConsolidationUserId($command->userId);
         $terminalId = new TerminalConsolidationTerminalId($command->terminalId);
         $speiCardTransactionId = new TerminalConsolidationSpeiCardTransactionId($command->speiCardTransactionId);
+        $speiCardTransactionAmount = new TerminalConsolidationSpeiCardTransactionAmount($command->speiCardTransactionAmount);
 
-         $this->creator->__invoke($commerceId,$userId,$terminalId,$speiCardTransactionId, $command->transactions);
+         $this->creator->__invoke(
+             $commerceId,$userId,$terminalId,$speiCardTransactionId,$speiCardTransactionAmount, $command->transactions, $command->threshold
+         );
     }
 }

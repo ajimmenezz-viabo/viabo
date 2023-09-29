@@ -11,7 +11,8 @@ final readonly class CreatorTerminalConsolidationCommand implements Command
         public string $userId,
         public string $speiCardTransactionId,
         public string $terminalId ,
-        public array $transactions
+        public array $transactions,
+        public string $threshold
     )
     {
     }

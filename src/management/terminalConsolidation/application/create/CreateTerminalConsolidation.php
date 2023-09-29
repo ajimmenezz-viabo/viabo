@@ -17,11 +17,12 @@ final readonly class CreateTerminalConsolidation
     }
 
     public function __invoke(
-        CommerceId            $commerceId,
+        CommerceId                                 $commerceId,
         TerminalConsolidationUserId                $userId,
         TerminalConsolidationTerminalId            $terminalId,
         TerminalConsolidationSpeiCardTransactionId $speiCardTransactionId,
-        array                                      $transactions
+        array                                      $transactions,
+        string                                     $threshold
     ):void
     {
         $referenceNumber = TerminalConsolidationReferenceNumber::random();

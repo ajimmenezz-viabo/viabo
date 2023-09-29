@@ -21,6 +21,6 @@ final readonly class CreatorTerminalConsolidationCommandHandler implements Comma
         $terminalId = new TerminalConsolidationTerminalId($command->terminalId);
         $speiCardTransactionId = new TerminalConsolidationSpeiCardTransactionId($command->speiCardTransactionId);
 
-         $this->creator->__invoke($commerceId,$userId,$terminalId,$speiCardTransactionId, $command->transactions);
+         $this->creator->__invoke($commerceId,$userId,$terminalId,$speiCardTransactionId, $command->transactions, $command->threshold);
     }
 }

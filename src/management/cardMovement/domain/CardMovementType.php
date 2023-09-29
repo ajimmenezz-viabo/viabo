@@ -16,7 +16,7 @@ final class CardMovementType extends StringValueObject
         return new static(self::MOVEMENT_TYPE[$value]);
     }
 
-    public function isSpent(): bool
+    public function isExpense(): bool
     {
         return $this->value === self::MOVEMENT_TYPE['2'];
     }

@@ -10,7 +10,9 @@ interface ConciliationRepository
 {
     public function save(Conciliation $conciliation): void;
 
-    public function search(ConciliationReferenceNumber $referenceNumber): ?Conciliation;
+    public function search(ConciliationId $conciliationId): ?Conciliation;
+
+    public function searchReferenceNumber(ConciliationReferenceNumber $referenceNumber): ?Conciliation;
 
     public function searchCriteria(Criteria $criteria): array;
 

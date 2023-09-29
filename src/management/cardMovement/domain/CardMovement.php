@@ -30,7 +30,7 @@ final class CardMovement
         $typeId = CardMovementType::create($typeId);
         $amount = CardMovementAmount::create($accredit);
 
-        if ($typeId->isSpent()) {
+        if ($typeId->isExpense()) {
             $amount = $amount->update($charge);
         }
 
@@ -76,7 +76,7 @@ final class CardMovement
             }
         }
 
-        return $this->type->isSpent() ? "OTROS CARGOS" : "SPEI";
+        return $this->type->isExpense() ? "OTROS CARGOS" : "SPEI";
     }
 
     public function toArray(): array

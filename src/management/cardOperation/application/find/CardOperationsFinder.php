@@ -11,7 +11,7 @@ use Viabo\shared\domain\utils\DatePHP;
 
 final readonly class CardOperationsFinder
 {
-    public function __construct(private CardOperationRepository $repository)
+    public function __construct(private CardOperationRepository $repository , private DatePHP $date)
     {
     }
 
@@ -21,6 +21,7 @@ final readonly class CardOperationsFinder
         string     $finalDate
     ): CardOperationsResponse
     {
+        $finalDate = empty($finalDate) ? $this->date->dateTime() : $finalDate;
         $this->ensureFormatDates($initialDate , $finalDate);
         $operations = $this->repository->searchDateRange($cardId , $initialDate , $finalDate);
         return new CardOperationsResponse(array_map(function (CardOperation $operation) {
@@ -38,11 +39,10 @@ final readonly class CardOperationsFinder
     private function ensureFormatDates(string $initialDate , string $finalDate): void
     {
         try {
-            $date = new DatePHP();
-            $date->formatDateTime($initialDate);
-            $date->formatDateTime($finalDate);
+            $this->date->formatDateTime($initialDate);
+            $this->date->formatDateTime($finalDate);
         } catch (\Exception) {
-            throw new \DomainException('No es un formato de fecha' , 400);
+            throw new \DomainException('No es un formato de fecha valido' , 400);
         }
     }
 }

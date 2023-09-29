@@ -27,14 +27,13 @@ final readonly class TerminalConsolidationCreatorController extends ApiControlle
                 $commerce->data['id'],
                 $tokenData['id'],
                 $data['speiCardTransactionId'],
+                $data['speiCardTransactionAmount'],
                 $data['terminalId'],
                 $data['transactions'],
                 $threshold->data['threshold']
             ));
 
-
-
-            return new JsonResponse($this->opensslEncrypt([]));
+            return new JsonResponse([]);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

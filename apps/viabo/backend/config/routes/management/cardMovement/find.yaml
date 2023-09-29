@@ -18,6 +18,11 @@ find-cards-master-movements:
   controller: Viabo\Backend\Controller\management\cardMovement\CardsMasterMovementsFinderController
   methods: GET
 
+find-unreconciled-master-card-movements:
+  path: '/api/master-card/movements/unreconciled'
+  controller: Viabo\Backend\Controller\management\cardMovement\UnreconciledMasterCardMovementsFinderController
+  methods: GET
+
 find-card-movements-consolidated:
   path: '/api/card/movements/{terminalId}/consolidated/{initialDate}'
   controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsConsolidatedFinderController

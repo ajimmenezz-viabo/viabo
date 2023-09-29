@@ -12,7 +12,7 @@ final class CardMovementInitialDate extends DateTimeValueObject
     public static function create(string $value): self
     {
         self::validate($value);
-        return new self("$value 00:00:00");
+        return self::formatDateTime($value);
     }
 
     public static function validate(string $value): void
@@ -21,4 +21,5 @@ final class CardMovementInitialDate extends DateTimeValueObject
             throw new CardMovementInitialDateEmpty();
         }
     }
+
 }

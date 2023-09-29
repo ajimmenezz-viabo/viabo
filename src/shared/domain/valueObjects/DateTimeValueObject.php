@@ -19,6 +19,16 @@ abstract class DateTimeValueObject
         return new static($date->dateTime());
     }
 
+    public static function formatDateTime(string $value): static
+    {
+        $value = preg_match(
+            "/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/" ,
+            $value
+        ) ? $value : "$value 00:00:00";
+
+        return new static($value);
+    }
+
     public function value(): string
     {
         self::setDate();

@@ -1,7 +1,7 @@
 import { Box, Stack } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { TerminalMovements } from './terminal/TerminalMovements'
+import { TerminalMovements } from './terminal/movements'
 
 import { useTerminalDetails } from '../store'
 

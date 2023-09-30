@@ -1,4 +1,4 @@
-import { CommerceTerminalsAdapter, TerminalMovementsAdapter } from '../adapters'
+import { CommerceTerminalsAdapter, MovementsToConciliateTerminalAdapter, TerminalMovementsAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
@@ -23,4 +23,14 @@ export const getTerminalMovements = async (terminalId, initialDate, finalDate) =
     : `?fromDate=${initialDate}&toDate=${finalDate}`
   const { data } = await axios.get(`/api/commerces-pay/transactions/all${terminal}`)
   return TerminalMovementsAdapter(data)
+}
+
+export const getMovementsToConciliateTerminal = async (terminal, date) => {
+  const { data } = await axios.get(`/api/card/movements/${terminal}/consolidated/${date}`)
+  return MovementsToConciliateTerminalAdapter(data)
+}
+
+export const conciliateTerminalMovements = async movements => {
+  const { data } = await axios.post(`/api/commerce/terminal/consolidation/create`, movements)
+  return data
 }

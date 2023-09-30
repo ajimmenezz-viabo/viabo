@@ -93,12 +93,12 @@ export const CommerceCardsTable = ({ cards, rows }) => {
         }
       },
       {
-        accessorKey: 'assignUser.name',
+        accessorFn: originalRow => originalRow?.assignUser?.name,
         header: 'Asignado',
         size: 150
       },
       {
-        accessorKey: 'assignUser.dateTime',
+        accessorFn: originalRow => originalRow?.assignUser?.dateTime,
         header: 'Fecha de Asignación',
         size: 150
       },
@@ -108,7 +108,7 @@ export const CommerceCardsTable = ({ cards, rows }) => {
         size: 150
       }
     ],
-    [data]
+    []
   )
 
   useEffect(() => {

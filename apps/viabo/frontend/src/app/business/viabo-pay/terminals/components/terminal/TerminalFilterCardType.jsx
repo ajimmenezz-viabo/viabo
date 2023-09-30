@@ -26,6 +26,7 @@ const TerminalFilterCardType = ({ cardType, handleChangeCardType, isLoading }) =
       multiple
       displayEmpty
       disabled={!!isLoading}
+      size="small"
       value={cardType}
       onChange={handleChangeCardType}
       input={<OutlinedInput />}

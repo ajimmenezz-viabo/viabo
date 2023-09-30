@@ -15,11 +15,13 @@ export const CardMovementsAdapter = movements => {
         const date = movement?.date ? format(new Date(movement?.date), 'dd MMM yyyy', { locale: es }) : ''
         const time = movement?.date ? format(new Date(movement?.date), 'p') : ''
         return {
+          id: movement?.transactionId,
           fullDate: fDateTime(movement?.date),
           date,
           time,
           description: movement?.description,
-          amount: fCurrency(amount),
+          amount,
+          amountFormat: fCurrency(amount),
           type: movement?.type.toLowerCase(),
           concept: movement?.concept ?? ''
         }

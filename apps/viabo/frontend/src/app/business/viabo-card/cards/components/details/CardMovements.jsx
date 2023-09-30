@@ -141,7 +141,7 @@ export function CardMovements() {
           const isIncome = rowData?.type === 'ingreso'
           return (
             <Typography variant="subtitle2" fontWeight="bold" color={isIncome ? 'success.main' : 'error'}>
-              {isIncome ? `+ ${rowData?.amount}` : `- ${rowData?.amount}`}
+              {isIncome ? `+ ${rowData?.amountFormat}` : `- ${rowData?.amountFormat}`}
             </Typography>
           )
         }

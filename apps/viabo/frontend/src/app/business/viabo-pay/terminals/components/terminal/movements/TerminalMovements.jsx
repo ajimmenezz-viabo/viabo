@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { FileDownload } from '@mui/icons-material'
 import { Box, Button, Card, Divider, IconButton, Stack, Tooltip } from '@mui/material'
 import { isArray } from 'lodash'
+import { toast } from 'react-toastify'
 
 import { TerminalMovementColumns } from './TerminalMovementColumns'
 
@@ -130,8 +131,12 @@ export const TerminalMovements = () => {
         renderTopToolbar={({ table }) => {
           const handleConciliate = () => {
             const selectedRows = table.getSelectedRowModel().flatRows?.map(selected => selected?.original)
-            setConciliateMovements(selectedRows)
-            setOpenConciliate(true)
+            if (!terminal?.isExternalConciliation) {
+              setConciliateMovements(selectedRows)
+              setOpenConciliate(true)
+            } else {
+              toast.info('Conciliación Externa: En etapa de desarrollo 🧑🏻‍💻🚀!!')
+            }
           }
           return (
             <Stack>

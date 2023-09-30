@@ -26,11 +26,11 @@ export const getTerminalMovements = async (terminalId, initialDate, finalDate) =
 }
 
 export const getMovementsToConciliateTerminal = async (terminal, date) => {
-  const { data } = await axios.get('/api/commerces/terminals')
+  const { data } = await axios.get(`/api/card/movements/${terminal}/consolidated/${date}`)
   return MovementsToConciliateTerminalAdapter(data)
 }
 
 export const conciliateTerminalMovements = async movements => {
-  const { data } = await axios.get(`/api/main-cards/information`)
+  const { data } = await axios.post(`/api/commerce/terminal/consolidation/create`, movements)
   return data
 }

@@ -37,7 +37,7 @@ function TransactionReport({ open, setOpen, selectedMovement }) {
         <Typography variant="subtitle1">Movimiento </Typography>
         <Stack direction={'row'} spacing={1} alignItems={'center'}>
           <Typography variant="h3" color={isIncome ? 'success.main' : 'error'}>
-            {`${isIncome ? `+ ${selectedMovement?.amount}` : `- ${selectedMovement?.amount}`}`}
+            {`${isIncome ? `+ ${selectedMovement?.amountFormat}` : `- ${selectedMovement?.amountFormat}`}`}
           </Typography>
           <Typography variant="caption" color={isIncome ? 'success.main' : 'error'}>
             MXN

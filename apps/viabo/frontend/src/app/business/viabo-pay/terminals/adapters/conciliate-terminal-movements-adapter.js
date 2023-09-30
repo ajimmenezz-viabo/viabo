@@ -1,5 +1,14 @@
-export const ConciliateTerminalMovementsAdapter = (terminal, terminalMovements, cardMovement) => ({
-  terminalId: terminal?.id,
-  movementId: cardMovement?.id,
-  terminalMovements
-})
+export const ConciliateTerminalMovementsAdapter = (terminal, terminalMovements, cardMovement) => {
+  const terminalMovementsAdapter =
+    terminalMovements?.map(terminalMovement => ({
+      transactionId: terminalMovement?.id?.toString(),
+      amount: terminalMovement?.amount?.toString()
+    })) ?? []
+
+  return {
+    terminalId: terminal?.id,
+    speiCardTransactionId: cardMovement?.id?.toString(),
+    speiCardTransactionAmount: cardMovement?.amount?.toString(),
+    transactions: terminalMovementsAdapter
+  }
+}

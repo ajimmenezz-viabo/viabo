@@ -1,5 +1,3 @@
-import { fCurrency } from '@/shared/utils'
-
 export const CommerceTerminalsAdapter = terminals =>
   terminals?.map(terminal => ({
     id: terminal?.id,
@@ -15,5 +13,5 @@ export const CommerceTerminalsAdapter = terminals =>
     isVirtual: terminal?.typeId === '1',
     name: terminal?.name !== '' ? terminal?.name.toString().toUpperCase() : `TERMINAL-${terminal?.terminalId}`,
     active: terminal?.active === '1',
-    balanceFormatted: fCurrency('0')
+    isExternalConciliation: !!terminal?.isConciliationExternal
   })) || []

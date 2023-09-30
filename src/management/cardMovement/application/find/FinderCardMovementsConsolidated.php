@@ -26,8 +26,8 @@ final readonly class FinderCardMovementsConsolidated
     {
         $mainCardTransactionsId = $this->filteredMainTransactionId($movementsConsolitaded);
 
-        $cardNumber = new CardNumber($speiCard['cardNumber']);
-        $cardClientKey = new CardClientKey($speiCard['clientKey']);
+        $cardNumber = new CardNumber($speiCard[0]['cardNumber']);
+        $cardClientKey = new CardClientKey($speiCard[0]['clientKey']);
 
         $cardMovement = CardMovementFilter::create($cardNumber,$cardClientKey, $initialDate , $finalDate);
 

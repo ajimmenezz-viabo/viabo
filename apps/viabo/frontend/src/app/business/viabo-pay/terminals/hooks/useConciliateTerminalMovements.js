@@ -14,7 +14,7 @@ export const useConciliateTerminalMovements = (options = {}) => {
 
     try {
       await toast.promise(conciliateOrder.mutateAsync(formData, mutationOptions), {
-        pending: 'Conciliando movimiento de la terminal ...',
+        pending: 'Conciliando movimientos de la terminal ...',
         success: {
           render({ data }) {
             client.invalidateQueries([TERMINALS_KEYS.MOVEMENTS])

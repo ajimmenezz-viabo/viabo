@@ -48,7 +48,7 @@ const ConciliateTerminalsMovements = () => {
     isError,
     isFetching,
     isLoading: isLoadingMovements
-  } = useFindMovementsToConciliateTerminal(terminal?.id, date, { enabled: !!(terminal && date) })
+  } = useFindMovementsToConciliateTerminal(terminal?.terminalId, date, { enabled: !!(terminal && date) })
 
   const { mutate, isLoading } = useConciliateTerminalMovements()
 
@@ -60,7 +60,7 @@ const ConciliateTerminalsMovements = () => {
   const handleSubmit = () => {
     const selectedCardMovements = movementsRef.current?.getSelectedRowModel().flatRows
     if (selectedCardMovements?.length > 0) {
-      const data = ConciliateTerminalMovementsAdapter(terminal, terminalMovements, selectedCardMovements[0])
+      const data = ConciliateTerminalMovementsAdapter(terminal, terminalMovements, selectedCardMovements[0]?.original)
       mutate(data, {
         onSuccess: () => {
           handleClose()
@@ -88,7 +88,7 @@ const ConciliateTerminalsMovements = () => {
           size: 130
         },
         {
-          accessorKey: 'amount',
+          accessorKey: 'amountFormat',
           header: 'Monto',
           size: 100
         }
@@ -184,7 +184,7 @@ const ConciliateTerminalsMovements = () => {
               positionActionsColumn="last"
               enableDensityToggle={false}
               columns={columns || []}
-              data={movements || []}
+              data={movements?.movements || []}
               isError={isError}
               textError={error}
               tableInstanceRef={movementsRef}

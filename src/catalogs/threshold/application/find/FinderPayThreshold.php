@@ -21,7 +21,7 @@ final readonly class FinderPayThreshold
         ]);
         $threshold = $this->repository->searchCriteria(new Criteria($filters));
 
-        $value = empty($threshold) ? "9" : $threshold[0]->name()->value;
+        $value = empty($threshold) ? "9" : $threshold[0]->name()->value();
 
         return new PayThresholdResponse(['threshold'=>$value]);
 

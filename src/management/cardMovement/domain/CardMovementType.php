@@ -20,6 +20,11 @@ final class CardMovementType extends StringValueObject
     {
         return $this->value === self::MOVEMENT_TYPE['2'];
     }
+
+    public function isIncome(): bool
+    {
+        return $this->value === self::MOVEMENT_TYPE['1'];
+    }
     public function update(string $value): static
     {
         return new static($value);

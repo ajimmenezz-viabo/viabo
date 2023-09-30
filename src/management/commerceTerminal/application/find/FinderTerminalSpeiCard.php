@@ -2,6 +2,7 @@
 
 namespace Viabo\management\commerceTerminal\application\find;
 
+use Viabo\management\commerceTerminal\domain\exceptions\TerminalSpeiCardNotAssigned;
 use Viabo\management\commerceTerminal\domain\TerminalRepository;
 use Viabo\management\commerceTerminal\domain\TerminalSpeiCardsView;
 use Viabo\management\commerceTerminal\domain\TerminalValueId;
@@ -22,10 +23,15 @@ final class FinderTerminalSpeiCard
 
         $card = $this->repository->searchSpeiCardsView(new Criteria($filters));
 
+        if(empty($card))
+        {
+            throw new TerminalSpeiCardNotAssigned();
+        }
+
         $cardsViewData = array_map(function (TerminalSpeiCardsView $view){
             return $view->toArray();
-        }, $card) ?? [];
+        }, $card);
 
-        return new FindTerminalSpeiCardResponse($cardsViewData);
+        return new FindTerminalSpeiCardResponse($cardsViewData[0]);
     }
 }

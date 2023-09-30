@@ -16,9 +16,9 @@ final class Threshold extends AggregateRoot
     )
     {
     }
-    public function name(): ThresholdName
+    public function value(): ThresholdValue
     {
-        return $this->name;
+        return $this->value;
     }
     public function toArray(): array
     {
@@ -27,5 +27,4 @@ final class Threshold extends AggregateRoot
             'value' => $this->value->value()
         ];
     }
-
 }

@@ -9,9 +9,10 @@ final readonly class CommerceTransactionsQuery implements Query
     public function __construct(
         public string  $fromDate,
         public string  $toDate,
-        public array  $apiData,
+        public array   $apiData,
         public ?string $terminalId,
         public array   $terminalsData,
+        public ?array  $movementsConsolidated,
         public ?string $page,
         public ?string $pageSize
     )

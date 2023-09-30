@@ -23,6 +23,7 @@ final readonly class CommerceTransactionsQueryHandler implements QueryHandler
             $query->apiData ,
             $query->terminalId ,
             $query->terminalsData,
+            $query->movementsConsolidated,
             $query->page ,
             $query->pageSize
         );

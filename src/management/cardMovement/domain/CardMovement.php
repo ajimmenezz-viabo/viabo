@@ -61,7 +61,7 @@ final class CardMovement
 
     public function isNotConsolidated(mixed $mainCardTransactionsId): bool
     {
-        return !in_array($this->transactionId->value(), $mainCardTransactionsId) && $this->type->isIncome();
+        return !in_array($this->transactionId->value(), $mainCardTransactionsId);
     }
 
     public function typeOperation(array $operations): string

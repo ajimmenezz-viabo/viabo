@@ -10,6 +10,7 @@ use Viabo\management\cardMovement\application\find\CardMovementsConsolidatedQuer
 use Viabo\management\commerceTerminal\application\find\FindTerminalSpeiCardQuery;
 use Viabo\management\commerceTerminal\application\find\TerminalSpeiCardsQuery;
 use Viabo\management\terminalConsolidation\application\find\TerminalConsolidationQuery;
+use Viabo\management\terminalConsolidation\application\find\TerminalConsolidationTransactionsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardMovementsConsolidatedFinderController extends ApiController
@@ -21,12 +22,12 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
             $this->validateSession();
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $speiCard = $this->ask(new FindTerminalSpeiCardQuery($terminalId));
-            $movementsConsolitaded = $this->ask(new TerminalConsolidationQuery($commerce->data['id']));
+            $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery($commerce->data['id'],$terminalId));
 
             $data = $this->ask(new CardMovementsConsolidatedQuery(
                 $speiCard->data,
                 $initialDate ,
-                $movementsConsolitaded->data
+                $movementsConsolidated->data
             ));
             return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {

@@ -13,12 +13,12 @@ final readonly class ValidatorTerminalConsolidation
 
     public function __invoke(
         TerminalConsolidationSpeiCardTransactionAmount $speiCardTransactionAmount,
-        string                                         $threshold,
+        mixed                                         $threshold,
         array                                          $transactions
     ):void
     {
         $total = $this->calculateTotalTransactions($transactions);
-        $inferiorLimit = $this->calculateInferiorLimit($total,$threshold);
+        $inferiorLimit = $this->calculateInferiorLimit($total,intval($threshold));
 
         if(!$this->validateAmountConsolidation($speiCardTransactionAmount,$total,$inferiorLimit)){
             throw new TerminalConsolidationNotMath();
@@ -34,17 +34,17 @@ final readonly class ValidatorTerminalConsolidation
         }
         return $suma;
     }
-    public function calculateInferiorLimit(string $total,string $threshold): float|int
+    public function calculateInferiorLimit(int $total,mixed $threshold): float|int
     {
         return $total * (1 - ($threshold / 100));
     }
 
     public function validateAmountConsolidation(
         TerminalConsolidationSpeiCardTransactionAmount $speiCardTransactionAmount,
-        string                                         $total,
-        mixed                                         $inferiorLimit
+        int                                            $total,
+        mixed                                          $inferiorLimit
     ): bool
     {
-        return $total >= $inferiorLimit && $total <= $speiCardTransactionAmount->value();
+        return $total >= $inferiorLimit && floatval($speiCardTransactionAmount->value()) <= $total;
     }
 }

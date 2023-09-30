@@ -18,14 +18,27 @@ final readonly class FinderCommerceTransactions
         array   $apiData,
         ?string $terminalId,
         array   $terminalsData,
+        ?array $movementsConsolidated,
         ?string $page,
         ?string $pageSize
     ):CommerceTransactionsResponse
     {
         if(empty($apiData)){ return new CommerceTransactionsResponse([]);}
+
+        $transactionsConsolidated = $this->filteredMainTransactionId($movementsConsolidated);
+
         $terminals = $this->extractTerminalData($terminalsData);
 
-        $response = $this->getMovements($fromDate, $toDate, $apiData['apiKey'],$terminalId,$page, $pageSize, $terminals);
+        $response = $this->getMovements(
+            $fromDate,
+            $toDate,
+            $apiData['apiKey'],
+            $terminalId,
+            $page,
+            $pageSize,
+            $terminals,
+            $transactionsConsolidated
+        );
 
         return new CommerceTransactionsResponse($response);
     }
@@ -37,13 +50,16 @@ final readonly class FinderCommerceTransactions
         ?string $terminalId,
         ?string $page,
         ?string $pageSize,
-        array $terminals
+        array $terminals,
+        ?array $transactionsConsolidated
     ): array
     {
         return empty($terminalId) ?
-            $this->getAllMovements($fromDate, $toDate, $apiKey, $page, $pageSize, $terminals)
+            $this->getAllMovements($fromDate, $toDate, $apiKey, $page, $pageSize, $terminals,$transactionsConsolidated)
             :
-            $this->getMovementsByTerminalId($fromDate, $toDate, $apiKey, $terminalId, $page, $pageSize, $terminals);
+            $this->getMovementsByTerminalId(
+                $fromDate, $toDate, $apiKey, $terminalId, $page, $pageSize, $terminals,$transactionsConsolidated
+            );
     }
     private function getAllMovements(
         string  $fromDate,
@@ -51,7 +67,8 @@ final readonly class FinderCommerceTransactions
         string  $apiKey,
         ?string $page,
         ?string $pageSize,
-        array $terminals
+        array $terminals,
+        ?array $transactionsConsolidated
     ): array
     {
         $filtered = [];
@@ -69,7 +86,7 @@ final readonly class FinderCommerceTransactions
 
             $data = $this->adapter->searchTerminalTransactions($queryParams, $apiKey);
             if(!empty($data['items'])){
-                $filtered = [$this->filteredData($data['items'],$terminals)];
+                $filtered = [$this->filteredData($data['items'],$terminals,$transactionsConsolidated)];
                 $movements[] = $filtered[0]['items'];
                 $total += count($filtered[0]['items']);
             }
@@ -92,7 +109,8 @@ final readonly class FinderCommerceTransactions
         string  $terminalId,
         ?string $page,
         ?string $pageSize,
-        array $terminals
+        array $terminals,
+        ?array $transactionsConsolidated
     ): array
     {
         $queryParams = $this->createQueryParams(
@@ -106,7 +124,7 @@ final readonly class FinderCommerceTransactions
 
         $data = $this->adapter->searchTerminalTransactions($queryParams, $apiKey);
 
-        $response = $this->filteredData($data['items'],$terminals);
+        $response = $this->filteredData($data['items'],$terminals,$transactionsConsolidated);
 
 
         return [
@@ -136,7 +154,7 @@ final readonly class FinderCommerceTransactions
         return http_build_query($params);
     }
 
-    private function filteredData(array $response, array $terminals): array
+    private function filteredData(array $response, array $terminals, ?array $transactionsConsolidated): array
     {
         $resultMessage = new CommercePayTransactionResultMessage('');
 
@@ -155,7 +173,8 @@ final readonly class FinderCommerceTransactions
                     "reversed" => $item["reversed"],
                     "card_number" => $item["card_number"],
                     "issuer" => $item["issuer"],
-                    "card_brand" => $item["card_brand"]
+                    "card_brand" => $item["card_brand"],
+                    "consolidated" => $this->isConsolidated($item["id"],$transactionsConsolidated)
                 ];
             }
         }
@@ -184,6 +203,20 @@ final readonly class FinderCommerceTransactions
             $mergedArray = array_merge($mergedArray, $sourceArray);
         }
         return $mergedArray;
+    }
+
+    private function filteredMainTransactionId(?array $movementsConsolitaded): array
+    {
+        $transactionsId = array_map(function (array $movementConsolitaded){
+            return $movementConsolitaded['transactionId'];
+        },$movementsConsolitaded);
+
+        return Utils::removeDuplicateElements($transactionsId);
+    }
+
+    private function isConsolidated(mixed $id, ?array $transactionsConsolidated):bool
+    {
+        return !in_array($id, $transactionsConsolidated);
     }
 
 }

@@ -36,13 +36,12 @@ final readonly class FinderCardMovementsConsolidated
 
         $mainCardsMovements = $this->movementsData($movements,$mainCardTransactionsId,$cardNumber->value());
 
-        return new CardMovementsConsolidatedResponse(array_filter($mainCardsMovements));
+        return new CardMovementsConsolidatedResponse($mainCardsMovements);
     }
 
     private function movementsData(mixed $movements,mixed $mainCardTransactionsId ,string $cardNumber): array
     {
-
-        return array_map(function (array $movementData) use($cardNumber,$mainCardTransactionsId){
+        $data = array_map(function (array $movementData) use($cardNumber,$mainCardTransactionsId){
             $data = [];
 
             $movement = CardMovement::create(
@@ -62,6 +61,12 @@ final readonly class FinderCardMovementsConsolidated
         } , array_filter($movements , function (array $movementData) {
             return !empty($movementData['Transaction_Id']);
         }));
+
+        $dataFilter = array_filter($data, function ($mainCardsMovement) {
+            return $mainCardsMovement['type'] === 'Ingreso';
+        });
+
+        return array_values($dataFilter);
     }
 
     private function filteredMainTransactionId(?array $movementsConsolitaded): array

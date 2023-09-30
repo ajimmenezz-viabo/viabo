@@ -13,7 +13,7 @@ final readonly class CreatorTerminalConsolidationCommand implements Command
         public string $speiCardTransactionAmount,
         public string $terminalId ,
         public array $transactions,
-        public string $threshold
+        public mixed $threshold
     )
     {
     }

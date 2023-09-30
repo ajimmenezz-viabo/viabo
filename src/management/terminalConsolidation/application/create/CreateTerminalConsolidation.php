@@ -28,7 +28,7 @@ final readonly class CreateTerminalConsolidation
         TerminalConsolidationSpeiCardTransactionId     $speiCardTransactionId,
         TerminalConsolidationSpeiCardTransactionAmount $speiCardTransactionAmount,
         array                                          $transactions,
-        string                                         $threshold
+        mixed                                          $threshold
     ):void
     {
         $this->validator->__invoke($speiCardTransactionAmount,$threshold,$transactions);

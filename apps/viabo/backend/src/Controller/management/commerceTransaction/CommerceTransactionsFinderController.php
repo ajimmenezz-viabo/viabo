@@ -9,6 +9,8 @@ use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\commercePayCredentials\application\find\CommercePayCredentialsQuery;
 use Viabo\management\commerceTerminal\application\find\FindTerminalsQuery;
 use Viabo\management\commerceTransaction\application\find\CommerceTransactionsQuery;
+use Viabo\management\terminalConsolidation\application\find\TerminalConsolidationQuery;
+use Viabo\management\terminalConsolidation\application\find\TerminalConsolidationTransactionsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CommerceTransactionsFinderController extends ApiController
@@ -30,12 +32,15 @@ final readonly class CommerceTransactionsFinderController extends ApiController
 
             $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'],[]));
 
+            $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery($commerce->data['id'],$terminalId));
+
             $transactions = $this->ask(new CommerceTransactionsQuery(
                 $fromDate,
                 $toDate,
                 $commercePayCredential->data,
                 $terminalId,
                 $terminalsData->data,
+                $movementsConsolidated->data,
                 $page,
                 $pageSize
             ));

@@ -33,6 +33,7 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
                 $commercePayCredential->data,
                 "",
                 $terminalsData->data,
+                [],
                 "",
                 ""
             ));

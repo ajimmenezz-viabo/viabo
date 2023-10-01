@@ -1,4 +1,4 @@
-funding-order-reconciliation:
-  path: "/api/funding-order/reconciliation"
+funding-order-conciliation:
+  path: "/api/funding-order/conciliation"
   controller: Viabo\Backend\Controller\management\fundingOrder\FundingOrderConciliationUpdaterController
   methods: PUT

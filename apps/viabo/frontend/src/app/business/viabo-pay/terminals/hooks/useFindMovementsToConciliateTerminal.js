@@ -16,7 +16,6 @@ export const useFindMovementsToConciliateTerminal = (terminalId, date, options =
   const key = terminalId ? [TERMINALS_KEYS.CONCILIATE_MOVEMENTS, terminalId] : [TERMINALS_KEYS.MOVEMENTS, 'global']
   const commerces = useQuery(key, ({ signal }) => getMovementsToConciliateTerminal(terminalId, finalDate, signal), {
     staleTime: 60000,
-    retry: false,
     refetchOnWindowFocus: false,
     onError: error => {
       const errorMessage = getErrorAPI(

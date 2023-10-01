@@ -17,7 +17,7 @@
         <field name="spei" column="SPEI"/>
         <field name="referencePayCash" column="ReferencePayCash"/>
         <field name="instructionsUrls" column="PayCashInstructionsUrls"/>
-        <field name="movementNumber" column="ConciliationNumber"/>
+        <field name="conciliationNumber" column="ConciliationNumber"/>
         <field name="emails" column="Emails"/>
         <field name="registerDate" column="RegisterDate"/>
         <field name="active" column="Active"/>

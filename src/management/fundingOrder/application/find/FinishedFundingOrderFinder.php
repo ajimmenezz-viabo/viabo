@@ -21,8 +21,7 @@ final readonly class FinishedFundingOrderFinder
     {
         $filters = Filters::fromValues([
             ['field' => 'cardId' , 'operator' => '=' , 'value' => $cardId->value() ],
-            ['field' => 'status.value' , 'operator' => '=' , 'value' => '11' ],
-            ['field' => 'status.value' , 'operator' => '=' , 'value' => '9' ]
+            ['field' => 'status.value' , 'operator' => 'in' , 'value' => '11,9' ]
         ]);
         $fundingOrder = $this->repository->searchCriteria(new Criteria($filters));
         return new FundingOrderResponse(array_map(function (FundingOrder $fundingOrder){

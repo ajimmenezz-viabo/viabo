@@ -8,10 +8,10 @@ import { getMovementsByFundingOrder } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useFindConciliateMovementsByOrder = (options = {}) => {
+export const useFindConciliateMovementsByOrder = (order, options = {}) => {
   const [customError, setCustomError] = useState(null)
 
-  const fundingOrders = useQuery([FUNDING_ORDERS_KEYS.MOVEMENTS], getMovementsByFundingOrder, {
+  const fundingOrders = useQuery([FUNDING_ORDERS_KEYS.MOVEMENTS], () => getMovementsByFundingOrder(order), {
     staleTime: 60000,
     refetchOnWindowFocus: false,
     onError: error => {

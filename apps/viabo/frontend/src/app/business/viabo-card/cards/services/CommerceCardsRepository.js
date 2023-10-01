@@ -60,6 +60,6 @@ export const sharedChargeKeys = async emails => {
 }
 
 export const createFundingOrder = async order => {
-  const { data } = await axios.post('/api/conciliation/new', order)
+  const { data } = await axios.post('/api/funding-order/new', order)
   return CreateFundingOrderResponseAdapter(data)
 }

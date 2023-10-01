@@ -1,5 +1,5 @@
 find-funding-order:
-  path: "/funding-order/referenceNumber/{referenceNumber}"
+  path: "/orden-fondeo/{referenceNumber}"
   controller: Viabo\Backend\Controller\management\fundingOrder\FundingOrderViewController
   methods: GET
 

@@ -45,6 +45,6 @@ final readonly class ValidatorTerminalConsolidation
         mixed                                          $inferiorLimit
     ): bool
     {
-        return $total >= $inferiorLimit && floatval($speiCardTransactionAmount->value()) <= $total;
+        return floatval($speiCardTransactionAmount->value()) >= $inferiorLimit && floatval($speiCardTransactionAmount->value()) <= $total;
     }
 }

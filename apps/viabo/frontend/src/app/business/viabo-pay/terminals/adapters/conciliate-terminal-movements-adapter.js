@@ -6,7 +6,7 @@ export const ConciliateTerminalMovementsAdapter = (terminal, terminalMovements, 
     })) ?? []
 
   return {
-    terminalId: terminal?.id,
+    terminalId: terminal?.terminalId,
     speiCardTransactionId: cardMovement?.id?.toString(),
     speiCardTransactionAmount: cardMovement?.amount?.toString(),
     transactions: terminalMovementsAdapter

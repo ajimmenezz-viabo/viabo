@@ -1,4 +1,0 @@
-create-conciliation:
-  path: '/api/conciliation/new'
-  controller: Viabo\Backend\Controller\management\conciliation\ConciliationCreatorController
-  methods: POST

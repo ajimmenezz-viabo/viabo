@@ -4,13 +4,13 @@
 namespace Viabo\management\shared\infrastructure\paymentCash;
 
 
-use Viabo\management\conciliation\domain\Conciliation;
+use Viabo\management\fundingOrder\domain\FundingOrder;
 use Viabo\management\shared\domain\paymentCash\PaymentCashAdapter;
 
 final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
 {
 
-    public function createReference(Conciliation $conciliation): string
+    public function createReference(FundingOrder $conciliation): string
     {
         $payCashData = $conciliation->payCashData();
         $data = [
@@ -28,7 +28,7 @@ final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
         return $response['Reference'];
     }
 
-    public function searchReference(Conciliation $conciliation): array
+    public function searchReference(FundingOrder $conciliation): array
     {
         $payCashData = $conciliation->payCashData();
         $reference = $conciliation->payCashReference();

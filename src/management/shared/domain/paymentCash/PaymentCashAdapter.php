@@ -4,11 +4,11 @@
 namespace Viabo\management\shared\domain\paymentCash;
 
 
-use Viabo\management\conciliation\domain\Conciliation;
+use Viabo\management\fundingOrder\domain\FundingOrder;
 
 interface PaymentCashAdapter
 {
-    public function createReference(Conciliation $conciliation): string;
+    public function createReference(FundingOrder $conciliation): string;
 
-    public function searchReference(Conciliation $conciliation): array;
+    public function searchReference(FundingOrder $conciliation): array;
 }

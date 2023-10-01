@@ -9,7 +9,7 @@ use Stringable;
 class UuidValueObject implements Stringable
 {
 
-    public function __construct(protected string $value)
+    public function __construct(protected string|null $value)
     {
         $this->ensureIsValidUuid($value);
     }
@@ -19,7 +19,7 @@ class UuidValueObject implements Stringable
         return new static(RamseyUuid::uuid4()->toString());
     }
 
-    public function value(): string
+    public function value(): string|null
     {
         return $this->value;
     }
@@ -34,7 +34,7 @@ class UuidValueObject implements Stringable
         return $this->value();
     }
 
-    private function ensureIsValidUuid(string $id): void
+    private function ensureIsValidUuid(string|null $id): void
     {
         if (!RamseyUuid::isValid($id)) {
             throw new \DomainException('Error Internal 263' , 400);

@@ -1,4 +1,4 @@
 export const ConciliateFundingOrderAdapter = (fundingOrder, movement) => ({
-  reference: fundingOrder?.referenceNumber,
-  movementId: movement?.id
+  fundingOrderId: fundingOrder?.id,
+  conciliationNumber: movement?.id
 })

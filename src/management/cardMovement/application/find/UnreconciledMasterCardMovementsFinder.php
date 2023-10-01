@@ -45,9 +45,13 @@ final readonly class UnreconciledMasterCardMovementsFinder
 
     private function removeMovementsAlreadyReconciled(array $movements , array $conciliation): array
     {
+        if(empty($conciliation)){
+            return $movements;
+        }
+
         $movements = array_filter($movements , function (array $movement) use ($conciliation) {
             foreach ($conciliation as $value) {
-                return $value['movementNumber'] !== $movement['transactionId'];
+                return $value['conciliationNumber'] !== $movement['transactionId'];
             }
         });
 

@@ -17,7 +17,7 @@ export const useConciliateTerminalMovements = (options = {}) => {
         pending: 'Conciliando movimientos de la terminal ...',
         success: {
           render({ data }) {
-            client.invalidateQueries([TERMINALS_KEYS.MOVEMENTS])
+            client.invalidateQueries([TERMINALS_KEYS.MOVEMENTS, formData?.terminalId])
             onSuccess(data)
             return 'Se creó la conciliación con éxito'
           }

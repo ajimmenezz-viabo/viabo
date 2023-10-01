@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { FileDownload } from '@mui/icons-material'
-import { Box, Button, Card, Divider, IconButton, Stack, Tooltip } from '@mui/material'
+import { Alert, Box, Button, Card, Divider, IconButton, Stack, Tooltip } from '@mui/material'
 import { isArray } from 'lodash'
 import { toast } from 'react-toastify'
 
@@ -37,7 +37,7 @@ export const TerminalMovements = () => {
   const { data, isFetching, refetch, isError, error, isLoading } = useFindTerminalMovements(
     terminal?.terminalId,
     currentMonth,
-    { enabled: false }
+    { enabled: !!(terminal?.terminalId && currentMonth) }
   )
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('Todos')
@@ -146,6 +146,19 @@ export const TerminalMovements = () => {
                 filters={data?.filters}
               />
               <Divider sx={{ borderStyle: 'dashed' }} />
+              {isError && !isFetching && (
+                <Alert
+                  severity={'error'}
+                  sx={{ width: 1, borderRadius: 0 }}
+                  action={
+                    <Button color="inherit" size="small" onClick={refetch}>
+                      {'Recargar'}
+                    </Button>
+                  }
+                >
+                  {error}
+                </Alert>
+              )}
               <Stack
                 direction={'row'}
                 alignItems={'center'}

@@ -32,7 +32,7 @@ const ConciliateModal = () => {
       size: 100
     },
     {
-      accessorKey: 'amount', // access nested data with dot notation
+      accessorKey: 'amountFormat', // access nested data with dot notation
       header: 'Monto',
       size: 100
     }
@@ -44,7 +44,7 @@ const ConciliateModal = () => {
     error,
     isLoading: isLoadingMovements,
     isFetching
-  } = useFindConciliateMovementsByOrder({
+  } = useFindConciliateMovementsByOrder(fundingOrder, {
     enabled: !!fundingOrder
   })
 
@@ -54,7 +54,7 @@ const ConciliateModal = () => {
   const handleSubmit = () => {
     const selectedMovements = movementsRef.current?.getSelectedRowModel().rows
     if (selectedMovements?.length > 0) {
-      const data = ConciliateFundingOrderAdapter(fundingOrder, selectedMovements[0])
+      const data = ConciliateFundingOrderAdapter(fundingOrder, selectedMovements[0]?.original)
       mutate(data, {
         onSuccess: () => {
           handleClose()
@@ -114,7 +114,7 @@ const ConciliateModal = () => {
               enableDensityToggle={false}
               tableInstanceRef={movementsRef}
               columns={columns || []}
-              data={movements || []}
+              data={movements?.movements || []}
               isError={isError}
               textError={error}
               initialState={{

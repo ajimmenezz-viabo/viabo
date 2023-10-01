@@ -1,10 +1,11 @@
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
-import { fCurrency, fDateTime } from '@/shared/utils'
+import { fCurrency, fDateTime, getDecryptInfo } from '@/shared/utils'
 
-export const FundingOrdersAdapter = orders =>
-  orders?.map(order => {
+export const FundingOrdersAdapter = orders => {
+  const decryptedOrders = getDecryptInfo(orders?.ciphertext, orders?.iv)
+  return decryptedOrders?.map(order => {
     let paymentMethods = ''
     if (order?.spei && order?.referencePayCash && order.spei !== '' && order.referencePayCash !== '') {
       paymentMethods = 'SPEI,PAYCASH'
@@ -40,3 +41,4 @@ export const FundingOrdersAdapter = orders =>
       conciliated: order?.conciliated !== 'No'
     }
   })
+}

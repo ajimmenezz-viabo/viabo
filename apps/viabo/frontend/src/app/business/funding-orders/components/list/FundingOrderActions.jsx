@@ -30,7 +30,7 @@ export function getFundingOrderActions(row, closeMenu) {
     </MenuItem>
   ]
 
-  if (hasPayed) {
+  if (hasPayed || hasPending) {
     menuItems.push(
       <MenuItem
         key={1}

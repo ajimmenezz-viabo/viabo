@@ -24,7 +24,7 @@ final class FundingOrderView extends AggregateRoot
         private string $spei ,
         private string $referencePayCash ,
         private string $instructionsUrls ,
-        private string $movementNumber ,
+        private string $conciliationNumber ,
         private string $emails ,
         private string $registerDate ,
         private string $active ,
@@ -58,7 +58,7 @@ final class FundingOrderView extends AggregateRoot
             'spei' => $this->spei ,
             'referencePayCash' => $this->referencePayCash ,
             'instructionsUrls' => $this->instructionsUrlsToArray() ,
-            'movementNumber' => $this->movementNumber ,
+            'conciliationNumber' => $this->conciliationNumber ?? '' ,
             'emails' => $this->emails ,
             'registerDate' => $this->registerDate ,
             'active' => $this->active

@@ -1,21 +1,19 @@
 import { useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { Check, CopyAll } from '@mui/icons-material'
 import { Box, Chip, IconButton, Link, Stack, Typography } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
-
-import { useFundingOrderStore } from '../../store'
 
 import { getColorFundingOrderStatusByName, getOperationTypeByName } from '@/app/shared/services'
 import { Label } from '@/shared/components/form'
 import { copyToClipboard } from '@/shared/utils'
 
-export const GeneralInfoFundingOrder = () => {
+export const GeneralInfoFundingOrder = ({ fundingOrder }) => {
   const [copied, setCopied] = useState(false)
 
   const logos = []
-
-  const fundingOrder = useFundingOrderStore(state => state.fundingOrder)
 
   const paymentMethods = fundingOrder?.paymentMethods?.split(',') || []
 
@@ -86,39 +84,41 @@ export const GeneralInfoFundingOrder = () => {
             <Typography paragraph variant="overline" gutterBottom={false} sx={{ color: 'text.disabled' }}>
               Liga Orden de Fondeo
             </Typography>
-            <Stack alignItems={'flex-start'} direction="row" spacing={1}>
-              <Link
-                variant="body2"
-                component={RouterLink}
-                underline="always"
-                to={`/orden-fondeo/${fundingOrder?.referenceNumber}`}
-                target="_blank"
-                color="info.main"
-              >
-                {`orden-fondeo/${fundingOrder?.referenceNumber}`}
-              </Link>
-              <Box position={'relative'}>
-                <IconButton
-                  variant="outlined"
-                  sx={{ position: 'absolute', p: 0 }}
-                  size="small"
-                  color={copied ? 'success' : 'inherit'}
-                  onClick={() => {
-                    setCopied(true)
-                    copyToClipboard(`${window.location.host}/orden-fondeo/${fundingOrder?.referenceNumber}`)
-                    setTimeout(() => {
-                      setCopied(false)
-                    }, 1000)
-                  }}
+            {fundingOrder?.referenceNumber && (
+              <Stack alignItems={'flex-start'} direction="row" spacing={1}>
+                <Link
+                  variant="body2"
+                  component={RouterLink}
+                  underline="always"
+                  to={`/orden-fondeo/${fundingOrder?.referenceNumber}`}
+                  target="_blank"
+                  color="info.main"
                 >
-                  {copied ? (
-                    <Check fontSize="small" sx={{ color: 'success' }} />
-                  ) : (
-                    <CopyAll fontSize="small" sx={{ color: 'text.disabled' }} />
-                  )}
-                </IconButton>
-              </Box>
-            </Stack>
+                  {`orden-fondeo/${fundingOrder?.referenceNumber}`}
+                </Link>
+                <Box position={'relative'}>
+                  <IconButton
+                    variant="outlined"
+                    sx={{ position: 'absolute', p: 0 }}
+                    size="small"
+                    color={copied ? 'success' : 'inherit'}
+                    onClick={() => {
+                      setCopied(true)
+                      copyToClipboard(`${window.location.host}/orden-fondeo/${fundingOrder?.referenceNumber}`)
+                      setTimeout(() => {
+                        setCopied(false)
+                      }, 1000)
+                    }}
+                  >
+                    {copied ? (
+                      <Check fontSize="small" sx={{ color: 'success' }} />
+                    ) : (
+                      <CopyAll fontSize="small" sx={{ color: 'text.disabled' }} />
+                    )}
+                  </IconButton>
+                </Box>
+              </Stack>
+            )}
           </Stack>
         </Stack>
 
@@ -151,7 +151,7 @@ export const GeneralInfoFundingOrder = () => {
                   textTransform: 'capitalize'
                 }}
               >
-                {fundingOrder?.status}
+                {fundingOrder?.status || '-'}
               </Label>
             </Box>
           </Stack>
@@ -162,10 +162,25 @@ export const GeneralInfoFundingOrder = () => {
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Fecha Último Estado:
             </Typography>
-            <Typography variant="body2">{'-'}</Typography>
+            <Typography variant="body2">{fundingOrder?.lastStatusDate || '-'}</Typography>
           </Stack>
         </Stack>
       </Stack>
     </Stack>
   )
+}
+
+GeneralInfoFundingOrder.propTypes = {
+  fundingOrder: PropTypes.shape({
+    amount: PropTypes.string,
+    cardNumber: PropTypes.string,
+    emails: PropTypes.array,
+    lastStatusDate: PropTypes.string,
+    paymentMethods: PropTypes.string,
+    referenceNumber: PropTypes.string,
+    registerDate: PropTypes.shape({
+      fullDate: PropTypes.string
+    }),
+    status: PropTypes.string
+  })
 }

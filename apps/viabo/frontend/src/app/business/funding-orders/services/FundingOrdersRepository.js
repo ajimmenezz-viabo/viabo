@@ -1,10 +1,15 @@
-import { ConciliateMovementsByOrderAdapter, FundingOrdersAdapter } from '../adapters'
+import { ConciliateMovementsByOrderAdapter, FundingOrderAdapter, FundingOrdersAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
 export const getFundingOrders = async () => {
   const { data } = await axios.get('/api/funding-orders')
   return FundingOrdersAdapter(data)
+}
+
+export const getFundingOrderDetails = async fundingOrder => {
+  const { data } = await axios.get(`/api/funding-order/${fundingOrder?.id}`)
+  return FundingOrderAdapter(data)
 }
 
 export const getMovementsByFundingOrder = async order => {
@@ -18,6 +23,6 @@ export const conciliateFundingOrder = async conciliateOrder => {
 }
 
 export const cancelFundingOrder = async fundingOrder => {
-  const { data } = await axios.get(`/api/main-cards/information`)
+  const { data } = await axios.put(`/api/funding-order/cancel/${fundingOrder?.id}`)
   return data
 }

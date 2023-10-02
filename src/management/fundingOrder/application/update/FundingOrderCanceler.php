@@ -37,12 +37,13 @@ final readonly class FundingOrderCanceler
         }
 
         $fundingOrder->cancel($user , $payCashData);
-        $this->repository->update($fundingOrder);
-
+        
         if ($fundingOrder->isDefineTypeChargePayCash()) {
             $this->adapter->cancel($fundingOrder);
         }
 
+        $this->repository->update($fundingOrder);
+        
         $this->bus->publish(...$fundingOrder->pullDomainEvents());
     }
 }

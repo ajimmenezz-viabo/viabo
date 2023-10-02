@@ -174,7 +174,7 @@ final readonly class FinderCommerceTransactions
                     "card_number" => $item["card_number"],
                     "issuer" => $item["issuer"],
                     "card_brand" => $item["card_brand"],
-                    "consolidated" => $this->isConsolidated($item["id"],$transactionsConsolidated)
+                    "conciliated" => $this->isConsolidated($item["id"],$transactionsConsolidated)
                 ];
             }
         }
@@ -216,7 +216,7 @@ final readonly class FinderCommerceTransactions
 
     private function isConsolidated(mixed $id, ?array $transactionsConsolidated):bool
     {
-        return !in_array($id, $transactionsConsolidated);
+        return in_array($id, $transactionsConsolidated);
     }
 
 }

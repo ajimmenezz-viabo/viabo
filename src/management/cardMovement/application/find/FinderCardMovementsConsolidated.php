@@ -52,28 +52,29 @@ final readonly class FinderCardMovementsConsolidated
                 $movementData['Merchant'] ,
                 $movementData['Date']
             );
-            if($movement->isNotConsolidated($mainCardTransactionsId)){
+            if($movement->isNotConsolidated($mainCardTransactionsId) && $movement->isIncome()){
                 $data = $movement->toArray();
                 $data['cardNumber'] = $cardNumber;
             }
 
             return $data;
+
         } , array_filter($movements , function (array $movementData) {
             return !empty($movementData['Transaction_Id']);
         }));
 
-        $dataFilter = array_filter($data, function ($mainCardsMovement) {
-            return $mainCardsMovement['type'] === 'Ingreso';
+        $filterData = array_filter($data, function ($movement) {
+            return !empty($movement);
         });
 
-        return array_values($dataFilter);
+        return array_values($filterData);
     }
 
-    private function filteredMainTransactionId(?array $movementsConsolitaded): array
+    private function filteredMainTransactionId(?array $movementsConsolidated): array
     {
-        $mainCardTransactionsId = array_map(function (array $movementConsolitaded){
-            return $movementConsolitaded['mainCardTransactionId'];
-        },$movementsConsolitaded);
+        $mainCardTransactionsId = array_map(function (array $movementConsolidated){
+            return $movementConsolidated['speiCardTransactionId'];
+        },$movementsConsolidated);
 
         return Utils::removeDuplicateElements($mainCardTransactionsId);
     }

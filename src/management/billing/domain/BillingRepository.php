@@ -17,6 +17,8 @@ interface BillingRepository
 
     public function searchCriteria(Criteria $criteria): array|null;
 
+    public function searchBillingPayCashCriteria(Criteria $criteria): array;
+
     public function delete(Billing $billing): void;
 
 }

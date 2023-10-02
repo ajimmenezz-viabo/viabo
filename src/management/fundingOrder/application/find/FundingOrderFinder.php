@@ -5,8 +5,11 @@ namespace Viabo\management\fundingOrder\application\find;
 
 
 use Viabo\management\fundingOrder\application\create\FundingOrderResponse;
+use Viabo\management\fundingOrder\domain\exceptions\FundingOrderNotExist;
 use Viabo\management\fundingOrder\domain\FundingOrderId;
 use Viabo\management\fundingOrder\domain\FundingOrderRepository;
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 
 final readonly class FundingOrderFinder
 {
@@ -14,9 +17,17 @@ final readonly class FundingOrderFinder
     {
     }
 
-    public function __invoke(FundingOrderId $conciliationId): FundingOrderResponse
+    public function __invoke(FundingOrderId $fundingOrderId): FundingOrderResponse
     {
-        $fundingOrder = $this->repository->search($conciliationId);
-        return new FundingOrderResponse($fundingOrder->toArray());
+        $filters = Filters::fromValues([
+            ['field' => 'id' , 'operator' => '=' , 'value' => $fundingOrderId->value()]
+        ]);
+        $fundingOrder = $this->repository->searchView(new Criteria($filters));
+
+        if (empty($fundingOrder)) {
+            throw new FundingOrderNotExist();
+        }
+
+        return new FundingOrderResponse($fundingOrder[0]->toArray());
     }
 }

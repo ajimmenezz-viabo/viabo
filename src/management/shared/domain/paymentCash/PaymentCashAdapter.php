@@ -8,7 +8,9 @@ use Viabo\management\fundingOrder\domain\FundingOrder;
 
 interface PaymentCashAdapter
 {
-    public function createReference(FundingOrder $conciliation): string;
+    public function createReference(FundingOrder $fundingOrder): string;
 
-    public function searchReference(FundingOrder $conciliation): array;
+    public function searchReference(FundingOrder $fundingOrder): array;
+
+    public function cancel(FundingOrder $fundingOrder): void;
 }

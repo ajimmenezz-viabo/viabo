@@ -10,17 +10,17 @@ use Viabo\management\shared\domain\paymentCash\PaymentCashAdapter;
 final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
 {
 
-    public function createReference(FundingOrder $conciliation): string
+    public function createReference(FundingOrder $fundingOrder): string
     {
-        $payCashData = $conciliation->payCashData();
+        $payCashData = $fundingOrder->payCashData();
         $data = [
             'url' => "{$payCashData['url']}/v1/reference" ,
             'method' => 'POST' ,
             'token' => $this->token($payCashData['key'] , $payCashData['url']) ,
             'fields' => [
-                'Amount' => $conciliation->amount()->value() ,
+                'Amount' => $fundingOrder->amount()->value() ,
                 'ExpirationDate' => '' ,
-                'Value' => $conciliation->payCashKey() ,
+                'Value' => $fundingOrder->payCashKey() ,
                 'Type' => 'true'
             ]
         ];
@@ -28,10 +28,10 @@ final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
         return $response['Reference'];
     }
 
-    public function searchReference(FundingOrder $conciliation): array
+    public function searchReference(FundingOrder $fundingOrder): array
     {
-        $payCashData = $conciliation->payCashData();
-        $reference = $conciliation->payCashReference();
+        $payCashData = $fundingOrder->payCashData();
+        $reference = $fundingOrder->payCashReference();
         $data = [
             'url' => "{$payCashData['url']}/v1/search?Reference={$reference->value()}" ,
             'method' => 'GET' ,
@@ -43,6 +43,21 @@ final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
         }
 
         return [];
+    }
+
+    public function cancel(FundingOrder $fundingOrder): void
+    {
+        $payCashData = $fundingOrder->payCashData();
+        $data = [
+            'url' => "{$payCashData['url']}/v1/cancel" ,
+            'method' => 'POST' ,
+            'token' => $this->token($payCashData['key'] , $payCashData['url']) ,
+            'fields' => [
+                'Reference' => $fundingOrder->payCashReference()->value()
+            ]
+        ];
+
+        $this->request($data);
     }
 
     private function token(string $key , string $url): string

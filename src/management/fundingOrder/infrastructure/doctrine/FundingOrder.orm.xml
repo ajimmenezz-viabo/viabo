@@ -17,6 +17,8 @@
         <embedded name="conciliationNumber" class="FundingOrderConciliationNumber" use-column-prefix="false"/>
         <embedded name="conciliationUserId" class="FundingOrderConciliationUser" use-column-prefix="false"/>
         <embedded name="conciliationDate" class="FundingOrderConciliationDate" use-column-prefix="false"/>
+        <embedded name="canceledByUser" class="FundingOrderCanceledByUser" use-column-prefix="false"/>
+        <embedded name="cancellationDate" class="FundingOrderCancellationDate" use-column-prefix="false"/>
         <embedded name="registerDate" class="FundingOrderRegisterDate" use-column-prefix="false"/>
         <embedded name="active" class="FundingOrderActive" use-column-prefix="false"/>
     </entity>

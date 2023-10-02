@@ -4,6 +4,7 @@
 namespace Viabo\management\fundingOrder\domain;
 
 
+use Viabo\management\fundingOrder\domain\events\FundingOrderCanceledDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderCreatedDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderConciliatedDomainEvent;
 use Viabo\management\shared\domain\card\CardId;
@@ -27,6 +28,8 @@ final class FundingOrder extends AggregateRoot
         private FundingOrderConciliationNumber      $conciliationNumber ,
         private FundingOrderConciliationUser        $conciliationUserId ,
         private FundingOrderConciliationDate        $conciliationDate ,
+        private FundingOrderCanceledByUser          $canceledByUser ,
+        private FundingOrderCancellationDate        $cancellationDate ,
         private FundingOrderRegisterDate            $registerDate ,
         private FundingOrderActive                  $active ,
         private PayCashData                         $payCashData
@@ -58,6 +61,8 @@ final class FundingOrder extends AggregateRoot
             new FundingOrderConciliationNumber('') ,
             FundingOrderConciliationUser::empty() ,
             FundingOrderConciliationDate::empty() ,
+            FundingOrderCanceledByUser::empty() ,
+            FundingOrderCancellationDate::empty() ,
             FundingOrderRegisterDate::todayDate() ,
             new FundingOrderActive('1') ,
             $payCashData
@@ -126,10 +131,25 @@ final class FundingOrder extends AggregateRoot
         FundingOrderConciliationNumber $numberConciliation
     ): void
     {
+        $this->status = $this->status->conciliation();
         $this->conciliationNumber = $numberConciliation;
         $this->conciliationUserId = $conciliationUserId;
         $this->conciliationDate = FundingOrderConciliationDate::todayDate();
         $this->record(new FundingOrderConciliatedDomainEvent($this->id->value() , $this->toArray()));
+    }
+
+    public function cancel(FundingOrderCanceledByUser $user, PayCashData $payCashData): void
+    {
+        $this->payCashData = $payCashData;
+        $this->status = $this->status->cancel();
+        $this->canceledByUser = $user;
+        $this->cancellationDate = FundingOrderCancellationDate::todayDate();
+        $this->record(new FundingOrderCanceledDomainEvent($this->id->value() , $this->toArray()));
+    }
+
+    public function hasNoPendingStatus(): bool
+    {
+        return !$this->status->hasPendingStatus();
     }
 
     public function toArray(): array
@@ -144,10 +164,12 @@ final class FundingOrder extends AggregateRoot
             'spei' => $this->spei->value() ,
             'referencePayCash' => $this->referencePayCash->value() ,
             'instructionsUrls' => $this->instructionsUrls->toArray() ,
+            'emails' => $this->emails->value() ,
             'conciliationNumber' => $this->conciliationNumber->value() ,
             'conciliationUserId' => $this->conciliationUserId->value() ,
             'conciliationDate' => $this->conciliationDate->value() ,
-            'emails' => $this->emails->value() ,
+            'canceledByUser' => $this->canceledByUser->value(),
+            'cancellationDate' => $this->cancellationDate->value(),
             'registerDate' => $this->registerDate->value() ,
             'active' => $this->active->value() ,
         ];

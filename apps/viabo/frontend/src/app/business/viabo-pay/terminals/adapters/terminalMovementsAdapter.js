@@ -30,7 +30,9 @@ export const TerminalMovementsAdapter = data => {
         description: `${movement?.issuer === '' ? movement?.card_brand : movement?.issuer}-${
           movement?.card_number
         }`.toUpperCase(),
-        transactionMessage: movement?.result_message
+        transactionMessage: movement?.result_message,
+        conciliated: !!movement?.conciliated,
+        conciliatedName: movement?.conciliated ? 'Conciliada' : 'Sin Conciliar'
       }
     }) ?? []
 

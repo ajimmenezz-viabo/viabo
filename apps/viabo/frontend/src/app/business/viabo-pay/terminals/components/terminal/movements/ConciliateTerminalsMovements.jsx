@@ -14,9 +14,10 @@ import {
   Typography,
   styled
 } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { ConciliateTerminalMovementsAdapter } from '../../../adapters'
+import { ConciliateTerminalMovementsAdapter, TERMINALS_KEYS } from '../../../adapters'
 import { useConciliateTerminalMovements, useFindMovementsToConciliateTerminal } from '../../../hooks'
 import { useTerminalDetails } from '../../../store'
 
@@ -52,9 +53,12 @@ const ConciliateTerminalsMovements = () => {
 
   const { mutate, isLoading } = useConciliateTerminalMovements()
 
+  const client = useQueryClient()
+
   const handleClose = () => {
     setOpenConciliate(false)
     setConciliateMovements(null)
+    client.removeQueries([TERMINALS_KEYS.CONCILIATE_MOVEMENTS, terminal?.terminalId])
   }
 
   const handleSubmit = () => {

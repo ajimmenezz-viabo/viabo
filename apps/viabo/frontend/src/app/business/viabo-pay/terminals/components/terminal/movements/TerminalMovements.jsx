@@ -99,7 +99,10 @@ export const TerminalMovements = () => {
         enableStickyHeader
         enableRowVirtualization
         enableFacetedValues
-        enableRowSelection
+        enableRowSelection={row => {
+          const { conciliated } = row.original
+          return !conciliated || !terminal
+        }}
         enableDensityToggle={false}
         columns={columns}
         data={movements || []}
@@ -221,11 +224,11 @@ export const TerminalMovements = () => {
           )
         }}
         muiSelectCheckboxProps={({ row }) => {
-          const { approved } = row.original
+          const { approved, conciliated } = row.original
           return {
             sx: {
-              disabled: Boolean(!approved && terminal),
-              display: !approved && terminal ? 'none' : 'flex'
+              disabled: Boolean(!approved && terminal) || (conciliated && terminal),
+              display: (!approved && terminal) || (conciliated && terminal) ? 'none' : 'flex'
             }
           }
         }}

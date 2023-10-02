@@ -16,9 +16,10 @@ final class PayCashData
     {
     }
 
-    public static function create(array $data , array $instructions): static
+    public static function create(array $data , array $instructions = []): static
     {
-        return new static($data['url'] , $data['key'] , $instructions['url'] , '' , '');
+        $instructionsUrl = $instructions['url'] ?? '';
+        return new static($data['url'] , $data['key'] , $instructionsUrl , '' , '');
     }
 
     public function setInstructionsUrls(string $senderId , string $payCashReferenceBase64Encode): void

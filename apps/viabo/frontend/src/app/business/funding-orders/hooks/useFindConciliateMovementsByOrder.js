@@ -11,7 +11,7 @@ import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/intercepto
 export const useFindConciliateMovementsByOrder = (order, options = {}) => {
   const [customError, setCustomError] = useState(null)
 
-  const fundingOrders = useQuery([FUNDING_ORDERS_KEYS.MOVEMENTS], () => getMovementsByFundingOrder(order), {
+  const fundingOrders = useQuery([FUNDING_ORDERS_KEYS.MOVEMENTS, order?.id], () => getMovementsByFundingOrder(order), {
     staleTime: 60000,
     refetchOnWindowFocus: false,
     onError: error => {

@@ -1,5 +1,7 @@
 import { AccountBalance, Check, Clear } from '@mui/icons-material'
 import { Avatar, Box, Stack, Tooltip, Typography } from '@mui/material'
+import { BiBlock } from 'react-icons/bi'
+import { BsPatchCheck } from 'react-icons/bs'
 
 import { getCardTypeByName } from '@/app/shared/services'
 
@@ -119,6 +121,25 @@ export const TerminalMovementColumns = terminal => [
             <Typography variant="subtitle2" fontWeight="bold">
               {rowData?.amountFormat}
             </Typography>
+          )
+        }
+      },
+      {
+        accessorKey: 'conciliatedName', // access nested data with dot notation
+        header: '¿Conciliada?',
+        filterVariant: 'multi-select',
+        size: 110,
+        Cell: ({ cell, column, row }) => {
+          const { original: rowData } = row
+
+          return (
+            <Stack flexDirection={'row'} gap={1} color={'primary'}>
+              {rowData?.conciliated ? (
+                <BsPatchCheck color="green" fontWeight={'bold'} fontSize={'20px'} />
+              ) : (
+                <BiBlock fontSize={'20px'} color="red" />
+              )}
+            </Stack>
           )
         }
       }

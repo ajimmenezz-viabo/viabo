@@ -45,4 +45,10 @@ final class BillingDoctrineRepository extends DoctrineRepository implements Bill
     {
         $this->remove($billing);
     }
+
+    public function searchBillingPayCashCriteria(Criteria $criteria): array
+    {
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(PayCashBilling::class)->matching($criteriaConvert)->toArray();
+    }
 }

@@ -37,7 +37,7 @@ final class PayCashBilling extends AggregateRoot
         return $this->id;
     }
 
-    private function toArray(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id->value() ,

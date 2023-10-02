@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\cardMovement\application\find\CardMovementsConsolidatedQuery;
 use Viabo\management\commerceTerminal\application\find\FindTerminalSpeiCardQuery;
-use Viabo\management\commerceTerminal\application\find\TerminalSpeiCardsQuery;
-use Viabo\management\terminalConsolidation\application\find\TerminalConsolidationQuery;
 use Viabo\management\terminalConsolidation\application\find\TerminalConsolidationTransactionsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 

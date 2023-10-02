@@ -78,6 +78,10 @@ final class CardMovement
 
         return $this->type->isExpense() ? "OTROS CARGOS" : "SPEI";
     }
+    public function isIncome(): bool
+    {
+        return $this->type->isIncome();
+    }
 
     public function toArray(): array
     {
@@ -90,6 +94,8 @@ final class CardMovement
             'date' => $this->date->value()
         ];
     }
+
+
 
 }
 

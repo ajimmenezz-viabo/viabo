@@ -6,7 +6,7 @@
 
     <entity name="Viabo\management\terminalConsolidation\domain\TerminalConsolidation" table="t_management_terminal_conciliation">
         <embedded name="id" class="TerminalConsolidationId" use-column-prefix="false"/>
-        <field name="commerceId" type="commerce_id" column="CommerceId"/>
+        <field name="commerceId" type="terminal_consolidation_commerce_id" column="CommerceId"/>
         <embedded name="speiCardTransactionId" class="TerminalConsolidationSpeiCardTransactionId" use-column-prefix="false"/>
         <embedded name="speiCardTransactionAmount" class="TerminalConsolidationSpeiCardTransactionAmount" use-column-prefix="false"/>
         <embedded name="transactionId" class="TerminalConsolidationTransactionId" use-column-prefix="false"/>

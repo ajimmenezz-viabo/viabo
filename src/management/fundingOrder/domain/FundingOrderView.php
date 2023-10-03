@@ -68,13 +68,18 @@ final class FundingOrderView extends AggregateRoot
             'conciliationNumber' => $this->conciliationNumber ?? '' ,
             'conciliationUserId' => $this->conciliationUserId ?? '' ,
             'conciliationUserName' => $this->conciliationUserName ?? '' ,
-            'conciliationDate' => $this->conciliationDate ?? '' ,
+            'conciliationDate' => $this->formatDate($this->conciliationDate ?? '') ,
             'canceledByUserId' => $this->canceledByUserId ?? '' ,
             'canceledByUserName' => $this->canceledByUserName ?? '' ,
-            'cancellationDate' => $this->cancellationDate ?? '' ,
+            'cancellationDate' => $this->formatDate($this->cancellationDate ?? '') ,
             'registerDate' => $this->registerDate ,
             'active' => $this->active
         ];
+    }
+
+    private function formatDate(string|null $date): string
+    {
+        return empty($date) || $date === '0000-00-00 00:00:00' ? '' : $date;
     }
 
 }

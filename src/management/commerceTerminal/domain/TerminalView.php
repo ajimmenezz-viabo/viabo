@@ -15,14 +15,14 @@ final readonly class TerminalView
         public string $typeId,
         public string $typeName,
         public string $registerDate,
-        public mixed $speiCard,
+        public mixed  $speiCard,
         public string $active
     )
     {
     }
     public function isConciliationExternal(mixed $speiCards): bool
     {
-        return !in_array($this->speiCard, $speiCards);
+        return empty($this->speiCard) || !in_array($this->speiCard, $speiCards);
     }
 
     public function toArray(): array

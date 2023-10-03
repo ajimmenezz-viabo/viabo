@@ -17,14 +17,14 @@ final readonly class FinderTerminalConsolidationTransactions
 
     public function __invoke(CommerceId $commerceId, TerminalConsolidationTerminalId $terminalId):TerminalConsolidationTransactionsResponse
     {
-        if (empty($terminalId->value()))
-        {
-            return new TerminalConsolidationTransactionsResponse([]);
+        $filter = [
+            ['field' => 'commerceId', 'operator' => '=', 'value' => $commerceId->value()]
+        ];
+
+        if (!empty($terminalId->value())) {
+            $filter[] = ['field' => 'terminalId.value', 'operator' => '=', 'value' => $terminalId->value()];
         }
-        $filters = Filters::fromValuesEmpty([
-            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()],
-            ['field' => 'terminalId.value' , 'operator' => '=' , 'value' => $terminalId->value()],
-        ]);
+        $filters = Filters::fromValuesEmpty($filter);
 
         $movementsTerminalConsolidation = $this->repository->searchCriteria(new Criteria($filters));
 

@@ -24,8 +24,8 @@ final readonly class FundingOrdersFinder
             ['field' => 'cardId' , 'operator' => 'in' , 'value' => $cardsId ]
         ]);
         $fundingOrders = $this->repository->searchView(new Criteria($filters));
-        return new FundingOrderResponse(array_map(function (FundingOrderView $conciliation){
-            return $conciliation->toArray();
+        return new FundingOrderResponse(array_map(function (FundingOrderView $fundingOrder){
+            return $fundingOrder->toArray();
         }, $fundingOrders));
     }
 

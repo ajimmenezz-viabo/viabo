@@ -7,6 +7,7 @@ namespace Viabo\management\fundingOrder\domain;
 use Viabo\management\fundingOrder\domain\events\FundingOrderCanceledDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderCreatedDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderConciliatedDomainEvent;
+use Viabo\management\fundingOrder\domain\events\FundingOrderStatusUpdatedDomainError;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -138,7 +139,7 @@ final class FundingOrder extends AggregateRoot
         $this->record(new FundingOrderConciliatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
-    public function cancel(FundingOrderCanceledByUser $user, PayCashData $payCashData): void
+    public function cancel(FundingOrderCanceledByUser $user , PayCashData $payCashData): void
     {
         $this->payCashData = $payCashData;
         $this->status = $this->status->cancel();
@@ -150,6 +151,12 @@ final class FundingOrder extends AggregateRoot
     public function hasNoPendingStatus(): bool
     {
         return !$this->status->hasPendingStatus();
+    }
+
+    public function updateStatus(FundingOrderStatusId $statusId): void
+    {
+        $this->status = $statusId;
+        $this->record(new FundingOrderStatusUpdatedDomainError($this->id->value() , $this->toArray()));
     }
 
     public function toArray(): array
@@ -168,8 +175,8 @@ final class FundingOrder extends AggregateRoot
             'conciliationNumber' => $this->conciliationNumber->value() ,
             'conciliationUserId' => $this->conciliationUserId->value() ,
             'conciliationDate' => $this->conciliationDate->value() ,
-            'canceledByUser' => $this->canceledByUser->value(),
-            'cancellationDate' => $this->cancellationDate->value(),
+            'canceledByUser' => $this->canceledByUser->value() ,
+            'cancellationDate' => $this->cancellationDate->value() ,
             'registerDate' => $this->registerDate->value() ,
             'active' => $this->active->value() ,
         ];

@@ -7,9 +7,6 @@ namespace Viabo\management\cardOperation\application\transactions;
 use Viabo\management\billing\domain\events\BillingCreatedDomainEvent;
 use Viabo\management\cardOperation\domain\CardOperationBalance;
 use Viabo\management\cardOperation\domain\CardOperationOrigin;
-use Viabo\management\cardOperation\domain\CardOperationOriginMain;
-use Viabo\management\cardOperation\domain\CardOperationTypeId;
-use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
 final readonly class CommissionBillingProcessorByBillingCreated implements DomainEventSubscriber

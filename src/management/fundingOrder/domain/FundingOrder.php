@@ -7,7 +7,7 @@ namespace Viabo\management\fundingOrder\domain;
 use Viabo\management\fundingOrder\domain\events\FundingOrderCanceledDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderCreatedDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderConciliatedDomainEvent;
-use Viabo\management\fundingOrder\domain\events\FundingOrderStatusUpdatedDomainError;
+use Viabo\management\fundingOrder\domain\events\FundingOrderStatusUpdatedDomainEvent;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -132,31 +132,52 @@ final class FundingOrder extends AggregateRoot
         FundingOrderConciliationNumber $numberConciliation
     ): void
     {
-        $this->status = $this->status->conciliation();
+        $dataPrevious = $this->status->name();
+        $this->status = $this->status->liquidated();
         $this->conciliationNumber = $numberConciliation;
         $this->conciliationUserId = $conciliationUserId;
         $this->conciliationDate = FundingOrderConciliationDate::todayDate();
-        $this->record(new FundingOrderConciliatedDomainEvent($this->id->value() , $this->toArray()));
+
+
+        $this->record(new FundingOrderConciliatedDomainEvent(
+            $this->id->value() ,
+            $this->formatToArrayWith($dataPrevious)
+        ));
     }
 
     public function cancel(FundingOrderCanceledByUser $user , PayCashData $payCashData): void
     {
+        $dataPrevious = $this->status->name();
         $this->payCashData = $payCashData;
         $this->status = $this->status->cancel();
         $this->canceledByUser = $user;
         $this->cancellationDate = FundingOrderCancellationDate::todayDate();
-        $this->record(new FundingOrderCanceledDomainEvent($this->id->value() , $this->toArray()));
+
+        $this->record(new FundingOrderCanceledDomainEvent(
+            $this->id->value() ,
+            $this->formatToArrayWith($dataPrevious)
+        ));
     }
 
-    public function hasNoPendingStatus(): bool
+    public function hasNotValidStatusToCancel(): bool
     {
-        return !$this->status->hasPendingStatus();
+        return $this->status->hasCancelStatus();
     }
 
     public function updateStatus(FundingOrderStatusId $statusId): void
     {
+        $dataPrevious = $this->status->name();
         $this->status = $statusId;
-        $this->record(new FundingOrderStatusUpdatedDomainError($this->id->value() , $this->toArray()));
+
+        $this->record(new FundingOrderStatusUpdatedDomainEvent(
+            $this->id->value() ,
+            $this->formatToArrayWith($dataPrevious)
+        ));
+    }
+
+    public function hasAnInvalidStatus(): bool
+    {
+        return $this->status->hasCancelStatus() || $this->status->hasLiquidatedStatus();
     }
 
     public function toArray(): array
@@ -165,6 +186,7 @@ final class FundingOrder extends AggregateRoot
             'id' => $this->id->value() ,
             'referenceNumber' => $this->referenceNumber->value() ,
             'status' => $this->status->value() ,
+            'statusName' => $this->status->name() ,
             'cardId' => $this->cardId->value() ,
             'amount' => $this->amount->value() ,
             'amountFormat' => $this->amount->format() ,
@@ -180,6 +202,13 @@ final class FundingOrder extends AggregateRoot
             'registerDate' => $this->registerDate->value() ,
             'active' => $this->active->value() ,
         ];
+    }
+
+    private function formatToArrayWith(string $dataPrevious): array
+    {
+        $data = $this->toArray();
+        $data['previousStatusName'] = $dataPrevious;
+        return $data;
     }
 
 }

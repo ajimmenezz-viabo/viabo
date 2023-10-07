@@ -32,7 +32,7 @@ final readonly class FundingOrderCanceler
     {
         $fundingOrder = $this->finder->__invoke($fundingOrderId);
 
-        if ($fundingOrder->hasNoPendingStatus()) {
+        if ($fundingOrder->hasNotValidStatusToCancel()) {
             throw new FundingOrderCannotBeCanceled();
         }
 

@@ -6,7 +6,7 @@ namespace Viabo\management\fundingOrder\domain\events;
 
 use Viabo\shared\domain\bus\event\DomainEvent;
 
-final readonly class FundingOrderStatusUpdatedDomainError extends DomainEvent
+final readonly class FundingOrderStatusUpdatedDomainEvent extends DomainEvent
 {
     public function __construct(
         string        $aggregateId ,

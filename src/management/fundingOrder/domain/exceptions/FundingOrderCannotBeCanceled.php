@@ -15,6 +15,6 @@ final class FundingOrderCannotBeCanceled extends DomainError
 
     public function errorMessage(): string
     {
-        return 'No se puede cancelar la orden de fondeo por que no tiene un estatus como pendiente';
+        return 'No se puede cancelar la orden de fondeo';
     }
 }

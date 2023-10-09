@@ -6,10 +6,15 @@ import { ALL_COMMERCE_CARDS_KEYS } from '@/app/business/viabo-card/all-commerce-
 import { getCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/services'
 import { getErrorAPI } from '@/shared/interceptors'
 
-export const useFindAllCommerceCards = (options = {}) => {
+export const useFindAllCommerceCards = (filters = {}, options = {}) => {
+  const { columnFilters, globalFilter, pageIndex, pageSize, sorting } = filters
+
   const [customError, setCustomError] = useState(null)
-  const commerces = useQuery([ALL_COMMERCE_CARDS_KEYS.LIST], getCommerceCards, {
-    staleTime: 60000,
+
+  const query = useQuery({
+    queryKey: [ALL_COMMERCE_CARDS_KEYS.LIST, columnFilters, globalFilter, pageIndex, pageSize, sorting],
+    queryFn: async ({ signal }) => getCommerceCards(filters, signal),
+    keepPreviousData: true,
     onError: error => {
       const errorMessage = getErrorAPI(
         error,
@@ -17,10 +22,13 @@ export const useFindAllCommerceCards = (options = {}) => {
       )
       setCustomError(errorMessage)
     },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
     ...options
   })
+
   return {
-    ...commerces,
+    ...query,
     error: customError || null
   }
 }

@@ -16,20 +16,24 @@ export function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
       handleClose={handleClose}
       title={cardsSelected?.length === 1 ? 'Asociar Tarjeta' : 'Asociar Tarjetas'}
     >
-      <Stack
-        flexDirection={'row'}
-        gap={2}
-        flexWrap={'wrap'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        px={3}
-        pt={3}
-      >
-        {cardsSelected?.map(card => (
-          <Chip key={card?.id} icon={<CreditCard />} label={card?.cardNumberHidden} />
-        ))}
-      </Stack>
-      <FormAssignCards cards={cardsSelected} onSuccess={handleSuccess} />
+      {open && (
+        <>
+          <Stack
+            flexDirection={'row'}
+            gap={2}
+            flexWrap={'wrap'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            px={3}
+            pt={3}
+          >
+            {cardsSelected?.map(card => (
+              <Chip key={card?.id} icon={<CreditCard />} label={card?.cardNumberHidden} />
+            ))}
+          </Stack>
+          <FormAssignCards cards={cardsSelected} onSuccess={handleSuccess} />
+        </>
+      )}
     </RightPanel>
   )
 }

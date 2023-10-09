@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import { Box, Stack, Zoom } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { shallow } from 'zustand/shallow'
 
 import CommerceAssignedCard from './CommerceAssignedCard'
 
@@ -16,7 +15,7 @@ import { Scrollbar } from '@/shared/components/scroll'
 export function CommerceCardsList({ commerceCards }) {
   const data = commerceCards?.data
   const cards = useCommerceCards(state => state.cards)
-  const setIndexCards = useCommerceCards(state => state.setIndexCards, shallow)
+  const setIndexCards = useCommerceCards(state => state.setIndexCards)
   const theme = useTheme()
 
   const rowsSelected = useMemo(

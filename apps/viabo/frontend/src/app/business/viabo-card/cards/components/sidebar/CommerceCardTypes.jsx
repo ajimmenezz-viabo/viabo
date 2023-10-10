@@ -12,8 +12,11 @@ import { ErrorRequestPage } from '@/shared/components/notifications'
 export function CommerceCardTypes({ cardTypes, isLoading, isError, refetch }) {
   const setCardTypeSelected = useCommerceDetailsCard(state => state.setCardTypeSelected)
   const cardTypeSelected = useCommerceDetailsCard(state => state.cardTypeSelected)
+  const setSelectedCards = useCommerceDetailsCard(state => state.setSelectedCards)
+
   const handleChangeCardType = cardType => {
     setCardTypeSelected(cardType?.id)
+    setSelectedCards([])
   }
 
   return (
@@ -27,27 +30,28 @@ export function CommerceCardTypes({ cardTypes, isLoading, isError, refetch }) {
         cardTypes?.map(cardType => {
           const selected = cardTypeSelected === cardType?.id
           return (
-            <motion.div
+            <Label
               key={cardType?.id}
-              onClick={() => handleChangeCardType(cardType)}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.8 }}
+              variant={selected ? 'ghost' : 'filled'}
+              color={getAvatarColor(cardType?.name || 'inherit')}
+              sx={{
+                textTransform: 'uppercase',
+                marginRight: 1,
+                marginBottom: 2,
+                cursor: 'pointer',
+                border: selected ? 3 : 0,
+                borderColor: selected ? theme => theme.palette.primary.main : 'inherit'
+              }}
             >
-              <Label
-                variant={selected ? 'ghost' : 'filled'}
-                color={getAvatarColor(cardType?.name || 'inherit')}
-                sx={{
-                  textTransform: 'uppercase',
-                  marginRight: 1,
-                  marginBottom: 2,
-                  cursor: 'pointer',
-                  border: selected ? 3 : 0,
-                  borderColor: selected ? theme => theme.palette.primary.main : 'inherit'
-                }}
+              <motion.div
+                key={cardType?.id}
+                onClick={() => handleChangeCardType(cardType)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.8 }}
               >
                 {cardType?.name}
-              </Label>
-            </motion.div>
+              </motion.div>
+            </Label>
           )
         })}
     </Box>

@@ -42,7 +42,7 @@ export function CardList({ cards, isOpenSidebar, isLoading, sx, onOpenDetails, .
             key={card?.id}
             isOpenSidebar={isOpenSidebar}
             card={card}
-            selected={selectedCards?.some(cardSelected => cardSelected?.id === card?.id)}
+            selected={selected?.some(cardSelected => cardSelected?.id === card?.id)}
             onSelectRow={() => onSelectRow(card)}
             onOpenDetails={onOpenDetails}
           />

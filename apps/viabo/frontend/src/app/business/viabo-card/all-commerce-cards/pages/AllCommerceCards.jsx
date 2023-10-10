@@ -3,9 +3,9 @@ import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { ALL_COMMERCE_CARDS_KEYS } from '../adapters'
+import { AssignCardsSidebar } from '../components/assign-card'
 import { CommerceCardsTable } from '../components/table/CommerceCardsTable'
 
-import { AssignCardsSidebar } from '@/app/business/viabo-card/all-commerce-cards/components'
 import { useCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/store'
 import { VIABO_CARD_PATHS, VIABO_CARD_ROUTES_NAMES } from '@/app/business/viabo-card/routes'
 import { PATH_DASHBOARD } from '@/routes'

@@ -36,17 +36,5 @@ export const CommerceCardsColumns = [
     accessorFn: originalRow => originalRow?.assignUser?.name,
     header: 'Asignado',
     size: 150
-  },
-  {
-    id: 'income',
-    accessorFn: originalRow => originalRow?.assignUser?.dateTime,
-    header: 'Abonos',
-    size: 150
-  },
-  {
-    id: 'expenses',
-    accessorFn: originalRow => originalRow?.assignUser?.dateTime,
-    header: 'Cargos',
-    size: 150
   }
 ]

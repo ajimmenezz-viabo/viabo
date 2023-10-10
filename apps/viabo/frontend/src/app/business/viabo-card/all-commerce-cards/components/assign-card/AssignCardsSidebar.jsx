@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { CreditCard } from '@mui/icons-material'
 import { Chip, Stack } from '@mui/material'
 
-import { FormAssignCards } from '@/app/business/viabo-card/all-commerce-cards/components/FormAssignCards'
+import { FormAssignCards } from './FormAssignCards'
+
 import { useCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/store'
 import { RightPanel } from '@/app/shared/components'
 
-export function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
+function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
   const cardsSelected = useCommerceCards(state => state.cards)
 
   return (
@@ -37,6 +38,8 @@ export function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
     </RightPanel>
   )
 }
+
+export default AssignCardsSidebar
 
 AssignCardsSidebar.propTypes = {
   handleClose: PropTypes.func,

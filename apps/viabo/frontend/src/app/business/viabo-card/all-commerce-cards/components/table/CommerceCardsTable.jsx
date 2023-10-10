@@ -76,43 +76,42 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
       <MaterialDataTable
         tableInstanceRef={refCommerceCardsTable}
         enablePinning
-        enableColumnDragging
         enableColumnOrdering={false}
         enableColumnFilterModes={false}
         enableStickyHeader
-        enableRowVirtualization={false}
+        enableRowVirtualization
         enableDensityToggle={false}
-        manualFiltering
-        manualPagination
-        manualSorting
+        // manualFiltering
+        // manualPagination
+        // manualSorting
         columns={columns}
         data={data?.data || []}
         isError={isError}
         textError={error}
         selectAllMode={'all'}
-        onColumnFiltersChange={setColumnFilters}
-        onGlobalFilterChange={setGlobalFilter}
-        onPaginationChange={setPagination}
-        onSortingChange={setSorting}
+        // onColumnFiltersChange={setColumnFilters}
+        // onGlobalFilterChange={setGlobalFilter}
+        // onPaginationChange={setPagination}
+        // onSortingChange={setSorting}
         onRowSelectionChange={setRowSelection}
         rowCount={data?.meta?.total ?? 0}
         initialState={{
           density: 'compact',
           sorting: [
             {
-              id: 'register',
+              id: 'lastActivityDate',
               desc: true
             }
           ]
         }}
         state={{
-          columnFilters,
-          globalFilter,
+          // columnFilters,
+          // globalFilter,
+          // pagination,
+          // sorting,
           isLoading,
-          pagination,
           showAlertBanner: isError,
           showProgressBars: isFetching,
-          sorting,
           rowSelection: rowSelection ?? {}
         }}
         enableRowSelection={true}

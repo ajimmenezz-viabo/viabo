@@ -38,6 +38,9 @@ abstract readonly class ApiController
     protected function decode(string $token): array
     {
         try {
+            if(empty($token)){
+                throw new \DomainException('Sin acceso' , 401);
+            }
             $token = explode(' ' , $token);
             return $this->JWTEncoder->decode($token[1]);
         } catch (JWTDecodeFailureException) {

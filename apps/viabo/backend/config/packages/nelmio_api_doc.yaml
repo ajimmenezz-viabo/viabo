@@ -1,0 +1,133 @@
+nelmio_api_doc:
+  areas:
+    path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
+      - ^/api(?!/doc$)
+    host_patterns: # document only routes with a host of the form api.*
+      - ^api\.
+  documentation:
+    openapi: 3.0.0
+    # servers:
+    #   # Added by API Auto Mocking Plugin
+    #   - description: Viabo Services API
+    #     url: https://qa.viabo.com
+
+    info:
+      title: Viabo API
+      description: |
+        Esta API permite a los desarrolladores consumir los servicios de Viabo Pay y Viabo Card.
+        Proporciona métodos y endpoints para realizar transacciones financieras, gestionar tarjetas 
+        y acceder a información relacionada con los servicios de Viabo Pay y Viabo Card de manera programática.
+        Facilita la integración de estos servicios en aplicaciones y sistemas externos.
+      version: 1.0.0
+      contact:
+        email: alonso@viabo.com
+      license:
+        name: Apache 2.0
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+   
+
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      schemas:
+        Encrypted:
+          type: object
+          description: "Existen algunos endpoints que la respuesta esta encriptada, despues de pasarle las claves para desencriptar, se obtendran los datos correctamente"
+          required:
+            - ciphertext
+            - iv
+          properties:
+            ciphertext:
+              type: string
+              description: Ciphertext
+              example: JkHTZcWtpl05wII00Sf2e5HrgpU2Jg22MJg4tLbg4EIIVPZKHcStMaFAM3DQAmXXqtd2P0nLJ4W3I+fG6c8XYQ==
+            iv:
+              type: string
+              example: fDGUuB8HeirvX4/CIpTMdg==
+              description: Vector de inicializacion
+
+    security:
+      - Bearer: []
+
+    tags:
+      - name: Control de Acceso
+        description: "Esta sección de la API proporciona endpoints relacionados con la autenticación y 
+        la autorización para acceder a los servicios de Viabo Pay y Viabo Card.
+        Incluye métodos para la gestión de tokens de acceso, autenticación de usuarios y autorización para realizar transacciones 
+        y operaciones en la plataforma."
+
+    paths:
+      /api/login:
+        post:
+          tags:
+            - Control de Acceso
+          summary: Generación de token
+          operationId: login
+          description: Inicio de sesión y generación de token
+          requestBody:
+            description: Datos del usuario para el inicio de sesion
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    username: { type: string, example: test@api.com, description: Email de usuario }
+                    password: { type: string, example: Test@api, description: Contraseña del usuario }
+
+          responses:
+            200:
+              description: "Token generado"
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      token: { type: string, example: WQzeDGjL0PMqT4ucaICZNgx8oszCpM... }
+      
+            400:
+              description: "Bad Request"
+            401:
+              description: "Credenciales incorrectas"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "El usuario o password son incorrectos"
+      
+      /api/payment-processors/of/commerce:
+        get:
+          tags:
+            - Viabo Card
+          summary: Lista de procesadores de pago del comercio [Encrypted]
+          description: Obtiene los tipos de procesadores de pago para las tarjetas del comercio o usuario loggeado
+          responses:
+            200:
+              description: "Lista de procesadores de pago del comercio"
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string, example: "1"}
+                        name: { type: string, example: MasterCard }
+                    example:
+                      - id: "1"
+                        name: MasterCard                       
+                      - id: "2"
+                        name: Carnet
+            400:
+              description: "Bad Request"
+            401:
+              description: "Sin acceso"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "El usuario caduco su sesion o no ha iniciado sesion"

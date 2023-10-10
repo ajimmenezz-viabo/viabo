@@ -28,7 +28,9 @@
     "ramsey/uuid": "^4.7",
     "endroid/qr-code": "^4.8",
     "picqer/php-barcode-generator": "^2.2",
-    "symfony/monolog-bundle": "^3.8"
+    "symfony/monolog-bundle": "^3.8",
+    "nelmio/api-doc-bundle": "^4.12",
+    "symfony/asset": "^6.3"
   },
   "require-dev": {
     "behat/behat": "^3.12",
@@ -39,6 +41,5 @@
     "behat/mink-browserkit-driver": "^2.1",
     "fakerphp/faker": "^1.21"
   },
-  "config": {
-  }
+  "config": {}
 }

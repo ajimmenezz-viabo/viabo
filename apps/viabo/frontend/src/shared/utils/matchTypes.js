@@ -1,3 +1,5 @@
+import { isFunction as isLodashFunction } from 'lodash'
+
 export function matchIsNumeric(text) {
   const isNumber = typeof text === 'number'
   const isString = matchIsString(text)
@@ -16,3 +18,5 @@ export const convertCatalogToReactSelect = (data, valueObject, label, disabledPr
     index,
     ...item
   }))
+
+export const isFunction = posibleFunction => isLodashFunction(posibleFunction)

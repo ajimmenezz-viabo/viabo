@@ -1,26 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { FUNDING_ORDERS_KEYS } from '../adapters'
-import { cancelFundingOrder } from '../services'
-
+import { ALL_COMMERCE_CARDS_KEYS } from '@/app/business/viabo-card/all-commerce-cards/adapters'
+import { updateUserInfo } from '@/app/business/viabo-card/all-commerce-cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { isFunction } from '@/shared/utils'
 
-export const useCancelFundingOrder = (options = {}) => {
+export const useUpdateUserInfo = (options = {}) => {
   const client = useQueryClient()
-  const cancelOrder = useMutation(cancelFundingOrder, options)
-  const cancel = async (formData, options = {}) => {
-    const { onSuccess, onError, mutationOptions } = options
+
+  const userMutate = useMutation(updateUserInfo, options)
+  const mutate = async (formData, options = {}) => {
+    const { onSuccess, onError, ...mutationOptions } = options
 
     try {
-      await toast.promise(cancelOrder.mutateAsync(formData, mutationOptions), {
-        pending: 'Cancelando orden de fondeo ...',
+      await toast.promise(userMutate.mutateAsync(formData, mutationOptions), {
+        pending: 'Actualizando información ...',
         success: {
           render({ data }) {
-            client.invalidateQueries([FUNDING_ORDERS_KEYS.LIST])
+            client.invalidateQueries([ALL_COMMERCE_CARDS_KEYS.LIST])
             isFunction(onSuccess) && onSuccess(data)
-            return 'Se canceló la orden de fondeo con éxito'
+            return 'Se actualizo con éxito'
           }
         }
       })
@@ -37,7 +37,7 @@ export const useCancelFundingOrder = (options = {}) => {
   }
 
   return {
-    ...cancelOrder,
-    mutate: cancel
+    ...userMutate,
+    mutate
   }
 }

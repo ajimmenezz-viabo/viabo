@@ -14,7 +14,7 @@ import { useAssignCards } from '@/app/business/viabo-card/all-commerce-cards/hoo
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
-export function FormAssignCards({ cards, onSuccess }) {
+function FormAssignCards({ cards, onSuccess }) {
   const { mutate: assignCards, isLoading: isAssigning } = useAssignCards()
 
   const emptyCVV = useMemo(() => Boolean(cards?.length > 0 && cards[0].cvv === ''), [cards])
@@ -171,6 +171,8 @@ export function FormAssignCards({ cards, onSuccess }) {
     </Scrollbar>
   )
 }
+
+export default FormAssignCards
 
 FormAssignCards.propTypes = {
   cards: PropTypes.array,

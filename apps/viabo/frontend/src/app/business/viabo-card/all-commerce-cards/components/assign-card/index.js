@@ -1,1 +1,1 @@
-export { default as AssignCardsSidebar } from './AssignCardsSidebar'
+export { default as AssignCardsDrawer } from './AssignCardsSidebar'

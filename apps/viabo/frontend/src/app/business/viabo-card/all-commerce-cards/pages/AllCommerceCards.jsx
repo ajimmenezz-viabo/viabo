@@ -1,21 +1,24 @@
-import { useEffect, useRef } from 'react'
+import { lazy, useEffect, useRef } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
 import { ALL_COMMERCE_CARDS_KEYS } from '../adapters'
-import { AssignCardsSidebar } from '../components/assign-card'
 import { CommerceCardsTable } from '../components/table/CommerceCardsTable'
 
-import { useCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/store'
+import { useAssignUserCard, useCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/store'
 import { VIABO_CARD_PATHS, VIABO_CARD_ROUTES_NAMES } from '@/app/business/viabo-card/routes'
 import { PATH_DASHBOARD } from '@/routes'
 import { Page } from '@/shared/components/containers'
 import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { HeaderPage } from '@/shared/components/layout'
+import { Lodable } from '@/shared/components/lodables'
+
+const AssignCardsDrawer = Lodable(lazy(() => import('../components/assign-card/AssignCardsDrawer')))
+const AssignUserInfoDrawer = Lodable(lazy(() => import('../components/user-card/AssignUserInfoDrawer')))
 
 export default function AllCommerceCards() {
-  const openAssignCards = useCommerceCards(state => state.openAssign)
-  const setOpenAssign = useCommerceCards(state => state.setOpenAssign)
+  const { openAssign: openAssignCards, setOpenAssign } = useCommerceCards(state => state)
+  const { openUserInfo, setOpenUserInfo } = useAssignUserCard(state => state)
   const queryClient = useQueryClient()
 
   const cardsTable = useRef(null)
@@ -41,7 +44,7 @@ export default function AllCommerceCards() {
             ]}
           />
           <CommerceCardsTable refCommerceCardsTable={cardsTable} />
-          <AssignCardsSidebar
+          <AssignCardsDrawer
             open={openAssignCards}
             handleClose={() => {
               setOpenAssign(false)
@@ -49,6 +52,15 @@ export default function AllCommerceCards() {
             handleSuccess={() => {
               setOpenAssign(false)
               cardsTable?.current?.resetRowSelection()
+            }}
+          />
+          <AssignUserInfoDrawer
+            open={openUserInfo}
+            handleClose={() => {
+              setOpenUserInfo(false)
+            }}
+            handleSuccess={() => {
+              setOpenUserInfo(false)
             }}
           />
         </ContainerPage>

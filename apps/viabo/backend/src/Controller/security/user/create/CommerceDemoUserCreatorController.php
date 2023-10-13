@@ -27,7 +27,6 @@ final readonly class CommerceDemoUserCreatorController extends ApiController
             ));
             $data = $this->ask(new FindUserQuery('' , $data['email']));
             $token = $this->encode(array_merge($tokenData , ['id' => $data->data['id']]));
-            $this->startSession(['id' => $data->data['id']]);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {

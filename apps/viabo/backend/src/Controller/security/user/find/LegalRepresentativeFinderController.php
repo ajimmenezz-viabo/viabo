@@ -16,9 +16,8 @@ final readonly class LegalRepresentativeFinderController extends ApiController
     {
         try {
             $username = $request->headers->get('Username');
-            $data = $this->ask(new FindLegalRepresentativeCommand($username));
-            $this->startSession($data->tokenData);
-            $token = $this->encode($data->tokenData);
+            $legalRepresentative = $this->ask(new FindLegalRepresentativeCommand($username));
+            $token = $this->encode($legalRepresentative->data);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {

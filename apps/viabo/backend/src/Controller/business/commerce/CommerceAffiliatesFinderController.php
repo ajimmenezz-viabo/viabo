@@ -16,10 +16,9 @@ final readonly class CommerceAffiliatesFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
-            $data = $this->ask(new CommercesAffiliatesQuery());
+            $affiliates = $this->ask(new CommercesAffiliatesQuery());
 
-            return new JsonResponse($data->commerces);
+            return new JsonResponse($affiliates->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

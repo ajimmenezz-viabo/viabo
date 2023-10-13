@@ -8,12 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class ViaboServicesResponse implements Response
 {
-    public function __construct(private array $services)
+    public function __construct(public array $data)
     {
-    }
-
-    public function services(): array
-    {
-        return $this->services;
     }
 }

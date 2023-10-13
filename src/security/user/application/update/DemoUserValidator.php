@@ -34,6 +34,10 @@ final readonly class DemoUserValidator
             return;
         }
 
+        if ($user->isLegalRepresentative()) {
+            throw new UserExist();
+        }
+
         if ($this->hasAssignedCards($user)) {
             throw new UserExist();
         }

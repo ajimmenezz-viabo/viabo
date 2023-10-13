@@ -16,9 +16,12 @@ final readonly class CardMessagesSendController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
-            $this->dispatch(new SendCardMessagesCommand($data['subject'] , $data['emails'] , $data['message']));
+            $this->dispatch(new SendCardMessagesCommand(
+                $data['subject'] ,
+                $data['emails'] ,
+                $data['message']
+            ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

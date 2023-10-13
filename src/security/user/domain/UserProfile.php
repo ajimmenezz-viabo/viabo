@@ -8,4 +8,9 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class UserProfile extends StringValueObject
 {
+    public function isLegalRepresentative(): bool
+    {
+        $legalRepresentativeProfileId = '3';
+        return $this->value === $legalRepresentativeProfileId;
+    }
 }

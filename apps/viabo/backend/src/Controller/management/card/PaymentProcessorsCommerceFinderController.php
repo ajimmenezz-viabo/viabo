@@ -17,10 +17,11 @@ final readonly class PaymentProcessorsCommerceFinderController extends ApiContro
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $commerceId = $this->ask(new CommerceIdQuery($tokenData['id'], $tokenData['profileId']));
             $data = $this->ask(new PaymentProcessorsOfCommerceQuery(
-                $commerceId->data, $tokenData['id'], $tokenData['profileId']
+                $commerceId->data ,
+                $tokenData['id'] ,
+                $tokenData['profileId']
             ));
 
             return new JsonResponse($this->opensslEncrypt($data->data));

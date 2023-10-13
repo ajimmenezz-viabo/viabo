@@ -16,7 +16,7 @@ final readonly class DocumentsCreatorController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
+            
             $uploadDocuments = $request->files->all();
             $commerceId = $request->request->get('commerceId');
             $this->dispatch(new CreateDocumentsCommand($commerceId , $uploadDocuments));

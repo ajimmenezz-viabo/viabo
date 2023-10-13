@@ -17,7 +17,6 @@ final readonly class FundingOrderConciliationUpdaterController extends ApiContro
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $request->toArray();
             $this->dispatch(new FundingOrderConciliationCommand(
                 $tokenData['id'] ,

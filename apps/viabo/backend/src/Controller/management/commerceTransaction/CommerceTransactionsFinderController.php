@@ -19,21 +19,18 @@ final readonly class CommerceTransactionsFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $fromDate = $request->query->get('fromDate');
             $toDate = $request->query->get('toDate');
             $terminalId = $request->query->get('terminalId');
             $page = $request->query->get('page');
             $pageSize = $request->query->get('pageSize');
-
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
-
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
-
             $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'],[]));
-
-            $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery($commerce->data['id'],$terminalId));
-
+            $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery(
+                $commerce->data['id'] ,
+                $terminalId
+            ));
             $transactions = $this->ask(new CommerceTransactionsQuery(
                 $fromDate,
                 $toDate,

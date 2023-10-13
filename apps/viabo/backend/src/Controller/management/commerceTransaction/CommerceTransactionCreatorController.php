@@ -19,9 +19,7 @@ final readonly class CommerceTransactionCreatorController extends ApiController
             $data = $this->opensslDecrypt($request->toArray());
             $commercePay = $this->ask(new CommercePayQuery($data['payId']));
             $commercePayCredentials = $this->ask(new CommercePayCredentialsQuery($commercePay->data['commerceId']));
-
             $terminalData = $this->ask(new CommerceTerminalMerchantIdQuery($commercePay->data['terminalId']));
-
             $this->dispatch(new CreateCommercePayTransactionCommand(
                 $commercePay->data ,
                 $terminalData->data['merchantId'],

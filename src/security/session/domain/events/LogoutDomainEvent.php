@@ -11,16 +11,20 @@ final readonly class LogoutDomainEvent extends DomainEvent
     public function __construct(
         string $aggregateId ,
         string $occurredOn ,
-        string $modifierId = null ,
         string $eventId = null
     )
     {
-        parent::__construct($aggregateId , $modifierId , $eventId , $occurredOn);
+        parent::__construct($aggregateId , $eventId , $occurredOn);
     }
 
-    public static function fromPrimitives(string $aggregateId , array $body , string $modifierId , string $eventId , string $occurredOn): DomainEvent
+    public static function fromPrimitives(
+        string $eventId ,
+        string $aggregateId ,
+        array  $body ,
+        string $occurredOn
+    ): DomainEvent
     {
-        return new self($aggregateId , $occurredOn , $modifierId , $eventId);
+        return new self($aggregateId , $occurredOn , $eventId);
     }
 
     public static function eventName(): string

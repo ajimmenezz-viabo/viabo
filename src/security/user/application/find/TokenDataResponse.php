@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class TokenDataResponse implements Response
 {
-    public function __construct(public array $tokenData)
+    public function __construct(public array $data)
     {
     }
 

@@ -18,7 +18,6 @@ final readonly class FundingOrderCreatorController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $request->toArray();
             $payCash = $this->ask(new ApiQuery('Pay_Cash'));
             $payCashInstructions = $this->ask(new ApiQuery('Pay_Cash_Instructions'));

@@ -19,15 +19,11 @@ final readonly class CommerceCardUserUpdaterController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
-
             $this->dispatch(new CreateUserCommand($data['name'] , $data['email'] , $data['phone']));
             $userData = $this->ask(new FindUserQuery('' , $data['email']));
-
             $userId = $userData->data['id'];
             $this->dispatch(new CreateCommerceUserCommand($userId , $data['cards']));
-
             $this->dispatch(new UpdateCardOwnerCommand($data['cards'] , $userId));
 
             return new JsonResponse();

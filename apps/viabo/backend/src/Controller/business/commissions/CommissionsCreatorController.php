@@ -16,7 +16,7 @@ final readonly class CommissionsCreatorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
+            
             $data = $request->toArray();
             $this->dispatch(new CreateCommissionsCommand(
                 $tokenData['id'],
@@ -27,7 +27,7 @@ final readonly class CommissionsCreatorController extends ApiController
                 $data['speiOutMasterCard'],
                 $data['pay']
             ));
-            $this->validateSession();
+            
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

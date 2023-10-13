@@ -5,6 +5,7 @@ namespace Viabo\catalogs\viaboService\application\find;
 
 
 use Viabo\shared\domain\bus\query\QueryHandler;
+use Viabo\shared\domain\bus\query\Response;
 
 final readonly class FindViaboServicesQueryHandler implements QueryHandler
 {
@@ -12,7 +13,7 @@ final readonly class FindViaboServicesQueryHandler implements QueryHandler
     {
     }
 
-    public function __invoke(FindViaboServicesQuery $query): ViaboServicesResponse
+    public function __invoke(FindViaboServicesQuery $query): Response
     {
         return $this->finder->__invoke();
     }

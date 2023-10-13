@@ -19,11 +19,10 @@ final readonly class CardMovementsFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $credentialData = $this->ask(new CardCredentialQuery($cardId));
             $cardData = $this->ask(new CardQuery($cardId));
             $operationData = $this->ask(new CardOperationsQuery($cardData->data['number'] , $initialDate , $finalDate));
-            $data = $this->ask(new CardMovementsQuery(
+            $movements = $this->ask(new CardMovementsQuery(
                 $cardData->data['number'] ,
                 $initialDate ,
                 $finalDate ,
@@ -31,7 +30,7 @@ final readonly class CardMovementsFinderController extends ApiController
                 $operationData->data
             ));
 
-            return new JsonResponse($this->opensslEncrypt($data->data));
+            return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class PaymentProcessorsResponse implements Response
 {
-    public function __construct(public array $paymentProcessors)
+    public function __construct(public array $data)
     {
     }
 }

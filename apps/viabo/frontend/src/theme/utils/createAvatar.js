@@ -19,7 +19,7 @@ export function getAvatarColor(name) {
 
 export function createAvatar(name) {
   return {
-    name: getFirstCharacter(name),
+    name: getNameAvatar(name),
     color: getAvatarColor(name)
   }
 }
@@ -45,7 +45,10 @@ export function stringToColor(string) {
 }
 
 export function getNameAvatar(name = '') {
-  return name.split(' ')?.length > 1 ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}` : `${name.split(' ')[0][0]}`
+  const nameScaped = name.trim()?.toUpperCase()
+  return nameScaped.split(' ')?.length > 1
+    ? `${nameScaped.split(' ')[0][0]}${nameScaped.split(' ')[1][0]}`
+    : `${nameScaped.split(' ')[0][0]}`
 }
 
 export function stringAvatar(name) {

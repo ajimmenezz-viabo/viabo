@@ -26,3 +26,8 @@ export const assignCards = async cards => {
   const { data } = await axios.put('/api/assign/commerce-card/to/user', cards)
   return cards
 }
+
+export const updateUserInfo = async userInfo => {
+  const { data } = await axios.put('/api/assign/commerce-card/to/user', userInfo)
+  return data
+}

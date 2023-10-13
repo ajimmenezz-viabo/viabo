@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { Box, Stack, Zoom } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-import CommerceAssignedCard from './CommerceAssignedCard'
+import CommerceAssignedCard from '../CommerceAssignedCard'
 
 import { CommerceCardsToolbar } from '@/app/business/viabo-card/all-commerce-cards/components/CommerceCardsToolbar'
 import { useCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/store'

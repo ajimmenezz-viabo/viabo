@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { AssignmentIndRounded, FileDownload } from '@mui/icons-material'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { Box, Button, Card, IconButton, Tooltip } from '@mui/material'
+import { Box, Button, Card, Container, IconButton, Tooltip } from '@mui/material'
+import { BsEye } from 'react-icons/bs'
 import { toast } from 'react-toastify'
 
 import { CommerceCardsColumns } from './CommerceCardsColumns'
@@ -41,7 +42,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
   const setOpenAssign = useCommerceCards(state => state.setOpenAssign)
   const setSelectedCards = useCommerceCards(state => state.setAllCards)
 
-  const columns = useMemo(() => CommerceCardsColumns, [])
+  const columns = CommerceCardsColumns()
 
   const handleValidateCards = table => () => {
     const selectedCards = table.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
@@ -72,96 +73,128 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
   }
 
   return (
-    <Card>
-      <MaterialDataTable
-        tableInstanceRef={refCommerceCardsTable}
-        enablePinning
-        enableColumnDragging
-        enableColumnOrdering={false}
-        enableColumnFilterModes={false}
-        enableStickyHeader
-        enableRowVirtualization={false}
-        enableDensityToggle={false}
-        manualFiltering
-        manualPagination
-        manualSorting
-        columns={columns}
-        data={data?.data || []}
-        isError={isError}
-        textError={error}
-        selectAllMode={'all'}
-        onColumnFiltersChange={setColumnFilters}
-        onGlobalFilterChange={setGlobalFilter}
-        onPaginationChange={setPagination}
-        onSortingChange={setSorting}
-        onRowSelectionChange={setRowSelection}
-        rowCount={data?.meta?.total ?? 0}
-        initialState={{
-          density: 'compact',
-          sorting: [
-            {
-              id: 'register',
-              desc: true
-            }
-          ]
-        }}
-        state={{
-          columnFilters,
-          globalFilter,
-          isLoading,
-          pagination,
-          showAlertBanner: isError,
-          showProgressBars: isFetching,
-          sorting,
-          rowSelection: rowSelection ?? {}
-        }}
-        enableRowSelection={true}
-        muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box sx={{ display: 'flex', gap: '1rem' }}>
-            <Button
-              onClick={handleValidateCards(table)}
-              disabled={!table.getIsSomeRowsSelected()}
-              startIcon={<AssignmentIndRounded width={24} height={24} />}
-            >
-              Asociar
-            </Button>
-          </Box>
-        )}
-        muiTableBodyRowProps={({ row }) => ({
-          sx: theme => ({
-            backgroundColor: theme.palette.background.paper,
-            '&.Mui-selected': {
-              backgroundColor: theme.palette.action.selected,
-              '&:hover': {
-                backgroundColor: theme.palette.action.hover
+    <Container maxWidth={'lg'}>
+      <Card>
+        <MaterialDataTable
+          tableInstanceRef={refCommerceCardsTable}
+          enablePinning
+          enableColumnOrdering={false}
+          enableColumnFilterModes={false}
+          enableStickyHeader
+          enableRowVirtualization
+          enableRowActions
+          positionActionsColumn="last"
+          enableDensityToggle={false}
+          // manualFiltering
+          // manualPagination
+          // manualSorting
+          columns={columns}
+          data={data?.data || []}
+          isError={isError}
+          textError={error}
+          selectAllMode={'all'}
+          // onColumnFiltersChange={setColumnFilters}
+          // onGlobalFilterChange={setGlobalFilter}
+          // onPaginationChange={setPagination}
+          // onSortingChange={setSorting}
+          onRowSelectionChange={setRowSelection}
+          rowCount={data?.meta?.total ?? 0}
+          initialState={{
+            density: 'compact',
+            sorting: [
+              {
+                id: 'assigned',
+                desc: true
               }
-            }
-          })
-        })}
-        renderToolbarInternalActions={({ table }) => (
-          <Box>
-            <Tooltip arrow title="Actualizar">
-              <IconButton onClick={() => refetch()}>
-                <RefreshIcon />
-              </IconButton>
-            </Tooltip>
-            <SearchAction table={table} />
-            <Tooltip title="Descargar">
-              <IconButton
-                disabled={table.getPrePaginationRowModel().rows.length === 0}
-                onClick={handleExportRows(table)}
-              >
-                <FileDownload />
-              </IconButton>
-            </Tooltip>
+            ]
+          }}
+          state={{
+            // columnFilters,
+            // globalFilter,
+            // pagination,
+            // sorting,
+            isLoading,
+            showAlertBanner: isError,
+            showProgressBars: isFetching,
+            rowSelection: rowSelection ?? {}
+          }}
+          enableRowSelection={true}
+          displayColumnDefOptions={{
+            'mrt-row-actions': {
+              header: 'Acciones', // change header text
+              minSize: 15, // make actions column wider,
 
-            <FiltersAction table={table} />
-            <ShowHideColumnsAction table={table} />
-            <FullScreenAction table={table} />
-          </Box>
-        )}
-      />
-    </Card>
+              muiTableHeadCellProps: ({ column }) => ({
+                align: 'center'
+              })
+            },
+            'mrt-row-select': {
+              size: 10
+            }
+          }}
+          muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box sx={{ display: 'flex', gap: '1rem' }}>
+              <Button
+                onClick={handleValidateCards(table)}
+                disabled={!table.getIsSomeRowsSelected()}
+                startIcon={<AssignmentIndRounded width={24} height={24} />}
+              >
+                Asociar
+              </Button>
+            </Box>
+          )}
+          muiTableBodyRowProps={({ row }) => ({
+            sx: theme => ({
+              backgroundColor: theme.palette.background.paper,
+              '&.Mui-selected': {
+                backgroundColor: theme.palette.action.selected,
+                '&:hover': {
+                  backgroundColor: theme.palette.action.hover
+                }
+              }
+            })
+          })}
+          renderToolbarInternalActions={({ table }) => (
+            <Box>
+              <Tooltip arrow title="Actualizar">
+                <IconButton onClick={() => refetch()}>
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
+              <SearchAction table={table} />
+              <Tooltip title="Descargar">
+                <IconButton
+                  disabled={table.getPrePaginationRowModel().rows.length === 0}
+                  onClick={handleExportRows(table)}
+                >
+                  <FileDownload />
+                </IconButton>
+              </Tooltip>
+
+              <FiltersAction table={table} />
+              <ShowHideColumnsAction table={table} />
+              <FullScreenAction table={table} />
+            </Box>
+          )}
+          renderRowActions={({ row, table }) => (
+            <Box
+              sx={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexWrap: 'nowrap',
+                gap: '8px'
+              }}
+            >
+              <IconButton size="small" color="primary">
+                <BsEye />
+              </IconButton>
+            </Box>
+          )}
+        />
+      </Card>
+    </Container>
   )
 }

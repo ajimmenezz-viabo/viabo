@@ -36,7 +36,7 @@ export function CardList({ cards, isOpenSidebar, isLoading, sx, onOpenDetails, .
 
   return (
     <List disablePadding sx={sx} {...other}>
-      {(isLoading ? [...Array(12)] : cards).map((card, index) =>
+      {(isLoading ? [...Array(5)] : cards).map((card, index) =>
         card?.id ? (
           <CardItem
             key={card?.id}

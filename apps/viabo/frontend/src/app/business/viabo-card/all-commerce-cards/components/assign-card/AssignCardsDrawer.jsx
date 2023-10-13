@@ -1,13 +1,17 @@
+import { lazy } from 'react'
+
 import PropTypes from 'prop-types'
 
 import { CreditCard } from '@mui/icons-material'
 import { Chip, Stack } from '@mui/material'
 
-import { FormAssignCards } from '@/app/business/viabo-card/all-commerce-cards/components/FormAssignCards'
 import { useCommerceCards } from '@/app/business/viabo-card/all-commerce-cards/store'
 import { RightPanel } from '@/app/shared/components'
+import { Lodable } from '@/shared/components/lodables'
 
-export function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
+const FormAssignCards = Lodable(lazy(() => import('./FormAssignCards')))
+
+function AssignCardsDrawer({ open, handleClose, handleSuccess }) {
   const cardsSelected = useCommerceCards(state => state.cards)
 
   return (
@@ -38,8 +42,10 @@ export function AssignCardsSidebar({ open, handleClose, handleSuccess }) {
   )
 }
 
-AssignCardsSidebar.propTypes = {
+export default AssignCardsDrawer
+
+AssignCardsDrawer.propTypes = {
   handleClose: PropTypes.func,
   handleSuccess: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool.isRequired
 }

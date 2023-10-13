@@ -11,11 +11,9 @@ abstract readonly class DomainEvent
 {
     private string $eventId;
     private string $occurredOn;
-    private ?string $modifierId;
 
     public function __construct(
         private string $aggregateId ,
-        string         $modifierId = null ,
         string         $eventId = null ,
         string         $occurredOn = null
     )
@@ -23,14 +21,12 @@ abstract readonly class DomainEvent
         $date = new DatePHP();
         $this->eventId = $eventId ?: UuidValueObject::random()->value();
         $this->occurredOn = $occurredOn ?: $date->dateTime();
-        $this->modifierId = $modifierId;
     }
 
     abstract public static function fromPrimitives(
+        string $eventId ,
         string $aggregateId ,
         array  $body ,
-        string $modifierId ,
-        string $eventId ,
         string $occurredOn
     ): self;
 
@@ -51,11 +47,6 @@ abstract readonly class DomainEvent
     public function occurredOn(): string
     {
         return $this->occurredOn;
-    }
-
-    public function modifierId(): string
-    {
-        return $this->modifierId;
     }
 
 }

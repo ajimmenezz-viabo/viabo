@@ -189,9 +189,14 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
         curl_setopt($curl , CURLOPT_HTTPHEADER , $headers);
         curl_setopt($curl , CURLOPT_SSL_VERIFYPEER , false);
         curl_setopt($curl , CURLOPT_POSTFIELDS , json_encode($inputData));
-        $response = json_decode(curl_exec($curl) , true);
+        $response = curl_exec($curl);
         curl_close($curl);
 
+        if ($response === false) {
+            throw new \DomainException("Error de API SET: DOES NOT RESPOND " , 403);
+        }
+
+        $response = json_decode($response , true);
         if ($this->hasError($response)) {
             throw new \DomainException("Error de API SET: {$response['ErrorMessage']}" , 403);
         }

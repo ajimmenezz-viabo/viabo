@@ -16,13 +16,9 @@ final readonly class TerminalConsolidationCreatorController extends ApiControlle
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $request->toArray();
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
-
             $threshold = $this->ask(new PayThresholdQuery('ViaboPay'));
-
-
             $this->dispatch(new CreatorTerminalConsolidationCommand(
                 $commerce->data['id'],
                 $tokenData['id'],

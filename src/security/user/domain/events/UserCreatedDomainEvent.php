@@ -12,17 +12,21 @@ final readonly class UserCreatedDomainEvent extends DomainEvent
         string         $aggregateId ,
         private array  $body ,
         private string $password ,
-        string         $modifierId = null ,
         string         $eventId = null ,
         string         $occurredOn = null
     )
     {
-        parent::__construct($aggregateId , $modifierId , $eventId , $occurredOn);
+        parent::__construct($aggregateId , $eventId , $occurredOn);
     }
 
-    public static function fromPrimitives(string $aggregateId , array $body , string $modifierId , string $eventId , string $occurredOn): DomainEvent
+    public static function fromPrimitives(
+        string $eventId ,
+        string $aggregateId ,
+        array  $body ,
+        string $occurredOn
+    ): DomainEvent
     {
-        return new static($aggregateId , $body , $modifierId , $eventId , $occurredOn);
+        return new static($aggregateId , $body , $eventId , $occurredOn);
     }
 
     public static function eventName(): string

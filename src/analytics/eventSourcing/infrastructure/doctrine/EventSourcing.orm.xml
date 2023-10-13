@@ -8,7 +8,6 @@
         <embedded name="id" class="EventSourcingId" use-column-prefix="false" />
         <embedded name="type" class="EventSourcingType" use-column-prefix="false" />
         <embedded name="aggregateId" class="EventSourcingAggregateId" use-column-prefix="false" />
-        <embedded name="modifierId" class="EventSourcingModifierId" use-column-prefix="false" />
         <embedded name="body" class="EventSourcingBody" use-column-prefix="false" />
         <embedded name="occurredOn" class="EventSourcingOccurredOn" use-column-prefix="false" />
     </entity>

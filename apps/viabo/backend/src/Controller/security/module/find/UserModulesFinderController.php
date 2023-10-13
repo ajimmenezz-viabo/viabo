@@ -16,11 +16,10 @@ final readonly class UserModulesFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $userPermission = $this->ask(new FindUserPermissionQuery($tokenData['id']));
-            $data = $this->ask(new FindUserModelsQuery($userPermission->permissions));
+            $modules = $this->ask(new FindUserModelsQuery($userPermission->permissions));
 
-            return new JsonResponse($data->modules);
+            return new JsonResponse($modules->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

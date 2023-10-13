@@ -19,7 +19,6 @@ final readonly class FundingOrdersFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $cards = $this->ask(new MastersCardsQueryByCommerce($commerce->data['id']));
             $fundingOrders = $this->ask(new FundingOrdersQueryByCards($cards->data));

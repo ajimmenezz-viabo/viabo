@@ -18,13 +18,14 @@ final readonly class EnabledCommerceCardsFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $paymentProcessorId = $request->get('paymentProcessorId');
             $userId = $tokenData['id'];
-
             $commerceId = $this->getCommerceId($userId);
             $data = $this->ask(new EnabledCardsQuery(
-                $commerceId , $userId , $tokenData['profileId'] , $paymentProcessorId
+                $commerceId ,
+                $userId ,
+                $tokenData['profileId'] ,
+                $paymentProcessorId
             ));
 
             return new JsonResponse($this->opensslEncrypt($data->data));

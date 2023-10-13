@@ -4,7 +4,7 @@
 namespace Viabo\management\card\domain;
 
 
-use Viabo\management\card\domain\events\AssignedCardDomaEventInCommerce;
+use Viabo\management\card\domain\events\AssignedCardDomainEventInCommerce;
 use Viabo\management\card\domain\events\CardBlockUpdatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedDomainEvent;
 use Viabo\management\card\domain\events\CardCreatedOutsideDomainEvent;
@@ -114,7 +114,7 @@ final class Card extends AggregateRoot
     {
         $this->commerceId = $this->commerceId->update($commerceId->value());
 
-        $this->record(new AssignedCardDomaEventInCommerce($this->id->value() , $this->toArray()));
+        $this->record(new AssignedCardDomainEventInCommerce($this->id->value() , $this->toArray()));
     }
 
     public function assignTo(CardOwnerId $ownerId): void

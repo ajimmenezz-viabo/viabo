@@ -16,13 +16,16 @@ final readonly class CommerceTerminalsPayFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $commerceData =  $commerce->data;
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerceData['id']));
             $commercePayCredentialData = $commercePayCredential->data;
-            $data = $this->ask(new FindTerminalsCommercePayQuery($commercePayCredentialData['merchantId'],$commercePayCredentialData['apiKey']));
-            return new JsonResponse($data->data);
+            $terminals = $this->ask(new FindTerminalsCommercePayQuery(
+                $commercePayCredentialData['merchantId'] ,
+                $commercePayCredentialData['apiKey']
+            ));
+
+            return new JsonResponse($terminals->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

@@ -10,23 +10,21 @@ final readonly class SessionStartedDomainEvent extends DomainEvent
 {
     public function __construct(
         string $aggregateId ,
-        string $modifierId = null ,
         string $eventId = null ,
         string $occurredOn = null
     )
     {
-        parent::__construct($aggregateId , $modifierId , $eventId , $occurredOn);
+        parent::__construct($aggregateId , $eventId , $occurredOn);
     }
 
     public static function fromPrimitives(
+        string $eventId ,
         string $aggregateId ,
         array  $body ,
-        string $modifierId ,
-        string $eventId ,
         string $occurredOn
     ): DomainEvent
     {
-        return new self($aggregateId , $modifierId , $eventId , $occurredOn);
+        return new self($aggregateId , $eventId , $occurredOn);
     }
 
     public static function eventName(): string

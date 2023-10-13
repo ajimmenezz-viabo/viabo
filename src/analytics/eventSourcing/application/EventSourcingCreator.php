@@ -7,7 +7,6 @@ namespace Viabo\analytics\eventSourcing\application;
 use Viabo\analytics\eventSourcing\domain\EventSourcing;
 use Viabo\analytics\eventSourcing\domain\EventSourcingAggregateId;
 use Viabo\analytics\eventSourcing\domain\EventSourcingId;
-use Viabo\analytics\eventSourcing\domain\EventSourcingModifierId;
 use Viabo\analytics\eventSourcing\domain\EventSourcingOccurredOn;
 use Viabo\analytics\eventSourcing\domain\EventSourcingRepository;
 use Viabo\analytics\eventSourcing\domain\EventSourcingType;
@@ -27,10 +26,7 @@ final readonly class EventSourcingCreator
         EventSourcingOccurredOn  $occurredOn
     ): void
     {
-
-        $modifierId = new EventSourcingModifierId($this->repository->userSession());
-        $eventSourcing = new EventSourcing($id , $type , $aggregateId , $modifierId , $value , $occurredOn);
-
+        $eventSourcing = new EventSourcing($id , $type , $aggregateId , $value , $occurredOn);
         $this->repository->save($eventSourcing);
     }
 }

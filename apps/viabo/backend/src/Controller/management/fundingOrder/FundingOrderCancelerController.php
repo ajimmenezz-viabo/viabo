@@ -18,7 +18,6 @@ final readonly class FundingOrderCancelerController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $payCash = $this->ask(new ApiQuery('Pay_Cash'));
             $this->dispatch(new CancelFundingOrderCommand(
                 $tokenData['id'] ,

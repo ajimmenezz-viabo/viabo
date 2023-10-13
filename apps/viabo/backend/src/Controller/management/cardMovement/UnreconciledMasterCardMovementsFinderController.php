@@ -20,20 +20,16 @@ final readonly class UnreconciledMasterCardMovementsFinderController extends Api
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $fundingOrderId = $request->get('fundingOrderId');
-
             $fundingOrder = $this->ask(new FundingOrderQuery($fundingOrderId));
             $fundingOrderAmount = $fundingOrder->data['amount'];
             $cardId = $fundingOrder->data['cardId'];
             $fundingOrderRegisterDate = $fundingOrder->data['registerDate'];
-
             $credentialData = $this->ask(new CardCredentialQuery($cardId));
             $cardData = $this->ask(new CardQuery($cardId));
             $cardOperations = $this->ask(new CardOperationsQuery($cardData->data['number'] , $fundingOrderRegisterDate));
             $threshold = $this->ask(new FundingOrderThresholdQuery());
             $fundingOrderFinished = $this->ask(new FinishedFundingOrderQuery($cardId));
-
             $movements = $this->ask(new UnreconciledMasterCardMovementsQuery(
                 $cardData->data['number'] ,
                 $fundingOrderAmount ,

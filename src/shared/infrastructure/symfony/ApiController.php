@@ -7,7 +7,6 @@ namespace Viabo\shared\infrastructure\symfony;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Viabo\shared\domain\bus\command\Command;
 use Viabo\shared\domain\bus\command\CommandBus;
 use Viabo\shared\domain\bus\query\Query;
@@ -19,8 +18,7 @@ abstract readonly class ApiController
     public function __construct(
         private QueryBus            $queryBus ,
         private CommandBus          $commandBus ,
-        private JWTEncoderInterface $JWTEncoder ,
-        private Session             $session = new Session()
+        private JWTEncoderInterface $JWTEncoder
     )
     {
     }
@@ -37,14 +35,15 @@ abstract readonly class ApiController
 
     protected function decode(string $token): array
     {
+        $message = 'Sin acceso';
         try {
-            if(empty($token)){
-                throw new \DomainException('Sin acceso' , 401);
+            if (empty($token)) {
+                throw new \DomainException($message , 401);
             }
             $token = explode(' ' , $token);
             return $this->JWTEncoder->decode($token[1]);
         } catch (JWTDecodeFailureException) {
-            throw new \DomainException('Sin acceso' , 401);
+            throw new \DomainException($message , 401);
         }
     }
 
@@ -80,28 +79,6 @@ abstract readonly class ApiController
             $json , 'AES-256-CBC' , $_ENV['APP_OPENSSL'] , OPENSSL_RAW_DATA , $initializationVector
         );
         return ['ciphertext' => base64_encode($ciphertext) , 'iv' => base64_encode($initializationVector)];
-    }
-
-    public function startSession(array $data): void
-    {
-        if ($this->session->isStarted()) {
-            $this->session->invalidate();
-            $this->session->start();
-        }
-        $this->session->set('userId' , $data['id']);
-    }
-
-    public function endSession(): void
-    {
-        $this->session->invalidate();
-    }
-
-    public function validateSession(): void
-    {
-        if (empty($this->session->get('userId'))) {
-            $this->session->invalidate();
-            throw new \DomainException('Sin acceso por session' , 401);
-        }
     }
 
     protected function formatResponse(mixed $data , bool $success = true , int $code = 200): array

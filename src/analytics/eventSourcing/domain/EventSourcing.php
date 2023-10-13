@@ -10,7 +10,6 @@ final readonly class EventSourcing
         private EventSourcingId          $id ,
         private EventSourcingType        $type ,
         private EventSourcingAggregateId $aggregateId ,
-        private EventSourcingModifierId  $modifierId ,
         private EventSourcingBody        $body ,
         private EventSourcingOccurredOn  $occurredOn
     )

@@ -16,7 +16,6 @@ final readonly class CodeCreatorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $this->dispatch(new CreateCodeCommand($tokenData['id']));
 
             return new JsonResponse();

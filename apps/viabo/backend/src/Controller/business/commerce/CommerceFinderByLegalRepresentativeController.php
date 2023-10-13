@@ -16,10 +16,9 @@ final readonly class CommerceFinderByLegalRepresentativeController extends ApiCo
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
-            $data = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
 
-            return new JsonResponse($data->data);
+            return new JsonResponse($commerce->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

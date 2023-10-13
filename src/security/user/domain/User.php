@@ -128,6 +128,11 @@ final class User extends AggregateRoot
         return $this->password->isNotBackdoor($passwordEntered->value());
     }
 
+    public function isLegalRepresentative(): bool
+    {
+        return $this->profile->isLegalRepresentative();
+    }
+
     public function resetPassword(UserPassword $password): void
     {
         $this->password = $password;

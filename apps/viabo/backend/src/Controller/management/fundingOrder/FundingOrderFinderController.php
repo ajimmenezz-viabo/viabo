@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\billing\application\find\BillingPayCashQuery;
-use Viabo\management\billing\domain\BillingReferencePayCash;
 use Viabo\management\fundingOrder\application\find\FundingOrderQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -19,7 +18,6 @@ final readonly class FundingOrderFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $fundingOrder = $this->ask(new FundingOrderQuery($fundingOrderId));
             $billingPayCash = $this->ask(new BillingPayCashQuery($fundingOrder->data['referencePayCash']));
 

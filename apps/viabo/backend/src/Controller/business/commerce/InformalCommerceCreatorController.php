@@ -17,7 +17,6 @@ final readonly class InformalCommerceCreatorController extends ApiController
         try {
             $data = $request->toArray();
             $this->dispatch(new CreateInformalCommerceCommand($data['commerceName']));
-            $this->validateSession();
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

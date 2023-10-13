@@ -17,11 +17,8 @@ final readonly class CommerceUpdaterController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $request = $request->toArray();
-
             $commerceId = $request['commerceId'];
-
             $this->dispatch(new UpdateCommerceCommand(
                 $commerceId ,
                 $request['fiscalPersonType'] ,
@@ -34,7 +31,6 @@ final readonly class CommerceUpdaterController extends ApiController
                 $request['paymentApi'] ,
                 $request['registerStep']
             ));
-
             $this->dispatch(new UpdateViaboServicesCommand($commerceId , $request['services']));
 
             return new JsonResponse();

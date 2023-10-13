@@ -8,5 +8,4 @@ interface EventSourcingRepository
 {
     public function save(EventSourcing $eventSourcing): void;
 
-    public function userSession(): string;
 }

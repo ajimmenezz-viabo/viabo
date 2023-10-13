@@ -17,11 +17,8 @@ final readonly class CommercePayVirtualTerminalCreatorController extends ApiCont
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $this->opensslDecrypt($request->toArray());
-
             $commercePayCredentials = $this->ask(new CommercePayCredentialsQuery($data['commerceId']));
-
             $commercePay = $this->ask(new CommercePayVirtualTerminalCommand(
                 $tokenData['id'] ,
                 $data['commerceId'] ,
@@ -32,9 +29,7 @@ final readonly class CommercePayVirtualTerminalCreatorController extends ApiCont
                 $data['description'] ,
                 $data['amount']
             ));
-
             $terminalData = $this->ask(new CommerceTerminalMerchantIdQuery($data['terminalId']));
-
             $cardData = [
                 'cardNumber' => $data['cardNumber'],
                 'cardHolder' => $data['clientName'],
@@ -42,7 +37,6 @@ final readonly class CommercePayVirtualTerminalCreatorController extends ApiCont
                 'expYear' => $data['expYear'],
                 'security' => $data['security']
             ];
-
             $this->dispatch(new CreateCommerceVirtualTerminalTransactionCommand(
                 $commercePay->data ,
                 $terminalData->data['merchantId'],

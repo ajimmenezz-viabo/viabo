@@ -17,7 +17,6 @@ final readonly class CardBlockStatusUpdaterController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $credential = $this->ask(new CardCredentialQuery($cardId));
             $this->dispatch(new UpdateCardBlockStatusCommand($cardId , $blockStatus , $credential->data));
 

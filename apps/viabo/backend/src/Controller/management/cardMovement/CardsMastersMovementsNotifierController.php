@@ -5,22 +5,19 @@ namespace Viabo\Backend\Controller\management\cardMovement;
 
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\business\commerce\application\find\AddCommerceLegalRepresentativeQuery;
 use Viabo\management\card\application\find\CardsMastersQuery;
-use Viabo\management\card\application\find\OwnerCardsQuery;
 use Viabo\management\cardMovement\application\find\AddTodayCardsMovementsQuery;
 use Viabo\management\cardOperation\application\find\AddTodayCardsOperationsQuery;
 use Viabo\management\credential\application\find\AddCardsCredentialsQuery;
 use Viabo\management\notifications\application\SendMastersCardsMovementsNotifications\SendMastersCardsMovementsNotifications;
-use Viabo\management\notifications\application\SendCardsMovementsNotifications\SendCardsMovementsNotifications;
 use Viabo\security\user\application\find\AddUsersEmailsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardsMastersMovementsNotifierController extends ApiController
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
         try {
             $cards = $this->ask(new CardsMastersQuery());
@@ -30,6 +27,7 @@ final readonly class CardsMastersMovementsNotifierController extends ApiControll
             $cards = $this->ask(new AddTodayCardsOperationsQuery($cards->data));
             $cards = $this->ask(new AddTodayCardsMovementsQuery($cards->data));
             $this->dispatch(new SendMastersCardsMovementsNotifications($cards->data));
+
             return new JsonResponse();
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());

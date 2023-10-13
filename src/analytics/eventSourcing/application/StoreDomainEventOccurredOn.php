@@ -26,16 +26,21 @@ final readonly class StoreDomainEventOccurredOn implements DomainEventSubscriber
     public function __invoke(DomainEvent $event): void
     {
 
-        if ($this->isLoginEvent($event)) return;
-        if ($this->isLogoutEvent($event)) return;
+        if ($this->isLoginEvent($event)) {
+            return;
+        }
+
+        if ($this->isLogoutEvent($event)) {
+            return;
+        }
 
         $id = new EventSourcingId($event->eventId());
         $type = new EventSourcingType($event->eventName());
         $aggregateId = new EventSourcingAggregateId($event->aggregateId());
         $body = EventSourcingBody::create($event->toPrimitives());
-        $ocurreOn = new EventSourcingOccurredOn($event->occurredOn());
+        $occurredOn = new EventSourcingOccurredOn($event->occurredOn());
 
-        ($this->creator)($id , $type , $aggregateId , $body , $ocurreOn);
+        $this->creator->__invoke($id , $type , $aggregateId , $body , $occurredOn);
     }
 
     private function isLoginEvent(DomainEvent $event): bool

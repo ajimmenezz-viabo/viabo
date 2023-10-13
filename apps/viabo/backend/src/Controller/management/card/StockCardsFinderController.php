@@ -16,7 +16,6 @@ final readonly class StockCardsFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $data = $this->ask(new StockCardsQuery());
 
             return new JsonResponse($this->opensslEncrypt($data->stockCards));

@@ -16,15 +16,14 @@ final readonly class LegalRepresentativeCreatorController extends ApiController
     {
         try {
             $data = $request->toArray();
-            $data = $this->ask(new CreateLegalRepresentativeQuery(
-                $data['name'],
-                $data['lastname'],
-                $data['phone'],
-                $data['email'],
-                $data['password'],
+            $this->ask(new CreateLegalRepresentativeQuery(
+                $data['name'] ,
+                $data['lastname'] ,
+                $data['phone'] ,
+                $data['email'] ,
+                $data['password'] ,
                 $data['confirmPassword']
             ));
-            $this->startSession(['id' => $data->userId]);
 
             return new JsonResponse('');
         } catch (\DomainException $exception) {

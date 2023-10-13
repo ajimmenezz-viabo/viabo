@@ -16,10 +16,9 @@ final readonly class CommercesFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
-            $data = $this->ask(new CommercesQuery());
+            $commerces = $this->ask(new CommercesQuery());
 
-            return new JsonResponse($data->commerces);
+            return new JsonResponse($commerces->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

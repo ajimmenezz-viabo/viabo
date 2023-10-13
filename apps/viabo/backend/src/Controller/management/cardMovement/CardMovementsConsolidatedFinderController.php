@@ -17,17 +17,19 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $this->validateSession();
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $speiCard = $this->ask(new FindTerminalSpeiCardQuery($terminalId));
-            $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery($commerce->data['id'],$terminalId));
-
-            $data = $this->ask(new CardMovementsConsolidatedQuery(
+            $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery(
+                $commerce->data['id'] ,
+                $terminalId
+            ));
+            $movements = $this->ask(new CardMovementsConsolidatedQuery(
                 $speiCard->data,
                 $initialDate ,
                 $movementsConsolidated->data
             ));
-            return new JsonResponse($this->opensslEncrypt($data->data));
+
+            return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

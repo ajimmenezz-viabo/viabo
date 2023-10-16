@@ -21,7 +21,7 @@ final readonly class MainCardFinder
 
     public function __invoke(CardCommerceId $commerceId, CardPaymentProcessorId $paymentProcessorId): MainCardIdResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()] ,
             ['field' => 'main.value' , 'operator' => '=' , 'value' => '1'],
             ['field' => 'paymentProcessorId.value' , 'operator' => '=' , 'value' => $paymentProcessorId->value()]

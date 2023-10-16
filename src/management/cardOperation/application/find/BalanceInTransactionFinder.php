@@ -19,7 +19,7 @@ final readonly class BalanceInTransactionFinder
     public function __invoke(array $cardsNumbers): BalanceResponse
     {
         $filter = Filters::fromValues([
-            ['field' => 'originCard.value' , 'operator' => 'in' , 'value' => implode(',' , $cardsNumbers)] ,
+            ['field' => 'originCard.value' , 'operator' => 'IN' , 'value' => implode(',' , $cardsNumbers)] ,
             ['field' => 'active.value' , 'operator' => '=' , 'value' => '1']
         ]);
 

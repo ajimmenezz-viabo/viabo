@@ -24,7 +24,7 @@ final readonly class FinderTerminalConsolidationTransactions
         if (!empty($terminalId->value())) {
             $filter[] = ['field' => 'terminalId.value', 'operator' => '=', 'value' => $terminalId->value()];
         }
-        $filters = Filters::fromValuesEmpty($filter);
+        $filters = Filters::fromValues($filter);
 
         $movementsTerminalConsolidation = $this->repository->searchCriteria(new Criteria($filters));
 

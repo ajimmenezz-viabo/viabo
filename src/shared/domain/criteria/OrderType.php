@@ -4,22 +4,14 @@
 namespace Viabo\shared\domain\criteria;
 
 
-use Viabo\shared\domain\valueObjects\Enum;
-use InvalidArgumentException;
-
-final class OrderType extends Enum
+enum OrderType: string
 {
-    public const ASC  = 'asc';
-    public const DESC = 'desc';
-    public const NONE = 'none';
+    case ASC = 'asc';
+    case DESC = 'desc';
+    case NONE = 'none';
 
     public function isNone(): bool
     {
-        return $this->equals(self::none());
-    }
-
-    protected function throwExceptionForInvalidValue($value): never
-    {
-        throw new InvalidArgumentException($value);
+        return $this->value === self::NONE->value;
     }
 }

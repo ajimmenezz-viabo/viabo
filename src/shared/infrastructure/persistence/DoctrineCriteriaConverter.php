@@ -10,8 +10,9 @@ use Doctrine\Common\Collections\Expr\CompositeExpression;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filter;
 use Viabo\shared\domain\criteria\FilterField;
+use Viabo\shared\domain\criteria\OrderBy;
 
-final class DoctrineCriteriaConverter
+final readonly class DoctrineCriteriaConverter
 {
     public function __construct(
         private Criteria $criteria ,
@@ -34,7 +35,12 @@ final class DoctrineCriteriaConverter
 
     private function convertToDoctrineCriteria(): DoctrineCriteria
     {
-        return new DoctrineCriteria($this->buildExpression($this->criteria) , null , null , $this->criteria->limit());
+        return new DoctrineCriteria(
+            $this->buildExpression($this->criteria) ,
+            $this->formatOrder($this->criteria) ,
+            $this->criteria->offset() ,
+            $this->criteria->limit()
+        );
     }
 
     private function buildExpression(Criteria $criteria): ?CompositeExpression
@@ -52,11 +58,10 @@ final class DoctrineCriteriaConverter
     private function buildComparison(): callable
     {
         return function (Filter $filter): Comparison {
-            $field = $this->mapFieldValue($filter->getField());
-            $value = $this->valueType($field , $filter);
-            $operator = $this->operatorType($filter);
+            $field = $this->mapFieldValue($filter->field());
+            $value = $this->formatValue($field , $filter);
 
-            return new Comparison($field , $operator , $value);
+            return new Comparison($field , $filter->operator()->value, $value);
         };
     }
 
@@ -77,31 +82,29 @@ final class DoctrineCriteriaConverter
         return $this->hydrators[$field]($value);
     }
 
-    private function valueType($field , Filter $filter)
+    private function formatOrder(Criteria $criteria): ?array
     {
-        if ($filter->getOperator()->isTypeIN()) {
-            return explode(',' , $filter->getValue()->value());
+        if (!$criteria->hasOrder()) {
+            return null;
+        }
+        return [$this->mapOrderBy($criteria->order()->orderBy()) => $criteria->order()->orderType()->value];
+    }
+
+    private function mapOrderBy(OrderBy $field): mixed
+    {
+        return array_key_exists($field->value(), $this->criteriaToDoctrineFields)
+            ? $this->criteriaToDoctrineFields[$field->value()]
+            : $field->value();
+    }
+
+    private function formatValue(mixed $field , Filter $filter): mixed
+    {
+        if($filter->operator()->isIN() || $filter->operator()->isNotIN()){
+            return explode(',', $filter->value()->value());
         }
 
         return $this->existsHydratorFor($field)
-            ? $this->hydrate($field , $filter->getValue()->value())
-            : $filter->getValue()->value();
-    }
-
-    private function operatorType(Filter $filter): string
-    {
-        if ($filter->getOperator()->isTypeLike()) {
-            return Comparison::CONTAINS;
-        }
-
-        if ($filter->getOperator()->isTypeIN()) {
-            return Comparison::IN;
-        }
-
-        if ($filter->getOperator()->isTypeEndWith()) {
-            return Comparison::ENDS_WITH;
-        }
-
-        return $filter->getOperator()->value();
+            ? $this->hydrate($field , $filter->value()->value())
+            : $filter->value()->value();
     }
 }

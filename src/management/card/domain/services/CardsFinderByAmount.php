@@ -18,7 +18,7 @@ final readonly class CardsFinderByAmount
 
     public function __invoke(CardPaymentProcessorId $paymentProcessor , int $amount): array
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => ''] ,
             ['field' => 'paymentProcessorId.value' , 'operator' => '=' , 'value' => $paymentProcessor->value()] ,
             ['field' => 'ownerId.value' , 'operator' => '=' , 'value' => ''] ,

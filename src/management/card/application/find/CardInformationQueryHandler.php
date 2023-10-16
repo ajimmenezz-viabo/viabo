@@ -24,6 +24,6 @@ final readonly class CardInformationQueryHandler implements QueryHandler
         $user = CardUser::create($query->credentialData['userName']);
         $password = CardPassword::create($query->credentialData['password']);
 
-        return ($this->finder)($cardId , $clientKey , $user , $password);
+        return $this->finder->__invoke($cardId , $clientKey , $user , $password);
     }
 }

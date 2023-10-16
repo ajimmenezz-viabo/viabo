@@ -8,7 +8,9 @@ use Doctrine\ORM\EntityManager;
 use Viabo\security\session\domain\Session;
 use Viabo\security\session\domain\SessionRepository;
 use Viabo\security\shared\domain\user\UserId;
+use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
+use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 
 final class SessionDoctrineRepository extends DoctrineRepository implements SessionRepository
 {
@@ -26,6 +28,12 @@ final class SessionDoctrineRepository extends DoctrineRepository implements Sess
     {
         return $this->repository(Session::class)
             ->findOneBy(['userId' => $userId->value() , 'active.value' => '1']);
+    }
+
+    public function matching(Criteria $criteria): array
+    {
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(Session::class)->matching($criteriaConvert)->toArray();
     }
 
     public function update(Session $session): void

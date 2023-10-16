@@ -19,7 +19,7 @@ final readonly class TerminalViewFinder
         $filters = [['field' => 'terminalId' , 'operator' => '=' , 'value' => $merchantId->value()]];
 
 
-        $filters = Filters::fromValuesEmpty($filters);
+        $filters = Filters::fromValues($filters);
 
         $terminals = $this->repository->searchView(new Criteria($filters));
 

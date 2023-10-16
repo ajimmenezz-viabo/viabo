@@ -17,7 +17,7 @@ final class StockCardsFinder
 
     public function __invoke(): StockCardsResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => '' ],
             ['field' => 'ownerId' , 'operator' => '=' , 'value' => '' ],
             ['field' => 'active' , 'operator' => '=' , 'value' => '1' ]

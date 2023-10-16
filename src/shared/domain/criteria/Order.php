@@ -4,25 +4,28 @@
 namespace Viabo\shared\domain\criteria;
 
 
-final class Order
+final readonly class Order
 {
-    public function __construct(private readonly OrderBy $orderBy, private readonly OrderType $orderType)
+    public function __construct(private OrderBy $orderBy , private OrderType $orderType)
     {
     }
 
-    public static function createDesc(OrderBy $orderBy): Order
+    public static function createDesc(OrderBy $orderBy): self
     {
-        return new self($orderBy, OrderType::desc());
+        return new self($orderBy , OrderType::DESC);
     }
 
-    public static function fromValues(?string $orderBy, ?string $order): Order
+    public static function fromValues(?string $orderBy , ?string $order): self
     {
-        return null === $orderBy ? self::none() : new Order(new OrderBy($orderBy), new OrderType($order));
+        return ($orderBy === null || $order === null) ? self::none() : new self(
+            new OrderBy($orderBy) ,
+            OrderType::from($order)
+        );
     }
 
-    public static function none(): Order
+    public static function none(): self
     {
-        return new Order(new OrderBy(''), OrderType::none());
+        return new self(new OrderBy('') , OrderType::NONE);
     }
 
     public function orderBy(): OrderBy
@@ -38,5 +41,10 @@ final class Order
     public function isNone(): bool
     {
         return $this->orderType()->isNone();
+    }
+
+    public function serialize(): string
+    {
+        return sprintf('%s.%s' , $this->orderBy->value() , $this->orderType->value);
     }
 }

@@ -17,7 +17,7 @@ final readonly class FinderMainCardsInformation
 
     public function __invoke(CardCommerceId $commerceId):MainCardsInformationResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()],
             ['field' => 'main' , 'operator' => '=' , 'value' => '1']
         ]);

@@ -26,4 +26,10 @@ final class UserName extends StringValueObject
     {
         return !empty($this->value);
     }
+
+    public function update(string $value): static
+    {
+        $value = empty($value) ? $this->value : $value;
+        return new static($value);
+    }
 }

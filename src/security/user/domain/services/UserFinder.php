@@ -28,7 +28,7 @@ final readonly class UserFinder
         }
 
         if (empty($user)) {
-            throw new UserNotExist('');
+            throw new UserNotExist();
         }
 
         return $user;

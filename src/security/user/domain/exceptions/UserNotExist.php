@@ -10,7 +10,7 @@ final class UserNotExist extends DomainError
 {
     private string $value;
 
-    public function __construct(string $value)
+    public function __construct(string $value = '')
     {
         $this->value = $value;
         parent::__construct();

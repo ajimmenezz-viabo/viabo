@@ -21,4 +21,9 @@ final class UserPhone extends StringValueObject
             throw new UserPhoneEmpty();
         }
     }
+
+    public function update(string $value): static
+    {
+        return new static($value);
+    }
 }

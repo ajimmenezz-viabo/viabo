@@ -37,7 +37,7 @@ class UuidValueObject implements Stringable
     private function ensureIsValidUuid(string|null $id): void
     {
         if (!RamseyUuid::isValid($id)) {
-            throw new \DomainException('Error Internal 263' , 400);
+            throw new \DomainException('Error Internal 263: Uui Invalid' , 400);
         }
     }
 }

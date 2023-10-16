@@ -1,0 +1,4 @@
+update-user-data-by-stock-cards:
+  path: '/api/card/owner/update'
+  controller: Viabo\Backend\Controller\security\user\update\CardOwnerDataUpdaterController
+  methods: PUT

@@ -6,6 +6,7 @@ namespace Viabo\security\user\domain;
 
 use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
+use Viabo\security\user\domain\events\CardOwnerDataUpdatedDomainEvent;
 use Viabo\security\user\domain\events\CommerceDemoUserCreatedDomainEvent;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
@@ -141,7 +142,7 @@ final class User extends AggregateRoot
     public function setEventSendPassword(): void
     {
         $this->record(new SendUserPasswordDomainEvent(
-            $this->id->value(), $this->toArray(), $this->password::$passwordRandom
+            $this->id->value() , $this->toArray() , $this->password::$passwordRandom
         ));
     }
 
@@ -152,7 +153,15 @@ final class User extends AggregateRoot
 
     public function setEventDeleted(): void
     {
-        $this->record(new UserDeletedDomainEvent($this->id->value(), $this->toArray()));
+        $this->record(new UserDeletedDomainEvent($this->id->value() , $this->toArray()));
+    }
+
+    public function update(string $name , string $lastName , string $phone): void
+    {
+        $this->name = $this->name->update($name);
+        $this->lastname = $this->lastname->update($lastName);
+        $this->phone = $this->phone->update($phone);
+        $this->record(new CardOwnerDataUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
     public function toArray(): array

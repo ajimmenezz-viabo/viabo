@@ -9,26 +9,27 @@ use Viabo\shared\domain\utils\Crypt;
 final class CardView
 {
     public function __construct(
-        private string $id ,
-        private string $main ,
-        private string $number ,
-        private string $cvv ,
-        private string $expirationDate ,
-        private string $paymentProcessorId ,
-        private string $paymentProcessorName ,
-        private string $statusId ,
-        private string $statusName ,
-        private string $commerceId ,
-        private string $commerceName ,
-        private string $ownerId ,
-        private string $ownerName ,
-        private string $ownerEmail ,
-        private string $ownerPhone ,
-        private string $recorderId ,
-        private string $recorderName ,
+        private string  $id ,
+        private string  $main ,
+        private string  $number ,
+        private string  $cvv ,
+        private string  $expirationDate ,
+        private string  $paymentProcessorId ,
+        private string  $paymentProcessorName ,
+        private string  $statusId ,
+        private string  $statusName ,
+        private string  $commerceId ,
+        private string  $commerceName ,
+        private string  $ownerId ,
+        private string  $ownerName ,
+        private string  $ownerLastname ,
+        private string  $ownerEmail ,
+        private string  $ownerPhone ,
+        private string  $recorderId ,
+        private string  $recorderName ,
         private ?string $assignmentDate ,
-        private string $registerDate ,
-        private string $active
+        private string  $registerDate ,
+        private string  $active
     )
     {
     }
@@ -49,6 +50,7 @@ final class CardView
             'commerceName' => $this->commerceName ?? '' ,
             'ownerId' => $this->ownerId ?? '' ,
             'ownerName' => $this->ownerName ?? '' ,
+            'ownerLastname' => $this->ownerLastname ?? '' ,
             'ownerEmail' => $this->ownerEmail ?? '' ,
             'ownerPhone' => $this->ownerPhone ?? '' ,
             'recorderId' => $this->recorderId ,
@@ -61,7 +63,7 @@ final class CardView
 
     private function assigmentDate(): string
     {
-        if($this->assignmentDate === '0000-00-00 00:00:00'){
+        if ($this->assignmentDate === '0000-00-00 00:00:00') {
             return '';
         }
         return $this->assignmentDate ?? '';

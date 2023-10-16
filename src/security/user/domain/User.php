@@ -13,6 +13,7 @@ use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
 use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
 use Viabo\security\user\domain\events\UserDeletedDomainEvent;
+use Viabo\security\user\domain\events\UserPasswordResetDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class User extends AggregateRoot
@@ -139,6 +140,14 @@ final class User extends AggregateRoot
         $this->password = $password;
     }
 
+    public function update(string $name , string $lastName , string $phone): void
+    {
+        $this->name = $this->name->update($name);
+        $this->lastname = $this->lastname->update($lastName);
+        $this->phone = $this->phone->update($phone);
+        $this->record(new CardOwnerDataUpdatedDomainEvent($this->id->value() , $this->toArray()));
+    }
+
     public function setEventSendPassword(): void
     {
         $this->record(new SendUserPasswordDomainEvent(
@@ -156,12 +165,11 @@ final class User extends AggregateRoot
         $this->record(new UserDeletedDomainEvent($this->id->value() , $this->toArray()));
     }
 
-    public function update(string $name , string $lastName , string $phone): void
+    public function setEventRestPassword(): void
     {
-        $this->name = $this->name->update($name);
-        $this->lastname = $this->lastname->update($lastName);
-        $this->phone = $this->phone->update($phone);
-        $this->record(new CardOwnerDataUpdatedDomainEvent($this->id->value() , $this->toArray()));
+        $data = $this->toArray();
+        $data['password'] = $this->password::$passwordRandom;
+        $this->record(new UserPasswordResetDomainEvent($this->id->value() , $data));
     }
 
     public function toArray(): array

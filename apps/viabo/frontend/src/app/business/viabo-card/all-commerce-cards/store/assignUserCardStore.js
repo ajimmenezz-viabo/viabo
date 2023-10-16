@@ -2,7 +2,9 @@ import { createStore } from '@/app/shared/store'
 
 const initialState = {
   cardInfo: null,
-  openUserInfo: false
+  openUserInfo: false,
+  hoverInfo: null,
+  hoverElement: null
 }
 const assignUserInfo = (set, get) => ({
   ...initialState,
@@ -22,6 +24,24 @@ const assignUserInfo = (set, get) => ({
       }),
       false,
       'SET_CARD_INFO'
+    )
+  },
+  setHoverInfo: info => {
+    set(
+      state => ({
+        hoverInfo: info
+      }),
+      false,
+      'SET_HOVER_INFO'
+    )
+  },
+  setHoverElement: element => {
+    set(
+      state => ({
+        hoverElement: element
+      }),
+      false,
+      'SET_HOVER_ElEMENT'
     )
   }
 })

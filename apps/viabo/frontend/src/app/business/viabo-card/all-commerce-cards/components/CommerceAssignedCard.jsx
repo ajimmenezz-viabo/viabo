@@ -30,7 +30,7 @@ export default function CommerceAssignedCard({ card }) {
           />
           <Stack>
             <Typography variant={'subtitle2'} sx={{ opacity: 0.72 }}>
-              {card?.assignUser?.name === '-' ? 'Viabo Card' : card?.assignUser?.name}
+              {card?.assignUser?.fullName === '-' ? 'Viabo Card' : card?.assignUser?.fullName}
             </Typography>
             <Typography variant={'caption'} color={'text.secondary'}>
               {card?.register}

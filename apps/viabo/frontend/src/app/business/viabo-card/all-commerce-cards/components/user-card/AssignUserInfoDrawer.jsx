@@ -9,7 +9,7 @@ const CardUserInfoForm = Lodable(lazy(() => import('./CardUserInfoForm')))
 
 const AssignUserInfoDrawer = ({ open, handleClose, handleSuccess }) => (
   <RightPanel open={open} handleClose={handleClose} title={'Editar Usuario'}>
-    {open && <CardUserInfoForm />}
+    {open && <CardUserInfoForm handleSuccess={handleClose} />}
   </RightPanel>
 )
 

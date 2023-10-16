@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { WarningAmberOutlined } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Avatar, Link, Stack, Typography } from '@mui/material'
@@ -7,6 +9,8 @@ import { useFormik } from 'formik'
 import { MuiTelInput } from 'mui-tel-input'
 import * as Yup from 'yup'
 
+import { UpdateAssignedUserAdapter } from '../../adapters'
+import { useRecoveryPasswordAssignedUser } from '../../hooks'
 import { useUpdateUserInfo } from '../../hooks/useUpdateUserInfo'
 import { useAssignUserCard } from '../../store'
 
@@ -15,15 +19,23 @@ import { ModalAlert } from '@/shared/components/modals'
 import { Scrollbar } from '@/shared/components/scroll'
 import { createAvatar } from '@/theme/utils'
 
-const CardUserInfoForm = () => {
+const OPERATION_TYPES = {
+  UPDATE_USER_INFO: '1',
+  RECOVERY_PASSWORD: '2'
+}
+
+const CardUserInfoForm = ({ handleSuccess }) => {
   const cardInfo = useAssignUserCard(state => state.cardInfo)
   const { mutate, isLoading } = useUpdateUserInfo()
+  const { mutate: recoveryPassword, isLoading: isRecoveringPassword } = useRecoveryPasswordAssignedUser()
 
   const [updatedName, setUpdatedName] = useState(cardInfo?.assignUser?.name || '')
   const [openAlertConfirm, setOpenAlertConfirm] = useState(false)
+  const [operationType, setOperationType] = useState(null)
 
   const registerValidation = Yup.object({
     name: Yup.string().required('El nombre es requerido'),
+    lastName: Yup.string().required('El apellido es requerido'),
     phone: Yup.string().test(
       'longitud',
       'El teléfono es muy corto',
@@ -34,24 +46,37 @@ const CardUserInfoForm = () => {
   const formik = useFormik({
     initialValues: {
       name: cardInfo?.assignUser?.name || '',
-      phone: cardInfo?.assignUser?.phone || ''
+      phone: cardInfo?.assignUser?.phone || '',
+      lastName: cardInfo?.assignUser?.lastName || ''
     },
     enableReinitialize: true,
     validationSchema: registerValidation,
     onSubmit: (values, { setSubmitting }) => {
-      mutate(values, {
-        onSuccess: () => {
-          setOpenAlertConfirm(false)
-        },
-        onError: error => {}
-      })
+      if (operationType === OPERATION_TYPES.UPDATE_USER_INFO) {
+        const data = UpdateAssignedUserAdapter(values, cardInfo)
+        mutate(data, {
+          onSuccess: () => {
+            handleSuccess()
+            setOperationType(null)
+          }
+        })
+      }
+
+      if (operationType === OPERATION_TYPES.RECOVERY_PASSWORD) {
+        recoveryPassword(cardInfo?.assignUser, {
+          onSuccess: () => {
+            handleSuccess()
+            setOperationType(null)
+          }
+        })
+      }
       setSubmitting(false)
     }
   })
 
   const { values, setFieldValue, touched, errors, isSubmitting, handleSubmit } = formik
 
-  const loading = isLoading || isSubmitting
+  const loading = isLoading || isSubmitting || isRecoveringPassword
 
   useEffect(() => {
     if (values.name) {
@@ -88,22 +113,52 @@ const CardUserInfoForm = () => {
                   {cardInfo?.assignUser?.email ?? '-'}
                 </Typography>
                 <Stack spacing={0.5} alignItems={'center'}>
-                  <Typography paragraph variant="body2" fontStyle={'italic'} sx={{ color: 'text.disabled' }}>
-                    Último Inicio de Sesión:
-                  </Typography>
+                  {cardInfo?.assignUser?.lastLogged ? (
+                    <>
+                      <Typography paragraph variant="body2" fontStyle={'italic'} sx={{ color: 'text.disabled' }}>
+                        Último Inicio de Sesión:
+                      </Typography>
 
-                  <Typography paragraph variant="body2" sx={{ color: 'text.disabled' }}>
-                    {cardInfo?.assignUser?.lastLogged ?? '🚀'}
-                  </Typography>
+                      <Typography paragraph variant="body2" sx={{ color: 'text.disabled' }}>
+                        {cardInfo?.assignUser?.lastLogged ?? '🚀'}
+                      </Typography>
+                    </>
+                  ) : (
+                    <Typography paragraph variant="body2" fontStyle={'italic'} sx={{ color: 'text.disabled' }}>
+                      No ha iniciado sesión 🚀
+                    </Typography>
+                  )}
+                </Stack>
+                <Stack>
+                  <LoadingButton
+                    variant="contained"
+                    color="secondary"
+                    loading={isRecoveringPassword}
+                    disabled={loading}
+                    sx={{ color: 'black' }}
+                    onClick={() => {
+                      setOperationType(OPERATION_TYPES.RECOVERY_PASSWORD)
+                      setOpenAlertConfirm(true)
+                    }}
+                  >
+                    Restablecer Contraseña
+                  </LoadingButton>
                 </Stack>
               </Stack>
             </Stack>
 
             <Stack spacing={0.5}>
               <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Nombre
+                Nombre (s)
               </Typography>
               <RFTextField name={'name'} required={true} placeholder={'Usuario'} disabled={loading} />
+            </Stack>
+
+            <Stack spacing={0.5}>
+              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+                Apellidos
+              </Typography>
+              <RFTextField name={'lastName'} required={true} placeholder={'Usuario'} disabled={loading} />
             </Stack>
 
             <Stack spacing={0.5}>
@@ -132,7 +187,9 @@ const CardUserInfoForm = () => {
                 color="primary"
                 fullWidth
                 loading={isLoading}
+                disabled={loading}
                 onClick={() => {
+                  setOperationType(OPERATION_TYPES.UPDATE_USER_INFO)
                   setOpenAlertConfirm(true)
                 }}
               >
@@ -144,7 +201,7 @@ const CardUserInfoForm = () => {
       </Scrollbar>
       {openAlertConfirm && (
         <ModalAlert
-          title={'Actualizar Usuario'}
+          title={operationType === OPERATION_TYPES.UPDATE_USER_INFO ? 'Actualizar Usuario' : 'Restablecer Contraseña'}
           typeAlert="warning"
           textButtonSuccess="Si, estoy de acuerdo"
           onClose={() => {
@@ -154,7 +211,11 @@ const CardUserInfoForm = () => {
           isSubmitting={false}
           description={
             <Stack spacing={2}>
-              <Typography>¿Está seguro de actualizar la información de este usuario?'</Typography>
+              <Typography>
+                {operationType === OPERATION_TYPES.UPDATE_USER_INFO
+                  ? '¿Está seguro de actualizar la información de este usuario'
+                  : '¿Está seguro de restablecer la contraseña de este usuario'}
+              </Typography>
               <Stack direction={'row'} alignItems={'center'} spacing={1}>
                 <WarningAmberOutlined />
                 <Stack>
@@ -175,6 +236,10 @@ const CardUserInfoForm = () => {
       )}
     </>
   )
+}
+
+CardUserInfoForm.propTypes = {
+  handleSuccess: PropTypes.func
 }
 
 export default CardUserInfoForm

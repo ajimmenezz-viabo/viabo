@@ -16,7 +16,7 @@ final readonly class FinderTerminalConsolidation
 
     public function __invoke(CommerceId $commerceId)
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()],
         ]);
 

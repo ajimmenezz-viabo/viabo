@@ -20,8 +20,8 @@ final readonly class FundingOrdersFinder
     public function __invoke(array $cardsData): FundingOrderResponse
     {
         $cardsId = $this->cardsId($cardsData);
-        $filters = Filters::fromValuesEmpty([
-            ['field' => 'cardId' , 'operator' => 'in' , 'value' => $cardsId ]
+        $filters = Filters::fromValues([
+            ['field' => 'cardId' , 'operator' => 'IN' , 'value' => $cardsId ]
         ]);
         $fundingOrders = $this->repository->searchView(new Criteria($filters));
         return new FundingOrderResponse(array_map(function (FundingOrderView $fundingOrder){

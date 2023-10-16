@@ -19,9 +19,9 @@ final readonly class FinderBalanceMasterInTransaction
         $cards = [];
         $balance = [];
         foreach ($cardsNumbers as $key => $card) {
-                $cards =  $cardsNumbers[$key];
+            $cards = $cardsNumbers[$key];
             $filter = Filters::fromValues([
-                ['field' => 'originCard.value' , 'operator' => 'in' , 'value' => implode(',' , $cards)] ,
+                ['field' => 'originCard.value' , 'operator' => 'IN' , 'value' => implode(',' , $cards)] ,
                 ['field' => 'active.value' , 'operator' => '=' , 'value' => '1']
             ]);
 

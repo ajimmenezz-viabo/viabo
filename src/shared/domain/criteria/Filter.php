@@ -4,54 +4,44 @@
 namespace Viabo\shared\domain\criteria;
 
 
-final class Filter
+final readonly class Filter
 {
-    private $field;
-    private $operator;
-    private $value;
 
     public function __construct(
-        FilterField    $field ,
-        FilterOperator $operator ,
-        FilterValue    $value
+        private FilterField    $field ,
+        private FilterOperator $operator ,
+        private FilterValue    $value
     )
     {
-        $this->field = $field;
-        $this->operator = $operator;
-        $this->value = $value;
     }
 
     public static function fromValues(array $values): self
     {
         return new self(
-            FilterField::create($values['field'] ?? '') ,
-            FilterOperator::create($values['operator'] ?? '') ,
-            FilterValue::create($values['value'] ?? '')
-        );
-    }
-
-    public static function fromValuesEmpty(array $values): self
-    {
-        return new self(
-            FilterField::create($values['field'] ?? '') ,
-            FilterOperator::create($values['operator'] ?? '') ,
+            new FilterField($values['field']) ,
+            FilterOperator::from($values['operator']) ,
             new FilterValue($values['value'])
         );
     }
 
-    public function getField(): FilterField
+    public function field(): FilterField
     {
         return $this->field;
     }
 
-    public function getOperator(): FilterOperator
+    public function operator(): FilterOperator
     {
         return $this->operator;
     }
 
-    public function getValue(): FilterValue
+    public function value(): FilterValue
     {
         return $this->value;
+    }
+
+    public function serialize(): string
+    {
+        return sprintf('%s.%s.%s', $this->field->value(), $this->operator->value(), $this->value->value());
     }
 
 }

@@ -17,7 +17,7 @@ final readonly class FinderTerminalSpeiCards
 
     public function __invoke(CardCommerceId $commerceId): TerminalSpeiCardsResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()],
         ]);
 

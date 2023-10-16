@@ -17,7 +17,7 @@ final class FinderTerminalSpeiCard
 
     public function __invoke(TerminalValueId $terminalId):FindTerminalSpeiCardResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'terminalId' , 'operator' => '=' , 'value' => $terminalId->value()],
         ]);
 

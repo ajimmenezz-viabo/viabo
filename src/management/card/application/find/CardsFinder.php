@@ -18,7 +18,7 @@ final readonly class CardsFinder
 
     public function __invoke(CardCommerceId $commerceId): CardsResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()] ,
             ['field' => 'main' , 'operator' => '=' , 'value' => '0'],
             ['field' => 'active' , 'operator' => '=' , 'value' => '1']

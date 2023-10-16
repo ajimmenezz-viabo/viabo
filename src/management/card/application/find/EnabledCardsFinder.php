@@ -39,7 +39,7 @@ final readonly class EnabledCardsFinder
             $filters[] = ['field' => 'ownerId' , 'operator' => '=' , 'value' => $ownerId->value()];
         }
 
-        $filters = Filters::fromValuesEmpty($filters);
+        $filters = Filters::fromValues($filters);
         $cards = $this->repository->searchView(new Criteria($filters));
 
         return new CardsResponse(array_map(function (CardView $card) {

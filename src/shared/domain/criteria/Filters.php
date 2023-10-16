@@ -4,45 +4,25 @@
 namespace Viabo\shared\domain\criteria;
 
 
-use Viabo\shared\domain\Assert;
+use Viabo\shared\domain\Collection;
+use function Lambdish\Phunctional\reduce;
 
-final class Filters
+final class Filters extends Collection
 {
-    public function __construct(private array $items)
-    {
-        Assert::arrayOf($this->type() , $items);
-    }
 
-    public static function fromValues(?array $values): self
+    public static function fromValues(array $values): self
     {
-        if (empty($values)) {
-            return new self([]);
-        }
-
         return new self(array_map(self::filterBuilder() , $values));
-    }
-
-    public static function fromValuesEmpty(?array $values): self
-    {
-        if (empty($values)) {
-            return new self([]);
-        }
-
-        return new self(array_map(self::filterBuilderEmpty() , $values));
     }
 
     private static function filterBuilder(): callable
     {
-        return function (array $values) {
-            return Filter::fromValues($values);
-        };
+        return fn(array $values): Filter => Filter::fromValues($values);
     }
 
-    private static function filterBuilderEmpty(): callable
+    public function add(Filter $filter): self
     {
-        return function (array $values) {
-            return Filter::fromValuesEmpty($values);
-        };
+        return new self(array_merge($this->items() , [$filter]));
     }
 
     public static function empty(): self
@@ -52,17 +32,30 @@ final class Filters
 
     public function count(): int
     {
-        return count($this->items);
+        return count($this->items());
     }
 
     public function get(): array
     {
-        return $this->items;
+        return $this->items();
     }
 
     protected function type(): string
     {
         return Filter::class;
+    }
+
+    public function serialize(): string
+    {
+        return reduce(
+            static fn(string $accumulate , Filter $filter): string => sprintf(
+                '%s^%s' ,
+                $accumulate ,
+                $filter->serialize()
+            ) ,
+            $this->items() ,
+            ''
+        );
     }
 
 }

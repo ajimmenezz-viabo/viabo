@@ -18,7 +18,7 @@ final readonly class BillingPayCashFinder
 
     public function __invoke(BillingReferencePayCash $reference): DepositReferenceResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'reference.value' , 'operator' => '=' , 'value' => $reference->value()]
         ]);
         $billing = $this->repository->searchBillingPayCashCriteria(new Criteria($filters));

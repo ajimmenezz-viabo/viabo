@@ -17,7 +17,7 @@ final readonly class OwnerCardsFinder
 
     public function __invoke(): CardsResponse
     {
-        $filters = Filters::fromValuesEmpty([
+        $filters = Filters::fromValues([
             ['field' => 'ownerId.value' , 'operator' => '<>' , 'value' => ''] ,
             ['field' => 'main.value' , 'operator' => '=' , 'value' => '0'] ,
             ['field' => 'active.value' , 'operator' => '=' , 'value' => '1']

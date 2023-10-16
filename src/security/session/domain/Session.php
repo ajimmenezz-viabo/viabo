@@ -37,4 +37,15 @@ final class Session extends AggregateRoot
         $this->active = $this->active->update('0');
         $this->record(new LogoutDomainEvent($this->userId->value() , $this->logoutDate->value()));
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id->value() ,
+            'userId' => $this->userId->value() ,
+            'loginDate' => $this->loginDate->value() ,
+            'logoutDate' => $this->logoutDate->value() ,
+            'active' => $this->active->value()
+        ];
+    }
 }

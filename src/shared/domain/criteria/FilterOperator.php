@@ -4,38 +4,32 @@
 namespace Viabo\shared\domain\criteria;
 
 
-use Viabo\shared\domain\criteria\exceptions\FilterOperatorEmpty;
-use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class FilterOperator extends StringValueObject
+enum FilterOperator: string
 {
 
-    public static function create($value): self
+    case EQUAL = '=';
+    case NOT_EQUAL = '!=';
+    case GT = '>';
+    case LT = '<';
+    case CONTAINS = 'CONTAINS';
+    case NOT_CONTAINS = 'NOT_CONTAINS';
+    case IN = 'IN';
+    case NIN = 'NIN';
+    case ENDS_WITH = 'ENDS_WITH';
+
+    public function isContaining(): bool
     {
-        self::validate($value);
-        return new self(strtoupper($value));
+        return in_array($this->value, [self::CONTAINS->value, self::NOT_CONTAINS->value], true);
     }
 
-    private static function validate(?string $value)
+    public function isIN(): bool
     {
-        if (empty($value)) {
-            throw new FilterOperatorEmpty();
-        }
+        return $this->value === self::IN->value;
     }
 
-    public function isTypeIN(): bool
+    public function isNotIN(): bool
     {
-        return strtoupper($this->value) === 'IN' || strtoupper($this->value) === 'NOT IN';
+        return $this->value === self::NIN->value;
     }
-
-    public function isTypeLike(): bool
-    {
-        return $this->value === 'LIKE' || $this->value === 'NOT LIKE';
-    }
-
-    public function isTypeEndWith(): bool
-    {
-        return $this->value === 'END_WITH';
-    }
-
 }

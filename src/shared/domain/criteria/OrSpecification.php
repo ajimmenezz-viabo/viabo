@@ -14,7 +14,7 @@ final class OrSpecification
         $this->filters = Filters::empty();
     }
 
-    public function add(Filters $filters)
+    public function add(Filters $filters): void
     {
         $this->filters = $filters;
     }

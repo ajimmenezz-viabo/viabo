@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { Stack, Typography } from '@mui/material'
 
 import { ConciliateFundingOrderInfo, GeneralInfoFundingOrder, PaymentFundingOrderInfo } from './details'
@@ -23,6 +25,12 @@ const FundingOrderDetails = () => {
     error,
     refetch
   } = useFindFundingOrderDetails(fundingOrder, { enabled: !!fundingOrder })
+
+  useEffect(() => {
+    if (fundingOrder) {
+      refetch()
+    }
+  }, [fundingOrder])
 
   const handleClose = () => {
     setOpenDetailsFundingOrder(false)

@@ -28,7 +28,7 @@ const FundingOrders = () => {
         <FundingOrdersTable />
         {openConciliateModal && <ConciliateModal />}
         {openCancelFundingOrder && <CancelFundingOrder />}
-        <FundingOrderDetails />
+        {openDetailsFundingOrder && <FundingOrderDetails />}
       </ContainerPage>
     </Page>
   )

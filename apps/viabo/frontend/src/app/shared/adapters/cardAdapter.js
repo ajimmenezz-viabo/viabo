@@ -36,6 +36,7 @@ export function CardDetailsAdapter(card) {
     commerceName,
     ownerId,
     ownerName,
+    ownerLastname,
     ownerPhone,
     ownerEmail,
     recorderId,
@@ -60,12 +61,15 @@ export function CardDetailsAdapter(card) {
     },
     assignUser: {
       id: ownerId,
+      fullName: ownerName !== '' ? startCase(camelCase(`${ownerName?.trim()} ${ownerLastname?.trim()} `)) : '-',
       name: ownerName === '' ? '-' : startCase(camelCase(ownerName)),
+      lastName: startCase(camelCase(ownerLastname)),
       phone: ownerPhone,
       email: ownerEmail,
       dateTime: assignmentDate === '' ? '-' : fDateTime(assignmentDate),
       date: assignmentDate === '' ? '-' : format(new Date(register), 'dd MMM yyyy'),
-      time: assignmentDate === '' ? '-' : format(new Date(register), 'p')
+      time: assignmentDate === '' ? '-' : format(new Date(register), 'p'),
+      lastLogged: card?.sessionLastDate && card?.sessionLastDate !== '' ? fDateTime(card?.sessionLastDate) : null
     },
     staffRegister: {
       id: recorderId,
@@ -84,6 +88,10 @@ export function CardDetailsAdapter(card) {
     status: {
       id: statusId,
       name: statusName
+    },
+    cardStatus: {
+      isActive: card?.block === 'UnBlocked',
+      name: card?.block === 'UnBlocked' ? 'Encendida' : 'Apagada'
     }
   }
 }

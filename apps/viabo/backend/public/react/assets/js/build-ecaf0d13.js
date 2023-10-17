@@ -1,1 +1,0 @@
-function i(n){const a=typeof n=="number",r=e(n);return(a||r&&n!=="")&&!isNaN(Number(n))}function e(n){return typeof n=="string"||n instanceof String}const t=(n,a,r,c)=>n.map((s,o)=>({value:s[`${a}`],label:s[`${r}`],isDisabled:s[`${c}`]==="0"||!1,index:o,...s}));export{t as c,i as m};

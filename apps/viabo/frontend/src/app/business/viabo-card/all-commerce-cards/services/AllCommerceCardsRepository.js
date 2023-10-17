@@ -11,12 +11,7 @@ export const getCommerceCards = async (filters, signal) => {
   fetchURL.searchParams.set('globalFilter', globalFilter ?? '')
   fetchURL.searchParams.set('sorting', JSON.stringify(sorting ?? []))
 
-  // const response = await fetch(fetchURL.href)
-  // const json = await response.json()
-  // return json
-
   const { data } = await axios.get(fetchURL.href, {
-    timeout: 30000,
     signal
   })
   return CardsPaginatedAdapter(data)
@@ -28,6 +23,11 @@ export const assignCards = async cards => {
 }
 
 export const updateUserInfo = async userInfo => {
-  const { data } = await axios.put('/api/assign/commerce-card/to/user', userInfo)
+  const { data } = await axios.put('/api/card-owner/data/update', userInfo)
+  return data
+}
+
+export const recoveryPasswordAssignedUser = async user => {
+  const { data } = await axios.put(`/api/card-owner/password/reset/${user.id}`)
   return data
 }

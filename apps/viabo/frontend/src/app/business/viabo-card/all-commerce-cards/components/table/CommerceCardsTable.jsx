@@ -301,7 +301,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
             const { original: dataRow } = row
             const cardON = dataRow?.cardStatus?.isActive
 
-            const isLoading = isChangingStatusCard && cardIdToggleStatus === dataRow?.id
+            const isChangingStatus = isChangingStatusCard && cardIdToggleStatus === dataRow?.id
 
             return (
               <Box
@@ -317,7 +317,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
                 <IconButton size="small" color="primary" disabled={isLoading}>
                   <BsEye />
                 </IconButton>
-                {isLoading ? (
+                {isChangingStatus ? (
                   <CircularLoading
                     size={15}
                     containerProps={{
@@ -327,6 +327,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
                   />
                 ) : (
                   <IOSSwitch
+                    disabled={isLoading}
                     size="sm"
                     color={!cardON ? 'error' : 'success'}
                     checked={cardON || false}

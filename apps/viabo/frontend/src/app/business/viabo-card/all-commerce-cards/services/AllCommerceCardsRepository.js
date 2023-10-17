@@ -12,7 +12,6 @@ export const getCommerceCards = async (filters, signal) => {
   fetchURL.searchParams.set('sorting', JSON.stringify(sorting ?? []))
 
   const { data } = await axios.get(fetchURL.href, {
-    timeout: 30000,
     signal
   })
   return CardsPaginatedAdapter(data)

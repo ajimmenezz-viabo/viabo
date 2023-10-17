@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 
 import AssignedPopOverDetails from './AssignedPopOverDetails'
 
+import { useToggleStatusCard } from '../../../cards/hooks'
 import { useFindAllCommerceCards } from '../../hooks'
 import { useAssignUserCard, useCommerceCards } from '../../store'
 
@@ -19,8 +20,9 @@ import {
   SearchAction,
   ShowHideColumnsAction
 } from '@/shared/components/dataTables'
-import { Label } from '@/shared/components/form'
+import { IOSSwitch, Label } from '@/shared/components/form'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
+import { CircularLoading } from '@/shared/components/loadings'
 import { generateCSVFile } from '@/shared/utils'
 
 export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
@@ -47,8 +49,11 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
     sorting: sorting ?? []
   })
 
+  const { mutate: changeStatusCard, isLoading: isChangingStatusCard } = useToggleStatusCard()
+
   const [anchorEl, setAnchorEl] = useState(null)
   const [hoverInfo, setHoverInfo] = useState(null)
+  const [cardIdToggleStatus, setCardIdToggleStatus] = useState(null)
 
   const handlePopoverOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -292,22 +297,59 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
               <FullScreenAction table={table} />
             </Box>
           )}
-          renderRowActions={({ row, table }) => (
-            <Box
-              sx={{
-                display: 'flex',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexWrap: 'nowrap',
-                gap: '8px'
-              }}
-            >
-              <IconButton size="small" color="primary">
-                <BsEye />
-              </IconButton>
-            </Box>
-          )}
+          renderRowActions={({ row, table }) => {
+            const { original: dataRow } = row
+            const cardON = dataRow?.cardStatus?.isActive
+
+            const isLoading = isChangingStatusCard && cardIdToggleStatus === dataRow?.id
+
+            return (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexWrap: 'nowrap',
+                  gap: '8px'
+                }}
+              >
+                <IconButton size="small" color="primary" disabled={isLoading}>
+                  <BsEye />
+                </IconButton>
+                {isLoading ? (
+                  <CircularLoading
+                    size={15}
+                    containerProps={{
+                      display: 'flex',
+                      ml: 1
+                    }}
+                  />
+                ) : (
+                  <IOSSwitch
+                    size="sm"
+                    color={!cardON ? 'error' : 'success'}
+                    checked={cardON || false}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    onChange={() => {
+                      setCardIdToggleStatus(dataRow?.id)
+                      changeStatusCard(
+                        { ...dataRow, cardON: !cardON },
+                        {
+                          onSuccess: () => {
+                            setCardIdToggleStatus(null)
+                          },
+                          onError: () => {
+                            setCardIdToggleStatus(null)
+                          }
+                        }
+                      )
+                    }}
+                  />
+                )}
+              </Box>
+            )
+          }}
         />
       </Card>
     </Container>

@@ -58,7 +58,7 @@ export const FundingOrderColumns = [
   {
     accessorKey: 'paymentMethods', // access nested data with dot notation
     header: 'Método(s)',
-    size: 100,
+    size: 120,
     filterVariant: 'multi-select',
     Cell: ({ cell, column, row }) => {
       const { original: rowData } = row
@@ -115,7 +115,7 @@ export const FundingOrderColumns = [
     accessorKey: 'conciliatedName', // access nested data with dot notation
     header: '¿Conciliada?',
     filterVariant: 'multi-select',
-    size: 110,
+    size: 100,
     Cell: ({ cell, column, row }) => {
       const { original: rowData } = row
 

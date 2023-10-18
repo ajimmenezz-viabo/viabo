@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 
 import { AssignmentIndRounded, FileDownload } from '@mui/icons-material'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { Box, Button, Card, Container, IconButton, Link, Stack, Tooltip, Typography, useTheme } from '@mui/material'
+import { Box, Button, Card, IconButton, Link, Stack, Tooltip, Typography, useTheme } from '@mui/material'
 import { BsEye } from 'react-icons/bs'
 import { toast } from 'react-toastify'
 
@@ -74,17 +74,18 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
         header: 'Tarjeta',
         enableClickToCopy: true,
         enableHiding: false,
+        size: 120,
         Cell: ({ cell, column, row }) => {
           const { original: dataRow } = row
           return (
-            <Stack direction={'row'} spacing={2} alignItems={'center'}>
+            <Stack direction={'row'} spacing={1} alignItems={'center'}>
               {dataRow?.cardType === 'Carnet' ? (
                 <CarnetLogo sx={{ width: 25, height: 25 }} />
               ) : (
                 <MasterCardLogo sx={{ width: 25, height: 25 }} />
               )}
               <Typography variant="subtitle2" fontWeight="bold" noWrap>
-                {dataRow?.cardNumberHidden}
+                {dataRow?.cardNumber?.substr(dataRow?.cardNumber?.length - 4)}
               </Typography>
             </Stack>
           )
@@ -126,14 +127,14 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
           return renderedCellValue
         },
         header: 'Asignado',
-        size: 150
+        minSize: 150
       },
       {
         id: 'status',
         accessorFn: originalRow => originalRow?.cardStatus?.name || null,
         header: 'Estado',
         filterVariant: 'select',
-        size: 150,
+        minSize: 100,
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: dataRow } = row
 
@@ -186,7 +187,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
   }
 
   return (
-    <Container maxWidth={'lg'}>
+    <Box maxWidth={'lg'}>
       <Card>
         <AssignedPopOverDetails
           anchorEl={anchorEl}
@@ -353,6 +354,6 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
           }}
         />
       </Card>
-    </Container>
+    </Box>
   )
 }

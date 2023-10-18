@@ -35,7 +35,7 @@ const CardUserInfoForm = ({ handleSuccess }) => {
 
   const registerValidation = Yup.object({
     name: Yup.string().required('El nombre es requerido'),
-    lastName: Yup.string().required('El apellido es requerido'),
+    lastName: Yup.string(),
     phone: Yup.string().test(
       'longitud',
       'El teléfono es muy corto',
@@ -61,15 +61,6 @@ const CardUserInfoForm = ({ handleSuccess }) => {
           }
         })
       }
-
-      if (operationType === OPERATION_TYPES.RECOVERY_PASSWORD) {
-        recoveryPassword(cardInfo?.assignUser, {
-          onSuccess: () => {
-            handleSuccess()
-            setOperationType(null)
-          }
-        })
-      }
       setSubmitting(false)
     }
   })
@@ -87,6 +78,26 @@ const CardUserInfoForm = ({ handleSuccess }) => {
   }, [values.name])
 
   const avatar = useMemo(() => createAvatar(updatedName), [updatedName])
+
+  const handleSubmitRecoveryPassword = () => {
+    recoveryPassword(cardInfo?.assignUser, {
+      onSuccess: () => {
+        handleSuccess()
+        setOperationType(null)
+      }
+    })
+  }
+
+  const handleConfirmAlert = () => {
+    setOpenAlertConfirm(false)
+    if (operationType === OPERATION_TYPES.UPDATE_USER_INFO) {
+      handleSubmit()
+    }
+
+    if (operationType === OPERATION_TYPES.RECOVERY_PASSWORD) {
+      handleSubmitRecoveryPassword()
+    }
+  }
 
   return (
     <>
@@ -135,7 +146,7 @@ const CardUserInfoForm = ({ handleSuccess }) => {
                     color="secondary"
                     loading={isRecoveringPassword}
                     disabled={loading}
-                    sx={{ color: 'black' }}
+                    sx={{ color: 'black', fontWeight: 'bolder' }}
                     onClick={() => {
                       setOperationType(OPERATION_TYPES.RECOVERY_PASSWORD)
                       setOpenAlertConfirm(true)
@@ -213,23 +224,22 @@ const CardUserInfoForm = ({ handleSuccess }) => {
             <Stack spacing={2}>
               <Typography>
                 {operationType === OPERATION_TYPES.UPDATE_USER_INFO
-                  ? '¿Está seguro de actualizar la información de este usuario'
-                  : '¿Está seguro de restablecer la contraseña de este usuario'}
+                  ? '¿Está seguro de actualizar la información de este usuario?'
+                  : '¿Está seguro de restablecer la contraseña de este usuario?'}
               </Typography>
-              <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                <WarningAmberOutlined />
-                <Stack>
-                  <Typography variant={'caption'}>
-                    Se enviara una notificación via correo electrónico con los cambios realizados
-                  </Typography>
+              {operationType === OPERATION_TYPES.RECOVERY_PASSWORD && (
+                <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                  <WarningAmberOutlined />
+                  <Stack>
+                    <Typography variant={'caption'}>
+                      Se enviara una notificación via correo electrónico con los cambios realizados
+                    </Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
+              )}
             </Stack>
           }
-          onSuccess={() => {
-            setOpenAlertConfirm(false)
-            handleSubmit()
-          }}
+          onSuccess={handleConfirmAlert}
           fullWidth
           maxWidth="xs"
         />

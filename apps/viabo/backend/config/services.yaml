@@ -9,6 +9,7 @@ imports:
   - { resource: ../../../../src/security/shared/infrastructure/symfony/dependencyInjection/security_database.yaml }
   - { resource: ../../../../src/catalogs/shared/infrastructure/symfony/dependencyInjection/catalogs_database.yaml }
   - { resource: ../../../../src/management/shared/infrastructure/symfony/dependencyInjection/management_database.yaml }
+  - { resource: ../../../../src/news/shared/infrastructure/symfony/dependencyInjection/news_database.yaml }
 
 services:
   # default configuration for services in *this* file

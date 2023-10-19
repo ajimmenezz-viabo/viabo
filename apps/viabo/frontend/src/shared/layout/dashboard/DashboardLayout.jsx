@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom'
 
 import { ThemeMode } from './header'
 import AccountPopover from './header/AccountPopover'
+import News from './header/News'
 import SideBar from './SideBar'
 
 import { cssStyles } from '@/theme/utils'
@@ -46,7 +47,8 @@ export function DashboardLayout() {
                 <Menu />
               </IconButton>
             )}
-            <Box sx={{ flexGrow: 1 }} />
+
+            <Box sx={{ flexGrow: 1 }}>{isDesktop && <News />}</Box>
 
             <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 2 }}>
               <ThemeMode />
@@ -55,7 +57,7 @@ export function DashboardLayout() {
           </Toolbar>
         </AppBar>
 
-        <Box component="main" sx={{ py: 3, position: 'relative' }}>
+        <Box component="main" sx={{ pb: 3, position: 'relative' }}>
           <Outlet />
         </Box>
       </Stack>

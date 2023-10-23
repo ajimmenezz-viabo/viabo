@@ -12,11 +12,9 @@ import { ErrorRequestPage } from '@/shared/components/notifications'
 export function CommerceCardTypes({ cardTypes, isLoading, isError, refetch }) {
   const setCardTypeSelected = useCommerceDetailsCard(state => state.setCardTypeSelected)
   const cardTypeSelected = useCommerceDetailsCard(state => state.cardTypeSelected)
-  const setSelectedCards = useCommerceDetailsCard(state => state.setSelectedCards)
 
   const handleChangeCardType = cardType => {
     setCardTypeSelected(cardType?.id)
-    setSelectedCards([])
   }
 
   return (

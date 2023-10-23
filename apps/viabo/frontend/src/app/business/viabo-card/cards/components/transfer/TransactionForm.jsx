@@ -12,7 +12,7 @@ import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
-export function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, onSuccess }) {
+function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, onSuccess }) {
   const arrayHelpersRef = useRef(null)
 
   const crypto = window.crypto || window.msCrypto
@@ -255,6 +255,8 @@ export function TransactionForm({ cards, setCurrentBalance, insufficient, isBinC
     </>
   )
 }
+
+export default TransactionForm
 
 TransactionForm.propTypes = {
   cards: PropTypes.any,

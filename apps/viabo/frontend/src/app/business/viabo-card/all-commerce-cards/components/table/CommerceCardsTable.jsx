@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import { AssignmentIndRounded, FileDownload, ManageAccounts } from '@mui/icons-material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { Box, Button, Card, IconButton, Link, Stack, Tooltip, Typography, useTheme } from '@mui/material'
-import { BsEye } from 'react-icons/bs'
 import { toast } from 'react-toastify'
 
 import AssignedPopOverDetails from './AssignedPopOverDetails'
@@ -338,9 +337,9 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
                   gap: '8px'
                 }}
               >
-                <IconButton size="small" color="primary" disabled={isLoading}>
+                {/* <IconButton size="small" color="primary" disabled={isLoading}>
                   <BsEye />
-                </IconButton>
+                </IconButton> */}
                 {dataRow?.assignUser?.fullName !== '-' && (
                   <IconButton
                     size="small"

@@ -8,14 +8,14 @@ import {
   Box,
   Button,
   Stack,
-  styled,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  styled
 } from '@mui/material'
 
 import { CardTransactionsAdapter } from '../../adapters'
@@ -31,7 +31,7 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
   }
 }))
 
-export const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactionLoading, onClose }) => {
+const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactionLoading, onClose }) => {
   const { transaction: transactionCard, isLoading: isSending } = useTransactionCard()
 
   const transactions = useMemo(() => (data?.isGlobal ? [data?.transactions] : data?.transactions) || [], [data])
@@ -146,6 +146,8 @@ export const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, tra
     </>
   )
 }
+
+export default ResumeTransactionForm
 
 ResumeTransactionForm.propTypes = {
   data: PropTypes.shape({

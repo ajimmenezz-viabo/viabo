@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { Check, CopyAll, Mail, Receipt } from '@mui/icons-material'
 import { Box, Button, Card, IconButton, Stack, Typography } from '@mui/material'
 
@@ -8,7 +10,7 @@ import { ModalSharedCharge } from '@/app/business/viabo-card/cards/components/de
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { copyToClipboard } from '@/shared/utils'
 
-export function FundingGlobalCard() {
+export function FundingGlobalCard({ actions }) {
   const card = useMasterGlobalStore(state => state.card)
   const [copiedSPEI, setCopiedSPEI] = useState(false)
   const [openShared, setOpenShared] = useState(false)
@@ -83,6 +85,7 @@ export function FundingGlobalCard() {
             >
               Orden Fondeo
             </Button>
+            {actions}
           </Stack>
         </Stack>
       </Card>
@@ -95,4 +98,8 @@ export function FundingGlobalCard() {
       />
     </>
   )
+}
+
+FundingGlobalCard.propTypes = {
+  actions: PropTypes.any
 }

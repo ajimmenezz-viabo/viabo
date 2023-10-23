@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
-export function TransferToGlobalForm({ setCurrentBalance, insufficient, mainCard, onSuccess }) {
+function TransferToGlobalForm({ setCurrentBalance, insufficient, mainCard, onSuccess }) {
   const RegisterSchema = Yup.object().shape({
     amount: Yup.string().required('La cantidad es requerida')
   })
@@ -103,6 +103,8 @@ export function TransferToGlobalForm({ setCurrentBalance, insufficient, mainCard
     </Scrollbar>
   )
 }
+
+export default TransferToGlobalForm
 
 TransferToGlobalForm.propTypes = {
   insufficient: PropTypes.any,

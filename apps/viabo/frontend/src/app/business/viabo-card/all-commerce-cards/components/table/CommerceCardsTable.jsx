@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useMemo, useState } from 'react'
 
-import { AssignmentIndRounded, FileDownload } from '@mui/icons-material'
+import { AssignmentIndRounded, FileDownload, ManageAccounts } from '@mui/icons-material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { Box, Button, Card, IconButton, Link, Stack, Tooltip, Typography, useTheme } from '@mui/material'
 import { BsEye } from 'react-icons/bs'
@@ -13,6 +13,7 @@ import { useToggleStatusCard } from '../../../cards/hooks'
 import { useFindAllCommerceCards } from '../../hooks'
 import { useAssignUserCard, useCommerceCards } from '../../store'
 
+import { getOperationTypeByName } from '@/app/shared/services'
 import {
   FiltersAction,
   FullScreenAction,
@@ -102,8 +103,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
               <Stack direction={'row'} spacing={2} alignItems={'center'}>
                 <Link
                   color={'info.main'}
-                  underline="always"
-                  sx={{ cursor: 'pointer' }}
+                  underline="none"
                   variant={'subtitle2'}
                   component={Typography}
                   aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -113,10 +113,6 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
                     setHoverInfo(dataRow)
                   }}
                   onMouseLeave={handlePopoverClose}
-                  onClick={() => {
-                    setCardInfo(dataRow)
-                    setOpenUserInfo(true)
-                  }}
                 >
                   {renderedCellValue}
                 </Link>
@@ -128,6 +124,37 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
         },
         header: 'Asignado',
         minSize: 150
+      },
+      {
+        id: 'methods',
+        accessorKey: 'methods', // access nested data with dot notation
+        header: 'Métodos de Fondeo',
+        minSize: 120,
+
+        Cell: ({ cell, column, row }) => {
+          const { original: rowData } = row
+          const logos = []
+
+          const paymentMethods = ['SPEI', 'PAYCASH']
+
+          paymentMethods?.forEach(method => {
+            const methodLogo = getOperationTypeByName(method)
+            if (methodLogo) {
+              logos.push({
+                component: methodLogo?.component,
+                width: method === 'PAYCASH' ? 50 : 30,
+                height: method === 'PAYCASH' ? 50 : 30
+              })
+            }
+          })
+          return (
+            <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
+              {logos?.map(({ component: Logo, width, height }, index) => (
+                <Logo key={index} sx={{ width, height }} />
+              ))}
+            </Stack>
+          )
+        }
       },
       {
         id: 'status',
@@ -243,11 +270,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
           displayColumnDefOptions={{
             'mrt-row-actions': {
               header: 'Acciones', // change header text
-              minSize: 15, // make actions column wider,
-
-              muiTableHeadCellProps: ({ column }) => ({
-                align: 'center'
-              })
+              minSize: 100 // make actions column wider,
             },
             'mrt-row-select': {
               size: 10
@@ -309,7 +332,7 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
                 sx={{
                   display: 'flex',
                   flex: 1,
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
                   alignItems: 'center',
                   flexWrap: 'nowrap',
                   gap: '8px'
@@ -318,6 +341,20 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
                 <IconButton size="small" color="primary" disabled={isLoading}>
                   <BsEye />
                 </IconButton>
+                {dataRow?.assignUser?.fullName !== '-' && (
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    disabled={isLoading}
+                    onClick={() => {
+                      setCardInfo(dataRow)
+                      setOpenUserInfo(true)
+                    }}
+                  >
+                    <ManageAccounts />
+                  </IconButton>
+                )}
+
                 {isChangingStatus ? (
                   <CircularLoading
                     size={15}

@@ -2,24 +2,12 @@ import { memo } from 'react'
 
 import PropTypes from 'prop-types'
 
-import {
-  Avatar,
-  Box,
-  Checkbox,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  Stack,
-  Tooltip,
-  Typography
-} from '@mui/material'
+import { Avatar, Box, ListItem, ListItemAvatar, ListItemButton, Stack, Tooltip, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-import { BUSINESS_PERMISSIONS } from '@/app/business/shared/routes'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 import { BadgeStatus } from '@/shared/components/notifications'
-import { useUser } from '@/shared/hooks'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
   borderRadius: '8px!important',
@@ -33,19 +21,15 @@ const RootStyle = styled(ListItemButton)(({ theme }) => ({
 
 CardItem.propTypes = {
   isOpenSidebar: PropTypes.bool,
-  selected: PropTypes.bool,
   card: PropTypes.object,
-  onSelectRow: PropTypes.func,
   onOpenDetails: PropTypes.func
 }
 
-function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails }) {
+function CardItem({ isOpenSidebar, card, onOpenDetails }) {
   const { id, cardUserNumber, cardType } = card
   const setCommerceCard = useCommerceDetailsCard(state => state.setCard)
   const commerceCard = useCommerceDetailsCard(state => state.card)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
-  const user = useUser()
-  const userActions = user?.permissions ?? []
 
   const status =
     id === commerceCard?.id && commerceCard ? (commerceCard?.cardON === true ? 'online' : 'offline') : 'invisible'
@@ -76,12 +60,6 @@ function CardItem({ isOpenSidebar, card, selected, onSelectRow, onOpenDetails })
           borderRadius: 1,
           '& :hover': { color: 'text.primary' }
         }}
-        secondaryAction={
-          isOpenSidebar &&
-          userActions.includes(BUSINESS_PERMISSIONS.COMMERCE_CARDS) && (
-            <Checkbox edge="start" checked={selected} onClick={onSelectRow} inputProps={{ 'aria-labelledby': id }} />
-          )
-        }
         disablePadding
       >
         <RootStyle

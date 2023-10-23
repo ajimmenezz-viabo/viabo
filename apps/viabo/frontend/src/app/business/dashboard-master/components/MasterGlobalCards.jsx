@@ -2,9 +2,14 @@ import { useMemo, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { Update } from '@mui/icons-material'
+import { CurrencyExchangeOutlined, Update } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import { Box, Button, Card, CardHeader, Divider, Stack, Typography } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
+
+import FundingCommerceCardsDrawer from './FundingCommerceCardsDrawer'
+
+import { useFindCommerceCards } from '../../viabo-card/cards/hooks'
 
 import { FundingGlobalCard } from '@/app/business/dashboard-master/components/FundingGlobalCard'
 import { useMasterGlobalStore } from '@/app/business/dashboard-master/store'
@@ -24,7 +29,19 @@ export function MasterGlobalCards({ data, isLoading }) {
   const movements = useMasterGlobalStore(state => state.movements)
   const isMaster = useMasterGlobalStore(state => state.isMaster)
 
+  const {
+    data: commerceCards,
+    isLoading: isLoadingCards,
+    isRefetching: isRefetchingCards,
+    refetch,
+    isSuccess
+  } = useFindCommerceCards(cardSelected?.paymentProcessorId, {
+    enabled: !!cardSelected?.paymentProcessorId
+  })
+
   const balance = useMemo(() => getBalance(), [movements])
+
+  const [openTransfer, setOpenTransfer] = useState(false)
 
   const master = data?.master
   const globals = data?.globals
@@ -181,7 +198,33 @@ export function MasterGlobalCards({ data, isLoading }) {
             }
           />
         )}
-        {view === '2' && cardSelected && !isMaster && <FundingGlobalCard />}
+        {view === '2' && cardSelected && !isMaster && (
+          <>
+            <FundingGlobalCard
+              actions={
+                <LoadingButton
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<CurrencyExchangeOutlined />}
+                  sx={{ color: 'black', fontWeight: 'bolder' }}
+                  loading={isRefetchingCards}
+                  onClick={() => {
+                    setOpenTransfer(true)
+                  }}
+                >
+                  Fondear Tarjetas
+                </LoadingButton>
+              }
+            />
+            <FundingCommerceCardsDrawer
+              setOpen={setOpenTransfer}
+              open={openTransfer}
+              card={cardSelected}
+              cardList={commerceCards}
+            />
+          </>
+        )}
       </Stack>
     </AnimatePresence>
   )

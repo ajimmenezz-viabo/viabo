@@ -1,20 +1,21 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, useEffect, useMemo, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
 import { Box, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 
-import { ResumeTransactionForm } from './ResumeTransactionForm'
-
 import { CARDS_COMMERCES_KEYS } from '@/app/business/viabo-card/cards/adapters'
-import { TransactionForm } from '@/app/business/viabo-card/cards/components/transfer/TransactionForm'
-import { TransferToGlobalForm } from '@/app/business/viabo-card/cards/components/transfer/TransferToGlobalForm'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { RightPanel } from '@/app/shared/components'
 import { Label } from '@/shared/components/form'
+import { Lodable } from '@/shared/components/lodables'
 import { useGetQueryData, useUser } from '@/shared/hooks'
 import { fCurrency } from '@/shared/utils'
+
+const TransactionForm = Lodable(lazy(() => import('./TransactionForm')))
+const ResumeTransactionForm = Lodable(lazy(() => import('./ResumeTransactionForm')))
+const TransferToGlobalForm = Lodable(lazy(() => import('./TransferToGlobalForm')))
 
 export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   const user = useUser()

@@ -21,7 +21,8 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
   const user = useUser()
   const card = useCommerceDetailsCard(state => state.card)
   const mainCard = useCommerceDetailsCard(state => state.mainCard)
-  const cardList = useGetQueryData([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST]) || []
+
+  const cardList = useGetQueryData([CARDS_COMMERCES_KEYS.CARDS_COMMERCE_LIST, card?.cardTypeId]) || []
   const [currentBalance, setCurrentBalance] = useState(0)
   const balance = useMemo(() => (isFundingCard ? mainCard?.balance : card?.balance), [mainCard?.balance, card?.balance])
   const [view, setView] = useState('1')

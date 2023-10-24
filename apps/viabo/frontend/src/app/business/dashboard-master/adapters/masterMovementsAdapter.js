@@ -26,6 +26,7 @@ export const MasterMovementsAdapter = movements => {
           fullDate: fDateTime(movement?.date),
           date,
           time,
+          serverDate: movement?.date,
           description: movement?.description,
           amount,
           amountFormatted: fCurrency(amount),

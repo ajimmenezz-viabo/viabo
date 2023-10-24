@@ -74,14 +74,14 @@ export function CardDetails() {
               >
                 <Stack pt={2} pb={4} px={2}>
                   <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>
-                    <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 4 : 12} xl={4}>
+                    <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 4 : 12} xl={3}>
                       <Stack spacing={3}>
                         <CardBalance card={card} />
                         <CardCharge />
                         <CardAssignInfo />
                       </Stack>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={8}>
+                    <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={9}>
                       <CardMovements />
                     </Grid>
                   </Grid>

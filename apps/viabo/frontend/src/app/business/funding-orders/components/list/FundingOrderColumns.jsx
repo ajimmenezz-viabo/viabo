@@ -115,7 +115,7 @@ export const FundingOrderColumns = [
     accessorKey: 'conciliatedName', // access nested data with dot notation
     header: '¿Conciliada?',
     filterVariant: 'multi-select',
-    size: 100,
+    size: 80,
     Cell: ({ cell, column, row }) => {
       const { original: rowData } = row
 
@@ -125,13 +125,14 @@ export const FundingOrderColumns = [
           width={1}
           justifyContent={'center'}
           alignItems={'center'}
+          mr={2}
           gap={1}
           color={'primary'}
         >
           {rowData?.conciliated ? (
-            <BsPatchCheck color="green" fontWeight={'bold'} fontSize={'20px'} />
+            <BsPatchCheck color="green" fontWeight={'bold'} fontSize={'18px'} />
           ) : (
-            <BiBlock fontSize={'20px'} color="red" />
+            <BiBlock fontSize={'18px'} color="red" />
           )}
         </Stack>
       )

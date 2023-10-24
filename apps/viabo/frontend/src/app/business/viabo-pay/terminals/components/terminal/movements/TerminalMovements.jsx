@@ -12,7 +12,7 @@ import { useTerminalDetails, useTerminals } from '../../../store'
 import TerminalFilterCardType from '../TerminalFilterCardType'
 import TerminalFilterStatus from '../TerminalFilterStatus'
 
-import { CardFilterMovements } from '@/app/business/viabo-card/cards/components/details/CardFilterMovements'
+import { CardFilterMovements } from '@/app/business/viabo-card/cards/components/details/movements/CardFilterMovements'
 import {
   FiltersAction,
   FullScreenAction,

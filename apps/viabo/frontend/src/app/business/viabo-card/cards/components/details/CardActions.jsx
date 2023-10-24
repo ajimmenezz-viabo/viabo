@@ -17,7 +17,7 @@ const PaymentSidebar = Lodable(
   lazy(() => import('@/app/business/viabo-card/cards/components/send-payment/PaymentSidebar'))
 )
 
-export function CardActions() {
+function CardActions() {
   const [openTransfer, setOpenTransfer] = useState(false)
   const [openPayment, setOpenPayment] = useState(false)
   const card = useCommerceDetailsCard(state => state.card)
@@ -62,3 +62,5 @@ export function CardActions() {
     </>
   )
 }
+
+export default CardActions

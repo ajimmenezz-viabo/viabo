@@ -1,21 +1,22 @@
 import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
-import { endOfMonth, format, getMonth, startOfMonth } from 'date-fns'
+import { format } from 'date-fns'
 import { toast } from 'react-toastify'
 
 import { CARDS_COMMERCES_KEYS } from '@/app/business/viabo-card/cards/adapters'
 import { getCardMovements } from '@/app/business/viabo-card/cards/services'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
-import { monthOptions } from '@/shared/utils'
+import { fDate } from '@/shared/utils'
 
-export const useFindCardMovements = (cardId, date, options = {}) => {
-  const month = monthOptions[getMonth(date)] ?? null
-  const primerDiaMes = startOfMonth(date)
-  const ultimoDiaMes = endOfMonth(date)
-  const initialDate = format(primerDiaMes, 'yyyy-MM-dd')
-  const finalDate = format(ultimoDiaMes, 'yyyy-MM-dd')
+export const useFindCardMovements = (cardId, startDate, endDate, options = {}) => {
+  if (!startDate || !endDate) {
+    return null
+  }
+  const initialDate = format(startDate, 'yyyy-MM-dd')
+  const finalDate = format(endDate, 'yyyy-MM-dd')
+  const month = `${fDate(startDate)} - ${fDate(endDate)}` ?? null
   const [customError, setCustomError] = useState(null)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const commerces = useQuery(

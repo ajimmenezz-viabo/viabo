@@ -2,7 +2,7 @@ import { Box, Grid } from '@mui/material'
 import { useCollapseDrawer } from '@theme/hooks'
 
 import { MasterGlobalCards } from '@/app/business/dashboard-master/components'
-import { MasterMovements } from '@/app/business/dashboard-master/components/MasterMovements'
+import { MasterMovements } from '@/app/business/dashboard-master/components/table/MasterMovements'
 import { useFindGlobalCards } from '@/app/business/dashboard-master/hooks'
 import { FundingOrder } from '@/app/business/viabo-card/cards/components/toolbar-actions'
 import { PATH_DASHBOARD } from '@/routes'

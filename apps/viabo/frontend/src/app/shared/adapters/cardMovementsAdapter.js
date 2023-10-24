@@ -16,6 +16,7 @@ export const CardMovementsAdapter = movements => {
         const time = movement?.date ? format(new Date(movement?.date), 'p') : ''
         return {
           id: movement?.transactionId,
+          serverDate: movement?.date,
           fullDate: fDateTime(movement?.date),
           date,
           time,

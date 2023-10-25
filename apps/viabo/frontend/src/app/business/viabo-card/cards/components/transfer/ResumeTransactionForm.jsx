@@ -63,8 +63,8 @@ const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactio
             >
               <TableRow>
                 <TableCell width={40}>#</TableCell>
-                <TableCell align="left">Descripción</TableCell>
-                <TableCell align="right">Total</TableCell>
+                <TableCell align="left">Movimiento</TableCell>
+                <TableCell align="right">Monto</TableCell>
               </TableRow>
             </TableHead>
 

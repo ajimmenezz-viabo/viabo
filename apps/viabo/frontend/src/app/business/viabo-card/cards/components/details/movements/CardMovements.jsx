@@ -1,12 +1,14 @@
-import { lazy, useEffect, useMemo, useState } from 'react'
+import { lazy, useEffect, useMemo, useRef, useState } from 'react'
 
-import { Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
+import { Check } from '@mui/icons-material'
+import { Box, Button, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { MobileDatePicker } from '@mui/x-date-pickers'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { BiBlock } from 'react-icons/bi'
 import { BsPatchCheck } from 'react-icons/bs'
+import { toast } from 'react-toastify'
 
-import { MovementDescriptionColumn } from '@/app/business/shared/components/cardMovements/columns'
+import { MovementDescriptionColumn } from '@/app/business/shared/components/card-movements/columns'
 import { useFindCardMovements } from '@/app/business/viabo-card/cards/hooks/useFindCardMovements'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { MaterialDataTable } from '@/shared/components/dataTables'
@@ -17,9 +19,15 @@ const TransactionReport = Lodable(
   lazy(() => import('@/app/business/viabo-card/cards/components/details/incidence/TransactionReport'))
 )
 
+const VerifyExpensesDrawer = Lodable(
+  lazy(() => import('@/app/business/shared/components/card-movements/verify-expenses/VerifyExpensesDrawer'))
+)
+
 export function CardMovements() {
   const [openReport, setOpenReport] = useState(false)
+  const [openVerifyExpenses, setOpenVerifyExpenses] = useState(false)
   const [selectedMovement, setSelectedMovement] = useState(null)
+  const table = useRef(null)
 
   const currentDate = new Date()
   const initialStartDate = startOfMonth(currentDate)
@@ -40,38 +48,6 @@ export function CardMovements() {
   )
 
   const movements = data?.movements || []
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      refetch()
-    }
-  }, [startDate, endDate])
-
-  useEffect(() => {
-    setStartDate(initialStartDate)
-    setEndDate(initialEndDate)
-  }, [card?.id])
-
-  useEffect(() => {
-    if (data) {
-      const month = `${fDate(startDate)} - ${fDate(endDate)}` ?? null
-      addInfoCard({ ...data, monthBalance: month })
-    }
-  }, [data, card?.id, startDate, endDate])
-
-  const handleStartDateChange = date => {
-    if (endDate !== null && date > endDate) {
-      setEndDate(date)
-    }
-    setStartDate(date)
-  }
-
-  const handleEndDateChange = date => {
-    if (startDate !== null && date < startDate) {
-      setStartDate(date)
-    }
-    setEndDate(date)
-  }
 
   const columns = useMemo(
     () => [
@@ -142,6 +118,47 @@ export function CardMovements() {
     []
   )
 
+  useEffect(() => {
+    if (startDate && endDate) {
+      refetch()
+    }
+  }, [startDate, endDate])
+
+  useEffect(() => {
+    setStartDate(initialStartDate)
+    setEndDate(initialEndDate)
+  }, [card?.id])
+
+  useEffect(() => {
+    if (data) {
+      const month = `${fDate(startDate)} - ${fDate(endDate)}` ?? null
+      addInfoCard({ ...data, monthBalance: month })
+    }
+  }, [data, card?.id, startDate, endDate])
+
+  const handleStartDateChange = date => {
+    if (endDate !== null && date > endDate) {
+      setEndDate(date)
+    }
+    setStartDate(date)
+  }
+
+  const handleEndDateChange = date => {
+    if (startDate !== null && date < startDate) {
+      setStartDate(date)
+    }
+    setEndDate(date)
+  }
+
+  const handleValidateExpenses = table => () => {
+    const movements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+    const someHasDifferentOperationType = movements?.some(movement => movement?.operationType !== 'OTROS CARGOS')
+    if (someHasDifferentOperationType) {
+      return toast.warn('Existen movimientos que no se pueden comprobar, verifique el tipo de movimiento.')
+    }
+    return setOpenVerifyExpenses(true)
+  }
+
   return (
     <>
       <Card>
@@ -207,6 +224,7 @@ export function CardMovements() {
             showAlertBanner: isError,
             showProgressBars: isFetching
           }}
+          tableInstanceRef={table}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               header: 'Acciones', // change header text
@@ -217,6 +235,18 @@ export function CardMovements() {
             }
           }}
           muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box sx={{ display: 'flex', gap: '1rem' }}>
+              <Button
+                onClick={handleValidateExpenses(table)}
+                disabled={!table.getIsSomeRowsSelected()}
+                startIcon={<Check width={24} height={24} />}
+                variant="outlined"
+              >
+                Comprobar
+              </Button>
+            </Box>
+          )}
           renderRowActionMenuItems={({ row, closeMenu }) => [
             <MenuItem
               key="incidence"
@@ -234,6 +264,11 @@ export function CardMovements() {
       </Card>
 
       <TransactionReport open={openReport} setOpen={setOpenReport} selectedMovement={selectedMovement} />
+      <VerifyExpensesDrawer
+        open={openVerifyExpenses}
+        setOpen={setOpenVerifyExpenses}
+        movements={table.current?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []}
+      />
     </>
   )
 }

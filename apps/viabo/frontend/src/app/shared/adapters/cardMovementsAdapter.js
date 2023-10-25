@@ -7,6 +7,7 @@ export const CardMovementsAdapter = movements => {
   const decryptedMovements = getDecryptInfo(movements?.ciphertext, movements?.iv)
   let expenses = 0
   let income = 0
+
   return {
     movements:
       decryptedMovements?.map(movement => {

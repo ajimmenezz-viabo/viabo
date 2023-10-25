@@ -39,13 +39,13 @@ export default function MultiFilePreview({ showPreview = false, files, onRemove,
     <>
       <List disablePadding sx={{ ...(hasFile && { my: 3 }) }}>
         <AnimatePresence>
-          {files.map(file => {
+          {files.map((file, index) => {
             const { key, name, size, preview } = getFileData(file)
 
             if (showPreview) {
               return (
                 <ListItem
-                  key={key}
+                  key={`${key}_${index}`}
                   component={m.div}
                   {...varFade().inRight}
                   sx={{
@@ -84,7 +84,7 @@ export default function MultiFilePreview({ showPreview = false, files, onRemove,
 
             return (
               <ListItem
-                key={key}
+                key={`${key}_${index}`}
                 component={m.div}
                 {...varFade().inRight}
                 sx={{

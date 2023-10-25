@@ -16,7 +16,7 @@ export const useFindCardMovements = (cardId, startDate, endDate, options = {}) =
   }
   const initialDate = format(startDate, 'yyyy-MM-dd')
   const finalDate = format(endDate, 'yyyy-MM-dd')
-  const month = `${fDate(startDate)} - ${fDate(endDate)}` ?? null
+  const month = `${fDate(startDate)} - ${fDate(endDate)}`
   const [customError, setCustomError] = useState(null)
   const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
   const commerces = useQuery(

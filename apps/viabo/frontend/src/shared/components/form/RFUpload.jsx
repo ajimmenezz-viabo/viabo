@@ -62,7 +62,7 @@ RFUploadMultiFile.propTypes = {
 
 export function RFUploadMultiFile({ name, ...other }) {
   const [field, meta, helpers] = useField(name)
-  const checkError = meta.touched && meta.error && field.value.length === 0
+  const checkError = Boolean(meta.touched && meta.error)
 
   const handleDrop = acceptedFiles => {
     const files = [...field.value, ...acceptedFiles]

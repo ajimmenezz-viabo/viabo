@@ -6,11 +6,13 @@ import { MobileDatePicker } from '@mui/x-date-pickers'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { BiBlock } from 'react-icons/bi'
 import { BsPatchCheck } from 'react-icons/bs'
+import { LuReceipt } from 'react-icons/lu'
 import { toast } from 'react-toastify'
 
 import { MovementDescriptionColumn } from '@/app/business/shared/components/card-movements/columns'
 import { useFindCardMovements } from '@/app/business/viabo-card/cards/hooks/useFindCardMovements'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
+import { getOperationTypeByName } from '@/app/shared/services'
 import { MaterialDataTable } from '@/shared/components/dataTables'
 import { Lodable } from '@/shared/components/lodables'
 import { fDate } from '@/shared/utils'
@@ -71,6 +73,22 @@ export function CardMovements() {
             <Stack>
               <Typography variant="subtitle2">{rowData?.fullDate}</Typography>
             </Stack>
+          )
+        }
+      },
+      {
+        accessorKey: 'operationType',
+        header: 'Tipo',
+        filterVariant: 'multi-select',
+        size: 100,
+        Cell: ({ cell, column, row }) => {
+          const { original: rowData } = row
+          const operationLogo = getOperationTypeByName(rowData?.operationType)
+          const OperationLogoComponent = operationLogo?.component
+          return (
+            <Box>
+              {operationLogo ? <OperationLogoComponent sx={{ width: 25, height: 25 }} /> : <LuReceipt size={22} />}
+            </Box>
           )
         }
       },
@@ -152,10 +170,17 @@ export function CardMovements() {
 
   const handleValidateExpenses = table => () => {
     const movements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+    const someHasVerified = movements?.some(movement => movement?.verified)
     const someHasDifferentOperationType = movements?.some(movement => movement?.operationType !== 'OTROS CARGOS')
+    if (someHasVerified) {
+      return toast.warn(
+        'Existen movimientos que ya se encuentran comprobados, verifique los movimientos seleccionados.'
+      )
+    }
     if (someHasDifferentOperationType) {
       return toast.warn('Existen movimientos que no se pueden comprobar, verifique el tipo de movimiento.')
     }
+
     return setOpenVerifyExpenses(true)
   }
 

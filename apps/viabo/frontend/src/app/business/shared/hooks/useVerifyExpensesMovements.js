@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { DASHBOARD_MASTER_KEYS } from '../../dashboard-master/adapters/dashboardMasterKeys'
+import { CARDS_COMMERCES_KEYS } from '../../viabo-card/cards/adapters'
 import { verifyExpenses } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
@@ -17,7 +19,8 @@ export const useVerifyExpensesMovements = (options = {}) => {
         pending: 'Comprobando movimientos ...',
         success: {
           render({ data }) {
-            //  client.invalidateQueries([FUNDING_ORDERS_KEYS.LIST])
+            client.invalidateQueries([DASHBOARD_MASTER_KEYS.MOVEMENTS])
+            client.invalidateQueries([CARDS_COMMERCES_KEYS.CARD_MOVEMENTS])
             isFunction(onSuccess) && onSuccess(data)
             return 'Se creó la comprobación con éxito'
           }

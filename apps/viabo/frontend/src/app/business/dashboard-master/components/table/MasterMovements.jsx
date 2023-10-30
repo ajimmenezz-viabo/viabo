@@ -165,7 +165,13 @@ export function MasterMovements() {
 
   const handleValidateExpenses = table => () => {
     const movements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+    const someHasVerified = movements?.some(movement => movement?.verified)
     const someHasDifferentOperationType = movements?.some(movement => movement?.operationType !== 'OTROS CARGOS')
+    if (someHasVerified) {
+      return toast.warn(
+        'Existen movimientos que ya se encuentran comprobados, verifique los movimientos seleccionados.'
+      )
+    }
     if (someHasDifferentOperationType) {
       return toast.warn('Existen movimientos que no se pueden comprobar, verifique el tipo de movimiento.')
     }

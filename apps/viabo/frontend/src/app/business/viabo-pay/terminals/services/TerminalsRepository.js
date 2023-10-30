@@ -25,8 +25,11 @@ export const getTerminalMovements = async (terminalId, initialDate, finalDate) =
   return TerminalMovementsAdapter(data)
 }
 
-export const getMovementsToConciliateTerminal = async (terminal, date) => {
-  const { data } = await axios.get(`/api/card/movements/${terminal}/consolidated/${date}`)
+export const getMovementsToConciliateTerminal = async (terminalId, date) => {
+  const fetchURL = new URL('/api/card/movements/terminal/conciliated', window.location.origin)
+  fetchURL.searchParams.set('startDate', date)
+  fetchURL.searchParams.set('terminalId', terminalId)
+  const { data } = await axios.get(fetchURL.href)
   return MovementsToConciliateTerminalAdapter(data)
 }
 

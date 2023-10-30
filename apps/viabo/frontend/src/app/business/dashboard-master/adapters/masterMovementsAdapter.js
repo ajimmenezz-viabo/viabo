@@ -8,7 +8,6 @@ export const MasterMovementsAdapter = movements => {
 
   let expenses = 0
   let income = 0
-
   return {
     movements:
       decryptedMovements?.map(movement => {
@@ -23,6 +22,7 @@ export const MasterMovementsAdapter = movements => {
         const date = movement?.date ? format(new Date(movement?.date), 'dd MMM yyyy', { locale: es }) : ''
         const time = movement?.date ? format(new Date(movement?.date), 'p') : ''
         return {
+          id: movement?.transactionId,
           fullDate: fDateTime(movement?.date),
           date,
           time,
@@ -30,10 +30,14 @@ export const MasterMovementsAdapter = movements => {
           description: movement?.description,
           amount,
           amountFormatted: fCurrency(amount),
-          paymentProcessor: movement?.paymentProcessor,
+          paymentProcessor: movement?.cardPaymentProcessor,
           type: movement?.type.toLowerCase(),
-          operationType: movement?.typeOperation.toUpperCase(),
-          concept: movement?.concept ?? ''
+          operationType: movement?.operationType?.toUpperCase(),
+          concept: movement?.concept ?? '',
+          cardId: movement?.cardId,
+          commerceId: movement?.cardCommerceId,
+          original: movement,
+          verified: Boolean(movement?.checked)
         }
       }) ?? [],
     income: fCurrency(income),

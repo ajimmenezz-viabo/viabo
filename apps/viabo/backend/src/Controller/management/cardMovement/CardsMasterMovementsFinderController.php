@@ -16,34 +16,36 @@ use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardsMasterMovementsFinderController extends ApiController
 {
-    public function __invoke(string $initialDate , string $finalDate,Request $request): Response
+    public function __invoke(Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $initialDate = $request->query->getString('startDate');
+            $finalDate = $request->query->getString('endDate');
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $cardsInformation = $this->ask(new MainCardsInformationQuery($commerce->data['id']));
             $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data , $initialDate , $finalDate));
             $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
-            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'],[]));
+            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'] , []));
             $payTransaction = $this->ask(new CommerceTransactionsQuery(
-                $initialDate,
-                $finalDate,
-                $commercePayCredential->data,
-                "",
-                $terminalsData->data,
-                [],
-                "",
+                $initialDate ,
+                $finalDate ,
+                $commercePayCredential->data ,
+                "" ,
+                $terminalsData->data ,
+                [] ,
+                "" ,
                 ""
             ));
             $movements = $this->ask(new CardsMasterMovementsQuery(
-                $cardsInformation->data,
-                $operationData->data,
-                $payTransaction->data,
+                $cardsInformation->data ,
+                $operationData->data ,
+                $payTransaction->data ,
                 $initialDate ,
                 $finalDate
             ));
 
-            return new JsonResponse($movements->data);
+            return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

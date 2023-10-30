@@ -1,15 +1,15 @@
 find-card-movements:
-  path: '/api/card/{cardId}/movements/{initialDate}/to/{finalDate}'
+  path: '/api/card/movements'
   controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsFinderController
   methods: GET
 
 find-master-cards-movements:
-  path: '/api/cards/movements/{initialDate}/to/{finalDate}'
+  path: '/api/master-cards/movements'
   controller: Viabo\Backend\Controller\management\cardMovement\CardsMasterMovementsFinderController
   methods: GET
 
-find-card-movements-consolidated:
-  path: '/api/card/movements/{terminalId}/consolidated/{initialDate}'
+find-card-movements-conciliated-by-terminal:
+  path: '/api/card/movements/terminal/conciliated'
   controller: Viabo\Backend\Controller\management\cardMovement\CardMovementsConsolidatedFinderController
   methods: GET
 

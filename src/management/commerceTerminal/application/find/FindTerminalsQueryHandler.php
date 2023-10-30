@@ -14,8 +14,6 @@ final readonly class FindTerminalsQueryHandler implements QueryHandler
 
     public function __invoke(FindTerminalsQuery $query):Response
     {
-        $commerceId = TerminalCommerceId::create($query->commerceId);
-
-        return $this->finder->__invoke($commerceId,$query->speiCards);
+        return $this->finder->__invoke($query->commerceId);
     }
 }

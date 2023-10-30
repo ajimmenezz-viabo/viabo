@@ -7,10 +7,7 @@ use Viabo\shared\domain\criteria\Criteria;
 interface TerminalRepository
 {
     public function save(Terminal $terminal):void;
-    public function searchBy(TerminalCommerceId $commerceId):array;
 
     public function searchView(Criteria $criteria):array;
-
-    public function searchSpeiCardsView(Criteria $criteria): array;
 
 }

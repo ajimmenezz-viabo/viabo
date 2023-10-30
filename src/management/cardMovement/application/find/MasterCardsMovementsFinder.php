@@ -43,8 +43,8 @@ final readonly class MasterCardsMovementsFinder
                 'concept' => '' ,
                 'amount' => $transaction['amount'] ,
                 'type' => "Terminal" ,
-                'typeOperation' => "VIABO PAY" ,
-                'paymentProcessor' => "Terminal" ,
+                'operationType' => "VIABO PAY" ,
+                'cardPaymentProcessor' => "Terminal" ,
             ];
         } , array_filter($payTransactions , function (array $payTransactionsData) {
             return $payTransactionsData['approved'];

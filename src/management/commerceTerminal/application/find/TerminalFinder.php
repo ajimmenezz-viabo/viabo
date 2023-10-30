@@ -2,38 +2,33 @@
 
 namespace Viabo\management\commerceTerminal\application\find;
 
-use Viabo\management\commerceTerminal\domain\services\TerminalsFinder as TerminalsFinderService ;
-use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
+use Viabo\management\commerceTerminal\domain\TerminalRepository;
 use Viabo\management\commerceTerminal\domain\TerminalView;
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 
 final readonly class TerminalFinder
 {
-    public function __construct(private TerminalsFinderService $finder)
+    public function __construct(private TerminalRepository $repository)
     {
     }
 
-    public function __invoke(TerminalCommerceId $commerceId, mixed $speiCardsData):FindTerminalResponse
+    public function __invoke(string $commerceId): FindTerminalResponse
     {
-        $terminals =($this->finder)($commerceId);
+        $filters = Filters::fromValues([
+            ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId]
+        ]);
+        $terminals = $this->repository->searchView(new Criteria($filters));
+        $terminals = empty($terminals) ? [] : $this->toArray($terminals);
 
-        $speiCards = $this->getSpeiCards($speiCardsData);
-
-        return new FindTerminalResponse(array_map(function(TerminalView $terminal) use($speiCards){
-             $data = $terminal->toArray();
-             $data['isConciliationExternal'] = $terminal->isConciliationExternal($speiCards);
-            return $data;
-        },$terminals));
+        return new FindTerminalResponse($terminals);
     }
 
-    private function getSpeiCards(mixed $speiCardsData): array
+    private function toArray(array $terminals): array
     {
-        $speiCards = [];
-
-        foreach ($speiCardsData as $item) {
-            if (isset($item['speiCard'])) {
-                $speiCards[] = $item['speiCard'];
-            }
-        }
-        return $speiCards;
+        return array_map(function (TerminalView $terminal) {
+            return $terminal->toArray();
+        } , $terminals);
     }
+
 }

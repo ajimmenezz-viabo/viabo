@@ -21,4 +21,11 @@ final class CardId extends UuidValueObject
             throw new CardIdEmpty();
         }
     }
+
+    public static function empty(): CardId
+    {
+        $cardId = self::random();
+        $cardId->value = '';
+        return $cardId;
+    }
 }

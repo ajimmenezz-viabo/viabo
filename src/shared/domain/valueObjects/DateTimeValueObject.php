@@ -29,6 +29,11 @@ abstract class DateTimeValueObject
         return new static($value);
     }
 
+    public static function hasFormatDateTime(string $value): false|int
+    {
+        return preg_match("/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/" , $value);
+    }
+
     public function value(): string
     {
         self::setDate();

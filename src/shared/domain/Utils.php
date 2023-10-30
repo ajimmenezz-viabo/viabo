@@ -18,7 +18,7 @@ class Utils
             return true;
         }
 
-        return (substr($haystack , -$length) === $needle);
+        return substr($haystack , -$length) === $needle;
     }
 
     public static function dateToString(DateTimeInterface $date): string
@@ -113,5 +113,10 @@ class Utils
     public static function sanitizeDoubleQuotes(string $value): string
     {
         return str_replace('"' , "'" , $value);
+    }
+
+    public static function removeArrayNulls(array $array): array
+    {
+        return array_values(array_filter($array , fn(mixed $value) => $value !== null));
     }
 }

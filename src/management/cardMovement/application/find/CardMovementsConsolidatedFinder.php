@@ -6,14 +6,20 @@ use Viabo\management\cardMovement\domain\CardMovement;
 use Viabo\management\cardMovement\domain\CardMovementFilter;
 use Viabo\management\cardMovement\domain\CardMovementFinalDate;
 use Viabo\management\cardMovement\domain\CardMovementInitialDate;
+use Viabo\management\cardMovement\domain\services\CardMovementsFinderOnSet;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 use Viabo\shared\domain\Utils;
+use Viabo\shared\domain\utils\DatePHP;
 
-final readonly class FinderCardMovementsConsolidated
+final readonly class CardMovementsConsolidatedFinder
 {
-    public function __construct(private PaymentProcessorAdapter $adapter)
+    public function __construct(
+        private CardMovementsFinderOnSet $finder ,
+        private DatePHP $datePHP,
+        private PaymentProcessorAdapter  $adapter
+    )
     {
     }
 
@@ -29,30 +35,36 @@ final readonly class FinderCardMovementsConsolidated
         $cardNumber = new CardNumber($speiCard['cardNumber']);
         $cardClientKey = new CardClientKey($speiCard['clientKey']);
 
-        $cardMovement = CardMovementFilter::create($cardNumber,$cardClientKey, $initialDate , $finalDate);
+        $cardMovement = CardMovementFilter::create(
+            $cardNumber->value() , $cardClientKey->value() , $initialDate->value() , $finalDate->value()
+        );
 
         $cardMovements = $this->adapter->searchMovements($cardMovement);
         $movements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
 
-        $mainCardsMovements = $this->movementsData($movements,$mainCardTransactionsId,$cardNumber->value());
+        $mainCardsMovements = $this->movementsData($movements , $mainCardTransactionsId , $cardNumber->value());
 
         return new CardMovementsConsolidatedResponse($mainCardsMovements);
     }
 
-    private function movementsData(mixed $movements,mixed $mainCardTransactionsId ,string $cardNumber): array
+    private function movementsData(mixed $movements , mixed $mainCardTransactionsId , string $cardNumber): array
     {
-        $data = array_map(function (array $movementData) use($cardNumber,$mainCardTransactionsId){
+        $data = array_map(function (array $movementData) use ($cardNumber , $mainCardTransactionsId) {
             $data = [];
 
-            $movement = CardMovement::create(
+            $movement = CardMovement::fromSetApiValue(
+                '',
+                $cardNumber,
+                '',
                 $movementData['Auth_Code'] ,
                 $movementData['Type_Id'] ,
                 $movementData['charge'] ,
                 $movementData['Accredit'] ,
                 $movementData['Merchant'] ,
-                $movementData['Date']
+                $movementData['Date'],
+                []
             );
-            if($movement->isNotConsolidated($mainCardTransactionsId) && $movement->isIncome()){
+            if ($movement->isNotConsolidated($mainCardTransactionsId) && $movement->isIncome()) {
                 $data = $movement->toArray();
                 $data['cardNumber'] = $cardNumber;
             }
@@ -63,7 +75,7 @@ final readonly class FinderCardMovementsConsolidated
             return !empty($movementData['Transaction_Id']);
         }));
 
-        $filterData = array_filter($data, function ($movement) {
+        $filterData = array_filter($data , function ($movement) {
             return !empty($movement);
         });
 
@@ -72,9 +84,9 @@ final readonly class FinderCardMovementsConsolidated
 
     private function filteredMainTransactionId(?array $movementsConsolidated): array
     {
-        $mainCardTransactionsId = array_map(function (array $movementConsolidated){
+        $mainCardTransactionsId = array_map(function (array $movementConsolidated) {
             return $movementConsolidated['speiCardTransactionId'];
-        },$movementsConsolidated);
+        } , $movementsConsolidated);
 
         return Utils::removeDuplicateElements($mainCardTransactionsId);
     }

@@ -4,28 +4,31 @@
 namespace Viabo\management\cardMovement\application\find;
 
 
-use Viabo\management\cardMovement\domain\CardMovementFinalDate;
-use Viabo\management\cardMovement\domain\CardMovementInitialDate;
+use Viabo\management\cardMovement\domain\CardMovement;
 use Viabo\management\cardMovement\domain\services\CardMovementsFinderOnSet;
-use Viabo\management\shared\domain\card\CardClientKey;
-use Viabo\management\shared\domain\card\CardNumber;
 
 final readonly class CardMovementsFinder
 {
 
-    public function __construct(private CardMovementsFinderOnSet $finder)
+    public function __construct(private CardMovementsFinderOnSet $finderOnSet)
     {
     }
 
     public function __invoke(
-        CardNumber              $cardNumber ,
-        CardMovementInitialDate $initialDate ,
-        CardMovementFinalDate   $finalDate ,
-        CardClientKey           $clientKey ,
-        array                   $operations
+        array  $card ,
+        string $initialDate ,
+        string $finalDate ,
+        array  $operations
     ): CardMovementsResponse
     {
-        $movements = $this->finder->__invoke($cardNumber , $clientKey , $initialDate , $finalDate , $operations);
-        return new CardMovementsResponse($movements);
+        $cardsMovements = $this->finderOnSet->__invoke(
+            $card ,
+            $initialDate ,
+            $finalDate ,
+            $operations
+        );
+
+        return new CardMovementsResponse($cardsMovements->toArray());
     }
+
 }

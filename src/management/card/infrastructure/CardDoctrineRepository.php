@@ -26,9 +26,9 @@ final class CardDoctrineRepository extends DoctrineRepository implements CardRep
         $this->persist($card);
     }
 
-    public function search(CardId $cardId): Card|null
+    public function search(string $cardId): Card|null
     {
-        return $this->repository(Card::class)->find($cardId->value());
+        return $this->repository(Card::class)->find($cardId);
     }
 
     public function searchCriteria(Criteria $criteria): array

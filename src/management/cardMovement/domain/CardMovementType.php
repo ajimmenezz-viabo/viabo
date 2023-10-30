@@ -16,6 +16,11 @@ final class CardMovementType extends StringValueObject
         return new static(self::MOVEMENT_TYPE[$value]);
     }
 
+    public static function fromName(string $value): static
+    {
+        return new static(ucfirst($value));
+    }
+
     public function isExpense(): bool
     {
         return $this->value === self::MOVEMENT_TYPE['2'];

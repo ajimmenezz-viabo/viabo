@@ -17,6 +17,17 @@ final class CardNumber extends StringValueObject
         return new self($value);
     }
 
+    public static function empty(): static
+    {
+        return new static('');
+    }
+
+    public static function createNotEmpty(string $value): static
+    {
+        self::validateNotEmpty($value);
+        return new static($value);
+    }
+
     public static function validate(string $value): void
     {
         if (self::hasNot16Digits($value)) {
@@ -45,12 +56,6 @@ final class CardNumber extends StringValueObject
     private static function hasNot8Digits(string $value): bool
     {
         return preg_match('/^\d{8}$/' , $value) === 0;
-    }
-
-    public static function createNotEmpty(string $value): static
-    {
-        self::validateNotEmpty($value);
-        return new static($value);
     }
 
     private static function validateNotEmpty(string $value): void

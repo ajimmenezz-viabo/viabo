@@ -9,9 +9,8 @@ use Viabo\catalogs\threshold\application\find\FundingOrderThresholdQuery;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\cardMovement\application\find\UnreconciledMasterCardMovementsQuery;
 use Viabo\management\cardOperation\application\find\CardOperationsQuery;
-use Viabo\management\fundingOrder\application\find\FundingOrderQuery;
 use Viabo\management\fundingOrder\application\find\FinishedFundingOrderQuery;
-use Viabo\management\credential\application\find\CardCredentialQuery;
+use Viabo\management\fundingOrder\application\find\FundingOrderQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class UnreconciledMasterCardMovementsFinderController extends ApiController
@@ -25,16 +24,14 @@ final readonly class UnreconciledMasterCardMovementsFinderController extends Api
             $fundingOrderAmount = $fundingOrder->data['amount'];
             $cardId = $fundingOrder->data['cardId'];
             $fundingOrderRegisterDate = $fundingOrder->data['registerDate'];
-            $credentialData = $this->ask(new CardCredentialQuery($cardId));
             $cardData = $this->ask(new CardQuery($cardId));
             $cardOperations = $this->ask(new CardOperationsQuery($cardData->data['number'] , $fundingOrderRegisterDate));
             $threshold = $this->ask(new FundingOrderThresholdQuery());
             $fundingOrderFinished = $this->ask(new FinishedFundingOrderQuery($cardId));
             $movements = $this->ask(new UnreconciledMasterCardMovementsQuery(
-                $cardData->data['number'] ,
+                $cardData->data ,
                 $fundingOrderAmount ,
                 $fundingOrderRegisterDate ,
-                $credentialData->data['clientKey'] ,
                 $threshold->data['value'] ,
                 $fundingOrderFinished->data ,
                 $cardOperations->data

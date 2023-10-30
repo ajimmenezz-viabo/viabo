@@ -4,32 +4,35 @@
 namespace Viabo\management\cardMovement\application\find;
 
 
-use Viabo\management\cardMovement\domain\CardMovementFinalDate;
-use Viabo\management\cardMovement\domain\CardMovementInitialDate;
 use Viabo\management\cardMovement\domain\services\CardMovementsFinderOnSet;
-use Viabo\management\shared\domain\card\CardClientKey;
-use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\Utils;
+use Viabo\shared\domain\utils\DatePHP;
 
 final readonly class UnreconciledMasterCardMovementsFinder
 {
-    public function __construct(private CardMovementsFinderOnSet $finder)
+    public function __construct(
+        private CardMovementsFinderOnSet $finder ,
+        private DatePHP                  $datePHP
+    )
     {
     }
 
     public function __invoke(
-        CardNumber              $cardNumber ,
-        CardMovementInitialDate $initialDate ,
-        CardMovementFinalDate   $finalDate ,
-        CardClientKey           $clientKey ,
-        string                  $anchoringOrderAmount ,
-        float                   $threshold ,
-        array                   $conciliation ,
-        array                   $cardOperations
+        array  $card ,
+        string $initialDate ,
+        string $anchoringOrderAmount ,
+        float  $threshold ,
+        array  $conciliation ,
+        array  $cardOperations
     ): CardMovementsResponse
     {
-        $movements = $this->finder->__invoke($cardNumber , $clientKey , $initialDate , $finalDate , $cardOperations);
-        $movements = $this->removeExpenseTypeMovements($movements);
+        $movements = $this->finder->__invoke(
+            $card ,
+            $initialDate ,
+            $this->datePHP->dateTime() ,
+            $cardOperations
+        );
+        $movements = $this->removeExpenseTypeMovements($movements->toArray());
         $movements = $this->removeMovementsAlreadyReconciled($movements , $conciliation);
         $movements = $this->removeMovementsThatAreNotInThreshold($movements , $threshold , $anchoringOrderAmount);
 
@@ -45,7 +48,7 @@ final readonly class UnreconciledMasterCardMovementsFinder
 
     private function removeMovementsAlreadyReconciled(array $movements , array $conciliation): array
     {
-        if(empty($conciliation)){
+        if (empty($conciliation)) {
             return $movements;
         }
 

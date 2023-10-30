@@ -4,7 +4,6 @@
 namespace Viabo\business\commerce\application\find;
 
 
-use Viabo\business\commerceUser\domain\CommerceUserId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 

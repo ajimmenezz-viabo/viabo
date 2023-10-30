@@ -10,6 +10,7 @@ final class CardView
 {
     public function __construct(
         private string  $id ,
+        private string  $clientKey ,
         private string  $main ,
         private string  $number ,
         private string  $cvv ,
@@ -38,6 +39,7 @@ final class CardView
     {
         return [
             'id' => $this->id ,
+            'clientKey' => $this->clientKey ,
             'main' => $this->main ,
             'number' => $this->number ,
             'CVV' => Crypt::decrypt($this->cvv) ,

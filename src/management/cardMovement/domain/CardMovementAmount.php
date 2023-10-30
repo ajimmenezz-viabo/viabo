@@ -8,8 +8,14 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CardMovementAmount extends StringValueObject
 {
-    public static function create(mixed $value): static
+    public static function create(string $value): static
     {
+        return new static($value);
+    }
+
+    public static function fromType(array $setApiData , bool $isExpense): static
+    {
+        $value = $isExpense ? $setApiData['charge'] : $setApiData['Accredit'];
         return new static(strval($value));
     }
 
@@ -20,7 +26,7 @@ final class CardMovementAmount extends StringValueObject
 
     public function update(mixed $value): static
     {
-        return self::create($value);
+        return new static(strval($value));
     }
 
 }

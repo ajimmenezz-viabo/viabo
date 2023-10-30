@@ -6,7 +6,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class FindTerminalsQuery implements Query
 {
-    public function __construct(public string $commerceId, public mixed $speiCards)
+    public function __construct(public string $commerceId)
     {
     }
 }

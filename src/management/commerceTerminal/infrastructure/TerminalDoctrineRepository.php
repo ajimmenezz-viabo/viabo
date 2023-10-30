@@ -22,10 +22,6 @@ final class TerminalDoctrineRepository extends DoctrineRepository implements Ter
     {
         $this->persist($terminal);
     }
-    public function searchBy(TerminalCommerceId $commerceId): array
-    {
-        return $this->repository(TerminalView::class)->findBy(['commerceId' => $commerceId->value()]);
-    }
 
     public function searchView(Criteria $criteria):array
     {
@@ -33,9 +29,4 @@ final class TerminalDoctrineRepository extends DoctrineRepository implements Ter
         return $this->repository(TerminalView::class)->matching($criteriaConvert)->toArray();
     }
 
-    public function searchSpeiCardsView(Criteria $criteria): array
-    {
-        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
-        return $this->repository(TerminalSpeiCardsView::class)->matching($criteriaConvert)->toArray();
-    }
 }

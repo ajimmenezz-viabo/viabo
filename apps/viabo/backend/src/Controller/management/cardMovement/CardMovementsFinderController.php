@@ -14,10 +14,13 @@ use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardMovementsFinderController extends ApiController
 {
-    public function __invoke(string $cardId , string $initialDate , string $finalDate , Request $request): Response
+    public function __invoke(Request $request): Response
     {
         try {
             $this->decode($request->headers->get('Authorization'));
+            $cardId = $request->query->getString('cardId');
+            $initialDate = $request->query->getString('startDate');
+            $finalDate = $request->query->getString('endDate');
             $cardData = $this->ask(new CardQuery($cardId));
             $operationData = $this->ask(new CardOperationsQuery($cardData->data['number'] , $initialDate , $finalDate));
             $movements = $this->ask(new CardMovementsQuery(

@@ -16,6 +16,8 @@
         <field name="typeName" column="TypeName" />
         <field name="registerDate" column="RegisterDate" />
         <field name="speiCard" column="SpeiCard" />
+        <field name="cardId" column="CardId"/>
+        <field name="isExternalConciliation" column="IsExternalConciliation"/>
         <field name="active" column="Active" />
     </entity>
 

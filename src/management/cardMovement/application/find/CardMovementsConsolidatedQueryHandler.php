@@ -2,8 +2,6 @@
 
 namespace Viabo\management\cardMovement\application\find;
 
-use Viabo\management\cardMovement\domain\CardMovementFinalDate;
-use Viabo\management\cardMovement\domain\CardMovementInitialDate;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
@@ -15,9 +13,10 @@ final readonly class CardMovementsConsolidatedQueryHandler implements QueryHandl
 
     public function __invoke(CardMovementsConsolidatedQuery $query): Response
     {
-        $initialDate = CardMovementInitialDate::create($query->initialDate);
-        $finalDate = CardMovementFinalDate::todayDate();
-
-        return $this->finder->__invoke($initialDate , $finalDate,$query->speiCard, $query->movementsConsolitaded);
+        return $this->finder->__invoke(
+            $query->startDate ,
+            $query->card ,
+            $query->movementsConciliated
+        );
     }
 }

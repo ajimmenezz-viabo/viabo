@@ -20,16 +20,16 @@ final readonly class CardMovementsFinderOnSet
 
     public function __invoke(
         array  $card ,
-        string $initialDate ,
-        string $finalDate ,
+        string $startDate ,
+        string $endDate ,
         array  $operations = []
     ): CardMovements
     {
         $filter = CardMovementFilter::create(
             $card['number'] ,
             $card['clientKey'] ,
-            $initialDate ,
-            $finalDate
+            $startDate ,
+            $endDate
         );
         $cardMovements = $this->adapter->searchMovements($filter);
         $cardMovements = empty($cardMovements) ? [] : $cardMovements['TicketMessage'];
@@ -55,7 +55,7 @@ final readonly class CardMovementsFinderOnSet
         }));
     }
 
-    public function searchReceiptBy(string $transactionId): string
+    private function searchReceiptBy(string $transactionId): string
     {
         try {
             $cardMovement = $this->finderByTransactionId->__invoke($transactionId);

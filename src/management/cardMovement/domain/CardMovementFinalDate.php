@@ -12,7 +12,8 @@ final class CardMovementFinalDate extends DateTimeValueObject
     public static function create(string $value): self
     {
         self::validate($value);
-        return self::formatDateTime("$value 23:59:59");
+        $value = self::hasFormatDateTime($value)? $value:"$value 23:59:59";
+        return self::formatDateTime($value);
     }
 
     public static function validate(string $value): void

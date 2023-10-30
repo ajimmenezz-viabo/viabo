@@ -4,18 +4,28 @@
 namespace Viabo\management\card\application\find;
 
 
-use Viabo\management\card\domain\services\CardFinder as CardFinderService;
-use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\card\domain\CardRepository;
+use Viabo\management\card\domain\exceptions\CardNotExist;
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CardFinder
 {
-    public function __construct(private CardFinderService $finder)
+    public function __construct(private CardRepository $repository)
     {
     }
 
-    public function __invoke(CardId $cardId): CardResponse
+    public function __invoke(string $cardId): CardResponse
     {
-        $card = $this->finder->__invoke($cardId);
-        return new CardResponse($card->toArray());
+        $filter = Filters::fromValues([
+            ['field' => 'id' , 'operator' => '=' , 'value' => $cardId]
+        ]);
+        $card = $this->repository->searchView(new Criteria($filter));
+
+        if (empty($card)) {
+            throw new CardNotExist();
+        }
+
+        return new CardResponse($card[0]->toArray());
     }
 }

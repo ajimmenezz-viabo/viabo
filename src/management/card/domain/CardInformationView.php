@@ -27,7 +27,7 @@ final readonly class CardInformationView
             'id' => $this->id,
             'commerceId' => $this->commerceId,
             'main' => $this->main,
-            'cardNumber' => $this->cardNumber,
+            'number' => $this->cardNumber,
             'cardSpei' => $this->cardSpei,
             'cardId' => $this->cardId,
             'userId' => $this->userId,

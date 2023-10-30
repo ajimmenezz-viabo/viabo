@@ -9,7 +9,7 @@ use Viabo\shared\domain\bus\query\Response;
 
 final readonly class CardMovementsConsolidatedQueryHandler implements QueryHandler
 {
-    public function __construct(private FinderCardMovementsConsolidated $finder)
+    public function __construct(private CardMovementsConsolidatedFinder $finder)
     {
     }
 

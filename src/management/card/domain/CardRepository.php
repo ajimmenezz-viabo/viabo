@@ -4,14 +4,13 @@
 namespace Viabo\management\card\domain;
 
 
-use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface CardRepository
 {
     public function save(Card $card): void;
 
-    public function search(CardId $cardId): Card|null;
+    public function search(string $cardId): Card|null;
 
     public function searchCriteria(Criteria $criteria): array;
 

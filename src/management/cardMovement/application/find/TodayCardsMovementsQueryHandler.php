@@ -3,11 +3,6 @@
 
 namespace Viabo\management\cardMovement\application\find;
 
-
-use Viabo\management\cardMovement\domain\CardMovementFinalDate;
-use Viabo\management\cardMovement\domain\CardMovementInitialDate;
-use Viabo\management\shared\domain\card\CardClientKey;
-use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 use Viabo\shared\domain\utils\DatePHP;
@@ -22,12 +17,13 @@ final readonly class TodayCardsMovementsQueryHandler implements QueryHandler
     public function __invoke(AddTodayCardsMovementsQuery $query): Response
     {
         $movements = array_map(function (array $card) {
-            $cardNumber = CardNumber::create($card['number']);
-            $initialDate = CardMovementInitialDate::create($this->date->now());
-            $finalDate = CardMovementFinalDate::create("{$this->date->now()} 23:59:59");
-            $clientKey = CardClientKey::create($card['clientKey']);
+            $nowDate = $this->date->now();
             $movements = $this->finder->__invoke(
-                $cardNumber , $initialDate , $finalDate , $clientKey , $card['operationData']
+                $card['number'] ,
+                $nowDate ,
+                "$nowDate 23:59:59" ,
+                $card['clientKey'] ,
+                $card['operationData']
             );
             $card['movements'] = $this->format($movements->data);
             return $card;

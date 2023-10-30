@@ -18,7 +18,7 @@ final readonly class CardFinder
 
     public function __invoke(CardId $cardId): Card
     {
-        $card = $this->repository->search($cardId);
+        $card = $this->repository->search($cardId->value());
 
         if(empty($card)){
             throw new CardNotExist();

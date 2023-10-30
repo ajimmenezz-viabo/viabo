@@ -43,7 +43,7 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
                 $finalDate
             ));
 
-            return new JsonResponse($this->opensslEncrypt($movements->data));
+            return new JsonResponse($movements->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

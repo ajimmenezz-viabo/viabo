@@ -30,13 +30,18 @@ final class CardMovementFilter
     }
 
     public static function create(
-        CardNumber              $cardNumber ,
-        CardClientKey           $clientKey ,
-        CardMovementInitialDate $initialDate ,
-        CardMovementFinalDate   $finalDate
+        string $cardNumber ,
+        string $clientKey ,
+        string $initialDate ,
+        string $finalDate
     ): static
     {
-        return new static($cardNumber , $clientKey , $initialDate , $finalDate);
+        return new static(
+            CardNumber::create($cardNumber) ,
+            CardClientKey::create($clientKey) ,
+            CardMovementInitialDate::create($initialDate) ,
+            CardMovementFinalDate::create($finalDate)
+        );
     }
 
     public function clientKey(): CardClientKey

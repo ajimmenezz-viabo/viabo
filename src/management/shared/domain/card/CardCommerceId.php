@@ -21,6 +21,7 @@ final class CardCommerceId extends StringValueObject
             throw new CardCommerceIdEmpty();
         }
     }
+
     public function isNotEmpty(): bool
     {
         return !empty($this->value);

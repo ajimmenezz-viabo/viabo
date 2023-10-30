@@ -15,6 +15,7 @@
   "require": {
     "ext-openssl": "*",
     "ext-curl": "*",
+    "ext-simplexml": "*",
     "symfony/framework-bundle": "^6.2",
     "symfony/dotenv": "^6.2",
     "symfony/yaml": "^6.2",

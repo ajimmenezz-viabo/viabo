@@ -6,7 +6,7 @@ namespace Viabo\management\cardMovement\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CardMovementTransactionId extends StringValueObject
+final class CardMovementSetTransactionId extends StringValueObject
 {
     public static function create(mixed $value): static
     {

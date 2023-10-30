@@ -14,29 +14,29 @@ final readonly class FinderCardsOperations
     }
 
     public function __invoke(
-        array  $cardsInformation,
-        string $initialDate,
-        string $finalDate
+        array       $cardsInformation ,
+        string|null $initialDate ,
+        string|null $finalDate
     ): CardsOperationsResponse
     {
-        $this->ensureFormatDates($initialDate, $finalDate);
+        $this->ensureFormatDates($initialDate , $finalDate);
         $allOperations = [];
         foreach ($cardsInformation as $card) {
-            $cardNumber = CardNumber::create($card['cardNumber']);
+            $cardNumber = CardNumber::create($card['number']);
 
-            $operations = $this->repository->searchDateRange($cardNumber, $initialDate, $finalDate);
+            $operations = $this->repository->searchDateRange($cardNumber , $initialDate , $finalDate);
             $cardOperation = array_map(function (CardOperation $operation) {
                 $data = $operation->toArray();
                 return [
-                    'payTransactionId' => $data['payTransactionId'],
-                    'descriptionPay' => $data['descriptionPay'],
-                    'reverseTransactionId' => $data['reverseTransactionId'],
-                    'descriptionReverse' => $data['descriptionReverse'],
+                    'payTransactionId' => $data['payTransactionId'] ,
+                    'descriptionPay' => $data['descriptionPay'] ,
+                    'reverseTransactionId' => $data['reverseTransactionId'] ,
+                    'descriptionReverse' => $data['descriptionReverse'] ,
                     'concept' => $data['concept']
                 ];
-            }, $operations);
+            } , $operations);
 
-            $allOperations = array_merge($allOperations,$cardOperation);
+            $allOperations = array_merge($allOperations , $cardOperation);
         }
         return new CardsOperationsResponse($allOperations);
     }

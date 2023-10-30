@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\cardMovement\application\find\CardMovementsQuery;
 use Viabo\management\cardOperation\application\find\CardOperationsQuery;
-use Viabo\management\credential\application\find\CardCredentialQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardMovementsFinderController extends ApiController
@@ -19,14 +18,12 @@ final readonly class CardMovementsFinderController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            $credentialData = $this->ask(new CardCredentialQuery($cardId));
             $cardData = $this->ask(new CardQuery($cardId));
             $operationData = $this->ask(new CardOperationsQuery($cardData->data['number'] , $initialDate , $finalDate));
             $movements = $this->ask(new CardMovementsQuery(
-                $cardData->data['number'] ,
+                $cardData->data ,
                 $initialDate ,
                 $finalDate ,
-                $credentialData->data['clientKey'] ,
                 $operationData->data
             ));
 

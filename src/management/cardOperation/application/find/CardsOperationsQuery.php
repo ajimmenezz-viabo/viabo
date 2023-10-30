@@ -6,7 +6,11 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CardsOperationsQuery implements Query
 {
-    public function __construct(public array $cardsInformation, public string $initialDate, public string $finalDate)
+    public function __construct(
+        public array  $cardsInformation ,
+        public string|null $initialDate ,
+        public string|null $finalDate
+    )
     {
     }
 }

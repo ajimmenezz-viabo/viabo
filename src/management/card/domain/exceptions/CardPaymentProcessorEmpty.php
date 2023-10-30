@@ -15,6 +15,6 @@ final class CardPaymentProcessorEmpty extends DomainError
 
     public function errorMessage(): string
     {
-        return 'No esta definido el tipo de tarjeta';
+        return 'No esta definido el tipo de procesador de pago de la tarjeta';
     }
 }

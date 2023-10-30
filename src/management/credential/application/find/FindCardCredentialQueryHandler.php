@@ -4,7 +4,6 @@
 namespace Viabo\management\credential\application\find;
 
 
-use Viabo\management\credential\domain\CardCredentialId;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;

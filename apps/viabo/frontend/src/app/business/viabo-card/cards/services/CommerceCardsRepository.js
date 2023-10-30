@@ -32,7 +32,11 @@ export const transactionsCard = async transactions => {
 }
 
 export const getCardMovements = async (cardId, initialDate, finalDate, signal) => {
-  const { data } = await axios.get(`/api/card/${cardId}/movements/${initialDate}/to/${finalDate}`, {
+  const fetchURL = new URL('/api/card/movements', window.location.origin)
+  fetchURL.searchParams.set('cardId', cardId)
+  fetchURL.searchParams.set('startDate', initialDate)
+  fetchURL.searchParams.set('endDate', finalDate)
+  const { data } = await axios.get(fetchURL.href, {
     timeout: 30000,
     signal
   })

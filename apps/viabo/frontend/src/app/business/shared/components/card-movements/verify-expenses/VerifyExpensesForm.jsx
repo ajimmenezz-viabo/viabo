@@ -51,18 +51,21 @@ const VerifyExpensesForm = ({ movements = [], onSuccess }) => {
       files: []
     },
     validationSchema: ValidationSchema,
-    onSubmit: values => {
+    onSubmit: (values, { setSubmitting }) => {
       const data = VerifyExpensesAdapter(values, movements)
       mutate(data, {
         onSuccess: () => {
           onSuccess()
+          setSubmitting(false)
         },
-        onError: () => {}
+        onError: () => {
+          setSubmitting(false)
+        }
       })
     }
   })
 
-  const { values, setFieldValue, setTouched } = formik
+  const { values, setFieldValue, setTouched, isSubmitting } = formik
 
   const isInvoice = values.method === 'invoice'
 
@@ -75,8 +78,7 @@ const VerifyExpensesForm = ({ movements = [], onSuccess }) => {
             'text/xml': ['.xml']
           }
         : {
-            'image/*': ['.jpeg', '.png'],
-            'application/pdf': ['.pdf']
+            'image/*': ['.jpeg', '.jpg', '.png']
           },
     [isInvoice]
   )
@@ -129,7 +131,13 @@ const VerifyExpensesForm = ({ movements = [], onSuccess }) => {
           </Stack>
 
           <Stack sx={{ pt: 1 }}>
-            <LoadingButton loading={isLoading} variant="contained" color="primary" fullWidth type="submit">
+            <LoadingButton
+              loading={isLoading || isSubmitting}
+              variant="contained"
+              color="primary"
+              fullWidth
+              type="submit"
+            >
               Comprobar
             </LoadingButton>
           </Stack>

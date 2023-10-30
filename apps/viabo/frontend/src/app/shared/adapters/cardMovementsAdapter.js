@@ -25,7 +25,12 @@ export const CardMovementsAdapter = movements => {
           amount,
           amountFormat: fCurrency(amount),
           type: movement?.type.toLowerCase(),
-          concept: movement?.concept ?? ''
+          concept: movement?.concept ?? '',
+          operationType: movement?.operationType?.toUpperCase(),
+          cardId: movement?.cardId,
+          commerceId: movement?.cardCommerceId,
+          original: movement,
+          verified: Boolean(movement?.checked)
         }
       }) ?? [],
     income: fCurrency(income),

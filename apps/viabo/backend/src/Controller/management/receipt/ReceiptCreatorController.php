@@ -19,6 +19,7 @@ final readonly class ReceiptCreatorController extends ApiController
             $note = $request->request->get('note');
             $isInvoice = $request->request->getBoolean('isInvoice');
             $files = $request->files->all();
+            $files = empty($files) ? ['files' =>[]]: $files;
             $receiptId = $this->generateUuid();
 
             $this->dispatch(new CreateReceiptCommand(

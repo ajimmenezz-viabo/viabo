@@ -7,6 +7,9 @@ export const getGlobalCards = async () => {
 }
 
 export const getMasterMovements = async (initialDate, finalDate, signal) => {
-  const { data } = await axios.get(`/api/cards/movements/${initialDate}/to/${finalDate}`)
+  const fetchURL = new URL('/api/master-cards/movements', window.location.origin)
+  fetchURL.searchParams.set('startDate', initialDate)
+  fetchURL.searchParams.set('endDate', finalDate)
+  const { data } = await axios.get(fetchURL.href)
   return MasterMovementsAdapter(data)
 }

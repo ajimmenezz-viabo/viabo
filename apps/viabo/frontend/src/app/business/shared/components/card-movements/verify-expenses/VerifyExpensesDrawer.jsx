@@ -14,7 +14,7 @@ const VerifyExpensesDrawer = ({ open, setOpen, movements = [] }) => {
 
   return (
     <RightPanel open={open} handleClose={handleClose} titleElement={'Comprobar Gastos'}>
-      {open && <VerifyExpensesForm movements={movements} />}
+      {open && <VerifyExpensesForm movements={movements} onSuccess={handleClose} />}
     </RightPanel>
   )
 }

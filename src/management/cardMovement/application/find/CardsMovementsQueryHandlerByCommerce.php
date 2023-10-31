@@ -15,11 +15,7 @@ final readonly class CardsMovementsQueryHandlerByCommerce implements QueryHandle
 
     public function __invoke(CardsMovementsQueryByCommerce $query): Response
     {
-        return $this->finder->__invoke(
-            $query->cards ,
-            $query->initialDate ,
-            $query->finalDate,
-            $query->type
-        );
+        $filters = $query->filters ?? [];
+        return $this->finder->__invoke($query->cards , $filters);
     }
 }

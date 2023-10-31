@@ -22,13 +22,13 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
             $startDate = $request->query->getString('startDate');
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $terminal = $this->ask(new TerminalQueryBySpeiCard($terminalId));
-            $card = $this->ask(new CardQuery($terminal->data['cardId']));
+            $card = $this->ask(new CardQuery($terminal->data['cardId'] ?? ''));
             $movementsConsolidated = $this->ask(new TerminalConsolidationTransactionsQuery(
                 $commerce->data['id'] ,
                 $terminalId
             ));
             $movements = $this->ask(new CardMovementsConsolidatedQuery(
-                $card->data,
+                $card->data ,
                 $startDate ,
                 $movementsConsolidated->data
             ));

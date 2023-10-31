@@ -8,10 +8,13 @@
         <id name="id" column="Id" />
         <field name="setTransactionId" column="SetTransactionId" />
         <field name="cardId" column="CardId" />
+        <field name="cardMain" column="CardMain" />
+        <field name="cardOwnerName" column="CardOwnerName" />
         <field name="cardNumber" column="CardNumber" />
         <field name="cardPaymentProcessorId" column="CardPaymentProcessorId" />
         <field name="commerceId" column="CommerceId" />
         <field name="receiptId" column="ReceiptId" />
+        <field name="receiptFiles" column="ReceiptFiles" />
         <field name="type" column="Type" />
         <field name="operationType" column="OperationType" />
         <field name="amount" column="Amount" />

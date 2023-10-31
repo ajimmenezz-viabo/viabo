@@ -60,4 +60,9 @@ final readonly class Criteria
             $this->limit ?? 'none'
         );
     }
+
+    public function getWhereSQL(): string
+    {
+        return $this->filters->sql();
+    }
 }

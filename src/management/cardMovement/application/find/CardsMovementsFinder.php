@@ -15,25 +15,27 @@ final readonly class CardsMovementsFinder
     {
     }
 
-    public function __invoke(
-        array  $cards ,
-        string $startDate ,
-        string $endDate ,
-        string $type
-    ): CardsMovementsResponse
+    public function __invoke(array $cards , array $filters): CardsMovementsResponse
     {
-        $cardsIds = $this->filterIds($cards);
-        $filters = Filters::fromValues([
-            ['field' => 'cardId' , 'operator' => 'IN' , 'value' => implode(',' , $cardsIds)] ,
-            ['field' => 'operationType' , 'operator' => '=' , 'value' => strtoupper($type)]
-        ]);
+        $filters = $this->addFilterCards($cards, $filters);
+        $filters = Filters::fromValues($filters);
         $cardMovements = $this->repository->matchingView(new Criteria($filters));
+
         return new CardsMovementsResponse(array_map(function (CardMovementView $movement) {
             return $movement->toArray();
         } , $cardMovements));
     }
 
-    private function filterIds(array $cards): array
+    private function addFilterCards(array $cards, array $filters): array
+    {
+        $cardsIds = $this->getCardsIds($cards);
+        return array_merge(
+            $filters ,
+            [['field' => 'cardId' , 'operator' => 'IN' , 'value' => implode(',' , $cardsIds)]]
+        );
+    }
+
+    private function getCardsIds(array $cards): array
     {
         return array_map(function (array $card) {
             return $card['id'];

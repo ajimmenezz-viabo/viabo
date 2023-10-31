@@ -28,7 +28,11 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
   const RegisterSchema = Yup.object().shape({
     transactions: Yup.array().of(
       Yup.object().shape({
-        amount: Yup.string().required('La cantidad es requerida'),
+        amount: Yup.string()
+          .test('maxAmount', 'Monto máximo de transferencia $50,000', function (value) {
+            return parseFloat(value?.replace(/,/g, '')) <= 50000
+          })
+          .required('La cantidad es requerida'),
         card: Yup.object().nullable().required('La tarjeta es requerida')
       })
     )

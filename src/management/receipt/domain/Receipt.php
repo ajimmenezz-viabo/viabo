@@ -61,9 +61,9 @@ final class Receipt extends AggregateRoot
         return !$this->note->hasNote();
     }
 
-    public function hasNotFilePDF(): bool
+    public function hasNotFile(): bool
     {
-        return !$this->files->hasFilePDF();
+        return !$this->files->hasFile();
     }
 
     public function isNotMatchTheInvoiceAmount(): bool

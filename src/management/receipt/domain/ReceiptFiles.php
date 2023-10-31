@@ -28,10 +28,10 @@ final class ReceiptFiles extends StringValueObject
         return in_array('pdf' , $extensions) && in_array('xml' , $extensions);
     }
 
-    public function hasFilePDF(): bool
+    public function hasFile(): bool
     {
         $extensions = $this->extensions();
-        return in_array('pdf' , $extensions);
+        return (bool)preg_match("/^(jpg|png|gif|pdf)$/i" , implode(',' , $extensions));
     }
 
     private function setFilesOrigin(array $value): void
@@ -68,7 +68,7 @@ final class ReceiptFiles extends StringValueObject
 
     public function allowedExtensions(): array
     {
-        return ['xml' , 'pdf'];
+        return ['xml' , 'pdf' , 'img' , 'jpg' , 'png' , 'gif'];
     }
 
     private function setPaths(array $filesData): void

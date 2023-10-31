@@ -15,6 +15,6 @@ final class ReceiptFilesOrNoteInvalid extends DomainError
 
     public function errorMessage(): string
     {
-        return 'No tiene una nota o archivo pdf para la comprobacion';
+        return 'No tiene una nota o archivo (imagen o pdf) para la comprobacion';
     }
 }

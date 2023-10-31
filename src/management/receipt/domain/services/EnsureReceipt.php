@@ -61,7 +61,7 @@ final readonly class EnsureReceipt
 
     private function ensureFileOrNote(Receipt $receipt): void
     {
-        if ($receipt->hasNotNote() && $receipt->hasNotFilePDF()) {
+        if ($receipt->hasNotNote() && $receipt->hasNotFile()) {
             throw new ReceiptFilesOrNoteInvalid();
         }
     }

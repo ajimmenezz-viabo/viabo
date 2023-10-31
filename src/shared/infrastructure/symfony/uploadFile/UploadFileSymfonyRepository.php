@@ -19,6 +19,7 @@ final class UploadFileSymfonyRepository implements UploadFileRepository
     private string $directory;
     private string $path;
     private string $originalName;
+    private string $mimeType;
 
     public function __construct(ParameterBagInterface $params , private Filesystem $filesystem)
     {
@@ -27,6 +28,7 @@ final class UploadFileSymfonyRepository implements UploadFileRepository
         $this->extension = '';
         $this->directory = '';
         $this->path = '';
+        $this->mimeType = '';
     }
 
     public function upload(object $file , string $path , array $extensions = [] , string $name = ''): void
@@ -52,8 +54,13 @@ final class UploadFileSymfonyRepository implements UploadFileRepository
         $this->ensureItIsFile($file);
         $this->setExtension($file);
         $this->setOriginalName($file);
+        $this->setMimeType($file);
 
-        return ['name' => $this->originalName , 'extension' => $this->extension];
+        return [
+            'name' => $this->originalName ,
+            'extension' => $this->extension ,
+            'mimeType' => $this->mimeType
+        ];
     }
 
     public function remove(string $storePath): void
@@ -64,7 +71,7 @@ final class UploadFileSymfonyRepository implements UploadFileRepository
     public function removeDirectory(string $directoryPath): void
     {
         $path = $this->rootDir . $directoryPath;
-        if(!file_exists($path)){
+        if (!file_exists($path)) {
             return;
         }
 
@@ -114,5 +121,10 @@ final class UploadFileSymfonyRepository implements UploadFileRepository
     private function setExtension(object $file): void
     {
         $this->extension = $file->getClientOriginalExtension();
+    }
+
+    private function setMimeType(object $file): void
+    {
+        $this->mimeType = $file->getMimeType();
     }
 }

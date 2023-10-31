@@ -64,7 +64,6 @@ function TransferToGlobalForm({ setCurrentBalance, insufficient, mainCard, onSuc
                   thousandsSeparator: ',',
                   padFractionalZeros: true,
                   min: 0,
-                  max: 50000,
                   scale: 2,
                   value: values.amount,
                   onAccept: value => {

@@ -2,6 +2,7 @@ privacy:
   path: "/privacy"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
+
 policies:
   path: "/policies"
   controller: Viabo\Backend\Controller\RoutesFrontendController
@@ -80,3 +81,8 @@ charge-paths:
   methods: GET
   requirements:
     any: ".+"
+
+expenses-control:
+  path: "/expenses-control"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET

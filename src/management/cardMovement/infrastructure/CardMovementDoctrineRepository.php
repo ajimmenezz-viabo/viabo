@@ -5,6 +5,7 @@ namespace Viabo\management\cardMovement\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Viabo\management\cardMovement\domain\CardMovement;
 use Viabo\management\cardMovement\domain\CardMovementRepository;
 use Viabo\management\cardMovement\domain\CardMovementView;
@@ -32,8 +33,16 @@ final class CardMovementDoctrineRepository extends DoctrineRepository implements
 
     public function matchingView(Criteria $criteria): array
     {
-        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
-        return $this->repository(CardMovementView::class)->matching($criteriaConvert)->toArray();
+        $rsm = new ResultSetMappingBuilder($this->entityManager());
+        $rsm->addRootEntityFromClassMetadata('Viabo\management\cardMovement\domain\CardMovementView' , 'v');
+        $query = $this->entityManager()->createNativeQuery(
+            'call managementCardsMovements(:filters,:limit,:offset)' ,
+            $rsm
+        );
+        $query->setParameter('filters' , $criteria->getWhereSQL());
+        $query->setParameter('limit' , $criteria->limit() ?? '');
+        $query->setParameter('offset' , $criteria->offset() ?? '');
+        return $query->getResult();
     }
 
     public function delete(CardMovement $cardMovement): void

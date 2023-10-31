@@ -39,9 +39,21 @@ final readonly class Filter
         return $this->value;
     }
 
+    public function sql(): string
+    {
+        $field = ucfirst($this->field->value());
+        $value = "'{$this->value->value()}'" ?? '';
+        if ($this->operator->isIN() || $this->operator->isNotIN()) {
+            $value = implode(',' , array_map(fn(string $value) => "'$value'" , explode(',' , $this->value->value())));
+            $value = "($value)";
+        }
+        return "$field {$this->operator->value} $value";
+
+    }
+
     public function serialize(): string
     {
-        return sprintf('%s.%s.%s', $this->field->value(), $this->operator->value(), $this->value->value());
+        return sprintf('%s.%s.%s' , $this->field->value() , $this->operator->value , $this->value->value());
     }
 
 }

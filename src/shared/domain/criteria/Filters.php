@@ -40,6 +40,15 @@ final class Filters extends Collection
         return $this->items();
     }
 
+    public function sql(): string
+    {
+        $filtersSql = array_map(function (Filter $filter) {
+            return $filter->sql();
+        } , $this->items());
+
+        return empty($filtersSql) ? '' : implode(' and ' , $filtersSql);
+    }
+
     protected function type(): string
     {
         return Filter::class;

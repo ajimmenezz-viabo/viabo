@@ -8,12 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CardsMovementsQueryByCommerce implements Query
 {
-    public function __construct(
-        public array  $cards ,
-        public string $initialDate ,
-        public string $finalDate ,
-        public string $type
-    )
+    public function __construct(public array $cards , public array|null $filters)
     {
     }
 }

@@ -31,7 +31,7 @@ function CollapseDrawerProvider({ children }) {
   useEffect(() => {
     if (!isDesktop) {
       setCollapse({
-        click: false,
+        click: collapse.click,
         hover: false
       })
     }

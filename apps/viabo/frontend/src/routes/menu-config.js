@@ -21,6 +21,12 @@ export const MENU_CONFIG = [
         path: '/funding-orders',
         icon: 'receipt_long',
         roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
+      },
+      {
+        name: 'Comprobación',
+        path: '/expenses-control',
+        icon: 'price_check',
+        roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
       }
     ]
   },

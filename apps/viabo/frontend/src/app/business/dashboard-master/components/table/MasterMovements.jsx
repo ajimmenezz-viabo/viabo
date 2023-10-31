@@ -106,7 +106,7 @@ export function MasterMovements() {
         }
       },
       {
-        accessorKey: 'amountFormatted',
+        accessorKey: 'amount',
         header: 'Monto',
         size: 100,
         Cell: ({ cell, column, row }) => {
@@ -115,7 +115,7 @@ export function MasterMovements() {
           const isViaboPay = rowData?.type === 'terminal'
           return (
             <Typography variant="subtitle2" fontWeight="bold" color={isIncome || isViaboPay ? 'success.main' : 'error'}>
-              {isIncome || isViaboPay ? `+ ${rowData?.amountFormatted}` : `- ${rowData?.amountFormatted}`}
+              {isIncome || isViaboPay ? `+ ${rowData?.amountFormat}` : `- ${rowData?.amountFormat}`}
             </Typography>
           )
         }

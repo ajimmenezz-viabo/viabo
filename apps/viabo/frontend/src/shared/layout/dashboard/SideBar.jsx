@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useState } from 'react'
 
-import { alpha, Icon, Stack, Typography, useTheme } from '@mui/material'
-import { Menu, menuClasses, MenuItem, Sidebar, sidebarClasses, SubMenu } from 'react-pro-sidebar'
+import { Icon, Stack, Tooltip, Typography, alpha, useTheme } from '@mui/material'
+import { Menu, MenuItem, Sidebar, SubMenu, menuClasses, sidebarClasses } from 'react-pro-sidebar'
 import { Link, useLocation } from 'react-router-dom'
 
 import CollapseButtonNew from './navbar/CollapseButtonNew'
@@ -18,6 +18,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
   const muiTheme = useTheme()
   const [broken, setBroken] = useState(window.matchMedia('(max-width: 1200px)').matches)
   const [rtl, setRtl] = useState(false)
+  const [openSubmenu, setOpenSubmenu] = useState(null)
   const { pathname } = useLocation()
 
   const menuItemStyles = {
@@ -40,6 +41,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
     },
     subMenuContent: ({ level }) => ({
       borderRadius: muiTheme.shape.borderRadius,
+      zIndex: muiTheme.zIndex.modal - 1,
       backgroundColor:
         level === 0
           ? isCollapse
@@ -85,6 +87,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
       toggled={toggled}
       onBackdropClick={() => {
         setToggled(false)
+        setCollapsed(true)
       }}
       onBreakPoint={setBroken}
       rtl={rtl}
@@ -138,50 +141,70 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                   const activeSubmenu = getActiveSubmenu(module?.path, pathname)
                   if (!module?.items) {
                     return (
-                      <MenuItem
-                        active={active}
-                        key={module?.name}
-                        onClick={() => {
-                          if (broken) {
-                            setToggled(false)
-                          } else {
-                            !isCollapse && setCollapsed(true)
-                          }
-                        }}
-                        component={<Link to={module?.path} />}
-                        icon={<Icon>{module?.icon && module?.icon}</Icon>}
-                      >
-                        {module?.name}
-                      </MenuItem>
-                    )
-                  }
-                  return (
-                    <SubMenu
-                      key={module?.name}
-                      label={module?.name}
-                      icon={<Icon>{module?.icon && module?.icon}</Icon>}
-                      active={activeSubmenu}
-                    >
-                      {module?.items?.map((submenu, index) => {
-                        const active = getActive(submenu?.path, pathname)
-                        return (
+                      <Tooltip key={module?.name} title={isCollapse ? module?.name : null} placement="right" arrow>
+                        <div>
                           <MenuItem
+                            active={active}
                             onClick={() => {
                               if (broken) {
                                 setToggled(false)
+                                setCollapsed(true)
                               } else {
                                 !isCollapse && setCollapsed(true)
                               }
                             }}
-                            key={submenu?.name}
-                            component={<Link to={submenu?.path} />}
-                            active={active}
+                            component={<Link to={module?.path} />}
+                            icon={<Icon>{module?.icon && module?.icon}</Icon>}
                           >
-                            {submenu?.name}
+                            {module?.name}
                           </MenuItem>
-                        )
-                      })}
-                    </SubMenu>
+                        </div>
+                      </Tooltip>
+                    )
+                  }
+                  return (
+                    <Tooltip
+                      key={module?.name}
+                      title={isCollapse && openSubmenu !== module?.name ? module?.name : null}
+                      placement="right"
+                      arrow
+                    >
+                      <div>
+                        <SubMenu
+                          label={module?.name}
+                          icon={<Icon>{module?.icon && module?.icon}</Icon>}
+                          active={activeSubmenu}
+                          onClick={() => {
+                            setOpenSubmenu(module?.name)
+                          }}
+                          onBlur={() => setOpenSubmenu(null)}
+                          defaultOpen={false}
+                        >
+                          {module?.items?.map((submenu, index) => {
+                            const active = getActive(submenu?.path, pathname)
+                            return (
+                              <MenuItem
+                                onBlur={() => setOpenSubmenu(null)}
+                                onClick={() => {
+                                  setOpenSubmenu(null)
+                                  if (broken) {
+                                    setToggled(false)
+                                    setCollapsed(true)
+                                  } else {
+                                    !isCollapse && setCollapsed(true)
+                                  }
+                                }}
+                                key={submenu?.name}
+                                component={<Link to={submenu?.path} />}
+                                active={active}
+                              >
+                                {submenu?.name}
+                              </MenuItem>
+                            )
+                          })}
+                        </SubMenu>
+                      </div>
+                    </Tooltip>
                   )
                 })}
               </Menu>

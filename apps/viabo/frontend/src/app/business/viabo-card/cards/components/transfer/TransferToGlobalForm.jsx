@@ -10,7 +10,11 @@ import { Scrollbar } from '@/shared/components/scroll'
 
 function TransferToGlobalForm({ setCurrentBalance, insufficient, mainCard, onSuccess }) {
   const RegisterSchema = Yup.object().shape({
-    amount: Yup.string().required('La cantidad es requerida')
+    amount: Yup.string()
+      .required('La cantidad es requerida')
+      .test('maxAmount', 'Monto máximo de transferencia $50,000', function (value) {
+        return parseFloat(value?.replace(/,/g, '')) <= 50000
+      })
   })
 
   const formik = useFormik({

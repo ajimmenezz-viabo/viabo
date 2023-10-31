@@ -7,6 +7,8 @@ use DateTime;
 
 class DatePHP
 {
+    private const FORMAT_DATETIME = 'Y-m-d H:i:s';
+
     private function timeZone(): void
     {
         date_default_timezone_set('America/Mexico_City');
@@ -22,7 +24,7 @@ class DatePHP
     public function dateTime(): string
     {
         $this->timeZone();
-        $format = 'Y-m-d H:i:s';
+        $format = self::FORMAT_DATETIME;
         return date($format);
     }
 
@@ -30,7 +32,12 @@ class DatePHP
     {
         $this->timeZone();
         $dateTime = new \DateTime($value);
-        return $dateTime->format($format ?? 'Y-m-d H:i:s');
+        return $dateTime->format($format ?? self::FORMAT_DATETIME);
+    }
+
+    public function hasFormatDateTime(string $value): false|int
+    {
+        return preg_match("/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/" , $value);
     }
 
     public function isOlderDate(string $date): bool
@@ -171,7 +178,7 @@ class DatePHP
         if ($diff->i > 0) {
             $timeDiff .= $diff->i . ' minuto(s) ';
         }
-        if ($diff->i === 0 and $diff->s > 0) {
+        if ($diff->i === 0 && $diff->s > 0) {
             $timeDiff .= $diff->s . ' segundo(s) ';
         }
 
@@ -191,6 +198,6 @@ class DatePHP
         $timestamp = $serial + time(); // Recupera el timestamp original sumando el número serializado al timestamp actual
         $date = new DateTime();
         $date->setTimestamp($timestamp);
-        return $date->format('Y-m-d H:i:s');
+        return $date->format(self::FORMAT_DATETIME);
     }
 }

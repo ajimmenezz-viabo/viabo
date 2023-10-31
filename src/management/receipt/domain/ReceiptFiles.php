@@ -74,7 +74,7 @@ final class ReceiptFiles extends StringValueObject
     private function setPaths(array $filesData): void
     {
         $paths = array_map(function (array $fileData) {
-            return "$this->directoryPath/{$fileData['name']}";
+            return "/storage$this->directoryPath/{$fileData['name']}";
         } , $filesData);
         $this->value = implode(',' , $paths);
     }

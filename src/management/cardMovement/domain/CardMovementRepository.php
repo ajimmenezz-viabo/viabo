@@ -10,6 +10,8 @@ interface CardMovementRepository
 {
     public function save(CardMovement $cardMovement): void;
 
+    public function saveLog(CardMovementLog $log): void;
+
     public function matching(Criteria $criteria): array;
 
     public function matchingView(Criteria $criteria): array;

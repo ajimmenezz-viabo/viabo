@@ -6,13 +6,13 @@ namespace Viabo\management\cardMovement\application\create;
 
 use Viabo\shared\domain\bus\command\CommandHandler;
 
-final readonly class CreateCardsMovementsCommandHandler implements CommandHandler
+final readonly class CreateCardsMovementsCommandHandlerByReceipt implements CommandHandler
 {
-    public function __construct(private CardsMovementsCreator $creator)
+    public function __construct(private CardsMovementsCreatorByReceipt $creator)
     {
     }
 
-    public function __invoke(CreateCardsMovementsCommand $command): void
+    public function __invoke(CreateCardsMovementsCommandByReceipt $command): void
     {
         $this->creator->__invoke($command->receiptId , $this->toArray($command->movements));
     }

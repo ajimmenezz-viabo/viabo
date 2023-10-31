@@ -16,6 +16,7 @@ final class CardMovementView
         private string  $cardNumber ,
         private string  $cardPaymentProcessorId ,
         private string  $commerceId ,
+        private ?string $commerceName ,
         private string  $receiptId ,
         private ?string $receiptFiles ,
         private string  $type ,
@@ -40,6 +41,7 @@ final class CardMovementView
             'cardNumber' => $this->cardNumber ,
             'cardPaymentProcessor' => $this->cardPaymentProcessorId ,
             'cardCommerceId' => $this->commerceId ,
+            'cardCommerceName' => $this->commerceName ?? '' ,
             'receiptId' => $this->receiptId ,
             'receiptFiles' => $this->receiptFiles ,
             'description' => $this->description ,
@@ -49,7 +51,7 @@ final class CardMovementView
             'operationType' => $this->operationType ,
             'apiData' => $this->apiData ,
             'date' => $this->date ,
-            'checked' => $this->receiptId
+            'checked' => !empty($this->receiptId)
         ];
     }
 

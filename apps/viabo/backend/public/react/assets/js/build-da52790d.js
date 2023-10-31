@@ -1,1 +1,0 @@
-import{a$ as o,k as u,b0 as l,r as b,b1 as g}from"./index-5445d16d.js";function y(r,a,n){const[t,c={}]=o(r,a,n),e=u({context:c.context}),s=e.getQueryCache();return l(b.useCallback(i=>s.subscribe(g.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{y as u};

@@ -198,7 +198,6 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
                                   thousandsSeparator: ',',
                                   padFractionalZeros: true,
                                   min: 0,
-                                  max: 50000,
                                   scale: 2,
                                   value: item.amount,
                                   onAccept: value => {

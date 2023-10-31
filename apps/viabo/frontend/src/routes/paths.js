@@ -15,7 +15,8 @@ export const PATH_AUTH = {
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   'dashboard-master': path(ROOTS_DASHBOARD, '/dashboard-master'),
-  'funding-orders': path(ROOTS_DASHBOARD, '/funding-orders')
+  'funding-orders': path(ROOTS_DASHBOARD, '/funding-orders'),
+  'expenses-control': path(ROOTS_DASHBOARD, '/expenses-control')
 }
 
 export const PUBLIC_PATHS = {

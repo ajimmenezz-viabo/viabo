@@ -78,7 +78,8 @@ const VerifyExpensesForm = ({ movements = [], onSuccess }) => {
             'text/xml': ['.xml']
           }
         : {
-            'image/*': ['.jpeg', '.jpg', '.png']
+            'image/*': ['.jpeg', '.jpg', '.png'],
+            'application/pdf': ['.pdf']
           },
     [isInvoice]
   )

@@ -29,7 +29,7 @@ export const MasterMovementsAdapter = movements => {
           serverDate: movement?.date,
           description: movement?.description,
           amount,
-          amountFormatted: fCurrency(amount),
+          amountFormat: fCurrency(amount),
           paymentProcessor: movement?.cardPaymentProcessor,
           type: movement?.type.toLowerCase(),
           operationType: movement?.operationType?.toUpperCase(),

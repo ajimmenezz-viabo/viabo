@@ -11,7 +11,7 @@ use Viabo\management\cardMovement\domain\services\CardMovementFinderByTransactio
 use Viabo\management\cardMovement\domain\services\EnsureMovements;
 
 
-final readonly class CardsMovementsCreator
+final readonly class CardsMovementsCreatorByReceipt
 {
     public function __construct(
         private CardMovementRepository            $repository ,

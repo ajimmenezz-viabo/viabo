@@ -43,6 +43,11 @@ final class CardDoctrineRepository extends DoctrineRepository implements CardRep
         return $this->repository(CardView::class)->matching($criteriaConvert)->toArray();
     }
 
+    public function searchAllView(): array
+    {
+        return $this->repository(CardView::class)->findAll();
+    }
+
     public function searchCardInformationView(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);

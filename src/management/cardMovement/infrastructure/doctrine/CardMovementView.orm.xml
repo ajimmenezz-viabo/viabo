@@ -13,6 +13,7 @@
         <field name="cardNumber" column="CardNumber" />
         <field name="cardPaymentProcessorId" column="CardPaymentProcessorId" />
         <field name="commerceId" column="CommerceId" />
+        <field name="commerceName" column="CommerceName" />
         <field name="receiptId" column="ReceiptId" />
         <field name="receiptFiles" column="ReceiptFiles" />
         <field name="type" column="Type" />

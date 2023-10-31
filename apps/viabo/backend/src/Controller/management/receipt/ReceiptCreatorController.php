@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\receipt;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\management\cardMovement\application\create\CreateCardsMovementsCommand;
+use Viabo\management\cardMovement\application\create\CreateCardsMovementsCommandByReceipt;
 use Viabo\management\receipt\application\create\CreateReceiptCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -30,7 +30,7 @@ final readonly class ReceiptCreatorController extends ApiController
                 $files['files'] ,
                 $isInvoice
             ));
-            $this->dispatch(new CreateCardsMovementsCommand($receiptId , $movements));
+            $this->dispatch(new CreateCardsMovementsCommandByReceipt($receiptId , $movements));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

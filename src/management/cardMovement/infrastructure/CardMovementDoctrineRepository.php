@@ -7,8 +7,8 @@ namespace Viabo\management\cardMovement\infrastructure;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Viabo\management\cardMovement\domain\CardMovement;
+use Viabo\management\cardMovement\domain\CardMovementLog;
 use Viabo\management\cardMovement\domain\CardMovementRepository;
-use Viabo\management\cardMovement\domain\CardMovementView;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -23,6 +23,11 @@ final class CardMovementDoctrineRepository extends DoctrineRepository implements
     public function save(CardMovement $cardMovement): void
     {
         $this->persist($cardMovement);
+    }
+
+    public function saveLog(CardMovementLog $log): void
+    {
+        $this->persist($log);
     }
 
     public function matching(Criteria $criteria): array

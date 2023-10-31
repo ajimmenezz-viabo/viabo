@@ -23,7 +23,7 @@ final readonly class CardMovementsFinderByCommerceController extends ApiControll
             $cards = $this->ask(new AllCardsQueryByCommerce($commerce->data['id']));
             $movements = $this->ask(new CardsMovementsQueryByCommerce($cards->data , $filters));
 
-            return new JsonResponse($movements->data);
+            return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

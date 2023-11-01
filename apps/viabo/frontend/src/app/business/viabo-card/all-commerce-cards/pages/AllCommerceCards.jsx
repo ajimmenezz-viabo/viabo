@@ -1,4 +1,4 @@
-import { lazy, useEffect, useRef } from 'react'
+import { lazy, useEffect, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -21,7 +21,7 @@ export default function AllCommerceCards() {
   const { openUserInfo, setOpenUserInfo } = useAssignUserCard(state => state)
   const queryClient = useQueryClient()
 
-  const cardsTable = useRef(null)
+  const [resetSelection, setResetSelection] = useState(false)
 
   useEffect(
     () => () => {
@@ -32,39 +32,37 @@ export default function AllCommerceCards() {
   )
 
   return (
-    <>
-      <Page title="Stock de Tarjetas del Comercio">
-        <ContainerPage sx={{ height: '100%' }}>
-          <HeaderPage
-            name={'Stock de Tarjetas'}
-            links={[
-              { name: 'Inicio', href: PATH_DASHBOARD.root },
-              { name: 'Viabo Card', href: VIABO_CARD_PATHS.allCards },
-              { name: VIABO_CARD_ROUTES_NAMES.allCards.name }
-            ]}
-          />
-          <CommerceCardsTable refCommerceCardsTable={cardsTable} />
-          <AssignCardsDrawer
-            open={openAssignCards}
-            handleClose={() => {
-              setOpenAssign(false)
-            }}
-            handleSuccess={() => {
-              setOpenAssign(false)
-              cardsTable?.current?.resetRowSelection()
-            }}
-          />
-          <AssignUserInfoDrawer
-            open={openUserInfo}
-            handleClose={() => {
-              setOpenUserInfo(false)
-            }}
-            handleSuccess={() => {
-              setOpenUserInfo(false)
-            }}
-          />
-        </ContainerPage>
-      </Page>
-    </>
+    <Page title="Stock de Tarjetas del Comercio">
+      <ContainerPage sx={{ height: '100%' }}>
+        <HeaderPage
+          name={'Stock de Tarjetas'}
+          links={[
+            { name: 'Inicio', href: PATH_DASHBOARD.root },
+            { name: 'Viabo Card', href: VIABO_CARD_PATHS.allCards },
+            { name: VIABO_CARD_ROUTES_NAMES.allCards.name }
+          ]}
+        />
+        <CommerceCardsTable setResetSelection={setResetSelection} resetSelection={resetSelection} />
+        <AssignCardsDrawer
+          open={openAssignCards}
+          handleClose={() => {
+            setOpenAssign(false)
+          }}
+          handleSuccess={() => {
+            setOpenAssign(false)
+            setResetSelection(true)
+          }}
+        />
+        <AssignUserInfoDrawer
+          open={openUserInfo}
+          handleClose={() => {
+            setOpenUserInfo(false)
+          }}
+          handleSuccess={() => {
+            setOpenUserInfo(false)
+          }}
+        />
+      </ContainerPage>
+    </Page>
   )
 }

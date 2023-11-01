@@ -20,10 +20,10 @@ export default function Button(theme) {
           }
         },
         containedPrimary: {
-          boxShadow: theme.customShadows.primary
+          boxShadow: theme.palette.mode === 'dark' ? theme.customShadows.secondary : theme.customShadows.primary
         },
         containedSecondary: {
-          boxShadow: theme.customShadows.secondary
+          boxShadow: theme.palette.mode === 'dark' ? theme.customShadows.primary : theme.customShadows.secondary
         },
         containedInfo: {
           boxShadow: theme.customShadows.info

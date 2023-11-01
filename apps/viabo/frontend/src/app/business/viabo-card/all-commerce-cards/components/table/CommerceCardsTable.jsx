@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+import PropTypes from 'prop-types'
 
 import { AssignmentIndRounded, FileDownload, ManageAccounts } from '@mui/icons-material'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -14,7 +15,6 @@ import { useAssignUserCard, useCommerceCards } from '../../store'
 
 import { getOperationTypeByName } from '@/app/shared/services'
 import {
-  FiltersAction,
   FullScreenAction,
   MaterialDataTable,
   SearchAction,
@@ -23,9 +23,10 @@ import {
 import { IOSSwitch, Label } from '@/shared/components/form'
 import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 import { CircularLoading } from '@/shared/components/loadings'
+import { useMaterialTable } from '@/shared/hooks'
 import { generateCSVFile } from '@/shared/utils'
 
-export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
+export const CommerceCardsTable = ({ resetSelection, setResetSelection }) => {
   const [columnFilters, setColumnFilters] = useState([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
@@ -212,6 +213,166 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
     } catch {}
   }
 
+  const table = useMaterialTable(isError, error, {
+    columns,
+    data: data?.data || [],
+    enableColumnPinning: true,
+    enableColumnFilterModes: true,
+    enableStickyHeader: true,
+    enableRowVirtualization: true,
+    enableFacetedValues: true,
+    enableRowActions: true,
+    enableRowSelection: true,
+    positionActionsColumn: 'last',
+    selectAllMode: 'all',
+    rowCount: data?.meta?.total ?? 0,
+    initialState: {
+      density: 'compact',
+      sorting: [
+        {
+          id: 'assigned',
+          desc: true
+        }
+      ]
+    },
+    onRowSelectionChange: setRowSelection,
+    state: {
+      // columnFilters,
+      // globalFilter,
+      // pagination,
+      // sorting,
+      isLoading,
+      showAlertBanner: isError,
+      showProgressBars: isFetching,
+      rowSelection: rowSelection ?? {}
+    },
+    displayColumnDefOptions: {
+      'mrt-row-select': {
+        maxSize: 10
+      },
+      'mrt-row-actions': {
+        header: 'Acciones',
+        maxSize: 80
+      }
+    },
+    muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
+    muiTableBodyRowProps: ({ row }) => ({
+      sx: theme => ({
+        backgroundColor: theme.palette.background.paper
+        // '&.Mui-selected': {
+        //   // backgroundColor: theme.palette.action.selected,
+        //   // '&:hover': {
+        //   //   backgroundColor: theme.palette.action.hover
+        //   // }
+        // }
+      })
+    }),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Button
+          onClick={handleValidateCards(table)}
+          disabled={!table.getIsSomeRowsSelected()}
+          startIcon={<AssignmentIndRounded width={24} height={24} />}
+        >
+          Asociar
+        </Button>
+      </Box>
+    ),
+    renderToolbarInternalActions: ({ table }) => (
+      <Box>
+        <Tooltip arrow title="Actualizar">
+          <IconButton onClick={() => refetch()}>
+            <RefreshIcon />
+          </IconButton>
+        </Tooltip>
+        <SearchAction table={table} />
+        <Tooltip title="Descargar">
+          <IconButton disabled={table.getPrePaginationRowModel().rows.length === 0} onClick={handleExportRows(table)}>
+            <FileDownload />
+          </IconButton>
+        </Tooltip>
+
+        <ShowHideColumnsAction table={table} />
+        <FullScreenAction table={table} />
+      </Box>
+    ),
+    renderRowActions: ({ row, table }) => {
+      const { original: dataRow } = row
+      const cardON = dataRow?.cardStatus?.isActive
+
+      const isChangingStatus = isChangingStatusCard && cardIdToggleStatus === dataRow?.id
+
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexWrap: 'nowrap',
+            gap: '8px'
+          }}
+        >
+          {/* <IconButton size="small" color="primary" disabled={isLoading}>
+                  <BsEye />
+                </IconButton> */}
+          {dataRow?.assignUser?.fullName !== '-' && (
+            <IconButton
+              size="small"
+              color="primary"
+              disabled={isLoading}
+              onClick={() => {
+                setCardInfo(dataRow)
+                setOpenUserInfo(true)
+              }}
+            >
+              <ManageAccounts />
+            </IconButton>
+          )}
+
+          {isChangingStatus ? (
+            <CircularLoading
+              size={15}
+              containerProps={{
+                display: 'flex',
+                ml: 1
+              }}
+            />
+          ) : (
+            <IOSSwitch
+              disabled={isLoading}
+              size="sm"
+              color={!cardON ? 'error' : 'success'}
+              checked={cardON || false}
+              inputProps={{ 'aria-label': 'controlled' }}
+              onChange={() => {
+                setCardIdToggleStatus(dataRow?.id)
+                changeStatusCard(
+                  { ...dataRow, cardON: !cardON },
+                  {
+                    onSuccess: () => {
+                      setCardIdToggleStatus(null)
+                    },
+                    onError: () => {
+                      setCardIdToggleStatus(null)
+                    }
+                  }
+                )
+              }}
+            />
+          )}
+        </Box>
+      )
+    }
+  })
+
+  useEffect(() => {
+    if (resetSelection) {
+      table?.resetRowSelection()
+      setResetSelection(false)
+    }
+  }, [resetSelection])
+
   return (
     <Box maxWidth={'lg'}>
       <Card>
@@ -221,175 +382,13 @@ export const CommerceCardsTable = ({ refCommerceCardsTable }) => {
           handlePopoverClose={handlePopoverClose}
           data={hoverInfo}
         />
-        <MaterialDataTable
-          tableInstanceRef={refCommerceCardsTable}
-          enablePinning
-          enableColumnOrdering={false}
-          enableColumnFilterModes={false}
-          enableStickyHeader
-          enableRowVirtualization
-          enableRowActions
-          positionActionsColumn="last"
-          enableDensityToggle={false}
-          enableFacetedValues
-          // manualFiltering
-          // manualPagination
-          // manualSorting
-          columns={columns}
-          data={data?.data || []}
-          isError={isError}
-          textError={error}
-          selectAllMode={'all'}
-          // onColumnFiltersChange={setColumnFilters}
-          // onGlobalFilterChange={setGlobalFilter}
-          // onPaginationChange={setPagination}
-          // onSortingChange={setSorting}
-          onRowSelectionChange={setRowSelection}
-          rowCount={data?.meta?.total ?? 0}
-          initialState={{
-            density: 'compact',
-            sorting: [
-              {
-                id: 'assigned',
-                desc: true
-              }
-            ]
-          }}
-          state={{
-            // columnFilters,
-            // globalFilter,
-            // pagination,
-            // sorting,
-            isLoading,
-            showAlertBanner: isError,
-            showProgressBars: isFetching,
-            rowSelection: rowSelection ?? {}
-          }}
-          enableRowSelection={true}
-          displayColumnDefOptions={{
-            'mrt-row-actions': {
-              header: 'Acciones', // change header text
-              minSize: 100 // make actions column wider,
-            },
-            'mrt-row-select': {
-              size: 10
-            }
-          }}
-          muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
-          renderTopToolbarCustomActions={({ table }) => (
-            <Box sx={{ display: 'flex', gap: '1rem' }}>
-              <Button
-                onClick={handleValidateCards(table)}
-                disabled={!table.getIsSomeRowsSelected()}
-                startIcon={<AssignmentIndRounded width={24} height={24} />}
-              >
-                Asociar
-              </Button>
-            </Box>
-          )}
-          muiTableBodyRowProps={({ row }) => ({
-            sx: theme => ({
-              backgroundColor: theme.palette.background.paper
-              // '&.Mui-selected': {
-              //   // backgroundColor: theme.palette.action.selected,
-              //   // '&:hover': {
-              //   //   backgroundColor: theme.palette.action.hover
-              //   // }
-              // }
-            })
-          })}
-          renderToolbarInternalActions={({ table }) => (
-            <Box>
-              <Tooltip arrow title="Actualizar">
-                <IconButton onClick={() => refetch()}>
-                  <RefreshIcon />
-                </IconButton>
-              </Tooltip>
-              <SearchAction table={table} />
-              <Tooltip title="Descargar">
-                <IconButton
-                  disabled={table.getPrePaginationRowModel().rows.length === 0}
-                  onClick={handleExportRows(table)}
-                >
-                  <FileDownload />
-                </IconButton>
-              </Tooltip>
-
-              <FiltersAction table={table} />
-              <ShowHideColumnsAction table={table} />
-              <FullScreenAction table={table} />
-            </Box>
-          )}
-          renderRowActions={({ row, table }) => {
-            const { original: dataRow } = row
-            const cardON = dataRow?.cardStatus?.isActive
-
-            const isChangingStatus = isChangingStatusCard && cardIdToggleStatus === dataRow?.id
-
-            return (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: 1,
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  flexWrap: 'nowrap',
-                  gap: '8px'
-                }}
-              >
-                {/* <IconButton size="small" color="primary" disabled={isLoading}>
-                  <BsEye />
-                </IconButton> */}
-                {dataRow?.assignUser?.fullName !== '-' && (
-                  <IconButton
-                    size="small"
-                    color="primary"
-                    disabled={isLoading}
-                    onClick={() => {
-                      setCardInfo(dataRow)
-                      setOpenUserInfo(true)
-                    }}
-                  >
-                    <ManageAccounts />
-                  </IconButton>
-                )}
-
-                {isChangingStatus ? (
-                  <CircularLoading
-                    size={15}
-                    containerProps={{
-                      display: 'flex',
-                      ml: 1
-                    }}
-                  />
-                ) : (
-                  <IOSSwitch
-                    disabled={isLoading}
-                    size="sm"
-                    color={!cardON ? 'error' : 'success'}
-                    checked={cardON || false}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                    onChange={() => {
-                      setCardIdToggleStatus(dataRow?.id)
-                      changeStatusCard(
-                        { ...dataRow, cardON: !cardON },
-                        {
-                          onSuccess: () => {
-                            setCardIdToggleStatus(null)
-                          },
-                          onError: () => {
-                            setCardIdToggleStatus(null)
-                          }
-                        }
-                      )
-                    }}
-                  />
-                )}
-              </Box>
-            )
-          }}
-        />
+        <MaterialDataTable table={table} />
       </Card>
     </Box>
   )
+}
+
+CommerceCardsTable.propTypes = {
+  resetSelection: PropTypes.any,
+  setResetSelection: PropTypes.func
 }

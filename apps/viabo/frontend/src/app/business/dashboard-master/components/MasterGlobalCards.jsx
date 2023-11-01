@@ -207,7 +207,7 @@ export function MasterGlobalCards({ data, isLoading }) {
                   variant="contained"
                   color="secondary"
                   startIcon={<CurrencyExchangeOutlined />}
-                  sx={{ color: 'black', fontWeight: 'bolder' }}
+                  sx={{ color: 'text.primary', fontWeight: 'bolder' }}
                   loading={isRefetchingCards}
                   onClick={() => {
                     setOpenTransfer(true)

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import { Close } from '@mui/icons-material'
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, Stack } from '@mui/material'
 import { alpha, styled } from '@mui/material/styles'
 import isString from 'lodash/isString'
 import { useDropzone } from 'react-dropzone'
@@ -33,6 +33,7 @@ UploadSingleFile.propTypes = {
 }
 
 const isImage = url => /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
+
 export default function UploadSingleFile({ error = false, file, helperText, onRemove, sx, ...other }) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
@@ -65,7 +66,15 @@ export default function UploadSingleFile({ error = false, file, helperText, onRe
         <input {...getInputProps()} />
 
         {!file ? (
-          <UploadIllustration sx={{ width: 1 }} />
+          <Stack
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            direction={{ xs: 'column', md: 'row' }}
+            sx={{ height: 130, textAlign: { xs: 'center', md: 'left' } }}
+          >
+            <UploadIllustration sx={{ width: '50%' }} />
+          </Stack>
         ) : (
           <Box width={1} height={{ lg: 165, xl: 155, md: 180, xs: 250, sm: 250 }} />
         )}

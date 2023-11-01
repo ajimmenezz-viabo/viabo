@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from 'react'
 
 import PropTypes from 'prop-types'
 
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 import { UseFindModulesByUser } from '@/app/authentication/hooks'
 import { resetAllStores } from '@/app/shared/store'

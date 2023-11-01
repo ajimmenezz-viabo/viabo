@@ -1,5 +1,3 @@
-import { useRef } from 'react'
-
 import { Alert, Box, Card, Stack, Typography } from '@mui/material'
 import { toast } from 'react-toastify'
 
@@ -10,6 +8,7 @@ import { useFundingOrderStore } from '../store'
 import { getCardTypeByName } from '@/app/shared/services'
 import { MaterialDataTable, SearchAction } from '@/shared/components/dataTables'
 import { Modal } from '@/shared/components/modals'
+import { useMaterialTable } from '@/shared/hooks'
 
 const ConciliateModal = () => {
   const openConciliateModal = useFundingOrderStore(state => state.openConciliateModal)
@@ -17,8 +16,6 @@ const ConciliateModal = () => {
   const fundingOrder = useFundingOrderStore(state => state.fundingOrder)
   const setFundingOrder = useFundingOrderStore(state => state.setFundingOrder)
   const { mutate, isLoading } = useConciliateFundingOrder()
-
-  const movementsRef = useRef(null)
 
   const columns = [
     {
@@ -51,10 +48,68 @@ const ConciliateModal = () => {
   const cardLogo = getCardTypeByName(fundingOrder?.paymentProcessorName)
   const CardLogoComponent = cardLogo?.component
 
+  const table = useMaterialTable(isError, error, {
+    columns,
+    data: movements?.movements || [],
+    enableColumnPinning: true,
+    enableStickyHeader: true,
+    enableRowVirtualization: true,
+    enableFacetedValues: true,
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
+    positionActionsColumn: 'last',
+    enableDensityToggle: false,
+    enableColumnResizing: false,
+    initialState: {
+      density: 'compact',
+      sorting: [
+        {
+          id: 'date',
+          desc: true
+        }
+      ]
+    },
+    state: {
+      isLoading: isLoadingMovements,
+      showAlertBanner: isError,
+      showProgressBars: isFetching
+    },
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: theme => ({
+        borderRadius: 0,
+        backgroundColor: theme.palette.background.neutral
+      })
+    },
+    muiBottomToolbarProps: {
+      sx: theme => ({
+        backgroundColor: theme.palette.background.neutral
+      })
+    },
+    muiTopToolbarProps: {
+      sx: theme => ({
+        backgroundColor: theme.palette.background.neutral
+      })
+    },
+    displayColumnDefOptions: {
+      'mrt-row-select': {
+        maxSize: 10,
+        header: ''
+      }
+    },
+    renderToolbarInternalActions: ({ table }) => (
+      <Box>
+        <SearchAction table={table} />
+      </Box>
+    ),
+    muiTableContainerProps: { sx: { maxHeight: 'md' } }
+  })
+
+  const selectedMovements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+
   const handleSubmit = () => {
-    const selectedMovements = movementsRef.current?.getSelectedRowModel().rows
     if (selectedMovements?.length > 0) {
-      const data = ConciliateFundingOrderAdapter(fundingOrder, selectedMovements[0]?.original)
+      const data = ConciliateFundingOrderAdapter(fundingOrder, selectedMovements[0])
       mutate(data, {
         onSuccess: () => {
           handleClose()
@@ -103,64 +158,7 @@ const ConciliateModal = () => {
         </Alert>
         <Stack>
           <Card>
-            <MaterialDataTable
-              enablePinning
-              enableStickyHeader
-              enableRowVirtualization
-              enableFacetedValues
-              enableRowSelection
-              enableMultiRowSelection={false}
-              positionActionsColumn="last"
-              enableDensityToggle={false}
-              tableInstanceRef={movementsRef}
-              columns={columns || []}
-              data={movements?.movements || []}
-              isError={isError}
-              textError={error}
-              initialState={{
-                density: 'compact',
-                sorting: [
-                  {
-                    id: 'date',
-                    desc: true
-                  }
-                ]
-              }}
-              state={{
-                isLoading: isLoadingMovements,
-                showAlertBanner: isError,
-                showProgressBars: isFetching
-              }}
-              muiTablePaperProps={{
-                elevation: 0,
-                sx: theme => ({
-                  borderRadius: 0,
-                  backgroundColor: theme.palette.background.neutral
-                })
-              }}
-              muiBottomToolbarProps={{
-                sx: theme => ({
-                  backgroundColor: theme.palette.background.neutral
-                })
-              }}
-              muiTopToolbarProps={{
-                sx: theme => ({
-                  backgroundColor: theme.palette.background.neutral
-                })
-              }}
-              displayColumnDefOptions={{
-                'mrt-row-select': {
-                  size: 12,
-                  header: ''
-                }
-              }}
-              renderToolbarInternalActions={({ table }) => (
-                <Box>
-                  <SearchAction table={table} />
-                </Box>
-              )}
-              muiTableContainerProps={{ sx: { maxHeight: 'md' } }}
-            />
+            <MaterialDataTable table={table} />
           </Card>
         </Stack>
       </Stack>

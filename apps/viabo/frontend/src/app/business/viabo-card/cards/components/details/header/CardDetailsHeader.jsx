@@ -82,7 +82,7 @@ export function CardDetailsHeader({ card }) {
         position: 'relative',
         zIndex: 1,
         backgroundColor: theme.palette.primary.light,
-        color: 'white',
+        color: theme.palette.primary.contrastText,
         minHeight: 'auto!important',
         height: { xs: 1, sm: 'auto' },
         py: { xs: 0, sm: 2 }
@@ -123,7 +123,7 @@ export function CardDetailsHeader({ card }) {
           </Stack>
         </Stack>
         <Stack justifyContent="flex-end" spacing={1} alignItems={{ xs: 'center', md: 'end' }}>
-          <CardNumber card={card} color={'#fff'} />
+          <CardNumber card={card} />
           <Stack
             display="flex"
             flexDirection={'row'}
@@ -132,9 +132,7 @@ export function CardDetailsHeader({ card }) {
             gap={1}
             divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           >
-            <Typography color={'#fff'} variant={'subtitle2'}>
-              {card?.expiration}
-            </Typography>
+            <Typography variant={'subtitle2'}>{card?.expiration}</Typography>
             <Button
               startIcon={openCVV ? <CircularStatic handleFinish={() => setOpenCVV(false)} /> : <PasswordTwoTone />}
               color={'inherit'}
@@ -185,7 +183,7 @@ function CircularStatic({ handleFinish, duration = 10 }) {
 
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" value={progress} />
+      <CircularProgress color={'secondary'} variant="determinate" value={progress} />
       <Box
         sx={{
           top: 0,
@@ -198,7 +196,7 @@ function CircularStatic({ handleFinish, duration = 10 }) {
           justifyContent: 'center'
         }}
       >
-        <Typography variant="caption" component="div" color="text.primary">
+        <Typography variant="caption" component="div" color="text.primary.contrastText">
           {`${Math.ceil((duration * progress) / 100)} `}
         </Typography>
       </Box>

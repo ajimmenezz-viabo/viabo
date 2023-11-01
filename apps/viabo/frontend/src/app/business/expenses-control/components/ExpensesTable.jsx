@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Card, Divider, FormLabel, IconButton, Link, Stack, Typography } from '@mui/material'
 import { MobileDatePicker } from '@mui/x-date-pickers'
@@ -9,8 +9,8 @@ import { PiFilesBold } from 'react-icons/pi'
 
 import { useFindExpensesMovementsFromCommerceCards } from '../hooks'
 
+import { getCardTypeByName } from '@/app/shared/services'
 import { MaterialDataTable } from '@/shared/components/dataTables'
-import { CarnetLogo, MasterCardLogo } from '@/shared/components/images'
 
 export const ExpensesTable = () => {
   const currentDate = new Date()
@@ -18,8 +18,6 @@ export const ExpensesTable = () => {
   const initialEndDate = endOfMonth(currentDate)
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
-
-  const table = useRef(null)
 
   const { data, isError, isLoading, isFetching, error, refetch } = useFindExpensesMovementsFromCommerceCards(
     startDate,
@@ -48,13 +46,12 @@ export const ExpensesTable = () => {
         Cell: ({ cell, column, row }) => {
           const { original: rowData } = row
           const isMainCard = rowData?.isMainCard
+
+          const cardLogo = getCardTypeByName(rowData?.paymentProcessor)
+          const CardLogoComponent = cardLogo?.component
           return (
             <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              {rowData?.cardType === 'Carnet' ? (
-                <CarnetLogo sx={{ width: 25, height: 25 }} />
-              ) : (
-                <MasterCardLogo sx={{ width: 25, height: 25 }} />
-              )}
+              {cardLogo && <CardLogoComponent sx={{ width: 30, height: 30 }} />}
               <Typography variant="subtitle2" fontWeight="bold" noWrap>
                 {isMainCard ? rowData?.cardNumber : rowData?.cardNumber?.substr(rowData?.cardNumber?.length - 4)}
               </Typography>
@@ -79,7 +76,7 @@ export const ExpensesTable = () => {
       {
         accessorKey: 'description',
         header: 'Movimiento',
-        size: 120,
+        minSize: 120,
         Cell: ({ cell, column, row }) => {
           const { original: rowData } = row
           return (
@@ -90,7 +87,7 @@ export const ExpensesTable = () => {
         }
       },
       {
-        accessorKey: 'serverDate', // normal accessorKey
+        accessorKey: 'fullDate', // normal accessorKey
         header: 'Fecha',
         size: 120,
         Cell: ({ cell, column, row }) => {
@@ -239,7 +236,7 @@ export const ExpensesTable = () => {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MaterialDataTable
-          enablePinning
+          enableColumnPinning
           enableStickyHeader
           enableRowVirtualization
           enableFacetedValues
@@ -251,12 +248,11 @@ export const ExpensesTable = () => {
           isError={isError}
           textError={error}
           selectAllMode={'all'}
-          tableInstanceRef={table}
           initialState={{
             density: 'compact',
             sorting: [
               {
-                id: 'serverDate',
+                id: 'fullDate',
                 desc: true
               }
             ]

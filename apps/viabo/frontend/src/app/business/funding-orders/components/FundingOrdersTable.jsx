@@ -15,7 +15,7 @@ const FundingOrdersTable = () => {
   return (
     <Card>
       <MaterialDataTable
-        enablePinning
+        enableColumnPinning
         enableColumnFilterModes
         enableStickyHeader
         enableRowVirtualization
@@ -46,10 +46,10 @@ const FundingOrdersTable = () => {
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones', // change header text
-            minSize: 80 // make actions column wider
+            maxSize: 80 // make actions column wider
           },
           'mrt-row-select': {
-            size: 10
+            maxSize: 10
           }
         }}
         muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}

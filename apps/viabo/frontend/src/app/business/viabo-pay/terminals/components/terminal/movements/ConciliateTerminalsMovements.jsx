@@ -1,18 +1,16 @@
-import { useRef } from 'react'
-
 import { CompareArrowsRounded } from '@mui/icons-material'
 import {
   Box,
   Grid,
   Stack,
+  styled,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  styled
+  Typography
 } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -24,6 +22,7 @@ import { useTerminalDetails } from '../../../store'
 import { MaterialDataTable, SearchAction } from '@/shared/components/dataTables'
 import { Modal } from '@/shared/components/modals'
 import { Scrollbar } from '@/shared/components/scroll'
+import { useMaterialTable } from '@/shared/hooks'
 import { fCurrency } from '@/shared/utils'
 
 const RowResultStyle = styled(TableRow)(({ theme }) => ({
@@ -41,8 +40,6 @@ const ConciliateTerminalsMovements = () => {
   const { movements: terminalMovements, total, date } = useTerminalDetails(state => state.conciliateInfo)
   const terminal = useTerminalDetails(state => state.terminal)
 
-  const movementsRef = useRef(null)
-
   const {
     data: movements,
     error,
@@ -55,6 +52,89 @@ const ConciliateTerminalsMovements = () => {
 
   const client = useQueryClient()
 
+  const columns = [
+    {
+      id: 'card',
+      header: `Movimientos Tarjeta Asociada`,
+      columns: [
+        {
+          accessorKey: 'description',
+          header: 'Movimiento',
+          minSize: 100
+        },
+        {
+          accessorKey: 'date',
+          header: 'Fecha',
+          size: 130
+        },
+        {
+          accessorKey: 'amountFormat',
+          header: 'Monto',
+          minSize: 100
+        }
+      ]
+    }
+  ]
+
+  const table = useMaterialTable(isError, error, {
+    columns,
+    data: movements?.movements || [],
+    enableColumnPinning: true,
+    enableStickyHeader: true,
+    enableRowVirtualization: true,
+    enableFacetedValues: true,
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
+    positionActionsColumn: 'last',
+    enableDensityToggle: false,
+    enableColumnResizing: false,
+    initialState: {
+      density: 'compact',
+      sorting: [
+        {
+          id: 'date',
+          desc: true
+        }
+      ]
+    },
+    state: {
+      isLoading: isLoadingMovements,
+      showAlertBanner: isError,
+      showProgressBars: isFetching
+    },
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: theme => ({
+        borderRadius: 0,
+        backgroundColor: theme.palette.background.neutral
+      })
+    },
+    muiBottomToolbarProps: {
+      sx: theme => ({
+        backgroundColor: theme.palette.background.neutral
+      })
+    },
+    muiTopToolbarProps: {
+      sx: theme => ({
+        backgroundColor: theme.palette.background.neutral
+      })
+    },
+    displayColumnDefOptions: {
+      'mrt-row-select': {
+        maxSize: 10,
+        header: ''
+      }
+    },
+    renderToolbarInternalActions: ({ table }) => (
+      <Box>
+        <SearchAction table={table} />
+      </Box>
+    ),
+    muiTableContainerProps: { sx: { maxHeight: 'md' } }
+  })
+
+  const selectedCardMovements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+
   const handleClose = () => {
     setOpenConciliate(false)
     setConciliateMovements(null)
@@ -62,9 +142,8 @@ const ConciliateTerminalsMovements = () => {
   }
 
   const handleSubmit = () => {
-    const selectedCardMovements = movementsRef.current?.getSelectedRowModel().flatRows
     if (selectedCardMovements?.length > 0) {
-      const data = ConciliateTerminalMovementsAdapter(terminal, terminalMovements, selectedCardMovements[0]?.original)
+      const data = ConciliateTerminalMovementsAdapter(terminal, terminalMovements, selectedCardMovements[0])
       mutate(data, {
         onSuccess: () => {
           handleClose()
@@ -75,31 +154,6 @@ const ConciliateTerminalsMovements = () => {
       toast.warn('Debe seleccionar un movimiento de la tarjeta para conciliar los movimientos de la terminal')
     }
   }
-
-  const columns = [
-    {
-      id: 'card',
-      header: `Movimientos Tarjeta Asociada`,
-      columns: [
-        {
-          accessorKey: 'description',
-          header: 'Movimiento',
-          size: 100
-        },
-        {
-          accessorKey: 'date',
-          header: 'Fecha',
-          size: 130
-        },
-        {
-          accessorKey: 'amountFormat',
-          header: 'Monto',
-          size: 100
-        }
-      ]
-    }
-  ]
-
   return (
     <Modal
       onClose={handleClose}
@@ -178,64 +232,7 @@ const ConciliateTerminalsMovements = () => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <MaterialDataTable
-              enablePinning
-              enableStickyHeader
-              enableRowVirtualization
-              enableFacetedValues
-              enableRowSelection
-              enableMultiRowSelection={false}
-              positionActionsColumn="last"
-              enableDensityToggle={false}
-              columns={columns || []}
-              data={movements?.movements || []}
-              isError={isError}
-              textError={error}
-              tableInstanceRef={movementsRef}
-              initialState={{
-                density: 'compact',
-                sorting: [
-                  {
-                    id: 'date',
-                    desc: true
-                  }
-                ]
-              }}
-              state={{
-                isLoading: isLoadingMovements,
-                showAlertBanner: isError,
-                showProgressBars: isFetching
-              }}
-              muiTablePaperProps={{
-                elevation: 0,
-                sx: theme => ({
-                  borderRadius: 0,
-                  backgroundColor: theme.palette.background.neutral
-                })
-              }}
-              muiBottomToolbarProps={{
-                sx: theme => ({
-                  backgroundColor: theme.palette.background.neutral
-                })
-              }}
-              muiTopToolbarProps={{
-                sx: theme => ({
-                  backgroundColor: theme.palette.background.neutral
-                })
-              }}
-              displayColumnDefOptions={{
-                'mrt-row-select': {
-                  size: 12,
-                  header: ''
-                }
-              }}
-              renderToolbarInternalActions={({ table }) => (
-                <Box>
-                  <SearchAction table={table} />
-                </Box>
-              )}
-              muiTableContainerProps={{ sx: { maxHeight: 'md' } }}
-            />
+            <MaterialDataTable table={table} />
           </Grid>
         </Grid>
       </Stack>

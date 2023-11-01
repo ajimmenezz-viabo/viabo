@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { FileDownload } from '@mui/icons-material'
-import { Alert, Box, Button, Card, Divider, IconButton, Stack, Tooltip } from '@mui/material'
+import { Alert, Box, Button, Card, Divider, IconButton, Paper, Stack, Tooltip } from '@mui/material'
 import { isArray } from 'lodash'
 import { toast } from 'react-toastify'
 
@@ -94,14 +94,15 @@ export const TerminalMovements = () => {
   return (
     <Card>
       <MaterialDataTable
-        enablePinning
+        enableColumnPinning
         enableColumnFilterModes
         enableStickyHeader
         enableRowVirtualization
         enableFacetedValues
         enableRowSelection={row => {
-          const { conciliated } = row.original
-          return !conciliated || !terminal
+          const { conciliated, approved } = row.original
+
+          return !(Boolean(!approved && terminal) || Boolean(conciliated && terminal))
         }}
         enableDensityToggle={false}
         columns={columns}
@@ -127,7 +128,7 @@ export const TerminalMovements = () => {
         }}
         displayColumnDefOptions={{
           'mrt-row-select': {
-            size: 10
+            maxSize: 10
           }
         }}
         muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
@@ -142,7 +143,7 @@ export const TerminalMovements = () => {
             }
           }
           return (
-            <Stack>
+            <Stack component={Paper}>
               <TerminalFilterStatus
                 filterStatus={filterStatus}
                 onChangeFilterStatus={onChangeFilterStatus}

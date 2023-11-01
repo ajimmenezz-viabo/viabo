@@ -55,6 +55,7 @@ export const CardMovementsAdapter = movements => {
             : movement?.cardOwnerName,
           cardNumber: movement?.cardMain ? 'Cuenta Maestra' : movement?.cardNumber,
           cardCommerceName: movement?.cardCommerceName,
+          paymentProcessor: movement?.cardPaymentProcessor,
           verified: Boolean(movement?.checked),
           isMainCard: Boolean(movement?.cardMain),
           expensesControl: {

@@ -10,6 +10,7 @@ final readonly class CreateCardsMovementsCommandBySetApi implements Command
 {
     public function __construct(
         public array  $cards ,
+        public array  $cardsOperations ,
         public string $startDate ,
         public string $endDate ,
         public bool   $today

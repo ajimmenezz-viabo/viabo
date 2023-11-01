@@ -15,5 +15,7 @@ interface CardOperationRepository
 
     public function searchDateRange(CardNumber $cardNumber , string $initialDate , string $finalDate): array;
 
+    public function searchAll(): array;
+
     public function update(CardOperations $operations): void;
 }

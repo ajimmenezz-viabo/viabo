@@ -72,8 +72,8 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
           }
         : {
             sx: theme => ({
-              backgroundColor: theme.palette.primary.lighter,
-              color: theme.palette.primary.main,
+              backgroundColor: theme.palette.primary.light,
+              color: theme.palette.primary.contrastText,
               fontSize: 12
             })
           }
@@ -102,8 +102,8 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
       showRowsPerPage: true,
       variant: 'outlined'
     }}
-    paginationDisplayMode={'pages'}
-    columnFilterDisplayMode={'default'}
+    paginationDisplayMode={'default'}
+    columnFilterDisplayMode={'popover'}
     {...props}
   />
 )

@@ -62,8 +62,8 @@ export function useMaterialTable(isError, textError, others = {}) {
         }
       : {
           sx: theme => ({
-            backgroundColor: theme.palette.primary.lighter,
-            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.primary.light,
+            color: theme.palette.primary.contrastText,
             fontSize: 12
           })
         },

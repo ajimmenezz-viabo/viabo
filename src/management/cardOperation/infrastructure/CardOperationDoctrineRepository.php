@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use Viabo\management\cardOperation\domain\CardOperation;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
 use Viabo\management\cardOperation\domain\CardOperations;
-use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
@@ -36,7 +35,7 @@ final class CardOperationDoctrineRepository extends DoctrineRepository implement
 
     public function searchDateRange(CardNumber $cardNumber , string $initialDate , string $finalDate): array
     {
-        $query = "select co from Viabo\management\cardOperation\domain\CardOperation co 
+        $query = "select co from Viabo\management\cardOperation\domain\CardOperation co
                     where (co.originCard.value = :cardNumber or co.destinationCard.value = :cardNumber) and
                     co.registerDate.value BETWEEN :initial and :final";
         $statement = $this->entityManager()->createQuery($query);
@@ -44,6 +43,11 @@ final class CardOperationDoctrineRepository extends DoctrineRepository implement
         $statement->setParameter('initial' , $initialDate);
         $statement->setParameter('final' , $finalDate);
         return $statement->getResult();
+    }
+
+    public function searchAll(): array
+    {
+        return $this->repository(CardOperation::class)->findAll();
     }
 
     public function update(CardOperations $operations): void

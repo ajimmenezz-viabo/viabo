@@ -25,7 +25,13 @@ final readonly class CardsMovementsCreatorBySetApi
     {
     }
 
-    public function __invoke(array $cards , string $startDate , string $endDate , bool $today): void
+    public function __invoke(
+        array  $cards ,
+        array  $cardsOperations ,
+        string $startDate ,
+        string $endDate ,
+        bool   $today
+    ): void
     {
         $startDate = $this->formatStartDate($startDate, $today);
         $endDate = $this->formatEndDate($endDate , $startDate, $today);
@@ -35,7 +41,8 @@ final readonly class CardsMovementsCreatorBySetApi
                 $cardMovementsOnSetApi = $this->finderOnSet->__invoke(
                     $card ,
                     $startDate ,
-                    $endDate
+                    $endDate,
+                    $cardsOperations
                 );
                 $this->save($cardMovementsOnSetApi);
             } catch (\Exception $exception) {

@@ -16,6 +16,7 @@ final readonly class CreateCardsMovementsCommandHandlerBySetApi implements Comma
     {
         $this->creator->__invoke(
             $command->cards ,
+            $command->cardsOperations ,
             $command->startDate ,
             $command->endDate ,
             $command->today

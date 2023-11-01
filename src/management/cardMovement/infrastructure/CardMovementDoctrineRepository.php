@@ -23,6 +23,7 @@ final class CardMovementDoctrineRepository extends DoctrineRepository implements
     public function save(CardMovement $cardMovement): void
     {
         $this->persist($cardMovement);
+        $this->entityManager()->clear();
     }
 
     public function saveLog(CardMovementLog $log): void

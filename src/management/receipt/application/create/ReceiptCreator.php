@@ -12,6 +12,7 @@ use Viabo\management\receipt\domain\services\FilesDataFinder;
 use Viabo\management\receipt\domain\services\InvoiceDataFinder;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\uploadFile\UploadFileRepository;
+use Viabo\shared\domain\utils\NumberFormat;
 
 final readonly class ReceiptCreator
 {
@@ -71,9 +72,11 @@ final readonly class ReceiptCreator
 
     private function amountTotal(array $cardMovements): float|int
     {
-        return array_sum(array_map(function (array $movement) {
+        $total = array_sum(array_map(function (array $movement) {
             return floatval($movement['amount']);
         } , $cardMovements));
+
+        return NumberFormat::float($total);
     }
 
     private function commercesIds(array $cardMovements): array

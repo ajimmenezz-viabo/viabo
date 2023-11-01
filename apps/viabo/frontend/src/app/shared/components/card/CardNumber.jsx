@@ -15,7 +15,11 @@ export default function CardNumber({ card, disableShow, color }) {
 
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
-      {card?.cardType?.toLowerCase() !== 'mastercard' ? <CarnetLogo color={color} /> : <MasterCardLogo color={color} />}
+      {card?.cardType?.toLowerCase() !== 'mastercard' ? (
+        <CarnetLogo basedOnTheme color={color} />
+      ) : (
+        <MasterCardLogo color={color} />
+      )}
 
       <Typography sx={{ typography: 'h6' }}>
         {showCardNumber ? fCardNumberHidden(card?.cardNumber) : fCardNumber(card?.cardNumber)}

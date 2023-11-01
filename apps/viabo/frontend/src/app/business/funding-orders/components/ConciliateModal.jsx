@@ -104,7 +104,7 @@ const ConciliateModal = () => {
         <Stack>
           <Card>
             <MaterialDataTable
-              enablePinning
+              enableColumnPinning
               enableStickyHeader
               enableRowVirtualization
               enableFacetedValues

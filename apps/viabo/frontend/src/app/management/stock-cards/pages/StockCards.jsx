@@ -80,7 +80,7 @@ export default function StockCards() {
               <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
                 {cards && cards?.length > 0 && (
                   <Button
-                    sx={{ color: 'black' }}
+                    sx={{ color: 'text.primary' }}
                     type="button"
                     color="secondary"
                     variant="contained"

@@ -1,4 +1,4 @@
-import { lazy, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Check } from '@mui/icons-material'
 import { Box, Button, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
@@ -15,6 +15,7 @@ import { MovementDescriptionColumn } from '@/app/business/shared/components/card
 import { getOperationTypeByName } from '@/app/shared/services'
 import { MaterialDataTable } from '@/shared/components/dataTables'
 import { Lodable } from '@/shared/components/lodables'
+import { useMaterialTable } from '@/shared/hooks'
 import { fCurrency } from '@/shared/utils'
 
 const VerifyExpensesDrawer = Lodable(
@@ -31,7 +32,6 @@ export function MasterMovements() {
   const setMovements = useMasterGlobalStore(state => state.setMovements)
   const movements = useMasterGlobalStore(state => state.movements)
 
-  const table = useRef(null)
   const [openVerifyExpenses, setOpenVerifyExpenses] = useState(false)
 
   const { data, isError, isLoading, isFetching, error, refetch } = useFindMasterMovements(startDate, endDate)
@@ -178,6 +178,81 @@ export function MasterMovements() {
     return setOpenVerifyExpenses(true)
   }
 
+  const table = useMaterialTable(isError, error, {
+    columns,
+    data: movements || [],
+    enableColumnPinning: true,
+    enableColumnFilterModes: true,
+    enableStickyHeader: true,
+    enableRowVirtualization: true,
+    enableFacetedValues: true,
+    enableRowActions: true,
+    enableRowSelection: true,
+    positionActionsColumn: 'last',
+    selectAllMode: 'all',
+    initialState: {
+      density: 'compact',
+      sorting: [
+        {
+          id: 'serverDate',
+          desc: true
+        }
+      ]
+    },
+    state: {
+      isLoading,
+      showAlertBanner: isError,
+      showProgressBars: isFetching
+    },
+    displayColumnDefOptions: {
+      'mrt-row-select': {
+        size: 10
+      },
+      'mrt-row-actions': {
+        header: 'Acciones',
+        size: 80
+      }
+    },
+    muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Button
+          onClick={handleValidateExpenses(table)}
+          disabled={handleValidateSamePaymentProcessor()}
+          startIcon={<Check width={24} height={24} />}
+          variant="outlined"
+        >
+          Comprobar
+        </Button>
+      </Box>
+    ),
+    renderRowActionMenuItems: ({ row }) => [
+      <MenuItem key="conciliation" onClick={() => console.info('conciliation')}>
+        Conciliación
+      </MenuItem>,
+      <MenuItem key="incidence" onClick={() => console.info('incidence')}>
+        Incidencia
+      </MenuItem>,
+      <MenuItem key="communication" onClick={() => console.info('communication')}>
+        Comunicación
+      </MenuItem>,
+      <MenuItem key="tag" onClick={() => console.info('tag')}>
+        Tag
+      </MenuItem>
+    ]
+  })
+
+  const selectedMovements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+
+  const handleValidateSamePaymentProcessor = useCallback(() => {
+    const firstPaymentProcessor = selectedMovements.length > 0 ? selectedMovements[0]?.paymentProcessor : null
+
+    const result = Boolean(
+      selectedMovements.every(obj => obj.paymentProcessor === firstPaymentProcessor) && table?.getIsSomeRowsSelected()
+    )
+    return !result
+  }, [selectedMovements, table])
+
   return (
     <>
       <Card>
@@ -214,78 +289,12 @@ export function MasterMovements() {
         </Stack>
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MaterialDataTable
-          enablePinning
-          enableColumnFilterModes
-          enableStickyHeader
-          enableRowVirtualization
-          enableFacetedValues
-          enableRowActions
-          enableRowSelection
-          positionActionsColumn="last"
-          enableDensityToggle={false}
-          columns={columns}
-          data={movements || []}
-          isError={isError}
-          textError={error}
-          selectAllMode={'all'}
-          tableInstanceRef={table}
-          initialState={{
-            density: 'compact',
-            sorting: [
-              {
-                id: 'serverDate',
-                desc: true
-              }
-            ]
-          }}
-          state={{
-            isLoading,
-            showAlertBanner: isError,
-            showProgressBars: isFetching
-          }}
-          displayColumnDefOptions={{
-            'mrt-row-actions': {
-              header: 'Acciones', // change header text
-              size: 80 // make actions column wider
-            },
-            'mrt-row-select': {
-              size: 10
-            }
-          }}
-          muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
-          renderTopToolbarCustomActions={({ table }) => (
-            <Box sx={{ display: 'flex', gap: '1rem' }}>
-              <Button
-                onClick={handleValidateExpenses(table)}
-                disabled={!table.getIsSomeRowsSelected()}
-                startIcon={<Check width={24} height={24} />}
-                variant="outlined"
-              >
-                Comprobar
-              </Button>
-            </Box>
-          )}
-          renderRowActionMenuItems={({ row }) => [
-            <MenuItem key="conciliation" onClick={() => console.info('conciliation')}>
-              Conciliación
-            </MenuItem>,
-            <MenuItem key="incidence" onClick={() => console.info('incidence')}>
-              Incidencia
-            </MenuItem>,
-            <MenuItem key="communication" onClick={() => console.info('communication')}>
-              Comunicación
-            </MenuItem>,
-            <MenuItem key="tag" onClick={() => console.info('tag')}>
-              Tag
-            </MenuItem>
-          ]}
-        />
+        <MaterialDataTable table={table} />
       </Card>
       <VerifyExpensesDrawer
         open={openVerifyExpenses}
         setOpen={setOpenVerifyExpenses}
-        movements={table.current?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []}
+        movements={selectedMovements ?? []}
       />
     </>
   )

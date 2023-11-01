@@ -1,4 +1,4 @@
-import { lazy, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Check } from '@mui/icons-material'
 import { Box, Button, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
@@ -15,6 +15,7 @@ import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { getOperationTypeByName } from '@/app/shared/services'
 import { MaterialDataTable } from '@/shared/components/dataTables'
 import { Lodable } from '@/shared/components/lodables'
+import { useMaterialTable } from '@/shared/hooks'
 import { fDate } from '@/shared/utils'
 
 const TransactionReport = Lodable(
@@ -29,7 +30,6 @@ export function CardMovements() {
   const [openReport, setOpenReport] = useState(false)
   const [openVerifyExpenses, setOpenVerifyExpenses] = useState(false)
   const [selectedMovement, setSelectedMovement] = useState(null)
-  const table = useRef(null)
 
   const currentDate = new Date()
   const initialStartDate = startOfMonth(currentDate)
@@ -184,6 +184,80 @@ export function CardMovements() {
     return setOpenVerifyExpenses(true)
   }
 
+  const table = useMaterialTable(isError, error, {
+    columns,
+    data: movements || [],
+    enableColumnPinning: true,
+    enableColumnFilterModes: true,
+    enableStickyHeader: true,
+    enableRowVirtualization: true,
+    enableFacetedValues: true,
+    enableRowActions: true,
+    enableRowSelection: true,
+    positionActionsColumn: 'last',
+    selectAllMode: 'all',
+    initialState: {
+      density: 'compact',
+      sorting: [
+        {
+          id: 'serverDate',
+          desc: true
+        }
+      ]
+    },
+    state: {
+      isLoading,
+      showAlertBanner: isError,
+      showProgressBars: isFetching
+    },
+    displayColumnDefOptions: {
+      'mrt-row-select': {
+        size: 10
+      },
+      'mrt-row-actions': {
+        header: 'Acciones',
+        size: 80
+      }
+    },
+    muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Button
+          onClick={handleValidateExpenses(table)}
+          disabled={handleValidateSamePaymentProcessor()}
+          startIcon={<Check width={24} height={24} />}
+          variant="outlined"
+        >
+          Comprobar
+        </Button>
+      </Box>
+    ),
+    renderRowActionMenuItems: ({ row, closeMenu }) => [
+      <MenuItem
+        key="incidence"
+        onClick={() => {
+          const { original: rowData } = row
+          setSelectedMovement(rowData)
+          closeMenu()
+          setOpenReport(true)
+        }}
+      >
+        Incidencia
+      </MenuItem>
+    ]
+  })
+
+  const selectedMovements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+
+  const handleValidateSamePaymentProcessor = useCallback(() => {
+    const firstPaymentProcessor = selectedMovements.length > 0 ? selectedMovements[0]?.paymentProcessor : null
+
+    const result = Boolean(
+      selectedMovements.every(obj => obj.paymentProcessor === firstPaymentProcessor) && table?.getIsSomeRowsSelected()
+    )
+    return !result
+  }, [selectedMovements, table])
+
   return (
     <>
       <Card>
@@ -220,79 +294,14 @@ export function CardMovements() {
         </Stack>
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MaterialDataTable
-          enablePinning
-          enableColumnFilterModes
-          enableStickyHeader
-          enableRowVirtualization
-          enableFacetedValues
-          enableRowActions
-          enableRowSelection
-          positionActionsColumn="last"
-          enableDensityToggle={false}
-          columns={columns}
-          data={movements || []}
-          isError={isError}
-          textError={error}
-          selectAllMode={'all'}
-          initialState={{
-            density: 'compact',
-            sorting: [
-              {
-                id: 'serverDate',
-                desc: true
-              }
-            ]
-          }}
-          state={{
-            isLoading,
-            showAlertBanner: isError,
-            showProgressBars: isFetching
-          }}
-          tableInstanceRef={table}
-          displayColumnDefOptions={{
-            'mrt-row-actions': {
-              header: 'Acciones', // change header text
-              size: 80 // make actions column wider
-            },
-            'mrt-row-select': {
-              size: 10
-            }
-          }}
-          muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
-          renderTopToolbarCustomActions={({ table }) => (
-            <Box sx={{ display: 'flex', gap: '1rem' }}>
-              <Button
-                onClick={handleValidateExpenses(table)}
-                disabled={!table.getIsSomeRowsSelected()}
-                startIcon={<Check width={24} height={24} />}
-                variant="outlined"
-              >
-                Comprobar
-              </Button>
-            </Box>
-          )}
-          renderRowActionMenuItems={({ row, closeMenu }) => [
-            <MenuItem
-              key="incidence"
-              onClick={() => {
-                const { original: rowData } = row
-                setSelectedMovement(rowData)
-                closeMenu()
-                setOpenReport(true)
-              }}
-            >
-              Incidencia
-            </MenuItem>
-          ]}
-        />
+        <MaterialDataTable table={table} />
       </Card>
 
       <TransactionReport open={openReport} setOpen={setOpenReport} selectedMovement={selectedMovement} />
       <VerifyExpensesDrawer
         open={openVerifyExpenses}
         setOpen={setOpenVerifyExpenses}
-        movements={table.current?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []}
+        movements={selectedMovements ?? []}
       />
     </>
   )

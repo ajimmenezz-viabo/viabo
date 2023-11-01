@@ -5,14 +5,14 @@ import {
   Box,
   Grid,
   Stack,
+  styled,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  styled
+  Typography
 } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -179,7 +179,7 @@ const ConciliateTerminalsMovements = () => {
 
           <Grid item xs={12} md={6}>
             <MaterialDataTable
-              enablePinning
+              enableColumnPinning
               enableStickyHeader
               enableRowVirtualization
               enableFacetedValues

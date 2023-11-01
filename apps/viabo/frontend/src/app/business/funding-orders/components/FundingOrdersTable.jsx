@@ -15,7 +15,7 @@ const FundingOrdersTable = () => {
   return (
     <Card>
       <MaterialDataTable
-        enablePinning
+        enableColumnPinning
         enableColumnFilterModes
         enableStickyHeader
         enableRowVirtualization

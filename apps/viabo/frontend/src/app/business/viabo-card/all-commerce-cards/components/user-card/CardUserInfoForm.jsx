@@ -146,7 +146,7 @@ const CardUserInfoForm = ({ handleSuccess }) => {
                     color="secondary"
                     loading={isRecoveringPassword}
                     disabled={loading}
-                    sx={{ color: 'black', fontWeight: 'bolder' }}
+                    sx={{ color: 'text.primary', fontWeight: 'bolder' }}
                     onClick={() => {
                       setOperationType(OPERATION_TYPES.RECOVERY_PASSWORD)
                       setOpenAlertConfirm(true)

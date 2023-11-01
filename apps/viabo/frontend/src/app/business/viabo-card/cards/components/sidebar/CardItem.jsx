@@ -65,7 +65,11 @@ function CardItem({ isOpenSidebar, card, onOpenDetails }) {
         <RootStyle
           onClick={handleSelectedRow}
           sx={{
-            ...(isSelected && { bgcolor: 'secondary.light', color: 'black', '& :hover': { color: 'text.primary' } }),
+            ...(isSelected && {
+              bgcolor: 'secondary.light',
+              color: 'text.primary.contrastText',
+              '& :hover': { color: 'text.primary' }
+            }),
             '& :hover': { color: 'text.primary' },
             width: 1,
             py: 1,
@@ -80,11 +84,11 @@ function CardItem({ isOpenSidebar, card, onOpenDetails }) {
                   height: 30,
                   m: 0,
                   color: theme.palette.primary.contrastText,
-                  backgroundColor: theme.palette.primary.main
+                  backgroundColor: theme.palette.primary.light
                 })}
               >
                 {cardType === 'Carnet' ? (
-                  <CarnetLogo sx={{ width: 20 }} color={'white'} />
+                  <CarnetLogo basedOnTheme sx={{ width: 20 }} />
                 ) : (
                   <MasterCardLogo sx={{ width: 20 }} />
                 )}

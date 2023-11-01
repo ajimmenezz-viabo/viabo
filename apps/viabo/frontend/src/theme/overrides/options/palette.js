@@ -108,6 +108,28 @@ const COMMON = {
   }
 }
 
+const COMMON_DARK = {
+  common: { black: '#000', white: '#fff' },
+  primary: { ...SECONDARY, contrastText: '#000' },
+  secondary: { ...PRIMARY, contrastText: '#fff' },
+  info: { ...INFO, contrastText: '#fff' },
+  success: { ...SUCCESS, contrastText: GREY[800] },
+  warning: { ...WARNING, contrastText: GREY[800] },
+  error: { ...ERROR, contrastText: '#fff' },
+  grey: GREY,
+  gradients: GRADIENTS,
+  chart: CHART_COLORS,
+  divider: GREY[500_24],
+  action: {
+    hover: GREY[500_8],
+    selected: GREY[500_16],
+    disabled: GREY[500_80],
+    disabledBackground: GREY[500_24],
+    focus: GREY[500_24],
+    hoverOpacity: 0.08,
+    disabledOpacity: 0.48
+  }
+}
 export const palette = {
   light: {
     ...COMMON,
@@ -117,9 +139,9 @@ export const palette = {
     action: { active: GREY[600], ...COMMON.action }
   },
   dark: {
-    ...COMMON,
+    ...COMMON_DARK,
     mode: 'dark',
-    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
+    text: { primary: '#fff', secondary: GREY[200], disabled: GREY[500] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action }
   }

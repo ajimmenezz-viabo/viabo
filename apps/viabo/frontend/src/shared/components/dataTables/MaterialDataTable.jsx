@@ -2,12 +2,12 @@
 import PropTypes from 'prop-types'
 
 import {
-  MRT_FullScreenToggleButton,
+  MaterialReactTable,
   MRT_GlobalFilterTextField,
   MRT_ShowHideColumnsButton,
   MRT_ToggleFiltersButton,
-  MRT_ToggleGlobalFilterButton,
-  MaterialReactTable
+  MRT_ToggleFullScreenButton,
+  MRT_ToggleGlobalFilterButton
 } from 'material-react-table'
 import { MRT_Localization_ES } from 'material-react-table/locales/es'
 
@@ -15,6 +15,10 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
   <MaterialReactTable
     localization={MRT_Localization_ES}
     enableSortingRemoval={false}
+    enableStickyHeader
+    enableStickyFooter
+    enableColumnResizing
+    layoutMode={'grid'}
     muiTableHeadCellProps={({ column }) => ({
       sx: theme => ({
         color: column.getIsSorted() ? theme.palette.text.primary : theme.palette.text.secondary,
@@ -34,6 +38,11 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
         }
       })
     })}
+    defaultColumn={{
+      maxSize: 400,
+      minSize: 80,
+      size: 160 // default size is usually 180
+    }}
     muiTableBodyCellProps={{
       sx: theme => ({
         borderBottom: `dashed 1px ${theme.palette.divider}`
@@ -69,11 +78,14 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
             })
           }
     }
-    muiTablePaperProps={{
+    muiTablePaperProps={({ table }) => ({
+      style: {
+        zIndex: table.getState().isFullScreen ? 1500 : undefined
+      },
       sx: theme => ({
         boxShadow: theme.customShadows.card
       })
-    }}
+    })}
     muiTablePaginationProps={{
       sx: theme => ({
         borderTop: `none`
@@ -84,6 +96,14 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
         size: 10
       }
     }}
+    muiPaginationProps={{
+      color: 'primary',
+      shape: 'rounded',
+      showRowsPerPage: true,
+      variant: 'outlined'
+    }}
+    paginationDisplayMode={'pages'}
+    columnFilterDisplayMode={'popover'}
     {...props}
   />
 )
@@ -93,7 +113,7 @@ MaterialDataTable.propTypes = {
   textError: PropTypes.string
 }
 
-const FullScreenAction = MRT_FullScreenToggleButton
+const FullScreenAction = MRT_ToggleFullScreenButton
 const ShowHideColumnsAction = MRT_ShowHideColumnsButton
 const FiltersAction = MRT_ToggleFiltersButton
 const SearchAction = MRT_ToggleGlobalFilterButton

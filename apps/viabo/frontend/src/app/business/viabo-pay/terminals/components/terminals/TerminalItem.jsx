@@ -62,7 +62,11 @@ export const TerminalItem = ({ terminal }) => {
         <RootStyle
           onClick={handleSelectedRow}
           sx={{
-            ...(isSelected && { bgcolor: 'secondary.light', color: 'black', '& :hover': { color: 'text.primary' } }),
+            ...(isSelected && {
+              bgcolor: 'secondary.light',
+              color: 'text.primary.contrastText',
+              '& :hover': { color: 'text.primary' }
+            }),
             '& :hover': { color: 'text.primary' },
             width: 1,
             py: 1,

@@ -1,7 +1,9 @@
+import { useCallback } from 'react'
+
 import PropTypes from 'prop-types'
 
 import { FormHelperText } from '@mui/material'
-import { ErrorMessage, Field, useField } from 'formik'
+import { Field, useField } from 'formik'
 
 import { UploadAvatar, UploadMultiFile, UploadSingleFile } from '../upload'
 
@@ -31,28 +33,41 @@ RFUploadSingleFile.propTypes = {
 }
 
 export function RFUploadSingleFile({ name, ...other }) {
-  return (
-    <Field name={name}>
-      {({ field, meta }) => {
-        const checkError = meta.touched && meta.error && !field.value
+  const [field, meta, helpers] = useField(name)
+  const checkError = Boolean(meta.touched && meta.error)
 
-        return (
-          <UploadSingleFile
-            accept="image/*"
-            file={field.value}
-            error={checkError}
-            helperText={
-              checkError && (
-                <FormHelperText error sx={{ px: 2 }}>
-                  <ErrorMessage name={name} />
-                </FormHelperText>
-              )
-            }
-            {...other}
-          />
+  const handleDrop = useCallback(
+    acceptedFiles => {
+      const file = acceptedFiles[0]
+
+      if (file) {
+        helpers.setValue(
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
         )
-      }}
-    </Field>
+      }
+    },
+    [helpers]
+  )
+  const handleRemove = useCallback(() => helpers.setValue(null), [helpers])
+
+  return (
+    <UploadSingleFile
+      accept="image/*"
+      file={field.value}
+      error={checkError}
+      helperText={
+        checkError && (
+          <FormHelperText error sx={{ px: 2 }}>
+            {meta.error}
+          </FormHelperText>
+        )
+      }
+      onDrop={handleDrop}
+      onRemove={handleRemove}
+      {...other}
+    />
   )
 }
 

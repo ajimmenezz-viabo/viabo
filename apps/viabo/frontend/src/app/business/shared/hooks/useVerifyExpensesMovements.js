@@ -10,7 +10,10 @@ import { isFunction } from '@/shared/utils'
 
 export const useVerifyExpensesMovements = (options = {}) => {
   const client = useQueryClient()
-  const verify = useMutation(verifyExpenses, options)
+  const verify = useMutation({
+    mutationFn: verifyExpenses,
+    ...options
+  })
   const mutate = async (formData, options) => {
     const { onSuccess, onError, ...mutationOptions } = options
 

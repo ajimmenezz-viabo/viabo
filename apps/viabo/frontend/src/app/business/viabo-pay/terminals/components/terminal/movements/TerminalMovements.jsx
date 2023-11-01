@@ -128,7 +128,7 @@ export const TerminalMovements = () => {
         }}
         displayColumnDefOptions={{
           'mrt-row-select': {
-            size: 10
+            maxSize: 10
           }
         }}
         muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}

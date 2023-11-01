@@ -95,7 +95,7 @@ export function useMaterialTable(isError, textError, others = {}) {
       showRowsPerPage: true,
       variant: 'outlined'
     },
-    paginationDisplayMode: 'pages',
+    paginationDisplayMode: 'default',
     columnFilterDisplayMode: 'popover'
   }
 

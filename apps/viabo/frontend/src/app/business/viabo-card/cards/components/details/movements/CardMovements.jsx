@@ -1,7 +1,8 @@
 import { lazy, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Check } from '@mui/icons-material'
-import { Box, Button, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { Box, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { MobileDatePicker } from '@mui/x-date-pickers'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { BiBlock } from 'react-icons/bi'
@@ -195,6 +196,7 @@ export function CardMovements() {
     enableRowActions: true,
     enableRowSelection: true,
     positionActionsColumn: 'last',
+    enableDensityToggle: false,
     selectAllMode: 'all',
     initialState: {
       density: 'compact',
@@ -212,24 +214,25 @@ export function CardMovements() {
     },
     displayColumnDefOptions: {
       'mrt-row-select': {
-        size: 10
+        maxSize: 10
       },
       'mrt-row-actions': {
         header: 'Acciones',
-        size: 80
+        maxSize: 80
       }
     },
     muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
     renderTopToolbarCustomActions: ({ table }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Button
+        <LoadingButton
+          loading={isFetching}
           onClick={handleValidateExpenses(table)}
           disabled={handleValidateSamePaymentProcessor()}
           startIcon={<Check width={24} height={24} />}
           variant="outlined"
         >
           Comprobar
-        </Button>
+        </LoadingButton>
       </Box>
     ),
     renderRowActionMenuItems: ({ row, closeMenu }) => [

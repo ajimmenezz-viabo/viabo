@@ -103,7 +103,7 @@ const MaterialDataTable = ({ isError, textError = '', ...props }) => (
       variant: 'outlined'
     }}
     paginationDisplayMode={'pages'}
-    columnFilterDisplayMode={'popover'}
+    columnFilterDisplayMode={'default'}
     {...props}
   />
 )

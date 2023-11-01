@@ -15,7 +15,6 @@ import { useAssignUserCard, useCommerceCards } from '../../store'
 
 import { getOperationTypeByName } from '@/app/shared/services'
 import {
-  FiltersAction,
   FullScreenAction,
   MaterialDataTable,
   SearchAction,
@@ -249,11 +248,11 @@ export const CommerceCardsTable = ({ resetSelection, setResetSelection }) => {
     },
     displayColumnDefOptions: {
       'mrt-row-select': {
-        size: 10
+        maxSize: 10
       },
       'mrt-row-actions': {
         header: 'Acciones',
-        size: 80
+        maxSize: 80
       }
     },
     muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
@@ -293,7 +292,6 @@ export const CommerceCardsTable = ({ resetSelection, setResetSelection }) => {
           </IconButton>
         </Tooltip>
 
-        <FiltersAction table={table} />
         <ShowHideColumnsAction table={table} />
         <FullScreenAction table={table} />
       </Box>

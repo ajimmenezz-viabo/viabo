@@ -51,11 +51,8 @@ final class CardMovementDoctrineRepository extends DoctrineRepository implements
         return $query->getResult();
     }
 
-    public function delete(string $transactionId): void
+    public function delete(CardMovement $cardMovement): void
     {
-        $query = "DELETE FROM t_management_cards_movements WHERE SetTransactionId = :transactionId";
-        $statement = $this->entityManager()->getConnection()->prepare($query);
-        $statement->bindValue('transactionId' , $transactionId);
-        $statement->executeQuery()->fetchAllAssociative();
+        $this->remove($cardMovement);
     }
 }

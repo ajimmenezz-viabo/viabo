@@ -12,8 +12,8 @@ use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 final readonly class CardMovementsFinderOnSet
 {
     public function __construct(
-        private PaymentProcessorAdapter           $adapter ,
-        private CardMovementFinderByTransactionId $finderByTransactionId
+        private PaymentProcessorAdapter               $adapter ,
+        private CardMovementViewFinderByTransactionId $finderByTransactionId
     )
     {
     }
@@ -40,15 +40,15 @@ final readonly class CardMovementsFinderOnSet
     private function formatMovements(array $cardMovements , array $card , array $operations): array
     {
         return array_map(function (array $movementData) use ($card , $operations) {
-            $receipt = $this->searchReceiptBy($movementData['Auth_Code']);
+            $receiptData = $this->searchReceiptBy($movementData['Auth_Code']);
             return CardMovement::fromSetApiValue(
                 $card['id'] ,
                 $card['number'] ,
                 $card['paymentProcessor'] ?? $card['paymentProcessorName'] ,
                 $card['commerceId'] ,
-                $receipt['receiptId'] ,
-                $receipt['receiptFiles'] ,
-                $movementData,
+                $receiptData['receiptId'] ,
+                $receiptData['receiptFiles'] ,
+                $movementData ,
                 $operations
             );
         } , array_filter($cardMovements , function (array $movementData) {
@@ -61,8 +61,8 @@ final readonly class CardMovementsFinderOnSet
         try {
             $cardMovement = $this->finderByTransactionId->__invoke($transactionId);
             return $cardMovement->toArray();
-        } catch (\DomainException $exception) {
-            return ["receiptId" =>'', "receiptFiles" => ''];
+        } catch (\DomainException) {
+            return ["receiptId" => '' , "receiptFiles" => ''];
         }
     }
 }

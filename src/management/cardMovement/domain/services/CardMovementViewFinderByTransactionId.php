@@ -4,25 +4,25 @@
 namespace Viabo\management\cardMovement\domain\services;
 
 
-use Viabo\management\cardMovement\domain\CardMovement;
 use Viabo\management\cardMovement\domain\CardMovementRepository;
+use Viabo\management\cardMovement\domain\CardMovementView;
 use Viabo\management\cardMovement\domain\exceptions\CardMovementNotExist;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class CardMovementFinderByTransactionId
+final readonly class CardMovementViewFinderByTransactionId
 {
     public function __construct(private CardMovementRepository $repository)
     {
     }
 
-    public function __invoke(string $transactionId): CardMovement
+    public function __invoke(string $transactionId): CardMovementView
     {
         $filter = Filters::fromValues([
-            ['field' => 'setTransactionId.value' , 'operator' => '=' , 'value' => $transactionId]
+            ['field' => 'SetTransactionId' , 'operator' => '=', 'value' => $transactionId]
         ]);
 
-        $cardMovement = $this->repository->matching(new Criteria($filter));
+        $cardMovement = $this->repository->matchingView(new Criteria($filter));
 
         if (empty($cardMovement)) {
             throw new CardMovementNotExist();

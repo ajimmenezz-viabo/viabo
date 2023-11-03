@@ -40,8 +40,8 @@ final readonly class CardsMovementsCreatorByReceipt
     private function ensureNotExist(CardMovement $cardMovement): void
     {
         try {
-            $this->finder->__invoke($cardMovement->transactionId());
-            $this->repository->delete($cardMovement->transactionId());
+            $movement = $this->finder->__invoke($cardMovement->transactionId());
+            $this->repository->delete($movement);
         } catch (\DomainException) {
         }
     }

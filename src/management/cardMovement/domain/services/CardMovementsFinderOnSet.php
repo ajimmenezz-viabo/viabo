@@ -60,9 +60,9 @@ final readonly class CardMovementsFinderOnSet
     {
         try {
             $cardMovement = $this->finderByTransactionId->__invoke($transactionId);
-            return ["receiptId" => $cardMovement->receiptId(), "receiptFiles" => $cardMovement->receiptFiles()];
-        } catch (\DomainException) {
-            return '';
+            return $cardMovement->toArray();
+        } catch (\DomainException $exception) {
+            return ["receiptId" =>'', "receiptFiles" => ''];
         }
     }
 }

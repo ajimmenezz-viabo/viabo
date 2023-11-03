@@ -102,11 +102,6 @@ final class CardMovement extends AggregateRoot
         return $this->receiptId->value();
     }
 
-    public function receiptFiles(): ?string
-    {
-        return $this->receiptFiles;
-    }
-
     public function isNotConsolidated(mixed $mainCardTransactionsId): bool
     {
         return !in_array($this->setTransactionId->value() , $mainCardTransactionsId);

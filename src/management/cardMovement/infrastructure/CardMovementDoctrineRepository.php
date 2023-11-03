@@ -11,6 +11,7 @@ use Viabo\management\cardMovement\domain\CardMovementLog;
 use Viabo\management\cardMovement\domain\CardMovementRepository;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
+use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 
 final class CardMovementDoctrineRepository extends DoctrineRepository implements CardMovementRepository
 {
@@ -32,16 +33,8 @@ final class CardMovementDoctrineRepository extends DoctrineRepository implements
 
     public function matching(Criteria $criteria): array
     {
-        $rsm = new ResultSetMappingBuilder($this->entityManager());
-        $rsm->addRootEntityFromClassMetadata('Viabo\management\cardMovement\domain\CardMovement', 'v');
-        $query = $this->entityManager()->createNativeQuery(
-            'call managementCardsMovements(:filters,:limit,:offset)',
-            $rsm
-        );
-        $query->setParameter('filters' , $criteria->getWhereSQL());
-        $query->setParameter('limit' , $criteria->limit() ?? '');
-        $query->setParameter('offset' , $criteria->offset() ?? '');
-        return $query->getResult();
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(CardMovement::class)->matching($criteriaConvert)->toArray();
     }
 
     public function matchingView(Criteria $criteria): array
@@ -58,8 +51,11 @@ final class CardMovementDoctrineRepository extends DoctrineRepository implements
         return $query->getResult();
     }
 
-    public function delete(CardMovement $cardMovement): void
+    public function delete(string $transactionId): void
     {
-        $this->remove($cardMovement);
+        $query = "DELETE FROM t_management_cards_movements WHERE SetTransactionId = :transactionId";
+        $statement = $this->entityManager()->getConnection()->prepare($query);
+        $statement->bindValue('transactionId' , $transactionId);
+        $statement->executeQuery()->fetchAllAssociative();
     }
 }

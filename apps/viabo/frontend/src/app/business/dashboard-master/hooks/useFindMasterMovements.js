@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
-import { format } from 'date-fns'
+import { endOfDay, format, startOfDay } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { toast } from 'react-toastify'
 
 import { DASHBOARD_MASTER_KEYS } from '@/app/business/dashboard-master/adapters/dashboardMasterKeys'
@@ -13,10 +14,11 @@ export const useFindMasterMovements = (startDate, endDate, options = {}) => {
   if (!startDate || !endDate) {
     return null
   }
-  const initialDate = format(startDate, 'yyyy-MM-dd')
-  const finalDate = format(endDate, 'yyyy-MM-dd')
+  const initialDate = format(startOfDay(startDate), 'yyyy-MM-dd')
+  const finalDate = format(endOfDay(endDate), 'yyyy-MM-dd')
   const [customError, setCustomError] = useState(null)
-  const setMovements = useMasterGlobalStore(state => state.setMovements)
+  const { setMovements, setFilterDate } = useMasterGlobalStore(state => state)
+
   const movements = useQuery(
     [DASHBOARD_MASTER_KEYS.MOVEMENTS],
     ({ signal }) => getMasterMovements(initialDate, finalDate, signal),
@@ -34,6 +36,15 @@ export const useFindMasterMovements = (startDate, endDate, options = {}) => {
           type: getNotificationTypeByErrorCode(error)
         })
         setMovements(null)
+      },
+      onSuccess: data => {
+        setFilterDate({
+          startDate: startOfDay(startDate),
+          endDate: endOfDay(endDate),
+          text: `${format(startDate, 'dd MMMM yyyy', { locale: es })} - ${format(endDate, 'dd MMMM yyyy', {
+            locale: es
+          })}`
+        })
       },
       ...options
     }

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { Card, Divider, FormLabel, IconButton, Link, Stack, Typography } from '@mui/material'
 import { MobileDatePicker } from '@mui/x-date-pickers'
-import { endOfMonth, startOfMonth } from 'date-fns'
+import { sub } from 'date-fns'
 import { BiBlock } from 'react-icons/bi'
 import { BsFiletypePdf, BsFiletypeXml, BsPatchCheck } from 'react-icons/bs'
 import { PiFilesBold } from 'react-icons/pi'
@@ -14,8 +14,9 @@ import { MaterialDataTable } from '@/shared/components/dataTables'
 
 export const ExpensesTable = () => {
   const currentDate = new Date()
-  const initialStartDate = startOfMonth(currentDate)
-  const initialEndDate = endOfMonth(currentDate)
+
+  const initialStartDate = sub(currentDate, { days: 30 })
+  const initialEndDate = currentDate
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
 

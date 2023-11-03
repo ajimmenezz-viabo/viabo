@@ -7,7 +7,12 @@ const initialState = {
   balanceMovements: '$0.00',
   income: '$0.00',
   expenses: '$0.00',
-  filterPaymentProcessor: null
+  expensesWithInvoice: '$0.00',
+  expensesWithoutInvoice: '$0.00',
+  expensesWithoutChecked: '$0.00',
+  totalExpensesOtherCharges: '$0.00',
+  filterPaymentProcessor: null,
+  filterDate: null
 }
 
 const masterGlobalsStore = (set, get) => ({
@@ -47,18 +52,34 @@ const masterGlobalsStore = (set, get) => ({
         movements: movements?.movements || [],
         balanceMovements: movements?.balanceMovements || '$0.00',
         expenses: movements?.expenses || '$0.00',
-        income: movements?.income || '$0.00'
+        income: movements?.income || '$0.00',
+        expensesWithInvoice: movements?.expensesWithInvoice || '$0.00',
+        expensesWithoutInvoice: movements?.expensesWithoutInvoice || '$0.00',
+        expensesWithoutChecked: movements?.expensesWithoutChecked || '$0.00',
+        totalExpensesOtherCharges: movements?.totalExpensesOtherCharges || '$0.00'
       }),
       false,
       'SET_MASTER_MOVEMENTS'
     )
   },
   getBalance: () => {
-    const { balanceMovements, income, expenses } = get()
+    const {
+      balanceMovements,
+      income,
+      expenses,
+      expensesWithInvoice,
+      expensesWithoutInvoice,
+      expensesWithoutChecked,
+      totalExpensesOtherCharges
+    } = get()
     return {
       balanceMovements,
       income,
-      expenses
+      expenses,
+      expensesWithInvoice,
+      expensesWithoutInvoice,
+      expensesWithoutChecked,
+      totalExpensesOtherCharges
     }
   },
   setFilterPaymentProcessor: filterPaymentProcessor => {
@@ -68,6 +89,15 @@ const masterGlobalsStore = (set, get) => ({
       }),
       false,
       'SET_FILTER_PAYMENT_PROCESSOR'
+    )
+  },
+  setFilterDate: filterDate => {
+    set(
+      state => ({
+        filterDate
+      }),
+      false,
+      'SET_FILTER_DATE'
     )
   }
 })

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import { Close } from '@mui/icons-material'
-import { Box, IconButton, Stack } from '@mui/material'
+import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { alpha, styled } from '@mui/material/styles'
 import isString from 'lodash/isString'
 import { useDropzone } from 'react-dropzone'
@@ -9,7 +9,6 @@ import { useDropzone } from 'react-dropzone'
 import RejectionFiles from './RejectionFiles'
 
 import pdf from '@/shared/assets/img/pdf.png'
-import { UploadIllustration } from '@/shared/components/illustrations'
 import { Image } from '@/shared/components/images'
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
@@ -48,7 +47,7 @@ export default function UploadSingleFile({ error = false, file, helperText, onRe
   }
 
   return (
-    <Box sx={{ width: '100%', height: '100%', position: 'relative', ...sx }}>
+    <Stack sx={{ width: '100%', height: '100%', position: 'relative', ...sx }}>
       <DropZoneStyle
         {...getRootProps()}
         sx={{
@@ -71,9 +70,31 @@ export default function UploadSingleFile({ error = false, file, helperText, onRe
             alignItems="center"
             justifyContent="center"
             direction={{ xs: 'column', md: 'row' }}
-            sx={{ height: 130, textAlign: { xs: 'center', md: 'left' } }}
+            sx={{ height: 10, textAlign: { xs: 'center', md: 'left' } }}
           >
-            <UploadIllustration sx={{ width: '50%' }} />
+            <Box
+              sx={{ p: 3 }}
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
+              flexDirection={'column'}
+            >
+              <Typography gutterBottom variant="subtitle1" fontWeight={'bold'}>
+                Arrastra ó Selecciona el archivo
+              </Typography>
+
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Arrastra el archivo aquí o haz clic para&nbsp;
+                <Typography
+                  variant="body2"
+                  component="span"
+                  sx={{ color: 'primary.main', textDecoration: 'underline' }}
+                >
+                  buscar
+                </Typography>
+                &nbsp;en tu equipo
+              </Typography>
+            </Box>
           </Stack>
         ) : (
           <Box width={1} height={{ lg: 165, xl: 155, md: 180, xs: 250, sm: 250 }} />
@@ -120,6 +141,6 @@ export default function UploadSingleFile({ error = false, file, helperText, onRe
       {fileRejections.length > 0 && <RejectionFiles fileRejections={fileRejections} />}
 
       {helperText && helperText}
-    </Box>
+    </Stack>
   )
 }

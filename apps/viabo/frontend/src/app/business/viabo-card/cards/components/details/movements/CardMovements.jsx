@@ -4,7 +4,7 @@ import { Check } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Box, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { MobileDatePicker } from '@mui/x-date-pickers'
-import { endOfMonth, startOfMonth } from 'date-fns'
+import { sub } from 'date-fns'
 import { BiBlock } from 'react-icons/bi'
 import { BsPatchCheck } from 'react-icons/bs'
 import { LuReceipt } from 'react-icons/lu'
@@ -33,8 +33,8 @@ export function CardMovements() {
   const [selectedMovement, setSelectedMovement] = useState(null)
 
   const currentDate = new Date()
-  const initialStartDate = startOfMonth(currentDate)
-  const initialEndDate = endOfMonth(currentDate)
+  const initialStartDate = sub(currentDate, { days: 30 })
+  const initialEndDate = currentDate
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
 

@@ -21,6 +21,7 @@ final class CardMovement extends AggregateRoot
         private CardPaymentProcessorId       $cardPaymentProcessorId ,
         private CardCommerceId               $commerceId ,
         private CardMovementReceiptId        $receiptId ,
+        private ?string                      $receiptFiles ,
         private CardMovementType             $type ,
         private CardMovementOperationType    $operationType ,
         private CardMovementAmount           $amount ,
@@ -38,6 +39,7 @@ final class CardMovement extends AggregateRoot
         string $paymentProcessor ,
         string $commerceId ,
         string $receiptId ,
+        ?string $receiptFiles,
         array  $setApiData ,
         array  $operations
     ): static
@@ -53,6 +55,7 @@ final class CardMovement extends AggregateRoot
             new CardPaymentProcessorId($paymentProcessor) ,
             new CardCommerceId($commerceId) ,
             new CardMovementReceiptId($receiptId) ,
+            $receiptFiles ?? '' ,
             $type ,
             CardMovementOperationType::fromOperations($operations , $transactionId , $type->isExpense()) ,
             CardMovementAmount::fromType($setApiData , $type->isExpense()) ,
@@ -73,6 +76,7 @@ final class CardMovement extends AggregateRoot
             new CardPaymentProcessorId($value['cardPaymentProcessor']) ,
             new CardCommerceId($value['cardCommerceId']) ,
             new CardMovementReceiptId($value['receiptId']) ,
+            $value['receiptFiles'] ?? '',
             CardMovementType::fromName($value['type']) ,
             CardMovementOperationType::create($value['operationType']) ,
             CardMovementAmount::create($value['amount']) ,
@@ -96,6 +100,11 @@ final class CardMovement extends AggregateRoot
     public function receiptId(): string
     {
         return $this->receiptId->value();
+    }
+
+    public function receiptFiles(): ?string
+    {
+        return $this->receiptFiles;
     }
 
     public function isNotConsolidated(mixed $mainCardTransactionsId): bool
@@ -133,6 +142,7 @@ final class CardMovement extends AggregateRoot
             'cardPaymentProcessor' => $this->cardPaymentProcessorId->value() ,
             'cardCommerceId' => $this->commerceId->value() ,
             'receiptId' => $this->receiptId->value() ,
+            'receiptFiles' => $this->receiptFiles ?? '' ,
             'description' => $this->description->value() ,
             'concept' => $this->concept->value() ,
             'amount' => $this->amount->value() ,

@@ -40,13 +40,14 @@ final readonly class CardMovementsFinderOnSet
     private function formatMovements(array $cardMovements , array $card , array $operations): array
     {
         return array_map(function (array $movementData) use ($card , $operations) {
-            $receiptId = $this->searchReceiptBy($movementData['Auth_Code']);
+            $receipt = $this->searchReceiptBy($movementData['Auth_Code']);
             return CardMovement::fromSetApiValue(
                 $card['id'] ,
                 $card['number'] ,
                 $card['paymentProcessor'] ?? $card['paymentProcessorName'] ,
                 $card['commerceId'] ,
-                $receiptId,
+                $receipt['receiptId'] ,
+                $receipt['receiptFiles'] ,
                 $movementData,
                 $operations
             );
@@ -55,11 +56,11 @@ final readonly class CardMovementsFinderOnSet
         }));
     }
 
-    private function searchReceiptBy(string $transactionId): string
+    private function searchReceiptBy(string $transactionId): array
     {
         try {
             $cardMovement = $this->finderByTransactionId->__invoke($transactionId);
-            return $cardMovement->receiptId();
+            return ["receiptId" => $cardMovement->receiptId(), "receiptFiles" => $cardMovement->receiptFiles()];
         } catch (\DomainException) {
             return '';
         }

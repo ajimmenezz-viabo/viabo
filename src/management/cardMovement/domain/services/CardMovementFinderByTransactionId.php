@@ -19,7 +19,7 @@ final readonly class CardMovementFinderByTransactionId
     public function __invoke(string $transactionId): CardMovement
     {
         $filter = Filters::fromValues([
-            ['field' => 'setTransactionId.value' , 'operator' => '=' , 'value' => $transactionId]
+            ['field' => 'SetTransactionId' , 'operator' => '=', 'value' => $transactionId]
         ]);
 
         $cardMovement = $this->repository->matching(new Criteria($filter));

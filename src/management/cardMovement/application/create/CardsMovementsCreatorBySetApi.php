@@ -98,7 +98,7 @@ final readonly class CardsMovementsCreatorBySetApi
     {
         try {
             $filters = Filters::fromValues([
-                ['field' => 'setTransactionId.value' , 'operator' => '=' , 'value' => $transactionId]
+                ['field' => 'SetTransactionId' , 'operator' => '=', 'value' => $transactionId]
             ]);
             $this->finder->__invoke(new Criteria($filters));
             return false;

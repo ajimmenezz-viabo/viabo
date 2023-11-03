@@ -16,5 +16,5 @@ interface CardMovementRepository
 
     public function matchingView(Criteria $criteria): array;
 
-    public function delete(string $transactionId): void;
+    public function delete(CardMovement $cardMovement): void;
 }

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { Box } from '@mui/material'
+import { Stack } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useDropzone } from 'react-dropzone'
 
@@ -42,7 +42,7 @@ export default function UploadMultiFile({
   })
 
   return (
-    <Box sx={{ width: '100%', ...sx }}>
+    <Stack sx={{ width: '100%', ...sx }}>
       <DropZoneStyle
         {...getRootProps()}
         sx={{
@@ -58,12 +58,11 @@ export default function UploadMultiFile({
 
         <BlockContent />
       </DropZoneStyle>
+      {helperText && helperText}
 
       {fileRejections.length > 0 && <RejectionFiles fileRejections={fileRejections} />}
 
       <MultiFilePreview files={files} showPreview={showPreview} onRemove={onRemove} onRemoveAll={onRemoveAll} />
-
-      {helperText && helperText}
-    </Box>
+    </Stack>
   )
 }

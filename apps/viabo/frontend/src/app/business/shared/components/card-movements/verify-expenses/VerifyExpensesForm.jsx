@@ -96,13 +96,13 @@ const VerifyExpensesForm = ({ movements = [], onSuccess }) => {
                 name="row-radio-buttons-group"
               >
                 <FormControlLabel value="invoice" control={<Radio />} label="Factura (XML y PDF)" />
-                <FormControlLabel value="image" control={<Radio />} label="Nota o imagen" />
+                <FormControlLabel value="image" control={<Radio />} label="Nota o archivo (Imagen o PDF)" />
               </RadioGroup>
             </FormControl>
           </Stack>
 
           {!isInvoice && (
-            <Stack>
+            <Stack spacing={1}>
               <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
                 Nota:
               </Typography>
@@ -111,9 +111,9 @@ const VerifyExpensesForm = ({ movements = [], onSuccess }) => {
             </Stack>
           )}
 
-          <Stack spacing={3}>
+          <Stack spacing={1}>
             <Typography variant="overline" sx={{ color: 'text.disabled', width: 1 }}>
-              Archivos:
+              Archivos (Max - 3MB):
             </Typography>
             {isInvoice ? (
               <RFUploadMultiFile

@@ -7,6 +7,9 @@ export const CardMovementsAdapter = movements => {
   const decryptedMovements = getDecryptInfo(movements?.ciphertext, movements?.iv)
   let expenses = 0
   let income = 0
+  let expensesWithoutInvoice = 0
+  let expensesWithInvoice = 0
+  let expensesWithoutChecked = 0
 
   return {
     movements:
@@ -33,6 +36,19 @@ export const CardMovementsAdapter = movements => {
         )
 
         const isInvoice = Boolean(invoiceFiles?.xml !== null && invoiceFiles?.pdf !== null)
+        const IS_OTHERS_CHARGES_TYPE = Boolean(movement?.operationType?.toLowerCase() === 'otros cargos')
+
+        if (IS_OTHERS_CHARGES_TYPE && Boolean(movement?.checked) && isInvoice) {
+          expensesWithInvoice += amount
+        }
+
+        if (IS_OTHERS_CHARGES_TYPE && Boolean(movement?.checked) && !isInvoice) {
+          expensesWithoutInvoice += amount
+        }
+
+        if (IS_OTHERS_CHARGES_TYPE && !movement?.checked) {
+          expensesWithoutChecked += amount
+        }
 
         return {
           id: movement?.transactionId,
@@ -69,6 +85,10 @@ export const CardMovementsAdapter = movements => {
       }) ?? [],
     income: fCurrency(income),
     expenses: fCurrency(expenses),
-    balanceMovements: fCurrency(income - expenses)
+    balanceMovements: fCurrency(income - expenses),
+    expensesWithInvoice: fCurrency(expensesWithInvoice),
+    expensesWithoutInvoice: fCurrency(expensesWithoutInvoice),
+    expensesWithoutChecked: fCurrency(expensesWithoutChecked),
+    totalExpensesOtherCharges: fCurrency(expensesWithInvoice + expensesWithoutInvoice + expensesWithoutChecked)
   }
 }

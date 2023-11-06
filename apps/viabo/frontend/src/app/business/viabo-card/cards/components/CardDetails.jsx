@@ -1,16 +1,9 @@
 import { useEffect } from 'react'
 
-import { Alert, Box, Grid, Stack } from '@mui/material'
-import { useCollapseDrawer } from '@theme/hooks'
+import { Alert, Box, Stack } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import {
-  CardActions,
-  CardAssignInfo,
-  CardBalance,
-  CardCharge,
-  CardMovements
-} from '@/app/business/viabo-card/cards/components/details'
+import { CardActions, CardMovements } from '@/app/business/viabo-card/cards/components/details'
 import { CardDetailsHeader } from '@/app/business/viabo-card/cards/components/details/header'
 import { useFindCardDetails } from '@/app/business/viabo-card/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
@@ -24,7 +17,6 @@ export function CardDetails() {
   const { data, isLoading, isError, error, refetch } = useFindCardDetails(card?.id, {
     enabled: !!card?.id
   })
-  const { isCollapse } = useCollapseDrawer()
 
   useEffect(() => {
     if (data) {
@@ -72,19 +64,8 @@ export function CardDetails() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
               >
-                <Stack pt={2} pb={4} px={2}>
-                  <Grid container spacing={3} sx={{ p: 0, pb: 3 }}>
-                    <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 4 : 12} xl={3}>
-                      <Stack spacing={3}>
-                        <CardBalance card={card} />
-                        <CardCharge />
-                        <CardAssignInfo />
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={isCollapse ? 8 : 12} xl={9}>
-                      <CardMovements />
-                    </Grid>
-                  </Grid>
+                <Stack pt={2} pb={4}>
+                  <CardMovements />
                 </Stack>
               </motion.div>
             </Box>

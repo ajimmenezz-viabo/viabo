@@ -15,7 +15,7 @@ import {
 import { RightPanel } from '@/app/shared/components'
 import { Scrollbar } from '@/shared/components/scroll'
 
-const BalanceDrawer = ({ open, onClose, balance, dateRange }) => (
+const BalanceDrawer = ({ open, onClose, card, dateRange }) => (
   <RightPanel
     open={open}
     handleClose={onClose}
@@ -36,19 +36,19 @@ const BalanceDrawer = ({ open, onClose, balance, dateRange }) => (
       <Stack spacing={1} pt={2}>
         <Stack alignItems={'center'}>
           <Stack direction={'row'} spacing={1}>
-            <Typography variant="h2" color={balance?.balanceMovements?.includes('-') ? 'error' : 'success.main'}>
-              {balance?.balanceMovements}
+            <Typography variant="h2" color={card?.balanceMovements?.includes('-') ? 'error' : 'success.main'}>
+              {card?.balanceMovements}
             </Typography>
             <Typography variant="caption">MXN</Typography>
           </Stack>
 
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography variant="h6" color={'success.main'}>
-              {balance?.income}
+              {card?.income}
             </Typography>
             <FormLabel sx={{ fontSize: 24 }}> / </FormLabel>
             <Typography variant="h6" color={'error'}>
-              -{balance?.expenses}
+              -{card?.expenses}
             </Typography>
           </Stack>
         </Stack>
@@ -79,7 +79,7 @@ const BalanceDrawer = ({ open, onClose, balance, dateRange }) => (
                     <Typography variant="subtitle2">Comprobado con Factura</Typography>
                   </TableCell>
 
-                  <TableCell align="right">{balance?.expensesWithInvoice}</TableCell>
+                  <TableCell align="right">{card?.expensesWithInvoice}</TableCell>
                 </TableRow>
                 <TableRow
                   sx={{
@@ -90,7 +90,7 @@ const BalanceDrawer = ({ open, onClose, balance, dateRange }) => (
                     <Typography variant="subtitle2">Comprobado sin Factura</Typography>
                   </TableCell>
 
-                  <TableCell align="right">{balance?.expensesWithoutInvoice}</TableCell>
+                  <TableCell align="right">{card?.expensesWithoutInvoice}</TableCell>
                 </TableRow>
                 <TableRow
                   sx={{
@@ -101,13 +101,13 @@ const BalanceDrawer = ({ open, onClose, balance, dateRange }) => (
                     <Typography variant="subtitle2">Sin comprobar</Typography>
                   </TableCell>
 
-                  <TableCell align="right">{balance?.expensesWithoutChecked}</TableCell>
+                  <TableCell align="right">{card?.expensesWithoutChecked}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={1} />
 
                   <TableCell align="right" width={120}>
-                    <Typography variant="subtitle1">{balance?.totalExpensesOtherCharges}</Typography>
+                    <Typography variant="subtitle1">{card?.totalExpensesOtherCharges}</Typography>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -120,7 +120,7 @@ const BalanceDrawer = ({ open, onClose, balance, dateRange }) => (
 )
 
 BalanceDrawer.propTypes = {
-  balance: PropTypes.shape({
+  card: PropTypes.shape({
     balanceMovements: PropTypes.any,
     expenses: PropTypes.any,
     expensesWithInvoice: PropTypes.any,

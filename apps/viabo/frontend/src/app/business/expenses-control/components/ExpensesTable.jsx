@@ -1,16 +1,22 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, useEffect, useMemo, useState } from 'react'
 
-import { Card, Divider, FormLabel, IconButton, Link, Stack, Typography } from '@mui/material'
-import { MobileDatePicker } from '@mui/x-date-pickers'
-import { sub } from 'date-fns'
+import { Card, IconButton, Link, Stack, Typography } from '@mui/material'
+import { endOfDay, format, startOfDay, sub } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { BiBlock } from 'react-icons/bi'
 import { BsFiletypePdf, BsFiletypeXml, BsPatchCheck } from 'react-icons/bs'
 import { PiFilesBold } from 'react-icons/pi'
 
+import { CardMovementsHeader } from '../../shared/components/card-movements/header-filter'
 import { useFindExpensesMovementsFromCommerceCards } from '../hooks'
 
 import { getCardTypeByName } from '@/app/shared/services'
 import { MaterialDataTable } from '@/shared/components/dataTables'
+import { Lodable } from '@/shared/components/lodables'
+
+const BalanceDrawer = Lodable(
+  lazy(() => import('@/app/business/shared/components/card-movements/balance/BalanceDrawer'))
+)
 
 export const ExpensesTable = () => {
   const currentDate = new Date()
@@ -19,10 +25,22 @@ export const ExpensesTable = () => {
   const initialEndDate = currentDate
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
+  const [openBalance, setOpenBalance] = useState(false)
 
   const { data, isError, isLoading, isFetching, error, refetch } = useFindExpensesMovementsFromCommerceCards(
     startDate,
     endDate
+  )
+
+  const filterDate = useMemo(
+    () => ({
+      startDate: startOfDay(startDate),
+      endDate: endOfDay(endDate),
+      text: `${format(startDate, 'dd MMMM yyyy', { locale: es })} - ${format(endDate, 'dd MMMM yyyy', {
+        locale: es
+      })}`
+    }),
+    [startDate, endDate]
   )
 
   const handleDownloadAllFiles = row => () => {
@@ -186,55 +204,24 @@ export const ExpensesTable = () => {
     []
   )
 
-  const handleStartDateChange = date => {
-    if (endDate !== null && date > endDate) {
-      setEndDate(date)
+  const handleDateRange = range => {
+    const { startDate, endDate } = range
+    if (endDate !== null && startDate !== null) {
+      setEndDate(endDate)
+      setStartDate(startDate)
     }
-    setStartDate(date)
-  }
-
-  const handleEndDateChange = date => {
-    if (startDate !== null && date < startDate) {
-      setStartDate(date)
-    }
-    setEndDate(date)
   }
 
   return (
     <>
       <Card>
-        <Stack p={2} direction={'row'} justifyContent={'center'} alignItems={'center'} spacing={2}>
-          <MobileDatePicker
-            size="small"
-            value={startDate}
-            onChange={handleStartDateChange}
-            maxDate={endDate}
-            slotProps={{
-              textField: {
-                size: 'small',
-                required: true
-              }
-            }}
-            disabled={isFetching}
-            format="dd MMMM yyyy"
-          />
-          <FormLabel>-</FormLabel>
-          <MobileDatePicker
-            size="small"
-            value={endDate}
-            onChange={handleEndDateChange}
-            minDate={startDate}
-            slotProps={{
-              textField: {
-                size: 'small',
-                required: true
-              }
-            }}
-            disabled={isFetching}
-            format="dd MMMM yyyy"
-          />
-        </Stack>
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <CardMovementsHeader
+          startDate={startDate}
+          endDate={endDate}
+          onChangeDateRange={handleDateRange}
+          onOpenBalance={() => setOpenBalance(true)}
+          loading={isFetching}
+        />
 
         <MaterialDataTable
           enableColumnPinning
@@ -286,6 +273,15 @@ export const ExpensesTable = () => {
           muiTableContainerProps={{ sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } }}
         />
       </Card>
+
+      <BalanceDrawer
+        open={openBalance}
+        card={data}
+        dateRange={filterDate?.text}
+        onClose={() => {
+          setOpenBalance(false)
+        }}
+      />
     </>
   )
 }

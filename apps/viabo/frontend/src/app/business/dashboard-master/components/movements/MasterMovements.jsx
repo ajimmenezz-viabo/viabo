@@ -306,7 +306,7 @@ export function MasterMovements() {
       />
       <BalanceDrawer
         open={openBalance}
-        balance={balance}
+        card={balance}
         dateRange={filterDate?.text}
         onClose={() => {
           setOpenBalance(false)

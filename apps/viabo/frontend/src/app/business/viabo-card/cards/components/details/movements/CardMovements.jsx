@@ -2,22 +2,22 @@ import { lazy, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Check } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { Box, Card, Divider, FormLabel, MenuItem, Stack, Typography } from '@mui/material'
-import { MobileDatePicker } from '@mui/x-date-pickers'
-import { sub } from 'date-fns'
+import { Box, Card, MenuItem, Stack, Typography } from '@mui/material'
+import { endOfDay, format, startOfDay, sub } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { BiBlock } from 'react-icons/bi'
 import { BsPatchCheck } from 'react-icons/bs'
 import { LuReceipt } from 'react-icons/lu'
 import { toast } from 'react-toastify'
 
 import { MovementDescriptionColumn } from '@/app/business/shared/components/card-movements/columns'
+import { CardMovementsHeader } from '@/app/business/shared/components/card-movements/header-filter'
 import { useFindCardMovements } from '@/app/business/viabo-card/cards/hooks/useFindCardMovements'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { getOperationTypeByName } from '@/app/shared/services'
 import { MaterialDataTable } from '@/shared/components/dataTables'
 import { Lodable } from '@/shared/components/lodables'
 import { useMaterialTable } from '@/shared/hooks'
-import { fDate } from '@/shared/utils'
 
 const TransactionReport = Lodable(
   lazy(() => import('@/app/business/viabo-card/cards/components/details/incidence/TransactionReport'))
@@ -27,10 +27,18 @@ const VerifyExpensesDrawer = Lodable(
   lazy(() => import('@/app/business/shared/components/card-movements/verify-expenses/VerifyExpensesDrawer'))
 )
 
+const BalanceDrawer = Lodable(
+  lazy(() => import('@/app/business/shared/components/card-movements/balance/BalanceDrawer'))
+)
+
 export function CardMovements() {
   const [openReport, setOpenReport] = useState(false)
   const [openVerifyExpenses, setOpenVerifyExpenses] = useState(false)
+  const [openBalance, setOpenBalance] = useState(false)
   const [selectedMovement, setSelectedMovement] = useState(null)
+
+  const card = useCommerceDetailsCard(state => state.card)
+  const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
 
   const currentDate = new Date()
   const initialStartDate = sub(currentDate, { days: 30 })
@@ -38,17 +46,9 @@ export function CardMovements() {
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
 
-  const card = useCommerceDetailsCard(state => state.card)
-  const addInfoCard = useCommerceDetailsCard(state => state.addInfoCard)
-
-  const { data, isLoading, refetch, remove, isFetching, isError, error } = useFindCardMovements(
-    card?.id,
-    startDate,
-    endDate,
-    {
-      enabled: false
-    }
-  )
+  const { data, isLoading, refetch, isFetching, isError, error } = useFindCardMovements(card?.id, startDate, endDate, {
+    enabled: false
+  })
 
   const movements = data?.movements || []
 
@@ -150,40 +150,16 @@ export function CardMovements() {
 
   useEffect(() => {
     if (data) {
-      const month = `${fDate(startDate)} - ${fDate(endDate)}` ?? null
-      addInfoCard({ ...data, monthBalance: month })
+      const filterDate = {
+        startDate: startOfDay(startDate),
+        endDate: endOfDay(endDate),
+        text: `${format(startDate, 'dd MMMM yyyy', { locale: es })} - ${format(endDate, 'dd MMMM yyyy', {
+          locale: es
+        })}`
+      }
+      addInfoCard({ ...data, filterDate })
     }
   }, [data, card?.id, startDate, endDate])
-
-  const handleStartDateChange = date => {
-    if (endDate !== null && date > endDate) {
-      setEndDate(date)
-    }
-    setStartDate(date)
-  }
-
-  const handleEndDateChange = date => {
-    if (startDate !== null && date < startDate) {
-      setStartDate(date)
-    }
-    setEndDate(date)
-  }
-
-  const handleValidateExpenses = table => () => {
-    const movements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
-    const someHasVerified = movements?.some(movement => movement?.verified)
-    const someHasDifferentOperationType = movements?.some(movement => movement?.operationType !== 'OTROS CARGOS')
-    if (someHasVerified) {
-      return toast.warn(
-        'Existen movimientos que ya se encuentran comprobados, verifique los movimientos seleccionados.'
-      )
-    }
-    if (someHasDifferentOperationType) {
-      return toast.warn('Existen movimientos que no se pueden comprobar, verifique el tipo de movimiento.')
-    }
-
-    return setOpenVerifyExpenses(true)
-  }
 
   const table = useMaterialTable(isError, error, {
     columns,
@@ -261,41 +237,40 @@ export function CardMovements() {
     return !result
   }, [selectedMovements, table])
 
+  const handleValidateExpenses = table => () => {
+    const movements = table?.getSelectedRowModel().flatRows?.map(row => row.original) ?? []
+    const someHasVerified = movements?.some(movement => movement?.verified)
+    const someHasDifferentOperationType = movements?.some(movement => movement?.operationType !== 'OTROS CARGOS')
+    if (someHasVerified) {
+      return toast.warn(
+        'Existen movimientos que ya se encuentran comprobados, verifique los movimientos seleccionados.'
+      )
+    }
+    if (someHasDifferentOperationType) {
+      return toast.warn('Existen movimientos que no se pueden comprobar, verifique el tipo de movimiento.')
+    }
+
+    return setOpenVerifyExpenses(true)
+  }
+
+  const handleDateRange = range => {
+    const { startDate, endDate } = range
+    if (endDate !== null && startDate !== null) {
+      setEndDate(endDate)
+      setStartDate(startDate)
+    }
+  }
+
   return (
     <>
       <Card>
-        <Stack p={2} direction={'row'} justifyContent={'center'} alignItems={'center'} spacing={2}>
-          <MobileDatePicker
-            size="small"
-            value={startDate}
-            onChange={handleStartDateChange}
-            maxDate={endDate}
-            slotProps={{
-              textField: {
-                size: 'small',
-                required: true
-              }
-            }}
-            disabled={isFetching}
-            format="dd MMMM yyyy"
-          />
-          <FormLabel>-</FormLabel>
-          <MobileDatePicker
-            size="small"
-            value={endDate}
-            onChange={handleEndDateChange}
-            minDate={startDate}
-            slotProps={{
-              textField: {
-                size: 'small',
-                required: true
-              }
-            }}
-            disabled={isFetching}
-            format="dd MMMM yyyy"
-          />
-        </Stack>
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <CardMovementsHeader
+          startDate={startDate}
+          endDate={endDate}
+          onChangeDateRange={handleDateRange}
+          onOpenBalance={() => setOpenBalance(true)}
+          loading={isFetching}
+        />
 
         <MaterialDataTable table={table} />
       </Card>
@@ -305,6 +280,14 @@ export function CardMovements() {
         open={openVerifyExpenses}
         setOpen={setOpenVerifyExpenses}
         movements={selectedMovements ?? []}
+      />
+      <BalanceDrawer
+        open={openBalance}
+        card={card}
+        dateRange={card?.filterDate?.text}
+        onClose={() => {
+          setOpenBalance(false)
+        }}
       />
     </>
   )

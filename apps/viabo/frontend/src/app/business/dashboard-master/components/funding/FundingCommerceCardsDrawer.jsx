@@ -42,6 +42,7 @@ const FundingCommerceCardsDrawer = ({ open, setOpen, card, cardList = [] }) => {
       cardOriginId,
       isGlobal,
       transactions: values?.transactions || [],
+      concept: values?.concept,
       balance,
       currentBalance
     })

@@ -1,10 +1,15 @@
+import PropTypes from 'prop-types'
+
 import { Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-export function SpeiLogo({ sx, color }) {
+export function SpeiLogo({ sx, color, invert = false }) {
   const theme = useTheme()
 
-  const colorDefault = theme?.palette.mode === 'dark' ? 'white' : '#343084'
+  let colorDefault = theme?.palette.mode === 'dark' ? 'white' : '#343084'
+  if (invert) {
+    colorDefault = theme?.palette.mode === 'dark' ? '#343084' : 'white'
+  }
   return (
     <Box sx={{ display: 'flex', width: 50, height: 50, alignItems: 'center', ...sx }}>
       <svg
@@ -77,4 +82,10 @@ export function SpeiLogo({ sx, color }) {
       </svg>
     </Box>
   )
+}
+
+SpeiLogo.propTypes = {
+  color: PropTypes.any,
+  invert: PropTypes.bool,
+  sx: PropTypes.any
 }

@@ -38,8 +38,8 @@ const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactio
   const total = useMemo(() => (parseFloat(data?.balance) - data?.currentBalance).toFixed(2) || 0, [data])
 
   const handleSubmit = () => {
-    const { cardOriginId, transactions, isGlobal } = data
-    const dataAdapted = CardTransactionsAdapter(cardOriginId, transactions, isGlobal)
+    const { cardOriginId, transactions, isGlobal, concept } = data
+    const dataAdapted = CardTransactionsAdapter(cardOriginId, transactions, concept, isGlobal)
     setTransactionLoading(true)
     transactionCard(dataAdapted, {
       onSuccess: () => {
@@ -155,7 +155,8 @@ ResumeTransactionForm.propTypes = {
     cardOriginId: PropTypes.any,
     currentBalance: PropTypes.any,
     isGlobal: PropTypes.any,
-    transactions: PropTypes.any
+    transactions: PropTypes.any,
+    concept: PropTypes.any
   }),
   onBack: PropTypes.any,
   onClose: PropTypes.func,

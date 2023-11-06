@@ -1,1 +1,0 @@
-import{ai as r,a as i,g as s,b as n}from"./index-3809032b.js";import{v as u}from"./build-ea106ac2.js";const m=(e={})=>{const{enqueueSnackbar:o}=r();return i({mutationFn:u,onError:a=>{const t=s(a,"No se puede validar el código");o(t,{variant:n(a),autoHideDuration:5e3})},...e})};export{m as u};

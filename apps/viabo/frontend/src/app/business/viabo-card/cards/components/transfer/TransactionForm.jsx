@@ -3,12 +3,13 @@ import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { Add, ArrowForwardIos, Delete } from '@mui/icons-material'
-import { Avatar, Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
-import { stringAvatar } from '@theme/utils'
-import { FieldArray, useFormik } from 'formik'
+import { Box, Button, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
+import { createAvatar } from '@theme/utils'
+import { FieldArray, getIn, useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
+import { Avatar } from '@/shared/components/avatar'
 import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
@@ -45,17 +46,17 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
         selectedCards?.map(card => ({
           id: Math.random(),
           card: { value: card?.value, label: card?.label, ...card },
-          amount: '',
-          concept: ''
+          amount: ''
         }))) || [
         {
           id: random,
           card: null,
-          amount: '',
-          concept: ''
+          amount: ''
         }
-      ]
+      ],
+      concept: ''
     },
+    validateOnChange: false,
     validationSchema: RegisterSchema,
     onSubmit: values => {
       if (insufficient) {
@@ -66,7 +67,7 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
     }
   })
 
-  const { isSubmitting, setFieldValue, values, setSubmitting } = formik
+  const { isSubmitting, setFieldValue, values, setSubmitting, errors, touched } = formik
 
   const loading = isSubmitting
 
@@ -95,36 +96,36 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
 
   return (
     <>
+      <Stack px={3} spacing={2} direction={{ xs: 'column-reverse', md: 'row' }} alignItems={'center'} mb={3}>
+        <Typography variant="subtitle1" sx={{ color: 'text.disabled' }}>
+          Transacciones:
+        </Typography>
+        <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }} />
+        {!isBinCard && (
+          <Button
+            type="button"
+            size="small"
+            variant={'outlined'}
+            startIcon={<Add />}
+            disabled={loading}
+            onClick={() =>
+              arrayHelpersRef.current.push({
+                id: random,
+                card: null,
+                amount: '',
+                concept: ''
+              })
+            }
+            sx={{ flexShrink: 0 }}
+          >
+            Agregar
+          </Button>
+        )}
+      </Stack>
+
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <FormProvider formik={formik}>
           <Box sx={{ p: 3 }}>
-            <Stack spacing={2} direction={{ xs: 'column-reverse', md: 'row' }} alignItems={'center'} mb={3}>
-              <Typography variant="subtitle1" sx={{ color: 'text.disabled' }}>
-                Transacciones:
-              </Typography>
-              <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }} />
-              {!isBinCard && (
-                <Button
-                  type="button"
-                  size="small"
-                  variant={'outlined'}
-                  startIcon={<Add />}
-                  disabled={loading}
-                  onClick={() =>
-                    arrayHelpersRef.current.push({
-                      id: random,
-                      card: null,
-                      amount: '',
-                      concept: ''
-                    })
-                  }
-                  sx={{ flexShrink: 0 }}
-                >
-                  Nueva
-                </Button>
-              )}
-            </Stack>
-
             <FieldArray
               name="transactions"
               render={arrayHelpers => {
@@ -133,18 +134,11 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
                   <Stack divider={<Divider flexItem sx={{ borderStyle: 'dashed' }} />} spacing={3}>
                     {values?.transactions.map((item, index) => {
                       const card = `transactions[${index}].card`
+                      const errorFieldCard = getIn(errors, card)
                       const amount = `transactions[${index}].amount`
-                      const concept = `transactions[${index}].concept`
 
                       return (
                         <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
-                          {item?.card?.assignUser?.name && (
-                            <Chip
-                              avatar={<Avatar {...stringAvatar(item?.card?.assignUser?.name ?? '')} />}
-                              label={item?.card?.assignUser?.name}
-                            />
-                          )}
-
                           <Stack
                             direction={{ xs: 'column', md: 'row' }}
                             spacing={2}
@@ -182,6 +176,58 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
                                 setCardsToSelect(filterCards)
                                 setFieldValue(card, value)
                               }}
+                              renderOption={(props, option) => {
+                                const avatar = createAvatar(option?.label)
+
+                                return (
+                                  <Box component="li" {...props}>
+                                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                                      <Avatar
+                                        src={option.label !== '' ? option.label : ''}
+                                        alt={option.label}
+                                        color={avatar?.color}
+                                        sx={{ width: 25, height: 25, fontSize: 12 }}
+                                      >
+                                        {avatar?.name}
+                                      </Avatar>
+                                      <span>{option.label}</span>
+                                    </Stack>
+                                  </Box>
+                                )
+                              }}
+                              renderInput={params => {
+                                const avatar = createAvatar(params?.inputProps?.value || '')
+
+                                return (
+                                  <TextField
+                                    {...params}
+                                    size="small"
+                                    placeholder="Seleccionar ..."
+                                    label={'Tarjeta'}
+                                    inputProps={{
+                                      ...params.inputProps
+                                    }}
+                                    error={Boolean(errorFieldCard)}
+                                    helperText={errorFieldCard || ''}
+                                    required
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      startAdornment: (
+                                        <InputAdornment position="start">
+                                          <Avatar
+                                            src={''}
+                                            alt={params.inputProps?.value || 'avatar'}
+                                            color={avatar?.color}
+                                            sx={{ width: 25, height: 25, fontSize: 12 }}
+                                          >
+                                            {avatar?.name !== 'undefined' ? avatar?.name : null}
+                                          </Avatar>
+                                        </InputAdornment>
+                                      )
+                                    }}
+                                  />
+                                )
+                              }}
                               sx={{ width: { xs: 1, lg: 0.6 } }}
                             />
                             <RFTextField
@@ -210,28 +256,28 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
                                 }
                               }}
                             />
+                            {index !== 0 && !isBinCard && (
+                              <IconButton
+                                size="small"
+                                color="error"
+                                title="Borrar"
+                                disabled={loading}
+                                onClick={() => {
+                                  const filterCards = cardsToSelect?.map((card, cardIndex) => {
+                                    if (card.value === item?.card?.value) {
+                                      return { ...card, isDisabled: false }
+                                    }
+                                    return card
+                                  })
+
+                                  setCardsToSelect(filterCards)
+                                  arrayHelpers.remove(index)
+                                }}
+                              >
+                                <Delete />
+                              </IconButton>
+                            )}
                           </Stack>
-                          <Stack sx={{ width: 1 }}>
-                            <RFTextField
-                              name={concept}
-                              multiline
-                              disabled={loading}
-                              rows={2}
-                              label={'Concepto'}
-                              placeholder={'Transferencia ..'}
-                            />
-                          </Stack>
-                          {index !== 0 && !isBinCard && (
-                            <Button
-                              size="small"
-                              color="error"
-                              disabled={loading}
-                              startIcon={<Delete />}
-                              onClick={() => arrayHelpers.remove(index)}
-                            >
-                              Borrar
-                            </Button>
-                          )}
                         </Stack>
                       )
                     })}
@@ -240,6 +286,17 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
               }}
             />
             <Divider sx={{ my: 3, borderStyle: 'dashed' }} />
+            <Stack sx={{ width: 1 }}>
+              <RFTextField
+                name={'concept'}
+                multiline
+                disabled={loading}
+                rows={2}
+                label={'Concepto'}
+                placeholder={'Transferencia ..'}
+              />
+            </Stack>
+
             <Stack sx={{ pt: 3 }}>
               <Button
                 variant="outlined"

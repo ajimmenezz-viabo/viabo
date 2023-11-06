@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { PasswordTwoTone } from '@mui/icons-material'
-import { Box, Button, CircularProgress, Divider, Stack, Switch, Toolbar, Typography } from '@mui/material'
+import { Check, PasswordTwoTone } from '@mui/icons-material'
+import { Box, Button, CircularProgress, Divider, IconButton, Stack, Switch, Toolbar, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useIsFetching } from '@tanstack/react-query'
 
 import { CARDS_COMMERCES_KEYS } from '@/app/business/viabo-card/cards/adapters'
 import { useToggleStatusCard } from '@/app/business/viabo-card/cards/hooks'
 import { CardNumber } from '@/app/shared/components/card'
+import { SpeiLogo } from '@/shared/components/images'
 import { CircularLoading } from '@/shared/components/loadings'
+import { copyToClipboard } from '@/shared/utils'
 
 const IOSSwitch = styled(props => <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />)(
   ({ theme }) => ({
@@ -63,6 +65,7 @@ const IOSSwitch = styled(props => <Switch focusVisibleClassName=".Mui-focusVisib
 export function CardDetailsHeader({ card }) {
   const [openCVV, setOpenCVV] = useState(false)
   const [openNIP, setOpenNIP] = useState(false)
+  const [copiedSPEI, setCopiedSPEI] = useState(false)
   const { mutate: changeStatusCard, isLoading: isChangingStatusCard } = useToggleStatusCard()
   const isFetchingCardDetails = useIsFetching([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id]) === 1
 
@@ -148,6 +151,24 @@ export function CardDetailsHeader({ card }) {
             >
               {openNIP ? <Stack px={1}>{card?.nip}</Stack> : 'NIP'}
             </Button>
+            <IconButton
+              variant="outlined"
+              title={`Copiar SPEI - ${card?.SPEI}`}
+              color={copiedSPEI ? 'success' : 'inherit'}
+              onClick={e => {
+                setCopiedSPEI(true)
+                copyToClipboard(card?.SPEI)
+                setTimeout(() => {
+                  setCopiedSPEI(false)
+                }, 1000)
+              }}
+            >
+              {copiedSPEI ? (
+                <Check sx={{ color: 'success', width: 25, height: 25 }} />
+              ) : (
+                <SpeiLogo sx={{ width: 25, height: 25 }} invert />
+              )}
+            </IconButton>
           </Stack>
         </Stack>
       </Stack>

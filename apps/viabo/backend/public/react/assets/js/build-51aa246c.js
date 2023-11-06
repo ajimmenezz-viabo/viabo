@@ -1,1 +1,0 @@
-import{ac as o,k as u,ad as l,r as g,ae as h}from"./index-3809032b.js";function C(a,r,n){const[t,c={}]=o(a,r,n),e=u({context:c.context}),s=e.getQueryCache();return l(g.useCallback(i=>s.subscribe(h.batchCalls(i)),[s]),()=>e.isFetching(t),()=>e.isFetching(t))}export{C as u};

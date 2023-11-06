@@ -68,6 +68,7 @@ export default function TransferSideBar({ open, setOpen, isFundingCard }) {
       cardOriginId,
       isGlobal,
       transactions: isGlobal ? values : values?.transactions || [],
+      concept: values?.concept,
       balance,
       currentBalance
     })

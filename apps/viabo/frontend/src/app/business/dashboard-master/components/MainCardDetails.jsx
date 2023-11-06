@@ -60,7 +60,7 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
                 {cardLogo && <CardLogoComponent sx={{ width: 30, height: 30 }} />}
                 <IconButton
                   variant="outlined"
-                  title={`Copiar SPEI - ${card?.spei}`}
+                  title={`Copiar SPEI - ${card?.SPEI}`}
                   color={copiedSPEI ? 'success' : 'inherit'}
                   onClick={e => {
                     setCopiedSPEI(true)
@@ -70,7 +70,11 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
                     }, 1000)
                   }}
                 >
-                  {copiedSPEI ? <Check sx={{ color: 'success' }} /> : <SpeiLogo sx={{ width: 25, height: 25 }} />}
+                  {copiedSPEI ? (
+                    <Check sx={{ color: 'success', width: 25, height: 25 }} />
+                  ) : (
+                    <SpeiLogo sx={{ width: 25, height: 25 }} />
+                  )}
                 </IconButton>
               </Stack>
             </Stack>

@@ -1,16 +1,16 @@
 import { getCryptInfo } from '@/shared/utils'
 
-export const CardTransactionsAdapter = (originCardId, data, isGlobal) => {
+export const CardTransactionsAdapter = (originCardId, transactions, concept, isGlobal) => {
   let adaptedData
   if (isGlobal) {
     adaptedData = {
       originCardId,
       destinationCards: [
         {
-          cardId: data?.card?.value.toString(),
-          concept: data?.concept?.toString(),
+          cardId: transactions?.card?.value.toString(),
+          concept: concept?.toString() || '',
           amount: parseFloat(
-            data?.amount.toString() === '' ? '0' : data?.amount?.toString().replace(/,/g, '')
+            transactions?.amount.toString() === '' ? '0' : transactions?.amount?.toString().replace(/,/g, '')
           ).toString()
         }
       ]
@@ -18,9 +18,9 @@ export const CardTransactionsAdapter = (originCardId, data, isGlobal) => {
   } else {
     adaptedData = {
       originCardId,
-      destinationCards: data?.map(transaction => ({
+      destinationCards: transactions?.map(transaction => ({
         cardId: transaction?.card?.value?.toString(),
-        concept: transaction?.concept?.toString(),
+        concept: concept?.toString() || '',
         amount: parseFloat(
           transaction?.amount.toString() === '' ? '0' : transaction?.amount?.toString().replace(/,/g, '')
         ).toString()

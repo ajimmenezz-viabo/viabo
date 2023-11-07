@@ -2,7 +2,6 @@
 
 namespace Viabo\management\commerceTerminal\application\find;
 
-use Viabo\management\commerceTerminal\domain\TerminalValueId;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
@@ -14,7 +13,6 @@ final readonly class CommerceTerminalMerchantIdQueryHandler implements QueryHand
 
     public function __invoke(CommerceTerminalMerchantIdQuery $query):Response
     {
-        $terminalId = TerminalValueId::create($query->terminalId);
-        return ($this->finder)($terminalId);
+        return $this->finder->__invoke($query->terminalId);
     }
 }

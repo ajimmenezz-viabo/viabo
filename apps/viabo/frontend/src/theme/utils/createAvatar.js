@@ -45,10 +45,14 @@ export function stringToColor(string) {
 }
 
 export function getNameAvatar(name = '') {
-  const nameScaped = name.trim()?.toUpperCase()
-  return nameScaped.split(' ')?.length > 1
-    ? `${nameScaped.split(' ')[0][0]}${nameScaped.split(' ')[1][0]}`
-    : `${nameScaped.split(' ')[0][0]}`
+  const cleanedName = name.trim().replace(/\s+/g, ' ')
+  const nameParts = cleanedName.toUpperCase().split(' ')
+
+  if (nameParts.length > 1) {
+    return `${nameParts[0][0]}${nameParts[1][0]}`
+  } else {
+    return `${nameParts[0][0]}`
+  }
 }
 
 export function stringAvatar(name) {

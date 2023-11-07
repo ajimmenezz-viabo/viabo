@@ -57,11 +57,11 @@ const CardMovementsHeader = ({ startDate, endDate, onChangeDateRange, loading, o
   return (
     <>
       <Stack py={2} px={1} flexDirection={{ lg: 'row' }} justifyContent={'space-between'} alignItems={'center'} gap={1}>
-        <Stack flex={1} direction={'row'} spacing={0.5}>
+        <Stack flex={1} width={1} direction={'row'} spacing={0.5}>
           <IconButton disabled={Boolean(loading)} onClick={toggle} size="small">
             <CalendarMonth />
           </IconButton>
-          <Stack minWidth={300} flex={1}>
+          <Stack flex={1}>
             <TextField
               placeholder="Fecha inicial - Fecha final"
               value={formatDate}
@@ -93,12 +93,12 @@ const CardMovementsHeader = ({ startDate, endDate, onChangeDateRange, loading, o
         <Dialog
           open={openModal}
           ref={modalRef}
-          scroll={'body'}
+          scroll={'paper'}
           aria-labelledby="scroll-dialog-title"
           aria-describedby="scroll-dialog-description"
           maxWidth="md"
         >
-          <DialogTitle variant="subtitle1" fontWeight={'bolder'} id="scroll-dialog-title">
+          <DialogTitle variant="subtitle1" fontWeight={'bolder'} sx={{ mb: 2 }} id="scroll-dialog-title">
             Confirma las fechas seleccionadas
           </DialogTitle>
           <DialogContent id="scroll-dialog-description" dividers={true}>

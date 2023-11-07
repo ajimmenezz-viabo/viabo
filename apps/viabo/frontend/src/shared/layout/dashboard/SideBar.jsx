@@ -40,25 +40,26 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
       color: '#b6b7b9'
     },
     subMenuContent: ({ level }) => ({
-      borderRadius: muiTheme.shape.borderRadius,
+      // borderRadius: muiTheme.shape.borderRadius,
       zIndex: muiTheme.zIndex.modal - 1,
+
+      paddingBottom: 0,
       backgroundColor:
         level === 0
           ? isCollapse
             ? muiTheme.palette.background.paper
-            : muiTheme.palette.background.default
+            : alpha(muiTheme.palette.action.hover, muiTheme.palette.action.hoverOpacity)
           : 'transparent'
     }),
     button: ({ level, active, disabled }) => ({
       color: muiTheme.palette.text.primary,
-      marginTop: '8px',
-      marginBottom: '8px',
-      ...(!isCollapse && {
-        marginLeft: muiTheme.spacing(2),
-        marginRight: muiTheme.spacing(1.5)
+      // marginBottom: '8px',
+
+      ...(level >= 1 && {
+        margin: muiTheme.spacing(1),
+        borderRadius: muiTheme.shape.borderRadius
       }),
 
-      borderRadius: muiTheme.shape.borderRadius,
       [`&.${menuClasses.disabled}`]: {
         color: muiTheme.palette.action.disabled
       },
@@ -69,11 +70,13 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
         //   color: muiTheme.palette.primary.main
         // }
       },
-
       ...(active && {
-        color: 'black',
+        color: 'inherit',
         fontWeight: 600,
-        backgroundColor: alpha(muiTheme.palette.secondary.main, 0.9)
+        backgroundColor:
+          level === 0
+            ? alpha(muiTheme.palette.secondary.main, 0.9)
+            : alpha(muiTheme.palette.info.light, muiTheme.palette.action.hoverOpacity)
       })
     }),
     label: ({ open }) => ({
@@ -166,7 +169,8 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                     <Tooltip
                       key={module?.name}
                       title={isCollapse && openSubmenu !== module?.name ? module?.name : null}
-                      placement="right"
+                      placement="bottom"
+                      followCursor
                       arrow
                     >
                       <div>

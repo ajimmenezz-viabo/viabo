@@ -7,6 +7,7 @@ use Viabo\management\card\domain\CardUser;
 use Viabo\management\card\domain\services\CardFinder as CardFinderService;
 use Viabo\management\shared\domain\card\CardClientKey;
 use Viabo\management\shared\domain\card\CardId;
+use Viabo\management\shared\domain\card\CardNumber;
 use Viabo\management\shared\domain\paymentProcessor\PaymentProcessorAdapter;
 
 final readonly class FinderCardsMasterGlobal
@@ -23,6 +24,7 @@ final readonly class FinderCardsMasterGlobal
         $global = [];
         foreach ($cardsInformation as $card) {
             $cardId = new CardId($card['cardId']);
+            $cardNumber = new CardNumber($card['number']);
             $clientKey = CardClientKey::create($card['clientKey']);
             $user = CardUser::create($card['userName']);
             $password = CardPassword::create($card['password']);
@@ -39,6 +41,7 @@ final readonly class FinderCardsMasterGlobal
                 'balance' => $cardData['balance'] ,
                 'inTransit' => $balanceMaster[$card['paymentProcessorId']],
                 'cardId' => $cardId->value() ,
+                'cardNumber' => $cardNumber->value() ,
                 'spei' => $cardData['spei']
             ];
         }

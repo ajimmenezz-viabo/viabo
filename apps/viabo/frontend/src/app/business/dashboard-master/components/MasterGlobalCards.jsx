@@ -1,19 +1,19 @@
 import { useMemo } from 'react'
 
-import PropTypes from 'prop-types'
-
 import { Update } from '@mui/icons-material'
 import { Card, CardHeader, Stack, Typography } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import MainCardDetails from './MainCardDetails'
 
-import { useFindCommerceCardsByPaymentProcessors } from '../hooks'
+import { useFindCommerceCardsByPaymentProcessors, useFindGlobalCards } from '../hooks'
 
 import { useMasterGlobalStore } from '@/app/business/dashboard-master/store'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 
-export function MasterGlobalCards({ data, isLoading }) {
+export function MasterGlobalCards() {
+  const { data, isLoading } = useFindGlobalCards()
+
   const cardSelected = useMasterGlobalStore(state => state.card)
 
   const resetGlobalCard = useMasterGlobalStore(state => state.resetGlobalCard)
@@ -119,13 +119,4 @@ export function MasterGlobalCards({ data, isLoading }) {
   )
 }
 
-MasterGlobalCards.propTypes = {
-  data: PropTypes.shape({
-    globals: PropTypes.array,
-    master: PropTypes.shape({
-      balanceFormatted: PropTypes.any,
-      inTransitFormatted: PropTypes.any
-    })
-  }),
-  isLoading: PropTypes.any
-}
+MasterGlobalCards.propTypes = {}

@@ -15,7 +15,7 @@ export const useFindGlobalCards = (options = {}) => {
     staleTime: 60000,
     refetchOnWindowFocus: false,
     onError: error => {
-      const errorMessage = getErrorAPI(error, 'No se puede obtener la informacion de las tarjetas principales')
+      const errorMessage = getErrorAPI(error, 'No se puede obtener la información de las tarjetas principales')
       setCustomError(errorMessage)
       setMainCard(null)
       toast.error(errorMessage, {

@@ -16,6 +16,7 @@ import { copyToClipboard } from '@/shared/utils'
 
 const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards, disableFilter = false }) => {
   const [copiedSPEI, setCopiedSPEI] = useState(false)
+  const [copiedCardNumber, setCopiedCardNumber] = useState(false)
   const cardLogo = getCardTypeByName(card?.paymentProcessor)
   const CardLogoComponent = cardLogo?.component
   const selected = cardSelected?.id === card?.id
@@ -56,12 +57,30 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
             <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'space-between'}>
               <Typography variant="caption">{total === 0 ? '' : total + ' Tarjetas'}</Typography>
 
-              <Stack flexDirection="row" alignItems="center" sx={{ flexWrap: 'wrap' }} gap={1}>
-                {cardLogo && <CardLogoComponent sx={{ width: 30, height: 30 }} />}
+              <Stack flexDirection="row" alignItems="center" sx={{ flexWrap: 'wrap' }} gap={0}>
+                {cardLogo && (
+                  <IconButton
+                    variant="outlined"
+                    title={`Copiar Tarjeta - ${card?.cardNumber}`}
+                    color={copiedCardNumber ? 'success' : 'inherit'}
+                    onClick={e => {
+                      setCopiedCardNumber(true)
+                      copyToClipboard(card?.cardNumber)
+                      setTimeout(() => {
+                        setCopiedCardNumber(false)
+                      }, 1000)
+                    }}
+                    size="small"
+                    sx={{ width: 40, height: 40 }}
+                  >
+                    {copiedCardNumber ? <Check sx={{ color: 'success' }} /> : <CardLogoComponent />}
+                  </IconButton>
+                )}
                 <IconButton
                   variant="outlined"
                   title={`Copiar SPEI - ${card?.SPEI}`}
                   color={copiedSPEI ? 'success' : 'inherit'}
+                  size="small"
                   onClick={e => {
                     setCopiedSPEI(true)
                     copyToClipboard(card?.SPEI)
@@ -69,12 +88,9 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
                       setCopiedSPEI(false)
                     }, 1000)
                   }}
+                  sx={{ width: 40, height: 40 }}
                 >
-                  {copiedSPEI ? (
-                    <Check sx={{ color: 'success', width: 25, height: 25 }} />
-                  ) : (
-                    <SpeiLogo sx={{ width: 25, height: 25 }} />
-                  )}
+                  {copiedSPEI ? <Check sx={{ color: 'success' }} /> : <SpeiLogo />}
                 </IconButton>
               </Stack>
             </Stack>
@@ -132,7 +148,7 @@ MainCardDetails.propTypes = {
     inTransitFormatted: PropTypes.any,
     paymentProcessor: PropTypes.any,
     paymentProcessorId: PropTypes.any,
-    spei: PropTypes.any
+    cardNumber: PropTypes.any
   }),
   cardSelected: PropTypes.shape({
     id: PropTypes.any

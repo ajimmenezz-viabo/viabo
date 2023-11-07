@@ -19,7 +19,8 @@ export const GlobalCardsAdapter = cards => {
       id: card?.cardId,
       SPEI: card?.spei,
       balanceFormatted: fCurrency(card?.balance),
-      inTransitFormatted: fCurrency(card?.inTransit)
+      inTransitFormatted: fCurrency(card?.inTransit),
+      cardNumber: card?.cardNumber || ''
     }
   })
 

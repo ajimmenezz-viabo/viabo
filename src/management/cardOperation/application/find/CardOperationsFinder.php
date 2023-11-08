@@ -17,13 +17,13 @@ final readonly class CardOperationsFinder
 
     public function __invoke(
         CardNumber $cardId ,
-        string     $initialDate ,
-        string     $finalDate
+        string     $startDate ,
+        string $endDate
     ): CardOperationsResponse
     {
-        $finalDate = empty($finalDate) ? $this->date->dateTime() : $finalDate;
-        $this->ensureFormatDates($initialDate , $finalDate);
-        $operations = $this->repository->searchDateRange($cardId , $initialDate , $finalDate);
+        $endDate = $this->formatEndDate($endDate);
+        $this->ensureFormatDates($startDate , $endDate);
+        $operations = $this->repository->searchDateRange($cardId , "$startDate 00:00:00" , $endDate);
         return new CardOperationsResponse(array_map(function (CardOperation $operation) {
             $data = $operation->toArray();
             return [
@@ -44,5 +44,14 @@ final readonly class CardOperationsFinder
         } catch (\Exception) {
             throw new \DomainException('No es un formato de fecha valido' , 400);
         }
+    }
+
+    private function formatEndDate(string $endDate): string
+    {
+        $endDate = empty($endDate) ? $this->date->dateTime() : $endDate;
+        if (!$this->date->hasFormatDateTime($endDate)) {
+            $endDate = "$endDate 23:59:59";
+        }
+        return $endDate;
     }
 }

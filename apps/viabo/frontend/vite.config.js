@@ -12,10 +12,10 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 export default defineConfig({
   mode: isProduction ? 'production' : 'development',
-  base: isProduction ? '/react/' : '/',
+  base: isProduction ? '/app/' : '/',
   build: {
     // publicPath: '/',
-    outDir: path.resolve(__dirname, '..', 'backend/public/react'),
+    outDir: path.resolve(__dirname, '..', 'backend/public/app'),
     rollupOptions: {
       output: {
         assetFileNames: assetInfo => {

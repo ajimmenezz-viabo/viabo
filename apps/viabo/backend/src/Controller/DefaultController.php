@@ -10,6 +10,6 @@ final class DefaultController extends AbstractController
 {
     public function __invoke(Request $request): Response
     {
-        return $this->render('index.html.twig');
+        return $this->render('web.html.twig');
     }
 }

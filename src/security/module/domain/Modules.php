@@ -4,55 +4,97 @@
 namespace Viabo\security\module\domain;
 
 
+use Viabo\shared\domain\Collection;
 use Viabo\shared\domain\Utils;
-use Viabo\shared\domain\utils\Collection;
+
 
 final class Modules extends Collection
 {
-    public function __construct(array $modules)
+
+    private array $modules;
+
+    public function filterModulesByServices(array $commerceServices): void
     {
-        parent::__construct($modules);
+        $this->modules = array_filter($this->items() , function (ModuleView $module) use ($commerceServices){
+            return $module->hasService($commerceServices);
+        });
     }
 
-    public function toArrayByCategory(): array
+    public function formatDataToArray(): void
     {
-        $categories = $this->modulesCategories();
-        $modules = $this->modulesSortedByCategories($categories);
-        return ['menu' => $modules];
+        $categories = $this->getCategories();
+        $subModules = $this->getSubmodules();
+        $this->deleteSubmodules();
+        $this->addSubmodules($subModules);
+        $this->sortByCategories($categories);
     }
 
-    public function toArray(): array
-    {
-        return array_map(function (ModuleView $module) {
-            return $module->toArray();
-        } , $this->getCollection());
-    }
-
-    private function modulesCategories(): array
+    private function getCategories(): array
     {
         return Utils::removeDuplicateElements(array_map(function (ModuleView $module) {
             return $module->category();
-        } , $this->getCollection()));
+        } , $this->modules));
     }
 
-    private function modulesSortedByCategories(array $categories): array
+    private function getSubmodules(): array
     {
-        $modulesCategory = [];
-        foreach ($categories as $category) {
-            $modulesCategory[] = ['category' => $category , 'modules' => $this->filterModulesBy($category)];
+        $submodules = Utils::removeDuplicateElements(array_filter($this->modules , function (ModuleView $module) {
+            return $module->belongsToASubmodule();
+        }));
+
+        return array_map(function (ModuleView $module) {
+            return $module->toArray();
+        } , $submodules);
+    }
+
+    private function deleteSubmodules(): void
+    {
+        $this->modules = Utils::removeDuplicateElements(array_filter($this->modules , function (ModuleView $module) {
+            return !$module->belongsToASubmodule();
+        }));
+    }
+
+    private function addSubmodules(array $subModules): void
+    {
+        foreach ($subModules as $subModule) {
+            $this->modules = array_map(function (ModuleView $module) use ($subModule) {
+                if ($module->isSameId($subModule['subModuleId'])) {
+                    $module->addSubModule($subModule);
+                }
+                return $module;
+            } , $this->modules);
         }
-        return $modulesCategory;
+    }
+
+    private function sortByCategories(array $categories): void
+    {
+        $modules = [];
+        foreach ($categories as $category) {
+            $modules[] = ['category' => $category , 'modules' => $this->filterModulesBy($category)];
+        }
+        $this->modules = $modules;
     }
 
     private function filterModulesBy(string $category): array
     {
-        $modules = [];
-        foreach ($this->toArray() as $module) {
-            if ($category === $module['categoryName']) {
-                unset($module['categoryName']);
-                $modules[] = $module;
-            }
-        }
-        return $modules;
+        $modules = Utils::removeDuplicateElements(array_filter($this->modules , function (ModuleView $module) use ($category) {
+            return $module->isSameCategory($category);
+        }));
+
+        return array_map(function (ModuleView $module) {
+            $data = $module->toArray();
+            unset($data['subModuleId'] , $data['categoryName']);
+            return $data;
+        } , $modules);
+    }
+
+    public function toArray(): array
+    {
+        return $this->modules;
+    }
+
+    protected function type(): string
+    {
+        return ModuleView::class;
     }
 }

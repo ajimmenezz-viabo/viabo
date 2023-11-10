@@ -22,33 +22,38 @@ final class Service extends AggregateRoot
     }
 
     public static function create(
-        CommerceId                  $commerceId ,
-        string                      $serviceType,
-        string                      $cardNumbers,
-        string                      $cardUse,
-        string                      $personalized
+        CommerceId $commerceId ,
+        string     $serviceType ,
+        string     $cardNumbers ,
+        string     $cardUse ,
+        string     $personalized
     ): self
     {
 
         $service = new self(
             ServiceId::create() ,
             $commerceId ,
-            new ServiceType($serviceType),
-            new ServiceCardNumbers($cardNumbers),
-            new ServiceCardUse($cardUse),
+            new ServiceType($serviceType) ,
+            new ServiceCardNumbers($cardNumbers) ,
+            new ServiceCardUse($cardUse) ,
             new ServicePersonalized($personalized)
         );
         $service->record(new ServiceCreatedDomainEvent($service->id->value() , $service->toArray()));
         return $service;
     }
 
+    public function type(): string
+    {
+        return $this->type->value();
+    }
+
     private function toArray(): array
     {
         return [
             'commerceId' => $this->commerceId->value() ,
-            'serviceType' => $this->type->value(),
-            'cardNumbers' => $this->cardNumbers->value(),
-            'cardUse' => $this->cardUse->value(),
+            'serviceType' => $this->type->value() ,
+            'cardNumbers' => $this->cardNumbers->value() ,
+            'cardUse' => $this->cardUse->value() ,
             'personalized' => $this->personalized->value()
         ];
     }

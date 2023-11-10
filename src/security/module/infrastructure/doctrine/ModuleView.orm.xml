@@ -7,10 +7,12 @@
     <entity name="Viabo\security\module\domain\ModuleView" read-only="true" table="v_modules">
         <id name="id" type="integer" column="Id"/>
         <field name="categoryId" column="CategoryId"/>
+        <field name="subModuleId" column="SubModuleId"/>
+        <field name="serviceId" column="ServiceId"/>
         <field name="categoryName" column="CategoryName"/>
         <field name="categoryOrder" column="CategoryOrder"/>
-        <field name="moduleOrder" column="ModuleOrder"/>
-        <field name="moduleName" column="ModuleName"/>
+        <field name="moduleOrder" column="Order"/>
+        <field name="moduleName" column="Name"/>
         <field name="path" column="Path"/>
         <field name="icon" column="Icon"/>
         <field name="moduleActions" column="ModuleActions"/>

@@ -91,3 +91,8 @@ expenses-control:
   path: "/expenses-control"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
+
+error-404:
+  path: "/404"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET

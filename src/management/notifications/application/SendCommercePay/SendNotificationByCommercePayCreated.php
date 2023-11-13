@@ -2,7 +2,7 @@
 
 namespace Viabo\management\notifications\application\SendCommercePay;
 
-use Viabo\management\commercePay\domain\events\CommercePayCreatedDomainEvent;
+use Viabo\management\terminalTransaction\domain\events\CommercePayCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;

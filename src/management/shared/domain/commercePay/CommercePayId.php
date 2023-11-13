@@ -2,7 +2,7 @@
 
 namespace Viabo\management\shared\domain\commercePay;
 
-use Viabo\management\commercePay\domain\exceptions\CommercePayIdEmpty;
+use Viabo\management\terminalTransaction\domain\exceptions\CommercePayIdEmpty;
 use Viabo\shared\domain\valueObjects\UuidValueObject;
 
 final class CommercePayId extends UuidValueObject

@@ -10,4 +10,6 @@ interface TerminalRepository
 
     public function searchView(Criteria $criteria):array;
 
+    public function searchTerminalsShared(string $commerceId): array;
+
 }

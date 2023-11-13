@@ -6,6 +6,7 @@
 
     <entity name="Viabo\management\commerceTerminal\domain\TerminalView" table="v_management_commerces_terminals">
         <id name="id" column="Id"/>
+        <field name="main" column="Main" />
         <field name="commerceId" column="CommerceId" />
         <field name="merchantId" column="MerchantId" />
         <field name="terminalId" column="TerminalId" />

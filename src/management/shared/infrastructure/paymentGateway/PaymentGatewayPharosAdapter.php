@@ -2,9 +2,9 @@
 
 namespace Viabo\management\shared\infrastructure\paymentGateway;
 
-use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
-use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
+use Viabo\management\shared\domain\paymentGateway\PaymentGatewayAdapter;
+use Viabo\management\terminalTransactionLog\domain\CommercePayTransaction;
 
 final class PaymentGatewayPharosAdapter implements PaymentGatewayAdapter
 {

@@ -1,0 +1,9 @@
+create-commerce-pay-url:
+  path: '/api/commerce/pay/new'
+  controller: Viabo\Backend\Controller\management\terminalTransaction\CommercePayCreatorController
+  methods: POST
+
+create-commerce-virtual-terminal-pay:
+  path: '/api/commerce/virtual/pay'
+  controller: Viabo\Backend\Controller\management\terminalTransaction\CommercePayVirtualTerminalCreatorController
+  methods: POST

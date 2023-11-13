@@ -1,15 +1,15 @@
 <?php
-namespace Viabo\Backend\Controller;
+namespace Viabo\Backend\Controller\landingPages\set;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-final class DefaultController extends AbstractController
+final class ViewController extends AbstractController
 {
     public function __invoke(Request $request): Response
     {
-        return $this->render('web.html.twig');
+        return $this->render('/landing-pages/set/set.html.twig');
     }
 }

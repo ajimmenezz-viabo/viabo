@@ -61,6 +61,11 @@ export const MENU_CONFIG = [
             name: 'Terminales',
             path: '/viabo-pay/terminals',
             roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
+          },
+          {
+            name: 'Nube',
+            path: '/viabo-pay/cloud',
+            roles: [SYSTEM_ROLES.LEGAL_REPRESENTATIVE]
           }
         ]
       }

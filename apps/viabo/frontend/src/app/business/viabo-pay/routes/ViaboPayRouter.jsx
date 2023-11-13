@@ -6,6 +6,7 @@ import { VIABO_PAY_ROUTES_NAMES } from '@/app/business/viabo-pay/routes/viabo-pa
 import { Lodable } from '@/shared/components/lodables'
 
 const POSTerminals = Lodable(lazy(() => import('@/app/business/viabo-pay/terminals/pages/POSTerminals')))
+const CloudMovementsPay = Lodable(lazy(() => import('@/app/business/viabo-pay/cloud/pages/CloudMovementsPay')))
 
 export const ViaboPayRouter = {
   path: VIABO_PAY_ROUTES_NAMES.root.route,
@@ -14,6 +15,10 @@ export const ViaboPayRouter = {
     {
       path: VIABO_PAY_ROUTES_NAMES.terminals.route,
       element: <POSTerminals />
+    },
+    {
+      path: VIABO_PAY_ROUTES_NAMES.cloud.route,
+      element: <CloudMovementsPay />
     }
   ]
 }

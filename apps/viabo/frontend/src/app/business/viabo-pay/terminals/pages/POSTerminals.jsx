@@ -28,7 +28,7 @@ const POSTerminals = () => {
               name={'Terminales Punto de Venta'}
               links={[
                 { name: 'Inicio', href: PATH_DASHBOARD.root },
-                { name: 'Administración', href: VIABO_PAY_PATHS.terminals },
+                { name: 'Viabo Pay', href: VIABO_PAY_PATHS.terminals },
                 { name: VIABO_PAY_ROUTES_NAMES.terminals.name }
               ]}
             />

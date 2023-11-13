@@ -7,14 +7,13 @@ import { Link, useLocation } from 'react-router-dom'
 import CollapseButtonNew from './navbar/CollapseButtonNew'
 import NavbarAccount from './navbar/NavbarAccount'
 
-import { getMenuByRole } from '@/routes/menu-config'
 import { Logo } from '@/shared/components/images'
 import { useAuth } from '@/shared/hooks'
 import { getActive, getActiveSubmenu } from '@/shared/layout/dashboard/nav-section'
 
 const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
   const { user } = useAuth()
-  const menu = useMemo(() => getMenuByRole(user?.profile), [user])
+  const menu = useMemo(() => user?.menu || [], [user])
   const muiTheme = useTheme()
   const [broken, setBroken] = useState(window.matchMedia('(max-width: 1200px)').matches)
   const [rtl, setRtl] = useState(false)
@@ -142,7 +141,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                 {menu?.modules?.map((module, index) => {
                   const active = getActive(module?.path, pathname)
                   const activeSubmenu = getActiveSubmenu(module?.path, pathname)
-                  if (!module?.items) {
+                  if (!module?.modules) {
                     return (
                       <Tooltip key={module?.name} title={isCollapse ? module?.name : null} placement="right" arrow>
                         <div>
@@ -184,7 +183,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                           onBlur={() => setOpenSubmenu(null)}
                           defaultOpen={false}
                         >
-                          {module?.items?.map((submenu, index) => {
+                          {module?.modules?.map((submenu, index) => {
                             const active = getActive(submenu?.path, pathname)
                             return (
                               <MenuItem

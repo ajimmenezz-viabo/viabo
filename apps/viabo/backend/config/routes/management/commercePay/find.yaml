@@ -1,4 +1,0 @@
-finder-commerce-pay:
-  path: '/api/commerces/pay/{urlCode}'
-  controller: Viabo\Backend\Controller\management\commercePay\CommercePayFinderController
-  methods: GET

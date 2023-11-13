@@ -3,7 +3,7 @@
 namespace Viabo\management\shared\domain\paymentGateway;
 
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
-use Viabo\management\commerceTransaction\domain\CommercePayTransaction;
+use Viabo\management\terminalTransactionLog\domain\CommercePayTransaction;
 
 interface PaymentGatewayAdapter
 {

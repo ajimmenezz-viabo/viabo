@@ -4,7 +4,6 @@ namespace Viabo\management\commerceTerminal\application\find;
 
 use Viabo\shared\domain\bus\query\Response;
 use Viabo\shared\domain\bus\query\QueryHandler;
-use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 
 final readonly class FindTerminalsQueryHandler implements QueryHandler
 {
@@ -12,7 +11,7 @@ final readonly class FindTerminalsQueryHandler implements QueryHandler
     {
     }
 
-    public function __invoke(FindTerminalsQuery $query):Response
+    public function __invoke(TerminalsQuery $query):Response
     {
         return $this->finder->__invoke($query->commerceId);
     }

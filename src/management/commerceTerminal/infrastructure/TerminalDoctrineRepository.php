@@ -3,6 +3,7 @@
 namespace Viabo\management\commerceTerminal\infrastructure;
 
 use Doctrine\ORM\EntityManager;
+use Viabo\management\commerceTerminal\domain\TerminalShared;
 use Viabo\management\commerceTerminal\domain\TerminalSpeiCardsView;
 use Viabo\management\commerceTerminal\domain\TerminalCommerceId;
 use Viabo\management\commerceTerminal\domain\Terminal;
@@ -29,4 +30,8 @@ final class TerminalDoctrineRepository extends DoctrineRepository implements Ter
         return $this->repository(TerminalView::class)->matching($criteriaConvert)->toArray();
     }
 
+    public function searchTerminalsShared(string $commerceId): array
+    {
+        return $this->repository(TerminalShared::class)->findBy(['commerceId' => $commerceId]);
+    }
 }

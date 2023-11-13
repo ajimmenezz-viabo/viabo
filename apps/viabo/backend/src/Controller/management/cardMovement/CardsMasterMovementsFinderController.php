@@ -9,9 +9,9 @@ use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\card\application\find\MainCardsInformationQuery;
 use Viabo\management\cardMovement\application\find\CardsMasterMovementsQuery;
 use Viabo\management\cardOperation\application\find\CardsOperationsQuery;
-use Viabo\management\commercePayCredentials\application\find\CommercePayCredentialsQuery;
-use Viabo\management\commerceTerminal\application\find\FindTerminalsQuery;
-use Viabo\management\commerceTransaction\application\find\CommerceTransactionsQuery;
+use Viabo\management\commercePayCredentials\application\find\PayServiceCredentialsQuery;
+use Viabo\management\commerceTerminal\application\find\TerminalsQuery;
+use Viabo\management\terminalTransaction\application\find\TerminalsTransactionsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CardsMasterMovementsFinderController extends ApiController
@@ -20,20 +20,21 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $initialDate = $request->query->getString('startDate');
-            $finalDate = $request->query->getString('endDate');
+            $startDate = $request->query->getString('startDate');
+            $endDate = $request->query->getString('endDate');
             $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
             $cardsInformation = $this->ask(new MainCardsInformationQuery($commerce->data['id']));
-            $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data , $initialDate , $finalDate));
-            $commercePayCredential = $this->ask(new CommercePayCredentialsQuery($commerce->data['id']));
-            $terminalsData = $this->ask(new FindTerminalsQuery($commerce->data['id'] , []));
-            $payTransaction = $this->ask(new CommerceTransactionsQuery(
-                $initialDate ,
-                $finalDate ,
-                $commercePayCredential->data ,
+            $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data , $startDate , $endDate));
+            $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($commerce->data['id']));
+            $terminalsData = $this->ask(new TerminalsQuery($commerce->data['id'] , []));
+            $payTransaction = $this->ask(new TerminalsTransactionsQuery(
+                $commerce->data['id'],
+                $commercePayCredential->data['apiKey'] ,
                 "" ,
                 $terminalsData->data ,
                 [] ,
+                $startDate ,
+                $endDate ,
                 "" ,
                 ""
             ));
@@ -41,8 +42,8 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
                 $cardsInformation->data ,
                 $operationData->data ,
                 $payTransaction->data ,
-                $initialDate ,
-                $finalDate
+                $startDate ,
+                $endDate
             ));
 
             return new JsonResponse($this->opensslEncrypt($movements->data));

@@ -6,7 +6,7 @@ namespace Viabo\management\terminalTransaction\domain;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\shared\domain\criteria\Criteria;
 
-interface CommercePayRepository
+interface TerminalTransactionRepository
 {
     public function save(CommercePay $commercePay): void;
 

@@ -2,7 +2,7 @@
 
 namespace Viabo\management\terminalTransaction\application\find;
 
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayUrlCode;
 use Viabo\management\terminalTransaction\domain\CommercePayView;
 use Viabo\management\terminalTransaction\domain\exceptions\CommercePayUrlCodeNotExist;
@@ -11,7 +11,7 @@ use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CommercePayFinderByUrlCode
 {
-    public function __construct(private CommercePayRepository $repository)
+    public function __construct(private TerminalTransactionRepository $repository)
     {
     }
 

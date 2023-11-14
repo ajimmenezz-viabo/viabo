@@ -13,13 +13,13 @@ use Viabo\management\terminalTransaction\domain\CommercePayCreatedByUser;
 use Viabo\management\terminalTransaction\domain\CommercePayDescription;
 use Viabo\management\terminalTransaction\domain\CommercePayEmail;
 use Viabo\management\terminalTransaction\domain\CommercePayPhone;
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayTerminalId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CommercePayCreator
 {
-    public function __construct(private CommercePayRepository $repository , private EventBus $bus)
+    public function __construct(private TerminalTransactionRepository $repository , private EventBus $bus)
     {
     }
 

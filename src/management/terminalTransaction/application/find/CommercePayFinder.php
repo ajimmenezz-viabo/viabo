@@ -5,12 +5,12 @@ namespace Viabo\management\terminalTransaction\application\find;
 
 
 use Viabo\management\shared\domain\commercePay\CommercePayId;
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\exceptions\CommercePayUrlCodeNotExist;
 
 final readonly class CommercePayFinder
 {
-    public function __construct(private CommercePayRepository $repository)
+    public function __construct(private TerminalTransactionRepository $repository)
     {
     }
 

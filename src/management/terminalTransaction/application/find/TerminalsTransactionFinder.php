@@ -2,7 +2,7 @@
 
 namespace Viabo\management\terminalTransaction\application\find;
 
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayView;
 use Viabo\management\terminalTransaction\domain\PharosTransactions;
 use Viabo\management\terminalTransaction\domain\services\TerminalsTransactionFinderInPharos;
@@ -16,7 +16,7 @@ final readonly class TerminalsTransactionFinder
 {
 
     public function __construct(
-        private CommercePayRepository              $repository ,
+        private TerminalTransactionRepository      $repository ,
         private TerminalsTransactionFinderInPharos $finderInPharos
     )
     {

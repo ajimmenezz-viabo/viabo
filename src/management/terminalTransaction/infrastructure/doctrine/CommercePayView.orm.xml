@@ -7,6 +7,8 @@
     <entity name="Viabo\management\terminalTransaction\domain\CommercePayView" table="v_management_commerces_pay">
         <id name="id" column="Id"/>
         <field name="commerceId" column="CommerceId"/>
+        <field name="commerceName" column="CommerceName"/>
+        <field name="sharedTerminalCommission" column="SharedTerminalCommission"/>
         <field name="terminalId" column="TerminalId"/>
         <field name="reference" column="Reference"/>
         <field name="clientName" column="ClientName"/>
@@ -17,6 +19,8 @@
         <field name="urlCode" column="UrlCode"/>
         <field name="statusId" column="StatusId"/>
         <field name="statusName" column="StatusName"/>
+        <field name="liquidationStatusId" column="LiquidationStatusId"/>
+        <field name="liquidationStatusName" column="LiquidationStatusName"/>
         <field name="apiAuthCode" column="ApiAuthCode"/>
         <field name="apiReferenceNumber" column="ApiReferenceNumber"/>
         <field name="createdByUser" column="CreatedByUser"/>

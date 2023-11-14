@@ -2,13 +2,13 @@
 
 namespace Viabo\management\terminalTransaction\domain\services;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CommercePayDataFinder
 {
-        public function __construct(private CommercePayRepository $repository)
+        public function __construct(private TerminalTransactionRepository $repository)
         {
         }
 

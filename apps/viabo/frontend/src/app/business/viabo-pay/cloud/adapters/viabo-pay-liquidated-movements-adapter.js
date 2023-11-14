@@ -5,7 +5,7 @@ import { fCurrency, normalizeDateString } from '@/shared/utils'
 
 export const ViaboPayLiquidatedMovementsAdapter = data => {
   const movements =
-    data?.movements?.map(movement => {
+    data?.map(movement => {
       const amount = parseFloat(movement?.amount || '0')
       const date = movement?.transaction_date
         ? format(normalizeDateString(movement?.transaction_date), 'dd MMM yyyy', { locale: es })
@@ -15,12 +15,17 @@ export const ViaboPayLiquidatedMovementsAdapter = data => {
       return {
         id: movement?.id,
         terminalName: movement?.terminal_name,
+        terminalId: movement?.terminal_id,
         amount,
         amountFormat: fCurrency(amount),
-        amountToLiquidate: fCurrency(parseFloat(amount - (5 / 100) * amount).toFixed(2)),
-        commerceName: 'Demo',
+        amountToLiquidate: movement?.amountToSettled,
+        amountToLiquidateFormat: fCurrency(movement?.amountToSettled),
+        commerceName: movement?.commerceName,
+        commerceId: movement?.commerceId,
         approved: movement?.approved,
         cardType: movement?.card_brand,
+        authNumber: movement?.authorization_number,
+        commission: movement?.commission >= 0 ? `${movement?.commission}%` : '0%',
         cardNumber: movement?.card_number,
         cardBank: movement?.issuer,
         transactionDate: {

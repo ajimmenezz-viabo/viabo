@@ -2,7 +2,8 @@ import { createStore } from '@/app/shared/store'
 
 const initialState = {
   openDrawerLiquidateMovement: false,
-  movement: null
+  movement: null,
+  filterDate: null
 }
 
 const liquidatedMovementsStore = (set, get) => ({
@@ -24,6 +25,16 @@ const liquidatedMovementsStore = (set, get) => ({
       }),
       false,
       'SET_OPEN_LIQUIDATE_MOVEMENT_VIABO_PAY'
+    )
+  },
+
+  setFilterDate: filterDate => {
+    set(
+      state => ({
+        filterDate
+      }),
+      false,
+      'SET_FILTER_DATE_LIQUIDATE_MOVEMENTS'
     )
   }
 })

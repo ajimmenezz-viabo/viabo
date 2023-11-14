@@ -42,6 +42,23 @@ final class PharosTransactions extends Collection
         return new static(Utils::removeDuplicateElements($items));
     }
 
+    public function filterLiquidationTransactionsByReferences(array $transactionReferences): static
+    {
+        $items = array_filter($this->items() , function (PharosTransaction $transaction) use ($transactionReferences) {
+            return $transaction->isSameReference($transactionReferences);
+        });
+
+        return new static(Utils::removeDuplicateElements($items));
+    }
+
+    public function addAdditionalData(array $transactions): void
+    {
+        array_map(function (PharosTransaction $transaction) use ($transactions) {
+            $transaction->addAdditionalData($transactions);
+            return $transaction;
+        } , $this->items());
+    }
+
     protected function type(): string
     {
         return PharosTransaction::class;

@@ -18,8 +18,8 @@ final readonly class TerminalsTransactionFinderInPharos
         array   $terminalsData ,
         string  $startDate ,
         string  $endDate ,
-        ?string $page ,
-        ?string $pageSize
+        ?string $page = null,
+        ?string $pageSize = null
     ): PharosTransactions
     {
         $terminalsData = $this->extractTerminalData($terminalsData);

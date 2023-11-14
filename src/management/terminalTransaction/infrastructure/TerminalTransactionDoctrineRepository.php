@@ -6,13 +6,13 @@ use Doctrine\ORM\EntityManager;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\management\terminalTransaction\domain\CommercePay;
 use Viabo\management\terminalTransaction\domain\CommercePayReference;
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayView;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 
-final class CommercePayDoctrineRepository extends DoctrineRepository implements CommercePayRepository
+final class TerminalTransactionDoctrineRepository extends DoctrineRepository implements TerminalTransactionRepository
 {
     public function __construct(EntityManager $ManagementEntityManager)
     {

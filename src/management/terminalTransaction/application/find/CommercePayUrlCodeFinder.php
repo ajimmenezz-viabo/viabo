@@ -3,11 +3,11 @@
 namespace Viabo\management\terminalTransaction\application\find;
 
 use Viabo\management\terminalTransaction\domain\CommercePayReferenceId;
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 
 final readonly class CommercePayUrlCodeFinder
 {
-    public function __construct (private CommercePayRepository $repository)
+    public function __construct (private TerminalTransactionRepository $repository)
     {
     }
 

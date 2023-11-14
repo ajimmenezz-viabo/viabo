@@ -7,14 +7,14 @@ namespace Viabo\management\terminalTransaction\application\update;
 use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\management\terminalTransaction\domain\CommercePayApiAuthCode;
 use Viabo\management\terminalTransaction\domain\CommercePayApiReferenceNumber;
-use Viabo\management\terminalTransaction\domain\CommercePayRepository;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayStatusId;
 use Viabo\management\terminalTransaction\domain\exceptions\CommercePayNotExist;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CommercePayUpdater
 {
-    public function __construct(private CommercePayRepository $repository, private EventBus $bus)
+    public function __construct(private TerminalTransactionRepository $repository, private EventBus $bus)
     {
     }
 

@@ -1,14 +1,44 @@
+import { useEffect, useMemo, useState } from 'react'
+
 import { Card } from '@mui/material'
+import { sub } from 'date-fns'
 
 import { getLiquidatedMovementsActions } from './LiquidatedMovementsActions'
 
 import { useFindViaboPayLiquidatedMovements, useLiquidatedMovementsColumns } from '../../hooks'
+import { useViaboPayLiquidatedMovementsStore } from '../../store'
 
+import { CardMovementsHeader } from '@/app/business/shared/components/card-movements/header-filter'
 import { MaterialDataTable } from '@/shared/components/dataTables'
 import { useMaterialTable } from '@/shared/hooks'
 
 const LiquidatedMovementsTable = () => {
-  const { data, isError, error, isLoading, isFetching } = useFindViaboPayLiquidatedMovements()
+  const currentDate = new Date()
+
+  const filterDate = useViaboPayLiquidatedMovementsStore(state => state.filterDate)
+
+  const initialStartDate = useMemo(
+    () => (filterDate?.startDate ? new Date(filterDate?.startDate) : sub(currentDate, { days: 30 })),
+    [filterDate?.startDate]
+  )
+  const initialEndDate = useMemo(
+    () => (filterDate?.endDate ? new Date(filterDate?.endDate) : currentDate),
+    [filterDate?.endDate]
+  )
+
+  const [startDate, setStartDate] = useState(initialStartDate)
+  const [endDate, setEndDate] = useState(initialEndDate)
+
+  const { data, isError, error, isLoading, isFetching, refetch } = useFindViaboPayLiquidatedMovements(
+    startDate,
+    endDate
+  )
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      refetch()
+    }
+  }, [startDate, endDate])
 
   const columns = useLiquidatedMovementsColumns()
 
@@ -52,8 +82,23 @@ const LiquidatedMovementsTable = () => {
     renderRowActionMenuItems: getLiquidatedMovementsActions
   })
 
+  const handleDateRange = range => {
+    const { startDate, endDate } = range
+    if (endDate !== null && startDate !== null) {
+      setEndDate(endDate)
+      setStartDate(startDate)
+    }
+  }
+
   return (
     <Card>
+      <CardMovementsHeader
+        startDate={startDate}
+        endDate={endDate}
+        onChangeDateRange={handleDateRange}
+        hideBalance
+        loading={isFetching}
+      />
       <MaterialDataTable table={table} />
     </Card>
   )

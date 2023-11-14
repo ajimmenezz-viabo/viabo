@@ -22,7 +22,14 @@ import { DateRangePicker } from 'mui-daterange-picker-orient'
 import { getDateRange } from '@/shared/utils'
 import { useResponsive } from '@/theme/hooks'
 
-const CardMovementsHeader = ({ startDate, endDate, onChangeDateRange, loading, onOpenBalance }) => {
+const CardMovementsHeader = ({
+  startDate,
+  endDate,
+  onChangeDateRange,
+  loading,
+  onOpenBalance,
+  hideBalance = false
+}) => {
   const initialDateRange = useMemo(() => getDateRange(), [])
 
   const modalRef = useRef(null)
@@ -78,16 +85,18 @@ const CardMovementsHeader = ({ startDate, endDate, onChangeDateRange, loading, o
 
         <Box display={'flex'} flexGrow={1} />
         <Box display={'flex'} flexGrow={1} justifyContent={'flex-end'}>
-          <Button
-            variant="contained"
-            color="secondary"
-            disabled={Boolean(loading)}
-            startIcon={<CurrencyExchangeOutlined />}
-            sx={{ color: 'text.primary', fontWeight: 'bolder' }}
-            onClick={onOpenBalance}
-          >
-            Ver Balance del Periodo
-          </Button>
+          {!hideBalance && (
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={Boolean(loading)}
+              startIcon={<CurrencyExchangeOutlined />}
+              sx={{ color: 'text.primary', fontWeight: 'bolder' }}
+              onClick={onOpenBalance}
+            >
+              Ver Balance del Periodo
+            </Button>
+          )}
         </Box>
 
         <Dialog
@@ -139,7 +148,8 @@ CardMovementsHeader.propTypes = {
   loading: PropTypes.any,
   onChangeDateRange: PropTypes.func.isRequired,
   onOpenBalance: PropTypes.func,
-  startDate: PropTypes.any.isRequired
+  startDate: PropTypes.any.isRequired,
+  hideBalance: PropTypes.bool
 }
 
 export default CardMovementsHeader

@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 
+import { TerminalMovementColumn } from '../components/movements/columns'
+
 export const useLiquidatedMovementsColumns = () =>
   useMemo(
     () => [
@@ -9,7 +11,8 @@ export const useLiquidatedMovementsColumns = () =>
         accessorKey: 'description',
         header: 'Movimiento',
         enableHiding: false,
-        size: 200
+        size: 200,
+        Cell: ({ row }) => <TerminalMovementColumn row={row} />
       },
       {
         accessorKey: 'terminalName',
@@ -66,7 +69,7 @@ export const useLiquidatedMovementsColumns = () =>
           return (
             <Stack>
               <Typography fontWeight={'bold'} color={'success.main'} variant="subtitle2">
-                {rowData?.amountToLiquidate}
+                {rowData?.amountToLiquidateFormat}
               </Typography>
             </Stack>
           )

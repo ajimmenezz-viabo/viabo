@@ -1,9 +1,9 @@
 <?php
 
-use Viabo\Backend\ViaboKernel;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
+use Viabo\Backend\ViaboKernel;
 
 require dirname(__DIR__) . '/../../../vendor/autoload.php';
 
@@ -20,8 +20,8 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 
 if ($response->isNotFound()) {
-    require __DIR__ . $_ENV['APP_VIABOLEGACY'];
-} else {
-    $response->send();
-    $kernel->terminate($request , $response);
+    header('Location: /', true, 302);
+    exit();
 }
+$response->send();
+$kernel->terminate($request , $response);

@@ -1,0 +1,302 @@
+nelmio_api_doc:
+  areas:
+    path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
+      - ^/api(?!/doc$)
+    host_patterns: # document only routes with a host of the form api.*
+      - ^api\.
+  documentation:
+    openapi: 3.0.0
+    # servers:
+    #   # Added by API Auto Mocking Plugin
+    #   - description: Viabo Services API
+    #     url: https://qa.viabo.com
+
+    info:
+      title: Viabo API
+      description: |
+        Esta API permite a los desarrolladores consumir los servicios de Viabo Pay y Viabo Card.
+        Proporciona métodos y endpoints para realizar transacciones financieras, gestionar tarjetas 
+        y acceder a información relacionada con los servicios de Viabo Pay y Viabo Card de manera programática.
+        Facilita la integración de estos servicios en aplicaciones y sistemas externos.
+      version: 1.0.0
+      contact:
+        email: alonso@viabo.com
+      license:
+        name: Apache 2.0
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+   
+
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      schemas:
+        Encrypted:
+          type: object
+          description: "Este endpoint devuelve datos encriptados utilizando el algoritmo AES-256 en modo de operación CBC.\n\n Las respuestas se envían en formato Base64 y constan de dos partes: el texto cifrado (cypher text) y el vector de inicialización (IV).\n\n Para desencriptar los datos, siga estos pasos:\n\n
+            1. Decode el texto cifrado y el IV desde Base64 a bytes.\n\n
+            2. Configure la clave de cifrado AES-256.\n\n
+            3. Utilice el IV como vector de inicialización para descifrar el texto cifrado.\n\n
+            4. El resultado será el contenido original en su formato legible.\n\n
+            Tenga en cuenta que para desencriptar con éxito, necesita la clave de cifrado AES-256, que no se proporciona en este documento. Asegúrese de contar con la clave adecuada antes de intentar desencriptar los datos."
+          required:
+            - ciphertext
+            - iv
+          properties:
+            ciphertext:
+              type: string
+              description: Ciphertext
+              example: JkHTZcWtpl05wII00Sf2e5HrgpU2Jg22MJg4tLbg4EIIVPZKHcStMaFAM3DQAmXXqtd2P0nLJ4W3I+fG6c8XYQ==
+            iv:
+              type: string
+              example: fDGUuB8HeirvX4/CIpTMdg==
+              description: Vector de inicializacion
+        UserCredentials:
+          type: object
+          required: 
+            - username
+            - password
+          properties:
+            username:
+              type: string
+              description: Email de usuario
+              example: username@email.com
+            password:
+              type: string
+              example: MyStrongP4$$
+              description: Contraseña del usuario
+        UserToken:
+          type: object
+          properties:
+            token:
+              type: string
+              example: WQzeDGjL0PMqT4ucaICZNgx8oszCpM...
+        NewCardUser:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Ramsés de Hoyos
+            email:
+              type: string
+              example: ramses@viabo.com
+            phone:
+              type: string
+              example: +52 12 3456 7890
+            privacy:
+              type: boolean
+              example: true
+        VerificationCode:
+          type: object
+          properties:
+            verificationCode:
+              type: string
+              example: 123456
+            token:
+              type: string
+              example: WQzeDGjL0PMqT4ucaICZNgx8oszCpM...
+        Empty:
+          type: object                      
+    security:
+      - Bearer: []
+
+    tags:
+      - name: Control de Acceso
+        description: "Esta sección de la API proporciona endpoints relacionados con la autenticación y 
+        la autorización para acceder a los servicios de Viabo Pay y Viabo Card.
+        Incluye métodos para la gestión de tokens de acceso, autenticación de usuarios y autorización para realizar transacciones 
+        y operaciones en la plataforma."
+
+    paths:
+      /api/login:
+        post:
+          tags:
+            - Control de Acceso
+          summary: Generación de token
+          operationId: login
+          description: Inicio de sesión y generación de token
+          requestBody:
+            description: Datos del usuario para el inicio de sesion
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserCredentials'
+
+          responses:
+            200:
+              description: "Token generado"
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/UserToken'
+      
+            400:
+              description: "Bad Request"
+            401:
+              description: "Credenciales incorrectas"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "El usuario o password son incorrectos"
+
+      /api/card-demo/information/{cardNumber}:
+        get:
+          tags:
+            - Registro de Tarjetas     
+          summary: Valida existencia de tarjeta     
+          description: Verifica si la tarjeta está registrada como parte del stock de tarjetas sin asociar de algun comercio
+          parameters:
+            - name: cardNumber
+              in: path
+              description: Bin de tarjeta (ultimos 8 digitos)
+              required: true
+              schema:
+                type: string
+                example: 12345678
+          responses:
+            200:
+              description: "Retorna un token confirmando que la tarjeta esta registrada como parte del stock de tarjetas sin asociar de algun comercio. Se utiliza pará en el siguiente envío de información"
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/UserToken'
+            400:
+              description: "Bad Request"                   
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: 'La tarjeta no esta registrada o los datos ingresados no son correctos'         
+      /api/security/commerce-demo/user/new:
+        post:
+          tags:
+            - Registro de Tarjetas        
+          summary: Registro de nuevo tarjetahabiente [Encrypted]
+          description: Recibe los datos del usuario para asociarlo con la tarjeta previamente definida
+          requestBody:
+            description: Datos del usuario para el registro
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/NewCardUser'
+          responses:
+            200:
+              description: "Retorna un token asociado al usuario registrado. Se utilizará en el siguiente envío de información"
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/UserToken'
+            400:
+              description: "Bad Request"                   
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: 'Error general, parámetros inválidos o faltantes'   
+            401:
+              description: "Token inválido o usuario existente"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso || El usuario ya esta registrado en el sistema"
+      /api/code/verificate:
+        post: 
+          tags:
+            - Registro de Tarjetas
+          summary: Verificación de identidad para nuevo usuario [Encrypted]
+          description: Verifica la identidad del usuario para asociarlo con la tarjeta previamente definida
+          requestBody:
+            description: Datos del usuario para el registro
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/VerificationCode' 
+          responses:
+            200:
+              description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Empty'
+            400:
+              description: "Bad Request"                   
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: 'Error general, parámetros inválidos o faltantes'
+            401:
+              description: "Token inválido o código de verificación incorrecto"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso || El código ingresado es incorrecto"               
+      /api/assign/commerce-demo-card/to/user:
+        put:
+          tags:
+            - Registro de Tarjetas
+          summary: Validación de datos de tarjeta y asociación a usuario [Encrypted]
+          description: Valida el CVV y los datos de vencimiento de la tarjeta. En caso de ser correctos, asocia la tarjeta al usuario previamente registrado
+          requestBody:
+            description: Datos del usuario para el registro
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Encrypted' 
+          responses:
+            200:
+              description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Empty'
+            400:
+              description: "Bad Request"                   
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: 'Los datos de la tarjeta son incorrectos'  
+      
+      /api/payment-processors/of/commerce:
+        get:
+          tags:
+            - Viabo Card
+          summary: Lista de procesadores de pago del comercio [Encrypted]
+          description: Obtiene los tipos de procesadores de pago para las tarjetas del comercio o usuario loggeado
+          responses:
+            200:
+              description: "Lista de procesadores de pago del comercio"
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string, example: "1"}
+                        name: { type: string, example: MasterCard }
+                    example:
+                      - id: "1"
+                        name: MasterCard                       
+                      - id: "2"
+                        name: Carnet
+            400:
+              description: "Bad Request"
+            401:
+              description: "Sin acceso"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "El usuario caduco su sesion o no ha iniciado sesion"

@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types'
 import { createContext } from 'react'
-import { defaultSettings } from '@/config'
+
+import PropTypes from 'prop-types'
+
+import { defaultSettings } from '@theme/overrides/options'
+import { colorPresets, getColorPresets } from '@theme/utils'
+
 import { useLocalStorage } from '@/shared/hooks'
-import { colorPresets, defaultPreset, getColorPresets } from '@theme/utils'
 
 const initialState = {
   ...defaultSettings,
@@ -13,7 +16,7 @@ const initialState = {
   onToggleStretch: () => {},
   onChangeLayout: () => {},
   onResetSetting: () => {},
-  setColor: defaultPreset,
+  setColor: {},
   colorOption: []
 }
 

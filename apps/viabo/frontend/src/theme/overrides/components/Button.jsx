@@ -3,13 +3,13 @@ export default function Button(theme) {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: theme.spacing(3),
+          borderRadius: theme.spacing(2),
           '&:hover': {
             boxShadow: 'none'
           }
         },
         sizeLarge: {
-          height: 48
+          height: 42
         },
         // contained
         containedInherit: {
@@ -20,10 +20,10 @@ export default function Button(theme) {
           }
         },
         containedPrimary: {
-          boxShadow: theme.customShadows.primary
+          boxShadow: theme.palette.mode === 'dark' ? theme.customShadows.secondary : theme.customShadows.primary
         },
         containedSecondary: {
-          boxShadow: theme.customShadows.secondary
+          boxShadow: theme.palette.mode === 'dark' ? theme.customShadows.primary : theme.customShadows.secondary
         },
         containedInfo: {
           boxShadow: theme.customShadows.info

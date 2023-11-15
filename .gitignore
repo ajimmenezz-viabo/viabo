@@ -11,14 +11,20 @@
 /.env.local
 /apps/viabo/backend/config/jwt/private.pem
 /apps/viabo/backend/config/jwt/public.pem
+apps/viabo/backend/public/assets
+apps/viabo/backend/public/landingPage
+/apps/viabo/backend/public/.htaccess
+apps/viabo/backend/public/storage
+/apps/viabo/backend/public/php.ini
+/apps/viabo/backend/public/.user.ini
+/apps/viabo/backend/public/production_images
 ###< Files ###
 
 ###> Symfony ###
 /apps/viabo/backend/var/
 ###< Symfony ###
 
-
-# Logs
+###> Logs ###
 /apps/viabo/frontend/logs
 /apps/viabo/frontend/*.log
 /apps/viabo/frontend/npm-debug.log*
@@ -32,6 +38,8 @@
 /apps/viabo/frontend/dist-ssr
 /apps/viabo/frontend/*.local
 /apps/viabo/frontend/pnpm-lock.yaml
+/apps/viabo/backend/log/
+###< Logs ###
 
 # Editor directories and files
 .vscode/*
@@ -43,4 +51,5 @@
 *.njsproj
 *.sln
 *.sw?
+
 

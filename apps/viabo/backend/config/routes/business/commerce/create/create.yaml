@@ -1,0 +1,4 @@
+informal-commerce-create:
+  path: '/api/informal-commerce/new'
+  controller: Viabo\Backend\Controller\business\commerce\InformalCommerceCreatorController
+  methods: POST

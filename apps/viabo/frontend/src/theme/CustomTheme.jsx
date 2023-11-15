@@ -1,10 +1,23 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import { useSettings } from '@theme/hooks/useSettings'
 import { useMemo } from 'react'
-import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
-import { ComponentsOverrides } from '@theme/overrides/components'
+
 import PropTypes from 'prop-types'
 
+import { createTheme, CssBaseline, styled, StyledEngineProvider, ThemeProvider } from '@mui/material'
+import { useSettings } from '@theme/hooks/useSettings'
+import { ComponentsOverrides } from '@theme/overrides/components'
+import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
+import { Bounce, ToastContainer } from 'react-toastify'
+
+const StyledToastContainer = styled(ToastContainer)(({ theme }) => ({
+  '& .Toastify__toast': {
+    background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    borderRadius: theme.shape.borderRadius
+  },
+  '& .Toastify__close-button': {
+    color: theme.palette.text.primary
+  }
+}))
 export const CustomTheme = ({ children }) => {
   const { themeMode, themeDirection } = useSettings()
   const isLight = themeMode === 'light'
@@ -29,10 +42,25 @@ export const CustomTheme = ({ children }) => {
   theme.components = ComponentsOverrides(theme)
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <StyledToastContainer
+          theme={theme}
+          position="top-center"
+          transition={Bounce}
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {children}
+      </ThemeProvider>
+    </StyledEngineProvider>
   )
 }
 

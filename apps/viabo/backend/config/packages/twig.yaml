@@ -1,3 +1,5 @@
 twig:
   globals:
-    host: '%env(HOST_VIABO)%'
+    host: "%env(APP_HOST)%"
+  paths:
+    "%kernel.project_dir%/public/app": App

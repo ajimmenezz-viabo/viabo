@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Viabo\business\commerce\domain\Commerce"  table="t_business_commerces">
+        <id name="id" type="commerce_id" column="Id"/>
+        <embedded name="fatherId" class="CommerceFatherId" use-column-prefix="false"/>
+        <field name="legalRepresentative" type="legal_representative" column="LegalRepresentative"/>
+        <embedded name="fiscalPersonType" class="CommerceFiscalPersonType" use-column-prefix="false"/>
+        <embedded name="taxName" class="CommerceTaxName" use-column-prefix="false"/>
+        <embedded name="tradeName" class="CommerceTradeName" use-column-prefix="false"/>
+        <embedded name="rfc" class="CommerceRfc" use-column-prefix="false"/>
+        <embedded name="employees" class="CommerceEmployees" use-column-prefix="false"/>
+        <embedded name="branchOffices" class="CommerceBranchOffices" use-column-prefix="false"/>
+        <embedded name="pointSaleTerminal" class="CommercePointSaleTerminal" use-column-prefix="false"/>
+        <embedded name="paymentApi" class="CommercePaymentApi" use-column-prefix="false"/>
+        <embedded name="register" class="CommerceRegister" use-column-prefix="false"/>
+        <embedded name="type" class="CommerceType" use-column-prefix="false"/>
+        <embedded name="allowTransactions" class="CommerceAllowTransactions" use-column-prefix="false"/>
+        <embedded name="statusId" class="CommerceStatusId" use-column-prefix="false"/>
+        <embedded name="registerStep" class="CommerceRegisterStep" use-column-prefix="false"/>
+        <embedded name="active" class="CommerceActive" use-column-prefix="false"/>
+    </entity>
+
+</doctrine-mapping>

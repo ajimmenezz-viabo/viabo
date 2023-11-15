@@ -10,17 +10,19 @@ export default function Dialog(theme) {
             borderRadius: Number(theme.shape.borderRadius) * 2
           },
           '&.MuiDialog-paperFullScreen': {
-            borderRadius: 0
+            borderRadius: 0,
+            backgroundColor: theme.palette.background.default
           },
           '&.MuiDialog-paper .MuiDialogActions-root': {
             padding: theme.spacing(3)
           },
           '@media (max-width: 600px)': {
-            margin: theme.spacing(2)
+            // margin: theme.spacing(2)
+            margin: 0
           },
           '@media (max-width: 663.95px)': {
             '&.MuiDialog-paperWidthSm.MuiDialog-paperScrollBody': {
-              maxWidth: '100%'
+              maxWidth: 'calc(100% - 32px)'
             }
           }
         },

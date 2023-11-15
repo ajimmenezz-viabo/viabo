@@ -1,0 +1,4 @@
+user-find-for-username:
+  path: '/api/legal-representative/verificate'
+  controller: Viabo\Backend\Controller\security\user\find\LegalRepresentativeFinderController
+  methods: GET

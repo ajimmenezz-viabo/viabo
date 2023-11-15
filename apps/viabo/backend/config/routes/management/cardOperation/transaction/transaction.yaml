@@ -8,7 +8,13 @@ card-transactions-reverse-find:
   controller: Viabo\Backend\Controller\management\cardOperation\ReverseCardTransactionsProcessorController
   methods: GET
 
+card-transactions-of-terminals-shared:
+  path: '/api/card/transactions/shared-terminals'
+  controller: Viabo\Backend\Controller\management\cardOperation\SharedTerminalsPaymentProcessorController
+  methods: POST
+
 find-card-transactions-of-commerce:
   path: '/api/card-transactions/commerce'
   controller: Viabo\Backend\Controller\management\cardOperation\CardTransactionsFinderOnCommerceController
   methods: GET
+

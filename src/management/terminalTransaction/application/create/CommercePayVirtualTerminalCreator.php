@@ -41,9 +41,7 @@ final readonly class CommercePayVirtualTerminalCreator
             $email ,
             $phone ,
             $description ,
-            $amount,
-            new CommercePayApiAuthCode(''),
-            new CommercePayApiReferenceNumber('')
+            $amount
         );
 
         $this->repository->save($commercePayVirtualTerminal);

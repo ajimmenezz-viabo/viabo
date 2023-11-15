@@ -40,7 +40,8 @@
 					</div>
 					<div class="col-12 ">
 						<label for="email" class="form-label require">Email</label>
-						<input type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" class="form-control" id="email" name="email" title="Ingrese una dirección de correo electrónico válida" required>
+						<input type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}" class="form-control" id="email" name="email" title="Ingrese una dirección de correo electrónico válida" required>
+
 					</div>
 					<div class="col-12">
 						<label for="telefono" class="form-label">Teléfono</label>
@@ -77,7 +78,7 @@
 
 			<div class="d-flex">
 				<div class="toast-body">
-					Se envio la información con éxito
+					Gracias por su registro. En breve nos pondremos en contacto.
 				</div>
 				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
@@ -89,6 +90,15 @@
 				<div class="toast-body">
 					Ocurrio un problema al enviar la información.
 				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
+
+
+		<div id="notification-contact-warning" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+
+			<div class="d-flex">
+				<div class="toast-body" id="message-warning-notification"></div>
 				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
 		</div>

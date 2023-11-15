@@ -40,7 +40,7 @@ async function sendContactInformation(information) {
       body: JSON.stringify(information),
     };
 
-    const response = await fetch("/api/login", configRequest);
+    const response = await fetch("/api/set/register/prospect", configRequest);
     if (response?.status !== 200) {
       throw new Exception("Problema al guardar la información");
     }

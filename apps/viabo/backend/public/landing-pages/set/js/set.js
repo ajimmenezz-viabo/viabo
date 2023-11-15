@@ -8,7 +8,7 @@
     (event) => {
       event.preventDefault();
       const information = getInformation(contactForm);
-      sendContactInformation(information);
+      sendContactInformation(information, contactForm);
     },
     false
   );
@@ -24,13 +24,18 @@ function getInformation(form) {
   return formObject;
 }
 
-async function sendContactInformation(information) {
+async function sendContactInformation(information, contactForm) {
   setButtonByStatus(true);
   const toastSuccess = document.getElementById("notification-contact-success");
   const toastError = document.getElementById("notification-contact-error");
+  const toastWarning = document.getElementById("notification-contact-warning");
+  const toastMessageWarning = document.getElementById(
+    "message-warning-notification"
+  );
 
   try {
     const toast = new bootstrap.Toast(toastSuccess);
+    const toast_warning = new bootstrap.Toast(toastWarning);
 
     const configRequest = {
       method: "POST",
@@ -41,11 +46,23 @@ async function sendContactInformation(information) {
     };
 
     const response = await fetch("/api/set/register/prospect", configRequest);
+
+    if (response?.status === 400) {
+      const message = await response?.json();
+      toastMessageWarning.innerHTML =
+        message !== ""
+          ? message
+          : "Ocurrio un problema al guardar la información";
+      toast_warning.show();
+      return;
+    }
+
     if (response?.status !== 200) {
       throw new Exception("Problema al guardar la información");
     }
 
     toast.show();
+    contactForm?.reset();
   } catch (error) {
     console.error(error);
     const toast = new bootstrap.Toast(toastError);

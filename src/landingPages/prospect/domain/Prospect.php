@@ -38,7 +38,7 @@ final class Prospect extends AggregateRoot
             ProspectBusinessType::create($businessType) ,
             ProspectName::create($name) ,
             ProspectLastname::create($lastname) ,
-            ProspectCompany::create($company) ,
+            new ProspectCompany($company) ,
             ProspectEmail::create($email) ,
             new ProspectPhone($phone) ,
             ProspectContactMethod::create($contactMethod) ,

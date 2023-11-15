@@ -14,7 +14,7 @@ final class FundingOrderReferenceNumber extends StringValueObject
     {
         $date = new DatePHP();
         $reference = $date->serializeDate();
-        return new static(strval($reference));
+        return new static($reference);
     }
 
     public static function create(string $value): self

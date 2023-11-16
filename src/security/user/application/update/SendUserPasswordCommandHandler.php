@@ -19,6 +19,6 @@ final readonly class SendUserPasswordCommandHandler implements CommandHandler
         $userId = new UserId($command->userId);
         $password = UserPassword::random();
 
-        $this->send->__invoke($userId, $password);
+        $this->send->__invoke($userId, $password, $command->cardNumber, $command->commerce);
     }
 }

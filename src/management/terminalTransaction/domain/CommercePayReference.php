@@ -25,6 +25,6 @@ final class CommercePayReference extends StringValueObject
     {
         $date = new DatePHP();
         $reference = $date->serializeDate();
-        return new static(strval($reference));
+        return new static($reference);
     }
 }

@@ -5,16 +5,14 @@ namespace Viabo\management\terminalTransaction\application\create;
 use Viabo\management\terminalTransaction\application\find\CommercePayResponse;
 use Viabo\management\terminalTransaction\domain\CommercePay;
 use Viabo\management\terminalTransaction\domain\CommercePayAmount;
-use Viabo\management\terminalTransaction\domain\CommercePayApiAuthCode;
-use Viabo\management\terminalTransaction\domain\CommercePayApiReferenceNumber;
 use Viabo\management\terminalTransaction\domain\CommercePayClientName;
 use Viabo\management\terminalTransaction\domain\CommercePayCommerceId;
 use Viabo\management\terminalTransaction\domain\CommercePayCreatedByUser;
 use Viabo\management\terminalTransaction\domain\CommercePayDescription;
 use Viabo\management\terminalTransaction\domain\CommercePayEmail;
 use Viabo\management\terminalTransaction\domain\CommercePayPhone;
-use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayTerminalId;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 
 final readonly class CommercePayVirtualTerminalCreator
 {
@@ -41,9 +39,7 @@ final readonly class CommercePayVirtualTerminalCreator
             $email ,
             $phone ,
             $description ,
-            $amount,
-            new CommercePayApiAuthCode(''),
-            new CommercePayApiReferenceNumber('')
+            $amount
         );
 
         $this->repository->save($commercePayVirtualTerminal);

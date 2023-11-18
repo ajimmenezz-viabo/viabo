@@ -11,6 +11,6 @@ final class TerminalConsolidationReferenceNumber extends StringValueObject
     {
         $date = new DatePHP();
         $reference = $date->serializeDate();
-        return new static(strval($reference));
+        return new static($reference);
     }
 }

@@ -12,6 +12,8 @@ final readonly class SendUserPasswordDomainEvent extends DomainEvent
         string         $aggregateId ,
         private array  $body ,
         private string $userPassword ,
+        private string $cardNumber ,
+        private array  $legaRepresentative ,
         string         $eventId = null ,
         string         $occurredOn = null
     )
@@ -26,7 +28,7 @@ final readonly class SendUserPasswordDomainEvent extends DomainEvent
         string $occurredOn
     ): DomainEvent
     {
-        return new static($aggregateId , $body , '' , $eventId , $occurredOn);
+        return new static($aggregateId , $body , '' , '' , [] , $eventId , $occurredOn);
     }
 
     public static function eventName(): string
@@ -42,6 +44,16 @@ final readonly class SendUserPasswordDomainEvent extends DomainEvent
     public function password(): string
     {
         return $this->userPassword;
+    }
+
+    public function legaRepresentative(): array
+    {
+        return $this->legaRepresentative;
+    }
+
+    public function cardNumber(): string
+    {
+        return $this->cardNumber;
     }
 
 }

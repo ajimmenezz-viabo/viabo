@@ -15,10 +15,19 @@ final readonly class SendUserPassword
     {
     }
 
-    public function __invoke(UserId $userId , UserPassword $password): void
+    public function __invoke(
+        UserId       $userId ,
+        UserPassword $password ,
+        string       $cardNumber ,
+        array        $commerce
+    ): void
     {
+        $legalRepresentativeData = [
+            'name' => $commerce['legalRepresentativeName'] ,
+            'email' => $commerce['legalRepresentativeEmail']
+        ];
         $user = $this->updater->__invoke($userId , $password);
-        $user->setEventSendPassword();
+        $user->setEventSendPassword($cardNumber , $legalRepresentativeData);
 
         $this->bus->publish(...$user->pullDomainEvents());
     }

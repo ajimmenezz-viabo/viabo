@@ -7,7 +7,9 @@ namespace Viabo\Backend\Controller\management\card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Viabo\business\commerce\application\find\CommerceQuery;
 use Viabo\business\commerceUser\application\create\CreateCommerceUserCommand;
+use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\card\application\update\UpdateCardDemoCommand;
 use Viabo\management\card\application\update\UpdateCardOwnerCommand;
 use Viabo\security\user\application\update\SendUserPasswordCommand;
@@ -21,10 +23,16 @@ final readonly class CommerceDemoCardUserUpdaterController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $this->opensslDecrypt($request->toArray());
             $cardId = [['id' => $tokenData['cardId'] , 'cvv' => $data['cvv']]];
+            $card = $this->ask(new CardQuery($tokenData['cardId']));
+            $commerce = $this->ask(new CommerceQuery($card->data['commerceId']));
             $this->dispatch(new UpdateCardDemoCommand($tokenData['cardId'] , $data['cvv'] , $data['expiration']));
             $this->dispatch(new CreateCommerceUserCommand($tokenData['id'] , $cardId));
             $this->dispatch(new UpdateCardOwnerCommand($cardId , $tokenData['id']));
-            $this->dispatch(new SendUserPasswordCommand($tokenData['id']));
+            $this->dispatch(new SendUserPasswordCommand(
+                $tokenData['id'] ,
+                $card->data['number'] ,
+                $commerce->data
+            ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

@@ -5,16 +5,14 @@ namespace Viabo\management\terminalTransaction\application\create;
 use Viabo\management\terminalTransaction\application\find\CommercePayUrlCodeResponse;
 use Viabo\management\terminalTransaction\domain\CommercePay;
 use Viabo\management\terminalTransaction\domain\CommercePayAmount;
-use Viabo\management\terminalTransaction\domain\CommercePayApiAuthCode;
-use Viabo\management\terminalTransaction\domain\CommercePayApiReferenceNumber;
 use Viabo\management\terminalTransaction\domain\CommercePayClientName;
 use Viabo\management\terminalTransaction\domain\CommercePayCommerceId;
 use Viabo\management\terminalTransaction\domain\CommercePayCreatedByUser;
 use Viabo\management\terminalTransaction\domain\CommercePayDescription;
 use Viabo\management\terminalTransaction\domain\CommercePayEmail;
 use Viabo\management\terminalTransaction\domain\CommercePayPhone;
-use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\management\terminalTransaction\domain\CommercePayTerminalId;
+use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CommercePayCreator

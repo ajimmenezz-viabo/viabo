@@ -42,9 +42,7 @@ final readonly class CommercePayCreator
             $email ,
             $phone ,
             $description ,
-            $amount,
-            new CommercePayApiAuthCode(''),
-            new CommercePayApiReferenceNumber('')
+            $amount
         );
 
         $this->repository->save($commercePay);

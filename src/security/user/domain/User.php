@@ -148,10 +148,14 @@ final class User extends AggregateRoot
         $this->record(new CardOwnerDataUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
-    public function setEventSendPassword(): void
+    public function setEventSendPassword(string $cardNumber , array $legalRepresentative): void
     {
         $this->record(new SendUserPasswordDomainEvent(
-            $this->id->value() , $this->toArray() , $this->password::$passwordRandom
+            $this->id->value() ,
+            $this->toArray() ,
+            $this->password::$passwordRandom ,
+            $cardNumber,
+            $legalRepresentative
         ));
     }
 

@@ -5,6 +5,7 @@ namespace Viabo\management\commerceTerminal\application\find;
 use Viabo\management\commerceTerminal\domain\TerminalRepository;
 use Viabo\management\commerceTerminal\domain\Terminals;
 use Viabo\management\commerceTerminal\domain\TerminalShared;
+use Viabo\management\commerceTerminal\domain\TerminalView;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
@@ -46,7 +47,12 @@ final readonly class TerminalFinder
             ['field' => 'id' , 'operator' => 'IN' , 'value' => implode(',' , $ids)]
         ]);
 
-        return $this->repository->searchView(new Criteria($filters));
+        $terminals = $this->repository->searchView(new Criteria($filters));
+
+        return array_map(function (TerminalView $terminal) use ($commerceId){
+            $terminal->updateCommerceId($commerceId);
+            return $terminal;
+        } , $terminals);
     }
 
 }

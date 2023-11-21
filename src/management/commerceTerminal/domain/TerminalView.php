@@ -29,6 +29,11 @@ final class TerminalView
         return $this->id;
     }
 
+    public function updateCommerceId(string $commerceId): void
+    {
+        $this->commerceId = $commerceId;
+    }
+
     public function toArray(): array
     {
         return [

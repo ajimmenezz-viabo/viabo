@@ -11,3 +11,8 @@ export const getViaboPayLiquidatedMovements = async (startDate, endDate, signal)
   })
   return ViaboPayLiquidatedMovementsAdapter(data)
 }
+
+export const liquidateTerminalMovement = async movement => {
+  const { data } = await axios.post('/api/card/transactions/shared-terminals', movement)
+  return data
+}

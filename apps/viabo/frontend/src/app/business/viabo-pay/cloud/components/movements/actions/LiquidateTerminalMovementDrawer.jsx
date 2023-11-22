@@ -33,7 +33,7 @@ const LiquidateTerminalMovementDrawer = () => {
       }
     >
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-        {open && <LiquidateTerminalMovementForm movement={movement} />}
+        {open && <LiquidateTerminalMovementForm movement={movement} onSuccess={handleClose} />}
       </Scrollbar>
     </RightPanel>
   )

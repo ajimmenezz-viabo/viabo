@@ -10,24 +10,24 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class CommercePay extends AggregateRoot
 {
 
-
     public function __construct(
-        private CommercePayId                 $id ,
-        private CommercePayReference          $reference ,
-        private CommercePayCommerceId         $commerceId ,
-        private CommercePayTerminalId         $terminalId ,
-        private CommercePayClientName         $clientName ,
-        private CommercePayEmail              $email ,
-        private CommercePayPhone              $phone ,
-        private CommercePayDescription        $description ,
-        private CommercePayAmount             $amount ,
-        private CommercePayStatusId           $statusId ,
-        private CommercePayUrlCode            $urlCode ,
-        private CommercePayApiAuthCode        $apiAuthCode ,
-        private CommercePayApiReferenceNumber $apiReferenceNumber ,
-        private CommercePayCreatedByUser      $createdByUser ,
-        private CommercePayRegisterDate       $registerDate ,
-        private CommercePayPaymentDate        $paymentDate
+        private CommercePayId                  $id ,
+        private CommercePayReference           $reference ,
+        private CommercePayCommerceId          $commerceId ,
+        private CommercePayTerminalId          $terminalId ,
+        private CommercePayClientName          $clientName ,
+        private CommercePayEmail               $email ,
+        private CommercePayPhone               $phone ,
+        private CommercePayDescription         $description ,
+        private CommercePayAmount              $amount ,
+        private CommercePayStatusId            $statusId ,
+        private CommercePayLiquidationStatusId $liquidationStatusId ,
+        private CommercePayUrlCode             $urlCode ,
+        private CommercePayApiAuthCode         $apiAuthCode ,
+        private CommercePayApiReferenceNumber  $apiReferenceNumber ,
+        private CommercePayCreatedByUser       $createdByUser ,
+        private CommercePayRegisterDate        $registerDate ,
+        private CommercePayPaymentDate         $paymentDate
     )
     {
     }
@@ -54,6 +54,7 @@ final class CommercePay extends AggregateRoot
             $description ,
             $amount ,
             new CommercePayStatusId('6') ,
+            new CommercePayLiquidationStatusId('12') ,
             CommercePayUrlCode::random() ,
             new CommercePayApiAuthCode('') ,
             new CommercePayApiReferenceNumber('') ,
@@ -96,9 +97,14 @@ final class CommercePay extends AggregateRoot
         $this->record(new CommercePayUpdatedDomainEvent($this->id()->value() , $this->toArray()));
     }
 
-    public function setPayEventCreated()
+    public function setPayEventCreated(): void
     {
         $this->record(new CommercePayCreatedDomainEvent($this->id->value() , $this->toArray() , $this->email->value()));
+    }
+
+    public function updateLiquidationStatusId(string $liquidationStatusId): void
+    {
+        $this->liquidationStatusId = $this->liquidationStatusId->update($liquidationStatusId);
     }
 
     public function toArray(): array
@@ -117,6 +123,7 @@ final class CommercePay extends AggregateRoot
             'apiAuthCode' => $this->apiAuthCode->value() ,
             'apiReferenceCode' => $this->apiReferenceNumber->value() ,
             'statusId' => $this->statusId->value() ,
+            'liquidationStatusId' => $this->liquidationStatusId->value() ,
             'createdByUser' => $this->createdByUser->value() ,
             'registerDate' => $this->registerDate->value()
         ];

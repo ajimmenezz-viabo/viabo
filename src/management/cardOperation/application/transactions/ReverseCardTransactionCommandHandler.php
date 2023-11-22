@@ -14,6 +14,6 @@ final readonly class ReverseCardTransactionCommandHandler implements CommandHand
 
     public function __invoke(ReverseCardTransactionCommand $command): void
     {
-        ($this->processor)();
+        $this->processor->__invoke();
     }
 }

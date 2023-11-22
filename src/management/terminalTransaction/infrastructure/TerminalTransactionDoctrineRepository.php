@@ -43,7 +43,7 @@ final class TerminalTransactionDoctrineRepository extends DoctrineRepository imp
 
     public function searchBy(CommercePayReference $referenceId): CommercePay|null
     {
-        return $this->repository(CommercePay::class)->findOneBy(['referenceId.value' => $referenceId->value()]);
+        return $this->repository(CommercePay::class)->findOneBy(['reference.value' => $referenceId->value()]);
     }
 
     public function update(CommercePay $commercePay): void

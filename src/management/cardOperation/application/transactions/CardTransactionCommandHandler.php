@@ -21,6 +21,6 @@ final readonly class CardTransactionCommandHandler implements CommandHandler
         $clientKey = new CardCredentialClientKey($command->cardCredential['clientKey']);
         $payEmail = new CardOperationPayEmail($command->legalRepresentativeEmail);
 
-        ($this->processor)($originCardId , $clientKey , $payEmail , $command->destinationCards);
+        $this->processor->__invoke($originCardId , $clientKey , $payEmail , $command->destinationCards);
     }
 }

@@ -76,7 +76,8 @@ final readonly class TerminalsTransactionFinderInPharos
             $data['merchantIds'][] = $terminal['merchantId'];
             $data['terminals'][$terminal['terminalId']] = [
                 'type' => $terminal['typeId'] ,
-                'name' => $terminal['name']
+                'name' => $terminal['name'],
+                'speiCard' => $terminal['speiCard']
             ];
             return $data;
         } , []);

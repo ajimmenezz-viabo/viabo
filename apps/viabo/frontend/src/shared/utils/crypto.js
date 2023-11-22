@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js'
 
-const SECRET_KEY = process.env.APP_OPENSSL
+const SECRET_KEY = import.meta.env.APP_OPENSSL
 
 export const getCryptInfo = object => {
   // Convertir el objeto a una cadena JSON

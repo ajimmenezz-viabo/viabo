@@ -43,7 +43,7 @@ export function MasterGlobalCards() {
   return (
     <AnimatePresence>
       <Stack spacing={2} flex={1}>
-        {isLoading && <RequestLoadingComponent />}
+        {isLoading && <RequestLoadingComponent sx={{ zIndex: 1 }} />}
 
         {!isLoading && (
           <>

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { ArrowBackIos, Send } from '@mui/icons-material'
+import { ArrowBackIos } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import {
   Box,
@@ -21,6 +21,7 @@ import {
 import { CardTransactionsAdapter } from '../../adapters'
 import { useTransactionCard } from '../../hooks'
 
+import { getCardTypeByName } from '@/app/shared/services'
 import { Scrollbar } from '@/shared/components/scroll'
 import { fCurrency } from '@/shared/utils'
 
@@ -50,6 +51,10 @@ const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactio
       }
     })
   }
+
+  const cardTypeLogo = useMemo(() => getCardTypeByName(data?.paymentProcessor), [data])
+
+  const CardLogoComponent = cardTypeLogo?.component
 
   return (
     <>
@@ -92,11 +97,12 @@ const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactio
               <RowResultStyle>
                 <TableCell colSpan={1} />
                 <TableCell align="right">
-                  <Box sx={{ mt: 2 }} />
-                  <Typography>Saldo</Typography>
+                  <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'flex-end'}>
+                    <Typography>Saldo Disponible</Typography>
+                    {cardTypeLogo && <CardLogoComponent sx={{ width: 30, height: 30 }} />}
+                  </Stack>
                 </TableCell>
                 <TableCell align="right" width={120}>
-                  <Box sx={{ mt: 2 }} />
                   <Typography>{fCurrency(data?.balance)}</Typography>
                 </TableCell>
               </RowResultStyle>
@@ -104,20 +110,22 @@ const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactio
               <RowResultStyle>
                 <TableCell colSpan={1} />
                 <TableCell align="right">
-                  <Typography>Transacciones</Typography>
+                  <Typography variant="h6">Total a dispersar</Typography>
                 </TableCell>
                 <TableCell align="right" width={120}>
-                  <Typography sx={{ color: 'error.main' }}>{fCurrency(-data?.currentBalance)}</Typography>
+                  <Typography variant="h6" sx={{ color: 'error.main' }}>
+                    {fCurrency(-data?.currentBalance)}
+                  </Typography>
                 </TableCell>
               </RowResultStyle>
 
               <RowResultStyle>
                 <TableCell colSpan={1} />
                 <TableCell align="right">
-                  <Typography variant="h6">Total</Typography>
+                  <Typography>Total después de movimiento</Typography>
                 </TableCell>
                 <TableCell align="right" width={140}>
-                  <Typography variant="h6">{fCurrency(total)}</Typography>
+                  <Typography>{fCurrency(total)}</Typography>
                 </TableCell>
               </RowResultStyle>
             </TableBody>
@@ -126,15 +134,16 @@ const ResumeTransactionForm = ({ data, onBack, setTransactionLoading, transactio
       </Scrollbar>
       <Stack sx={{ p: 3 }} spacing={3}>
         <LoadingButton
+          size={'large'}
           onClick={handleSubmit}
           loading={isSending || transactionLoading}
           variant="contained"
           color="primary"
           fullWidth
           type="submit"
-          startIcon={<Send />}
+          sx={{ fontWeight: 'bold' }}
         >
-          Enviar
+          Realizar
         </LoadingButton>
 
         {(!isSending || !transactionLoading) && (
@@ -153,6 +162,7 @@ ResumeTransactionForm.propTypes = {
   data: PropTypes.shape({
     balance: PropTypes.any,
     cardOriginId: PropTypes.any,
+    paymentProcessor: PropTypes.any,
     currentBalance: PropTypes.any,
     isGlobal: PropTypes.any,
     transactions: PropTypes.any,

@@ -7,6 +7,7 @@
     <entity name="Viabo\management\cardOperation\domain\CardOperation" table="t_management_cards_operations">
         <embedded name="id" class="CardOperationId" use-column-prefix="false"/>
         <embedded name="typeId" class="CardOperationTypeId" use-column-prefix="false"/>
+        <embedded name="referenceTerminal" class="CardOperationReferenceTerminal" use-column-prefix="false"/>
         <embedded name="originCard" class="CardOperationOrigin" use-column-prefix="false"/>
         <embedded name="originCardMain" class="CardOperationOriginMain" use-column-prefix="false"/>
         <embedded name="destinationCard" class="CardOperationDestination" use-column-prefix="false"/>

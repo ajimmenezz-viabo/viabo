@@ -16,6 +16,7 @@ final class CardOperation extends AggregateRoot
     public function __construct(
         private CardOperationId                   $id ,
         private CardOperationTypeId               $typeId ,
+        private CardOperationReferenceTerminal    $referenceTerminal ,
         private CardOperationOrigin               $originCard ,
         private CardOperationOriginMain           $originCardMain ,
         private CardOperationDestination          $destinationCard ,
@@ -37,22 +38,24 @@ final class CardOperation extends AggregateRoot
     }
 
     public static function create(
-        CardOperationTypeId         $operationTypeId ,
-        CardOperationOrigin         $originCard ,
-        CardOperationOriginMain     $originCardMain ,
-        CardOperationDestination    $destinationCard ,
-        CardOperationBalance        $balance ,
-        CardOperationConcept        $concept ,
-        CardOperationPayEmail       $payEmail ,
-        CardOperationReverseEmail   $reverseEmail ,
-        CardCredentialClientKey     $clientKey ,
-        CardOperationDescriptionPay $descriptionPay ,
-        CardOperationActive         $active
+        CardOperationTypeId            $operationTypeId ,
+        CardOperationReferenceTerminal $referenceTerminal ,
+        CardOperationOrigin            $originCard ,
+        CardOperationOriginMain        $originCardMain ,
+        CardOperationDestination       $destinationCard ,
+        CardOperationBalance           $balance ,
+        CardOperationConcept           $concept ,
+        CardOperationPayEmail          $payEmail ,
+        CardOperationReverseEmail      $reverseEmail ,
+        CardCredentialClientKey        $clientKey ,
+        CardOperationDescriptionPay    $descriptionPay ,
+        CardOperationActive            $active
     ): static
     {
         return new static(
             CardOperationId::random() ,
             $operationTypeId ,
+            $referenceTerminal ,
             $originCard ,
             $originCardMain ,
             $destinationCard ,
@@ -152,6 +155,7 @@ final class CardOperation extends AggregateRoot
         return [
             'id' => $this->id->value() ,
             'typeId' => $this->typeId->value() ,
+            'referenceTerminal' => $this->referenceTerminal->value() ,
             'originCard' => $this->originCard->value() ,
             'originCardMain' => $this->originCardMain->value() ,
             'destinationCard' => $this->destinationCard->value() ,

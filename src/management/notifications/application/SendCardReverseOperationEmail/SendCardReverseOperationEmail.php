@@ -25,6 +25,10 @@ final readonly class SendCardReverseOperationEmail implements DomainEventSubscri
         $transactionData = $event->toPrimitives();
         $emails = $event->emails();
 
+        if(empty($emails)){
+            return;
+        }
+
         $email = new Email(
             [$emails],
             'Notificación de Transferencia',

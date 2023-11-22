@@ -12,9 +12,10 @@ use Viabo\management\cardOperation\domain\CardOperationBalance;
 use Viabo\management\cardOperation\domain\CardOperationConcept;
 use Viabo\management\cardOperation\domain\CardOperationDescriptionPay;
 use Viabo\management\cardOperation\domain\CardOperationDestination;
-use Viabo\management\cardOperation\domain\CardOperationPayEmail;
 use Viabo\management\cardOperation\domain\CardOperationOrigin;
 use Viabo\management\cardOperation\domain\CardOperationOriginMain;
+use Viabo\management\cardOperation\domain\CardOperationPayEmail;
+use Viabo\management\cardOperation\domain\CardOperationReferenceTerminal;
 use Viabo\management\cardOperation\domain\CardOperationRepository;
 use Viabo\management\cardOperation\domain\CardOperationReverseEmail;
 use Viabo\management\cardOperation\domain\CardOperations;
@@ -46,7 +47,9 @@ final readonly class CardTransactionsProcessor
         CardId                  $originCardId ,
         CardCredentialClientKey $clientKey ,
         CardOperationPayEmail   $payEmail ,
-        array                   $destinationCards
+        array                   $destinationCards ,
+        string                  $referenceTerminal = '' ,
+        bool                    $isTerminal = false
     ): void
     {
         if (empty($destinationCards)) {
@@ -56,12 +59,20 @@ final readonly class CardTransactionsProcessor
         $originCardData = $this->cardData($originCardId);
         $destinationCardsData = $this->destinationCardsData($destinationCards);
 
-        $this->ensureHasSameCommerce($originCardData , $destinationCardsData);
+        if (!$isTerminal) {
+            $this->ensureHasSameCommerce($originCardData , $destinationCardsData);
+        }
+
         $this->ensureCardsNotBlocked($destinationCardsData);
         $this->ensureOriginCardHasSufficientBalance($originCardData , $destinationCardsData);
 
         $operations = $this->operations(
-            $destinationCardsData , $originCardData['number'] , $originCardData['main'] , $payEmail , $clientKey
+            $destinationCardsData ,
+            $originCardData['number'] ,
+            $originCardData['main'] ,
+            $payEmail ,
+            $clientKey ,
+            $referenceTerminal
         );
 
         $this->adapter->transactionPay($operations);
@@ -134,7 +145,8 @@ final readonly class CardTransactionsProcessor
         string                  $originCardNumber ,
         string                  $originCardMain ,
         CardOperationPayEmail   $payEmail ,
-        CardCredentialClientKey $clientKey
+        CardCredentialClientKey $clientKey ,
+        string                  $referenceTerminal
     ): CardOperations
     {
         $operations = [];
@@ -142,6 +154,7 @@ final readonly class CardTransactionsProcessor
             $destinationCard = new CardOperationDestination($destinationCardData['number']);
             $operations[] = CardOperation::create(
                 new CardOperationTypeId('1') ,
+                new CardOperationReferenceTerminal($referenceTerminal) ,
                 new CardOperationOrigin($originCardNumber) ,
                 new CardOperationOriginMain($originCardMain) ,
                 $destinationCard ,
@@ -150,7 +163,7 @@ final readonly class CardTransactionsProcessor
                 $payEmail ,
                 new CardOperationReverseEmail($destinationCardData['ownerEmail']) ,
                 $clientKey ,
-                CardOperationDescriptionPay::create($destinationCard->last8Digits() , $destinationCardData['main']),
+                CardOperationDescriptionPay::create($destinationCard->last8Digits() , $destinationCardData['main']) ,
                 new CardOperationActive('1')
             );
         }

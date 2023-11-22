@@ -16,6 +16,7 @@
         <embedded name="amount" class="CommercePayAmount" use-column-prefix="false"/>
         <embedded name="urlCode" class="CommercePayUrlCode" use-column-prefix="false"/>
         <embedded name="statusId" class="CommercePayStatusId" use-column-prefix="false"/>
+        <embedded name="liquidationStatusId" class="CommercePayLiquidationStatusId" use-column-prefix="false"/>
         <embedded name="apiAuthCode" class="CommercePayApiAuthCode" use-column-prefix="false"/>
         <embedded name="apiReferenceNumber" class="CommercePayApiReferenceNumber" use-column-prefix="false"/>
         <embedded name="createdByUser" class="CommercePayCreatedByUser" use-column-prefix="false"/>

@@ -35,6 +35,34 @@ final class CardView
     {
     }
 
+    public static function fromValue(array $value): static
+    {
+        return new static(
+            $value['id'],
+            $value['clientKey'],
+            $value['main'],
+            $value['number'],
+            $value['cvv'],
+            $value['expirationDate'],
+            $value['paymentProcessorId'],
+            $value['paymentProcessorName'],
+            $value['statusId'],
+            $value['statusName'],
+            $value['commerceId'],
+            $value['commerceName'],
+            $value['ownerId'],
+            $value['ownerName'],
+            $value['ownerLastname'],
+            $value['ownerEmail'],
+            $value['ownerPhone'],
+            $value['recorderId'],
+            $value['recorderName'],
+            $value['assignmentDate'],
+            $value['registerDate'],
+            $value['active']
+        );
+    }
+
     public function toArray(): array
     {
         return [

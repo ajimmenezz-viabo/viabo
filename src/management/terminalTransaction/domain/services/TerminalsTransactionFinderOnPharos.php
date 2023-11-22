@@ -88,6 +88,7 @@ final readonly class TerminalsTransactionFinderOnPharos
                 $data['message'] = PharosMessage::message($data['result_code']);
                 $data['terminal_name'] = $terminals[$data["terminal_id"]]['name'];
                 $data['terminal_type'] = $terminals[$data["terminal_id"]]['type'];
+                $data['terminal_speiCard'] = $terminals[$data["terminal_id"]]['speiCard'];
                 $items[] = $data;
             }
         }

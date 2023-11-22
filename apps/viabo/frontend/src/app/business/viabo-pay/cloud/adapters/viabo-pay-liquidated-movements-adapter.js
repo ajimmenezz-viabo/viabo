@@ -40,6 +40,10 @@ export const ViaboPayLiquidatedMovementsAdapter = data => {
         transactionMessage: movement?.result_message,
         conciliated: !!movement?.conciliated,
         conciliatedName: movement?.conciliated ? 'Conciliada' : 'Sin Conciliar',
+        liquidationStatus: {
+          id: movement?.liquidationStatusId,
+          name: movement?.liquidationStatusName
+        },
         dataToLiquidate: {
           id: movement?.id,
           commerceId: movement?.commerceId,

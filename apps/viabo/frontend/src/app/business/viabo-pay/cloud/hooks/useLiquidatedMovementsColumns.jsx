@@ -74,6 +74,20 @@ export const useLiquidatedMovementsColumns = () =>
             </Stack>
           )
         }
+      },
+      {
+        id: 'status',
+        accessorFn: originalRow => originalRow?.liquidationStatus?.name || null,
+        header: 'Estado de Liquidación',
+        size: 120,
+        Cell: ({ cell, column, row, renderedCellValue }) => {
+          const { original: rowData } = row
+          return (
+            <Stack>
+              <Typography variant="subtitle2">{rowData?.liquidationStatus?.name}</Typography>
+            </Stack>
+          )
+        }
       }
     ],
     []

@@ -39,7 +39,15 @@ export const ViaboPayLiquidatedMovementsAdapter = data => {
         }`.toUpperCase(),
         transactionMessage: movement?.result_message,
         conciliated: !!movement?.conciliated,
-        conciliatedName: movement?.conciliated ? 'Conciliada' : 'Sin Conciliar'
+        conciliatedName: movement?.conciliated ? 'Conciliada' : 'Sin Conciliar',
+        dataToLiquidate: {
+          id: movement?.id,
+          commerceId: movement?.commerceId,
+          authorization_number: movement?.authorization_number,
+          terminal_id: movement?.terminal_id,
+          terminal_spei_card: movement?.terminal_spei_card || '',
+          amountToSettled: movement?.amountToSettled
+        }
       }
     }) ?? []
 

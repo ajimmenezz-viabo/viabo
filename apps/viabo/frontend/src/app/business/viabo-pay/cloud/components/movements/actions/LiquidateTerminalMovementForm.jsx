@@ -3,11 +3,23 @@ import PropTypes from 'prop-types'
 import { LoadingButton } from '@mui/lab'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 
+import { useLiquidateTerminalMovement } from '../../../hooks'
+
 import { getCardTypeByName } from '@/app/shared/services'
 
-const LiquidateTerminalMovementForm = ({ movement }) => {
+const LiquidateTerminalMovementForm = ({ movement, onSuccess }) => {
   const cardLogo = getCardTypeByName(movement?.cardType)
   const CardLogoComponent = cardLogo?.component
+
+  const { mutate, isLoading } = useLiquidateTerminalMovement()
+
+  const handleLiquidateMovement = () => {
+    mutate(movement?.dataToLiquidate, {
+      onSuccess: () => {
+        onSuccess()
+      }
+    })
+  }
 
   return (
     <Stack px={5} py={3}>
@@ -62,7 +74,7 @@ const LiquidateTerminalMovementForm = ({ movement }) => {
           <Stack justifyContent={'space-between'} direction={'row'}>
             <Typography variant="subtitle2">No. Autorización:</Typography>
             <Box component={'span'} color={'primary.main'} fontWeight={'bold'}>
-              {movement?.id}
+              {movement?.authNumber}
             </Box>
           </Stack>
           <Stack justifyContent={'space-between'} direction={'row'}>
@@ -108,7 +120,13 @@ const LiquidateTerminalMovementForm = ({ movement }) => {
           </Stack>
         </Stack>
         <Stack width={1} pt={2}>
-          <LoadingButton size="large" fullWidth variant="contained">
+          <LoadingButton
+            loading={isLoading}
+            size="large"
+            fullWidth
+            variant="contained"
+            onClick={handleLiquidateMovement}
+          >
             Liquidar
           </LoadingButton>
         </Stack>
@@ -124,14 +142,17 @@ LiquidateTerminalMovementForm.propTypes = {
     amount: PropTypes.any,
     amountFormat: PropTypes.any,
     amountToLiquidateFormat: PropTypes.any,
+    authNumber: PropTypes.any,
     cardType: PropTypes.any,
     commerceName: PropTypes.any,
     commission: PropTypes.any,
+    dataToLiquidate: PropTypes.any,
     description: PropTypes.any,
     id: PropTypes.any,
     terminalName: PropTypes.any,
     transactionDate: PropTypes.shape({
       fullDate: PropTypes.any
     })
-  })
+  }),
+  onSuccess: PropTypes.func
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { Card } from '@mui/material'
+import { Box, Card } from '@mui/material'
 import { sub } from 'date-fns'
 
 import { getLiquidatedMovementsActions } from './LiquidatedMovementsActions'
@@ -79,7 +79,8 @@ const LiquidatedMovementsTable = () => {
       }
     },
     muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
-    renderRowActionMenuItems: getLiquidatedMovementsActions
+    renderRowActionMenuItems: getLiquidatedMovementsActions,
+    renderTopToolbarCustomActions: () => <Box></Box>
   })
 
   const handleDateRange = range => {

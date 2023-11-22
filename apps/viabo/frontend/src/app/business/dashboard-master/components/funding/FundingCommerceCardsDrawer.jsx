@@ -40,6 +40,7 @@ const FundingCommerceCardsDrawer = ({ open, setOpen, card, cardList = [] }) => {
 
     setTransactionData({
       cardOriginId,
+      paymentProcessor: card?.paymentProcessor,
       isGlobal,
       transactions: values?.transactions || [],
       concept: values?.concept,
@@ -53,11 +54,7 @@ const FundingCommerceCardsDrawer = ({ open, setOpen, card, cardList = [] }) => {
     setShowResume(false)
   }
 
-  const titleTransaction = (
-    <>
-      <Typography variant="h6">Fondear Tarjetas</Typography>
-    </>
-  )
+  const titleTransaction = <Typography variant="h6"> Revisión - Fondeo Tarjetas</Typography>
 
   const renderContentTransaction = (
     <>
@@ -140,7 +137,8 @@ const FundingCommerceCardsDrawer = ({ open, setOpen, card, cardList = [] }) => {
 FundingCommerceCardsDrawer.propTypes = {
   card: PropTypes.shape({
     balance: PropTypes.any,
-    id: PropTypes.any
+    id: PropTypes.any,
+    paymentProcessor: PropTypes.any
   }),
   cardList: PropTypes.array,
   open: PropTypes.any,

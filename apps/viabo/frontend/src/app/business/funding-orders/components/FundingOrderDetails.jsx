@@ -49,7 +49,7 @@ const FundingOrderDetails = () => {
     >
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <Stack spacing={3} p={3}>
-          {isLoading && <RequestLoadingComponent open={isLoading} />}
+          {isLoading && <RequestLoadingComponent />}
           {isError && !isLoading && (
             <ErrorRequestPage
               errorMessage={error}

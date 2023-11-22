@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { Backdrop, Box } from '@mui/material'
 import { useCollapseDrawer } from '@theme/hooks'
 
@@ -30,7 +32,7 @@ export function RequestLoading({ ...rest }) {
   )
 }
 
-export function RequestLoadingComponent(props) {
+export function RequestLoadingComponent({ sx, ...others }) {
   return (
     <Box
       sx={{
@@ -43,11 +45,16 @@ export function RequestLoadingComponent(props) {
         alignItems: 'center',
         justifyContent: 'center',
         backdropFilter: 'blur(1px)',
-        zIndex: theme => theme.zIndex.modal - 1
+        zIndex: theme => theme.zIndex.modal - 1,
+        ...sx
       }}
-      {...props}
+      {...others}
     >
       <CircularLoading />
     </Box>
   )
+}
+
+RequestLoadingComponent.propTypes = {
+  sx: PropTypes.any
 }

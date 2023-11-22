@@ -13,6 +13,8 @@ final class PharosTransaction
     private float $commission;
     private float $amountCharged;
     private float $amountToSettled;
+    private string $liquidationStatusId;
+    private string $liquidationStatusName;
 
     public function __construct(
         private mixed $id ,
@@ -37,6 +39,8 @@ final class PharosTransaction
         $this->commission = 0;
         $this->amountCharged = 0;
         $this->amountToSettled = 0;
+        $this->liquidationStatusId = '';
+        $this->liquidationStatusName = '';
     }
 
     public static function fromValues(array $value): static
@@ -95,6 +99,8 @@ final class PharosTransaction
                 $this->commission = floatval($commission);
                 $this->amountCharged = $this->calculateCharge();
                 $this->amountToSettled = $this->calculateAmountSettled();
+                $this->liquidationStatusId = $transaction['liquidationStatusId'];
+                $this->liquidationStatusName = $transaction['liquidationStatusName'];
             }
         } , $transactions);
     }
@@ -126,6 +132,8 @@ final class PharosTransaction
             'terminal_type' => $this->terminal_type ,
             'terminal_name' => $this->terminal_name ,
             'terminal_spei_card' => $this->terminal_speiCard ,
+            'liquidationStatusId' => $this->liquidationStatusId ?? '' ,
+            'liquidationStatusName' => $this->liquidationStatusName ?? '' ,
             'result_message' => $this->message ,
             'reversed' => $this->reversed ,
             'card_number' => $this->card_number ,

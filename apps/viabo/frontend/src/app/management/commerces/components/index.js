@@ -1,2 +1,1 @@
-export * from './CommerceList'
-export * from './CommerceLayout'
+export * from './list/CommerceList'

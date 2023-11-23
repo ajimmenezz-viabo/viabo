@@ -1,4 +1,4 @@
-import { CommerceLayout } from '@/app/management/commerces/components'
+import { CommerceList } from '@/app/management/commerces/components'
 import { MANAGEMENT_PATHS, MANAGEMENT_ROUTES_NAMES } from '@/app/management/shared/routes'
 import { PATH_DASHBOARD } from '@/routes'
 import { Page } from '@/shared/components/containers'
@@ -7,17 +7,17 @@ import { HeaderPage } from '@/shared/components/layout'
 
 export default function ManagementCommerces() {
   return (
-    <Page title="Administracion Comercios">
+    <Page title="Administración Comercios">
       <ContainerPage>
         <HeaderPage
           name={'Comercios'}
           links={[
             { name: 'Inicio', href: PATH_DASHBOARD.root },
-            { name: 'Administracion', href: MANAGEMENT_PATHS.commerces },
+            { name: 'Administración', href: MANAGEMENT_PATHS.commerces },
             { name: MANAGEMENT_ROUTES_NAMES.commerces.name }
           ]}
         />
-        <CommerceLayout />
+        <CommerceList />
       </ContainerPage>
     </Page>
   )

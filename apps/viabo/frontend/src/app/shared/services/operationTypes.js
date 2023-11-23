@@ -1,3 +1,5 @@
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
+
 import { PayCashLogo, SpeiLogo, ViaboCardLogo, ViaboPayLogo } from '@/shared/components/images'
 
 const OPERATION_TYPES = [
@@ -16,6 +18,10 @@ const OPERATION_TYPES = [
   {
     name: 'PAYCASH',
     component: PayCashLogo
+  },
+  {
+    name: 'NUBE',
+    component: MonetizationOnIcon
   }
 ]
 

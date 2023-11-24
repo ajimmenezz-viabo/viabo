@@ -10,3 +10,8 @@ export const updateCommerceCommissions = async commissions => {
   const { data } = await axios.post('/api/commerce/commissions/register', commissions)
   return data
 }
+
+export const updateCommerceInformation = async commerce => {
+  const { data } = await axios.post('/api/commerce/information', commerce)
+  return data
+}

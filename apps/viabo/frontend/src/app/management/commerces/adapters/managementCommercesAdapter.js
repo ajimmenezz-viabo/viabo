@@ -1,7 +1,7 @@
 import { PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
 import { fDateTime } from '@/shared/utils'
 
-const CardAdapter = services => {
+const ViaboCardAdapter = services => {
   const viaboCard = services?.find(service => service?.type === '2')
 
   if (viaboCard) {
@@ -28,13 +28,13 @@ const DocumentsAdapter = documents =>
     }
   }) ?? []
 
-const CommisionsAdapter = comissions => ({
-  available: Boolean(comissions),
-  speiInCarnet: parseFloat(comissions?.SpeiInCarnet ?? '0.0'),
-  speiOutCarnet: parseFloat(comissions?.SpeiOutCarnet ?? '0.0'),
-  speiInMasterCard: parseFloat(comissions?.SpeiInMasterCard ?? '0.0'),
-  speiOutMasterCard: parseFloat(comissions?.SpeiOutMasterCard ?? '0.0'),
-  viaboPay: parseFloat(comissions?.Pay ?? '0.0')
+const CommissionsAdapter = commissions => ({
+  available: Boolean(commissions),
+  speiInCarnet: parseFloat(commissions?.SpeiInCarnet ?? '0.0'),
+  speiOutCarnet: parseFloat(commissions?.SpeiOutCarnet ?? '0.0'),
+  speiInMasterCard: parseFloat(commissions?.SpeiInMasterCard ?? '0.0'),
+  speiOutMasterCard: parseFloat(commissions?.SpeiOutMasterCard ?? '0.0'),
+  viaboPay: parseFloat(commissions?.Pay ?? '0.0')
 })
 
 export const ManagementCommercesAdapter = commerces =>
@@ -86,10 +86,13 @@ export const ManagementCommercesAdapter = commerces =>
         branchesNumber: branchOffices
       },
       services: {
+        names: services?.map(service => service?.name) || [],
         available: pointSaleTerminal !== '0',
-        viaboCard: CardAdapter(services),
-        tpvsNumber: pointSaleTerminal,
-        apiRequired: paymentApi === '1'
+        viaboCard: ViaboCardAdapter(services),
+        viaboPay: {
+          tpvsNumber: pointSaleTerminal,
+          apiRequired: paymentApi === '1'
+        }
       },
       status: {
         id: statusId,
@@ -97,6 +100,6 @@ export const ManagementCommercesAdapter = commerces =>
         step: PROCESS_LIST_STEPS.find(step => step.step.toString() === registerStep)?.name ?? ''
       },
       documents: DocumentsAdapter(documents),
-      commissions: CommisionsAdapter(commissions)
+      commissions: CommissionsAdapter(commissions)
     }
   })

@@ -1,1 +1,0 @@
-import{j as s}from"./index-C406R3ty.js";import{a as i}from"./build-KIH6eYLU.js";import{T as m}from"./build-9E9tHrZa.js";function d({name:r,...o}){const[t,e,a]=i(r);return s.jsx(m,{...t,...o,error:!!(e.touched&&e.error),helperText:e.touched&&e.error})}export{d as R};

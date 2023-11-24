@@ -7,12 +7,14 @@ export function getCommerceActions(table) {
   const { row, closeMenu } = table
   const { original: rowData } = row
   const { status } = rowData
-  const setCommerce = useCommerce(state => state.setCommerce)
+  const { setCommerce, setOpenDetailsCommerce } = useCommerce(state => state)
 
   const menuItems = [
     <MenuItem
       key={0}
       onClick={() => {
+        setCommerce(rowData)
+        setOpenDetailsCommerce(true)
         closeMenu()
       }}
       sx={{ m: 0 }}

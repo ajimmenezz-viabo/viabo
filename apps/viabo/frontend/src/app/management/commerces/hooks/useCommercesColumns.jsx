@@ -35,16 +35,13 @@ export const useCommercesColumns = () =>
       },
       {
         id: 'services',
-        accessorFn: originalRow => originalRow?.services?.available,
+        accessorFn: originalRow => originalRow?.services?.names?.toString(),
         header: 'Servicios',
-        size: 120,
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
           const logos = []
 
-          const services = ['VIABO CARD', 'VIABO PAY', 'NUBE']
-
-          services?.forEach(service => {
+          rowData?.services?.names?.forEach(service => {
             const serviceLogo = getOperationTypeByName(service)
             if (serviceLogo) {
               logos.push({
@@ -64,6 +61,11 @@ export const useCommercesColumns = () =>
               gap={1}
               divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'double' }} />}
             >
+              {logos?.length === 0 && (
+                <Typography variant="subtitle2" fontWeight={'bold'} color={'warning.main'}>
+                  {'Sin Servicios'}
+                </Typography>
+              )}
               {logos?.map(({ component: Logo, width, height, name, color }, index) => (
                 <Tooltip title={name} key={index}>
                   <Box display={'flex'}>
@@ -83,8 +85,14 @@ export const useCommercesColumns = () =>
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
           return (
-            <Stack>
-              <Typography variant="subtitle2">{renderedCellValue}</Typography>
+            <Stack sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <Typography
+                sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                variant="subtitle2"
+                title={renderedCellValue}
+              >
+                {renderedCellValue}
+              </Typography>
             </Stack>
           )
         }
@@ -99,6 +107,7 @@ export const useCommercesColumns = () =>
           return (
             <Stack>
               <Label
+                size={'sm'}
                 variant={'filled'}
                 color={getColorStatusCommerceById(rowData?.status?.id)}
                 sx={{

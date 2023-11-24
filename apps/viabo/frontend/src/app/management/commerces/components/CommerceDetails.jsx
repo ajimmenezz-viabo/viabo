@@ -1,111 +1,39 @@
-import { useState } from 'react'
+import { lazy } from 'react'
 
-import { Alert, Button, Grid, Stack, Typography } from '@mui/material'
-import { m } from 'framer-motion'
-import { shallow } from 'zustand/shallow'
+import { Stack, Typography } from '@mui/material'
 
-import {
-  AccountInfo,
-  Commissions,
-  Documents,
-  GeneralInfo,
-  ServicesInfo
-} from '@/app/management/commerces/components/details'
 import { useCommerce } from '@/app/management/commerces/store'
-import { varFade } from '@/shared/components/animate'
-import { SelectDataIllustration } from '@/shared/components/illustrations'
+import { RightPanel } from '@/app/shared/components'
+import { Lodable } from '@/shared/components/lodables'
+import { Scrollbar } from '@/shared/components/scroll'
 
-export function CommerceDetails() {
-  const { commerce } = useCommerce(state => state, shallow)
-  const [expanded, setExpanded] = useState('')
+const GeneralInfoForm = Lodable(lazy(() => import('./details/GeneralInfoForm')))
 
-  const handleChange = newExpanded => {
-    if (expanded === newExpanded) {
-      setExpanded('')
-    } else {
-      setExpanded(newExpanded)
-    }
+function CommerceDetails() {
+  const { setCommerce, setOpenDetailsCommerce } = useCommerce(state => state)
+  const openDetailsCommerce = useCommerce(state => state.openDetailsCommerce)
+  const commerce = useCommerce(state => state.commerce)
+
+  const handleClose = () => {
+    setOpenDetailsCommerce(false)
+    setCommerce(null)
   }
 
   return (
-    <>
-      <Stack
-        spacing={3}
-        direction={'row'}
-        justifyContent="space-between"
-        sx={{ width: 1, mb: 2 }}
-        alignItems={{ sm: 'center' }}
-      >
-        <Stack direction="row" spacing={1}>
-          <Typography variant="h5">Detalles</Typography>
-        </Stack>
-        {commerce && commerce?.status?.id === '2' && <Button variant="contained">Afiliación</Button>}
-      </Stack>
-
-      {commerce ? (
+    <RightPanel
+      open={openDetailsCommerce}
+      handleClose={handleClose}
+      titleElement={
         <Stack>
-          <Grid container spacing={3}>
-            <Grid item xs={12} xl={6}>
-              <m.div {...varFade().in}>
-                <AccountInfo
-                  account={commerce?.account}
-                  expanded={expanded}
-                  handleChange={handleChange}
-                  status={commerce?.status}
-                />
-              </m.div>
-            </Grid>
-
-            <Grid item xs={12} xl={6}>
-              <m.div {...varFade().in}>
-                <GeneralInfo
-                  info={commerce?.information}
-                  expanded={expanded}
-                  handleChange={handleChange}
-                  status={commerce?.status}
-                />
-              </m.div>
-            </Grid>
-
-            <Grid item xs={12} xl={6}>
-              <m.div {...varFade().in}>
-                <ServicesInfo
-                  services={commerce?.services}
-                  expanded={expanded}
-                  handleChange={handleChange}
-                  status={commerce?.status}
-                />
-              </m.div>
-            </Grid>
-
-            <Grid item xs={12} xl={6}>
-              <m.div {...varFade().in}>
-                <Documents
-                  documents={commerce?.documents}
-                  expanded={expanded}
-                  handleChange={handleChange}
-                  status={commerce?.status}
-                />
-              </m.div>
-            </Grid>
-
-            <Grid item xs={12} xl={6}>
-              <m.div {...varFade().in}>
-                <Commissions expanded={expanded} handleChange={handleChange} commerce={commerce} />
-              </m.div>
-            </Grid>
-          </Grid>
+          <Typography variant={'h6'}>Editar Comercio</Typography>
         </Stack>
-      ) : (
-        <Stack spacing={3} sx={{ height: '100%', width: '100%' }}>
-          <Alert variant="filled" severity="info">
-            Debe seleccionar un comercio para ver sus detalles!
-          </Alert>
-          <Stack alignItems={'center'}>
-            <SelectDataIllustration sx={{ width: '30%' }} />
-          </Stack>
-        </Stack>
-      )}
-    </>
+      }
+    >
+      <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
+        {openDetailsCommerce && <GeneralInfoForm commerce={commerce} onSuccess={handleClose} />}
+      </Scrollbar>
+    </RightPanel>
   )
 }
+
+export default CommerceDetails

@@ -1,7 +1,8 @@
 import { createStore } from '@/app/shared/store'
 
 const initialState = {
-  commerce: null
+  commerce: null,
+  openDetailsCommerce: false
 }
 const commerceDetailsStore = (set, get) => ({
   ...initialState,
@@ -9,6 +10,15 @@ const commerceDetailsStore = (set, get) => ({
     set(state => ({
       commerce
     }))
+  },
+  setOpenDetailsCommerce: open => {
+    set(
+      state => ({
+        openDetailsCommerce: open
+      }),
+      false,
+      'SET_OPEN_DETAILS_COMMERCE'
+    )
   }
 })
 

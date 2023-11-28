@@ -17,6 +17,11 @@
         <field name="taxName" column="TaxName"/>
         <field name="tradeName" column="TradeName"/>
         <field name="rfc" column="Rfc"/>
+        <field name="postalAddress" column="PostalAddress"/>
+        <field name="phoneNumbers" column="PhoneNumbers"/>
+        <field name="logo" column="Logo"/>
+        <field name="slug" column="Slug"/>
+        <field name="publicTerminal" column="PublicTerminal"/>
         <field name="employees" column="Employees"/>
         <field name="branchOffices" column="BranchOffices"/>
         <field name="pointSaleTerminal" column="PointSaleTerminal"/>

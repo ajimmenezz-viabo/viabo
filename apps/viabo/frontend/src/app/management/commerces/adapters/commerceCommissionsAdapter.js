@@ -4,5 +4,6 @@ export const CommerceCommissionsAdapter = (commissions, commerceId) => ({
   speiOutCarnet: commissions?.speiOutCarnet,
   speiInMasterCard: commissions?.speiInMasterCard,
   speiOutMasterCard: commissions?.speiOutMasterCard,
-  pay: commissions?.viaboPay
+  pay: commissions?.viaboPay,
+  cloud: commissions?.cloud
 })

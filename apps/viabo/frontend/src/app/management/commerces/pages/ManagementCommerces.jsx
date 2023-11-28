@@ -9,6 +9,7 @@ import { HeaderPage } from '@/shared/components/layout'
 import { Lodable } from '@/shared/components/lodables'
 
 const CommerceDetails = Lodable(lazy(() => import('../components/CommerceDetails')))
+const CommerceCommissions = Lodable(lazy(() => import('../components/CommerceCommissions')))
 
 export default function ManagementCommerces() {
   return (
@@ -24,6 +25,7 @@ export default function ManagementCommerces() {
         />
         <CommerceList />
         <CommerceDetails />
+        <CommerceCommissions />
       </ContainerPage>
     </Page>
   )

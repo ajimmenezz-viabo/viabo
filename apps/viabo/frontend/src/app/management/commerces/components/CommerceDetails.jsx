@@ -10,18 +10,18 @@ import { Scrollbar } from '@/shared/components/scroll'
 const GeneralInfoForm = Lodable(lazy(() => import('./details/GeneralInfoForm')))
 
 function CommerceDetails() {
-  const { setCommerce, setOpenDetailsCommerce } = useCommerce(state => state)
-  const openDetailsCommerce = useCommerce(state => state.openDetailsCommerce)
+  const { setCommerce, setOpenCommerceDetails } = useCommerce(state => state)
+  const openCommerceDetails = useCommerce(state => state.openCommerceDetails)
   const commerce = useCommerce(state => state.commerce)
 
   const handleClose = () => {
-    setOpenDetailsCommerce(false)
+    setOpenCommerceDetails(false)
     setCommerce(null)
   }
 
   return (
     <RightPanel
-      open={openDetailsCommerce}
+      open={openCommerceDetails}
       handleClose={handleClose}
       titleElement={
         <Stack>
@@ -30,7 +30,7 @@ function CommerceDetails() {
       }
     >
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-        {openDetailsCommerce && <GeneralInfoForm commerce={commerce} onSuccess={handleClose} />}
+        {openCommerceDetails && <GeneralInfoForm commerce={commerce} onSuccess={handleClose} />}
       </Scrollbar>
     </RightPanel>
   )

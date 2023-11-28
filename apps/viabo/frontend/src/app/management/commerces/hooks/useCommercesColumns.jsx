@@ -16,7 +16,7 @@ export const useCommercesColumns = () =>
         accessorKey: 'name',
         header: 'Nombre',
         enableHiding: false,
-        size: 100,
+        size: 120,
         Cell: ({ cell, column, row, renderedCellValue }) => (
           <Typography fontWeight={'bold'} variant="subtitle2">
             {renderedCellValue}
@@ -36,6 +36,7 @@ export const useCommercesColumns = () =>
       {
         id: 'services',
         accessorFn: originalRow => originalRow?.services?.names?.toString(),
+        size: 220,
         header: 'Servicios',
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
@@ -81,7 +82,7 @@ export const useCommercesColumns = () =>
         id: 'register-status',
         accessorFn: originalRow => originalRow?.status?.step,
         header: 'Estado Registro',
-        size: 100,
+        minSize: 100,
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
           return (

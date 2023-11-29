@@ -1,5 +1,5 @@
 export * from './AccountInfo'
-export * from './Commissions'
+export * from './CommissionsForm'
 export * from './DetailsCardLayout'
 export * from './Documents'
 export * from './GeneralInfoForm'

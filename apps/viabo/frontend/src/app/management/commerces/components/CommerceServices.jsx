@@ -8,33 +8,33 @@ import { RightPanel } from '@/app/shared/components'
 import { Lodable } from '@/shared/components/lodables'
 import { Scrollbar } from '@/shared/components/scroll'
 
-const CommissionsForm = Lodable(lazy(() => import('./details/CommissionsForm')))
+const ServicesForm = Lodable(lazy(() => import('./details/ServicesForm')))
 
-const CommerceCommissions = () => {
-  const { setCommerce, setOpenCommerceCommissions } = useCommerce(state => state)
-  const openCommerceCommissions = useCommerce(state => state.openCommerceCommissions)
+const CommerceServices = () => {
+  const { setCommerce, setOpenCommerceServices } = useCommerce(state => state)
+  const openCommerceServices = useCommerce(state => state.openCommerceServices)
   const commerce = useCommerce(state => state.commerce)
 
   const handleClose = () => {
-    setOpenCommerceCommissions(false)
+    setOpenCommerceServices(false)
     setCommerce(null)
   }
 
   return (
     <RightPanel
-      open={openCommerceCommissions}
+      open={openCommerceServices}
       handleClose={handleClose}
       titleElement={
         <Stack>
-          <Typography variant={'h6'}>Comisiones del Comercio</Typography>
+          <Typography variant={'h6'}>Servicios del Comercio</Typography>
         </Stack>
       }
     >
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-        {openCommerceCommissions && <CommissionsForm commerce={commerce} onSuccess={handleClose} />}
+        {openCommerceServices && <ServicesForm commerce={commerce} onSuccess={handleClose} />}
       </Scrollbar>
     </RightPanel>
   )
 }
 
-export default CommerceCommissions
+export default CommerceServices

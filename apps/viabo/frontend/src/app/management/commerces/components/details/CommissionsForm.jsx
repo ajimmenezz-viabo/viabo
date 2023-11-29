@@ -11,7 +11,7 @@ import { useUpdateCommerceCommissions } from '../../hooks'
 import { FormProvider, RFTextField } from '@/shared/components/form'
 import { CarnetLogo, MasterCardLogo, ViaboCoin, ViaboPayLogo } from '@/shared/components/images'
 
-Commissions.propTypes = {
+CommissionsForm.propTypes = {
   commerce: PropTypes.object.isRequired,
   onSuccess: PropTypes.func
 }
@@ -20,7 +20,7 @@ const MIN_AMOUNT = 0
 const MAX_AMOUNT = 50
 const STEP = 0.1
 
-function Commissions({ commerce, onSuccess }) {
+function CommissionsForm({ commerce, onSuccess }) {
   const { commissions } = commerce
   const { mutate, isLoading: isUpdatingCommissions } = useUpdateCommerceCommissions()
 
@@ -222,4 +222,4 @@ function Commissions({ commerce, onSuccess }) {
   )
 }
 
-export default Commissions
+export default CommissionsForm

@@ -87,6 +87,7 @@ export const ManagementCommercesAdapter = commerces =>
       },
       services: {
         names: services?.map(service => service?.name) || [],
+        catalog: services?.map(service => ({ id: service?.Id, type: service?.type, name: service?.name })) || [],
         available: pointSaleTerminal !== '0',
         viaboCard: ViaboCardAdapter(services),
         viaboPay: {

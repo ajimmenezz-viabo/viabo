@@ -30,7 +30,7 @@ final readonly class CommerceUpdatedDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'update.commerce';
+        return 'updated.commerce';
     }
 
     public function toPrimitives(): array

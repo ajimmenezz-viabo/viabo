@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\management\commerceTerminal\application\find;
+
+namespace Viabo\management\commerceTerminal\domain\services;
+
 
 use Viabo\management\commerceTerminal\domain\TerminalRepository;
 use Viabo\management\commerceTerminal\domain\Terminals;
@@ -9,21 +11,18 @@ use Viabo\management\commerceTerminal\domain\TerminalView;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class TerminalFinder
+final readonly class TerminalsFinder
 {
     public function __construct(private TerminalRepository $repository)
     {
     }
 
-    public function __invoke(string $commerceId): FindTerminalResponse
+    public function __invoke(string $commerceId): Terminals
     {
         $terminals = $this->searchTerminalsByCommerce($commerceId);
         $terminalsShared = $this->searchTerminalsShared($commerceId);
-        $terminals = $terminals->add($terminalsShared);
-
-        return new FindTerminalResponse($terminals->toArray());
+        return $terminals->add($terminalsShared);
     }
-
 
     private function searchTerminalsByCommerce(string $commerceId): Terminals
     {
@@ -49,7 +48,7 @@ final readonly class TerminalFinder
 
         $terminals = $this->repository->searchView(new Criteria($filters));
 
-        return array_map(function (TerminalView $terminal) use ($commerceId){
+        return array_map(function (TerminalView $terminal) use ($commerceId) {
             $terminal->updateCommerceId($commerceId);
             return $terminal;
         } , $terminals);

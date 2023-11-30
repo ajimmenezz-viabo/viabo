@@ -5,9 +5,9 @@ namespace Viabo\management\commerceTerminal\application\find;
 use Viabo\shared\domain\bus\query\Response;
 use Viabo\shared\domain\bus\query\QueryHandler;
 
-final readonly class FindTerminalsQueryHandler implements QueryHandler
+final readonly class TerminalsQueryHandler implements QueryHandler
 {
-    public function __construct(private TerminalFinder $finder)
+    public function __construct(private TerminalsFinder $finder)
     {
     }
 

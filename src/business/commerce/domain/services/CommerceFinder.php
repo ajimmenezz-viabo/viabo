@@ -61,4 +61,15 @@ final readonly class CommerceFinder
 
         return is_array($commerce) ? $commerce[0] : $commerce;
     }
+
+    public function searchCriteria(Criteria $criteria): Commerce
+    {
+        $commerce = $this->repository->searchCriteria($criteria);
+
+        if (empty($commerce)) {
+            throw new CommerceNotExist();
+        }
+
+        return $commerce[0];
+    }
 }

@@ -12,4 +12,10 @@ final class CommercePointSaleTerminal extends StringValueObject
     {
         return new self(!empty($value) ? $value : '0');
     }
+
+    public function update(string $value): static
+    {
+        return new static($value);
+    }
+
 }

@@ -21,6 +21,15 @@ final class Terminals extends Collection
         } , $this->items());
     }
 
+    public function virtual(): static
+    {
+        $terminals = array_filter($this->items() , function (TerminalView $terminal) {
+            return $terminal->isVirtual();
+        });
+
+        return new static($terminals);
+    }
+
     protected function type(): string
     {
         return TerminalView::class;

@@ -4,16 +4,16 @@ export const ManagementCommerceInformationAdapter = (information, commerce) => {
   const dataAdapted = {
     commerceId: commerce?.id,
     fiscalPersonType: information?.fiscalTypePerson,
-    taxName: information?.fiscalName,
+    fiscalName: information?.fiscalName,
     tradeName: information?.commercialName,
     rfc: information?.rfc,
     employees: information?.employeesNumber,
     branchOffices: information?.branchesNumber,
     postalAddress: information?.postalAddress,
-    phonesNumbers: information?.phonesNumbers,
+    phoneNumbers: information?.phoneNumbers,
     slug: information?.terminalCommerceSlug?.toLowerCase(),
     publicTerminal: information?.publicTerminal?.value || null,
-    logo: information?.commerceLogo
+    logo: information?.commerceLogo || null
   }
 
   Object.entries(dataAdapted).forEach(([key, value]) => {

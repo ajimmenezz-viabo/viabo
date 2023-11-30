@@ -11,6 +11,7 @@ import { useUpdateCommerceInfo } from '../../hooks'
 import { FormProvider, RFSelect, RFTextField, RFUploadSingleFile } from '@/shared/components/form'
 
 function GeneralInfoForm({ commerce, onSuccess }) {
+  console.log(commerce)
   const { mutate, isLoading } = useUpdateCommerceInfo()
 
   const CommerceSchema = Yup.object().shape({
@@ -33,11 +34,11 @@ function GeneralInfoForm({ commerce, onSuccess }) {
       rfc: commerce?.information?.rfc || '',
       employeesNumber: commerce?.information?.employeesNumber || '',
       branchesNumber: commerce?.information?.branchesNumber || '',
-      postalAddress: '',
-      phonesNumbers: '',
-      terminalCommerceSlug: '',
-      publicTerminal: null,
-      commerceLogo: null
+      postalAddress: commerce?.information?.postalAddress || '',
+      phoneNumbers: commerce?.information?.phoneNumbers || '',
+      terminalCommerceSlug: commerce?.information?.terminalCommerceSlug || '',
+      publicTerminal: commerce?.information?.publicTerminal || null,
+      commerceLogo: commerce?.information?.commerceLogo || null
     },
     enableReinitialize: true,
     validationSchema: CommerceSchema,
@@ -61,7 +62,7 @@ function GeneralInfoForm({ commerce, onSuccess }) {
 
   return (
     <FormProvider formik={formik}>
-      <Stack spacing={2} p={3}>
+      <Stack spacing={2}>
         <Stack spacing={1}>
           <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Nombre Comercial *
@@ -173,7 +174,7 @@ function GeneralInfoForm({ commerce, onSuccess }) {
 
           <RFTextField
             size={'small'}
-            name={'phonesNumbers'}
+            name={'phoneNumbers'}
             disabled={loading}
             placeholder={'(00)-0000 000... , (00) 0000 000...'}
           />

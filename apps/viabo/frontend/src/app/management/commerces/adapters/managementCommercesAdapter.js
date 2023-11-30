@@ -37,70 +37,83 @@ const CommissionsAdapter = commissions => ({
   viaboPay: parseFloat(commissions?.Pay ?? '0.0')
 })
 
-export const ManagementCommercesAdapter = commerces =>
-  commerces.map((commerce, index) => {
-    const {
-      id,
-      legalRepresentative,
-      legalRepresentativeName,
-      legalRepresentativePhone,
-      legalRepresentativeLastSession,
-      legalRepresentativeEmail,
-      taxName,
-      fiscalPersonType,
-      tradeName,
-      rfc,
-      employees,
-      branchOffices,
-      pointSaleTerminal,
-      paymentApi,
-      register,
-      statusId,
-      registerStep,
-      statusName,
-      services,
-      documents,
-      commissions
-    } = commerce
+export const ManagementCommercesAdapter = commerces => commerces.map((commerce, index) => CommerceAdapter(commerce))
 
-    return {
-      id,
-      name: tradeName,
-      account: {
-        id: legalRepresentative,
-        name: legalRepresentativeName,
-        email: legalRepresentativeEmail,
-        phone: legalRepresentativePhone,
-        status: 'Activo',
-        lastLogged:
-          legalRepresentativeLastSession === '' ? 'No ha iniciado sesión' : fDateTime(legalRepresentativeLastSession),
-        register: fDateTime(register) ?? ''
-      },
-      information: {
-        available: taxName !== '',
-        fiscalName: taxName,
-        commercialName: tradeName,
-        fiscalTypePerson: fiscalPersonType === '1' ? 'Moral' : 'Física',
-        rfc,
-        employeesNumber: employees,
-        branchesNumber: branchOffices
-      },
-      services: {
-        names: services?.map(service => service?.name) || [],
-        catalog: services?.map(service => ({ id: service?.Id, type: service?.type, name: service?.name })) || [],
-        available: pointSaleTerminal !== '0',
-        viaboCard: ViaboCardAdapter(services),
-        viaboPay: {
-          tpvsNumber: pointSaleTerminal,
-          apiRequired: paymentApi === '1'
-        }
-      },
-      status: {
-        id: statusId,
-        name: statusName,
-        step: PROCESS_LIST_STEPS.find(step => step.step.toString() === registerStep)?.name ?? ''
-      },
-      documents: DocumentsAdapter(documents),
-      commissions: CommissionsAdapter(commissions)
-    }
-  })
+export const CommerceAdapter = commerce => {
+  const {
+    id,
+    legalRepresentative,
+    legalRepresentativeName,
+    legalRepresentativePhone,
+    legalRepresentativeLastSession,
+    legalRepresentativeEmail,
+    fiscalName,
+    fiscalPersonType,
+    tradeName,
+    rfc,
+    employees,
+    branchOffices,
+    pointSaleTerminal,
+    paymentApi,
+    register,
+    statusId,
+    registerStep,
+    statusName,
+    services,
+    documents,
+    terminals,
+    commissions,
+    slug,
+    publicTerminal,
+    postalAddress,
+    phoneNumbers,
+    logo
+  } = commerce
+
+  return {
+    id,
+    name: tradeName,
+    account: {
+      id: legalRepresentative,
+      name: legalRepresentativeName,
+      email: legalRepresentativeEmail,
+      phone: legalRepresentativePhone,
+      status: 'Activo',
+      lastLogged:
+        legalRepresentativeLastSession === '' ? 'No ha iniciado sesión' : fDateTime(legalRepresentativeLastSession),
+      register: fDateTime(register) ?? ''
+    },
+    information: {
+      available: fiscalName !== '',
+      fiscalName,
+      commercialName: tradeName,
+      fiscalTypePerson: fiscalPersonType === '1' ? 'Moral' : 'Física',
+      rfc,
+      employeesNumber: employees,
+      branchesNumber: branchOffices,
+      terminalCommerceSlug: slug || '',
+      publicTerminal: publicTerminal || null,
+      postalAddress: postalAddress || '',
+      phoneNumbers: phoneNumbers || '',
+      logo: logo || null
+    },
+    terminals: terminals || [],
+    services: {
+      names: services?.map(service => service?.name) || [],
+      catalog: services?.map(service => ({ id: service?.Id, type: service?.type, name: service?.name })) || [],
+      available: pointSaleTerminal !== '0',
+      viaboCard: ViaboCardAdapter(services),
+      viaboPay: {
+        tpvsNumber: pointSaleTerminal,
+        apiRequired: paymentApi === '1'
+      }
+    },
+    status: {
+      id: statusId,
+      name: statusName,
+      step: PROCESS_LIST_STEPS.find(step => step.step.toString() === registerStep)?.name ?? ''
+    },
+    documents: DocumentsAdapter(documents),
+    commissions: CommissionsAdapter(commissions)
+  }
+}

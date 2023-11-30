@@ -1,4 +1,5 @@
 export * from './useCommercesColumns'
+export * from './useFindCommerceDetails'
 export * from './useFindCommerceList'
 export * from './useUpdateCommerceCommissions'
 export * from './useUpdateCommerceInfo'

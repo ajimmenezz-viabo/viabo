@@ -1,12 +1,24 @@
-import { useRef, useState, createElement } from 'react'
+import { createElement, lazy, useRef, useState } from 'react'
 
 import { LoadingButton } from '@mui/lab'
-import { Box, Divider, IconButton, ListItemIcon, ListItemText, MenuItem, Tooltip, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography
+} from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { useLogout } from '@/app/authentication/hooks'
 import { MenuPopover } from '@/shared/components/containers'
+import { Lodable } from '@/shared/components/lodables'
 import { useUser } from '@/shared/hooks'
 import { MyAvatar } from '@/shared/layout/dashboard/header'
 
@@ -18,9 +30,12 @@ const MENU_OPTIONS = [
   // }
 ]
 
+const ChangePassword = Lodable(lazy(() => import('@/app/authentication/components/ChangePassword')))
+
 export default function AccountPopover() {
   const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
+  const [openChangePassword, setOpenChangePassword] = useState(false)
   const user = useUser()
   const { mutate: logout, isLoading } = useLogout()
 
@@ -33,6 +48,11 @@ export default function AccountPopover() {
 
   const handleLogout = () => {
     logout()
+  }
+
+  const handleChangePassword = () => {
+    setOpen(false)
+    setOpenChangePassword(true)
   }
 
   return (
@@ -89,12 +109,16 @@ export default function AccountPopover() {
           </MenuItem>
         ))}
 
-        <Box sx={{ p: 2, pt: 1.5 }}>
+        <Stack sx={{ p: 2, pt: 1.5 }} gap={2}>
+          <Button fullWidth variant="outlined" color="info" onClick={handleChangePassword}>
+            Cambiar Contraseña
+          </Button>
           <LoadingButton loading={isLoading} fullWidth variant="outlined" color="error" onClick={handleLogout}>
             Cerrar Sesión
           </LoadingButton>
-        </Box>
+        </Stack>
       </MenuPopover>
+      <ChangePassword open={openChangePassword} setOpen={setOpenChangePassword} />
     </>
   )
 }

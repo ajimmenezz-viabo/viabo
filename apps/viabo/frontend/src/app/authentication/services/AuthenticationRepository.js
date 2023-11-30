@@ -15,3 +15,8 @@ export const getUserModules = async () => {
   const { data } = await axios.get('/api/modules/user')
   return UserModulesAdapter(data)
 }
+
+export const changePassword = async password => {
+  const { data } = await axios.post('/api/user/password', password)
+  return data
+}

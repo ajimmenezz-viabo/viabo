@@ -5,12 +5,12 @@ namespace Viabo\Backend\Controller\business\commerce;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\update\UpdateCommerceCommand;
+use Viabo\business\commerce\application\update\UpdateCommerceCommandByRegistration;
 use Viabo\business\services\application\create\UpdateViaboServicesCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 
-final readonly class CommerceUpdaterController extends ApiController
+final readonly class CommerceUpdaterByRegistrationController extends ApiController
 {
 
     public function __invoke(Request $request): Response
@@ -19,7 +19,7 @@ final readonly class CommerceUpdaterController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             $request = $request->toArray();
             $commerceId = $request['commerceId'];
-            $this->dispatch(new UpdateCommerceCommand(
+            $this->dispatch(new UpdateCommerceCommandByRegistration(
                 $commerceId ,
                 $request['fiscalPersonType'] ,
                 $request['taxName'] ,

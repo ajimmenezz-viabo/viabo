@@ -17,18 +17,25 @@ final class Commerce extends AggregateRoot
         private CommerceFatherId            $fatherId ,
         private CommerceLegalRepresentative $legalRepresentative ,
         private CommerceFiscalPersonType    $fiscalPersonType ,
-        private CommerceTaxName             $taxName ,
+        private CommerceFiscalName          $fiscalName ,
         private CommerceTradeName           $tradeName ,
         private CommerceRfc                 $rfc ,
+        private CommercePostalAddress       $postalAddress ,
+        private CommercePhoneNumbers        $phoneNumbers ,
+        private CommerceLogo                $logo ,
+        private CommerceSlug                $slug ,
+        private CommercePublicTerminal      $publicTerminal ,
         private CommerceEmployees           $employees ,
         private CommerceBranchOffices       $branchOffices ,
         private CommercePointSaleTerminal   $pointSaleTerminal ,
         private CommercePaymentApi          $paymentApi ,
-        private CommerceRegister            $register ,
         private CommerceType                $type ,
         private CommerceAllowTransactions   $allowTransactions ,
         private CommerceStatusId            $statusId ,
         private CommerceRegisterStep        $registerStep ,
+        private CommerceUpdatedByUser       $updatedByUser ,
+        private CommerceUpdateDate          $updateDate ,
+        private CommerceRegister            $register ,
         private CommerceActive              $active
     )
     {
@@ -43,18 +50,25 @@ final class Commerce extends AggregateRoot
             new CommerceFatherId('') ,
             $legalRepresentative ,
             new CommerceFiscalPersonType('') ,
-            new CommerceTaxName('') ,
+            new CommerceFiscalName('') ,
             new CommerceTradeName('') ,
             new CommerceRfc('') ,
+            CommercePostalAddress::empty() ,
+            CommercePhoneNumbers::empty() ,
+            CommerceLogo::empty() ,
+            CommerceSlug::empty() ,
+            CommercePublicTerminal::empty() ,
             new CommerceEmployees('0') ,
             new CommerceBranchOffices('0') ,
             new CommercePointSaleTerminal('0') ,
             new CommercePaymentApi('0') ,
-            CommerceRegister::todayDate() ,
             new CommerceType('1') ,
             new CommerceAllowTransactions('1') ,
             new CommerceStatusId('1') ,
             $registerStep ,
+            CommerceUpdatedByUser::empty() ,
+            CommerceUpdateDate::empty() ,
+            CommerceRegister::todayDate() ,
             new CommerceActive('1') ,
         );
 
@@ -70,51 +84,76 @@ final class Commerce extends AggregateRoot
             new CommerceFatherId('') ,
             CommerceLegalRepresentative::empty() ,
             new CommerceFiscalPersonType('') ,
-            new CommerceTaxName('') ,
+            new CommerceFiscalName('') ,
             $commerceTradeName ,
             new CommerceRfc('') ,
+            CommercePostalAddress::empty() ,
+            CommercePhoneNumbers::empty() ,
+            CommerceLogo::empty() ,
+            CommerceSlug::empty() ,
+            CommercePublicTerminal::empty() ,
             new CommerceEmployees('0') ,
             new CommerceBranchOffices('0') ,
             new CommercePointSaleTerminal('0') ,
             new CommercePaymentApi('0') ,
-            CommerceRegister::todayDate() ,
             new CommerceType('2') ,
             new CommerceAllowTransactions('0') ,
             new CommerceStatusId('3') ,
-            new CommerceRegisterStep('4')  ,
+            new CommerceRegisterStep('4') ,
+            CommerceUpdatedByUser::empty() ,
+            CommerceUpdateDate::empty() ,
+            CommerceRegister::todayDate() ,
             new CommerceActive('1') ,
         );
     }
 
     public function update(
-        CommerceFiscalPersonType  $fiscalPersonType ,
-        CommerceTaxName           $taxName ,
-        CommerceTradeName         $tradeName ,
-        CommerceRfc               $rfc ,
-        CommerceEmployees         $employees ,
-        CommerceBranchOffices     $branchOffices ,
-        CommercePointSaleTerminal $pointSaleTerminal ,
-        CommercePaymentApi        $paymentApi ,
-        CommerceRegisterStep      $registerStep
+        string $userId ,
+        string $fiscalPersonType ,
+        string $fiscalName ,
+        string $tradeName ,
+        string $rfc ,
+        string $postalAddress ,
+        string $phoneNumbers ,
+        array  $logoData ,
+        string $slug ,
+        string $publicTerminal ,
+        string $employees ,
+        string $branchOffices ,
+        string $pointSaleTerminal ,
+        string $paymentApi ,
+        string $registerStep
     ): void
     {
-        $this->fiscalPersonType = $fiscalPersonType;
-        $this->taxName = $taxName;
-        $this->tradeName = $tradeName;
-        $this->rfc = $rfc;
-        $this->employees = $employees;
-        $this->branchOffices = $branchOffices;
-        $this->pointSaleTerminal = $pointSaleTerminal;
-        $this->paymentApi = $paymentApi;
-        $this->registerStep = $this->registerStep->update($registerStep->value());
-        $this->statusId = $this->statusId->update($registerStep->isLastStep());
+        $this->fiscalPersonType = $this->fiscalPersonType->update($fiscalPersonType);
+        $this->fiscalName = $this->fiscalName->update($fiscalName);
+        $this->tradeName = $this->tradeName->update($tradeName);
+        $this->rfc = $this->rfc->update($rfc);
+        $this->postalAddress = $this->postalAddress->update($postalAddress);
+        $this->phoneNumbers = $this->phoneNumbers->update($phoneNumbers);
+        $this->logo = $this->logo->update($logoData , $this->id());
+        $this->slug = $this->slug->update($slug);
+        $this->publicTerminal = $this->publicTerminal->update($publicTerminal);
+        $this->employees = $this->employees->update($employees);
+        $this->branchOffices = $this->branchOffices->update($branchOffices);
+        $this->pointSaleTerminal = $this->pointSaleTerminal->update($pointSaleTerminal);
+        $this->paymentApi = $this->paymentApi->update($paymentApi);
+        $this->registerStep = $this->registerStep->update($registerStep);
+        $this->statusId = $this->statusId->update($this->registerStep->isLastStep());
+        $this->updatedByUser = $this->updatedByUser->update($userId);
+        $this->updateDate = $this->updateDate->todayDate();
 
         $this->record(new CommerceUpdatedDomainEvent($this->id->value() , $this->toArray()));
     }
 
-    public function id(): CommerceId
+    public function id(): string
     {
-        return $this->id;
+        return $this->id->value();
+    }
+
+    public function slug(): string
+    {
+        return $this->slug->value();
     }
 
     public function isInformal(): bool
@@ -127,6 +166,11 @@ final class Commerce extends AggregateRoot
         return $this->fatherId;
     }
 
+    public function logoData(): array
+    {
+        return $this->logo->data();
+    }
+
     public function toArray(): array
     {
         return [
@@ -134,18 +178,25 @@ final class Commerce extends AggregateRoot
             'fatherId' => $this->fatherId->value() ,
             'legalRepresentative' => $this->legalRepresentative->value() ,
             'fiscalPersonType' => $this->fiscalPersonType->value() ,
-            'taxName' => $this->taxName->value() ,
+            'fiscalName' => $this->fiscalName->value() ,
             'tradeName' => $this->tradeName->value() ,
             'rfc' => $this->rfc->value() ,
+            'postalAddress' => $this->postalAddress->value() ,
+            'phoneNumbers' => $this->phoneNumbers->value() ,
+            'logo' => $this->logo->value() ,
+            'slug' => $this->slug->value() ,
+            'publicTerminal' => $this->publicTerminal->value() ,
             'employees' => $this->employees->value() ,
             'branchOffices' => $this->branchOffices->value() ,
             'pointSaleTerminal' => $this->pointSaleTerminal->value() ,
             'paymentApi' => $this->paymentApi->value() ,
-            'register' => $this->register->value() ,
             'type' => $this->type->value() ,
             'allowTransactions' => $this->allowTransactions->value() ,
             'statusId' => $this->statusId->value() ,
             'registerStep' => $this->registerStep->value() ,
+            'updatedByUser' => $this->updatedByUser->value() ,
+            'updateDate' => $this->updateDate->value() ,
+            'register' => $this->register->value() ,
             'active' => $this->active->value()
         ];
     }

@@ -34,6 +34,12 @@ final class TerminalView
         $this->commerceId = $commerceId;
     }
 
+    public function isVirtual(): bool
+    {
+        $virtualType = '1';
+        return $this->typeId === $virtualType;
+    }
+
     public function toArray(): array
     {
         return [

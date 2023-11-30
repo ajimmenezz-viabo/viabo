@@ -1,4 +1,9 @@
-commerce-update:
+update-commerce-by-registration:
   path: '/api/commerce/update'
-  controller: Viabo\Backend\Controller\business\commerce\CommerceUpdaterController
+  controller: Viabo\Backend\Controller\business\commerce\CommerceUpdaterByRegistrationController
   methods: PUT
+
+update-commerce-by-backoffice:
+  path: '/api/backoffice/commerce/update'
+  controller: Viabo\Backend\Controller\business\commerce\CommerceUpdaterByBackofficeController
+  methods: POST

@@ -8,4 +8,9 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CommerceRfc extends StringValueObject
 {
+    public function update(string $value): static
+    {
+        return new static($value);
+    }
+
 }

@@ -21,4 +21,10 @@ final class CommerceTradeName extends StringValueObject
             throw new CommerceTradeNameEmpty();
         }
     }
+
+    public function update(string $value): static
+    {
+        return self::create($value);
+    }
+
 }

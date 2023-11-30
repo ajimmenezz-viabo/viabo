@@ -14,7 +14,7 @@
         <field name="legalRepresentativeRegister" column="LegalRepresentativeRegister"/>
         <field name="legalRepresentativeLastSession" column="LegalRepresentativeLastSession"/>
         <field name="fiscalPersonType" column="FiscalPersonType"/>
-        <field name="taxName" column="TaxName"/>
+        <field name="fiscalName" column="FiscalName"/>
         <field name="tradeName" column="TradeName"/>
         <field name="rfc" column="Rfc"/>
         <field name="postalAddress" column="PostalAddress"/>

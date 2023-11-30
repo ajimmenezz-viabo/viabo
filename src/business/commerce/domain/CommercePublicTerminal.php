@@ -6,11 +6,11 @@ namespace Viabo\business\commerce\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class CommerceBranchOffices extends StringValueObject
+final class CommercePublicTerminal extends StringValueObject
 {
-    public static function create(string $value): self
+    public static function empty(): static
     {
-        return new self(!empty($value) ? $value : '0');
+        return new static('');
     }
 
     public function update(string $value): static

@@ -30,7 +30,7 @@ final readonly class LegalRepresentativeCreatedDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'create.user';
+        return 'created.user';
     }
 
     public function toPrimitives(): array

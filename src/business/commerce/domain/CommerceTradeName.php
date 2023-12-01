@@ -22,9 +22,13 @@ final class CommerceTradeName extends StringValueObject
         }
     }
 
-    public function update(string $value): static
+    public function update(string $value , string $registerStep): static
     {
-        return self::create($value);
+        $registerStep = intval($registerStep);
+        if ($registerStep > 2) {
+            return self::create($value);
+        }
+        return new static($value);
     }
 
 }

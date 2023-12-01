@@ -54,7 +54,7 @@ export default function CommerceInfo({ store }) {
       })
       const dataAdapted = {
         ...resumeAdapter,
-        taxName: fiscalName,
+        fiscalName,
         tradeName: commercialName,
         rfc,
         employees: employeesNumber,

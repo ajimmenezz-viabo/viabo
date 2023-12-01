@@ -22,7 +22,7 @@ final readonly class CommerceUpdaterByRegistrationController extends ApiControll
             $this->dispatch(new UpdateCommerceCommandByRegistration(
                 $commerceId ,
                 $request['fiscalPersonType'] ,
-                $request['taxName'] ,
+                $request['fiscalName'] ,
                 $request['tradeName'] ,
                 $request['rfc'] ,
                 $request['employees'] ,

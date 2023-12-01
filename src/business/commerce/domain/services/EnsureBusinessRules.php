@@ -29,7 +29,7 @@ final readonly class EnsureBusinessRules
         $this->ensureSlug($commerceId , $slug);
     }
 
-    private function ensureTradeName(string $commerceId , string $tradeName): void
+    public function ensureTradeName(string $commerceId , string $tradeName): void
     {
         $commerce = $this->searchCommerceByTradeName($commerceId , $tradeName);
         if (!empty($commerce)) {

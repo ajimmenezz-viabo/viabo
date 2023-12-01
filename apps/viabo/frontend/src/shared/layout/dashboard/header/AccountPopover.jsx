@@ -1,4 +1,4 @@
-import { createElement, lazy, useRef, useState } from 'react'
+import { createElement, useRef, useState } from 'react'
 
 import { LoadingButton } from '@mui/lab'
 import {
@@ -16,9 +16,9 @@ import {
 import { alpha } from '@mui/material/styles'
 import { Link as RouterLink } from 'react-router-dom'
 
+import ChangePassword from '@/app/authentication/components/ChangePassword'
 import { useLogout } from '@/app/authentication/hooks'
 import { MenuPopover } from '@/shared/components/containers'
-import { Lodable } from '@/shared/components/lodables'
 import { useUser } from '@/shared/hooks'
 import { MyAvatar } from '@/shared/layout/dashboard/header'
 
@@ -29,8 +29,6 @@ const MENU_OPTIONS = [
   //   linkTo: '/settings'
   // }
 ]
-
-const ChangePassword = Lodable(lazy(() => import('@/app/authentication/components/ChangePassword')))
 
 export default function AccountPopover() {
   const anchorRef = useRef(null)

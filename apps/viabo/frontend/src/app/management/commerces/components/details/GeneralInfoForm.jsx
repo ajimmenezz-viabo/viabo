@@ -19,8 +19,8 @@ function GeneralInfoForm({ commerce, onSuccess }) {
     branchesNumber: Yup.number().min(1, 'Al menos debe existir una sucursal'),
     terminalCommerceSlug: Yup.string()
       .trim()
-      .matches(/^[a-zA-Z]+([_][a-zA-Z]+)*$/, {
-        message: 'Solo se permiten letras y los espacios se deben convertir en guion bajo (_).',
+      .matches(/^[a-zA-Z]+([_-][a-zA-Z]+)*$/, {
+        message: 'Solo se permiten letras y los espacios se deben convertir en (_ ó -).',
         excludeEmptyString: true
       })
   })
@@ -29,15 +29,16 @@ function GeneralInfoForm({ commerce, onSuccess }) {
     initialValues: {
       commercialName: commerce?.information?.commercialName || '',
       fiscalName: commerce?.information?.fiscalName || '',
-      fiscalTypePerson: commerce?.information?.fiscalTypePerson || 'Moral',
+      fiscalTypePerson: commerce?.information?.fiscalTypePerson || '1',
       rfc: commerce?.information?.rfc || '',
       employeesNumber: commerce?.information?.employeesNumber || '',
       branchesNumber: commerce?.information?.branchesNumber || '',
-      postalAddress: '',
-      phonesNumbers: '',
-      terminalCommerceSlug: '',
-      publicTerminal: null,
-      commerceLogo: null
+      postalAddress: commerce?.information?.postalAddress || '',
+      phoneNumbers: commerce?.information?.phoneNumbers || '',
+      terminalCommerceSlug: commerce?.information?.terminalCommerceSlug || '',
+      publicTerminal:
+        commerce?.terminals?.find(terminal => terminal?.id === commerce?.information?.publicTerminal) || null,
+      commerceLogo: commerce?.information?.logo || null
     },
     enableReinitialize: true,
     validationSchema: CommerceSchema,
@@ -61,7 +62,7 @@ function GeneralInfoForm({ commerce, onSuccess }) {
 
   return (
     <FormProvider formik={formik}>
-      <Stack spacing={2} p={3}>
+      <Stack spacing={2}>
         <Stack spacing={1}>
           <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
             Nombre Comercial *
@@ -112,8 +113,8 @@ function GeneralInfoForm({ commerce, onSuccess }) {
                 aria-labelledby="fiscal-type-person-group-label"
                 name="fiscalTypePerson"
               >
-                <FormControlLabel value="Física" control={<Radio />} label="Física" />
-                <FormControlLabel value="Moral" control={<Radio />} label="Moral" />
+                <FormControlLabel value="1" control={<Radio />} label="Moral" />
+                <FormControlLabel value="2" control={<Radio />} label="Física" />
               </RadioGroup>
             </FormControl>
           </Stack>
@@ -173,22 +174,9 @@ function GeneralInfoForm({ commerce, onSuccess }) {
 
           <RFTextField
             size={'small'}
-            name={'phonesNumbers'}
+            name={'phoneNumbers'}
             disabled={loading}
             placeholder={'(00)-0000 000... , (00) 0000 000...'}
-          />
-        </Stack>
-
-        <Stack spacing={1}>
-          <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Liga de cobro (Slug)
-          </Typography>
-
-          <RFTextField
-            size={'small'}
-            name={'terminalCommerceSlug'}
-            disabled={loading}
-            placeholder={'mi_comercio ...'}
           />
         </Stack>
 
@@ -200,17 +188,31 @@ function GeneralInfoForm({ commerce, onSuccess }) {
             size={'small'}
             name={'publicTerminal'}
             disabled={loading}
-            options={[]}
+            options={commerce?.terminals || []}
             textFieldParams={{
               placeholder: 'Seleccionar ...',
               size: 'small'
             }}
           />
         </Stack>
+        {commerce?.terminals?.length > 0 && (
+          <Stack spacing={1}>
+            <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+              Liga de cobro (Slug)
+            </Typography>
+
+            <RFTextField
+              size={'small'}
+              name={'terminalCommerceSlug'}
+              disabled={loading}
+              placeholder={'mi_comercio ...'}
+            />
+          </Stack>
+        )}
 
         <Stack spacing={1}>
           <Typography variant="overline" sx={{ color: 'text.disabled', width: 1 }}>
-            Logo (Max - 3MB):
+            Logo (Max - 3MB - png,svg,webp):
           </Typography>
 
           <RFUploadSingleFile
@@ -243,12 +245,18 @@ GeneralInfoForm.propTypes = {
   commerce: PropTypes.shape({
     information: PropTypes.shape({
       branchesNumber: PropTypes.string,
+      logo: PropTypes.any,
       commercialName: PropTypes.string,
       employeesNumber: PropTypes.string,
       fiscalName: PropTypes.string,
       fiscalTypePerson: PropTypes.string,
-      rfc: PropTypes.string
-    })
+      phoneNumbers: PropTypes.string,
+      postalAddress: PropTypes.string,
+      publicTerminal: PropTypes.any,
+      rfc: PropTypes.string,
+      terminalCommerceSlug: PropTypes.string
+    }),
+    terminals: PropTypes.array
   }),
   onSuccess: PropTypes.func
 }

@@ -41,14 +41,12 @@ final class Commerce extends AggregateRoot
     {
     }
 
-    public static function create(
-        CommerceLegalRepresentative $legalRepresentative , CommerceRegisterStep $registerStep
-    ): self
+    public static function create(string $legalRepresentative): self
     {
         $commerce = new self(
             CommerceId::random() ,
             new CommerceFatherId('') ,
-            $legalRepresentative ,
+            new CommerceLegalRepresentative($legalRepresentative) ,
             new CommerceFiscalPersonType('') ,
             new CommerceFiscalName('') ,
             new CommerceTradeName('') ,
@@ -65,7 +63,7 @@ final class Commerce extends AggregateRoot
             new CommerceType('1') ,
             new CommerceAllowTransactions('1') ,
             new CommerceStatusId('1') ,
-            $registerStep ,
+            CommerceRegisterStep::start() ,
             CommerceUpdatedByUser::empty() ,
             CommerceUpdateDate::empty() ,
             CommerceRegister::todayDate() ,
@@ -127,7 +125,7 @@ final class Commerce extends AggregateRoot
     {
         $this->fiscalPersonType = $this->fiscalPersonType->update($fiscalPersonType);
         $this->fiscalName = $this->fiscalName->update($fiscalName);
-        $this->tradeName = $this->tradeName->update($tradeName);
+        $this->tradeName = $this->tradeName->update($tradeName, $registerStep);
         $this->rfc = $this->rfc->update($rfc);
         $this->postalAddress = $this->postalAddress->update($postalAddress);
         $this->phoneNumbers = $this->phoneNumbers->update($phoneNumbers);

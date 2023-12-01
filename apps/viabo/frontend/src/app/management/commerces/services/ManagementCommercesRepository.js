@@ -1,9 +1,14 @@
-import { ManagementCommercesAdapter } from '@/app/management/commerces/adapters'
+import { CommerceAdapter, ManagementCommercesAdapter } from '@/app/management/commerces/adapters'
 import { axios } from '@/shared/interceptors'
 
 export const getCommerceList = async () => {
   const { data } = await axios.get('/api/commerces')
   return ManagementCommercesAdapter(data)
+}
+
+export const getCommerceDetails = async commerceId => {
+  const { data } = await axios.get(`/api/commerce/${commerceId}`)
+  return CommerceAdapter(data)
 }
 
 export const updateCommerceCommissions = async commissions => {
@@ -12,7 +17,7 @@ export const updateCommerceCommissions = async commissions => {
 }
 
 export const updateCommerceInformation = async commerce => {
-  const { data } = await axios.post('/api/commerce/information', commerce)
+  const { data } = await axios.post('/api/backoffice/commerce/update', commerce)
   return data
 }
 

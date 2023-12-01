@@ -21,7 +21,7 @@ export const CommerceUpdateAdapter = (resume, stepUpdate) => {
   return {
     commerceId: id,
     fiscalPersonType: fiscalTypePerson,
-    taxName: fiscalName,
+    fiscalName,
     tradeName: commercialName,
     rfc,
     employees: employeesNumber,

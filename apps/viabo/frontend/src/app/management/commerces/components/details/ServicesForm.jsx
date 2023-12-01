@@ -115,9 +115,7 @@ ServicesForm.propTypes = {
   commerce: PropTypes.shape({
     id: PropTypes.any,
     services: PropTypes.shape({
-      catalog: PropTypes.shape({
-        some: PropTypes.func
-      })
+      catalog: PropTypes.array
     })
   })
 }

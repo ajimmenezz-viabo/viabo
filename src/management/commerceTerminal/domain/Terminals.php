@@ -5,6 +5,7 @@ namespace Viabo\management\commerceTerminal\domain;
 
 
 use Viabo\shared\domain\Collection;
+use Viabo\shared\domain\Utils;
 
 final class Terminals extends Collection
 {
@@ -27,7 +28,7 @@ final class Terminals extends Collection
             return $terminal->isVirtual();
         });
 
-        return new static($terminals);
+        return new static(Utils::removeDuplicateElements($terminals));
     }
 
     protected function type(): string

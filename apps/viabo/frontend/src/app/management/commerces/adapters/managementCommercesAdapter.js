@@ -34,7 +34,8 @@ const CommissionsAdapter = commissions => ({
   speiOutCarnet: parseFloat(commissions?.SpeiOutCarnet ?? '0.0'),
   speiInMasterCard: parseFloat(commissions?.SpeiInMasterCard ?? '0.0'),
   speiOutMasterCard: parseFloat(commissions?.SpeiOutMasterCard ?? '0.0'),
-  viaboPay: parseFloat(commissions?.Pay ?? '0.0')
+  viaboPay: parseFloat(commissions?.Pay ?? '0.0'),
+  cloud: parseFloat(commissions?.SharedTerminal ?? '0.0')
 })
 
 export const ManagementCommercesAdapter = commerces => commerces.map((commerce, index) => CommerceAdapter(commerce))

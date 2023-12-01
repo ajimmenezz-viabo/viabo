@@ -20,7 +20,14 @@ const DocumentDropzone = ({ name, accept, setFieldValue, file }) => {
 
   return (
     <>
-      <UploadSingleFile file={file} accept={accept} onDrop={handleDrop} onRemove={handleRemove} maxSize={3145728} />
+      <UploadSingleFile
+        file={file}
+        accept={accept}
+        onDrop={handleDrop}
+        onRemove={handleRemove}
+        maxSize={3145728}
+        height={40}
+      />
     </>
   )
 }

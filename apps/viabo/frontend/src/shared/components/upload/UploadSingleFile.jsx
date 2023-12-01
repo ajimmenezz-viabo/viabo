@@ -33,7 +33,7 @@ UploadSingleFile.propTypes = {
 
 const isImage = url => /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
 
-export default function UploadSingleFile({ error = false, file, helperText, onRemove, sx, ...other }) {
+export default function UploadSingleFile({ error = false, file, helperText, onRemove, sx, height = 10, ...other }) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     ...other
@@ -70,7 +70,7 @@ export default function UploadSingleFile({ error = false, file, helperText, onRe
             alignItems="center"
             justifyContent="center"
             direction={{ xs: 'column', md: 'row' }}
-            sx={{ height: 10, textAlign: { xs: 'center', md: 'left' } }}
+            sx={{ height, textAlign: { xs: 'center', md: 'left' } }}
           >
             <Box
               sx={{ p: 3 }}

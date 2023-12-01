@@ -25,7 +25,7 @@ final class CommerceTradeName extends StringValueObject
     public function update(string $value , string $registerStep): static
     {
         $registerStep = intval($registerStep);
-        if ($registerStep >= 2) {
+        if ($registerStep > 2) {
             return self::create($value);
         }
         return new static($value);

@@ -15,6 +15,7 @@ final class CommercePointSaleTerminal extends StringValueObject
 
     public function update(string $value): static
     {
+         $value = empty($value)? '0': $value;
         return new static($value);
     }
 

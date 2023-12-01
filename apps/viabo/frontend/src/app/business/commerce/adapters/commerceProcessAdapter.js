@@ -2,7 +2,7 @@ export const CommerceProcessAdapter = process => {
   const {
     id,
     fiscalPersonType,
-    taxName,
+    fiscalName,
     tradeName,
     rfc,
     employees,
@@ -25,7 +25,7 @@ export const CommerceProcessAdapter = process => {
     idUser: legalRepresentative,
     services,
     fiscalTypePerson: fiscalPersonType,
-    fiscalName: taxName,
+    fiscalName: fiscalName || '',
     rfc,
     commercialName: tradeName,
     employeesNumber: Number(employees),

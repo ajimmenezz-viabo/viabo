@@ -6,7 +6,7 @@ namespace Viabo\business\commission\domain;
 
 use Viabo\shared\domain\valueObjects\DecimalValueObject;
 
-final class CommissionPay extends DecimalValueObject
+final class CommissionSharedTerminal extends DecimalValueObject
 {
     public static function empty(): static
     {

@@ -12,6 +12,7 @@
         <embedded name="speiOutCarnet" class="CommissionSpeiOutCarnet" use-column-prefix="false"/>
         <embedded name="speiOutMasterCard" class="CommissionSpeiOutMasterCard" use-column-prefix="false"/>
         <embedded name="pay" class="CommissionPay" use-column-prefix="false"/>
+        <embedded name="sharedTerminal" class="CommissionSharedTerminal" use-column-prefix="false"/>
         <embedded name="updateByUser" class="CommissionUpdateByUser" use-column-prefix="false"/>
         <embedded name="updateDate" class="CommissionUpdateDate" use-column-prefix="false"/>
     </entity>

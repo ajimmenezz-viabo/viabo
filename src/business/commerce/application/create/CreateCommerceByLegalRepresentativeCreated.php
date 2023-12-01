@@ -4,8 +4,6 @@
 namespace Viabo\business\commerce\application\create;
 
 
-use Viabo\business\commerce\domain\CommerceRegisterStep;
-use Viabo\business\shared\domain\commerce\CommerceLegalRepresentative;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
@@ -22,9 +20,6 @@ final readonly class CreateCommerceByLegalRepresentativeCreated implements Domai
 
     public function __invoke(LegalRepresentativeCreatedDomainEvent $event): void
     {
-        $legalRepresentative = new CommerceLegalRepresentative($event->aggregateId());
-        $registerStatus = new CommerceRegisterStep('1');
-
-        ($this->creator)($legalRepresentative , $registerStatus);
+        $this->creator->__invoke($event->aggregateId());
     }
 }

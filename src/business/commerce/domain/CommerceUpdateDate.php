@@ -10,6 +10,8 @@ final class CommerceUpdateDate extends DateTimeValueObject
 {
     public static function empty(): static
     {
-        return new static('0000-00-00 00:00:00');
+        $date = self::todayDate();
+        $date->value = '0000-00-00 00:00:00';
+        return $date;
     }
 }

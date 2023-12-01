@@ -22,6 +22,11 @@ final class CommerceRegisterStep extends StringValueObject
         }
     }
 
+    public static function start(): static
+    {
+        return new static('1');
+    }
+
     public function isLastStep(): bool
     {
         $lastStep = '4';

@@ -125,7 +125,7 @@ final class Commerce extends AggregateRoot
     {
         $this->fiscalPersonType = $this->fiscalPersonType->update($fiscalPersonType);
         $this->fiscalName = $this->fiscalName->update($fiscalName);
-        $this->tradeName = $this->tradeName->update($tradeName);
+        $this->tradeName = $this->tradeName->update($tradeName, $registerStep);
         $this->rfc = $this->rfc->update($rfc);
         $this->postalAddress = $this->postalAddress->update($postalAddress);
         $this->phoneNumbers = $this->phoneNumbers->update($phoneNumbers);

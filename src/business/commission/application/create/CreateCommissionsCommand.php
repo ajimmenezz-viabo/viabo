@@ -15,7 +15,8 @@ final readonly class CreateCommissionsCommand implements Command
         public float $speiInMasterCard ,
         public float $speiOutCarnet ,
         public float $speiOutMasterCard ,
-        public float $pay
+        public float $pay,
+        public float $sharedTerminal
     )
     {
     }

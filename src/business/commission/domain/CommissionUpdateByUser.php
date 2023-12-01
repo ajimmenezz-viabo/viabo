@@ -14,4 +14,10 @@ final class CommissionUpdateByUser extends UuidValueObject
         $user->value = '';
         return $user;
     }
+
+    public function update(string $value): static
+    {
+        return new static($value);
+    }
+
 }

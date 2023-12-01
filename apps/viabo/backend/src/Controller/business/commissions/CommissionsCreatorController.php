@@ -16,7 +16,6 @@ final readonly class CommissionsCreatorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            
             $data = $request->toArray();
             $this->dispatch(new CreateCommissionsCommand(
                 $tokenData['id'],
@@ -25,7 +24,8 @@ final readonly class CommissionsCreatorController extends ApiController
                 $data['speiInMasterCard'],
                 $data['speiOutCarnet'],
                 $data['speiOutMasterCard'],
-                $data['pay']
+                $data['pay'],
+                $data['sharedTerminal']
             ));
             
 

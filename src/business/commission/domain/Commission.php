@@ -21,6 +21,7 @@ final class Commission extends AggregateRoot
         private CommissionSpeiOutCarnet     $speiOutCarnet ,
         private CommissionSpeiOutMasterCard $speiOutMasterCard ,
         private CommissionPay               $pay ,
+        private CommissionSharedTerminal    $sharedTerminal ,
         private CommissionUpdateByUser      $updateByUser ,
         private CommissionUpdateDate        $updateDate
     )
@@ -29,24 +30,26 @@ final class Commission extends AggregateRoot
     }
 
     public static function create(
-        CommerceId                  $commerceId ,
-        CommissionSpeiInCarnet      $speiInCarnet ,
-        CommissionSpeiInMasterCard  $speiInMasterCard ,
-        CommissionSpeiOutCarnet     $speiOutCarnet ,
-        CommissionSpeiOutMasterCard $speiOutMasterCard ,
-        CommissionPay               $pay ,
-        CommissionUpdateByUser      $updateByUser
+        string $commerceId ,
+        float  $speiInCarnet ,
+        float  $speiInMasterCard ,
+        float  $speiOutCarnet ,
+        float  $speiOutMasterCard ,
+        float  $pay ,
+        float  $sharedTerminal ,
+        string $updateByUser
     ): static
     {
         $commission = new static(
             CommissionId::random() ,
-            $commerceId ,
-            $speiInCarnet ,
-            $speiInMasterCard ,
-            $speiOutCarnet ,
-            $speiOutMasterCard ,
-            $pay ,
-            $updateByUser ,
+            CommerceId::create($commerceId) ,
+            new CommissionSpeiInCarnet($speiInCarnet) ,
+            new CommissionSpeiInMasterCard($speiInMasterCard) ,
+            new CommissionSpeiOutCarnet($speiOutCarnet) ,
+            new CommissionSpeiOutMasterCard($speiOutMasterCard) ,
+            new CommissionPay($pay) ,
+            new CommissionSharedTerminal($sharedTerminal) ,
+            new CommissionUpdateByUser($updateByUser) ,
             CommissionUpdateDate::todayDate()
         );
 
@@ -60,11 +63,12 @@ final class Commission extends AggregateRoot
         $commission = new static(
             CommissionId::random() ,
             $commerceId ,
-            new CommissionSpeiInCarnet(0) ,
-            new CommissionSpeiInMasterCard(0) ,
-            new CommissionSpeiOutCarnet(0) ,
-            new CommissionSpeiOutMasterCard(0) ,
-            new CommissionPay(0) ,
+            CommissionSpeiInCarnet::empty() ,
+            CommissionSpeiInMasterCard::empty() ,
+            CommissionSpeiOutCarnet::empty() ,
+            CommissionSpeiOutMasterCard::empty() ,
+            CommissionPay::empty() ,
+            CommissionSharedTerminal::empty() ,
             CommissionUpdateByUser::empty() ,
             CommissionUpdateDate::todayDate()
         );
@@ -80,20 +84,22 @@ final class Commission extends AggregateRoot
     }
 
     public function update(
-        CommissionSpeiInCarnet      $speiInCarnet ,
-        CommissionSpeiInMasterCard  $speiInMasterCard ,
-        CommissionSpeiOutCarnet     $speiOutCarnet ,
-        CommissionSpeiOutMasterCard $speiOutMasterCard ,
-        CommissionPay               $pay ,
-        CommissionUpdateByUser      $updateByUser
+        float  $speiInCarnet ,
+        float  $speiInMasterCard ,
+        float  $speiOutCarnet ,
+        float  $speiOutMasterCard ,
+        float  $pay ,
+        float  $sharedTerminal ,
+        string $updateByUser
     ): void
     {
-        $this->speiInCarnet = $speiInCarnet;
-        $this->speiInMasterCard = $speiInMasterCard;
-        $this->speiOutCarnet = $speiOutCarnet;
-        $this->speiOutMasterCard = $speiOutMasterCard;
-        $this->pay = $pay;
-        $this->updateByUser = $updateByUser;
+        $this->speiInCarnet = $this->speiInCarnet->update($speiInCarnet);
+        $this->speiInMasterCard = $this->speiInMasterCard->update($speiInMasterCard);
+        $this->speiOutCarnet = $this->speiOutCarnet->update($speiOutCarnet);
+        $this->speiOutMasterCard = $this->speiOutMasterCard->update($speiOutMasterCard);
+        $this->pay = $this->pay->update($pay);
+        $this->sharedTerminal = $this->sharedTerminal->update($sharedTerminal);
+        $this->updateByUser = $this->updateByUser->update($updateByUser);
         $this->updateDate = CommissionUpdateDate::todayDate();
 
         $this->record(new CommissionUpdatedDomainEvent($this->id()->value() , $this->toArray()));
@@ -127,6 +133,7 @@ final class Commission extends AggregateRoot
             'speiOutCarnet' => $this->speiOutCarnet->value() ,
             'speiOutMasterCard' => $this->speiOutMasterCard->value() ,
             'pay' => $this->pay->value() ,
+            'sharedTerminal' => $this->sharedTerminal->value() ,
             'updateByUser' => $this->updateByUser->value() ,
             'updateDate' => $this->updateDate->value()
         ];

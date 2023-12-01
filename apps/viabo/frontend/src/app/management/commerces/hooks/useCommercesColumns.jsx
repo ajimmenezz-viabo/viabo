@@ -36,7 +36,6 @@ export const useCommercesColumns = () =>
       {
         id: 'services',
         accessorFn: originalRow => originalRow?.services?.names?.toString(),
-        size: 220,
         header: 'Servicios',
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row

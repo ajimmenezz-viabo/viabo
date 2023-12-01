@@ -1,5 +1,5 @@
 import { PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
-import { fDateTime } from '@/shared/utils'
+import { convertCatalogToReactSelect, fDateTime } from '@/shared/utils'
 
 const ViaboCardAdapter = services => {
   const viaboCard = services?.find(service => service?.type === '2')
@@ -87,7 +87,7 @@ export const CommerceAdapter = commerce => {
       available: fiscalName !== '',
       fiscalName,
       commercialName: tradeName,
-      fiscalTypePerson: fiscalPersonType === '1' ? 'Moral' : 'Física',
+      fiscalTypePerson: fiscalPersonType,
       rfc,
       employeesNumber: employees,
       branchesNumber: branchOffices,
@@ -97,7 +97,7 @@ export const CommerceAdapter = commerce => {
       phoneNumbers: phoneNumbers || '',
       logo: logo || null
     },
-    terminals: terminals || [],
+    terminals: convertCatalogToReactSelect(terminals || [], 'id', 'name'),
     services: {
       names: services?.map(service => service?.name) || [],
       catalog: services?.map(service => ({ id: service?.Id, type: service?.type, name: service?.name })) || [],

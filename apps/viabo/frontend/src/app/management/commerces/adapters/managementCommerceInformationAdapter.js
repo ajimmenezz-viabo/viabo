@@ -11,8 +11,8 @@ export const ManagementCommerceInformationAdapter = (information, commerce) => {
     branchOffices: information?.branchesNumber,
     postalAddress: information?.postalAddress,
     phoneNumbers: information?.phoneNumbers,
-    slug: information?.terminalCommerceSlug?.toLowerCase(),
-    publicTerminal: information?.publicTerminal?.value || null,
+    slug: information?.terminalCommerceSlug?.toLowerCase()?.trim() || '',
+    publicTerminal: information?.publicTerminal?.value || '',
     logo: information?.commerceLogo || null
   }
 

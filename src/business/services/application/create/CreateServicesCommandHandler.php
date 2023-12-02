@@ -2,7 +2,6 @@
 
 namespace Viabo\business\services\application\create;
 
-use Viabo\business\shared\domain\commerce\CommerceId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateServicesCommandHandler implements CommandHandler
@@ -13,9 +12,6 @@ final readonly class CreateServicesCommandHandler implements CommandHandler
 
     public function __invoke(UpdateViaboServicesCommand $command): void
     {
-        $commerceId = new CommerceId($command->commerceId);
-        $services = $command->services;
-
-        ($this->servicesUpdater)($commerceId , $services);
+        $this->servicesUpdater->__invoke($command->commerceId , $command->services);
     }
 }

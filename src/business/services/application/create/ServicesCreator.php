@@ -15,9 +15,9 @@ final readonly class ServicesCreator
     {
     }
 
-    public function __invoke(CommerceId $commerceId , array $services): void
+    public function __invoke(string $commerceId , array $services): void
     {
-        $this->repository->delete($commerceId);
+        $this->repository->delete(new CommerceId($commerceId));
 
         array_map(function (array $service) use ($commerceId) {
             $service = Service::create(

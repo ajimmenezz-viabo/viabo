@@ -30,6 +30,11 @@ final class ServiceDoctrineRepository extends DoctrineRepository implements Serv
         return $this->repository(Service::class)->matching($criteriaConvert)->toArray();
     }
 
+    public function update(Service $service): void
+    {
+        $this->entityManager()->flush($service);
+    }
+
     public function delete(CommerceId $commerceId): void
     {
         $this->entityManager()->getConnection()->delete('t_business_commerces_services' , ['CommerceId' => $commerceId->value()]);

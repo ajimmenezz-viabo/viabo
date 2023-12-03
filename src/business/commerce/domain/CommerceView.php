@@ -57,7 +57,7 @@ final class CommerceView extends AggregateRoot
             'legalRepresentativeRegister' => $this->legalRepresentativeRegister ,
             'legalRepresentativeLastSession' => empty($this->legalRepresentativeLastSession) ? '' : $this->legalRepresentativeLastSession ,
             'fiscalPersonType' => $this->fiscalPersonType ,
-            'fiscalName' => $this->fiscalName ,
+            'fiscalName' => $this->fiscalName ?? '',
             'tradeName' => $this->tradeName ,
             'rfc' => $this->rfc ,
             'postalAddress' => $this->postalAddress ?? '' ,

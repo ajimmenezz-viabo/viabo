@@ -13,5 +13,7 @@ interface ServiceRepository
 
     public function searchCriteria(Criteria $criteria): array;
 
+    public function update(Service $service): void;
+
     public function delete(CommerceId $commerceId): void;
 }

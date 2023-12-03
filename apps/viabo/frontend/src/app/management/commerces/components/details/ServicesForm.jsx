@@ -59,11 +59,12 @@ const ServicesForm = ({ commerce }) => {
 
   const handleChange = service => event => {
     setLoadingType(service?.type)
+    const active = !values[service?.formikValue]
     mutate(
-      { commerceId: commerce?.id, serviceType: service?.type },
+      { commerceId: commerce?.id, type: service?.type, active: active ? '1' : '0' },
       {
         onSuccess: () => {
-          setFieldValue(service?.formikValue, !values[service?.formikValue])
+          setFieldValue(service?.formikValue, active)
           setLoadingType(null)
         },
         onError: () => {

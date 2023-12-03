@@ -22,6 +22,6 @@ export const updateCommerceInformation = async commerce => {
 }
 
 export const updateCommerceService = async service => {
-  const { data } = await axios.put('/api/commerce/service', service)
+  const { data } = await axios.put('/api/backoffice/commerce/service/update', service)
   return data
 }

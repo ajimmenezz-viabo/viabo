@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 
+import { Refresh } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Alert, AlertTitle, Box, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
@@ -9,6 +10,8 @@ import * as Yup from 'yup'
 import { ChangePasswordAdapter } from '../adapters'
 import { useChangePassword } from '../hooks'
 
+import { useSendValidationCode } from '@/app/business/shared/hooks'
+import { IconButtonAnimate } from '@/shared/components/animate'
 import { FormProvider, RFPasswordField } from '@/shared/components/form'
 import { useUser } from '@/shared/hooks'
 import { matchIsNumeric } from '@/shared/utils'
@@ -17,6 +20,7 @@ const ChangePasswordForm = ({ onSuccess }) => {
   const user = useUser()
 
   const { mutate, isLoading } = useChangePassword()
+  const { mutate: sendCode, isLoading: isSendingCode } = useSendValidationCode()
 
   const ChangePasswordSchema = Yup.object().shape({
     currentPassword: Yup.string().trim().required('La contraseña actual es requerida'),
@@ -117,9 +121,22 @@ const ChangePasswordForm = ({ onSuccess }) => {
         </Stack>
 
         <Stack spacing={1}>
-          <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Código de Autorización *
-          </Typography>
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+            <Typography m={0} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+              Código de Autorización *
+            </Typography>
+            <IconButtonAnimate
+              size="small"
+              onClick={sendCode}
+              color="info"
+              disabled={isSendingCode}
+              aria-haspopup="true"
+              title="Reenviar"
+            >
+              <Refresh width={20} height={20} />
+            </IconButtonAnimate>
+          </Stack>
+
           <Stack>
             <MuiOtpInput
               length={6}

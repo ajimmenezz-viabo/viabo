@@ -23,7 +23,9 @@ final class UserPassword extends StringValueObject
     {
         self::validateConfirm($value, $confirm);
         self::validateSecurity($value);
-        return new static(self::encrypt($value));
+        $password = new static(self::encrypt($value));
+        $password::$passwordRandom = $value;
+        return $password;
     }
 
     private static function validateConfirm(string $value, string $confirm): void

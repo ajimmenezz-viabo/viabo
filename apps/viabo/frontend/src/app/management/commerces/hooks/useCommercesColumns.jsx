@@ -16,7 +16,7 @@ export const useCommercesColumns = () =>
         accessorKey: 'name',
         header: 'Nombre',
         enableHiding: false,
-        size: 120,
+        size: 150,
         Cell: ({ cell, column, row, renderedCellValue }) => (
           <Typography fontWeight={'bold'} variant="subtitle2">
             {renderedCellValue}

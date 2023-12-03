@@ -3,7 +3,12 @@ update-user-data-by-stock-cards:
   controller: Viabo\Backend\Controller\security\user\update\CardOwnerDataUpdaterController
   methods: PUT
 
-reset-password-user:
+reset-password-user-by-card-owner:
   path: '/api/card-owner/password/reset/{userId}'
   controller: Viabo\Backend\Controller\security\user\update\CardOwnerPasswordUpdaterController
+  methods: PUT
+
+reset-password-user:
+  path: '/api/user/password/reset'
+  controller: Viabo\Backend\Controller\security\user\update\UserPasswordUpdaterController
   methods: PUT

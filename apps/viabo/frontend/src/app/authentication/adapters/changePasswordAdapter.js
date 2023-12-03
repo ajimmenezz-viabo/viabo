@@ -1,6 +1,11 @@
-export const ChangePasswordAdapter = data => ({
-  code: data?.authCode,
-  currentPassword: data?.currentPassword,
-  newPassword: data?.newPassword,
-  confirmPassword: data?.verifyNewPassword
-})
+import { getCryptInfo } from '@/shared/utils'
+
+export const ChangePasswordAdapter = data => {
+  const password = {
+    code: data?.authCode,
+    currentPassword: data?.currentPassword,
+    newPassword: data?.newPassword,
+    confirmationPassword: data?.verifyNewPassword
+  }
+  return getCryptInfo(password)
+}

@@ -32,11 +32,12 @@ export function useMaterialTable(isError, textError, others = {}) {
     defaultColumn: {
       maxSize: 400,
       minSize: 80,
-      size: 160 // default size is usually 180
+      size: 180 // default size is usually 180
     },
     muiTableBodyCellProps: {
       sx: theme => ({
-        borderBottom: `dashed 1px ${theme.palette.divider}`
+        borderBottom: `dashed 1px ${theme.palette.divider}`,
+        whiteSpace: 'pre-line'
       })
     },
     muiBottomToolbarProps: {

@@ -1,15 +1,14 @@
 import { getDecryptInfo } from '@/shared/utils'
 
 export const CreateFundingOrderAdapter = (values, card) => {
-  const speiInProcessorTypes = values?.processorTypes?.find(type => type?.value === '1')
-  const payCashInProcessorTypes = values?.processorTypes?.find(type => type?.value === '2')
+  const speiInProcessorTypes = values?.processorTypes?.find(type => type === '1')
+  const payCashInProcessorTypes = values?.processorTypes?.find(type => type === '2')
 
   return {
     cardId: card?.id,
     amount: values?.amount.toString(),
     spei: speiInProcessorTypes ? card?.SPEI : '',
-    payCash: payCashInProcessorTypes ? '1' : '',
-    emails: values?.emails
+    payCash: payCashInProcessorTypes ? '1' : ''
   }
 }
 

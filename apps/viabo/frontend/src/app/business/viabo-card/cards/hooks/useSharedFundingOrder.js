@@ -1,21 +1,24 @@
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { createFundingOrder } from '@/app/business/viabo-card/cards/services'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+import { sharedFundingOrder } from '../services'
 
-export const useCreateFundingOrder = (options = {}) => {
-  const fundingOrder = useMutation(createFundingOrder, options)
-  const funding = async (formData, options) => {
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+import { isFunction } from '@/shared/utils'
+
+export const useSharedFundingOrder = (options = {}) => {
+  const password = useMutation(sharedFundingOrder, options)
+  const mutate = async (formData, options) => {
     const { onSuccess, onError, mutationOptions } = options
 
     try {
-      await toast.promise(fundingOrder.mutateAsync(formData, mutationOptions), {
-        pending: 'Creando Orden de Fondeo ...',
+      await toast.promise(password.mutateAsync(formData, mutationOptions), {
+        pending: 'Enviando Orden de Fondeo ...',
         success: {
           render({ data }) {
-            onSuccess(data)
-            return 'Se creó la orden de fondeo con éxito'
+            isFunction(onSuccess) && onSuccess(data)
+
+            return 'Se envió la orden de fondeo con éxito'
           }
         }
       })
@@ -24,7 +27,7 @@ export const useCreateFundingOrder = (options = {}) => {
         error,
         `No se puede realizar esta operación en este momento. Intente nuevamente o reporte a sistemas`
       )
-      onError(errorFormatted)
+      isFunction(onError) && onError(errorFormatted)
       toast.error(errorFormatted, {
         type: getNotificationTypeByErrorCode(error)
       })
@@ -32,7 +35,7 @@ export const useCreateFundingOrder = (options = {}) => {
   }
 
   return {
-    ...fundingOrder,
-    mutate: funding
+    ...password,
+    mutate
   }
 }

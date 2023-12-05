@@ -21,4 +21,9 @@ final class FundingOrderConciliationNumber extends StringValueObject
             throw new FundingOrderConciliationNumberEmpty();
         }
     }
+
+    public static function empty(): static
+    {
+        return new static('');
+    }
 }

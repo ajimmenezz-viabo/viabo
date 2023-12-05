@@ -1,9 +1,18 @@
 import { useState } from 'react'
 
-import { Check, CheckCircle, CopyAll, Email, Sms } from '@mui/icons-material'
+import { Check, CheckCircle, CopyAll, Email } from '@mui/icons-material'
 import LinkIcon from '@mui/icons-material/Link'
 import { LoadingButton } from '@mui/lab'
-import { Button, IconButton, InputAdornment, Link, Stack, Typography } from '@mui/material'
+import {
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography
+} from '@mui/material'
 import { stringToColor } from '@theme/utils'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -13,10 +22,11 @@ import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { CreateFundingOrderAdapter } from '@/app/business/viabo-card/cards/adapters'
-import { useCreateFundingOrder } from '@/app/business/viabo-card/cards/hooks'
+import { useCreateFundingOrder, useSharedFundingOrder } from '@/app/business/viabo-card/cards/hooks'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { RightPanel } from '@/app/shared/components'
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+import { getOperationTypeByName } from '@/app/shared/services'
+import { FormProvider, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 import { copyToClipboard, fCurrency } from '@/shared/utils'
 
@@ -40,32 +50,42 @@ export function FundingOrder() {
   const fundingCard = useCommerceDetailsCard(state => state.fundingCard)
 
   const { mutate: fundingOrder, isLoading: isCreatingFundingOrder, data } = useCreateFundingOrder()
+  const { mutate: sharedFundingOrder, isLoading: isSharingFundingOrder } = useSharedFundingOrder()
 
-  const [step, setStep] = useState(1)
-  const [sharedType, setSharedType] = useState(null)
   const [copied, setCopied] = useState(false)
   const [chipInputValue, setChipInputValue] = useState('')
 
   const SharedSchema = Yup.object().shape({
-    emails: Yup.array()
-      .of(Yup.string().email('Deben ser direcciones de correo válidos'))
-      .min(1, 'Las correos son requeridos'),
-    processorTypes: Yup.array().of(Yup.object()).min(1, 'Al menos un tipo de procesador es requerido')
+    amount: Yup.number()
+      .typeError('El monto debe ser un número')
+      .required('El monto es requerido')
+      .min(1, 'El monto debe ser mayor igual que 1'),
+    emails: Yup.array().when('step', {
+      is: 2,
+      then: schema =>
+        Yup.array()
+          .of(Yup.string().email('Deben ser direcciones de correo válidos'))
+          .min(1, 'Las correos son requeridos'),
+      otherwise: schema => Yup.array().notRequired()
+    }),
+    processorTypes: Yup.array().of(Yup.string()).min(1, 'Al menos un tipo de procesador es requerido'),
+    step: Yup.number()
   })
 
   const formik = useFormik({
     initialValues: {
       amount: '',
       emails: [],
-      processorTypes: [FUNDING_PROCESSORS_TYPES[0]]
+      processorTypes: [],
+      step: 1
     },
     validationSchema: SharedSchema,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
+    onSubmit: (values, { setSubmitting, setFieldValue }) => {
       const data = CreateFundingOrderAdapter(values, fundingCard)
       fundingOrder(data, {
         onSuccess: () => {
           setSubmitting(false)
-          setStep(3)
+          setFieldValue('step', 2)
         },
         onError: () => {
           setSubmitting(false)
@@ -81,7 +101,6 @@ export function FundingOrder() {
   const handleClose = () => {
     resetFundingOrder()
     resetForm()
-    setStep(1)
   }
 
   const handleChipInputChange = value => {
@@ -102,14 +121,30 @@ export function FundingOrder() {
     }
   }
 
+  const handleChange = (event, processorTypes) => {
+    setFieldValue('processorTypes', processorTypes)
+  }
+
+  const handleShared = sharedType => async event => {
+    sharedFundingOrder(
+      { fundingOrderId: data?.id, emails: values?.emails },
+      {
+        onSuccess: () => {
+          handleClose()
+        },
+        onError: () => {}
+      }
+    )
+  }
+
   return (
     <RightPanel open={openFundingOrder} handleClose={handleClose} title={'Orden de Fondeo'}>
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <FormProvider formik={formik}>
           <Stack spacing={3} sx={{ p: 3 }}>
-            {step === 1 && (
+            {values.step === 1 && (
               <>
-                <Stack spacing={3}>
+                <Stack spacing={2}>
                   <Typography variant="overline" sx={{ color: 'text.secondary' }}>
                     Ingresa La Cantidad
                   </Typography>
@@ -117,6 +152,7 @@ export function FundingOrder() {
                     <RFTextField
                       fullWidth
                       placeholder={'0.00'}
+                      disabled={loading}
                       name={'amount'}
                       type={'number'}
                       InputLabelProps={{
@@ -129,156 +165,128 @@ export function FundingOrder() {
                       inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, step: 'any' }}
                     />
                   </Stack>
+                  <Stack spacing={2}>
+                    <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+                      Procesadores de Fondeo
+                    </Typography>
+                    <ToggleButtonGroup
+                      color="primary"
+                      value={values.processorTypes}
+                      disabled={loading}
+                      onChange={handleChange}
+                      aria-label="processors types"
+                    >
+                      {FUNDING_PROCESSORS_TYPES?.map(processor => {
+                        const methodLogo = getOperationTypeByName(processor?.label)
+                        if (methodLogo) {
+                          const Logo = methodLogo.component
+                          return (
+                            <ToggleButton key={processor?.value} value={processor?.value} aria-label={processor?.value}>
+                              <Logo />
+                            </ToggleButton>
+                          )
+                        }
+                        return null
+                      })}
+                    </ToggleButtonGroup>
+                    {!!errors.processorTypes && (
+                      <FormHelperText error={!!errors.processorTypes}>{errors.processorTypes}</FormHelperText>
+                    )}
+                  </Stack>
                 </Stack>
-                <Button
-                  disabled={amount <= 0}
-                  onClick={() => setStep(2)}
-                  fullWidth
-                  color={'primary'}
-                  variant={'outlined'}
-                >
-                  Siguiente
-                </Button>
+                <LoadingButton loading={loading} type="submit" fullWidth color={'primary'} variant={'outlined'}>
+                  Crear Orden
+                </LoadingButton>
               </>
             )}
 
-            {step === 2 && (
-              <>
-                <Stack justifyContent={'center'} alignItems={'center'}>
-                  <Typography variant="h3">{fCurrency(amount)}</Typography>
+            {values.step === 2 && (
+              <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+                <Stack flexDirection="column" alignItems={'center'} spacing={2}>
+                  <CheckCircle sx={{ width: 40, height: 40 }} color={'success'} />
+                  <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                    <Typography variant="h3"> {fCurrency(amount)}</Typography>
+                    <Typography variant="caption">MXN</Typography>
+                  </Stack>
+
+                  <Typography variant="h6">{`Orden de Fondeo: ${data?.reference}`}</Typography>
                 </Stack>
-
-                <RFSelect
-                  multiple
-                  name={'processorTypes'}
-                  options={FUNDING_PROCESSORS_TYPES}
-                  textFieldParams={{
-                    label: 'Procesador',
-                    placeholder: 'Selecciona los procesadores del fondeo'
-                  }}
-                  required={true}
-                />
-
-                <MuiChipsInput
-                  disableEdition
-                  name={'emails'}
-                  fullWidth
-                  disabled={loading}
-                  placeholder="Escribe los correos para compartir"
-                  value={values?.emails || []}
-                  helperText={touched.emails && errors.emails ? errors.emails : ''}
-                  error={Boolean(touched.emails && errors.emails)}
-                  onChange={value => {
-                    setFieldValue('emails', value)
-                  }}
-                  renderChip={(Component, key, props) => (
-                    <Component
-                      {...props}
-                      variant={'filled'}
-                      sx={{
-                        fontWeight: 'bolder',
-                        backgroundColor: stringToColor(props?.label || ''),
-                        color: 'white',
-                        '& .MuiChip-deleteIcon': { color: 'white' }
+                <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0}>
+                  <Stack justifyContent={'center'} alignItems={'center'} direction="row" spacing={1}>
+                    <LinkIcon />
+                    <Link
+                      component={RouterLink}
+                      underline="always"
+                      to={`/orden-fondeo/${data?.reference}`}
+                      target="_blank"
+                      color="info.main"
+                    >
+                      {`${window.location.host}/orden-fondeo/${data?.reference}`}
+                    </Link>
+                    <IconButton
+                      variant="outlined"
+                      size="small"
+                      color={copied ? 'success' : 'inherit'}
+                      onClick={() => {
+                        setCopied(true)
+                        copyToClipboard(`${window.location.host}/orden-fondeo/${data?.reference}`)
+                        setTimeout(() => {
+                          setCopied(false)
+                        }, 1000)
                       }}
-                      key={key}
-                    />
-                  )}
-                  onBlur={handleBlur}
-                  onInputChange={handleChipInputChange}
-                  inputValue={chipInputValue}
-                />
+                    >
+                      {copied ? <Check sx={{ color: 'success' }} /> : <CopyAll sx={{ color: 'text.disabled' }} />}
+                    </IconButton>
+                  </Stack>
+                </Stack>
+                <Typography variant="caption" color={'text.disabled'}>
+                  {format(new Date(), 'dd MMM yyyy hh:mm a', { locale: es })}
+                </Typography>
 
+                <Stack spacing={1} width={1}>
+                  <Typography variant="caption">¿Desea enviar la orden de fondeo?</Typography>
+                  <MuiChipsInput
+                    disableEdition
+                    name={'emails'}
+                    fullWidth
+                    disabled={loading}
+                    placeholder="Escribe los correos para compartir"
+                    value={values?.emails || []}
+                    helperText={touched.emails && errors.emails ? errors.emails : ''}
+                    error={Boolean(touched.emails && errors.emails)}
+                    onChange={value => {
+                      setFieldValue('emails', value)
+                    }}
+                    renderChip={(Component, key, props) => (
+                      <Component
+                        {...props}
+                        variant={'filled'}
+                        sx={{
+                          fontWeight: 'bolder',
+                          backgroundColor: stringToColor(props?.label || ''),
+                          color: 'white',
+                          '& .MuiChip-deleteIcon': { color: 'white' }
+                        }}
+                        key={key}
+                      />
+                    )}
+                    onBlur={handleBlur}
+                    onInputChange={handleChipInputChange}
+                    inputValue={chipInputValue}
+                  />
+                </Stack>
                 <LoadingButton
                   variant="contained"
                   color="primary"
-                  loading={loading}
-                  disabled={amount <= 0}
+                  disabled={values.emails?.length <= 0}
+                  loading={isSharingFundingOrder}
                   fullWidth
-                  type="submit"
-                  onClick={() => {
-                    setSharedType(SHARED_TYPES.EMAIL)
-                  }}
+                  onClick={handleShared(SHARED_TYPES.EMAIL)}
                   startIcon={<Email />}
                 >
-                  Enviar Correo
+                  Enviar Orden
                 </LoadingButton>
-
-                <LoadingButton
-                  variant="contained"
-                  color="secondary"
-                  loading={loading}
-                  disabled={true}
-                  fullWidth
-                  onClick={() => {
-                    setSharedType(SHARED_TYPES.SMS)
-                  }}
-                  startIcon={<Sms />}
-                >
-                  Enviar SMS
-                </LoadingButton>
-
-                {!loading && (
-                  <Button
-                    onClick={() => {
-                      setStep(1)
-                    }}
-                    fullWidth
-                    type="submit"
-                    variant="outlined"
-                    color="primary"
-                  >
-                    Cancelar
-                  </Button>
-                )}
-              </>
-            )}
-
-            {step === 3 && (
-              <>
-                <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={2}>
-                  <Stack flexDirection="column" alignItems={'center'} spacing={2}>
-                    <CheckCircle sx={{ width: 40, height: 40 }} color={'success'} />
-                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
-                      <Typography variant="h3"> {fCurrency(amount)}</Typography>
-                      <Typography variant="caption">MXN</Typography>
-                    </Stack>
-
-                    <Typography variant="h6">{`Orden de Fondeo: ${data?.reference}`}</Typography>
-                  </Stack>
-                  <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0}>
-                    <Stack justifyContent={'center'} alignItems={'center'} direction="row" spacing={1}>
-                      <LinkIcon />
-                      <Link
-                        component={RouterLink}
-                        underline="always"
-                        to={`/orden-fondeo/${data?.reference}`}
-                        target="_blank"
-                        color="info.main"
-                      >
-                        {`${window.location.host}/orden-fondeo/${data?.reference}`}
-                      </Link>
-                      <IconButton
-                        variant="outlined"
-                        size="small"
-                        color={copied ? 'success' : 'inherit'}
-                        onClick={() => {
-                          setCopied(true)
-                          copyToClipboard(`${window.location.host}/orden-fondeo/${data?.reference}`)
-                          setTimeout(() => {
-                            setCopied(false)
-                          }, 1000)
-                        }}
-                      >
-                        {copied ? <Check sx={{ color: 'success' }} /> : <CopyAll sx={{ color: 'text.disabled' }} />}
-                      </IconButton>
-                    </Stack>
-                  </Stack>
-                  <Typography variant="caption" color={'text.disabled'}>
-                    {format(new Date(), 'dd MMM yyyy hh:mm a', { locale: es })}
-                  </Typography>
-                </Stack>
-              </>
+              </Stack>
             )}
           </Stack>
         </FormProvider>

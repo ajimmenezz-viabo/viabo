@@ -67,3 +67,8 @@ export const createFundingOrder = async order => {
   const { data } = await axios.post('/api/funding-order/new', order)
   return CreateFundingOrderResponseAdapter(data)
 }
+
+export const sharedFundingOrder = async order => {
+  const { data } = await axios.post('/api/funding-order/send', order)
+  return data
+}

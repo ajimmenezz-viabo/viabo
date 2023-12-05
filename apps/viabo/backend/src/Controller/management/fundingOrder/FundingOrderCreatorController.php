@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\fundingOrder\application\create\CreateFundingOrderCommand;
+use Viabo\management\fundingOrder\application\find\FundingOrderQuery;
 use Viabo\security\api\application\find\ApiQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -22,16 +23,18 @@ final readonly class FundingOrderCreatorController extends ApiController
             $payCash = $this->ask(new ApiQuery('Pay_Cash'));
             $payCashInstructions = $this->ask(new ApiQuery('Pay_Cash_Instructions'));
             $card = $this->ask(new CardQuery($data['cardId']));
-            $fundingOrder = $this->ask(new CreateFundingOrderCommand(
+            $fundingOrderId = $this->generateUuid();
+            $this->dispatch(new CreateFundingOrderCommand(
+                $fundingOrderId ,
                 $data['cardId'] ,
                 $card->data['number'] ,
                 $data['amount'] ,
-                $data['emails'] ,
                 $data['spei'] ,
                 $data['payCash'] ,
-                $payCash->data,
+                $payCash->data ,
                 $payCashInstructions->data
             ));
+            $fundingOrder = $this->ask(new FundingOrderQuery($fundingOrderId));
 
             return new JsonResponse($this->opensslEncrypt($fundingOrder->data));
         } catch (\DomainException $exception) {

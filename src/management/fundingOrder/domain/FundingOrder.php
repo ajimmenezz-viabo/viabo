@@ -5,8 +5,8 @@ namespace Viabo\management\fundingOrder\domain;
 
 
 use Viabo\management\fundingOrder\domain\events\FundingOrderCanceledDomainEvent;
-use Viabo\management\fundingOrder\domain\events\FundingOrderCreatedDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderConciliatedDomainEvent;
+use Viabo\management\fundingOrder\domain\events\FundingOrderCreatedDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderStatusUpdatedDomainEvent;
 use Viabo\management\shared\domain\card\CardId;
 use Viabo\management\shared\domain\card\CardNumber;
@@ -39,34 +39,35 @@ final class FundingOrder extends AggregateRoot
     }
 
     public static function create(
-        CardId                       $cardId ,
-        CardNumber                   $cardNumber ,
-        FundingOrderAmount           $amount ,
-        FundingOrderSpei             $spei ,
-        FundingOrderEmails           $emails ,
-        FundingOrderReferencePayCash $referencePayCash ,
-        PayCashData                  $payCashData
+        string $fundingOrderId ,
+        string $cardId ,
+        string $cardNumber ,
+        string $amount ,
+        string $spei ,
+        string $payCash ,
+        array  $payCashData ,
+        array  $payCashInstructionsData ,
     ): static
     {
         return new static(
-            FundingOrderId::random() ,
+            new FundingOrderId($fundingOrderId) ,
             FundingOrderReferenceNumber::random() ,
-            new FundingOrderStatusId('6') ,
-            $cardId ,
-            $cardNumber ,
-            $amount ,
-            $spei ,
-            $referencePayCash ,
+            FundingOrderStatusId::awaiting() ,
+            CardId::create($cardId) ,
+            CardNumber::create($cardNumber) ,
+            FundingOrderAmount::create($amount) ,
+            new FundingOrderSpei($spei) ,
+            new FundingOrderReferencePayCash($payCash) ,
             FundingOrderPayCashInstructionsUrls::empty() ,
-            $emails ,
-            new FundingOrderConciliationNumber('') ,
+            FundingOrderEmails::empty() ,
+            FundingOrderConciliationNumber::empty() ,
             FundingOrderConciliationUser::empty() ,
             FundingOrderConciliationDate::empty() ,
             FundingOrderCanceledByUser::empty() ,
             FundingOrderCancellationDate::empty() ,
             FundingOrderRegisterDate::todayDate() ,
-            new FundingOrderActive('1') ,
-            $payCashData
+            FundingOrderActive::enable() ,
+            PayCashData::create($payCashData , $payCashInstructionsData)
         );
     }
 

@@ -112,6 +112,6 @@ final class PaymentCashPayCashAdapterAdapter implements PaymentCashAdapter
 
     private function hasError(array $response): bool
     {
-        return !array_key_exists('ErrorCode' , $response) && !empty($response['ErrorCode']);
+        return array_key_exists('ErrorCode' , $response) && !empty($response['ErrorCode']);
     }
 }

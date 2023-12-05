@@ -22,4 +22,9 @@ final class FundingOrderEmails extends StringValueObject
             throw new FundingOrderEmailsEmpty();
         }
     }
+
+    public static function empty(): static
+    {
+        return new static('');
+    }
 }

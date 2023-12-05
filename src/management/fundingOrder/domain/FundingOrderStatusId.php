@@ -34,6 +34,11 @@ final class FundingOrderStatusId extends StringValueObject
         }
     }
 
+    public static function awaiting(): static
+    {
+        return new static(self::STATUS_AWAITING);
+    }
+
     public function cancel(): static
     {
         return new static(self::STATUS_CANCELED);

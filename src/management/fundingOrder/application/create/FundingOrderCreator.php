@@ -4,16 +4,9 @@
 namespace Viabo\management\fundingOrder\application\create;
 
 
-use Viabo\management\fundingOrder\domain\FundingOrder;
-use Viabo\management\fundingOrder\domain\FundingOrderAmount;
-use Viabo\management\fundingOrder\domain\FundingOrderEmails;
-use Viabo\management\fundingOrder\domain\FundingOrderReferencePayCash;
-use Viabo\management\fundingOrder\domain\FundingOrderRepository;
-use Viabo\management\fundingOrder\domain\FundingOrderSpei;
 use Viabo\management\fundingOrder\domain\exceptions\FundingOrderTypeChargeNotDefine;
-use Viabo\management\fundingOrder\domain\PayCashData;
-use Viabo\management\shared\domain\card\CardId;
-use Viabo\management\shared\domain\card\CardNumber;
+use Viabo\management\fundingOrder\domain\FundingOrder;
+use Viabo\management\fundingOrder\domain\FundingOrderRepository;
 use Viabo\management\shared\domain\paymentCash\PaymentCashAdapter;
 use Viabo\shared\domain\bus\event\EventBus;
 
@@ -28,23 +21,25 @@ final readonly class FundingOrderCreator
     }
 
     public function __invoke(
-        CardId                       $cardId ,
-        FundingOrderAmount           $amount ,
-        FundingOrderSpei             $spei ,
-        FundingOrderEmails           $emails ,
-        FundingOrderReferencePayCash $referencePayCash ,
-        CardNumber                   $cardNumber ,
-        PayCashData                  $payCashData
-    ): FundingOrderResponse
+        string $fundingOrderId ,
+        string $cardId ,
+        string $cardNumber ,
+        string $amount ,
+        string $spei ,
+        string $payCash ,
+        array  $payCashData ,
+        array  $payCashInstructionsData
+    ): void
     {
         $fundingOrder = FundingOrder::create(
+            $fundingOrderId ,
             $cardId ,
             $cardNumber ,
             $amount ,
             $spei ,
-            $emails ,
-            $referencePayCash ,
-            $payCashData
+            $payCash ,
+            $payCashData ,
+            $payCashInstructionsData
         );
 
         if ($fundingOrder->isNotTypeCharge()) {
@@ -59,11 +54,9 @@ final readonly class FundingOrderCreator
         }
 
         $this->repository->save($fundingOrder);
-
         $fundingOrder->setEventCreated();
-        $this->bus->publish(...$fundingOrder->pullDomainEvents());
 
-        return new FundingOrderResponse(['referenceNumber' => $fundingOrder->referenceNumber()->value()]);
+        $this->bus->publish(...$fundingOrder->pullDomainEvents());
     }
 
 }

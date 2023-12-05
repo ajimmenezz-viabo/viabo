@@ -17,6 +17,7 @@ export const CreateFundingOrderResponseAdapter = response => {
 
   if (decryptedResponse) {
     return {
+      id: decryptedResponse?.id,
       reference: decryptedResponse?.referenceNumber
     }
   } else {

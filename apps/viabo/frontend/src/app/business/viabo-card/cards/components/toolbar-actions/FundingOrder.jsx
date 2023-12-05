@@ -127,7 +127,7 @@ export function FundingOrder() {
 
   const handleShared = sharedType => async event => {
     sharedFundingOrder(
-      { reference: data?.reference, emails: values?.emails },
+      { fundingOrderId: data?.id, emails: values?.emails },
       {
         onSuccess: () => {
           handleClose()

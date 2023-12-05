@@ -36,9 +36,9 @@ final  class Code extends AggregateRoot
         $this->record(new CodeCreatedDomainEvent($this->userId->value() , $userData));
     }
 
-    public function isNotSame(CodeValue $verificationCode): bool
+    public function isNotSame(string $code): bool
     {
-        return $this->value->isNotSame($verificationCode->value());
+        return $this->value->isNotSame($code);
     }
 
     public function isExpired(): bool

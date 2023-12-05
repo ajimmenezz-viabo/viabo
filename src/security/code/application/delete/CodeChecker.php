@@ -16,19 +16,19 @@ final readonly class CodeChecker
     {
     }
 
-    public function __invoke(UserId $userId, CodeValue $verificationCode): void
+    public function __invoke(UserId $userId , CodeValue $verificationCode): void
     {
         $code = $this->repository->search($userId);
 
-        if(empty($code)){
+        if (empty($code)) {
             throw new WrongCode();
         }
 
-        if($code->isNotSame($verificationCode)){
+        if ($code->isNotSame($verificationCode->value())) {
             throw new WrongCode();
         }
 
-        if($code->isExpired()){
+        if ($code->isExpired()) {
             throw new CodeExpired();
         }
 

@@ -10,7 +10,7 @@ final class UserPasswordErrorConfirmation extends DomainError
 {
     public function errorCode(): int
     {
-        return 406;
+        return 400;
     }
 
     public function errorMessage(): string

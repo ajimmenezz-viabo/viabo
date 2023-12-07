@@ -21,6 +21,6 @@ final readonly class CreateCodeCommandHandler implements CommandHandler
         $userId = new UserId($command->userId);
         $data = $this->queryBus->ask(new FindUserQuery($command->userId, $userEmail));
 
-        ($this->creator)($userId , $data->data);
+        $this->creator->__invoke($userId , $data->data);
     }
 }

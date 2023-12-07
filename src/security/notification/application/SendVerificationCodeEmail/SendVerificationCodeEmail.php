@@ -26,7 +26,7 @@ final readonly class SendVerificationCodeEmail implements DomainEventSubscriber
 
         $email = new Email(
             [$userData['email']],
-            'Verificación de Registro Viabo',
+            'Viabo - Verificiación de Identidad',
             'security/notification/emails/verification.code.html.twig',
             [
                 'name' => "{$userData['name']} {$userData['lastname']}",

@@ -19,6 +19,6 @@ final readonly class CodeCheckerCommandHandler implements CommandHandler
         $userId = new UserId($command->userId);
         $verificationCode = new CodeValue($command->verificationCode);
 
-        ($this->checker)($userId , $verificationCode);
+        $this->checker->__invoke($userId , $verificationCode);
     }
 }

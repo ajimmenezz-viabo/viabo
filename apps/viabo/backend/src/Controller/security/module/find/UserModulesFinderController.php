@@ -19,15 +19,26 @@ final readonly class UserModulesFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->commerceQuery($tokenData['id']);
-            $commerceServices = $this->ask(new CommerceServicesQuery($commerce['id']));
+            $commerceServices = $this->searchCommerceServices($tokenData);
             $userPermission = $this->ask(new FindUserPermissionQuery($tokenData['id']));
-            $modules = $this->ask(new UserModulesQuery($userPermission->permissions, $commerceServices->data));
+            $modules = $this->ask(new UserModulesQuery($userPermission->permissions , $commerceServices));
 
             return new JsonResponse($modules->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }
+    }
+
+    private function searchCommerceServices(array $tokenData): array
+    {
+        $administrator = '2';
+        if ($tokenData['profileId'] === $administrator) {
+            return [];
+        }
+
+        $commerce = $this->commerceQuery($tokenData['id']);
+        $commerceServices = $this->ask(new CommerceServicesQuery($commerce['id']));
+        return $commerceServices->data;
     }
 
     private function commerceQuery(string $userId): array

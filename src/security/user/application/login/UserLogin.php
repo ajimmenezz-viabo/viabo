@@ -42,7 +42,7 @@ final readonly class UserLogin
     private function searchUserBy(UserEmail $email): User
     {
         try {
-            return ($this->finder)(UserId::empty() , $email);
+            return $this->finder->__invoke(UserId::empty() , $email);
         }catch (DomainError){
             throw new UserNoAccess();
         }

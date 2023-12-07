@@ -15,6 +15,6 @@ final readonly class CommercesQueryHandler implements QueryHandler
 
     public function __invoke(CommercesQuery $command): Response
     {
-        return ($this->finder)();
+        return $this->finder->__invoke();
     }
 }

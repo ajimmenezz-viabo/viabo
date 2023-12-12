@@ -2,15 +2,28 @@ import { useEffect, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { Add, ArrowForwardIos, Delete } from '@mui/icons-material'
-import { Box, Button, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
+import { Add, ArrowForwardIos, Delete, FileDownload, FileUpload } from '@mui/icons-material'
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material'
 import { createAvatar } from '@theme/utils'
 import { FieldArray, getIn, useFormik } from 'formik'
 import * as Yup from 'yup'
 
+import { useFundingCardsExcel } from '@/app/business/dashboard-master/hooks'
 import { useCommerceDetailsCard } from '@/app/business/viabo-card/cards/store'
 import { Avatar } from '@/shared/components/avatar'
 import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
+import { CircularLoading } from '@/shared/components/loadings'
 import { Scrollbar } from '@/shared/components/scroll'
 
 function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, onSuccess }) {
@@ -25,6 +38,15 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
   const [cardsToSelect, setCardsToSelect] = useState(cards)
 
   const selectedCards = useCommerceDetailsCard(state => state?.selectedCards)
+
+  const {
+    downloadFundingCardsLayoutExcel,
+    uploadFundingCardsLayoutExcel,
+    loading: isUploadingFile,
+    error: errorUploadFile,
+    data,
+    cards: catalogWithSelectedCards
+  } = useFundingCardsExcel(cards)
 
   const RegisterSchema = Yup.object().shape({
     transactions: Yup.array().of(
@@ -44,7 +66,7 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
       transactions: (selectedCards?.length > 0 &&
         isBinCard &&
         selectedCards?.map(card => ({
-          id: Math.random(),
+          id: random,
           card: { value: card?.value, label: card?.label, ...card },
           amount: ''
         }))) || [
@@ -69,7 +91,7 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
 
   const { isSubmitting, setFieldValue, values, setSubmitting, errors, touched } = formik
 
-  const loading = isSubmitting
+  const loading = isSubmitting || isUploadingFile
 
   useEffect(() => {
     if (selectedCards && isBinCard) {
@@ -77,6 +99,12 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
       setCardsToSelect(filterCards)
     }
   }, [selectedCards, isBinCard])
+
+  useEffect(() => {
+    if (data && data?.length > 0) {
+      setFieldValue('transactions', data)
+    }
+  }, [data, catalogWithSelectedCards])
 
   useEffect(() => {
     const totalAmount = values.transactions?.reduce((accumulator, currentObject) => {
@@ -96,36 +124,68 @@ function TransactionForm({ cards, setCurrentBalance, insufficient, isBinCard, on
 
   return (
     <>
-      <Stack px={3} spacing={2} direction={{ xs: 'column-reverse', md: 'row' }} alignItems={'center'} mb={3}>
+      <Stack p={3} pb={0} gap={1} flexDirection={{ xs: 'column-reverse', md: 'row' }} alignItems={'center'}>
         <Typography variant="subtitle1" sx={{ color: 'text.disabled' }}>
           Transacciones:
         </Typography>
         <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }} />
-        {!isBinCard && (
-          <Button
-            type="button"
+        <Stack direction={'row'} spacing={1}>
+          <IconButton
+            disabled={isUploadingFile}
             size="small"
-            variant={'outlined'}
-            startIcon={<Add />}
-            disabled={loading}
-            onClick={() =>
-              arrayHelpersRef.current.push({
-                id: random,
-                card: null,
-                amount: '',
-                concept: ''
-              })
-            }
-            sx={{ flexShrink: 0 }}
+            color="success"
+            title="Descargar Layout"
+            onClick={() => downloadFundingCardsLayoutExcel(cards)}
           >
-            Agregar
-          </Button>
-        )}
+            <FileDownload />
+          </IconButton>
+          {isUploadingFile ? (
+            <CircularLoading />
+          ) : (
+            <IconButton
+              disabled={isUploadingFile}
+              size="small"
+              color="info"
+              title="Cargar Layout"
+              onClick={() => uploadFundingCardsLayoutExcel()}
+            >
+              <FileUpload />
+            </IconButton>
+          )}
+
+          {!isBinCard && (
+            <Button
+              type="button"
+              size="small"
+              variant={'outlined'}
+              startIcon={<Add />}
+              disabled={loading}
+              onClick={() =>
+                arrayHelpersRef.current.push({
+                  id: random,
+                  card: null,
+                  amount: '',
+                  concept: ''
+                })
+              }
+              sx={{ flexShrink: 0 }}
+            >
+              Agregar
+            </Button>
+          )}
+        </Stack>
       </Stack>
 
       <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
         <FormProvider formik={formik}>
           <Box sx={{ p: 3 }}>
+            {errorUploadFile && (
+              <Alert severity={errorUploadFile?.severity || 'error'} sx={{ mb: 3 }}>
+                <AlertTitle>{errorUploadFile?.severity === 'error' ? 'Error Layout' : 'Advertencia'}</AlertTitle>
+                {errorUploadFile?.message}
+              </Alert>
+            )}
+
             <FieldArray
               name="transactions"
               render={arrayHelpers => {

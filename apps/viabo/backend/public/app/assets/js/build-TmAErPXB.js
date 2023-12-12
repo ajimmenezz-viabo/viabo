@@ -1,7 +1,0 @@
-import{C as n,r as p,_ as l,j as o,b4 as i,O as e}from"./index-5_BXEtIM.js";const m=n(p.lazy(()=>l(()=>import("./build-oleTQlgH.js"),__vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24])))),c=({open:s,setOpen:t,movements:a=[]})=>{const r=()=>{t(!1)};return o.jsx(i,{open:s,handleClose:r,titleElement:"Comprobar Gastos",children:s&&o.jsx(m,{movements:a,onSuccess:r})})};c.propTypes={movements:e.array,open:e.bool,setOpen:e.func};export{c as default};
-function __vite__mapDeps(indexes) {
-  if (!__vite__mapDeps.viteFileDeps) {
-    __vite__mapDeps.viteFileDeps = ["assets/js/build-oleTQlgH.js","assets/js/index-5_BXEtIM.js","assets/css/build-pvjN466W.css","assets/js/build-kXIYbeSn.js","assets/js/build-8qnaLKwz.js","assets/js/build-y_zyw8J-.js","assets/js/build-38f6O0Nl.js","assets/js/build-RC03kKXs.js","assets/js/build-WMLPHDf0.js","assets/js/build-cuSlQRQA.js","assets/js/build-wyISiVZ0.js","assets/js/build-LUHFa-wO.js","assets/js/build-Gx2A3nYD.js","assets/js/build-_kEaX9ia.js","assets/js/build-86ORaRSg.js","assets/js/build-ngghYPKR.js","assets/js/build-AnDTBf7v.js","assets/js/build-0ASo85PW.js","assets/js/build-qjKQWaxY.js","assets/js/build-NDp8OxF1.js","assets/js/build-iLGsyCBi.js","assets/js/build-2jcM0l3A.js","assets/js/build-Uc7vb3zK.js","assets/js/build-Coikuwfn.js","assets/js/build-O5L1gM1Q.js"]
-  }
-  return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
-}

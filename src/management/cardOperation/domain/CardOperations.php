@@ -5,15 +5,23 @@ namespace Viabo\management\cardOperation\domain;
 
 
 use Viabo\shared\domain\Collection;
+use Viabo\shared\domain\Utils;
 
 final class CardOperations extends Collection
 {
-
-    public function removeOperations(array $operationKey): void
+    public function operations(): array
     {
+        return $this->items();
+    }
+
+    public function remove(array $operationKey): static
+    {
+        $items = $this->items();
         foreach ($operationKey as $value) {
-            parent::remove($value);
+            unset($items[$value]);
         }
+
+        return new static(Utils::removeDuplicateElements($items));
     }
 
     protected function type(): string

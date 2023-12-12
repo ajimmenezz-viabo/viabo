@@ -33,8 +33,4 @@ abstract class Collection implements Countable , IteratorAggregate
         return $this->items;
     }
 
-    public function remove(int $value): void
-    {
-        unset($this->items[$value]);
-    }
 }

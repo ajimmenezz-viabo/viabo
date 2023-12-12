@@ -79,6 +79,7 @@ export function CardDetailsAdapter(card) {
     cardNumberHidden: fCardNumberHidden(number),
     cardNumberMoreDigits: fCardNumberShowLastDigits(number),
     cardUserNumber: assignName?.toUpperCase() + ' ' + lastFourDigits,
+    binCard: lastFourDigits,
     expiration: expirationDate,
     register: fDateTime(register),
     registerDate: register ? format(new Date(register), 'dd MMM yyyy') : '',

@@ -1,0 +1,7 @@
+import{C as n,r as p,_ as l,j as o,b4 as i,O as e}from"./index-2z-ZW7ZM.js";const m=n(p.lazy(()=>l(()=>import("./build--Lkug8yC.js"),__vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24])))),c=({open:s,setOpen:t,movements:a=[]})=>{const r=()=>{t(!1)};return o.jsx(i,{open:s,handleClose:r,titleElement:"Comprobar Gastos",children:s&&o.jsx(m,{movements:a,onSuccess:r})})};c.propTypes={movements:e.array,open:e.bool,setOpen:e.func};export{c as default};
+function __vite__mapDeps(indexes) {
+  if (!__vite__mapDeps.viteFileDeps) {
+    __vite__mapDeps.viteFileDeps = ["assets/js/build--Lkug8yC.js","assets/js/index-2z-ZW7ZM.js","assets/css/build-pvjN466W.css","assets/js/build-zmG1rUQC.js","assets/js/build-zGwhZ4ld.js","assets/js/build-_xMqY4Jh.js","assets/js/build-1AAt12lA.js","assets/js/build-Ve6yeeQ4.js","assets/js/build-397rQXlc.js","assets/js/build-KmDWCa1O.js","assets/js/build-fTSzZ0k5.js","assets/js/build-ohrxkAt7.js","assets/js/build-_FiX8RUA.js","assets/js/build-wuqjaMWm.js","assets/js/build-SzDtQGnO.js","assets/js/build-xb_ThzDn.js","assets/js/build-1KANcpWx.js","assets/js/build-0ASo85PW.js","assets/js/build-qjKQWaxY.js","assets/js/build--SuI_DMG.js","assets/js/build-A7hFqGNg.js","assets/js/build-u3LcFEdF.js","assets/js/build-Uc7vb3zK.js","assets/js/build-2Ry57NQ3.js","assets/js/build-KoY5K6R9.js"]
+  }
+  return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+}

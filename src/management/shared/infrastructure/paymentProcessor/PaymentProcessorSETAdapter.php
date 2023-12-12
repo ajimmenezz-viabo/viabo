@@ -122,13 +122,12 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
 
     }
 
-    public function transactionReverse(CardOperations $operations): void
+    public function transactionReverse(CardOperations $operations): CardOperations
     {
         $clientsKeyWithInsufficientBalance = [];
         $removeOperations = [];
-        $arrayIterator = $operations->getIterator();
 
-        foreach ($arrayIterator as $key => $operation) {
+        foreach ($operations->operations() as $key => $operation) {
             $clientKey = $operation->clientKey()->valueDecrypt();
 
             if (in_array($clientKey , $clientsKeyWithInsufficientBalance)) {
@@ -153,7 +152,7 @@ final class PaymentProcessorSETAdapter implements PaymentProcessorAdapter
             }
         }
 
-        $operations->removeOperations($removeOperations);
+        return $operations->remove($removeOperations);
     }
 
     private function registerUser(CardCredential $credential): void

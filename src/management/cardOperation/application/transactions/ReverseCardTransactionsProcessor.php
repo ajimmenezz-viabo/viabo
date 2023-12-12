@@ -29,7 +29,7 @@ final readonly class ReverseCardTransactionsProcessor
     {
         $operations = $this->searchCardOperations();
         $this->setDescriptionReverse($operations);
-        $this->adapter->transactionReverse($operations);
+        $operations = $this->adapter->transactionReverse($operations);
         $this->repository->update($operations);
 
         $this->publish($operations);

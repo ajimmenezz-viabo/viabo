@@ -7,7 +7,6 @@ namespace Viabo\management\terminalTransaction\domain;
 final class PharosTransaction
 {
 
-
     private string $commerceId;
     private string $commerceName;
     private float $commission;
@@ -26,6 +25,7 @@ final class PharosTransaction
         private mixed $terminal_type ,
         private mixed $terminal_name ,
         private mixed $terminal_speiCard ,
+        private mixed $terminal_shared ,
         private mixed $message ,
         private mixed $reversed ,
         private mixed $card_number ,
@@ -55,6 +55,7 @@ final class PharosTransaction
             $value["terminal_type"] ,
             $value["terminal_name"] ,
             $value["terminal_speiCard"] ,
+            $value["terminal_shared"] ,
             $value["message"] ,
             $value["reversed"] ,
             $value["card_number"] ,
@@ -115,6 +116,10 @@ final class PharosTransaction
         return $this->amount - $this->amountCharged;
     }
 
+    public function isNotTerminalShared(): bool
+    {
+        return !$this->terminal_shared;
+    }
     public function toArray(): array
     {
         return [
@@ -132,6 +137,7 @@ final class PharosTransaction
             'terminal_type' => $this->terminal_type ,
             'terminal_name' => $this->terminal_name ,
             'terminal_spei_card' => $this->terminal_speiCard ,
+            'terminal_shared' => $this->terminal_shared ,
             'liquidationStatusId' => $this->liquidationStatusId ?? '' ,
             'liquidationStatusName' => $this->liquidationStatusName ?? '' ,
             'result_message' => $this->message ,

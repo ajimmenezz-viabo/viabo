@@ -50,6 +50,7 @@ final readonly class TerminalsFinder
 
         return array_map(function (TerminalView $terminal) use ($commerceId) {
             $terminal->updateCommerceId($commerceId);
+            $terminal->setShared();
             return $terminal;
         } , $terminals);
     }

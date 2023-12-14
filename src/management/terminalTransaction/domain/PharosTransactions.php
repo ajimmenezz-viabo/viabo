@@ -36,7 +36,9 @@ final class PharosTransactions extends Collection
     public function filterTransactionReferences(array $transactionReferences): static
     {
         $items = array_filter($this->items() , function (PharosTransaction $transaction) use ($transactionReferences) {
-            return $transaction->isTerminalPhysical() ?: $transaction->belongsToCommerceBy($transactionReferences);
+            return $transaction->isNotTerminalShared() ?:(
+                $transaction->isTerminalPhysical() ?: $transaction->belongsToCommerceBy($transactionReferences)
+            );
         });
 
         return new static(Utils::removeDuplicateElements($items));

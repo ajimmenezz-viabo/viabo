@@ -77,7 +77,8 @@ final readonly class TerminalsTransactionFinderInPharos
             $data['terminals'][$terminal['terminalId']] = [
                 'type' => $terminal['typeId'] ,
                 'name' => $terminal['name'],
-                'speiCard' => $terminal['speiCard']
+                'speiCard' => $terminal['speiCard'],
+                'shared' => $terminal['shared']
             ];
             return $data;
         } , []);

@@ -4,6 +4,8 @@ namespace Viabo\management\commerceTerminal\domain;
 
 final class TerminalView
 {
+    private bool $shared;
+
     public function __construct(
         private string  $id ,
         private string  $main ,
@@ -22,6 +24,7 @@ final class TerminalView
         private string  $active
     )
     {
+        $this->shared = false;
     }
 
     public function id(): string
@@ -38,6 +41,11 @@ final class TerminalView
     {
         $virtualType = '1';
         return $this->typeId === $virtualType;
+    }
+
+    public function setShared(): void
+    {
+        $this->shared = true;
     }
 
     public function toArray(): array
@@ -57,7 +65,8 @@ final class TerminalView
             'speiCard' => $this->speiCard ,
             'cardId' => $this->cardId ,
             'active' => $this->active ,
-            'isConciliationExternal' => $this->isExternalConciliation
+            'isConciliationExternal' => $this->isExternalConciliation,
+            'shared' => $this->shared ?? false
         ];
     }
 }

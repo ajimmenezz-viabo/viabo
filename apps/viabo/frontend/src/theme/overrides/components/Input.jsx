@@ -7,6 +7,9 @@ export default function Input(theme) {
     MuiInputBase: {
       styleOverrides: {
         root: {
+          '& input:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0px 1000px ${alpha(theme.palette.primary.main, 0.1)} inset`
+          },
           '&.Mui-disabled': {
             '& svg': { color: theme.palette.text.disabled }
           }

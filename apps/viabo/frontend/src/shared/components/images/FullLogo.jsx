@@ -14,7 +14,7 @@ export function FullLogo({ disabledLink = false, sx }) {
   const PRIMARY_DARK = theme.palette.primary.dark
 
   return (
-    <Box sx={{ width: 40, height: 40, ...sx }}>
+    <Box sx={{ width: 40, height: 40, display: 'flex', alignItems: 'center', ...sx }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill={PRIMARY_MAIN}

@@ -14,6 +14,7 @@ export const CommercePaymentInfo = () => {
         <Stack flexDirection={'row'} gap={3} p={3}>
           <Stack>
             <Avatar
+              src={commerce?.information?.logo}
               sx={theme => ({
                 width: 110,
                 height: 110,

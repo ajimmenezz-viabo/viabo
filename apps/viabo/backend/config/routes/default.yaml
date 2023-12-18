@@ -91,3 +91,10 @@ error-404:
   path: "/404"
   controller: Viabo\Backend\Controller\RoutesFrontendController
   methods: GET
+
+payments-paths:
+  path: "/pagos/{any}"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"

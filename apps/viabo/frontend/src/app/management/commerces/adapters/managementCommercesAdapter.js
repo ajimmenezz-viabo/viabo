@@ -1,5 +1,5 @@
 import { PROCESS_LIST_STEPS } from '@/app/business/commerce/services'
-import { convertCatalogToReactSelect, fDateTime } from '@/shared/utils'
+import { convertCatalogToReactSelect, fDateTime, getDecryptInfo } from '@/shared/utils'
 
 const ViaboCardAdapter = services => {
   const viaboCard = services?.find(service => service?.type === '2')
@@ -40,7 +40,13 @@ const CommissionsAdapter = commissions => ({
 
 export const ManagementCommercesAdapter = commerces => commerces.map((commerce, index) => CommerceAdapter(commerce))
 
-export const CommerceAdapter = commerce => {
+export const CommerceAdapter = (commerce, hasEncrypted = false) => {
+  let commerceInformation = commerce
+
+  if (hasEncrypted) {
+    commerceInformation = getDecryptInfo(commerce?.ciphertext, commerce?.iv)
+  }
+
   const {
     id,
     legalRepresentative,
@@ -69,7 +75,8 @@ export const CommerceAdapter = commerce => {
     postalAddress,
     phoneNumbers,
     logo
-  } = commerce
+  } = commerceInformation
+  const dateLastSession = legalRepresentativeLastSession || ''
 
   return {
     id,
@@ -80,9 +87,8 @@ export const CommerceAdapter = commerce => {
       email: legalRepresentativeEmail,
       phone: legalRepresentativePhone,
       status: 'Activo',
-      lastLogged:
-        legalRepresentativeLastSession === '' ? 'No ha iniciado sesión' : fDateTime(legalRepresentativeLastSession),
-      register: fDateTime(register) ?? ''
+      lastLogged: dateLastSession === '' ? 'No ha iniciado sesión' : fDateTime(dateLastSession),
+      register: register ? fDateTime(register) : ''
     },
     information: {
       available: fiscalName !== '',

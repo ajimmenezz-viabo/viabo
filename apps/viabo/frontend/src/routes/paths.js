@@ -21,5 +21,6 @@ export const PATH_DASHBOARD = {
 
 export const PUBLIC_PATHS = {
   privacy: '/privacy',
-  policies: '/policies'
+  policies: '/policies',
+  payments: '/pagos/:slug'
 }

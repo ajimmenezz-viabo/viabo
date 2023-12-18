@@ -8,7 +8,7 @@ export function CarnetLogo({ sx, color, basedOnTheme = false }) {
   const isDarkMode = theme.palette.mode === 'dark'
 
   return (
-    <Box sx={{ width: 50, height: 50, display: 'flex', alignItems: 'center', ...sx }}>
+    <Box sx={{ width: 50, height: 50, p: '1px', display: 'flex', alignItems: 'center', ...sx }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"

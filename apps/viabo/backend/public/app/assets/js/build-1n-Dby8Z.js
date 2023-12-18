@@ -1,1 +1,0 @@
-import{an as r,a as n,dI as s,g as i,b as u}from"./index-2z-ZW7ZM.js";const c=(e={})=>{const{enqueueSnackbar:o}=r();return n({mutationFn:s,onError:a=>{const t=i(a,"No se puede validar el código");o(t,{variant:u(a),autoHideDuration:5e3})},...e})};export{c as u};

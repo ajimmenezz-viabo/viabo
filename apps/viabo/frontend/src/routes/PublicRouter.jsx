@@ -9,8 +9,9 @@ const ChargePaymentLink = LoadableRoute(
 )
 const CommerceRegister = LoadableRoute(lazy(() => import('@/app/business/commerce/pages/CommerceRegister')))
 const RegisterCards = LoadableRoute(lazy(() => import('@/app/business/viabo-card/register-cards/pages/RegisterCards')))
-const Privacy = LoadableRoute(lazy(() => import('@/app/public/pages/Privacy')))
-const Policies = LoadableRoute(lazy(() => import('@/app/public/pages/Policies')))
+const Privacy = LoadableRoute(lazy(() => import('@/app/public/privacy/pages/Privacy')))
+const Policies = LoadableRoute(lazy(() => import('@/app/public/privacy/pages/Policies')))
+const PublicPayments = LoadableRoute(lazy(() => import('@/app/public/payments/pages/PublicPayments')))
 
 export const PublicRouter = [
   {
@@ -32,7 +33,11 @@ export const PublicRouter = [
   {
     path: PUBLIC_PATHS.policies,
     element: <Policies />
+  },
+  {
+    path: PUBLIC_PATHS.payments,
+    element: <PublicPayments />
   }
 ]
 
-export const WHITE_THEME_LIST = ['/comercio/registro', '/registro', '/cobro/*']
+export const WHITE_THEME_LIST = ['/comercio/registro', '/registro', '/cobro/*', '/pagos/*']

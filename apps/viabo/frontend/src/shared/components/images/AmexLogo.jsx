@@ -5,7 +5,7 @@ export function AmexLogo({ sx, color }) {
 
   return (
     <Box sx={{ width: 50, height: 50, display: 'flex', alignItems: 'center', ...sx }}>
-      <svg xmlns="http://www.w3.org/2000/svg" width={800} height={800} fill="none" viewBox="0 -9 58 58">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -9 58 58">
         <rect width={57} height={39} x={0.5} y={0.5} fill="#006FCF" stroke="#F3F3F3" rx={3.5} />
         <path
           fill="#fff"

@@ -6,9 +6,11 @@ use Viabo\shared\domain\criteria\Criteria;
 
 interface TerminalRepository
 {
-    public function save(Terminal $terminal):void;
+    public function save(Terminal $terminal): void;
 
-    public function searchView(Criteria $criteria):array;
+    public function search(string $terminalId): Terminal|null;
+
+    public function searchView(Criteria $criteria): array;
 
     public function searchTerminalsShared(string $commerceId): array;
 

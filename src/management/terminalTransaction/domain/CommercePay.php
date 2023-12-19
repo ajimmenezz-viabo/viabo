@@ -33,36 +33,42 @@ final class CommercePay extends AggregateRoot
     }
 
     public static function create(
-        CommercePayCreatedByUser $createdByUser ,
-        CommercePayCommerceId    $commerceId ,
-        CommercePayTerminalId    $terminalId ,
-        CommercePayClientName    $clientName ,
-        CommercePayEmail         $email ,
-        CommercePayPhone         $phone ,
-        CommercePayDescription   $description ,
-        CommercePayAmount        $amount
+        string $terminalTransactionId ,
+        string $commerceId ,
+        string $terminalId ,
+        string $clientName ,
+        string $email ,
+        string $phone ,
+        string $description ,
+        string $amount ,
+        string $createdByUser ,
     ): self
     {
-        return new self(
-            CommercePayId::random() ,
+        $transaction = new self(
+            new CommercePayId($terminalTransactionId) ,
             CommercePayReference::random() ,
-            $commerceId ,
-            $terminalId ,
-            $clientName ,
-            $email ,
-            $phone ,
-            $description ,
-            $amount ,
-            new CommercePayStatusId('6') ,
-            new CommercePayLiquidationStatusId('12') ,
+            CommercePayCommerceId::create($commerceId) ,
+            CommercePayTerminalId::create($terminalId) ,
+            CommercePayClientName::create($clientName) ,
+            CommercePayEmail::create($email) ,
+            new CommercePayPhone($phone) ,
+            new CommercePayDescription($description) ,
+            CommercePayAmount::create($amount) ,
+            CommercePayStatusId::pending() ,
+            CommercePayLiquidationStatusId::unLiquidated() ,
             CommercePayUrlCode::random() ,
-            new CommercePayApiAuthCode('') ,
-            new CommercePayApiReferenceNumber('') ,
-            $createdByUser ,
+            CommercePayApiAuthCode::empty() ,
+            CommercePayApiReferenceNumber::empty() ,
+            new CommercePayCreatedByUser($createdByUser) ,
             CommercePayRegisterDate::todayDate() ,
             CommercePayPaymentDate::empty()
         );
-
+        $transaction->record(new CommercePayCreatedDomainEvent(
+            $transaction->id->value() ,
+            $transaction->toArray() ,
+            $transaction->email->value()
+        ));
+        return $transaction;
     }
 
     private function id(): CommercePayId
@@ -95,11 +101,6 @@ final class CommercePay extends AggregateRoot
         }
 
         $this->record(new CommercePayUpdatedDomainEvent($this->id()->value() , $this->toArray()));
-    }
-
-    public function setPayEventCreated(): void
-    {
-        $this->record(new CommercePayCreatedDomainEvent($this->id->value() , $this->toArray() , $this->email->value()));
     }
 
     public function updateLiquidationStatusId(string $liquidationStatusId): void

@@ -4,7 +4,7 @@ namespace Viabo\management\terminalTransaction\application\create;
 
 use Viabo\shared\domain\bus\command\Command;
 
-final readonly class CreateCommercePayCommand implements Command
+final readonly class CreateTerminalTransactionCommand implements Command
 {
     public function __construct(
         public string $terminalTransactionId ,

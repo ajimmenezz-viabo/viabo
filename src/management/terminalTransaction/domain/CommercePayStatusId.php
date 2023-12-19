@@ -7,7 +7,13 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 final class CommercePayStatusId extends StringValueObject
 {
 
-    const APPROVED = '7';
+    private const PENDING = '6';
+    private const APPROVED = '7';
+
+    public static function pending(): static
+    {
+        return new static(self::PENDING);
+    }
 
     public function isApproved(): bool
     {

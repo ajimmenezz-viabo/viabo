@@ -1,20 +1,22 @@
 <?php declare(strict_types=1);
 
+
 namespace Viabo\management\terminalTransaction\application\create;
 
-use Viabo\shared\domain\bus\query\QueryHandler;
-use Viabo\shared\domain\bus\query\Response;
 
-final readonly class CreateCommercePayCommandHandler implements QueryHandler
+use Viabo\shared\domain\bus\command\CommandHandler;
+
+final readonly class CreateTerminalTransactionBySlugCommandHandler implements CommandHandler
 {
     public function __construct(private TerminalTransactionCreator $creator)
     {
     }
 
-    public function __invoke(CreateCommercePayCommand $command): Response
+    public function __invoke(CreateTerminalTransactionBySlugCommand $command): void
     {
-        return $this->creator->__invoke(
-            $command->userId ,
+        $userId = '';
+        $this->creator->__invoke(
+            $userId ,
             $command->terminalTransactionId ,
             $command->commerceId ,
             $command->terminalId ,

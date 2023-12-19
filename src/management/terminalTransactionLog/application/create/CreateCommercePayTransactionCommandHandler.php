@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateCommercePayTransactionCommandHandler implements CommandHandler
 {
-    public function __construct(private CommercePayTransactionCreator $creator)
+    public function __construct(private TerminalTransactionLogCreator $creator)
     {
     }
 

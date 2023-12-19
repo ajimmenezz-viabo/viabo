@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\commercePayCredentials\application\find\PayServiceCredentialsQuery;
-use Viabo\management\commerceTerminal\application\find\CommerceTerminalMerchantIdQuery;
-use Viabo\management\terminalTransaction\application\find\CommercePayQuery;
+use Viabo\management\commerceTerminal\application\find\TerminalQueryByPharosId;
+use Viabo\management\terminalTransaction\application\find\TerminalTransactionQuery;
 use Viabo\management\terminalTransactionLog\application\create\CreateCommercePayTransactionCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -17,12 +17,12 @@ final readonly class CommerceTransactionCreatorController extends ApiController
     {
         try {
             $data = $this->opensslDecrypt($request->toArray());
-            $commercePay = $this->ask(new CommercePayQuery($data['payId']));
-            $commercePayCredentials = $this->ask(new PayServiceCredentialsQuery($commercePay->data['commerceId']));
-            $terminalData = $this->ask(new CommerceTerminalMerchantIdQuery($commercePay->data['terminalId']));
+            $terminalTransaction = $this->ask(new TerminalTransactionQuery($data['payId']));
+            $commercePayCredentials = $this->ask(new PayServiceCredentialsQuery($terminalTransaction->data['commerceId']));
+            $terminal = $this->ask(new TerminalQueryByPharosId($terminalTransaction->data['terminalId']));
             $this->dispatch(new CreateCommercePayTransactionCommand(
-                $commercePay->data ,
-                $terminalData->data['merchantId'],
+                $terminalTransaction->data ,
+                $terminal->data['merchantId'] ,
                 $commercePayCredentials->data['apiKey'] ,
                 $data
             ));

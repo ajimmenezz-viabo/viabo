@@ -6,39 +6,37 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\management\commercePayCredentials\application\find\PayServiceCredentialsQuery;
-use Viabo\management\commerceTerminal\application\find\TerminalQueryByPharosId;
-use Viabo\management\terminalTransaction\application\create\CreateTerminalTransactionCommand;
+use Viabo\management\commerceTerminal\application\find\TerminalQuery;
+use Viabo\management\terminalTransaction\application\create\CreateTerminalTransactionBySlugCommand;
 use Viabo\management\terminalTransaction\application\find\TerminalTransactionQuery;
 use Viabo\management\terminalTransactionLog\application\create\CreateTerminalTransactionLogCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
-final readonly class CommercePayVirtualTerminalCreatorController extends ApiController
+final readonly class TerminalTransactionCreatorController extends ApiController
 {
     public function __invoke(Request $request): Response
     {
         try {
-            $tokenData = $this->decode($request->headers->get('Authorization'));
-            $data = $this->opensslDecrypt($request->toArray());
+            $request = $this->opensslDecrypt($request->toArray());
             $terminalTransactionId = $this->generateUuid();
             $cardData = [
-                'cardNumber' => $data['cardNumber'] ,
-                'cardHolder' => $data['clientName'] ,
-                'expMonth' => $data['expMonth'] ,
-                'expYear' => $data['expYear'] ,
-                'security' => $data['security']
+                'cardNumber' => $request['cardNumber'] ,
+                'cardHolder' => $request['clientName'] ,
+                'expMonth' => $request['expMonth'] ,
+                'expYear' => $request['expYear'] ,
+                'security' => $request['security']
             ];
-            $terminal = $this->ask(new TerminalQueryByPharosId($data['terminalId']));
-            $commercePayCredentials = $this->ask(new PayServiceCredentialsQuery($data['commerceId']));
-            $this->dispatch(new CreateTerminalTransactionCommand(
+            $terminal = $this->ask(new TerminalQuery($request['terminalId']));
+            $commercePayCredentials = $this->ask(new PayServiceCredentialsQuery($request['commerceId']));
+            $this->dispatch(new CreateTerminalTransactionBySlugCommand(
                 $terminalTransactionId ,
-                $data['commerceId'] ,
-                $data['terminalId'] ,
-                $data['clientName'] ,
-                $data['email'] ,
-                $data['phone'] ,
-                $data['description'] ,
-                $data['amount'] ,
-                $tokenData['id']
+                $request['commerceId'] ,
+                $request['terminalId'] ,
+                $request['clientName'] ,
+                $request['email'] ,
+                $request['phone'] ,
+                $request['description'] ,
+                $request['amount']
             ));
             $terminalTransaction = $this->ask(new TerminalTransactionQuery($terminalTransactionId));
             $this->dispatch(new CreateTerminalTransactionLogCommand(

@@ -7,7 +7,7 @@ use Viabo\management\commerceTerminal\domain\TerminalRepository;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class TerminalViewFinder
+final readonly class TerminalFinderByPharosId
 {
     public function __construct(private TerminalRepository $repository)
     {
@@ -24,8 +24,7 @@ final readonly class TerminalViewFinder
             throw new TerminalsNotFound();
         }
 
-        $terminal = $terminals[0]->toArray();
-        return new TerminalMerchantIdResponse(['merchantId' => $terminal['merchantId']]);
+        return new TerminalMerchantIdResponse($terminals[0]->toArray());
     }
 }
 

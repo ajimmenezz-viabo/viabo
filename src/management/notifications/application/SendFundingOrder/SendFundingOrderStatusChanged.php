@@ -6,7 +6,6 @@ namespace Viabo\management\notifications\application\SendFundingOrder;
 
 use Viabo\management\fundingOrder\domain\events\FundingOrderCanceledDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderConciliatedDomainEvent;
-use Viabo\management\fundingOrder\domain\events\FundingOrderCreatedDomainEvent;
 use Viabo\management\fundingOrder\domain\events\FundingOrderStatusUpdatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;

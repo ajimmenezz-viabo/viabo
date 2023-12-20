@@ -7,13 +7,12 @@ namespace Viabo\Backend\Controller\management\fundingOrder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\management\card\application\find\CardQueryBySpei;
-use Viabo\management\commerceTerminal\application\find\TerminalQuery;
+use Viabo\management\card\application\find\MainCardsInformationQuery;
 use Viabo\management\fundingOrder\application\create\CreateFundingOrderCommand;
 use Viabo\management\fundingOrder\application\find\FundingOrderQuery;
 use Viabo\management\notifications\application\SendFundingOrder\SendFundingOrderCommand;
-use Viabo\management\notifications\application\SendFundingOrder\SendNotificationFundingOrderCommand;
 use Viabo\security\api\application\find\ApiQuery;
+use Viabo\shared\domain\Utils;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class FundingOrderCreatorBySlugController extends ApiController
@@ -22,8 +21,7 @@ final readonly class FundingOrderCreatorBySlugController extends ApiController
     {
         try {
             $request = $request->toArray();
-            $terminal = $this->ask(new TerminalQuery($request['terminalId']));
-            $card = $this->ask(new CardQueryBySpei($terminal->data['speiCard']));
+            $card = $this->searchCard($request['commerceId']);
             $payCash = $this->ask(new ApiQuery('Pay_Cash'));
             $payCashInstructions = $this->ask(new ApiQuery('Pay_Cash_Instructions'));
             $fundingOrderId = $this->generateUuid();
@@ -31,8 +29,8 @@ final readonly class FundingOrderCreatorBySlugController extends ApiController
             $payCashActive = '1';
             $this->dispatch(new CreateFundingOrderCommand(
                 $fundingOrderId ,
-                $card->data['id'] ,
-                $card->data['number'] ,
+                $card['id'] ,
+                $card['number'] ,
                 $request['amount'] ,
                 $emptySpei ,
                 $payCashActive ,
@@ -46,5 +44,22 @@ final readonly class FundingOrderCreatorBySlugController extends ApiController
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }
+    }
+
+    private function searchCard($commerceId): array
+    {
+        $cards = $this->ask(new MainCardsInformationQuery($commerceId));
+
+        if (count($cards->data) > 1) {
+            $card = array_filter($cards->data , function (array $data) {
+                $masterCardPaymentProcessorId = '1';
+                return $data['paymentProcessorId'] === $masterCardPaymentProcessorId;
+            });
+            $card = Utils::removeDuplicateElements($card);
+            return $card[0];
+        }
+
+        return $cards->data[0];
+
     }
 }

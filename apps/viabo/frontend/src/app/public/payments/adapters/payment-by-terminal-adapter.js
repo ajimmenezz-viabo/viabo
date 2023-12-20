@@ -13,10 +13,8 @@ export const PaymentByTerminalAdapter = (payment, commerce) => {
     cardNumber: payment?.cardNumber.replace(/\s+/g, ''),
     expMonth: convertToDoubleDigit(payment?.month + 1)?.toString() || '',
     expYear: payment?.year?.toString()?.slice(-2) || '',
-    security: payment?.cvv
+    security: payment?.cvv,
+    clientName: commerce?.name
   }
-
-  console.log(dataAdapted)
-
   return dataAdapted
 }

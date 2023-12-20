@@ -6,5 +6,5 @@ export const PublicPaymentAdapter = payment => ({
   amount: parseFloat(
     payment?.amount?.toString() === '' ? '0' : payment?.amount?.toString().replace(/,/g, '')
   ).toString(),
-  concept: payment?.concept
+  description: payment?.concept
 })

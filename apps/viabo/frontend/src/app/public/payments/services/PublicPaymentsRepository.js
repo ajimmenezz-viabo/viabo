@@ -28,11 +28,6 @@ export const payWithCashMethod = async payment => {
 }
 
 export const payWithTerminalMethod = async payment => {
-  console.log(payment)
-  // const { data } = await axios.post(`/api/commerce/pay/terminal`, payment)
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(true)
-    }, 2000)
-  })
+  const { data } = await axios.post(`/api/commerce-slug/terminal/transaction`, payment)
+  return data
 }

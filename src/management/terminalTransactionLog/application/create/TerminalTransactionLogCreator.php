@@ -10,7 +10,7 @@ use Viabo\management\terminalTransactionLog\domain\CommercePayTransactionTypeId;
 use Viabo\management\terminalTransactionLog\domain\exceptions\CommercePayTransactionNotApproved;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CommercePayTransactionCreator
+final readonly class TerminalTransactionLogCreator
 {
     public function __construct(
         private CommercePayTransactionRepository $repository ,

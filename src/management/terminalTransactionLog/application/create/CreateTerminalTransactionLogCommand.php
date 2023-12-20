@@ -4,7 +4,7 @@ namespace Viabo\management\terminalTransactionLog\application\create;
 
 use Viabo\shared\domain\bus\command\Command;
 
-final readonly class CreateCommerceVirtualTerminalTransactionCommand implements Command
+final readonly class CreateTerminalTransactionLogCommand implements Command
 {
     public function __construct(
         public array  $commercePayData ,

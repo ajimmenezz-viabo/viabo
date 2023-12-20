@@ -6,7 +6,8 @@ export const PaymentByCashAdapter = (payment, commerce) => {
   const publicPayment = PublicPaymentAdapter(payment)
   const dataAdapted = {
     commerceId: commerce?.id,
-    ...publicPayment
+    ...publicPayment,
+    email: [publicPayment?.email]
   }
 
   console.log(dataAdapted)

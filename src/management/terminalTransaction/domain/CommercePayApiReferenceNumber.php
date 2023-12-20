@@ -6,4 +6,9 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CommercePayApiReferenceNumber extends StringValueObject
 {
+    public static function empty(): static
+    {
+        return new static('');
+    }
+
 }

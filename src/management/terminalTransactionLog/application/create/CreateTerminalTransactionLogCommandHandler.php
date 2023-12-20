@@ -6,13 +6,13 @@ use Viabo\management\shared\domain\commercePay\CommercePayId;
 use Viabo\management\terminalTransactionLog\domain\CommercePayTransactionTypeId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
-final readonly class CreateCommerceVirtualTerminalTransactionCommandHandler implements CommandHandler
+final readonly class CreateTerminalTransactionLogCommandHandler implements CommandHandler
 {
-    public function __construct(private CommercePayTransactionCreator $creator)
+    public function __construct(private TerminalTransactionLogCreator $creator)
     {
     }
 
-    public function __invoke(CreateCommerceVirtualTerminalTransactionCommand $command):void
+    public function __invoke(CreateTerminalTransactionLogCommand $command):void
     {
         $commercePayId = CommercePayId::create($command->commercePayData['id']);
         $commercePayData = $command->commercePayData;

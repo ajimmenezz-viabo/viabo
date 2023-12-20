@@ -4,10 +4,11 @@ namespace Viabo\management\terminalTransaction\application\create;
 
 use Viabo\management\terminalTransaction\domain\CommercePay;
 use Viabo\management\terminalTransaction\domain\TerminalTransactionRepository;
+use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CommercePayVirtualTerminalCreator
+final readonly class TerminalTransactionCreator
 {
-    public function __construct(private TerminalTransactionRepository $repository)
+    public function __construct(private TerminalTransactionRepository $repository , private EventBus $bus)
     {
     }
 
@@ -23,7 +24,7 @@ final readonly class CommercePayVirtualTerminalCreator
         string $userId ,
     ): void
     {
-        $transaction = CommercePay::create(
+        $commercePay = CommercePay::create(
             $terminalTransactionId ,
             $commerceId ,
             $terminalId ,
@@ -34,7 +35,8 @@ final readonly class CommercePayVirtualTerminalCreator
             $amount ,
             $userId
         );
+        $this->repository->save($commercePay);
 
-        $this->repository->save($transaction);
+        $this->bus->publish(...$commercePay->pullDomainEvents());
     }
 }

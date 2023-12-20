@@ -13,7 +13,7 @@ final readonly class Terminal
         private TerminalCreatedByUser $createdByUser,
         private TerminalName          $name,
         private TerminalSpeiCard      $speiCard,
-        private TerminalTypeId        $type,
+        private TerminalTypeId        $typeId,
         private TerminalRegisterDate  $registerDate,
         private TerminalActive        $active
     ) {
@@ -30,7 +30,7 @@ final readonly class Terminal
             'createdByUser' => $this->createdByUser->value(),
             'name' => $this->name->value(),
             'speiCard' => $this->speiCard->value(),
-            'typeId' => $this->type->value(),
+            'typeId' => $this->typeId->value(),
             'registerDate' => $this->registerDate->value(),
             'active' => $this->active->value()
         ];

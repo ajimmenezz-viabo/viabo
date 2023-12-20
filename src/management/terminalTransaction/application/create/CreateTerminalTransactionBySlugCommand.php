@@ -1,10 +1,12 @@
 <?php declare(strict_types=1);
 
+
 namespace Viabo\management\terminalTransaction\application\create;
+
 
 use Viabo\shared\domain\bus\command\Command;
 
-final readonly class CreateCommercePayCommand implements Command
+final readonly class CreateTerminalTransactionBySlugCommand implements Command
 {
     public function __construct(
         public string $terminalTransactionId ,
@@ -14,8 +16,7 @@ final readonly class CreateCommercePayCommand implements Command
         public string $email ,
         public string $phone ,
         public string $description ,
-        public string $amount ,
-        public string $userId ,
+        public string $amount
     )
     {
     }

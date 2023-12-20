@@ -20,7 +20,7 @@ final readonly class FundingOrderCreatorBySlugController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $request = $request->toArray();
+            $request = $this->opensslDecrypt($request->toArray());
             $card = $this->searchCard($request['commerceId']);
             $payCash = $this->ask(new ApiQuery('Pay_Cash'));
             $payCashInstructions = $this->ask(new ApiQuery('Pay_Cash_Instructions'));
@@ -40,7 +40,7 @@ final readonly class FundingOrderCreatorBySlugController extends ApiController
             $fundingOrder = $this->ask(new FundingOrderQuery($fundingOrderId));
             $this->dispatch(new SendFundingOrderCommand($fundingOrder->data , $request['email']));
 
-            return new JsonResponse($fundingOrder->data);
+            return new JsonResponse($this->opensslEncrypt($fundingOrder->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

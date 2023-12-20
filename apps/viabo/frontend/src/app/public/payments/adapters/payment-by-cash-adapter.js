@@ -10,8 +10,6 @@ export const PaymentByCashAdapter = (payment, commerce) => {
     email: [publicPayment?.email]
   }
 
-  console.log(dataAdapted)
-
   return dataAdapted
 }
 
@@ -20,6 +18,8 @@ export const PaymentByCashAdapterResponseAdapter = response => {
 
   if (decryptedResponse) {
     return {
+      download: decryptedResponse?.instructionsUrls?.download,
+      pay: decryptedResponse?.instructionsUrls?.format,
       id: decryptedResponse?.id,
       reference: decryptedResponse?.referenceNumber
     }

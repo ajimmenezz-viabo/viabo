@@ -117,8 +117,15 @@ const CommercePaymentForm = ({ onSuccess }) => {
     }
   })
 
-  const { errors, touched, isSubmitting, setFieldValue, values } = formik
+  const { isSubmitting, setFieldValue, values } = formik
   const loading = isSubmitting || loadingByCash || loadingByTerminal
+
+  const getButtonText = () => {
+    if (values.amount !== '') {
+      return values.paymentType === 'cash' ? `Generar Referencia` : `Pagar $${values.amount}`
+    }
+    return values.paymentType === 'cash' ? 'Generar Referencia' : 'Pagar'
+  }
 
   return (
     <Stack flex={1}>
@@ -343,7 +350,7 @@ const CommercePaymentForm = ({ onSuccess }) => {
               variant="contained"
               sx={{ fontWeight: 'bold' }}
             >
-              {values.amount !== '' ? `Pagar $${values.amount}` : 'Pagar'}
+              {getButtonText()}
             </LoadingButton>
           </Stack>
         </Stack>

@@ -1,19 +1,19 @@
-import { useState } from 'react'
-
 import PropTypes from 'prop-types'
 
-import { Check, CheckCircle, CopyAll } from '@mui/icons-material'
+import { CheckCircle } from '@mui/icons-material'
 import LinkIcon from '@mui/icons-material/Link'
-import { Button, IconButton, Link, Stack, Typography } from '@mui/material'
+import { Button, Link, Stack, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { PaymentCashIllustration } from '@/shared/components/illustrations'
-import { copyToClipboard, fCurrency } from '@/shared/utils'
+import { fCurrency } from '@/shared/utils'
 
 export const SuccessPaymentByCash = ({ payment, onFinish }) => {
-  const [copied, setCopied] = useState(false)
+  const urlDownload = payment?.download ? payment?.download : `/orden-fondeo/${payment?.reference}`
+  const payURL = payment?.pay
+
   return (
     <Stack flexDirection="column" alignItems={'center'} justifyContent={'center'} spacing={2} p={3}>
       <Stack flexDirection="column" alignItems={'center'} spacing={2}>
@@ -30,32 +30,26 @@ export const SuccessPaymentByCash = ({ payment, onFinish }) => {
         En el siguiente link encontraras las instrucciones para realizar tu pago en efectivo.
       </Typography>
 
-      <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0}>
+      <Stack flexDirection="column" alignItems={'center'} spacing={1}>
+        {payURL && (
+          <Button
+            component={Link}
+            href={payURL}
+            type="button"
+            size="large"
+            target="_blank"
+            variant="outlined"
+            sx={{ fontWeight: 'bold' }}
+          >
+            Pagar
+          </Button>
+        )}
+
         <Stack justifyContent={'center'} alignItems={'center'} direction="row" spacing={1}>
           <LinkIcon />
-          <Link
-            component={RouterLink}
-            underline="always"
-            to={`/orden-fondeo/${payment?.reference}`}
-            target="_blank"
-            color="info.main"
-          >
-            {`${window.location.host}/orden-fondeo/${payment?.reference}`}
+          <Link component={RouterLink} underline="always" to={urlDownload} target="_blank" color="info.main">
+            Descargar Instrucciones
           </Link>
-          <IconButton
-            variant="outlined"
-            size="small"
-            color={copied ? 'success' : 'inherit'}
-            onClick={() => {
-              setCopied(true)
-              copyToClipboard(`${window.location.host}/orden-fondeo/${payment?.reference}`)
-              setTimeout(() => {
-                setCopied(false)
-              }, 1000)
-            }}
-          >
-            {copied ? <Check sx={{ color: 'success' }} /> : <CopyAll sx={{ color: 'text.disabled' }} />}
-          </IconButton>
         </Stack>
       </Stack>
       <Typography variant="caption" color={'text.disabled'}>

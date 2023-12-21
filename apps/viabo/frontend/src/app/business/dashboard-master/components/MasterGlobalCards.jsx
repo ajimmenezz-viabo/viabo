@@ -12,7 +12,7 @@ import { useMasterGlobalStore } from '@/app/business/dashboard-master/store'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 
 export function MasterGlobalCards() {
-  const { data, isLoading } = useFindGlobalCards()
+  const { data, isLoading, isFetching: isFetchingGlobalCards } = useFindGlobalCards()
 
   const cardSelected = useMasterGlobalStore(state => state.card)
 
@@ -107,7 +107,7 @@ export function MasterGlobalCards() {
                 key={card?.id}
                 card={card}
                 cardSelected={cardSelected}
-                isRefetchingCards={isRefetchingCards}
+                isRefetchingCards={isRefetchingCards || isFetchingGlobalCards}
                 commerceCards={commerceCards}
                 disableFilter={data?.globals?.length <= 1}
               />

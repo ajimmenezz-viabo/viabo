@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack'
 
 import { ALL_COMMERCE_CARDS_KEYS } from '../../all-commerce-cards/adapters'
 
+import { DASHBOARD_MASTER_KEYS } from '@/app/business/dashboard-master/adapters/dashboardMasterKeys'
 import { CARDS_COMMERCES_KEYS } from '@/app/business/viabo-card/cards/adapters'
 import { changeStatusCard } from '@/app/business/viabo-card/cards/services'
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
@@ -19,6 +20,7 @@ export const useToggleStatusCard = (options = {}) => {
       setCustomError(null)
       client.refetchQueries([CARDS_COMMERCES_KEYS.CARD_INFO, card?.id])
       client.invalidateQueries([ALL_COMMERCE_CARDS_KEYS.LIST])
+      client.invalidateQueries([DASHBOARD_MASTER_KEYS.GLOBAL_CARDS])
       enqueueSnackbar(card?.cardON ? 'Se encendió la tarjeta con éxito' : 'Se apagó la tarjeta con éxito', {
         variant: 'success',
         autoHideDuration: 5000

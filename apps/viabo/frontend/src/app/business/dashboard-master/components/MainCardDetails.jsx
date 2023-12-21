@@ -8,10 +8,13 @@ import { motion } from 'framer-motion'
 
 import { FundingGlobalCard } from './funding/FundingGlobalCard'
 
+import { useToggleStatusCard } from '../../viabo-card/cards/hooks'
 import { useMasterGlobalStore } from '../store'
 
 import { getCardTypeByName } from '@/app/shared/services'
+import { IOSSwitch } from '@/shared/components/form'
 import { SpeiLogo } from '@/shared/components/images'
+import { CircularLoading } from '@/shared/components/loadings'
 import { copyToClipboard } from '@/shared/utils'
 
 const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards, disableFilter = false }) => {
@@ -21,6 +24,9 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
   const CardLogoComponent = cardLogo?.component
   const selected = cardSelected?.id === card?.id
   const { setGlobalCard, setIsMaster, setFilterPaymentProcessor } = useMasterGlobalStore(state => state)
+
+  const { mutate: changeStatusCard, isLoading: isChangingStatusCard } = useToggleStatusCard()
+  const [cardIdToggleStatus, setCardIdToggleStatus] = useState(null)
 
   const commerceCardsByPaymentProcessor = useMemo(
     () => (commerceCards && commerceCards[card?.paymentProcessorId]) || [],
@@ -37,6 +43,8 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
     setIsMaster(false)
     setGlobalCard(card)
   }
+
+  const isChangingStatus = (isChangingStatusCard && cardIdToggleStatus === card?.id) || isRefetchingCards
 
   return (
     <Stack key={card?.cardId}>
@@ -92,6 +100,39 @@ const MainCardDetails = ({ card, cardSelected, isRefetchingCards, commerceCards,
                 >
                   {copiedSPEI ? <Check sx={{ color: 'success' }} /> : <SpeiLogo />}
                 </IconButton>
+                <Stack ml={1}>
+                  {isChangingStatus ? (
+                    <CircularLoading
+                      size={15}
+                      containerProps={{
+                        display: 'flex',
+                        ml: 1
+                      }}
+                    />
+                  ) : (
+                    <IOSSwitch
+                      disabled={isChangingStatus}
+                      size="sm"
+                      color={!card?.cardON ? 'error' : 'success'}
+                      checked={card?.cardON || false}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                      onChange={() => {
+                        setCardIdToggleStatus(card?.id)
+                        changeStatusCard(
+                          { ...card, cardON: !card?.cardON },
+                          {
+                            onSuccess: () => {
+                              setCardIdToggleStatus(null)
+                            },
+                            onError: () => {
+                              setCardIdToggleStatus(null)
+                            }
+                          }
+                        )
+                      }}
+                    />
+                  )}
+                </Stack>
               </Stack>
             </Stack>
           }

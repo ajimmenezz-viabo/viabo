@@ -33,16 +33,15 @@ final readonly class FinderCardsMasterGlobal
             $cardEntity->registerCredentials($clientKey, $user, $password);
             $data = $this->adapter->searchCardBalance($cardEntity);
             $cardEntity->updateSETData($data);
-
             $cardData = $cardEntity->toArray();
-
             $global[] =[
                 'paymentProcessor' => $card['paymentProcessor'],
                 'balance' => $cardData['balance'] ,
                 'inTransit' => $balanceMaster[$card['paymentProcessorId']],
                 'cardId' => $cardId->value() ,
                 'cardNumber' => $cardNumber->value() ,
-                'spei' => $cardData['spei']
+                'spei' => $cardData['spei'],
+                'block'=> $cardData['block']
             ];
         }
 

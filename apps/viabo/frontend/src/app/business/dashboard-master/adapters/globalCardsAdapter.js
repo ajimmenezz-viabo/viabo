@@ -20,7 +20,8 @@ export const GlobalCardsAdapter = cards => {
       SPEI: card?.spei,
       balanceFormatted: fCurrency(card?.balance),
       inTransitFormatted: fCurrency(card?.inTransit),
-      cardNumber: card?.cardNumber || ''
+      cardNumber: card?.cardNumber || '',
+      cardON: !(card?.block === 'Blocked')
     }
   })
 

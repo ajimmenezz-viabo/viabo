@@ -1,0 +1,1 @@
+import{aP as r,a as s,dJ as n,g as i,b as u}from"./index-ixKXqnJp.js";const c=(e={})=>{const{enqueueSnackbar:o}=r();return s({mutationFn:n,onError:a=>{const t=i(a,"No se puede validar el código");o(t,{variant:u(a),autoHideDuration:5e3})},...e})};export{c as u};

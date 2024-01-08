@@ -72,6 +72,12 @@ export default ({ mode }) => {
         '@': path.resolve(__dirname, './src'),
         '@theme': path.resolve(__dirname, './src', 'theme')
       }
+    },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      css: true,
+      setupFiles: ['./src/test/setup.js']
     }
   })
 }

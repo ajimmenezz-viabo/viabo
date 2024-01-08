@@ -1,8 +1,8 @@
 import path from 'path'
 
 import react from '@vitejs/plugin-react-swc'
-import { defineConfig } from 'vite'
-import { compression } from 'vite-plugin-compression2'
+import million from 'million/compiler'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 
 // https://vitejs.dev/config/
 
@@ -14,8 +14,15 @@ export default ({ mode }) => {
     base: isProduction ? '/app/' : '/',
     build: {
       // publicPath: '/',
+      sourcemap: true,
+      cssMinify: true,
       outDir: path.resolve(__dirname, '..', 'backend/public/app'),
       rollupOptions: {
+        manualChunks(id) {
+          if (id.includes('react-dom')) {
+            return 'react-dom'
+          }
+        },
         output: {
           assetFileNames: assetInfo => {
             let extType = assetInfo.name.split('.').at(1)
@@ -26,13 +33,12 @@ export default ({ mode }) => {
             return `assets/${extType}/build-[hash][extname]`
           },
           entryFileNames: 'assets/js/[name]-[hash].js',
-          chunkFileNames: 'assets/js/build-[hash].js'
+          chunkFileNames: 'assets/js/[name]-[hash].js'
         }
-      },
-      cssMinify: true
+      }
     },
 
-    plugins: [react(), compression()],
+    plugins: [million.vite({ auto: true, mute: true }), react(), splitVendorChunkPlugin()],
     server: {
       port: 3000,
       hmr: {

@@ -9,6 +9,7 @@
 
 ###> Files ###
 /.env.local
+/.phpunit.result.cache
 /apps/viabo/backend/config/jwt/private.pem
 /apps/viabo/backend/config/jwt/public.pem
 apps/viabo/backend/public/assets
@@ -51,5 +52,7 @@ apps/viabo/backend/public/storage
 *.njsproj
 *.sln
 *.sw?
+
+
 
 

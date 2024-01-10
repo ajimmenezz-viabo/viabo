@@ -40,7 +40,8 @@
     "friends-of-behat/mink": "^1.10",
     "friends-of-behat/mink-extension": "^2.7",
     "behat/mink-browserkit-driver": "^2.1",
-    "fakerphp/faker": "^1.21"
+    "fakerphp/faker": "^1.21",
+    "mockery/mockery": "^1.6"
   },
   "config": {}
 }

@@ -1,7 +1,7 @@
 {
   "name": "viabo-app",
-  "type": "module",
   "private": true,
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
     "dev": "vite --host",
@@ -11,7 +11,8 @@
     "lint:fix": "eslint --fix --ext .js,.jsx ./src",
     "prettify": "prettier --write **/*.{ts,tsx,js,jsx,json}",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "test-play": "pnpm exec playwright test"
   },
   "dependencies": {
     "@emotion/react": "11.11.3",
@@ -61,9 +62,11 @@
     "zustand": "4.4.7"
   },
   "devDependencies": {
+    "@playwright/test": "1.40.1",
     "@testing-library/jest-dom": "6.2.0",
     "@testing-library/react": "14.1.2",
     "@testing-library/user-event": "14.5.2",
+    "@types/node": "20.10.8",
     "@types/react": "18.2.47",
     "@types/react-dom": "18.2.18",
     "@vitejs/plugin-react-swc": "3.5.0",

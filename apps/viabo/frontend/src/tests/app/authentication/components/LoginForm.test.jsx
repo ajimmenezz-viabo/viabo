@@ -2,7 +2,7 @@ import { cleanup, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { LoginForm } from '@/app/authentication/components'
-import { render, screen, user } from '@/test/testUtils'
+import { render, screen, user } from '@/tests/testUtils'
 
 const mockLogin = vi.fn()
 let mockError = null

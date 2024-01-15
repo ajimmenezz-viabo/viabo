@@ -42,6 +42,13 @@ services:
     arguments: [ !tagged domain_event_subscriber ]
     lazy: true
 
+  Viabo\shared\infrastructure\bus\event\inMemory\InMemorySymfonyEventBus:
+    arguments: [ !tagged domain_event_subscriber ]
+    lazy: true
+
+  Viabo\shared\infrastructure\doctrine\DatabaseConnections:
+    arguments: [ !tagged codely.database_connection ]
+
   # -- APP DEFINITIONS --
   # Command/Query Handlers
   Viabo\shared\infrastructure\bus\command\InMemorySymfonyCommandBus:
@@ -49,6 +56,9 @@ services:
 
   Viabo\shared\infrastructure\bus\query\InMemorySymfonyQueryBus:
     arguments: [ !tagged viabo.query_handler ]
+
+  # -- IMPLEMENTATIONS SELECTOR --
+  Viabo\shared\domain\bus\event\EventBus: '@Viabo\shared\infrastructure\bus\event\DomainEventMapping'
 
 #
 #  viabo.user_authenticator:

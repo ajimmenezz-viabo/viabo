@@ -4,7 +4,6 @@
 namespace Viabo\shared\infrastructure\symfony\security;
 
 
-
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -12,7 +11,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-final class UserAuthenticator  extends JWTAuthenticator
+final class UserAuthenticator extends JWTAuthenticator
 {
     public function authenticate(Request $request): Passport
     {

@@ -16,7 +16,7 @@ final readonly class CommercePayCreatorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $data = $request->toArray();
+            $data = $this->opensslDecrypt($request->toArray());
             $terminalTransactionId = $this->generateUuid();
             $this->dispatch(new CreateTerminalTransactionCommand(
                 $terminalTransactionId ,

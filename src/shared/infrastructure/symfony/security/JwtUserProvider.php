@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Viabo\security\user\application\find\UserFinder;
-use Viabo\security\user\application\find\UserFinderRequest;
 use Viabo\security\user\domain\exceptions\UserNotExist;
 
 final class JwtUserProvider implements UserProviderInterface

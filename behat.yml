@@ -1,0 +1,2 @@
+imports:
+  - tests/security/apps/backend/security_behat.yml

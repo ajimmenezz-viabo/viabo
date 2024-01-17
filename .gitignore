@@ -9,6 +9,7 @@
 
 ###> Files ###
 /.env.local
+/.phpunit.result.cache
 /apps/viabo/backend/config/jwt/private.pem
 /apps/viabo/backend/config/jwt/public.pem
 apps/viabo/backend/public/assets
@@ -38,6 +39,10 @@ apps/viabo/backend/public/storage
 /apps/viabo/frontend/dist-ssr
 /apps/viabo/frontend/*.local
 /apps/viabo/frontend/pnpm-lock.yaml
+/apps/viabo/frontend/test-results/
+/apps/viabo/frontend/playwright-report/
+/apps/viabo/frontend/blob-report/
+/apps/viabo/frontend/playwright/.cache/
 /apps/viabo/backend/log/
 ###< Logs ###
 
@@ -51,5 +56,7 @@ apps/viabo/backend/public/storage
 *.njsproj
 *.sln
 *.sw?
+
+
 
 

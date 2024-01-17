@@ -93,8 +93,9 @@ export function LoginForm() {
           <FormProvider formik={formik}>
             <Stack spacing={2} flex={1}>
               <Stack spacing={1}>
-                <InputLabel>Email</InputLabel>
+                <InputLabel htmlFor="email">Email</InputLabel>
                 <RFTextField
+                  id="email"
                   disabled={loading}
                   name={'email'}
                   placeholder={'usuario@dominio.com'}
@@ -107,8 +108,9 @@ export function LoginForm() {
               </Stack>
 
               <Stack spacing={1}>
-                <InputLabel>Contraseña</InputLabel>
+                <InputLabel htmlFor="password">Contraseña</InputLabel>
                 <RFPasswordField
+                  id="password"
                   InputLabelProps={{
                     shrink: true
                   }}

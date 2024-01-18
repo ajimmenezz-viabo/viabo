@@ -17,6 +17,7 @@
         <field name="clientKey" column="ClientKey"/>
         <field name="paymentProcessorId" column="PaymentProcessorId"/>
         <field name="paymentProcessor" column="PaymentProcessor"/>
+        <field name="active" column="Active"/>
     </entity>
 
 </doctrine-mapping>

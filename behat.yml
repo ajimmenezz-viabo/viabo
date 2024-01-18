@@ -1,2 +1,3 @@
 imports:
   - tests/security/apps/backend/security_behat.yml
+  - tests/management/apps/backend/management_behat.yml

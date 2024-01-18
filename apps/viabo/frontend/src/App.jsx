@@ -3,32 +3,39 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { CollapseDrawerProvider, SettingsProvider } from '@theme/context'
 import GlobalStyles from '@theme/overrides/components/GlobalStyles'
 import { es } from 'date-fns/locale'
-import { BrowserRouter } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
+
+import { LoadingLogo } from './shared/components/loadings'
+import { useUser } from './shared/hooks'
 
 import { AppRouter } from '@/routes'
 import { MotionLazyContainer } from '@/shared/components/animate'
 import { NotistackProvider } from '@/shared/components/notifications'
-import { ScrollToTop } from '@/shared/components/scroll'
 import { CustomTheme } from '@/theme'
 
 import './App.css'
 
 function App() {
+  const user = useUser()
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
       <SettingsProvider>
         <CollapseDrawerProvider>
-          <BrowserRouter>
-            <CustomTheme>
-              <NotistackProvider>
-                <MotionLazyContainer>
-                  <GlobalStyles />
-                  <ScrollToTop />
-                  <AppRouter />
-                </MotionLazyContainer>
-              </NotistackProvider>
-            </CustomTheme>
-          </BrowserRouter>
+          <CustomTheme>
+            <NotistackProvider>
+              <MotionLazyContainer>
+                <GlobalStyles />
+                <RouterProvider
+                  router={AppRouter(user)}
+                  fallbackElement={<LoadingLogo />}
+                  future={{
+                    // Wrap all state updates in React.startTransition()
+                    v7_startTransition: true
+                  }}
+                />
+              </MotionLazyContainer>
+            </NotistackProvider>
+          </CustomTheme>
         </CollapseDrawerProvider>
       </SettingsProvider>
     </LocalizationProvider>

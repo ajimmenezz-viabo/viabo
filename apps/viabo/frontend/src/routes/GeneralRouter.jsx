@@ -10,14 +10,14 @@ const ExpensesControl = Lodable(lazy(() => import('@/app/business/expenses-contr
 export const GeneralRouter = [
   {
     path: PATH_DASHBOARD['dashboard-master'],
-    element: <GlobalCardDetails />
+    Component: GlobalCardDetails
   },
   {
     path: PATH_DASHBOARD['funding-orders'],
-    element: <FundingOrders />
+    Component: FundingOrders
   },
   {
     path: PATH_DASHBOARD['expenses-control'],
-    element: <ExpensesControl />
+    Component: ExpensesControl
   }
 ]

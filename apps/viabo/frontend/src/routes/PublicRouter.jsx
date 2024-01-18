@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import { PUBLIC_PATHS } from './paths'
 
 import { LoadableRoute } from '@/routes/LoadableRoute'
+import { useLightThemeOnMount } from '@/shared/hooks'
 
 const ChargePaymentLink = LoadableRoute(
   lazy(() => import('@/app/business/viabo-pay/terminal-charge-payment-link/pages/ChargePaymentLink'))
@@ -16,27 +17,39 @@ const PublicPayments = LoadableRoute(lazy(() => import('@/app/public/payments/pa
 export const PublicRouter = [
   {
     path: '/cobro/:paymentId',
-    element: <ChargePaymentLink />
+    Component() {
+      useLightThemeOnMount()
+      return <ChargePaymentLink />
+    }
   },
   {
     path: '/comercio/registro',
-    element: <CommerceRegister />
+    Component() {
+      useLightThemeOnMount()
+      return <CommerceRegister />
+    }
   },
   {
     path: '/registro',
-    element: <RegisterCards />
+    Component() {
+      useLightThemeOnMount()
+      return <RegisterCards />
+    }
   },
   {
     path: PUBLIC_PATHS.privacy,
-    element: <Privacy />
+    Component: Privacy
   },
   {
     path: PUBLIC_PATHS.policies,
-    element: <Policies />
+    Component: Policies
   },
   {
     path: PUBLIC_PATHS.payments,
-    element: <PublicPayments />
+    Component() {
+      useLightThemeOnMount()
+      return <PublicPayments />
+    }
   }
 ]
 

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Menu } from '@mui/icons-material'
 import { AppBar, Box, CssBaseline, IconButton, Stack, Toolbar } from '@mui/material'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
-import { Outlet } from 'react-router-dom'
+import { Outlet, ScrollRestoration } from 'react-router-dom'
 
 import { ThemeMode } from './header'
 import AccountPopover from './header/AccountPopover'
@@ -61,6 +61,7 @@ export function DashboardLayout() {
           <Outlet />
         </Box>
       </Stack>
+      <ScrollRestoration />
     </Box>
   )
 }

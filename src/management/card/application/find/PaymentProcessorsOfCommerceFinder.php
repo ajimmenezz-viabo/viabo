@@ -39,13 +39,15 @@ final readonly class PaymentProcessorsOfCommerceFinder
             return [
                 ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()] ,
                 ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus] ,
-                ['field' => 'main' , 'operator' => '=' , 'value' => '1']
+                ['field' => 'main' , 'operator' => '=' , 'value' => '1'],
+                ['field' => 'active' , 'operator' => '=' , 'value' => '1']
             ];
         }
 
         return [
             ['field' => 'ownerId' , 'operator' => '=' , 'value' => $ownerId->value()] ,
-            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus] ,
+            ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus],
+            ['field' => 'active' , 'operator' => '=' , 'value' => '1']
         ];
     }
 }

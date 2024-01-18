@@ -16,3 +16,7 @@ security_behat:
       paths: [ tests/security/apps/backend/healthCheck ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\APIContext
+    profile:
+      paths: [ tests/security/apps/backend/profile ]
+      contexts:
+        - Viabo\Tests\shared\infrastructure\behat\APIContext

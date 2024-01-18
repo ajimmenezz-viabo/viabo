@@ -29,7 +29,8 @@ final readonly class EnabledCardsFinder
         $filters = [
             ['field' => 'statusId' , 'operator' => '=' , 'value' => $enabledStatus] ,
             ['field' => 'main' , 'operator' => '=' , 'value' => '0'] ,
-            ['field' => 'paymentProcessorId' , 'operator' => '=' , 'value' => $paymentProcessorId->value()]
+            ['field' => 'paymentProcessorId' , 'operator' => '=' , 'value' => $paymentProcessorId->value()],
+            ['field' => 'active' , 'operator' => '=' , 'value' => '1']
         ];
 
         $LegalRepresentativeProfile = '3';

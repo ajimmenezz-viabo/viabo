@@ -19,14 +19,12 @@ final readonly class FinderMainCardsInformation
     {
         $filters = Filters::fromValues([
             ['field' => 'commerceId' , 'operator' => '=' , 'value' => $commerceId->value()],
-            ['field' => 'main' , 'operator' => '=' , 'value' => '1']
+            ['field' => 'main' , 'operator' => '=' , 'value' => '1'],
+            ['field' => 'active' , 'operator' => '=' , 'value' => '1']
         ]);
 
         $cardInformation = $this->repository->searchCardInformationView(new Criteria($filters));
 
-        if(empty($cardInformation)){
-            throw new CardInformationNotFound();
-        }
         return new MainCardsInformationResponse(array_map(function (CardInformationView $card) {
             return $card->toArray();
         } , $cardInformation));

@@ -2,13 +2,16 @@ import { lazy } from 'react'
 
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 
-import { ViaboCardRouter } from '@/app/business/viabo-card/routes'
-import { ViaboPayRouter } from '@/app/business/viabo-pay/routes'
-import { CatalogsRouter } from '@/app/catalogs/shared/routes'
-import { ManagementRouter } from '@/app/management/shared/routes'
-import { GeneralRouter } from '@/routes/GeneralRouter'
+import {
+  CatalogsRouter,
+  GeneralRouter,
+  ManagementRouter,
+  PublicRouter,
+  ViaboCardRouter,
+  ViaboPayRouter
+} from './routers'
+
 import { LoadableRoute } from '@/routes/LoadableRoute'
-import { PublicRouter } from '@/routes/PublicRouter'
 import { AuthGuard, GuestGuard } from '@/shared/guards'
 import { DashboardLayout } from '@/shared/layout/dashboard'
 
@@ -44,8 +47,8 @@ export const AppRouter = user =>
         ManagementRouter,
         ViaboCardRouter,
         ViaboPayRouter,
-        CatalogsRouter,
         ...GeneralRouter,
+        CatalogsRouter,
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

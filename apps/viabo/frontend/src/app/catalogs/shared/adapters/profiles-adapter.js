@@ -6,10 +6,8 @@ export const ProfilesAdapter = profiles => {
     status: profile?.active,
     name: profile?.name,
     initUrl: profile?.urlInit,
-    level: getRandomLevel(profiles.length)
+    level: Number(profile?.level)
   }))
 
   return convertCatalogToReactSelect(profilesAdapted, 'id', 'name', 'status')
 }
-
-const getRandomLevel = arrayLength => Math.floor(Math.random() * arrayLength) + 1

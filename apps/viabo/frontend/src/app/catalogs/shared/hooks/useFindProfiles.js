@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 import { CATALOGS_SHARED_KEYS } from '../adapters'
 import { getProfilesCatalog } from '../services'
 
-import { getErrorAPI } from '@/shared/interceptors'
+import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useFindCommerceInfoBySlug = (options = {}) => {
+export const useFindProfiles = (options = {}) => {
   const [customError, setCustomError] = useState(null)
 
   const query = useQuery({
@@ -24,6 +25,9 @@ export const useFindCommerceInfoBySlug = (options = {}) => {
         'No se puede obtener los perfiles del sistema. Intente nuevamente o reporte a sistemas'
       )
       setCustomError(errorMessage)
+      toast.error(errorMessage, {
+        type: getNotificationTypeByErrorCode(errorMessage)
+      })
     }
   }, [query.isError, query.error])
 

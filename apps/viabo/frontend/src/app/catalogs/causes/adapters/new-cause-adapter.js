@@ -1,7 +1,7 @@
 export const NewCauseAdapter = cause => ({
-  cause: cause?.cause,
+  reason: cause?.cause,
   description: cause?.description,
-  requesterId: cause?.requesterProfile?.value || '',
-  receptorId: cause?.receptorProfile?.value || '',
+  applicantProfileId: cause?.requesterProfile?.value || '',
+  assignedProfileId: cause?.receptorProfile?.value || '',
   color: cause?.color
 })

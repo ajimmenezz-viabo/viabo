@@ -1,4 +1,4 @@
-import { useFindCommerceInfoBySlug } from '../../shared/hooks'
+import { useFindProfiles } from '../../shared/hooks'
 import { CATALOGS_PATHS } from '../../shared/routes'
 import { NewCauseDrawer } from '../components'
 import { useCausesStore } from '../store'
@@ -9,7 +9,7 @@ import { ContainerPage } from '@/shared/components/containers/ContainerPage'
 import { HeaderPage } from '@/shared/components/layout'
 
 export const CatalogCauses = () => {
-  const { data, isLoading } = useFindCommerceInfoBySlug()
+  const { data, isLoading } = useFindProfiles()
   const setOpenNewCause = useCausesStore(state => state.setOpenNewCause)
 
   return (

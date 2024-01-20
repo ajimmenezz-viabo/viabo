@@ -9,7 +9,7 @@ SimpleBreadcrumbs.propTypes = {
 }
 
 export function SimpleBreadcrumbs({ links = [], friendlyPages = {}, activeLast = false, ...other }) {
-  const currentLink = links[links.length - 1].name
+  const currentLink = links[links.length - 1]?.name
 
   const listDefault = links.map(link => <LinkItem key={link.name} link={link} />)
 

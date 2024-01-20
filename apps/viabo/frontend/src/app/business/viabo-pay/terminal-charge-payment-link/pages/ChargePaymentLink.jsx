@@ -33,7 +33,7 @@ const ChargePaymentLink = () => {
       }
     >
       <Box component={'main'} height={1} m={0} p={0}>
-        <Stack p={4} alignItems={'center'} justifyContent={'center'} minHeight={'100vH'}>
+        <Stack p={4} alignItems={'center'} justifyContent={'center'} minHeight={'100dvH'}>
           {isLoading && <RequestLoadingComponent />}
           {!isLoading && data && (
             <Stack width={{ xs: 1, sm: 0.5, md: '0.4' }} spacing={3} maxWidth={data?.status?.id === '7' ? 400 : 'sm'}>

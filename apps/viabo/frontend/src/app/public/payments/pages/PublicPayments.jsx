@@ -36,7 +36,7 @@ const PublicPayments = () => {
       }
     >
       <Box component={'main'} height={1} m={0} p={0}>
-        <Stack alignItems={'center'} justifyContent={'center'} minHeight={'100vH'}>
+        <Stack alignItems={'center'} justifyContent={'center'} minHeight={'100dvH'}>
           {isLoading && <RequestLoadingComponent />}
           {!isLoading && isError && <CommercePaymentLink />}
           {!isLoading && !isError && <CommercePayment />}

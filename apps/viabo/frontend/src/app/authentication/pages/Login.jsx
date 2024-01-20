@@ -19,7 +19,7 @@ const Login = () => {
 
   return (
     <Page title="Inicio de Sesión">
-      <Stack alignItems={'center'} justifyContent={'center'} minHeight={'100vH'}>
+      <Stack alignItems={'center'} justifyContent={'center'} minHeight={'100dvH'}>
         <Stack px={{ sm: 10, xl: 20 }} width={1} height={1} direction={'row'}>
           <Stack
             flexGrow={1}

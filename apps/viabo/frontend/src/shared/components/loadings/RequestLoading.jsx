@@ -11,14 +11,14 @@ export function RequestLoading({ ...rest }) {
   return (
     <Backdrop
       sx={theme => ({
-        height: '100vH',
+        height: '100dvH',
         display: 'flex',
         position: 'relative',
         alignItems: 'center',
         top: 0,
         left: 0,
         justifyContent: 'center',
-        backgroundColor: theme => theme.palette.mode === 'light' && 'rgba(244, 247, 252, 0.72)',
+        backgroundColor: 'inherit',
         backdropFilter: 'blur(40px)',
         zIndex: theme => theme.zIndex.appBar - 1,
         transition: theme.transitions.create(['left', 'margin-left', 'width'], {

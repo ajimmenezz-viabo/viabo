@@ -49,35 +49,42 @@ export const typography = {
   subtitle1: {
     fontWeight: 400,
     lineHeight: 1.5,
-    fontSize: pxToRem(14)
+    fontSize: pxToRem(15),
+    ...responsiveFontSizes({ sm: 14, md: 14, lg: 15 })
   },
   subtitle2: {
     fontWeight: 400,
     lineHeight: 1.5,
-    fontSize: pxToRem(12)
+    fontSize: pxToRem(13),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 13 })
   },
   body1: {
     lineHeight: 1.5,
-    fontSize: pxToRem(14)
+    fontSize: pxToRem(15),
+    ...responsiveFontSizes({ sm: 14, md: 14, lg: 15 })
   },
   body2: {
     lineHeight: 1.5,
-    fontSize: pxToRem(12)
+    fontSize: pxToRem(13),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 13 })
   },
   caption: {
     lineHeight: 1.5,
-    fontSize: pxToRem(12)
+    fontSize: pxToRem(13),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 13 })
   },
   overline: {
     fontWeight: 600,
     lineHeight: 1.5,
-    fontSize: pxToRem(12),
+    fontSize: pxToRem(13),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 13 }),
     textTransform: 'uppercase'
   },
   button: {
-    fontWeight: 400,
+    fontWeight: 600,
     lineHeight: 1.5,
-    fontSize: pxToRem(12),
+    fontSize: pxToRem(13),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 13 }),
     textTransform: 'capitalize'
   }
 }

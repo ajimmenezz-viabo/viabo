@@ -1,15 +1,14 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\security\profile\domain;
+namespace Viabo\tickets\supportReason\domain;
 
 
 use Viabo\shared\domain\criteria\Criteria;
 
-interface ProfileRepository
+interface SupportReasonRepository
 {
-
-    public function search(string $profileId): Profile|null;
+    public function save(SupportReason $supportReason): void;
 
     public function searchCriteria(Criteria $criteria): array;
 }

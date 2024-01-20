@@ -18,6 +18,11 @@ final class ProfileDoctrineRepository extends DoctrineRepository implements Prof
         parent::__construct($SecurityEntityManager);
     }
 
+    public function search(string $profileId): Profile|null
+    {
+        return $this->repository(Profile::class)->find($profileId);
+    }
+
     public function searchCriteria(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);

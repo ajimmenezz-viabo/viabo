@@ -11,6 +11,7 @@ imports:
   - { resource: ../../../../src/management/shared/infrastructure/symfony/dependencyInjection/management_database.yaml }
   - { resource: ../../../../src/news/shared/infrastructure/symfony/dependencyInjection/news_database.yaml }
   - { resource: ../../../../src/landingPages/shared/infrastructure/symfony/dependencyInjection/landingPages_database.yaml }
+  - { resource: ../../../../src/tickets/shared/infrastructure/symfony/dependencyInjection/tickets_database.yaml }
 
 services:
   # default configuration for services in *this* file
@@ -47,7 +48,7 @@ services:
     lazy: true
 
   Viabo\shared\infrastructure\doctrine\DatabaseConnections:
-    arguments: [ !tagged codely.database_connection ]
+    arguments: [ !tagged database_connection ]
 
   # -- APP DEFINITIONS --
   # Command/Query Handlers

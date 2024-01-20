@@ -7,6 +7,7 @@
     <entity name="Viabo\security\profile\domain\Profile" table="cat_profile">
         <embedded name="id" class="ProfileId" use-column-prefix="false"/>
         <embedded name="name" class="ProfileName" use-column-prefix="false"/>
+        <embedded name="level" class="ProfileLevel" use-column-prefix="false"/>
         <embedded name="urlInit" class="ProfileUrlInit" use-column-prefix="false"/>
         <embedded name="active" class="ProfileActive" use-column-prefix="false"/>
     </entity>

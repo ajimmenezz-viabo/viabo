@@ -8,7 +8,8 @@ import {
   ManagementRouter,
   PublicRouter,
   ViaboCardRouter,
-  ViaboPayRouter
+  ViaboPayRouter,
+  ViaboSpeiRouter
 } from './routers'
 
 import { LoadableRoute } from '@/routes/LoadableRoute'
@@ -49,6 +50,7 @@ export const AppRouter = user =>
         ViaboPayRouter,
         ...GeneralRouter,
         CatalogsRouter,
+        ViaboSpeiRouter,
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

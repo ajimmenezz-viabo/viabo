@@ -1,5 +1,6 @@
 export { ViaboCardRouter } from '@/app/business/viabo-card/routes/ViaboCardRouter'
 export { ViaboPayRouter } from '@/app/business/viabo-pay/routes/ViaboPayRouter'
+export { default as ViaboSpeiRouter } from '@/app/business/viabo-spei/shared/routes/ViaboSpeiRouter'
 export { CatalogsRouter } from '@/app/catalogs/shared/routes/CatalogsRouter'
 export { ManagementRouter } from '@/app/management/shared/routes/ManagementRouter'
 export { GeneralRouter } from '@/routes/GeneralRouter'

@@ -32,8 +32,8 @@ export default function GlobalStyles() {
           height: '100%',
           background:
             theme.palette.mode === 'dark'
-              ? `radial-gradient(125% 125% at 50% 40%,${theme.palette.background.default} 40%,#63e 120%)`
-              : 'radial-gradient(ellipse 80% 80% at 50% -20%,rgba(120,119,198,0.3),rgba(255,255,255,0))'
+              ? `radial-gradient(125% 125% at 50% 30%,${theme.palette.background.default} 20%,#63e 120%)`
+              : `radial-gradient(ellipse 80% 80% at 60% -20%,rgba(120,119,198,0.3),${theme.palette.background.default})`
         },
         '#root': {
           width: '100%',

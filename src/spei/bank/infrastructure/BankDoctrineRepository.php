@@ -16,6 +16,11 @@ final class BankDoctrineRepository extends DoctrineRepository implements BankRep
         parent::__construct($SpeiEntityManager);
     }
 
+    public function search(string $bankId): Bank|null
+    {
+        return $this->repository(Bank::class)->find($bankId);
+    }
+
     public function searchAll(): array
     {
         return $this->repository(Bank::class)->findBy(['active.value' => '1']);

@@ -81,7 +81,7 @@ final class User extends AggregateRoot
     {
         $user = new static(
             UserId::random() ,
-            new UserProfile('5') ,
+            UserProfile::cardHolder() ,
             $name ,
             new UserLastname('') ,
             $phone ,

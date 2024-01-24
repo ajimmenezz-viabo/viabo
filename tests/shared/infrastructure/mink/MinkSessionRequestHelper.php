@@ -5,26 +5,26 @@ namespace Viabo\Tests\shared\infrastructure\mink;
 use Behat\Gherkin\Node\PyStringNode;
 use Symfony\Component\DomCrawler\Crawler;
 
-final class MinkSessionRequestHelper
+final readonly class MinkSessionRequestHelper
 {
 
-    public function __construct(private readonly MinkHelper $sessionHelper)
+    public function __construct(private MinkHelper $sessionHelper)
     {
     }
 
-    public function sendRequest($method, $url, array $optionalParams = []): void
+    public function sendRequest($method , $url , array $optionalParams = []): void
     {
-        $this->request($method, $url, $optionalParams);
+        $this->request($method , $url , $optionalParams);
     }
 
-    public function sendRequestWithPyStringNode($method, $url, PyStringNode $body): void
+    public function sendRequestWithPyStringNode($method , $url , PyStringNode $body): void
     {
-        $this->request($method, $url, ['content' => $body->getRaw()]);
+        $this->request($method , $url , ['content' => $body->getRaw()]);
     }
 
-    public function request($method, $url, array $optionalParams = []): Crawler
+    public function request($method , $url , array $optionalParams = [] , string $authorization = ''): Crawler
     {
-        return $this->sessionHelper->sendRequest($method, $url, $optionalParams);
+        return $this->sessionHelper->sendRequest($method , $url , $optionalParams , $authorization);
     }
 
 }

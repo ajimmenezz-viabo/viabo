@@ -1,4 +1,4 @@
-security_behat:
+tickets_behat:
   extensions:
     FriendsOfBehat\SymfonyExtension:
       kernel:
@@ -12,11 +12,7 @@ security_behat:
       base_url: ''
 
   suites:
-    health_check:
-      paths: [ tests/security/apps/backend/healthCheck ]
-      contexts:
-        - Viabo\Tests\shared\infrastructure\behat\APIContext
-    profile:
-      paths: [ tests/security/apps/backend/profile ]
+    supportReason:
+      paths: [ tests/tickets/apps/supportReason ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\APIContext

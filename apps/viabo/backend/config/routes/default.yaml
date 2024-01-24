@@ -98,3 +98,17 @@ payments-paths:
   methods: GET
   requirements:
     any: ".+"
+
+viabo-spei-paths:
+  path: "/viabo-spei/{any}"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"
+
+catalogs-paths:
+  path: "/catalogs/{any}"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET
+  requirements:
+    any: ".+"

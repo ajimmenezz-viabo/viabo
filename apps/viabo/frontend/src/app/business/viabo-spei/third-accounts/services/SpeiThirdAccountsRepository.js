@@ -1,5 +1,18 @@
-import { ThirdAccountsMock } from '../_mock'
+import { SpeiBanksAdapter, SpeiThirdAccountsListAdapter } from '../adapters'
 
-export const getSpeiThirdAccountsList = async () =>
-  // const { data } = await axios.get('/api/viabo-spei/third-accounts')
-  ThirdAccountsMock
+import { axios } from '@/shared/interceptors'
+
+export const getSpeiThirdAccountsList = async () => {
+  const { data } = await axios.get('/api/spei/external-accounts')
+  return SpeiThirdAccountsListAdapter(data)
+}
+
+export const newSpeiThirdAccount = async account => {
+  const { data } = await axios.post('/api/spei/external-account/new', account)
+  return data
+}
+
+export const getSpeiBanks = async () => {
+  const { data } = await axios.get('/api/spei/banks')
+  return SpeiBanksAdapter(data)
+}

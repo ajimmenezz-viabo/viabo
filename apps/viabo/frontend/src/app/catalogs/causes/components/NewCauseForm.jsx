@@ -30,7 +30,7 @@ const NewCauseForm = ({ profiles, onSuccess }) => {
         'El perfil receptor debe tener un nivel más alto que el perfil solicitante',
         function (value) {
           const { requesterProfile } = this.parent
-          return !value || (requesterProfile && value?.level > requesterProfile?.level)
+          return !value || (requesterProfile && value?.level < requesterProfile?.level)
         }
       ),
     color: Yup.string()

@@ -6,13 +6,20 @@ import { Box, InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { bankCatalogs } from '@/app/shared/_mock/banks'
-import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
-import { Scrollbar } from '@/shared/components/scroll'
+import { SpeiNewThirdAccountAdapter } from '../../adapters'
+import { useCreateNewSpeiThirdAccount } from '../../hooks'
 
-const NewSpeiThirdAccountForm = ({ account }) => {
+import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
+
+const NewSpeiThirdAccountForm = ({ account, catalogBanks, onSuccess }) => {
+  const { mutate, isLoading } = useCreateNewSpeiThirdAccount()
+
   const ValidationSchema = Yup.object().shape({
-    clabe: Yup.string().trim().max(18, 'Máximo 18 caracteres').required('Es necesario la clabe'),
+    clabe: Yup.string()
+      .trim()
+      .max(18, 'Máximo 18 caracteres')
+      .matches(/^\S{18}$/, 'La clabe debe contener 18 caracteres y no puede contener espacios en blanco')
+      .required('Es necesario la clabe'),
     name: Yup.string().trim().max(100, 'Máximo 100 caracteres').required('Es necesario el beneficiario'),
     rfc: Yup.string(),
     alias: Yup.string().trim().max(100, 'Máximo 100 caracteres'),
@@ -24,135 +31,150 @@ const NewSpeiThirdAccountForm = ({ account }) => {
   const formik = useFormik({
     initialValues: {
       clabe: account?.clabe || '',
-      name: account?.name || '',
+      name: account?.beneficiary || '',
       alias: account?.alias || '',
       rfc: account?.rfc || '',
-      bank: bankCatalogs?.find(bank => bank?.marca === account?.bank) || null,
+      bank: catalogBanks?.find(bank => bank?.id === account?.bank?.id) || null,
       email: account?.email || '',
       phone: account?.phone || ''
     },
     enableReinitialize: true,
     validationSchema: ValidationSchema,
-    onSubmit: (values, { setSubmitting, setFieldValue }) => {}
+    onSubmit: (values, { setSubmitting, setFieldValue }) => {
+      const account = SpeiNewThirdAccountAdapter(values)
+      mutate(account, {
+        onSuccess: () => {
+          setSubmitting(false)
+          onSuccess()
+        },
+        onError: () => {
+          setSubmitting(false)
+        }
+      })
+    }
   })
 
   const { isSubmitting, setFieldValue, values } = formik
 
-  const loading = isSubmitting
+  const loading = isSubmitting || isLoading
   return (
-    <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-      <FormProvider formik={formik}>
-        <Stack spacing={2} sx={{ p: 3 }}>
-          <Stack spacing={1}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Cuenta CLABE
-              <Box component={'span'} color={'error.main'} ml={0.5}>
-                *
-              </Box>
-            </Typography>
+    <FormProvider formik={formik}>
+      <Stack spacing={2}>
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Cuenta CLABE
+            <Box component={'span'} color={'error.main'} ml={0.5}>
+              *
+            </Box>
+          </Typography>
 
-            <RFTextField required name={'clabe'} size={'small'} disabled={loading} placeholder={'Clabe...'} />
-          </Stack>
+          <RFTextField
+            inputProps={{ maxLength: '18' }}
+            required
+            name={'clabe'}
+            size={'small'}
+            disabled={loading}
+            placeholder={'Clabe...'}
+          />
+        </Stack>
 
-          <Stack spacing={1}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Beneficiario
-              <Box component={'span'} color={'error.main'} ml={0.5}>
-                *
-              </Box>
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Beneficiario
+            <Box component={'span'} color={'error.main'} ml={0.5}>
+              *
+            </Box>
+          </Typography>
+
+          <RFTextField
+            required
+            name={'name'}
+            size={'small'}
+            placeholder={'Nombre del titular de la cuenta...'}
+            disabled={loading}
+          />
+        </Stack>
+
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            RFC
+          </Typography>
+
+          <RFTextField name={'rfc'} size={'small'} placeholder={'RFC del beneficiario...'} disabled={loading} />
+        </Stack>
+
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Alias
+          </Typography>
+
+          <RFTextField name={'alias'} size={'small'} placeholder={'Alias de la cuenta...'} disabled={loading} />
+        </Stack>
+
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Banco
+            <Box component={'span'} color={'error.main'} ml={0.5}>
+              *
+            </Box>
+          </Typography>
+          <RFSelect
+            name={'bank'}
+            textFieldParams={{ placeholder: 'Seleccionar ...', required: true, size: 'small' }}
+            options={catalogBanks || []}
+            disabled={loading}
+          />
+        </Stack>
+
+        <Stack flexDirection={{ md: 'row' }} gap={2}>
+          <Stack spacing={1} flex={1}>
+            <Typography type={'email'} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+              Correo
             </Typography>
 
             <RFTextField
-              required
-              name={'name'}
+              name={'email'}
               size={'small'}
-              placeholder={'Nombre del titular de la cuenta...'}
+              placeholder={'beneficiario@domino.com...'}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailOutlined />
+                  </InputAdornment>
+                )
+              }}
               disabled={loading}
             />
           </Stack>
 
           <Stack spacing={1}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              RFC
+              Teléfono
             </Typography>
-
-            <RFTextField name={'rfc'} size={'small'} placeholder={'RFC del beneficiario...'} disabled={loading} />
-          </Stack>
-
-          <Stack spacing={1}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Alias
-            </Typography>
-
-            <RFTextField name={'alias'} size={'small'} placeholder={'Alias de la cuenta...'} disabled={loading} />
-          </Stack>
-
-          <Stack spacing={1}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Banco
-              <Box component={'span'} color={'error.main'} ml={0.5}>
-                *
-              </Box>
-            </Typography>
-            <RFSelect
-              name={'bank'}
-              disableClearable
-              textFieldParams={{ placeholder: 'Seleccionar ...', required: true, size: 'small' }}
-              options={bankCatalogs}
+            <RFTextField
+              name={'phone'}
+              type={'tel'}
+              size={'small'}
+              placeholder={'55 5555 5555'}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Phone />
+                  </InputAdornment>
+                )
+              }}
               disabled={loading}
             />
-          </Stack>
-
-          <Stack flexDirection={{ md: 'row' }} gap={2}>
-            <Stack spacing={1} flex={1}>
-              <Typography type={'email'} paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Correo
-              </Typography>
-
-              <RFTextField
-                name={'email'}
-                size={'small'}
-                placeholder={'beneficiario@domino.com...'}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailOutlined />
-                    </InputAdornment>
-                  )
-                }}
-                disabled={loading}
-              />
-            </Stack>
-
-            <Stack spacing={1}>
-              <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-                Teléfono
-              </Typography>
-              <RFTextField
-                name={'phone'}
-                type={'tel'}
-                size={'small'}
-                placeholder={'55 5555 5555'}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Phone />
-                    </InputAdornment>
-                  )
-                }}
-                disabled={loading}
-              />
-            </Stack>
-          </Stack>
-
-          <Stack sx={{ pt: 1 }}>
-            <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
-              Crear
-            </LoadingButton>
           </Stack>
         </Stack>
-      </FormProvider>
-    </Scrollbar>
+
+        <Stack sx={{ pt: 1 }}>
+          <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
+            Crear
+          </LoadingButton>
+        </Stack>
+      </Stack>
+    </FormProvider>
   )
 }
 
@@ -160,12 +182,15 @@ NewSpeiThirdAccountForm.propTypes = {
   account: PropTypes.shape({
     alias: PropTypes.string,
     bank: PropTypes.any,
+    beneficiary: PropTypes.string,
     clabe: PropTypes.string,
     email: PropTypes.string,
     name: PropTypes.string,
     phone: PropTypes.string,
     rfc: PropTypes.string
-  })
+  }),
+  catalogBanks: PropTypes.array,
+  onSuccess: PropTypes.func
 }
 
 export default NewSpeiThirdAccountForm

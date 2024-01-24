@@ -29,11 +29,11 @@ export const useSpeiThirdAccountsColumns = () =>
       {
         id: 'bank',
         header: 'Banco',
-        accessorKey: 'bank',
+        accessorFn: originalRow => originalRow?.bank?.name || null,
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
 
-          return <Typography variant="subtitle2">{renderedCellValue}</Typography>
+          return <Typography variant="subtitle2">{rowData?.bank.name}</Typography>
         }
       },
       {

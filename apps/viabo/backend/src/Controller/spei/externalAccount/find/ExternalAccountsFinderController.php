@@ -16,8 +16,8 @@ final readonly class ExternalAccountsFinderController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $this->decode($request->headers->get('Authorization'));
-            $externalAccounts = $this->ask(new ExternalAccountsQuery());
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $externalAccounts = $this->ask(new ExternalAccountsQuery($tokenData['id']));
             $externalAccounts = $this->mergeShorNameBank($externalAccounts->data);
 
             return new JsonResponse($externalAccounts);

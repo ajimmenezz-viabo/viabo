@@ -15,10 +15,11 @@ final readonly class ExternalAccountsFinder
     {
     }
 
-    public function __invoke(): ExternalAccountResponse
+    public function __invoke(string $userId): ExternalAccountResponse
     {
         $filters = Filters::fromValues([
-            ['field' => 'active.value' , 'operator' => '=' , 'value' => '1']
+            ['field' => 'active.value' , 'operator' => '=' , 'value' => '1'] ,
+            ['field' => 'createdByUser.value' , 'operator' => '=' , 'value' => $userId]
         ]);
         $externalAccounts = $this->repository->searchCriteria(new Criteria($filters));
 

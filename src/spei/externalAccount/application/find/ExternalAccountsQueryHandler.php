@@ -15,6 +15,6 @@ final readonly class ExternalAccountsQueryHandler implements QueryHandler
 
     public function __invoke(ExternalAccountsQuery $query): Response
     {
-        return $this->finder->__invoke();
+        return $this->finder->__invoke($query->userId);
     }
 }

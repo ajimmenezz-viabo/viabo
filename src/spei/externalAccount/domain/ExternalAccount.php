@@ -57,12 +57,12 @@ final class ExternalAccount extends AggregateRoot
         return $externalAccount;
     }
 
-    private function id(): string
+    public function id(): string
     {
         return $this->id->value();
     }
 
-    private function toArray(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id->value() ,

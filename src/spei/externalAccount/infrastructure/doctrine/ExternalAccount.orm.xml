@@ -10,7 +10,7 @@
         <embedded name="beneficiary" class="ExternalAccountBeneficiary" use-column-prefix="false"/>
         <embedded name="rfc" class="ExternalAccountRfc" use-column-prefix="false"/>
         <embedded name="alias" class="ExternalAccountAlias" use-column-prefix="false"/>
-        <embedded name="bank" class="ExternalAccountBank" use-column-prefix="false"/>
+        <embedded name="bankId" class="ExternalAccountBankId" use-column-prefix="false"/>
         <embedded name="email" class="ExternalAccountEmail" use-column-prefix="false"/>
         <embedded name="phone" class="ExternalAccountPhone" use-column-prefix="false"/>
         <embedded name="createdByUser" class="ExternalAccountCreatedByUser" use-column-prefix="false"/>

@@ -14,7 +14,7 @@ final readonly class CreateExternalAccountCommand implements Command
         public string $beneficiary ,
         public string $rfc ,
         public string $alias ,
-        public string $bank ,
+        public string $bankId ,
         public string $email ,
         public string $phone
     )

@@ -20,7 +20,7 @@ final readonly class CreateExternalAccountCommandHandler implements CommandHandl
             $command->beneficiary,
             $command->rfc,
             $command->alias,
-            $command->bank,
+            $command->bankId,
             $command->email,
             $command->phone
         );

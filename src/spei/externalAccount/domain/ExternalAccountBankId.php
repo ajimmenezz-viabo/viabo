@@ -7,7 +7,7 @@ namespace Viabo\spei\externalAccount\domain;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 use Viabo\spei\externalAccount\domain\exceptions\ExternalAccountBankEmpty;
 
-final class ExternalAccountBank extends StringValueObject
+final class ExternalAccountBankId extends StringValueObject
 {
     public static function create(string $value): self
     {

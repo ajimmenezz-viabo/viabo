@@ -24,7 +24,7 @@ final readonly class ExternalAccountCreatorController extends ApiController
                 $data['beneficiary'],
                 $data['rfc'],
                 $data['alias'],
-                $data['bank'],
+                $data['bankId'],
                 $data['email'],
                 $data['phone']
             ));

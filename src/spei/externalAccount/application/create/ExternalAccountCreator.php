@@ -23,7 +23,7 @@ final readonly class ExternalAccountCreator
         string $beneficiary ,
         string $rfc ,
         string $alias ,
-        string $bank ,
+        string $bankId ,
         string $email ,
         string $phone
     ): void
@@ -36,7 +36,7 @@ final readonly class ExternalAccountCreator
             $beneficiary ,
             $rfc ,
             $alias ,
-            $bank ,
+            $bankId ,
             $email ,
             $phone
         );

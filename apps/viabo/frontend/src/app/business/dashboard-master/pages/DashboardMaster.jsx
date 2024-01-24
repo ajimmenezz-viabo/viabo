@@ -17,10 +17,8 @@ export default function DashboardMaster() {
           links={[{ name: 'Inicio', href: PATH_DASHBOARD.root }, { name: 'Dashboard Master' }]}
         />
         <Box pb={4}>
-          <Stack flexDirection={{ md: 'row' }} gap={3}>
-            <Stack minWidth={300}>
-              <MasterGlobalCards />
-            </Stack>
+          <Stack flexDirection={{ md: 'row' }}>
+            <MasterGlobalCards />
             <Stack flex={1}>
               <MasterMovements />
             </Stack>

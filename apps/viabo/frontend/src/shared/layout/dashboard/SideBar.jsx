@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useState } from 'react'
 
-import { Icon, Stack, Tooltip, Typography, alpha, useTheme } from '@mui/material'
+import { Box, Icon, Stack, Tooltip, Typography, alpha, useTheme } from '@mui/material'
 import { Menu, MenuItem, Sidebar, SubMenu, menuClasses, sidebarClasses } from 'react-pro-sidebar'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -43,12 +43,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
       zIndex: muiTheme.zIndex.modal - 1,
 
       paddingBottom: 0,
-      backgroundColor:
-        level === 0
-          ? isCollapse
-            ? muiTheme.palette.background.paper
-            : alpha(muiTheme.palette.action.hover, muiTheme.palette.action.hoverOpacity)
-          : 'transparent'
+      backgroundColor: level === 0 ? (isCollapse ? muiTheme.palette.background.paper : 'inherit') : 'inherit'
     }),
     button: ({ level, active, disabled }) => ({
       color: muiTheme.palette.text.primary,
@@ -56,7 +51,9 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
 
       ...(level >= 1 && {
         margin: muiTheme.spacing(1),
-        borderRadius: muiTheme.shape.borderRadius
+        borderRadius: muiTheme.shape.borderRadius,
+        padding: 0,
+        paddingLeft: 8
       }),
 
       [`&.${menuClasses.disabled}`]: {
@@ -72,10 +69,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
       ...(active && {
         color: 'inherit',
         fontWeight: 600,
-        backgroundColor:
-          level === 0
-            ? alpha(muiTheme.palette.secondary.main, 0.9)
-            : alpha(muiTheme.palette.info.light, muiTheme.palette.action.hoverOpacity)
+        backgroundColor: level === 0 ? alpha(muiTheme.palette.secondary.main, 0.9) : 'inherit'
       })
     }),
     label: ({ open }) => ({
@@ -100,16 +94,16 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
       rootStyles={{
         color: muiTheme.palette.text.primary,
         zIndex: `${muiTheme.zIndex.drawer}!important`,
-        borderColor: 'rgba(145, 158, 171, 0.24)',
-        borderRightStyle: 'dashed',
-        backgroundColor: muiTheme.palette.background.default,
+        borderColor: toggled ? 'none' : 'rgba(145, 158, 171, 0.24)',
+        borderRightStyle: toggled ? 'none' : 'dashed',
+        backgroundColor: toggled ? muiTheme.palette.background.default : 'inherit',
 
         [`.${sidebarClasses.container}`]: {
-          backgroundColor: muiTheme.palette.background.default
+          backgroundColor: toggled ? muiTheme.palette.background.default : 'inherit'
         }
       }}
     >
-      <Stack height={'100vH'}>
+      <Stack height={'100dvH'}>
         <Stack
           spacing={3}
           sx={{
@@ -200,6 +194,18 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                                 key={submenu?.name}
                                 component={<Link to={submenu?.path} />}
                                 active={active}
+                                title={submenu?.name}
+                                icon={
+                                  <Box
+                                    component="span"
+                                    sx={{
+                                      width: active ? 6 : 4,
+                                      height: active ? 6 : 4,
+                                      borderRadius: '50%',
+                                      bgcolor: active ? 'success.main' : 'text.disabled'
+                                    }}
+                                  />
+                                }
                               >
                                 {submenu?.name}
                               </MenuItem>

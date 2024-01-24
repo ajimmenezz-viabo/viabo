@@ -16,8 +16,16 @@ RightPanel.propTypes = {
 export function RightPanel({ open = false, handleClose, title, children, titleElement }) {
   const matches = useResponsive('down', 'md')
 
+  const handleDrawerClose = event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return
+    }
+    handleClose()
+  }
+
   return (
     <Drawer
+      keepMounted={false}
       anchor={matches ? 'bottom' : 'right'}
       sx={{
         '& .MuiPaper-root.MuiDrawer-paper': {
@@ -26,7 +34,10 @@ export function RightPanel({ open = false, handleClose, title, children, titleEl
         }
       }}
       open={open}
-      keepMounted={false}
+      onClose={handleDrawerClose}
+      ModalProps={{
+        keepMounted: false
+      }}
     >
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
         {titleElement || <Typography variant="h6">{title}</Typography>}

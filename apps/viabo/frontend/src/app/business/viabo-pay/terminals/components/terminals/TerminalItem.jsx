@@ -8,9 +8,9 @@ import {
   ListItemAvatar,
   ListItemButton,
   Stack,
-  styled,
   Tooltip,
-  Typography
+  Typography,
+  styled
 } from '@mui/material'
 
 import { useTerminalDetails, useTerminals } from '../../store'
@@ -81,20 +81,21 @@ export const TerminalItem = ({ terminal }) => {
                   height: 32,
                   m: 0,
                   backgroundColor: theme.palette.primary.main,
-                  '& :hover': {
-                    color: 'white'
-                  }
+                  color: theme.palette.primary.contrastText,
+                  '& :hover': { color: theme.palette.primary.contrastText }
                 })}
               >
                 {terminal?.isVirtual ? (
-                  <ContactlessSharp sx={{ width: 20, height: 20, color: 'white' }} />
+                  <ContactlessSharp
+                    sx={theme => ({ width: 20, height: 20, '& :hover': { color: theme.palette.primary.contrastText } })}
+                  />
                 ) : (
                   <PointOfSale
-                    sx={{
+                    sx={theme => ({
                       width: 16,
                       height: 16,
-                      color: 'white'
-                    }}
+                      '& :hover': { color: theme.palette.primary.contrastText }
+                    })}
                   />
                 )}
               </Avatar>

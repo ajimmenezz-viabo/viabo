@@ -11,26 +11,27 @@ use Doctrine\ORM\ORMSetup;
 class DoctrineEntityManagerFactory
 {
     private static $sharedPrefixes = [
-        __DIR__ . '/../../../shared/infrastructure/persistence/mappings' => 'Viabo\shared\domain',
+        __DIR__ . '/../../../shared/infrastructure/persistence/mappings' => 'Viabo\shared\domain' ,
     ];
 
     public static function create(
-        array $parameters,
-        array $contextPrefixes,
-        bool $isDevMode,
+        array $parameters ,
+        array $contextPrefixes ,
+        bool  $isDevMode ,
         array $dbalCustomTypesClasses
-    ): EntityManagerInterface {
+    ): EntityManagerInterface
+    {
 
         DbalCustomTypesRegistrar::register($dbalCustomTypesClasses);
 
-        return EntityManager::create($parameters, self::createConfiguration($contextPrefixes, $isDevMode));
+        return EntityManager::create($parameters , self::createConfiguration($contextPrefixes , $isDevMode));
     }
 
-    private static function createConfiguration(array $contextPrefixes, bool $isDevMode): Configuration
+    private static function createConfiguration(array $contextPrefixes , bool $isDevMode): Configuration
     {
         $config = ORMSetup::createConfiguration($isDevMode);
 
-        $config->setMetadataDriverImpl(new SimplifiedXmlDriver(array_merge(self::$sharedPrefixes, $contextPrefixes)));
+        $config->setMetadataDriverImpl(new SimplifiedXmlDriver(array_merge(self::$sharedPrefixes , $contextPrefixes)));
 
         return $config;
     }

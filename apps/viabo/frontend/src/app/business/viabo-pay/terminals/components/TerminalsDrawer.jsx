@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 
 import { useTheme } from '@emotion/react'
 import { ContactlessSharp } from '@mui/icons-material'
@@ -21,9 +21,9 @@ import {
 import { Scrollbar } from '@/shared/components/scroll'
 
 export const TerminalsDrawer = () => {
+  const openSidebar = useTerminals(state => state.isOpenList)
   const setOpenSidebar = useTerminals(state => state.setOpenList)
   const setCollapse = useTerminals(state => state.setCollapse)
-  const openSidebar = useTerminals(state => state.isOpenList)
 
   const terminalsQuery = useFindCommerceTerminals()
 
@@ -31,26 +31,16 @@ export const TerminalsDrawer = () => {
 
   const isDesktop = useResponsive('up', 'md')
 
-  const isCollapse = isDesktop && !openSidebar
+  const isCollapse = useMemo(() => isDesktop && !openSidebar, [isDesktop, openSidebar])
 
   const handleCloseSidebar = () => {
+    setCollapse(true)
     setOpenSidebar(false)
   }
 
   const handleToggleSidebar = () => {
     setOpenSidebar(!openSidebar)
   }
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (isDesktop) {
-      setOpenSidebar(true)
-    }
-  }, [isDesktop])
-
-  useEffect(() => {
-    setCollapse(isCollapse)
-  }, [isCollapse])
 
   const renderContent = (
     <>
@@ -121,7 +111,7 @@ export const TerminalsDrawer = () => {
         </Drawer>
       ) : (
         <Drawer
-          ModalProps={{ keepMounted: true }}
+          ModalProps={{ keepMounted: false }}
           open={openSidebar}
           onClose={handleCloseSidebar}
           sx={{

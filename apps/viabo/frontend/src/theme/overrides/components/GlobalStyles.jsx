@@ -29,7 +29,11 @@ export default function GlobalStyles() {
         },
         body: {
           width: '100%',
-          height: '100%'
+          height: '100%',
+          background:
+            theme.palette.mode === 'dark'
+              ? `radial-gradient(125% 125% at 50% 30%,${theme.palette.background.default} 20%,#63e 120%)`
+              : `radial-gradient(ellipse 80% 80% at 60% -20%,rgba(120,119,198,0.3),${theme.palette.background.default})`
         },
         '#root': {
           width: '100%',

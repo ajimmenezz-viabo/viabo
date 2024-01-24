@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Viabo\Tests\shared\infrastructure\doctrine;
 
@@ -33,6 +33,9 @@ final class MySqlDatabaseCleaner
 
     private function tables(Connection $connection): array
     {
-        return $connection->query('SHOW TABLES')->fetchAll();
+        $tables = $connection->query('SHOW TABLES')->fetchAll();
+        return array_filter($tables , function (array $table) {
+            return strpos(first($table) , 'v_');
+        });
     }
 }

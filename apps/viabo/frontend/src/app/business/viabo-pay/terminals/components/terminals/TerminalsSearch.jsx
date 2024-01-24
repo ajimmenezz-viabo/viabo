@@ -11,13 +11,16 @@ import { SidebarButtonStyle } from '@/app/business/viabo-card/cards/components/s
 import { arrowIcon } from '@/shared/assets/icons'
 import { InputStyle } from '@/shared/components/form'
 import { SearchNotFound } from '@/shared/components/notifications'
+import { useResponsive } from '@/theme/hooks'
 
 export const TerminalsSearch = ({ commerceTerminals = [] }) => {
+  const { setOpenList: setOpenSidebar, setCollapse, setTerminals } = useTerminals()
+
   const openSidebar = useTerminals(state => state.isOpenList)
-  const setOpenSidebar = useTerminals(state => state.setOpenList)
-  const setTerminals = useTerminals(state => state.setTerminals)
-  const terminals = useTerminals(state => state.terminals)
   const isCollapse = useTerminals(state => state.isCollapse)
+  const terminals = useTerminals(state => state.terminals)
+
+  const isDesktop = useResponsive('up', 'md')
 
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -45,6 +48,8 @@ export const TerminalsSearch = ({ commerceTerminals = [] }) => {
   }
 
   const handleToggleSidebar = () => {
+    const sentence = isDesktop && openSidebar
+    setCollapse(sentence)
     if (openSidebar) {
       setSearchQuery('')
       setTerminals(commerceTerminals)
@@ -77,7 +82,7 @@ export const TerminalsSearch = ({ commerceTerminals = [] }) => {
     <>
       <Box sx={{ p: 2, px: 0 }}>
         <Stack direction="row" justifyContent={openSidebar ? 'flex-end' : 'center'} alignItems={'center'} spacing={2}>
-          {!isCollapse && (
+          {(!isCollapse || !isDesktop) && (
             <ClickAwayListener onClickAway={handleClickAwaySearch}>
               <InputStyle
                 fullWidth
@@ -96,19 +101,21 @@ export const TerminalsSearch = ({ commerceTerminals = [] }) => {
               />
             </ClickAwayListener>
           )}
-          <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
-            <SidebarButtonStyle
-              size={'small'}
-              sx={{
-                ...(!openSidebar && {
-                  transform: 'rotate(180deg)'
-                })
-              }}
-              onClick={handleToggleSidebar}
-            >
-              {arrowIcon}
-            </SidebarButtonStyle>
-          </Stack>
+          {isDesktop && (
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
+              <SidebarButtonStyle
+                size={'small'}
+                sx={{
+                  ...(!openSidebar && {
+                    transform: 'rotate(180deg)'
+                  })
+                }}
+                onClick={handleToggleSidebar}
+              >
+                {arrowIcon}
+              </SidebarButtonStyle>
+            </Stack>
+          )}
         </Stack>
       </Box>
       {terminals?.length === 0 && commerceTerminals?.length > 0 && (

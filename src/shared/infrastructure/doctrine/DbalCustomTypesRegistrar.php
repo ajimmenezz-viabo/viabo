@@ -7,21 +7,18 @@ use function Lambdish\Phunctional\each;
 
 class DbalCustomTypesRegistrar
 {
-    private static bool $initialized = false;
 
     public static function register(array $dbalCustomTypesClasses): void
     {
-        if (!self::$initialized) {
-            each(self::registerType(), $dbalCustomTypesClasses);
-
-//            self::$initialized = true;
-        }
+        each(self::registerType() , $dbalCustomTypesClasses);
     }
 
     private static function registerType(): callable
     {
         return static function ($dbalCustomTypesClasses): void {
-            Type::addType($dbalCustomTypesClasses::customTypeName(), $dbalCustomTypesClasses);
+            if (!Type::hasType($dbalCustomTypesClasses::customTypeName())) {
+                Type::addType($dbalCustomTypesClasses::customTypeName() , $dbalCustomTypesClasses);
+            }
         };
     }
 

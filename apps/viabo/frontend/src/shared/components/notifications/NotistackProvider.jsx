@@ -4,7 +4,7 @@ import { Cancel, CheckCircle, Close, Warning } from '@mui/icons-material'
 import { Box, IconButton, styled } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { InfoIcon } from '@theme/overrides/components/CustomIcons'
-import { closeSnackbar, SnackbarProvider } from 'notistack'
+import { SnackbarProvider, closeSnackbar } from 'notistack'
 
 NotistackProvider.propTypes = {
   children: PropTypes.node
@@ -12,7 +12,7 @@ NotistackProvider.propTypes = {
 
 const StyledSnackbarProvider = styled(SnackbarProvider)(({ theme }) => ({
   '&.notistack-SnackbarContainer': {
-    width: 'calc(100vh - 200px)'
+    width: 'calc(100dvh - 200px)'
   },
   '&#notistack-snackbar': {
     maxWidth: '88%'

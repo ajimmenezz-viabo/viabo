@@ -10,17 +10,38 @@ export function useMaterialTable(isError, textError, others = {}) {
     enableStickyFooter: true,
     enableColumnResizing: true,
     layoutMode: 'grid',
+    muiTableHeadProps: {
+      sx: theme => ({
+        backgroundColor:
+          theme.palette.mode === 'dark' ? theme.palette.background.paper : theme.palette.background.neutral,
+        backgroundImage:
+          theme.palette.mode === 'dark'
+            ? `linear-gradient(to bottom, ${theme.palette.background.neutral} 0%, ${theme.palette.background.neutral} 100%)`
+            : 'none',
+        boxShadow: 'none',
+        backdropFilter: `blur(10px)`,
+        WebkitBackdropFilter: `blur(10px)`,
+        zIndex: 1000
+      })
+    },
+    muiTableHeadRowProps: {
+      sx: theme => ({
+        backgroundColor: 'inherit',
+        boxShadow: 'none'
+      })
+    },
     muiTableHeadCellProps: ({ column }) => ({
       sx: theme => ({
         color: column.getIsSorted() ? theme.palette.text.primary : theme.palette.text.secondary,
-        backgroundColor: theme.palette.neutral
+        backgroundColor: 'inherit',
+        boxShadow: 'none'
       })
     }),
     muiTableBodyRowProps: ({ row }) => ({
       onClick: row.getToggleSelectedHandler(),
       sx: theme => ({
         cursor: 'pointer',
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: 'inherit',
         '&.Mui-selected': {
           backgroundColor: theme.palette.action.selected,
           '&:hover': {
@@ -42,12 +63,12 @@ export function useMaterialTable(isError, textError, others = {}) {
     },
     muiBottomToolbarProps: {
       sx: theme => ({
-        backgroundColor: theme.palette.background.paper
+        backgroundColor: 'inherit'
       })
     },
     muiTopToolbarProps: {
       sx: theme => ({
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: 'inherit',
         '>div': {
           alignItems: 'center'
         }
@@ -69,11 +90,14 @@ export function useMaterialTable(isError, textError, others = {}) {
           })
         },
     muiTablePaperProps: ({ table }) => ({
+      elevation: 0,
       style: {
         zIndex: table.getState().isFullScreen ? 1500 : undefined
       },
       sx: theme => ({
-        boxShadow: theme.customShadows.card
+        boxShadow: 'none',
+        backgroundColor: table.getState().isFullScreen ? theme.palette.paper : 'transparent',
+        borderRadius: 0
       })
     }),
     muiTablePaginationProps: {

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Menu } from '@mui/icons-material'
 import { AppBar, Box, CssBaseline, IconButton, Stack, Toolbar } from '@mui/material'
 import { useCollapseDrawer, useResponsive } from '@theme/hooks'
-import { Outlet } from 'react-router-dom'
+import { Outlet, ScrollRestoration } from 'react-router-dom'
 
 import { ThemeMode } from './header'
 import AccountPopover from './header/AccountPopover'
@@ -20,7 +20,7 @@ export function DashboardLayout() {
   const [open, setOpen] = useState(false)
 
   return (
-    <Box sx={{ display: 'flex', height: '100vH' }}>
+    <Box sx={{ display: 'flex', height: '100dvH' }}>
       <CssBaseline />
       <SideBar toggled={open} setToggled={setOpen} isCollapse={isCollapse} setCollapsed={onToggleCollapse} />
       <Stack sx={{ overflow: 'auto', flexGrow: 1 }}>
@@ -29,7 +29,8 @@ export function DashboardLayout() {
           component="nav"
           sx={theme => ({
             ...cssStyles(theme).bgBlur(),
-            boxShadow: 'none'
+            boxShadow: 'none',
+            backgroundColor: 'inherit'
           })}
         >
           <Toolbar>
@@ -57,10 +58,11 @@ export function DashboardLayout() {
           </Toolbar>
         </AppBar>
 
-        <Box component="main" sx={{ pb: 3, position: 'relative' }}>
+        <Box component="main" sx={{ pb: 3, position: 'relative', height: '100%' }}>
           <Outlet />
         </Box>
       </Stack>
+      <ScrollRestoration />
     </Box>
   )
 }

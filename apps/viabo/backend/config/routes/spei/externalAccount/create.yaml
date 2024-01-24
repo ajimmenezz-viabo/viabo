@@ -1,0 +1,4 @@
+create-external-account:
+  path: '/api/spei/external-account/new'
+  controller: Viabo\Backend\Controller\spei\externalAccount\create\ExternalAccountCreatorController
+  methods: POST

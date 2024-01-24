@@ -18,5 +18,5 @@ services:
           collate: 'utf8_general_ci'
       - '%env(APP_ENV)%'
     tags:
-      - { name: bc.database_connection }
+      - { name: database_connection }
     public: true

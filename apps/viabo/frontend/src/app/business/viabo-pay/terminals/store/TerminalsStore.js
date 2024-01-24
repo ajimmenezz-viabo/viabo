@@ -2,7 +2,7 @@ import { createStore } from '@/app/shared/store'
 
 const initialState = {
   terminals: [],
-  isOpenList: false,
+  isOpenList: true,
   isCollapse: false,
   balance: { amount: '$0.00', month: null },
   globalBalance: { amount: '$0.00', month: null }

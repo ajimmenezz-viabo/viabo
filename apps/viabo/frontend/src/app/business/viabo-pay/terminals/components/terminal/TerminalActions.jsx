@@ -14,11 +14,16 @@ export const TerminalActions = () => {
     <>
       <Divider sx={{ borderStyle: 'dashed' }} />
       <Stack px={2} py={1} flexDirection={'row'} justifyContent={'space-between'}>
-        <Button startIcon={<Link />} onClick={() => setOpenPaymentLink(true)}>
+        <Button size="small" startIcon={<Link />} onClick={() => setOpenPaymentLink(true)}>
           Liga de Pago
         </Button>
-        <Button startIcon={<Apps />} sx={{ textWrap: 'nowrap' }} onClick={() => setOpenVirtualTerminal(true)}>
-          Terminal Virtual
+        <Button
+          size="small"
+          startIcon={<Apps />}
+          sx={{ textWrap: 'nowrap' }}
+          onClick={() => setOpenVirtualTerminal(true)}
+        >
+          Term. Virtual
         </Button>
       </Stack>
       <Suspense>

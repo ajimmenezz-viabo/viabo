@@ -12,6 +12,7 @@ imports:
   - { resource: ../../../../src/news/shared/infrastructure/symfony/dependencyInjection/news_database.yaml }
   - { resource: ../../../../src/landingPages/shared/infrastructure/symfony/dependencyInjection/landingPages_database.yaml }
   - { resource: ../../../../src/tickets/shared/infrastructure/symfony/dependencyInjection/tickets_database.yaml }
+  - { resource: ../../../../src/spei/shared/infrastructure/symfony/dependencyInjection/spei_database.yaml }
 
 services:
   # default configuration for services in *this* file

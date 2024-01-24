@@ -1,3 +1,5 @@
+import { convertCatalogToReactSelect } from '@/shared/utils'
+
 const banks = [
   {
     clabe: '002',
@@ -394,7 +396,7 @@ const banks = [
   },
   {
     clabe: 623,
-    marca: 'SKANDIA',
+    marca: 'SKANDIA VIDA',
     nombre: 'Skandia Vida, S.A. de C.V.'
   },
   {
@@ -484,7 +486,7 @@ const banks = [
   },
   {
     clabe: 649,
-    marca: 'SKANDIA',
+    marca: 'SKANDIA FONDOS',
     nombre: 'Skandia Operadora de Fondos, S.A. de C.V.'
   },
   {
@@ -535,3 +537,5 @@ const banks = [
 ]
 
 export const banksNames = banks.map(bank => bank.marca)
+
+export const bankCatalogs = convertCatalogToReactSelect(banks, 'clabe', 'marca')

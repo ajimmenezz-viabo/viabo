@@ -194,6 +194,7 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                                 key={submenu?.name}
                                 component={<Link to={submenu?.path} />}
                                 active={active}
+                                title={submenu?.name}
                                 icon={
                                   <Box
                                     component="span"

@@ -1,22 +1,18 @@
-import { path } from '@/routes/index.js'
+import { path } from '@/routes'
 
-const ROUTES = {
+export const VIABO_SPEI_ROUTES = {
+  home: { route: '/', name: 'Inicio2' },
   root: { route: 'viabo-spei', name: 'Viabo Spei' },
   dashboard: { route: 'dashboard', name: 'Dashboard' },
-  companies: { route: 'companies', name: 'Empresas' }
+  companies: { route: 'companies', name: 'Empresas' },
+  third_accounts: { route: 'third-accounts', name: 'Cuentas de Terceros' }
 }
 
-const ROOT = `/${ROUTES.root.route}`
+const ROOT = `/${VIABO_SPEI_ROUTES.root.route}`
 
-const PATHS = {
+export const VIABO_SPEI_PATHS = {
   root: ROOT,
-  dashboard: path(ROOT, `/${ROUTES.dashboard.route}`),
-  companies: path(ROOT, `/${ROUTES.companies.route}`)
+  dashboard: path(ROOT, `/${VIABO_SPEI_ROUTES.dashboard.route}`),
+  companies: path(ROOT, `/${VIABO_SPEI_ROUTES.companies.route}`),
+  third_accounts: path(ROOT, `/${VIABO_SPEI_ROUTES.third_accounts.route}`)
 }
-
-const viaboSpeiPaths = {
-  paths: PATHS,
-  routes: ROUTES
-}
-
-export { viaboSpeiPaths }

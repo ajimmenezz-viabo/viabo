@@ -1,19 +1,23 @@
-import { useState } from 'react'
+import { lazy } from 'react'
 
 import { Add } from '@mui/icons-material'
 import { Avatar, Box, Card, CardHeader, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 
-import NewBeneficiaryDrawer from './NewBeneficiaryDrawer'
-
+import { useSpeiThirdAccounts } from '../../../third-accounts/store'
 import { beneficiaresMock } from '../services'
 
+import { Lodable } from '@/shared/components/lodables'
 import { Scrollbar } from '@/shared/components/scroll'
 import { cssStyles } from '@/theme/utils'
+
+const NewSpeiThirdAccountDrawer = Lodable(
+  lazy(() => import('../../../third-accounts/components/new-third-account/NewSpeiThirdAccountDrawer'))
+)
 
 const CommerceSpeiBeneficiaries = () => {
   const _bankingContacts = []
 
-  const [open, setOpen] = useState()
+  const { setOpenNewSpeiThirdAccount } = useSpeiThirdAccounts()
 
   return (
     <>
@@ -26,7 +30,7 @@ const CommerceSpeiBeneficiaries = () => {
           subheader={`Tienes ${beneficiaresMock?.length || 0} beneficiarios`}
           action={
             <Tooltip title="Nuevo Beneficiario">
-              <IconButton color="primary" size="large" onClick={() => setOpen(true)}>
+              <IconButton color="primary" size="large" onClick={() => setOpenNewSpeiThirdAccount(true)}>
                 <Add />
               </IconButton>
             </Tooltip>
@@ -51,7 +55,7 @@ const CommerceSpeiBeneficiaries = () => {
           </Stack>
         </Scrollbar>
       </Card>
-      <NewBeneficiaryDrawer open={open} setOpen={setOpen} />
+      <NewSpeiThirdAccountDrawer />
     </>
   )
 }

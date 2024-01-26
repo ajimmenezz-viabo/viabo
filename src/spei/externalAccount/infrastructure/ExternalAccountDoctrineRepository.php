@@ -23,9 +23,19 @@ final class ExternalAccountDoctrineRepository extends DoctrineRepository impleme
         $this->persist($externalAccount);
     }
 
+    public function search(string $externalAccountId): ExternalAccount|null
+    {
+        return $this->repository(ExternalAccount::class)->find($externalAccountId);
+    }
+
     public function searchCriteria(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(ExternalAccount::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function update(ExternalAccount $externalAccount): void
+    {
+        $this->entityManager()->flush($externalAccount);
     }
 }

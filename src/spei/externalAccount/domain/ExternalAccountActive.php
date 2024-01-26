@@ -12,4 +12,9 @@ final class ExternalAccountActive extends StringValueObject
     {
         return new static('1');
     }
+
+    public function disable(): static
+    {
+        return new static('0');
+    }
 }

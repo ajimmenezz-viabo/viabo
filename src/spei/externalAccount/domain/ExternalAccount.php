@@ -6,6 +6,7 @@ namespace Viabo\spei\externalAccount\domain;
 
 use Viabo\shared\domain\aggregate\AggregateRoot;
 use Viabo\spei\externalAccount\domain\events\ExternalAccountCreatedDomainEvent;
+use Viabo\spei\externalAccount\domain\events\ExternalAccountDisabledDomainEvent;
 
 final class ExternalAccount extends AggregateRoot
 {
@@ -60,6 +61,12 @@ final class ExternalAccount extends AggregateRoot
     public function id(): string
     {
         return $this->id->value();
+    }
+
+    public function disable(): void
+    {
+        $this->active = $this->active->disable();
+        $this->record(new ExternalAccountDisabledDomainEvent($this->id() , $this->toArray()));
     }
 
     public function toArray(): array

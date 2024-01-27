@@ -28,4 +28,9 @@ final class SupportReasonDoctrineRepository extends DoctrineRepository implement
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(SupportReason::class)->matching($criteriaConvert)->toArray();
     }
+
+    public function searchAll(): array
+    {
+        return $this->repository(SupportReason::class)->findBy(['active.value' => '1']);
+    }
 }

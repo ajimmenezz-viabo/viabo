@@ -10,5 +10,7 @@ interface SupportReasonRepository
 {
     public function save(SupportReason $supportReason): void;
 
+    public function searchAll(): array;
+
     public function searchCriteria(Criteria $criteria): array;
 }

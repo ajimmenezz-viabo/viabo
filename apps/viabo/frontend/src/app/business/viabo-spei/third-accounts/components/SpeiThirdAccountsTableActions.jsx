@@ -1,17 +1,13 @@
-import { Edit } from '@mui/icons-material'
+import { DeleteForever } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/material'
 
 import { useSpeiThirdAccounts } from '../store'
-
-import { IOSSwitch } from '@/shared/components/form'
-import { CircularLoading } from '@/shared/components/loadings'
 
 export function getSpeiThirdAccountsTableActions(table) {
   const { row, closeMenu } = table
   const { original: rowData } = row
   const { status } = rowData
-  const { setOpenNewSpeiThirdAccount, setSpeiThirdAccount } = useSpeiThirdAccounts()
-  const isChangingStatus = false
+  const { setOpenDeleteSpeiThirdAccount, setSpeiThirdAccount } = useSpeiThirdAccounts()
 
   return (
     <Box
@@ -24,37 +20,18 @@ export function getSpeiThirdAccountsTableActions(table) {
         gap: '8px'
       }}
     >
-      {isChangingStatus ? (
-        <CircularLoading
-          size={15}
-          containerProps={{
-            display: 'flex',
-            ml: 1
-          }}
-        />
-      ) : (
-        <IOSSwitch
-          size="sm"
-          color={!status ? 'error' : 'success'}
-          checked={status || false}
-          inputProps={{ 'aria-label': 'controlled' }}
-          onChange={e => {}}
-          onClick={e => {
-            e.stopPropagation()
-          }}
-        />
-      )}
       {status && (
         <IconButton
           size="small"
           color="primary"
+          title="Borrar"
           onClick={e => {
             e.stopPropagation()
             setSpeiThirdAccount(rowData)
-            setOpenNewSpeiThirdAccount(true)
+            setOpenDeleteSpeiThirdAccount(true)
           }}
         >
-          <Edit size="small" fontSize="16px" />
+          <DeleteForever color="error" size="small" titleAccess="Borrar" />
         </IconButton>
       )}
     </Box>

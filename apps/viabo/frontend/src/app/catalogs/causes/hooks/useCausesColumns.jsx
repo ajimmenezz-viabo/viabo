@@ -24,7 +24,7 @@ export const useCausesColumns = () =>
       },
       {
         id: 'requesterProfile',
-        accessorFn: originalRow => originalRow?.requesterProfile?.id || null,
+        accessorFn: originalRow => originalRow?.requesterProfile?.name || null,
         header: 'Perfil Solicitante',
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
@@ -33,7 +33,7 @@ export const useCausesColumns = () =>
       },
       {
         id: 'receptorProfile',
-        accessorFn: originalRow => originalRow?.receptorProfile?.id || null,
+        accessorFn: originalRow => originalRow?.receptorProfile?.name || null,
         header: 'Perfil Receptor',
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row

@@ -1,6 +1,7 @@
 import { useFindProfiles } from '../../shared/hooks'
 import { CATALOGS_PATHS } from '../../shared/routes'
 import { NewCauseDrawer } from '../components'
+import { CausesList } from '../components/CausesList'
 import { useCausesStore } from '../store'
 
 import { PATH_DASHBOARD } from '@/routes'
@@ -26,6 +27,7 @@ export const CatalogCauses = () => {
           onClick={() => setOpenNewCause(true)}
           loading={isLoading}
         />
+        <CausesList />
       </ContainerPage>
       <NewCauseDrawer profiles={data} />
     </Page>

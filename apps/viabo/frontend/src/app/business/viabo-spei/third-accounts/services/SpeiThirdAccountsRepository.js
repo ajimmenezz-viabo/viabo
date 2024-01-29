@@ -16,3 +16,8 @@ export const getSpeiBanks = async () => {
   const { data } = await axios.get('/api/spei/banks')
   return SpeiBanksAdapter(data)
 }
+
+export const deleteSpeiThirdAccount = async account => {
+  const { data } = await axios.put('/api/spei/external-account/disable', account)
+  return data
+}

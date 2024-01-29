@@ -2,7 +2,8 @@ import { createStore } from '@/app/shared/store'
 
 const initialState = {
   account: null,
-  openNewAccount: false
+  openNewAccount: false,
+  openDeleteAccount: false
 }
 const speiThirdAccountsStore = (set, get) => ({
   ...initialState,
@@ -18,6 +19,15 @@ const speiThirdAccountsStore = (set, get) => ({
       }),
       false,
       'SET_OPEN_SPEI_NEW_THIRD_ACCOUNT'
+    )
+  },
+  setOpenDeleteSpeiThirdAccount: open => {
+    set(
+      state => ({
+        openDeleteAccount: open
+      }),
+      false,
+      'SET_OPEN_SPEI_DELETE_THIRD_ACCOUNT'
     )
   }
 })

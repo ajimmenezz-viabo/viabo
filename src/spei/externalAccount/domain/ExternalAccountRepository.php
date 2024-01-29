@@ -10,5 +10,9 @@ interface ExternalAccountRepository
 {
     public function save(ExternalAccount $externalAccount): void;
 
+    public function search(string $externalAccountId): ExternalAccount|null;
+
     public function searchCriteria(Criteria $criteria): array;
+
+    public function update(ExternalAccount $externalAccount): void;
 }

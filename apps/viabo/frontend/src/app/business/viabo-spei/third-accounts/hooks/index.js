@@ -1,4 +1,5 @@
 export * from './useCreateNewSpeiThirdAccount'
+export * from './useDeleteSpeiThirdAccount'
 export * from './useFindSpeiBanks'
 export * from './useFindSpeiThirdAccountsList'
 export * from './useSpeiThirdAccountsColumns'

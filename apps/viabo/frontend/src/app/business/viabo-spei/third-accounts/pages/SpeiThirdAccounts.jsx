@@ -11,6 +11,7 @@ import { Lodable } from '@/shared/components/lodables'
 const NewSpeiThirdAccountDrawer = Lodable(
   lazy(() => import('../components/new-third-account/NewSpeiThirdAccountDrawer'))
 )
+const AlertConfirmationDeleteAccount = Lodable(lazy(() => import('../components/AlertConfirmationDeleteAccount')))
 
 export const SpeiThirdAccounts = () => {
   const { thirdAccounts } = useViaboSpeiBreadCrumbs()
@@ -21,6 +22,7 @@ export const SpeiThirdAccounts = () => {
         <HeaderPage name={'Cuentas de Terceros '} links={thirdAccounts} />
         <SpeiThirdAccountsList />
         <NewSpeiThirdAccountDrawer />
+        <AlertConfirmationDeleteAccount />
       </ContainerPage>
     </Page>
   )

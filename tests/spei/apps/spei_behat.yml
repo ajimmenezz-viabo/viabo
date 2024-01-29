@@ -1,0 +1,20 @@
+spei_behat:
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      kernel:
+        class: Viabo\Backend\ViaboKernel
+        environment: ~
+      bootstrap: apps/bootstrap.php
+    Behat\MinkExtension:
+      sessions:
+        symfony:
+          symfony: ~
+      base_url: ''
+
+  suites:
+    external-account:
+      paths: [ tests/spei/apps/externalAccount ]
+      contexts:
+        - Viabo\Tests\spei\apps\context\SpeiContext
+        - Viabo\Tests\shared\infrastructure\behat\ApplicationFeatureContext
+        - Viabo\Tests\shared\infrastructure\behat\APIContext

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { MoreVert, Person } from '@mui/icons-material'
 import {
@@ -17,10 +17,13 @@ import {
 import { BsBank2 } from 'react-icons/bs'
 import { PiEyeBold, PiEyeClosedBold } from 'react-icons/pi'
 
+import { useFindViaboSpeiBalance } from '../../../shared/hooks'
 import { useAdminDashboardSpeiStore } from '../store'
 
 import { MenuPopover } from '@/shared/components/containers'
 import { FullLogo } from '@/shared/components/images'
+import { RequestLoadingComponent } from '@/shared/components/loadings'
+import { ErrorRequestPage } from '@/shared/components/notifications'
 import { fCurrency } from '@/shared/utils'
 
 const HEIGHT = 330
@@ -67,7 +70,15 @@ const shadowStyle = {
 }
 
 const AdminSpeiCurrentBalance = () => {
+  const { data, isLoading, isError, error, refetch } = useFindViaboSpeiBalance()
   const stpAccount = useAdminDashboardSpeiStore(state => state.stpAccount)
+  const setStpAccount = useAdminDashboardSpeiStore(state => state.setStpAccount)
+
+  useEffect(() => {
+    if (data) {
+      setStpAccount(data)
+    }
+  }, [data])
 
   const [show, setShow] = useState(false)
 
@@ -80,56 +91,62 @@ const AdminSpeiCurrentBalance = () => {
         }}
       >
         <CardItemStyle>
-          <CardHeader
-            sx={{ p: 0, pb: 3 }}
-            avatar={
-              <Avatar sx={{ backgroundColor: theme => theme.palette.background.default }}>
-                <Person color="primary" />
-              </Avatar>
-            }
-            action={
-              <Stack direction={'row'} spacing={1} alignItems={'center'} justifyContent={'center'}>
-                <Stack direction={'row'} spacing={1} alignItems={'center'} justifyContent={'center'}>
-                  <FullLogo sx={{ width: 60 }} />
-                  <Typography variant="h4" color={'primary.main'}>
-                    |
-                  </Typography>
-                  <Typography variant="h5" color={'primary.main'}>
-                    spei
-                  </Typography>
-                </Stack>
-                <MoreMenuButton />
-              </Stack>
-            }
-            title="Ramses Hoyos"
-            subheader="Admin"
-          />
-          <CardContent sx={{ p: 0 }}>
-            <Stack gap={4}>
-              <Stack gap={1}>
-                <Typography color={'primary.main'} sx={{ typography: 'subtitle1', fontWeight: 'bold' }}>
-                  Balance Total
-                </Typography>
-                <Typography sx={{ typography: 'h2' }}>{fCurrency(stpAccount?.balance)}</Typography>
-              </Stack>
+          {isLoading && <RequestLoadingComponent />}
+          {!isLoading && !isError && (
+            <>
+              <CardHeader
+                sx={{ p: 0, pb: 3 }}
+                avatar={
+                  <Avatar sx={{ backgroundColor: theme => theme.palette.background.default }}>
+                    <Person color="primary" />
+                  </Avatar>
+                }
+                action={
+                  <Stack direction={'row'} spacing={1} alignItems={'center'} justifyContent={'center'}>
+                    <Stack direction={'row'} spacing={1} alignItems={'center'} justifyContent={'center'}>
+                      <FullLogo sx={{ width: 60 }} />
+                      <Typography variant="h4" color={'primary.main'}>
+                        |
+                      </Typography>
+                      <Typography variant="h5" color={'primary.main'}>
+                        spei
+                      </Typography>
+                    </Stack>
+                    <MoreMenuButton />
+                  </Stack>
+                }
+                title="Ramses Hoyos"
+                subheader="Admin"
+              />
+              <CardContent sx={{ p: 0 }}>
+                <Stack gap={4}>
+                  <Stack gap={1}>
+                    <Typography color={'primary.main'} sx={{ typography: 'subtitle1', fontWeight: 'bold' }}>
+                      Balance Total
+                    </Typography>
+                    <Typography sx={{ typography: 'h2' }}>{fCurrency(stpAccount?.balance)}</Typography>
+                  </Stack>
 
-              <Stack gap={2}>
-                <Typography color={'primary.main'} sx={{ typography: 'subtitle1', fontWeight: 'bold' }}>
-                  Cuenta Origen | STP
-                </Typography>
-                <Stack direction={'row'} spacing={1} alignItems={'center'}>
-                  <Typography sx={{ typography: 'h6' }}>
-                    {show ? stpAccount?.accountNumber : stpAccount?.accountNumberHidden}
-                  </Typography>
-                  <Box>
-                    <IconButton size={'small'} color="inherit" onClick={() => setShow(!show)} sx={{ opacity: 0.7 }}>
-                      {show ? <PiEyeBold /> : <PiEyeClosedBold />}
-                    </IconButton>
-                  </Box>
+                  <Stack gap={2}>
+                    <Typography color={'primary.main'} sx={{ typography: 'subtitle1', fontWeight: 'bold' }}>
+                      Cuenta Origen | STP
+                    </Typography>
+                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                      <Typography sx={{ typography: 'h6' }}>
+                        {show ? stpAccount?.accountNumber : stpAccount?.accountNumberHidden}
+                      </Typography>
+                      <Box>
+                        <IconButton size={'small'} color="inherit" onClick={() => setShow(!show)} sx={{ opacity: 0.7 }}>
+                          {show ? <PiEyeBold /> : <PiEyeClosedBold />}
+                        </IconButton>
+                      </Box>
+                    </Stack>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </Stack>
-          </CardContent>
+              </CardContent>
+            </>
+          )}
+          {!isLoading && isError && <ErrorRequestPage errorMessage={error} handleButton={refetch} widthImage="30%" />}
         </CardItemStyle>
       </Box>
 

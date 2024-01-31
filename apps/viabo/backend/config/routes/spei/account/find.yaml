@@ -1,4 +1,4 @@
-find-account:
-  path: '/api/spei/account'
-  controller: Viabo\Backend\Controller\spei\account\find\AccountFinderController
+find-account-balance:
+  path: '/api/spei/account/balance'
+  controller: Viabo\Backend\Controller\spei\account\find\AccountBalanceFinderController
   methods: GET

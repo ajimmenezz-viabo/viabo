@@ -11,10 +11,9 @@ use Viabo\business\commerceUser\application\find\CommerceQueryByUser;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\stpAccount\application\find\AccountBalanceQuery;
-use Viabo\spei\stpAccount\application\find\StpCredentialQuery;
 
 
-final readonly class AccountFinderController extends ApiController
+final readonly class AccountBalanceFinderController extends ApiController
 {
 
     public function __invoke(Request $request): Response
@@ -29,7 +28,7 @@ final readonly class AccountFinderController extends ApiController
                 $commerce['stpAccountId']
             ));
 
-            return new JsonResponse($accountBalance->data);
+            return new JsonResponse($this->opensslEncrypt($accountBalance->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());
         }

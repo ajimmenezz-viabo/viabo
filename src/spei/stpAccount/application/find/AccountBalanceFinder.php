@@ -24,8 +24,16 @@ final readonly class AccountBalanceFinder
     {
         $account = $this->finder->__invoke($profileId , $userStpAccountId , $commerceStpAccountId);
         $balance = $this->STPRepository->searchBalance($account);
-        $balance['accountNumber'] = $account->number();
 
-        return new AccountResponse($balance);
+        return new AccountResponse($this->format($balance , $account->number()));
+    }
+
+    private function format(array $balance , string $number): array
+    {
+        return [
+            'accountNumber' => $number ,
+            'balance' => $balance['saldo'] ,
+            'pendingCharges' => $balance['cargosPendientes']
+        ];
     }
 }

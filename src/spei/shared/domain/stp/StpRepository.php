@@ -13,4 +13,6 @@ interface StpRepository
 
     public function processPayment(Transaction $transaction): string;
 
+    public function speiOut(array $stpAccount): array;
+
 }

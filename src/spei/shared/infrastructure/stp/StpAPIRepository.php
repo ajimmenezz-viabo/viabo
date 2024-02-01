@@ -53,6 +53,18 @@ final readonly class StpAPIRepository implements StpRepository
         return strval($response['resultado']['id']);
     }
 
+    public function speiOut(array $stpAccount): array
+    {
+        $inputData = [
+            'app' => 'getConciliation' ,
+            'keys' => $stpAccount['key'] ,
+            'company' => $stpAccount['company']
+        ];
+
+        $response = $this->request($inputData , $stpAccount['url']);
+        return $response['datos'];
+    }
+
     public function request(array $inputData , string $api)
     {
 

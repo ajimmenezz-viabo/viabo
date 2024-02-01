@@ -33,9 +33,8 @@ final readonly class SpeiPaymentProcessor
         $this->registerTransaction($userId , $concept , $stpAccount , $externalAccounts);
     }
 
-    private function ensureSufficientBalance(string $balance , array $externalAccounts): void
+    private function ensureSufficientBalance(float $balance , array $externalAccounts): void
     {
-        $balance = NumberFormat::float($balance);
         $total = array_sum(array_map(function (array $externalAccount) {
             return NumberFormat::float($externalAccount['amount']);
         } , $externalAccounts));

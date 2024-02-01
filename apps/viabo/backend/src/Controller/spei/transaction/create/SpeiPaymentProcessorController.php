@@ -98,7 +98,7 @@ final readonly class SpeiPaymentProcessorController extends ApiController
     {
         return array_map(function (array $externalAccount) {
             $transaction = $this->ask(new TransactionUrlQuery($externalAccount['transactionId']));
-            return $transaction->data['url'];
+            return ['url' => $transaction->data['url'] , 'externalAccount' => $externalAccount['beneficiary']];
         } , $externalAccounts);
     }
 }

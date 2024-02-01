@@ -10,7 +10,7 @@ import AccountPopover from './header/AccountPopover'
 import News from './header/News'
 import SideBar from './SideBar'
 
-import { TicketSupport } from '@/app/ticket-support/new-ticket-support/pages/TicketSupport'
+import { TicketSupport } from '@/app/support/new-ticket-support/pages/TicketSupport'
 import { cssStyles } from '@/theme/utils'
 
 export function DashboardLayout() {

@@ -7,6 +7,7 @@ import {
   GeneralRouter,
   ManagementRouter,
   PublicRouter,
+  SupportRouter,
   ViaboCardRouter,
   ViaboPayRouter,
   ViaboSpeiRouter
@@ -51,6 +52,7 @@ export const AppRouter = user =>
         ...GeneralRouter,
         CatalogsRouter,
         ViaboSpeiRouter,
+        SupportRouter,
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

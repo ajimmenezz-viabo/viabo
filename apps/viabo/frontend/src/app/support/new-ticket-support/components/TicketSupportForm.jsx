@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import { LoadingButton } from '@mui/lab'
-import { Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { motion } from 'framer-motion'
 import * as Yup from 'yup'
@@ -97,7 +97,10 @@ const TicketSupportForm = ({ causes = [], onSuccess }) => {
           </Stack>
           <Stack spacing={1}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Causa:
+              Causa:{' '}
+              <Box component={'span'} color={'error.main'}>
+                *
+              </Box>
             </Typography>
 
             <Typography fontWeight={'bold'} color={errors.cause ? 'error.main' : 'text.primary'} variant="subtitle1">
@@ -108,7 +111,10 @@ const TicketSupportForm = ({ causes = [], onSuccess }) => {
 
         <Stack spacing={1}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Descripción
+            Descripción{' '}
+            <Box component={'span'} color={'error.main'}>
+              *
+            </Box>
           </Typography>
 
           <RFTextField
@@ -118,7 +124,7 @@ const TicketSupportForm = ({ causes = [], onSuccess }) => {
             rows={2}
             disabled={loading}
             inputProps={{ maxLength: '200' }}
-            placeholder={'Descripción de la causa...'}
+            placeholder={'Descripción del ticket...'}
           />
         </Stack>
 

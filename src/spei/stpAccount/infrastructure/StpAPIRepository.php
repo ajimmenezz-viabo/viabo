@@ -6,6 +6,7 @@ namespace Viabo\spei\stpAccount\infrastructure;
 
 use Viabo\spei\stpAccount\domain\StpAccount;
 use Viabo\spei\stpAccount\domain\StpRepository;
+use Viabo\spei\transaction\domain\Transaction;
 
 final readonly class StpAPIRepository implements StpRepository
 {
@@ -21,6 +22,31 @@ final readonly class StpAPIRepository implements StpRepository
 
         $response = $this->request($inputData , $data['url']);
         return $response['respuesta'];
+    }
+
+    public function processPayment(Transaction $transaction): void
+    {
+        $keys = $transaction->stpKeys();
+        $data = $transaction->toArray();
+        $inputData = [
+            'app' => 'getOrder' ,
+            'keys' => $keys['key'] ,
+            'Empresa' => $data['sourceName'] ,
+            'TipoPago' => 1 ,
+            'ClaveRastreo' => "ROB{$data['trackingKey']}" ,
+            'ConceptoPago' => $data['concept'] ,
+            'CuentaOrdenante' => $data['sourceAccount'] ,
+            'NombreOrdenante' => $data['sourceName'] ,
+            'RfcCurpOrdenante' => "ND" ,
+            'CuentaBeneficiario' => $data['destinationAccount'] ,
+            'NombreBeneficiario' => $data['destinationName'] ,
+            'ReferenciaNumerica' => $data['reference'] ,
+            'InstitucionOperante' => 90646 ,
+            'RfcCurpBeneficiario' => "ND" ,
+            'TipoCuentaOrdenante' => 40 ,
+            'InstitucionContraparte' => 90646 ,
+            'TipoCuentaBeneficiario' => 40
+        ];
     }
 
     public function request(array $inputData , string $api)

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\Backend\Controller\spei\account\find;
+namespace Viabo\Backend\Controller\spei\stpAccount\find;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

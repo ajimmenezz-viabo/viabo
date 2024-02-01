@@ -1,0 +1,4 @@
+find-transaction-spei:
+  path: "/spei/transaccion/{referenceNumber}"
+  controller: Viabo\Backend\Controller\spei\transaction\find\TransactionViewController
+  methods: GET

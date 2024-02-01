@@ -1,0 +1,4 @@
+find-account-balance:
+  path: '/api/spei/account/balance'
+  controller: Viabo\Backend\Controller\spei\stpAccount\find\AccountBalanceFinderController
+  methods: GET

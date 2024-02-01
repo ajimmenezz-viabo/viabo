@@ -8,10 +8,10 @@ use Viabo\shared\domain\valueObjects\DateTimeValueObject;
 
 final class TransactionTrackingKey extends DateTimeValueObject
 {
-    public static function create(): static
+    public static function create(string $acronym): static
     {
         $trackingKey = self::todayDate();
-        $trackingKey->value = $trackingKey->date->formatDateTime($trackingKey->value , 'YmdHis');
+        $trackingKey->value = $acronym . $trackingKey->date->formatDateTime($trackingKey->value , 'YmdHis');;
         return $trackingKey;
     }
 

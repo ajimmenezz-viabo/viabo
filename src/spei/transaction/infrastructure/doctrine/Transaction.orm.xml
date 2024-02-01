@@ -9,12 +9,14 @@
         <embedded name="type" class="TransactionType" use-column-prefix="false"/>
         <embedded name="reference" class="TransactionReference" use-column-prefix="false"/>
         <embedded name="trackingKey" class="TransactionTrackingKey" use-column-prefix="false"/>
+        <embedded name="stpId" class="TransactionStpId" use-column-prefix="false"/>
         <embedded name="concept" class="TransactionConcept" use-column-prefix="false"/>
         <embedded name="sourceAccount" class="TransactionSourceAccount" use-column-prefix="false"/>
         <embedded name="sourceName" class="TransactionSourceName" use-column-prefix="false"/>
         <embedded name="destinationAccount" class="TransactionDestinationAccount" use-column-prefix="false"/>
         <embedded name="destinationName" class="TransactionDestinationName" use-column-prefix="false"/>
         <embedded name="destinationEmail" class="TransactionDestinationEmail" use-column-prefix="false"/>
+        <embedded name="destinationBankCode" class="TransactionDestinationBankCode" use-column-prefix="false"/>
         <embedded name="amount" class="TransactionAmount" use-column-prefix="false"/>
         <embedded name="statusId" class="TransactionStatusId" use-column-prefix="false"/>
         <embedded name="createdByUser" class="TransactionCreatedByUser" use-column-prefix="false"/>

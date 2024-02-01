@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\spei\stpAccount\infrastructure;
+namespace Viabo\spei\shared\infrastructure\stp;
 
 
+use Viabo\spei\shared\domain\stp\StpRepository;
 use Viabo\spei\stpAccount\domain\StpAccount;
-use Viabo\spei\stpAccount\domain\StpRepository;
 use Viabo\spei\transaction\domain\Transaction;
 
 final readonly class StpAPIRepository implements StpRepository
@@ -24,16 +24,17 @@ final readonly class StpAPIRepository implements StpRepository
         return $response['respuesta'];
     }
 
-    public function processPayment(Transaction $transaction): void
+    public function processPayment(Transaction $transaction): string
     {
         $keys = $transaction->stpKeys();
         $data = $transaction->toArray();
         $inputData = [
             'app' => 'getOrder' ,
             'keys' => $keys['key'] ,
+            'Monto' => $data['amount'] ,
             'Empresa' => $data['sourceName'] ,
             'TipoPago' => 1 ,
-            'ClaveRastreo' => "ROB{$data['trackingKey']}" ,
+            'ClaveRastreo' => $data['trackingKey'] ,
             'ConceptoPago' => $data['concept'] ,
             'CuentaOrdenante' => $data['sourceAccount'] ,
             'NombreOrdenante' => $data['sourceName'] ,
@@ -44,13 +45,17 @@ final readonly class StpAPIRepository implements StpRepository
             'InstitucionOperante' => 90646 ,
             'RfcCurpBeneficiario' => "ND" ,
             'TipoCuentaOrdenante' => 40 ,
-            'InstitucionContraparte' => 90646 ,
+            'InstitucionContraparte' => $data['destinationBankCode'] ,
             'TipoCuentaBeneficiario' => 40
         ];
+
+        $response = $this->request($inputData , $keys['url']);
+        return strval($response['resultado']['id']);
     }
 
     public function request(array $inputData , string $api)
     {
+
         $curl = curl_init();
         curl_setopt($curl , CURLOPT_URL , $api);
         curl_setopt($curl , CURLOPT_RETURNTRANSFER , true);

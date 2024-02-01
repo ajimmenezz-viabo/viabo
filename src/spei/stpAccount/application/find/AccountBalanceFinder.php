@@ -4,8 +4,8 @@
 namespace Viabo\spei\stpAccount\application\find;
 
 
+use Viabo\spei\shared\domain\stp\StpRepository;
 use Viabo\spei\stpAccount\domain\services\StpAccountFinder;
-use Viabo\spei\stpAccount\domain\StpRepository;
 
 final readonly class AccountBalanceFinder
 {

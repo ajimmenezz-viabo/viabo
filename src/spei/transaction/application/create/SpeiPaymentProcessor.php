@@ -6,7 +6,7 @@ namespace Viabo\spei\transaction\application\create;
 
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\utils\NumberFormat;
-use Viabo\spei\stpAccount\domain\StpRepository;
+use Viabo\spei\shared\domain\stp\StpRepository;
 use Viabo\spei\transaction\domain\exceptions\TransactionInsufficientBalance;
 use Viabo\spei\transaction\domain\Transaction;
 use Viabo\spei\transaction\domain\TransactionRepository;
@@ -57,15 +57,19 @@ final readonly class SpeiPaymentProcessor
                 $externalAccount['transactionId'] ,
                 $concept ,
                 $stpAccount['number'] ,
+                $stpAccount['acronym'] ,
                 $stpAccount['company'] ,
                 $externalAccount['interbankCLABE'] ,
                 $externalAccount['beneficiary'] ,
                 $externalAccount['email'] ,
+                $externalAccount['bankCode'] ,
                 $externalAccount['amount'] ,
                 $userId
             );
             $transaction->setStpKeys($stpAccount['key'] , $stpAccount['url']);
-            $this->stpRepository->processPayment($transaction);
+            $stpId = $this->stpRepository->processPayment($transaction);
+            $transaction->updateStpId($stpId);
+            $transaction->eventCreated();
             $this->repository->save($transaction);
 
             $this->bus->publish(...$transaction->pullDomainEvents());

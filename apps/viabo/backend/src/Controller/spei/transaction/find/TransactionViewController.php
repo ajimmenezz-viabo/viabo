@@ -8,15 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\spei\transaction\application\find\TransactionQueryByReference;
+use Viabo\spei\transaction\application\find\TransactionQuery;
 
 final readonly class TransactionViewController extends ApiController
 {
 
-    public function __invoke(int $referenceNumber , Request $request , Environment $twig): Response
+    public function __invoke(string $transactionId , Request $request , Environment $twig): Response
     {
         try {
-            $transaction = $this->ask(new TransactionQueryByReference($referenceNumber));
+            $transaction = $this->ask(new TransactionQuery($transactionId));
             $data = [
                 'reference' => $transaction->data['reference'] ,
                 'trackingKey' => $transaction->data['trackingKey'] ,

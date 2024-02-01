@@ -7,6 +7,7 @@
     <entity name="Viabo\spei\stpAccount\domain\StpAccount" table="t_spei_stp_accounts">
         <embedded name="id" class="StpAccountId" use-column-prefix="false"/>
         <embedded name="number" class="StpAccountNumber" use-column-prefix="false"/>
+        <embedded name="acronym" class="StpAccountAcronym" use-column-prefix="false"/>
         <embedded name="company" class="StpAccountCompany" use-column-prefix="false"/>
         <embedded name="key" class="StpAccountKey" use-column-prefix="false"/>
         <embedded name="url" class="StpAccountUrl" use-column-prefix="false"/>

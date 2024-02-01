@@ -14,20 +14,22 @@ final class Transaction extends AggregateRoot
 
     public function __construct(
         private TransactionId                 $id ,
-        private TransactionType               $type ,
-        private TransactionReference          $reference ,
-        private TransactionTrackingKey        $trackingKey ,
-        private TransactionConcept            $concept ,
-        private TransactionSourceAccount      $sourceAccount ,
-        private TransactionSourceName         $sourceName ,
-        private TransactionDestinationAccount $destinationAccount ,
-        private TransactionDestinationName    $destinationName ,
-        private TransactionDestinationEmail   $destinationEmail ,
-        private TransactionAmount             $amount ,
-        private TransactionStatusId           $statusId ,
-        private TransactionCreatedByUser      $createdByUser ,
-        private TransactionCreateDate         $createDate ,
-        private TransactionActive             $active
+        private TransactionType                $type ,
+        private TransactionReference           $reference ,
+        private TransactionTrackingKey         $trackingKey ,
+        private TransactionStpId               $stpId ,
+        private TransactionConcept             $concept ,
+        private TransactionSourceAccount       $sourceAccount ,
+        private TransactionSourceName          $sourceName ,
+        private TransactionDestinationAccount  $destinationAccount ,
+        private TransactionDestinationName     $destinationName ,
+        private TransactionDestinationEmail    $destinationEmail ,
+        private TransactionDestinationBankCode $destinationBankCode ,
+        private TransactionAmount              $amount ,
+        private TransactionStatusId            $statusId ,
+        private TransactionCreatedByUser       $createdByUser ,
+        private TransactionCreateDate          $createDate ,
+        private TransactionActive              $active
     )
     {
         $this->sptKeys = ['key' => '' , 'url' => ''];
@@ -37,34 +39,35 @@ final class Transaction extends AggregateRoot
         string $transactionId ,
         string $concept ,
         string $sourceAccount ,
+        string $sourceAcronym ,
         string $sourceName ,
         string $destinationAccount ,
         string $destinationName ,
         string $destinationEmail ,
+        string $destinationBankCode ,
         float  $amount ,
         string $userId
     ): static
     {
-        $transaction = new static(
+        return new static(
             new TransactionId($transactionId) ,
             TransactionType::out() ,
             TransactionReference::random() ,
-            TransactionTrackingKey::create() ,
+            TransactionTrackingKey::create($sourceAcronym) ,
+            TransactionStpId::empty() ,
             TransactionConcept::create($concept) ,
             TransactionSourceAccount::create($sourceAccount) ,
             TransactionSourceName::create($sourceName) ,
             TransactionDestinationAccount::create($destinationAccount) ,
             TransactionDestinationName::create($destinationName) ,
             new TransactionDestinationEmail($destinationEmail) ,
+            TransactionDestinationBankCode::create($destinationBankCode) ,
             TransactionAmount::create($amount) ,
             TransactionStatusId::inProcess() ,
             new TransactionCreatedByUser($userId) ,
             TransactionCreateDate::todayDate() ,
             TransactionActive::enable() ,
         );
-
-        $transaction->record(new TransactionCreatedDomainEvent($transaction->id() , $transaction->toArray()));
-        return $transaction;
     }
 
     public function id(): string
@@ -85,7 +88,17 @@ final class Transaction extends AggregateRoot
 
     public function url(): string
     {
-        return URL::get() . "/spei/transaccion/" . $this->reference->value();
+        return URL::get() . "/spei/transaccion/" . $this->id();
+    }
+
+    public function updateStpId(string $stpId): void
+    {
+        $this->stpId = $this->stpId->update($stpId);
+    }
+
+    public function eventCreated(): void
+    {
+        $this->record(new TransactionCreatedDomainEvent($this->id() , $this->toArray()));
     }
 
     public function toArray(): array
@@ -95,12 +108,14 @@ final class Transaction extends AggregateRoot
             'type' => $this->type->value() ,
             'reference' => $this->reference->value() ,
             'trackingKey' => $this->trackingKey->value() ,
+            'stpId' => $this->stpId->value() ,
             'concept' => $this->concept->value() ,
             'sourceAccount' => $this->sourceAccount->value() ,
             'sourceName' => $this->sourceName->value() ,
             'destinationAccount' => $this->destinationAccount->value() ,
             'destinationName' => $this->destinationName->value() ,
             'destinationEmail' => $this->destinationEmail->value() ,
+            'destinationBankCode' => $this->destinationBankCode->value() ,
             'amount' => $this->amount->value() ,
             'amountMoneyFormat' => $this->amount->moneyFormat() ,
             'statusId' => $this->statusId->value() ,

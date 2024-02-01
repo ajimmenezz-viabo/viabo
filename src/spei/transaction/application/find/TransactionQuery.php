@@ -6,9 +6,9 @@ namespace Viabo\spei\transaction\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class TransactionQueryByReference implements Query
+final readonly class TransactionQuery implements Query
 {
-    public function __construct(public int $referenceNumber)
+    public function __construct(public string $transactionId)
     {
     }
 }

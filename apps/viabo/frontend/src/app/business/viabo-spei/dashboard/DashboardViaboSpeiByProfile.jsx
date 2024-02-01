@@ -1,3 +1,4 @@
+import AdminDashboardViaboSpei from './admin-stp/pages/AdminDashboardViaboSpei'
 import DashboardCommerceViaboSpei from './commerce/pages/DashboardCommerceViaboSpei'
 
 import { VIABO_SPEI_PERMISSIONS } from '../shared/permissions'
@@ -17,6 +18,7 @@ export const DashboardViaboSpeiByProfile = () => {
       <ContainerPage sx={{ pb: 3 }}>
         <HeaderPage name={'Dashboard'} links={[]} />
         {isCommerceViaboSpei && <DashboardCommerceViaboSpei />}
+        {isAdminViaboSpei && <AdminDashboardViaboSpei />}
       </ContainerPage>
     </Page>
   )

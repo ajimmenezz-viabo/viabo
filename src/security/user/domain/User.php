@@ -19,15 +19,16 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class User extends AggregateRoot
 {
     public function __construct(
-        private UserId       $id ,
-        private UserProfile  $profile ,
-        private UserName     $name ,
-        private UserLastname $lastname ,
-        private UserPhone    $phone ,
-        private UserEmail    $email ,
-        private UserPassword $password ,
-        private UserRegister $register ,
-        private UserActive   $active
+        private UserId           $id ,
+        private UserProfile      $profile ,
+        private UserName         $name ,
+        private UserLastname     $lastname ,
+        private UserPhone        $phone ,
+        private UserEmail        $email ,
+        private UserPassword     $password ,
+        private UserStpAccountId $stpAccountId ,
+        private UserRegister     $register ,
+        private UserActive       $active
     )
     {
     }
@@ -48,6 +49,7 @@ final class User extends AggregateRoot
             $phone ,
             $email ,
             $password ,
+            UserStpAccountId::empty(),
             UserRegister::todayDate() ,
             new UserActive('1') ,
         );
@@ -67,6 +69,7 @@ final class User extends AggregateRoot
             $phone ,
             $email ,
             UserPassword::random() ,
+            UserStpAccountId::empty(),
             UserRegister::todayDate() ,
             new UserActive('1') ,
         );
@@ -87,6 +90,7 @@ final class User extends AggregateRoot
             $phone ,
             $email ,
             UserPassword::random() ,
+            UserStpAccountId::empty(),
             UserRegister::todayDate() ,
             new UserActive('1') ,
         );
@@ -154,7 +158,7 @@ final class User extends AggregateRoot
             $this->id->value() ,
             $this->toArray() ,
             $this->password::$passwordRandom ,
-            $cardNumber,
+            $cardNumber ,
             $legalRepresentative
         ));
     }
@@ -186,6 +190,7 @@ final class User extends AggregateRoot
             'phone' => $this->phone->value() ,
             'email' => $this->email->value() ,
             'password' => $this->password->value() ,
+            'stpAccountId' => $this->stpAccountId->value() ,
             'register' => $this->register->value() ,
             'active' => $this->active->value()
         ];

@@ -32,6 +32,7 @@
         <field name="allowTransactions" column="AllowTransactions"/>
         <field name="statusId" column="StatusId"/>
         <field name="statusName" column="StatusName"/>
+        <field name="stpAccountId" column="StpAccountId"/>
         <field name="registerStep" column="RegisterStep"/>
         <field name="services" column="Services"/>
         <field name="documents" column="Documents"/>

@@ -1,0 +1,4 @@
+transaction-process-payments:
+  path: '/api/spei/transaction/process-payments'
+  controller: Viabo\Backend\Controller\spei\transaction\create\SpeiPaymentProcessorController
+  methods: POST

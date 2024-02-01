@@ -22,21 +22,22 @@ final class Commerce extends AggregateRoot
         private CommerceRfc                 $rfc ,
         private CommercePostalAddress       $postalAddress ,
         private CommercePhoneNumbers        $phoneNumbers ,
-        private CommerceLogo                $logo ,
-        private CommerceSlug                $slug ,
-        private CommercePublicTerminal      $publicTerminal ,
-        private CommerceEmployees           $employees ,
-        private CommerceBranchOffices       $branchOffices ,
-        private CommercePointSaleTerminal   $pointSaleTerminal ,
-        private CommercePaymentApi          $paymentApi ,
-        private CommerceType                $type ,
-        private CommerceAllowTransactions   $allowTransactions ,
-        private CommerceStatusId            $statusId ,
-        private CommerceRegisterStep        $registerStep ,
-        private CommerceUpdatedByUser       $updatedByUser ,
-        private CommerceUpdateDate          $updateDate ,
-        private CommerceRegister            $register ,
-        private CommerceActive              $active
+        private CommerceLogo              $logo ,
+        private CommerceSlug              $slug ,
+        private CommercePublicTerminal    $publicTerminal ,
+        private CommerceEmployees         $employees ,
+        private CommerceBranchOffices     $branchOffices ,
+        private CommercePointSaleTerminal $pointSaleTerminal ,
+        private CommercePaymentApi        $paymentApi ,
+        private CommerceType              $type ,
+        private CommerceAllowTransactions $allowTransactions ,
+        private CommerceStatusId          $statusId ,
+        private CommerceStpAccountId      $stpAccountId ,
+        private CommerceRegisterStep      $registerStep ,
+        private CommerceUpdatedByUser     $updatedByUser ,
+        private CommerceUpdateDate        $updateDate ,
+        private CommerceRegister          $register ,
+        private CommerceActive            $active
     )
     {
     }
@@ -63,6 +64,7 @@ final class Commerce extends AggregateRoot
             new CommerceType('1') ,
             new CommerceAllowTransactions('1') ,
             new CommerceStatusId('1') ,
+            CommerceStpAccountId::empty() ,
             CommerceRegisterStep::start() ,
             CommerceUpdatedByUser::empty() ,
             CommerceUpdateDate::empty() ,
@@ -97,6 +99,7 @@ final class Commerce extends AggregateRoot
             new CommerceType('2') ,
             new CommerceAllowTransactions('0') ,
             new CommerceStatusId('3') ,
+            CommerceStpAccountId::empty() ,
             new CommerceRegisterStep('4') ,
             CommerceUpdatedByUser::empty() ,
             CommerceUpdateDate::empty() ,
@@ -125,7 +128,7 @@ final class Commerce extends AggregateRoot
     {
         $this->fiscalPersonType = $this->fiscalPersonType->update($fiscalPersonType);
         $this->fiscalName = $this->fiscalName->update($fiscalName);
-        $this->tradeName = $this->tradeName->update($tradeName, $registerStep);
+        $this->tradeName = $this->tradeName->update($tradeName , $registerStep);
         $this->rfc = $this->rfc->update($rfc);
         $this->postalAddress = $this->postalAddress->update($postalAddress);
         $this->phoneNumbers = $this->phoneNumbers->update($phoneNumbers);
@@ -191,6 +194,7 @@ final class Commerce extends AggregateRoot
             'type' => $this->type->value() ,
             'allowTransactions' => $this->allowTransactions->value() ,
             'statusId' => $this->statusId->value() ,
+            'stpAccountId' => $this->stpAccountId->value() ,
             'registerStep' => $this->registerStep->value() ,
             'updatedByUser' => $this->updatedByUser->value() ,
             'updateDate' => $this->updateDate->value() ,

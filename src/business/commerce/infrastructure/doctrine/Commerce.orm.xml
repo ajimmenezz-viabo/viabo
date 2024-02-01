@@ -24,6 +24,7 @@
         <embedded name="type" class="CommerceType" use-column-prefix="false"/>
         <embedded name="allowTransactions" class="CommerceAllowTransactions" use-column-prefix="false"/>
         <embedded name="statusId" class="CommerceStatusId" use-column-prefix="false"/>
+        <embedded name="stpAccountId" class="CommerceStpAccountId" use-column-prefix="false"/>
         <embedded name="registerStep" class="CommerceRegisterStep" use-column-prefix="false"/>
         <embedded name="updatedByUser" class="CommerceUpdatedByUser" use-column-prefix="false"/>
         <embedded name="updateDate" class="CommerceUpdateDate" use-column-prefix="false"/>

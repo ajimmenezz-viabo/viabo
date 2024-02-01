@@ -15,6 +15,7 @@ import { fCurrency } from '@/shared/utils'
 
 const SpeiOutForm = Lodable(lazy(() => import('./SpeiOutForm')))
 const SpeiOutResume = Lodable(lazy(() => import('./SpeiOutResume')))
+const SpeiOutSuccess = Lodable(lazy(() => import('./SpeiOutSuccess')))
 
 const SpeiOutDrawer = () => {
   const { data: accounts, isLoading, isError, error, refetch } = useFindSpeiThirdAccountsList()
@@ -25,6 +26,7 @@ const SpeiOutDrawer = () => {
   const balance = useMemo(() => stpAccount?.balance, [stpAccount?.balance])
   const [showResume, setShowResume] = useState(false)
   const [transactionData, setTransactionData] = useState(null)
+  const [successTransaction, setSuccessTransaction] = useState(null)
   const [transactionLoading, setTransactionLoading] = useState(false)
 
   const insufficient = useMemo(
@@ -39,6 +41,7 @@ const SpeiOutDrawer = () => {
     setTransactionData(null)
     setTransactionLoading(false)
     setTransactionForm(null)
+    setSuccessTransaction(null)
   }
 
   const handleSuccessForm = values => {
@@ -55,6 +58,11 @@ const SpeiOutDrawer = () => {
 
   const handleBackResume = () => {
     setShowResume(false)
+  }
+
+  const handleSuccess = transaction => {
+    setShowResume(false)
+    setSuccessTransaction(transaction)
   }
 
   const titleTransaction = <Typography variant="h6">SPEI Out</Typography>
@@ -98,10 +106,12 @@ const SpeiOutDrawer = () => {
   return (
     <RightPanel open={openSpeiOut} handleClose={handleClose} titleElement={titleTransaction}>
       {isLoading && <RequestLoadingComponent />}
+
       {isError && !isLoading && (
         <ErrorRequestPage errorMessage={error} titleMessage={'Lista de Cuentas'} handleButton={() => refetch()} />
       )}
-      {!isError && !isLoading && openSpeiOut && !showResume && (
+
+      {!isError && !isLoading && openSpeiOut && !showResume && !successTransaction && (
         <m.div
           variants={varFade().in}
           style={{
@@ -114,15 +124,22 @@ const SpeiOutDrawer = () => {
           {renderContentTransaction}
         </m.div>
       )}
-      {!isError && !isLoading && openSpeiOut && showResume && (
+
+      {!isError && !isLoading && openSpeiOut && showResume && !successTransaction && (
         <m.div variants={varFade().in}>
           <SpeiOutResume
             data={transactionData}
             onBack={handleBackResume}
             setTransactionLoading={setTransactionLoading}
             transactionLoading={transactionLoading}
-            onClose={handleClose}
+            onSuccess={handleSuccess}
           />
+        </m.div>
+      )}
+
+      {!isError && !isLoading && openSpeiOut && !showResume && successTransaction && (
+        <m.div variants={varFade().in}>
+          <SpeiOutSuccess transactions={successTransaction} onFinish={handleClose} />
         </m.div>
       )}
     </RightPanel>

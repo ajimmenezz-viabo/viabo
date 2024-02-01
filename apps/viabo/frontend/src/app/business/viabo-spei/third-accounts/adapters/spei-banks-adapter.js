@@ -4,9 +4,9 @@ export const SpeiBanksAdapter = banks => {
   const banksAdapted =
     banks?.map(bank => ({
       id: bank?.id,
-      code: bank?.code,
-      name: bank?.shortName,
-      commercialName: bank.name,
+      stpCode: bank?.code,
+      name: `${bank?.shortName} - ${bank?.code}`,
+      commercialName: bank?.name,
       status: bank?.active === '1'
     })) || []
 

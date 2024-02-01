@@ -30,7 +30,7 @@ final readonly class SpeiPaymentProcessorController extends ApiController
             $user = $this->ask(new FindUserQuery($tokenData['id'] , ''));
             $externalAccounts = $this->searchExternalAccountsData($data['externalAccounts']);
             $stpAccount = $this->searchStpAccount(
-                $tokenData['profile'] ,
+                $user->data['profile'] ,
                 $user->data['stpAccountId'] ,
                 $commerce['stpAccountId']
             );

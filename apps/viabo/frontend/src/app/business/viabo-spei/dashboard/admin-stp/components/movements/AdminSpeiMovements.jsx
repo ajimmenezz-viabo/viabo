@@ -7,13 +7,14 @@ import AdminSpeiMovementsFilters from './AdminSpeiMovementsFilters'
 
 import { useAdminSpeiMovementsColumns } from '../../hooks'
 
+import { useFindViaboSpeiMovements } from '@/app/business/viabo-spei/shared/hooks'
 import { MaterialDataTable } from '@/shared/components/dataTables'
 import { useMaterialTable } from '@/shared/hooks'
 
 const AdminSpeiMovements = () => {
   const currentDate = new Date()
 
-  const { isLoading, isFetching, isError, error } = { isLoading: false, isFetching: false, isError: false, error: null }
+  const { isLoading, isFetching, isError, error, data: movements } = useFindViaboSpeiMovements()
 
   const filterDate = null
 
@@ -33,13 +34,13 @@ const AdminSpeiMovements = () => {
 
   const table = useMaterialTable(isError, error, {
     columns,
-    data: [],
+    data: movements || [],
     enableColumnPinning: true,
     enableColumnFilterModes: true,
     enableStickyHeader: true,
     enableRowVirtualization: true,
     enableFacetedValues: true,
-    enableRowActions: true,
+    enableRowActions: false,
     enableRowSelection: true,
     enableDensityToggle: false,
     positionActionsColumn: 'last',
@@ -48,8 +49,8 @@ const AdminSpeiMovements = () => {
       density: 'compact',
       sorting: [
         {
-          id: 'company',
-          desc: false
+          id: 'date',
+          desc: true
         }
       ]
     },

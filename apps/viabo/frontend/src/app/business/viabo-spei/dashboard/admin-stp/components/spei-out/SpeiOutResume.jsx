@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { ArrowBackIos } from '@mui/icons-material'
+import { ArrowBackIos, GppGoodTwoTone } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import {
   Box,
@@ -18,6 +18,8 @@ import {
   styled
 } from '@mui/material'
 
+import { ViaboSpeiOutAdapter } from '@/app/business/viabo-spei/shared/adapters'
+import { useCreateSpeiOut } from '@/app/business/viabo-spei/shared/hooks'
 import { Scrollbar } from '@/shared/components/scroll'
 import { fCurrency } from '@/shared/utils'
 
@@ -28,17 +30,25 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
   }
 }))
 
-const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading, onClose }) => {
+const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading, onSuccess }) => {
+  const { mutate, isLoading: isSending } = useCreateSpeiOut()
   const transactions = useMemo(() => data?.transactions || [], [data])
   const total = useMemo(() => (parseFloat(data?.balance) - data?.currentBalance).toFixed(2) || 0, [data])
 
   const handleSubmit = () => {
-    const { cardOriginId, transactions, isGlobal, concept } = data
+    const { transactions, concept } = data
 
+    const dataAdapted = ViaboSpeiOutAdapter(transactions, concept)
     setTransactionLoading(true)
+    mutate(dataAdapted, {
+      onSuccess: data => {
+        onSuccess(data)
+      },
+      onError: () => {
+        setTransactionLoading(false)
+      }
+    })
   }
-
-  const isSending = false
 
   const isLoading = isSending || transactionLoading
 
@@ -70,7 +80,11 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
                   <TableCell>{index + 1}</TableCell>
                   <TableCell align="left">
                     <Box sx={{ maxWidth: 200 }}>
-                      <Typography variant="subtitle2">{row?.card?.cardUserNumber || 'Cuenta Global'}</Typography>
+                      <Typography variant="subtitle2" fontWeight={'bold'}>
+                        {row?.account?.alias}
+                      </Typography>
+                      <Typography variant="subtitle2">{row?.account?.bank?.name}</Typography>
+                      <Typography variant="subtitle2">{row?.account?.clabe}</Typography>
                       <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
                         {row?.concept}
                       </Typography>
@@ -121,6 +135,7 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
         <LoadingButton
           size={'large'}
           onClick={handleSubmit}
+          endIcon={<GppGoodTwoTone />}
           loading={isLoading}
           variant="contained"
           color="primary"
@@ -144,14 +159,12 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
 SpeiOutResume.propTypes = {
   data: PropTypes.shape({
     balance: PropTypes.any,
-    cardOriginId: PropTypes.any,
-    concept: PropTypes.any,
     currentBalance: PropTypes.any,
-    isGlobal: PropTypes.any,
+    concept: PropTypes.any,
     transactions: PropTypes.array
   }),
-  onBack: PropTypes.any,
-  onClose: PropTypes.any,
+  onBack: PropTypes.func,
+  onSuccess: PropTypes.func,
   setTransactionLoading: PropTypes.func,
   transactionLoading: PropTypes.any
 }

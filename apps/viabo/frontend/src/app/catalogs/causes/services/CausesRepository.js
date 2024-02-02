@@ -9,7 +9,7 @@ export const newCause = async cause => {
 }
 
 export const getCausesList = async () => {
-  const { data } = await axios.get('/api/support-reasons')
+  const { data } = await axios.get('/api/tickets/support-reasons')
 
   return CausesListAdapter(data)
 }

@@ -6,6 +6,7 @@ import { AssignedTicketsSupportTable } from './AssignedTicketsSupportTable'
 import { GeneratedTicketsSupportTable } from './GeneratedTicketsSupportTable'
 
 import { TICKET_SUPPORT_PERMISSIONS } from '../../shared/permissions'
+import { useTicketSupportListStore } from '../store'
 
 import { useUser } from '@/shared/hooks'
 
@@ -13,6 +14,9 @@ const TicketsSupportList = () => {
   const user = useUser()
   const hasGeneratedTicketsPermission = user?.permissions.includes(TICKET_SUPPORT_PERMISSIONS.GENERATED_TICKETS)
   const hasAssignedTicketsPermission = user?.permissions.includes(TICKET_SUPPORT_PERMISSIONS.ASSIGNED_TICKETS)
+  const totalTicketsGenerated = useTicketSupportListStore(state => state.totalTicketsGenerated)
+  const totalTicketsAssigned = useTicketSupportListStore(state => state.totalTicketsAssigned)
+  const isFullScreen = useTicketSupportListStore(state => state.isTableFullScreen)
 
   const [view, setView] = useState(null)
 
@@ -21,6 +25,11 @@ const TicketsSupportList = () => {
   const message = useMemo(
     () => (view === TICKET_SUPPORT_PERMISSIONS.GENERATED_TICKETS ? 'Generados' : 'Asignados'),
     [view]
+  )
+
+  const totalTickets = useMemo(
+    () => (view === TICKET_SUPPORT_PERMISSIONS.GENERATED_TICKETS ? totalTicketsGenerated : totalTicketsAssigned),
+    [view, totalTicketsGenerated, totalTicketsAssigned]
   )
 
   useEffect(() => {
@@ -37,13 +46,25 @@ const TicketsSupportList = () => {
   }, [])
 
   return (
-    <Card variant="outlined">
+    <Card
+      variant="outlined"
+      sx={theme =>
+        !isFullScreen
+          ? {
+              boxShadow: theme.customShadows.z24,
+              backgroundColor: theme.palette.mode === 'light' ? 'inherit' : theme.palette.grey[500_12],
+              backdropFilter: `blur(10px)`,
+              WebkitBackdropFilter: `blur(10px)`
+            }
+          : {}
+      }
+    >
       <CardHeader
         sx={theme => ({
           pb: 2
         })}
         title={`Lista de Tickets ${message}`}
-        subheader={`Tienes ${0} Tickets ${message}`}
+        subheader={`Tienes ${totalTickets || 0} Tickets ${message}`}
         action={
           hasTwoPermission ? (
             <ToggleButtonGroup
@@ -56,6 +77,7 @@ const TicketsSupportList = () => {
                 }
               }}
               aria-label="Ticket View"
+              sx={{ backgroundColor: 'inherit' }}
             >
               <ToggleButton fullWidth sx={{ width: 1 }} value={TICKET_SUPPORT_PERMISSIONS.ASSIGNED_TICKETS}>
                 <Stack direction={'row'} spacing={1} alignItems={'center'}>

@@ -13,7 +13,7 @@ const AdminDashboardViaboSpei = () => (
   <>
     <Stack spacing={3}>
       <Stack flexDirection={{ md: 'row' }}>
-        <Stack flex={1}>
+        <Stack flex={{ md: 1, xl: 0.5 }}>
           <AdminSpeiCurrentBalance />
         </Stack>
 

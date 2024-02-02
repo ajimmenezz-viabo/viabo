@@ -114,8 +114,8 @@ const AdminSpeiCurrentBalance = () => {
                     <MoreMenuButton />
                   </Stack>
                 }
-                title="Ramses Hoyos"
-                subheader="Admin"
+                title="TOP_SYSTEM"
+                subheader="Administrador STP"
               />
               <CardContent sx={{ p: 0 }}>
                 <Stack gap={4}>

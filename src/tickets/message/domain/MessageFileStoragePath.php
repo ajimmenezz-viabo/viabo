@@ -1,14 +1,13 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\tickets\ticket\domain;
+namespace Viabo\tickets\message\domain;
 
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class TicketFileStoragePath extends StringValueObject
+final class MessageFileStoragePath extends StringValueObject
 {
-
     public static function create(string $ticketId , string $file): static
     {
         return new static("/tickets/$ticketId/$file");

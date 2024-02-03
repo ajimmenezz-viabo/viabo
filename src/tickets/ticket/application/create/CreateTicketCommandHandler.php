@@ -16,11 +16,11 @@ final readonly class CreateTicketCommandHandler implements CommandHandler
     {
         $this->creator->__invoke(
             $command->userId ,
+            $command->userProfileId,
             $command->ticketId ,
             $command->supportReasonId ,
             $command->supportReasonAssignedProfileId ,
-            $command->description ,
-            $command->uploadDocuments
+            $command->description
         );
     }
 }

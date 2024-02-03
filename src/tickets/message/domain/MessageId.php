@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\tickets\ticket\domain;
+namespace Viabo\tickets\message\domain;
 
 
 use Viabo\shared\domain\valueObjects\UuidValueObject;
 
-final class TicketFileId extends UuidValueObject
+final class MessageId extends UuidValueObject
 {
 }

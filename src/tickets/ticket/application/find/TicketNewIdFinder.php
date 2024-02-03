@@ -6,7 +6,7 @@ namespace Viabo\tickets\ticket\application\find;
 
 use Viabo\tickets\ticket\domain\TicketRepository;
 
-final readonly class TicketLastFinder
+final readonly class TicketNewIdFinder
 {
     public function __construct(private TicketRepository $repository)
     {
@@ -15,7 +15,12 @@ final readonly class TicketLastFinder
     public function __invoke(): TicketResponse
     {
         $ticket = $this->repository->searchIdLast();
-        $id = empty($ticket) ? ['id' => '999999'] : ['id' => $ticket->id()];
+        if (empty($ticket)) {
+            $id = ['id' => '1000000'];
+        } else {
+            $lastId = $ticket->id();
+            $id = ['id' => strval(++$lastId)];
+        }
 
         return new TicketResponse($id);
     }

@@ -4,8 +4,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <embeddable name="Viabo\tickets\ticket\domain\TicketFileReferenceId">
-        <field name="value" column="TicketId"/>
+    <embeddable name="Viabo\tickets\message\domain\MessageId">
+        <id name="value" column="Id" />
     </embeddable>
 
 </doctrine-mapping>

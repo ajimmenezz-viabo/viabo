@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
+use Viabo\tickets\message\application\create\CreateMessageCommand;
 use Viabo\tickets\supportReason\application\find\SupportReasonQuery;
 use Viabo\tickets\ticket\application\create\CreateTicketCommand;
-use Viabo\tickets\ticket\application\find\TicketIdLastQuery;
+use Viabo\tickets\ticket\application\find\TicketNewIdQuery;
 
 final readonly class TicketCreatorController extends ApiController
 {
@@ -20,17 +21,26 @@ final readonly class TicketCreatorController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $supportReasonId = $request->request->getString('supportReasonId');
             $description = $request->request->getString('description');
-            $uploadDocuments = $request->files->all();
-            $ticketId = $this->ask(new TicketIdLastQuery());
+            $uploadFiles = $request->files->all();
+            $ticketId = $this->ask(new TicketNewIdQuery());
+            $messageId = $this->generateUuid();
             $supportReason = $this->ask(new SupportReasonQuery($supportReasonId));
 
             $this->dispatch(new CreateTicketCommand(
                 $tokenData['id'] ,
+                $tokenData['profileId'] ,
                 $ticketId->data['id'] ,
                 $supportReason->data['id'] ,
                 $supportReason->data['assignedProfileId'] ,
+                $description
+            ));
+
+            $this->dispatch(new CreateMessageCommand(
+                $tokenData['id'] ,
+                $messageId ,
+                $ticketId->data['id'] ,
                 $description ,
-                $uploadDocuments
+                $uploadFiles
             ));
 
             return new JsonResponse();

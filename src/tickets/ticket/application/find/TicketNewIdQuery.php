@@ -6,6 +6,6 @@ namespace Viabo\tickets\ticket\application\find;
 
 use Viabo\shared\domain\bus\query\Query;
 
-final readonly class TicketIdLastQuery implements Query
+final readonly class TicketNewIdQuery implements Query
 {
 }

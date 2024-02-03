@@ -5,7 +5,9 @@ namespace Viabo\tickets\ticket\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
+use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 use Viabo\tickets\ticket\domain\Ticket;
 use Viabo\tickets\ticket\domain\TicketFile;
 use Viabo\tickets\ticket\domain\TicketRepository;
@@ -20,14 +22,16 @@ final class TicketDoctrineRepository extends DoctrineRepository implements Ticke
     public function save(Ticket $ticket): void
     {
         $this->persist($ticket);
-        $this->entityManager()->clear();
-        array_map(function (TicketFile $file) {
-            $this->persist($file);
-        } , $ticket->files());
     }
 
     public function searchIdLast(): Ticket|null
     {
         return $this->repository(Ticket::class)->findOneBy([] , ['id.value' => 'desc']);
+    }
+
+    public function searchCriteria(Criteria $criteria): array
+    {
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(Ticket::class)->matching($criteriaConvert)->toArray();
     }
 }

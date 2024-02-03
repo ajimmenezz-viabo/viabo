@@ -10,6 +10,6 @@ final class TicketId extends StringValueObject
 {
     public static function create(string $value): static
     {
-        return new static(strval(++$value));
+        return new static($value);
     }
 }

@@ -16,7 +16,6 @@ final class Ticket extends AggregateRoot
         private TicketSupportReasonId   $supportReasonId ,
         private TicketAssignedProfileId $assignedProfileId ,
         private TicketDescription       $description ,
-        private TicketFiles             $files ,
         private TicketCreatedByUser     $createdByUser ,
         private TicketCreateDate        $createDate ,
         private TicketActive            $active
@@ -29,17 +28,16 @@ final class Ticket extends AggregateRoot
         string $supportReasonId ,
         string $assignedProfileId ,
         string $description ,
-        array  $files ,
         string $userId
     ): static
     {
+
         $ticket = new static(
             TicketId::create($ticketId) ,
             TicketStatusId::new() ,
             TicketSupportReasonId::create($supportReasonId) ,
             TicketAssignedProfileId::create($assignedProfileId) ,
             TicketDescription::create($description) ,
-            TicketFiles::fromValues($files) ,
             new TicketCreatedByUser($userId) ,
             TicketCreateDate::todayDate() ,
             TicketActive::enable()
@@ -54,11 +52,6 @@ final class Ticket extends AggregateRoot
         return $this->id->value();
     }
 
-    public function files(): array
-    {
-        return $this->files->elements();
-    }
-
     public function toArray(): array
     {
         return [
@@ -67,7 +60,6 @@ final class Ticket extends AggregateRoot
             'supportReasonId' => $this->supportReasonId->value() ,
             'assignedProfileId' => $this->assignedProfileId->value() ,
             'description' => $this->description->value() ,
-            'files' => $this->files->value() ,
             'createdByUser' => $this->createdByUser->value() ,
             'createDate' => $this->createDate->value() ,
             'active' => $this->active->value()

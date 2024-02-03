@@ -10,11 +10,11 @@ final readonly class CreateTicketCommand implements Command
 {
     public function __construct(
         public string $userId ,
+        public string $userProfileId ,
         public string $ticketId ,
         public string $supportReasonId ,
         public string $supportReasonAssignedProfileId ,
-        public string $description ,
-        public array  $uploadDocuments
+        public string $description
     )
     {
     }

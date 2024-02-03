@@ -8,8 +8,13 @@ import { useMaterialTable } from '@/shared/hooks'
 
 export const AssignedTicketsSupportTable = () => {
   const { data: tickets, isLoading, isError, error, isFetching } = useFindAssignedTicketsSupport()
-  const setTotal = useTicketSupportListStore(state => state.setTotalSupportTicketsAssigned)
-  const setFullScreen = useTicketSupportListStore(state => state.setFullScreenTableSupportList)
+
+  const {
+    setTotalSupportTicketsAssigned: setTotal,
+    setFullScreenTableSupportList: setFullScreen,
+    setSupportTicketDetails,
+    setOpenTicketConversation
+  } = useTicketSupportListStore()
 
   const columns = useAssignedTicketsTableColumns()
 
@@ -51,10 +56,11 @@ export const AssignedTicketsSupportTable = () => {
     layoutMode: 'grid',
 
     muiTableBodyRowProps: ({ row }) => ({
-      onClick: () =>
-        setRowSelection(prev => ({
-          [row.id]: !prev[row.id]
-        })),
+      onClick: () => {
+        row.getToggleSelectedHandler()
+        setSupportTicketDetails(row?.original)
+        setOpenTicketConversation(true)
+      },
       selected: rowSelection[row.id],
       sx: theme => ({
         cursor: 'pointer',

@@ -35,15 +35,6 @@ export const useAssignedTicketsTableColumns = () => {
         }
       },
       {
-        id: 'description',
-        accessorKey: 'description',
-        header: 'Descripción',
-        Cell: ({ cell, column, row, renderedCellValue }) => {
-          const { original: rowData } = row
-          return <Typography variant="subtitle2">{renderedCellValue}</Typography>
-        }
-      },
-      {
         id: 'attendant',
         header: 'Atiende',
         accessorKey: 'attendant',

@@ -6,14 +6,22 @@ import { Divider, Drawer, IconButton, Stack, Typography } from '@mui/material'
 import { useResponsive } from '@/theme/hooks'
 
 RightPanel.propTypes = {
-  open: PropTypes.bool,
-  handleClose: PropTypes.func,
-  title: PropTypes.string,
   children: PropTypes.node,
-  titleElement: PropTypes.node
+  handleClose: PropTypes.func,
+  open: PropTypes.bool,
+  title: PropTypes.string,
+  titleElement: PropTypes.node,
+  width: PropTypes.any
 }
 
-export function RightPanel({ open = false, handleClose, title, children, titleElement }) {
+export function RightPanel({
+  open = false,
+  handleClose,
+  title,
+  children,
+  titleElement,
+  width = { sm: '100%', lg: '40%', xl: '30%' }
+}) {
   const matches = useResponsive('down', 'md')
 
   const handleDrawerClose = event => {
@@ -30,7 +38,7 @@ export function RightPanel({ open = false, handleClose, title, children, titleEl
       sx={{
         '& .MuiPaper-root.MuiDrawer-paper': {
           borderRadius: `${!matches ? '10px 0px 0px 10px' : 'none'}`,
-          width: { sm: '100%', lg: '40%', xl: '30%' }
+          width
         }
       }}
       open={open}

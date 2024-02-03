@@ -52,9 +52,7 @@ const TicketsSupportList = () => {
         !isFullScreen
           ? {
               boxShadow: theme.customShadows.z24,
-              backgroundColor: theme.palette.mode === 'light' ? 'inherit' : theme.palette.grey[500_12],
-              backdropFilter: `blur(10px)`,
-              WebkitBackdropFilter: `blur(10px)`
+              backgroundColor: theme.palette.mode === 'light' ? 'inherit' : theme.palette.grey[500_12]
             }
           : {}
       }

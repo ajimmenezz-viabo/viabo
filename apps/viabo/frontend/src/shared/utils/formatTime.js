@@ -9,6 +9,7 @@ import {
   endOfYear,
   format,
   formatDistanceToNow,
+  formatDistanceToNowStrict,
   getTime,
   parseISO,
   startOfMonth,
@@ -35,6 +36,13 @@ export function fTimestamp(date) {
 
 export function fDateTimeSuffix(date) {
   return format(new Date(date), 'dd/MM/yyyy hh:mm p', { locale: es })
+}
+
+export function fToNowStrict(date) {
+  return formatDistanceToNowStrict(new Date(date), {
+    addSuffix: true,
+    locale: es
+  })
 }
 
 export function normalizeDateString(dateString) {

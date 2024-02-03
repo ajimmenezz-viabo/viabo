@@ -4,17 +4,27 @@ const initialState = {
   ticket: null,
   totalTicketsGenerated: 0,
   totalTicketsAssigned: 0,
-  isTableFullScreen: false
+  isTableFullScreen: false,
+  openTicketConversation: false
 }
 const ticketSupportListStore = (set, get) => ({
   ...initialState,
   setSupportTicketDetails: ticket => {
     set(
       state => ({
-        ticket: open
+        ticket
       }),
       false,
       'SET_SUPPORT_TICKET_DETAILS'
+    )
+  },
+  setOpenTicketConversation: open => {
+    set(
+      state => ({
+        openTicketConversation: open
+      }),
+      false,
+      'SET_SUPPORT_TICKET_CONVERSATION'
     )
   },
   setFullScreenTableSupportList: isFullScreen => {

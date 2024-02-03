@@ -1,5 +1,7 @@
-import { AssignedTicketsMock, GeneratedTicketsMock } from '../_mock'
-import { AssignedTicketsListAdapter, GeneratedTicketsListAdapter } from '../adapters'
+import { AssignedTicketsMock, ConversationTicketMock, GeneratedTicketsMock } from '../_mock'
+import { AssignedTicketsListAdapter, GeneratedTicketsListAdapter, TicketConversationAdapter } from '../adapters'
+
+import { axios } from '@/shared/interceptors'
 
 export const getGeneratedTicketsSupportList = async () => {
   // const { data } = await axios.get('/api/support/tickets/generated')
@@ -13,4 +15,17 @@ export const getAssignedTicketsSupportList = async () => {
 
   const data = AssignedTicketsMock
   return AssignedTicketsListAdapter(data)
+}
+
+export const getSupportTicketConversation = async ticketId => {
+  // const { data } = await axios.get('/api/support/tickets/assigned')
+
+  const data = ConversationTicketMock
+  return TicketConversationAdapter(data)
+}
+
+export const addMessageToSupportTicketConversation = async message => {
+  const { data } = await axios.post('/api/support/tickets/add-message', message)
+
+  return data
 }

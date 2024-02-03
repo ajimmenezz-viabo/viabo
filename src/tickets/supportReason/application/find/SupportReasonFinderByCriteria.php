@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\tickets\supportReason\find;
+namespace Viabo\tickets\supportReason\application\find;
 
 
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
-use Viabo\tickets\supportReason\application\find\SupportReasonResponse;
 use Viabo\tickets\supportReason\domain\SupportReason;
 use Viabo\tickets\supportReason\domain\SupportReasonRepository;
 

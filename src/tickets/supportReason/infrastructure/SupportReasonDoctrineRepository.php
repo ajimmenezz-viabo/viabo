@@ -23,6 +23,11 @@ final class SupportReasonDoctrineRepository extends DoctrineRepository implement
         $this->persist($supportReason);
     }
 
+    public function search(string $supportReasonId): SupportReason|null
+    {
+        return $this->repository(SupportReason::class)->find($supportReasonId);
+    }
+
     public function searchCriteria(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);

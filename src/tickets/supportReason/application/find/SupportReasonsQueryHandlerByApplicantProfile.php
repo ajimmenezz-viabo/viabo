@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\tickets\supportReason\find;
+namespace Viabo\tickets\supportReason\application\find;
 
 
 use Viabo\shared\domain\bus\query\QueryHandler;

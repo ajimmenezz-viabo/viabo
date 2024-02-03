@@ -10,6 +10,8 @@ interface SupportReasonRepository
 {
     public function save(SupportReason $supportReason): void;
 
+    public function search(string $supportReasonId): SupportReason|null;
+
     public function searchAll(): array;
 
     public function searchCriteria(Criteria $criteria): array;

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\security\profile\application\find\ProfileQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\tickets\supportReason\find\SupportReasonsQueryByApplicantProfile;
+use Viabo\tickets\supportReason\application\find\SupportReasonsQueryByApplicantProfile;
 
 final readonly class SupportReasonsFinderByApplicantProfileController extends ApiController
 {

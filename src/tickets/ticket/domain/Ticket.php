@@ -18,8 +18,7 @@ final class Ticket extends AggregateRoot
         private TicketAssignedProfileId  $assignedProfileId ,
         private TicketDescription        $description ,
         private TicketCreatedByUser      $createdByUser ,
-        private TicketCreateDate         $createDate ,
-        private TicketActive             $active
+        private TicketCreateDate         $createDate
     )
     {
     }
@@ -42,8 +41,7 @@ final class Ticket extends AggregateRoot
             TicketAssignedProfileId::create($assignedProfileId) ,
             TicketDescription::create($description) ,
             new TicketCreatedByUser($userId) ,
-            TicketCreateDate::todayDate() ,
-            TicketActive::enable()
+            TicketCreateDate::todayDate()
         );
 
         $ticket->record(new TicketCreatedDomainEvent($ticket->id() , $ticket->toArray()));
@@ -65,8 +63,7 @@ final class Ticket extends AggregateRoot
             'assignedProfileId' => $this->assignedProfileId->value() ,
             'description' => $this->description->value() ,
             'createdByUser' => $this->createdByUser->value() ,
-            'createDate' => $this->createDate->value() ,
-            'active' => $this->active->value()
+            'createDate' => $this->createDate->value()
         ];
     }
 }

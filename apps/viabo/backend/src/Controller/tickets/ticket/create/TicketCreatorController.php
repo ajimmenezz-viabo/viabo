@@ -37,13 +37,13 @@ final readonly class TicketCreatorController extends ApiController
                 $description
             ));
 
-//            $this->dispatch(new CreateMessageCommand(
-//                $tokenData['id'] ,
-//                $messageId ,
-//                $ticketId->data['id'] ,
-//                $description ,
-//                $uploadFiles
-//            ));
+            $this->dispatch(new CreateMessageCommand(
+                $tokenData['id'] ,
+                $messageId ,
+                $ticketId->data['id'] ,
+                $description ,
+                $uploadFiles
+            ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

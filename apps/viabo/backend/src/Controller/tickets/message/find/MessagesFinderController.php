@@ -41,6 +41,7 @@ final readonly class MessagesFinderController extends ApiController
         $messages['messages'] = array_map(function (array $message) {
             $user = $this->ask(new FindUserQuery($message['createdByUser'] , ''));
             $message['userName'] = "{$user->data['name']} {$user->data['lastname']}";
+            $message['files'] = array_map(fn(array $file) => $file['storagePath'] , $message['files']);
             return $message;
         } , $messages['messages']);
 

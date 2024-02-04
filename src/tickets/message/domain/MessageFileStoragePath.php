@@ -15,6 +15,8 @@ final class MessageFileStoragePath extends StringValueObject
 
     public function directoryPath(): string
     {
-        return dirname($this->value);
+        $value = str_replace("/storage" , "" , $this->value);
+        return dirname($value);
     }
+
 }

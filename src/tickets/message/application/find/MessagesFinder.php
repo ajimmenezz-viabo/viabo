@@ -34,9 +34,16 @@ final readonly class MessagesFinder
 
         return new MessageResponse([
             'messages' => $messages ,
+            'userCanCloseTicket ' => $this->hasClosePermission($messages , $userId) ,
             'limit' => $limit ,
             'page' => $page ,
             'total' => $total
         ]);
+    }
+
+    private function hasClosePermission(array $messages , string $userId): bool
+    {
+        $messageLast = end($messages);
+        return $messageLast['createdByUser'] === $userId;
     }
 }

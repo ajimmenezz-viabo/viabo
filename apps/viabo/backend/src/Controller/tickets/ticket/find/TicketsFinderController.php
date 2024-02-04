@@ -70,7 +70,7 @@ final readonly class TicketsFinderController extends ApiController
         }
 
         if ($created && $ticket['assignedProfileId'] === $viaboAdminProfile) {
-            return "Assitencia Viabo";
+            return "Asistencia Viabo";
         }
 
         return '';

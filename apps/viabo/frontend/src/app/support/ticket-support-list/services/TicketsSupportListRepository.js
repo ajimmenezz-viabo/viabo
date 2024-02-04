@@ -1,19 +1,25 @@
-import { AssignedTicketsMock, ConversationTicketMock, GeneratedTicketsMock } from '../_mock'
+import { ConversationTicketMock } from '../_mock'
 import { AssignedTicketsListAdapter, GeneratedTicketsListAdapter, TicketConversationAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
 export const getGeneratedTicketsSupportList = async () => {
-  // const { data } = await axios.get('/api/support/tickets/generated')
+  const fetchURL = new URL('/api/tickets', window.location.origin)
+  fetchURL.searchParams.set('created', true)
 
-  const data = GeneratedTicketsMock
+  const { data } = await axios.get(fetchURL)
+
+  // const data = GeneratedTicketsMock
   return GeneratedTicketsListAdapter(data)
 }
 
 export const getAssignedTicketsSupportList = async () => {
-  // const { data } = await axios.get('/api/support/tickets/assigned')
+  const fetchURL = new URL('/api/tickets', window.location.origin)
+  fetchURL.searchParams.set('assigned', true)
 
-  const data = AssignedTicketsMock
+  const { data } = await axios.get(fetchURL)
+
+  // const data = AssignedTicketsMock
   return AssignedTicketsListAdapter(data)
 }
 

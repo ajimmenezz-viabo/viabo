@@ -2,7 +2,7 @@ export const NewTicketSupportAdapter = ticket => {
   const formData = new FormData()
 
   const ticketAdapted = {
-    causeId: ticket?.cause,
+    supportReasonId: ticket?.cause?.id,
     description: ticket?.description
   }
 
@@ -11,7 +11,7 @@ export const NewTicketSupportAdapter = ticket => {
   })
 
   if (ticket?.file) {
-    formData.append('file', ticket?.file)
+    formData.append('files', ticket?.file)
   }
 
   return formData

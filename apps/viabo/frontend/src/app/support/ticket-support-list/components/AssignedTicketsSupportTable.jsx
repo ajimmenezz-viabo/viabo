@@ -7,7 +7,7 @@ import { MaterialDataTable } from '@/shared/components/dataTables'
 import { useMaterialTable } from '@/shared/hooks'
 
 export const AssignedTicketsSupportTable = () => {
-  const { data: tickets, isLoading, isError, error, isFetching } = useFindAssignedTicketsSupport()
+  const { data: tickets, isLoading, isError, error, isFetching, refetch } = useFindAssignedTicketsSupport()
 
   const {
     setTotalSupportTicketsAssigned: setTotal,
@@ -76,6 +76,10 @@ export const AssignedTicketsSupportTable = () => {
     positionToolbarAlertBanner: 'none',
     onRowSelectionChange: setRowSelection
   })
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   useEffect(() => {
     if (tickets?.length) {

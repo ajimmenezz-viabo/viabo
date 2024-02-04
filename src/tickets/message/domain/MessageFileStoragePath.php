@@ -10,7 +10,7 @@ final class MessageFileStoragePath extends StringValueObject
 {
     public static function create(string $ticketId , string $file): static
     {
-        return new static("/tickets/$ticketId/$file");
+        return new static("/storage/tickets/$ticketId/$file");
     }
 
     public function directoryPath(): string

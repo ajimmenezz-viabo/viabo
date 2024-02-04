@@ -7,7 +7,7 @@ import { MaterialDataTable } from '@/shared/components/dataTables'
 import { useMaterialTable } from '@/shared/hooks'
 
 export const GeneratedTicketsSupportTable = () => {
-  const { data: tickets, isLoading, isError, error, isFetching } = useFindGeneratedTicketsSupport()
+  const { data: tickets, isLoading, isError, error, isFetching, refetch } = useFindGeneratedTicketsSupport()
   const {
     setTotalSupportTicketsGenerated: setTotal,
     setFullScreenTableSupportList: setFullScreen,
@@ -74,6 +74,10 @@ export const GeneratedTicketsSupportTable = () => {
     positionToolbarAlertBanner: 'none',
     onRowSelectionChange: setRowSelection
   })
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   useEffect(() => {
     if (tickets?.length) {

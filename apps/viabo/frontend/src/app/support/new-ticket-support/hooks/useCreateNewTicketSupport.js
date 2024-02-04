@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { TICKETS_SUPPORT_LIST_KEYS } from '../../ticket-support-list/adapters'
 import { newTicketSupport } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
@@ -22,6 +23,8 @@ export const useCreateNewTicketSupport = (options = {}) => {
           }
         }
       })
+      client.invalidateQueries([TICKETS_SUPPORT_LIST_KEYS.ASSIGNED_LIST])
+      client.invalidateQueries([TICKETS_SUPPORT_LIST_KEYS.GENERATED_LIST])
     } catch (error) {
       const errorFormatted = getErrorAPI(
         error,

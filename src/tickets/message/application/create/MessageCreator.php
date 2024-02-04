@@ -28,7 +28,9 @@ final readonly class MessageCreator
         array  $uploadFile
     ): void
     {
-        $files = $this->getFileDataAndMergeData($uploadFile['files'] , $ticketId , $messageId);
+        $uploadFiles = !empty($uploadFile) ?  $uploadFile['files'] : [];
+        
+        $files = $this->getFileDataAndMergeData($uploadFiles , $ticketId , $messageId);
 
         $message = Message::create(
             $messageId ,
@@ -39,7 +41,7 @@ final readonly class MessageCreator
         );
 
         $this->repository->save($message);
-        $this->storageFile($uploadFile['files'] , $message->directoryPath());
+        $this->storageFile($uploadFiles , $message->directoryPath());
 
     }
 

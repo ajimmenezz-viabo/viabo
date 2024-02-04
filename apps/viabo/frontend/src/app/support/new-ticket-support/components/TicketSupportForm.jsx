@@ -121,7 +121,7 @@ const TicketSupportForm = ({ causes = [], onSuccess }) => {
             size={'small'}
             name={'description'}
             multiline
-            rows={2}
+            rows={4}
             disabled={loading}
             inputProps={{ maxLength: '200' }}
             placeholder={'Descripción del ticket...'}

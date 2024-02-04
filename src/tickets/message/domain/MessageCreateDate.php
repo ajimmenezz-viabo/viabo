@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\DateTimeValueObject;
 
 final class MessageCreateDate extends DateTimeValueObject
 {
+    public function diffNow(): string
+    {
+        return $this->date->diffNow($this->value);
+    }
 }

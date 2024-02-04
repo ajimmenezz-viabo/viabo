@@ -9,6 +9,8 @@ use Viabo\tickets\message\domain\events\MessageCreatedDomainEvent;
 
 final class Message extends AggregateRoot
 {
+    private bool $isUserSentMessage;
+
     public function __construct(
         private MessageId            $id ,
         private MessageTicketId      $ticketId ,
@@ -18,6 +20,7 @@ final class Message extends AggregateRoot
         private MessageCreateDate    $createDate
     )
     {
+        $this->isUserSentMessage = false;
     }
 
     public static function create(
@@ -56,6 +59,16 @@ final class Message extends AggregateRoot
         return $this->files->directoryPath();
     }
 
+    public function setFiles(array $files): void
+    {
+        $this->files = new MessageFiles($files);
+    }
+
+    public function markMessageAsUser(string $userId): void
+    {
+        $this->isUserSentMessage = $this->createdByUser->isSame($userId);
+    }
+
     public function toArray(): array
     {
         return [
@@ -65,6 +78,8 @@ final class Message extends AggregateRoot
             'files' => $this->files->value() ,
             'createdByUser' => $this->createdByUser->value() ,
             'createDate' => $this->createDate->value() ,
+            'createDateDiffNow' => $this->createDate->diffNow() ,
+            'isUserSentMessage' => $this->isUserSentMessage ,
         ];
     }
 }

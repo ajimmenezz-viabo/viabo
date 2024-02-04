@@ -24,4 +24,25 @@ final class MessageDoctrineRepository extends DoctrineRepository implements Mess
             $this->persist($file);
         } , $message->files());
     }
+
+    public function search(string $ticket , $limit , $offset): array
+    {
+        return $this->repository(Message::class)->findBy(
+            ['ticketId.value' => $ticket] ,
+            ['createDate.value' => 'Asc'] ,
+            $limit ,
+            $offset
+        );
+    }
+
+    public function searchFiles(string $messageId): array
+    {
+        return $this->repository(MessageFile::class)->findBy(['messageId.value' => $messageId]);
+    }
+
+    public function searchTotal(string $ticket): int
+    {
+        $messages = $this->repository(Message::class)->findBy(['ticketId.value' => $ticket]);
+        return count($messages);
+    }
 }

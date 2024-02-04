@@ -2,21 +2,21 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import { CAUSES_KEYS } from '../adapters'
-import { newCause } from '../services'
+import { updateCause } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { isFunction } from '@/shared/utils'
 
-export const useCreateNewCause = (options = {}) => {
+export const useUpdateCause = (options = {}) => {
   const client = useQueryClient()
-  const cause = useMutation(newCause, options)
+  const cause = useMutation(updateCause, options)
   const mutate = async (formData, options) => {
     const { onSuccess, onError, mutationOptions } = options
 
     try {
       const data = await toast.promise(cause.mutateAsync(formData, mutationOptions), {
-        pending: 'Guardando nueva causa ...',
-        success: 'Se creó la causa con éxito'
+        pending: 'Actualizando causa ...',
+        success: 'Se actualizó la causa con éxito'
       })
       client.invalidateQueries([CAUSES_KEYS.LIST])
       isFunction(onSuccess) && onSuccess(data)

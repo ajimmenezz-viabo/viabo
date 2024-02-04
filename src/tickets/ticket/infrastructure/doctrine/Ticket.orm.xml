@@ -8,6 +8,7 @@
         <embedded name="id" class="TicketId" use-column-prefix="false"/>
         <embedded name="statusId" class="TicketStatusId" use-column-prefix="false"/>
         <embedded name="supportReasonId" class="TicketSupportReasonId" use-column-prefix="false"/>
+        <embedded name="applicantProfileId" class="TicketApplicantProfileId" use-column-prefix="false"/>
         <embedded name="assignedProfileId" class="TicketAssignedProfileId" use-column-prefix="false"/>
         <embedded name="description" class="TicketDescription" use-column-prefix="false"/>
         <embedded name="createdByUser" class="TicketCreatedByUser" use-column-prefix="false"/>

@@ -11,14 +11,15 @@ final class Ticket extends AggregateRoot
 {
 
     public function __construct(
-        private TicketId                $id ,
-        private TicketStatusId          $statusId ,
-        private TicketSupportReasonId   $supportReasonId ,
-        private TicketAssignedProfileId $assignedProfileId ,
-        private TicketDescription       $description ,
-        private TicketCreatedByUser     $createdByUser ,
-        private TicketCreateDate        $createDate ,
-        private TicketActive            $active
+        private TicketId                 $id ,
+        private TicketStatusId           $statusId ,
+        private TicketSupportReasonId    $supportReasonId ,
+        private TicketApplicantProfileId $applicantProfileId ,
+        private TicketAssignedProfileId  $assignedProfileId ,
+        private TicketDescription        $description ,
+        private TicketCreatedByUser      $createdByUser ,
+        private TicketCreateDate         $createDate ,
+        private TicketActive             $active
     )
     {
     }
@@ -26,6 +27,7 @@ final class Ticket extends AggregateRoot
     public static function create(
         string $ticketId ,
         string $supportReasonId ,
+        string $userProfileId ,
         string $assignedProfileId ,
         string $description ,
         string $userId
@@ -36,6 +38,7 @@ final class Ticket extends AggregateRoot
             TicketId::create($ticketId) ,
             TicketStatusId::new() ,
             TicketSupportReasonId::create($supportReasonId) ,
+            TicketApplicantProfileId::create($userProfileId) ,
             TicketAssignedProfileId::create($assignedProfileId) ,
             TicketDescription::create($description) ,
             new TicketCreatedByUser($userId) ,
@@ -58,6 +61,7 @@ final class Ticket extends AggregateRoot
             'id' => $this->id->value() ,
             'statusId' => $this->statusId->value() ,
             'supportReasonId' => $this->supportReasonId->value() ,
+            'applicantProfileId' => $this->applicantProfileId->value() ,
             'assignedProfileId' => $this->assignedProfileId->value() ,
             'description' => $this->description->value() ,
             'createdByUser' => $this->createdByUser->value() ,

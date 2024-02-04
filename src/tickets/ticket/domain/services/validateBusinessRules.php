@@ -6,8 +6,8 @@ namespace Viabo\tickets\ticket\domain\services;
 
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
-use Viabo\tickets\ticket\domain\exceptions\TicketLimitByCardHolder;
-use Viabo\tickets\ticket\domain\exceptions\TicketLimitByCommerceAdministrator;
+use Viabo\tickets\ticket\domain\exceptions\ApplicantTicketLimitExceeded;
+use Viabo\tickets\ticket\domain\exceptions\CommerceAdministratorTicketLimitExceeded;
 use Viabo\tickets\ticket\domain\TicketRepository;
 
 final readonly class validateBusinessRules
@@ -18,35 +18,25 @@ final readonly class validateBusinessRules
 
     public function __invoke(string $userId , string $userProfileId): void
     {
-        $this->checkCardHolderTicketLimit($userId);
-        $this->checkCommerceAdministratorTicketLimit($userProfileId);
+        $this->checkApplicantTicketLimit($userId , $userProfileId);
     }
 
-    private function checkCardHolderTicketLimit(string $userId): void
+    private function checkApplicantTicketLimit(string $userId , string $userProfileId): void
     {
         $filters = Filters::fromValues([
             ['field' => 'createdByUser.value' , 'operator' => '=' , 'value' => $userId] ,
-            ['field' => 'statusId.value' , 'operator' => 'IN' , 'value' => '1,2'] ,
+            ['field' => 'statusId.value' , 'operator' => 'NIN' , 'value' => '3,4'] ,
         ]);
         $tickets = $this->repository->searchCriteria(new Criteria($filters));
 
-        if (!empty($tickets) && count($tickets) >= 5) {
-            throw new TicketLimitByCardHolder();
+        $applicantProfileId = '4';
+        if (!empty($tickets) && count($tickets) >= 5 && $userProfileId === $applicantProfileId) {
+            throw new ApplicantTicketLimitExceeded();
         }
-
-    }
-
-    private function checkCommerceAdministratorTicketLimit(string $userProfileId): void
-    {
-        $filters = Filters::fromValues([
-            ['field' => 'assignedProfileId.value' , 'operator' => '=' , 'value' => $userProfileId] ,
-            ['field' => 'statusId.value' , 'operator' => 'IN' , 'value' => '1,2'] ,
-        ]);
-        $tickets = $this->repository->searchCriteria(new Criteria($filters));
 
         $commerceAdministrator = '3';
         if (!empty($tickets) && count($tickets) >= 10 && $userProfileId === $commerceAdministrator) {
-            throw new TicketLimitByCommerceAdministrator();
+            throw new CommerceAdministratorTicketLimitExceeded();
         }
     }
 

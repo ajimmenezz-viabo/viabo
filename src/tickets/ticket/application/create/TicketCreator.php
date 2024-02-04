@@ -7,7 +7,6 @@ namespace Viabo\tickets\ticket\application\create;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\tickets\ticket\domain\services\validateBusinessRules;
 use Viabo\tickets\ticket\domain\Ticket;
-use Viabo\tickets\ticket\domain\TicketFile;
 use Viabo\tickets\ticket\domain\TicketRepository;
 
 final readonly class TicketCreator
@@ -35,6 +34,7 @@ final readonly class TicketCreator
         $ticket = Ticket::create(
             $ticketId ,
             $supportReasonId ,
+            $userProfileId ,
             $supportReasonAssignedProfileId ,
             $description ,
             $userId

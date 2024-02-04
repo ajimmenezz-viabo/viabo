@@ -7,6 +7,8 @@ namespace Viabo\Backend\Controller\tickets\ticket\create;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Viabo\security\user\application\find\AddUsersEmailsQuery;
+use Viabo\security\user\application\find\UsersQueryByProfile;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\tickets\message\application\create\CreateMessageCommand;
 use Viabo\tickets\supportReason\application\find\SupportReasonQuery;
@@ -35,13 +37,13 @@ final readonly class TicketCreatorController extends ApiController
                 $description
             ));
 
-            $this->dispatch(new CreateMessageCommand(
-                $tokenData['id'] ,
-                $messageId ,
-                $ticketId->data['id'] ,
-                $description ,
-                $uploadFiles
-            ));
+//            $this->dispatch(new CreateMessageCommand(
+//                $tokenData['id'] ,
+//                $messageId ,
+//                $ticketId->data['id'] ,
+//                $description ,
+//                $uploadFiles
+//            ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

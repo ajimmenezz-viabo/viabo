@@ -29,3 +29,9 @@ export const addMessageToSupportTicketConversation = async message => {
 
   return data
 }
+
+export const finishSupportTicket = async ticket => {
+  const { data } = await axios.post('/api/support/tickets/finish-ticket', ticket)
+
+  return data
+}

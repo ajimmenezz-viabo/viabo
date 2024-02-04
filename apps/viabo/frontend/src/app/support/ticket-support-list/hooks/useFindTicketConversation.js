@@ -24,7 +24,7 @@ export const useFindTicketConversation = (tickedId, options = {}) => {
     if (query?.isError) {
       const errorMessage = getErrorAPI(
         query.error,
-        'No se puede obtener la conversacion del ticket. Intente nuevamente o reporte a sistemas'
+        'No se puede obtener la conversación del ticket. Intente nuevamente o reporte a sistemas'
       )
       setCustomError(errorMessage)
       toast.error(errorMessage, {

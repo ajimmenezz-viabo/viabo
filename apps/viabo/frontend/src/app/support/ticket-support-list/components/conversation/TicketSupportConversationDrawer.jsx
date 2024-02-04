@@ -4,7 +4,7 @@ import { DoneAll } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Stack, Typography } from '@mui/material'
 
-import { useFindTicketConversation } from '../../hooks'
+import { useFindTicketConversation, useFinishSupportTicket } from '../../hooks'
 import { useTicketSupportListStore } from '../../store'
 
 import { RightPanel } from '@/app/shared/components'
@@ -19,6 +19,8 @@ const TicketSupportConversationDrawer = () => {
     useTicketSupportListStore()
 
   const queryTicketConversation = useFindTicketConversation(ticket?.id, { enabled: !!ticket?.id })
+  const { mutate: finishTicket, isLoading: isFinishingTicket } = useFinishSupportTicket()
+
   const { isLoading, error, isError, refetch } = queryTicketConversation
 
   useEffect(() => {
@@ -30,6 +32,17 @@ const TicketSupportConversationDrawer = () => {
   const handleClose = () => {
     setOpenTicketConversation(false)
     setSupportTicketDetails(null)
+  }
+
+  const handleFinishSupportTicket = () => {
+    finishTicket(
+      { ticketId: ticket?.id },
+      {
+        onSuccess: () => {
+          handleClose()
+        }
+      }
+    )
   }
 
   return (
@@ -45,8 +58,8 @@ const TicketSupportConversationDrawer = () => {
             <LoadingButton
               endIcon={<DoneAll />}
               variant="contained"
-              type="submit"
-              loading={isLoading}
+              onClick={handleFinishSupportTicket}
+              loading={isLoading || isFinishingTicket}
               color="success"
               // sx={{ typography: 'subtitle1' }}
             >

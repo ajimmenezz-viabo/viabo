@@ -92,12 +92,14 @@ const TicketConversationLayout = ({ ticket, queryTicketConversation }) => {
         {!isLoading && (
           <TicketAddAttachmentFiles files={files} isLoading={isLoading} handleRemoveFile={handleRemoveFile} />
         )}
-        <TicketMessageInput
-          formik={formik}
-          isLoading={isLoading}
-          handleAddMessage={handleAddMessage}
-          handleFileChange={handleFileChange}
-        />
+        {ticket?.status?.id !== '3' && (
+          <TicketMessageInput
+            formik={formik}
+            isLoading={isLoading}
+            handleAddMessage={handleAddMessage}
+            handleFileChange={handleFileChange}
+          />
+        )}
       </Stack>
     </>
   )
@@ -108,7 +110,10 @@ TicketConversationLayout.propTypes = {
     isFetching: PropTypes.any
   }),
   ticket: PropTypes.shape({
-    id: PropTypes.any
+    id: PropTypes.any,
+    status: PropTypes.shape({
+      id: PropTypes.string
+    })
   })
 }
 

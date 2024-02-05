@@ -11,9 +11,11 @@ export const AddMessageToTicketAdapter = (ticketId, conversation, user) => {
     formData.append('files[]', file)
   })
   const createDate = new Date().toLocaleString()
+  const crypto = window.crypto || window.msCrypto
+  const array = new Uint32Array(1)
 
   const optimisticMessage = {
-    id: self.crypto.randomUUID(),
+    id: crypto.getRandomValues(array)[0],
     name: user?.name,
     initials: getNameAvatar(user?.name || ''),
     message,

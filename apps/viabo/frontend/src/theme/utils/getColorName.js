@@ -32,3 +32,20 @@ export function getColorName(hex) {
 
   return color
 }
+
+export const contrastColor = color => {
+  console.log(color)
+  const lum = [0.299 /* red */, 0.587 /* green */, 0.114 /* blue */].reduce((result, value, index) => {
+    // with reduce() we can convert an array of numbers into a single number
+    // result = previous result returned by this function
+    // value = https://www.w3.org/TR/AERT/#color-contrast
+    // index = current position index in the array
+    // num = decimal number of Red, Green or Blue color
+    const num = parseInt(color.substr(index * 2 + 1, 2), 16)
+    return num * value + result
+  }, 0 /* result = 0 */)
+
+  const isDark = lum < 128
+  const index = ~~isDark // convert boolean into 0 or 1
+  return ['#000', '#fff'][index]
+}

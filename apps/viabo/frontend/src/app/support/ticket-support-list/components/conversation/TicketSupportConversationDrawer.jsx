@@ -26,7 +26,7 @@ const TicketSupportConversationDrawer = () => {
 
   useEffect(() => {
     if (openTicketConversation && ticket?.id) {
-      fetchNextPage({ pageParam: 1 })
+      refetch()
     }
   }, [openTicketConversation, ticket?.id])
 
@@ -55,7 +55,7 @@ const TicketSupportConversationDrawer = () => {
           <Stack>
             <Typography variant={'h6'}>{`Ticket #${ticket?.id}`}</Typography>
           </Stack>
-          {ticket && data && canCloseTicket && (
+          {ticket && data && canCloseTicket && ticket?.status?.id !== '3' && (
             <Stack maxWidth={'30%'}>
               <LoadingButton
                 endIcon={<DoneAll />}

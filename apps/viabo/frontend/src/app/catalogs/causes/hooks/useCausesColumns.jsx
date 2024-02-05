@@ -2,10 +2,7 @@ import { useMemo } from 'react'
 
 import { Box, Typography } from '@mui/material'
 
-const getColorBasedOnBackground = backgroundColor => {
-  const isBackgroundLight = parseInt(backgroundColor.replace(/^#/, ''), 16) > 0xffffff / 2
-  return isBackgroundLight ? 'black' : 'white'
-}
+import { contrastColor } from '@/theme/utils'
 
 export const useCausesColumns = () =>
   useMemo(
@@ -60,7 +57,7 @@ export const useCausesColumns = () =>
             display: 'inline-flex',
             justifyContent: 'center',
             padding: theme.spacing(0, 1),
-            color: getColorBasedOnBackground(renderedCellValue),
+            color: contrastColor(renderedCellValue),
             fontSize: theme.typography.pxToRem(12),
             fontFamily: theme.typography.fontFamily,
             backgroundColor: renderedCellValue,

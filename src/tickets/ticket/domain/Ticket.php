@@ -6,6 +6,7 @@ namespace Viabo\tickets\ticket\domain;
 
 use Viabo\shared\domain\aggregate\AggregateRoot;
 use Viabo\tickets\ticket\domain\events\TicketCreatedDomainEvent;
+use Viabo\tickets\ticket\domain\events\TicketStatusUpdatedDomainEvent;
 
 final class Ticket extends AggregateRoot
 {
@@ -61,6 +62,7 @@ final class Ticket extends AggregateRoot
     public function updateStatus(string $newStatus): void
     {
         $this->statusId = $this->statusId->update($newStatus);
+        $this->record(new TicketStatusUpdatedDomainEvent($this->id(),$this->toArray()));
     }
 
     public function toArray(): array

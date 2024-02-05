@@ -4,12 +4,16 @@
 namespace Viabo\tickets\ticket\application\update;
 
 
+use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\tickets\ticket\domain\exceptions\TicketNotExist;
 use Viabo\tickets\ticket\domain\TicketRepository;
 
 final readonly class TicketStatusUpdater
 {
-    public function __construct(private TicketRepository $repository)
+    public function __construct(
+        private TicketRepository $repository,
+        private EventBus $bus
+    )
     {
     }
 
@@ -24,6 +28,8 @@ final readonly class TicketStatusUpdater
         if ($ticket->isStatusDifferent($newStatus)) {
             $ticket->updateStatus($newStatus);
             $this->repository->update($ticket);
+
+            $this->bus->publish(...$ticket->pullDomainEvents());
         }
 
     }

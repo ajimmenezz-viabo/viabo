@@ -36,7 +36,7 @@ final readonly class TicketsFinder
         if ($created && ($userProfileId === $applicantProfile || $userProfileId === $commerceAdminProfile)) {
             $filters = [
                 ['field' => 'createdByUser.value' , 'operator' => '=' , 'value' => $userId] ,
-                ['field' => 'statusId.value' , 'operator' => 'NIN' , 'value' => '3,4']
+                ['field' => 'statusId.value' , 'operator' => 'NIN' , 'value' => '4']
             ];
         }
 

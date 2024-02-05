@@ -1,35 +1,33 @@
 import PropTypes from 'prop-types'
 
-import { alpha, styled } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 
-const getColorBasedOnBackground = backgroundColor => {
-  if (!backgroundColor) {
-    return null
-  }
-  const isBackgroundLight = parseInt(backgroundColor.replace(/^#/, ''), 16) > 0xffffff / 2
-  return isBackgroundLight ? 'black' : 'white'
-}
+import { contrastColor } from '@/theme/utils'
 
 const RootStyle = styled('span')(({ theme, ownerState }) => {
   const isLight = theme.palette.mode === 'light'
   const { color, variant } = ownerState
 
   const styleFilled = color => ({
-    color: getColorBasedOnBackground(color) || theme.palette.text.primary,
+    color: contrastColor(color) || theme.palette.text.primary,
     backgroundColor: color
   })
 
   const styleOutlined = color => ({
-    color: getColorBasedOnBackground(color) || theme.palette.text.primary,
+    color: contrastColor(color) || theme.palette.text.primary,
     backgroundColor: 'transparent',
     border: `1px solid ${color}`
   })
 
-  const styleGhost = color => ({
-    color: getColorBasedOnBackground(color) || theme.palette.text.primary,
-    backgroundColor: color ? alpha(color, 0.6) : 'inherit'
-  })
+  const styleGhost = color => {
+    const hexColor = color
+    const colorText = contrastColor(hexColor)
 
+    return {
+      color: colorText,
+      backgroundColor: color ? hexColor : 'inherit'
+    }
+  }
   return {
     height: 22,
     minWidth: 22,

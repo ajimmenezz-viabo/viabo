@@ -112,3 +112,8 @@ catalogs-paths:
   methods: GET
   requirements:
     any: ".+"
+
+support-incidences:
+  path: "/support/incidences"
+  controller: Viabo\Backend\Controller\RoutesFrontendController
+  methods: GET

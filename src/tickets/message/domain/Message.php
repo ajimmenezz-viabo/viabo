@@ -69,6 +69,11 @@ final class Message extends AggregateRoot
         $this->isUserSentMessage = $this->createdByUser->isSame($userId);
     }
 
+    public function hasTicketClosePermission(string $userId): bool
+    {
+        return $this->createdByUser->isSame($userId);
+    }
+
     public function toArray(): array
     {
         return [

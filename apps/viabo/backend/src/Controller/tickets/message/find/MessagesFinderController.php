@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\tickets\message\application\find\MessagesQuery;
+use Viabo\tickets\message\application\find\UserHasTicketClosePermissionQuery;
 
 final readonly class MessagesFinderController extends ApiController
 {
@@ -28,7 +29,7 @@ final readonly class MessagesFinderController extends ApiController
                 $limit ,
                 $page
             ));
-            $messages = $this->addAdditionalData($messages->data);
+            $messages = $this->addAdditionalData($messages->data , $tokenData['id'] , $ticket);
 
             return new JsonResponse($messages);
         } catch (\DomainException $exception) {
@@ -36,7 +37,7 @@ final readonly class MessagesFinderController extends ApiController
         }
     }
 
-    private function addAdditionalData(array $messages): array
+    private function addAdditionalData(array $messages , string $userId , string $ticket): array
     {
         $messages['messages'] = array_map(function (array $message) {
             $user = $this->ask(new FindUserQuery($message['createdByUser'] , ''));
@@ -45,6 +46,8 @@ final readonly class MessagesFinderController extends ApiController
             return $message;
         } , $messages['messages']);
 
+        $response = $this->ask(new UserHasTicketClosePermissionQuery($userId , $ticket));
+        $messages['userCanCloseTicket'] = $response->data['userCanCloseTicket'];
         return $messages;
     }
 

@@ -45,4 +45,12 @@ final class MessageDoctrineRepository extends DoctrineRepository implements Mess
         $messages = $this->repository(Message::class)->findBy(['ticketId.value' => $ticket]);
         return count($messages);
     }
+
+    public function searchLast(string $ticketId): Message|null
+    {
+        return $this->repository(Message::class)->findOneBy(
+            ['ticketId.value' => $ticketId] ,
+            ['createDate.value' => 'desc']
+        );
+    }
 }

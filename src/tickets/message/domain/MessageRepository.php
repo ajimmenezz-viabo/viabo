@@ -13,4 +13,6 @@ interface MessageRepository
     public function searchFiles(string $messageId): array;
 
     public function searchTotal(string $ticket): int;
+
+    public function searchLast(string $ticketId): Message|null;
 }

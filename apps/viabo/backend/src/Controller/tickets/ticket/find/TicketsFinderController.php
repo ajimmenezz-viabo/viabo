@@ -32,6 +32,7 @@ final readonly class TicketsFinderController extends ApiController
             ));
 
             $tickets = $this->additionalData($tickets->data , $created);
+            $tickets = $this->filterByAssigned($tickets , $assigned , $tokenData['id']);
 
             return new JsonResponse($tickets);
         } catch (\DomainException $exception) {
@@ -75,4 +76,21 @@ final readonly class TicketsFinderController extends ApiController
 
         return '';
     }
+
+    private function filterByAssigned(array $tickets , bool $assigned , string $userId): array
+    {
+        if ($assigned) {
+            return array_filter($tickets , function (array $ticket) use ($userId) {
+                $commerceId = $this->ask(new CommerceIdQuery(
+                    $ticket['createdByUser'] ,
+                    $ticket['applicantProfileId']
+                ));
+                $commerce = $this->ask(new CommerceQuery($commerceId->data));
+                return $commerce->data['legalRepresentative'] === $userId;
+            });
+        }
+
+        return $tickets;
+    }
+
 }

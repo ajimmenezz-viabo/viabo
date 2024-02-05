@@ -1,41 +1,84 @@
-import { memo, useEffect, useMemo, useRef } from 'react'
+import { Fragment, memo, useEffect, useMemo, useRef } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { Alert, Avatar, Box, Skeleton, Stack, Tooltip, styled } from '@mui/material'
+import { AccessTime, DoneAll } from '@mui/icons-material'
+import { Alert, Avatar, Box, CircularProgress, Skeleton, Stack, Tooltip, styled } from '@mui/material'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import TicketMessageFile from './TicketMessageFile'
 import { ContentStyle, InfoStyle } from './TicketMessageItemStyles'
 
 import { createAvatar } from '@/theme/utils'
 
-const TicketMessages = ({ queryTicketConversation }) => {
-  const { data, isLoading, isFetching } = queryTicketConversation
+const TicketMessages = ({ queryTicketConversation, scroll, setScroll }) => {
+  const { data, isLoading, fetchNextPage, hasNextPage, refetch } = queryTicketConversation
 
-  const messages = data?.messages || []
+  const dataLength = data?.pages?.reduce((counter, page) => counter + (page.results?.messages?.length || 0), 0) ?? 0
 
-  const ref = useRef(null)
+  const scrollRef = useRef(null)
 
-  const dataLength = data?.messages?.length
+  const scrollMessagesToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }
 
   useEffect(() => {
-    if (dataLength > 0 && ref?.current) {
-      ref.current.scrollBottom = ref.current.scrollHeight
+    scrollMessagesToBottom()
+  }, [])
+
+  useEffect(() => {
+    if (scroll) {
+      scrollMessagesToBottom()
+      setScroll(false)
     }
-  }, [data])
+  }, [scroll])
 
   const direction = useMemo(() => (dataLength === 0 ? 'column' : 'column-reverse'), [dataLength])
 
   return (
-    <Stack ref={ref} gap={2} p={3} sx={{ overflow: 'auto' }} direction={direction}>
-      {!isLoading && messages?.length === 0 && (
-        <Stack>
-          <Alert severity="info">No hay mensajes disponibles</Alert>
-        </Stack>
-      )}
-      {(isLoading ? [...Array(12)] : messages.reverse())?.map((message, index) =>
-        message ? <TicketMessageItem key={message.id} message={message} /> : <MessageSkeleton key={index} />
-      )}
+    <Stack ref={scrollRef} gap={2} p={3} sx={{ overflow: 'auto' }} id="scrollbar-target" flexDirection={direction}>
+      <Box
+        component={InfiniteScroll}
+        dataLength={dataLength}
+        next={fetchNextPage}
+        hasMore={!!hasNextPage}
+        inverse
+        sx={{
+          display: 'flex',
+          flexDirection: direction,
+          overflow: 'none'
+        }}
+        loader={
+          <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1 }}>
+            <CircularProgress />
+          </Box>
+        }
+        scrollableTarget="scrollbar-target"
+        endMessage={
+          !isLoading && (
+            <Alert variant="outlined" severity="info" sx={{ justifyContent: 'center', m: 2 }}>
+              Este es el principio del chat
+            </Alert>
+          )
+        }
+        refreshFunction={refetch}
+        pullDownToRefresh
+        pullDownToRefreshThreshold={50}
+      >
+        {(isLoading ? [...Array(12)] : data?.pages)?.map((group, index) =>
+          group ? (
+            <Fragment key={index}>
+              {group.results?.messages?.map((message, index) => (
+                <TicketMessageItem key={index} message={message} />
+              ))}
+            </Fragment>
+          ) : (
+            <MessageSkeleton key={index} />
+          )
+        )}
+      </Box>
     </Stack>
   )
 }
@@ -43,13 +86,16 @@ const TicketMessages = ({ queryTicketConversation }) => {
 TicketMessages.propTypes = {
   queryTicketConversation: PropTypes.shape({
     data: PropTypes.shape({
-      logs: PropTypes.shape({
-        length: PropTypes.number
-      })
+      pages: PropTypes.array
     }),
+    fetchNextPage: PropTypes.any,
+    hasNextPage: PropTypes.any,
     isFetching: PropTypes.any,
-    isLoading: PropTypes.any
-  })
+    isLoading: PropTypes.any,
+    refetch: PropTypes.any
+  }),
+  scroll: PropTypes.any,
+  setScroll: PropTypes.func
 }
 
 export default memo(TicketMessages)
@@ -67,7 +113,8 @@ function MessageSkeleton() {
 }
 
 const RootStyle = styled('div')(({ theme }) => ({
-  display: 'flex'
+  display: 'flex',
+  paddingTop: theme.spacing(1.5)
 }))
 
 function TicketMessageItem({ message }) {
@@ -110,67 +157,92 @@ function TicketMessageItem({ message }) {
               ...(isMe && { justifyContent: 'flex-end' })
             }}
           >
-            {!isMe && `${message?.name},`}&nbsp;
+            {!isMe && `${message?.name}`}&nbsp;
             {
               <Tooltip title={message?.createDate?.original || ''} followCursor>
-                <div>{message?.createDate?.fToNow}</div>
+                <Box component={'span'} color={'text.disabled'}>
+                  {!isMe && <>&bull; {message?.createDate?.fToNow}</>}
+                  {isMe && message?.createDate?.fToNow}
+                </Box>
               </Tooltip>
             }
           </InfoStyle>
+          <Stack gap={1}>
+            <ContentStyle
+              sx={{
+                ...(isMe && {
+                  color: 'grey.800',
+                  bgcolor: 'success.lighter',
+                  '&:before': {
+                    bottom: '100%',
+                    left: '100%',
+                    border: '10px solid transparent',
+                    content: '" "',
+                    height: 0,
+                    width: 0,
+                    position: 'absolute',
+                    pointerEvents: 'none',
+                    borderBottomColor: 'success.lighter',
+                    borderWidth: '7px',
+                    marginLeft: '-30px'
+                  }
+                })
+              }}
+            >
+              {hasFiles ? (
+                <Stack flexDirection={'row'} justifyContent={'space-between'} gap={1}>
+                  <Stack spacing={2}>
+                    <Box
+                      sx={{ wordWrap: 'break-word', textWrap: 'pretty', fontSize: 'small' }}
+                      dangerouslySetInnerHTML={{
+                        __html: `<p style='font-size: small'>${message?.message}</p>`
+                      }}
+                    />
 
-          <ContentStyle
-            sx={{
-              ...(isMe && {
-                color: 'grey.800',
-                bgcolor: 'success.lighter',
-                '&:before': {
-                  bottom: '100%',
-                  left: '100%',
-                  border: '10px solid transparent',
-                  content: '" "',
-                  height: 0,
-                  width: 0,
-                  position: 'absolute',
-                  pointerEvents: 'none',
-                  borderBottomColor: 'success.lighter',
-                  borderWidth: '7px',
-                  marginLeft: '-30px'
-                }
-              }),
-              ...(hasFiles && { p: 0 })
-            }}
-          >
-            {hasFiles ? (
-              <Stack spacing={2} p={1.5}>
-                <div
-                  style={{ wordWrap: 'break-word', textWrap: 'pretty', fontSize: 'small' }}
-                  dangerouslySetInnerHTML={{
-                    __html: `<p style='font-size: small'>${message?.message}</p>`
-                  }}
-                />
-
-                <Stack
-                  flexDirection="row"
-                  flexWrap="wrap"
-                  justifyContent="start"
-                  alignItems="end"
-                  gap={2}
-                  sx={{ overflow: 'auto', pb: 2 }}
-                >
-                  {files?.map((file, index) => (
-                    <TicketMessageFile key={index} file={file} />
-                  ))}
+                    <Stack
+                      flexDirection="row"
+                      flexWrap="wrap"
+                      justifyContent="start"
+                      alignItems="end"
+                      gap={2}
+                      sx={{ overflow: 'auto', pb: 2 }}
+                    >
+                      {files?.map((file, index) => (
+                        <TicketMessageFile key={index} file={file} isURL={!!message?.isSent} />
+                      ))}
+                    </Stack>
+                  </Stack>
+                  {isMe && (
+                    <Box component={'span'} sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                      {message?.isSent ? (
+                        <DoneAll sx={{ color: 'info.main', fontSize: 16 }} />
+                      ) : (
+                        <AccessTime sx={{ color: 'info.main', fontSize: 16 }} />
+                      )}
+                    </Box>
+                  )}
                 </Stack>
-              </Stack>
-            ) : (
-              <div
-                style={{ wordWrap: 'break-word', textWrap: 'pretty' }}
-                dangerouslySetInnerHTML={{
-                  __html: `<p style='font-size: small'>${message?.message}</p>`
-                }}
-              />
-            )}
-          </ContentStyle>
+              ) : (
+                <Stack flexDirection={'row'} justifyContent={'space-between'} gap={1}>
+                  <Box
+                    sx={{ wordWrap: 'break-word', textWrap: 'pretty' }}
+                    dangerouslySetInnerHTML={{
+                      __html: `<p style='font-size: small'>${message?.message}</p>`
+                    }}
+                  />
+                  {isMe && (
+                    <Box component={'span'} sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                      {message?.isSent ? (
+                        <DoneAll sx={{ color: 'info.main', fontSize: 16 }} />
+                      ) : (
+                        <AccessTime sx={{ color: 'info.main', fontSize: 16 }} />
+                      )}
+                    </Box>
+                  )}
+                </Stack>
+              )}
+            </ContentStyle>
+          </Stack>
         </div>
       </Box>
     </RootStyle>

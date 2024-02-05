@@ -5,7 +5,8 @@ const initialState = {
   totalTicketsGenerated: 0,
   totalTicketsAssigned: 0,
   isTableFullScreen: false,
-  openTicketConversation: false
+  openTicketConversation: false,
+  canCloseTicket: false
 }
 const ticketSupportListStore = (set, get) => ({
   ...initialState,
@@ -52,6 +53,15 @@ const ticketSupportListStore = (set, get) => ({
       }),
       false,
       'SET_TOTAL_SUPPORT_TICKETS_ASSIGNED'
+    )
+  },
+  setCanCloseTicket: canClose => {
+    set(
+      state => ({
+        canCloseTicket: canClose
+      }),
+      false,
+      'SET_CAN_CLOSE_SUPPORT_TICKET'
     )
   }
 })

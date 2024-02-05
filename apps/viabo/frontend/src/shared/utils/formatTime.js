@@ -4,6 +4,9 @@ import {
   addMonths,
   addWeeks,
   addYears,
+  differenceInHours,
+  differenceInMinutes,
+  eachDayOfInterval,
   endOfMonth,
   endOfWeek,
   endOfYear,
@@ -11,6 +14,7 @@ import {
   formatDistanceToNow,
   formatDistanceToNowStrict,
   getTime,
+  isWeekend,
   parseISO,
   startOfMonth,
   startOfWeek,
@@ -125,3 +129,17 @@ export const getDateRange = (date = new Date()) => [
     endDate: endOfYear(addYears(date, -1))
   }
 ]
+
+export function calculateTimeWithoutWeekends(startDate, endDate = new Date()) {
+  const daysWithoutWeekends = eachDayOfInterval({ start: startDate, end: endDate }).filter(date => !isWeekend(date))
+
+  const adjustedEndDate = addDays(endDate, daysWithoutWeekends.length - 1)
+
+  if (adjustedEndDate > startDate) {
+    const totalMinutes = differenceInMinutes(adjustedEndDate, startDate)
+    return formatDistanceToNow(new Date(0, 0, 0, 0, totalMinutes))
+  } else {
+    const totalHours = differenceInHours(startDate, endDate)
+    return formatDistanceToNow(new Date(0, 0, 0, totalHours))
+  }
+}

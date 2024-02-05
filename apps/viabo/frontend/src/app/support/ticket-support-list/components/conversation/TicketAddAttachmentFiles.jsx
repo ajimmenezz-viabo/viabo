@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react'
+import { memo, useMemo, useRef } from 'react'
 
 import PropTypes from 'prop-types'
 
@@ -9,7 +9,9 @@ import TicketAttachmentFile from './TicketAttachmentFile'
 const TicketAddAttachmentFiles = ({ files, isLoading, handleRemoveFile }) => {
   const scrollRef = useRef()
 
-  if (files?.length === 0) {
+  const filesTotal = useMemo(() => files, [files])
+
+  if (filesTotal?.length === 0) {
     return null
   }
 
@@ -29,8 +31,13 @@ const TicketAddAttachmentFiles = ({ files, isLoading, handleRemoveFile }) => {
         }}
         spacing={2}
       >
-        {files?.map((file, index) => (
-          <TicketAttachmentFile key={`${file?.name}-${index}`} file={file} handleRemoveFile={handleRemoveFile} />
+        {filesTotal?.map((file, index) => (
+          <TicketAttachmentFile
+            key={`${file?.name}`}
+            file={file}
+            isLoading={isLoading}
+            handleRemoveFile={handleRemoveFile}
+          />
         ))}
       </Stack>
       <Divider />

@@ -1,4 +1,5 @@
 import { fToNowStrict } from '@/shared/utils'
+import { getNameAvatar } from '@/theme/utils'
 
 export const TicketConversationAdapter = (data, pageParam) => {
   const { total, page, limit } = data
@@ -17,20 +18,25 @@ export const TicketConversationAdapter = (data, pageParam) => {
   const messages =
     data?.messages?.map((message, index) => ({
       id: message?.id,
-      name: message?.name,
-      initials: message?.initials,
-      message: message?.message,
+      name: message?.userName,
+      initials: getNameAvatar(message?.userName || ''),
+      message: message?.description,
       createDate: {
         fToNow: message?.createDate ? fToNowStrict(message?.createDate) : '',
         original: message?.createDate
       },
-      my: message?.my,
-      attachment: message?.localAttachment?.split(',') || [],
-      avatar: message?.photo && message?.photo !== '' ? message?.photo : '/'
+      my: !!message?.isUserSentMessage,
+      attachment: message?.files || [],
+      avatar: message?.photo && message?.photo !== '' ? message?.photo : '/',
+      isSent: true
     })) || []
 
   return {
-    participants,
-    messages
+    results: {
+      participants,
+      messages
+    },
+    next: Number(total) > Number(page) * Number(limit) ? pageParam + 1 : undefined,
+    canCloseTicket: !!data?.userCanCloseTicket
   }
 }

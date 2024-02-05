@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { AttachFile, DeleteOutline } from '@mui/icons-material'
+import { DeleteOutline, FilePresentRounded } from '@mui/icons-material'
 import { Box, IconButton, Stack, Tooltip } from '@mui/material'
 
 import { Image } from '@/shared/components/images'
@@ -40,7 +40,7 @@ const TicketAttachmentFile = ({ isLoading, file, handleRemoveFile }) => {
           {url && url !== 'image' && (
             <Image src={url} alt={file.name} sx={{ width: 80, height: 80, borderRadius: 2 }} />
           )}
-          {!url && <AttachFile sx={{ width: 80, height: 80 }} />}
+          {!url && <FilePresentRounded sx={{ width: 80, height: 80 }} />}
         </Box>
       </Tooltip>
     </Stack>

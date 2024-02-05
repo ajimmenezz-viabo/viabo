@@ -1,4 +1,4 @@
-import { lazy, useMemo } from 'react'
+import { lazy, useMemo, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
@@ -11,6 +11,7 @@ import { AddMessageToTicketAdapter } from '../../adapters'
 import { useAddNewMessageToTicket } from '../../hooks'
 
 import { Lodable } from '@/shared/components/lodables'
+import { useUser } from '@/shared/hooks'
 
 const TicketMessages = Lodable(lazy(() => import('./TicketMessages')))
 const TicketAddAttachmentFiles = Lodable(lazy(() => import('./TicketAddAttachmentFiles')))
@@ -18,6 +19,8 @@ const TicketMessageInput = Lodable(lazy(() => import('./TicketMessageInput')))
 
 const TicketConversationLayout = ({ ticket, queryTicketConversation }) => {
   const { mutate, isLoading: isLoadingNewMessage } = useAddNewMessageToTicket()
+  const user = useUser()
+  const [scroll, setScroll] = useState(false)
 
   const RegisterSchema = Yup.object().shape({
     message: Yup.string().required('El mensaje es requerido'),
@@ -33,7 +36,7 @@ const TicketConversationLayout = ({ ticket, queryTicketConversation }) => {
     },
     validationSchema: RegisterSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
-      const message = AddMessageToTicketAdapter(ticket?.id, values)
+      const message = AddMessageToTicketAdapter(ticket?.id, values, user)
       mutate(message, {
         onSuccess: () => {
           setSubmitting(false)
@@ -64,6 +67,7 @@ const TicketConversationLayout = ({ ticket, queryTicketConversation }) => {
 
   const handleAddMessage = async e => {
     e.preventDefault()
+    setScroll(true)
     const validate = await validateForm()
 
     if (validate && Object.keys(validate)?.length > 0) {
@@ -79,13 +83,15 @@ const TicketConversationLayout = ({ ticket, queryTicketConversation }) => {
     <>
       {queryTicketConversation?.isFetching && <LinearProgress />}
       <Stack sx={{ overflow: 'hidden' }}>
-        <TicketMessages queryTicketConversation={queryTicketConversation} />
+        <TicketMessages queryTicketConversation={queryTicketConversation} scroll={scroll} setScroll={setScroll} />
       </Stack>
-      {queryTicketConversation?.isFetching && <LinearProgress />}
 
       <Stack flex={1} justifyContent={'flex-end'}>
+        {queryTicketConversation?.isFetching && <LinearProgress />}
         <Divider />
-        <TicketAddAttachmentFiles files={files} isLoading={isLoading} handleRemoveFile={handleRemoveFile} />
+        {!isLoading && (
+          <TicketAddAttachmentFiles files={files} isLoading={isLoading} handleRemoveFile={handleRemoveFile} />
+        )}
         <TicketMessageInput
           formik={formik}
           isLoading={isLoading}

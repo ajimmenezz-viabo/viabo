@@ -29,7 +29,7 @@ final class MessageDoctrineRepository extends DoctrineRepository implements Mess
     {
         return $this->repository(Message::class)->findBy(
             ['ticketId.value' => $ticket] ,
-            ['createDate.value' => 'Asc'] ,
+            ['createDate.value' => 'Desc'] ,
             $limit ,
             $offset
         );

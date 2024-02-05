@@ -15,19 +15,20 @@ import { Scrollbar } from '@/shared/components/scroll'
 const TicketConversationLayout = Lodable(lazy(() => import('./TicketConversationLayout')))
 
 const TicketSupportConversationDrawer = () => {
-  const { openTicketConversation, setOpenTicketConversation, ticket, setSupportTicketDetails } =
+  const { openTicketConversation, setOpenTicketConversation, ticket, setSupportTicketDetails, canCloseTicket } =
     useTicketSupportListStore()
 
   const queryTicketConversation = useFindTicketConversation(ticket?.id, { enabled: !!ticket?.id })
+
   const { mutate: finishTicket, isLoading: isFinishingTicket } = useFinishSupportTicket()
 
-  const { isLoading, error, isError, refetch } = queryTicketConversation
+  const { isLoading, error, isError, refetch, data, fetchNextPage } = queryTicketConversation
 
   useEffect(() => {
-    if (openTicketConversation) {
-      refetch()
+    if (openTicketConversation && ticket?.id) {
+      fetchNextPage({ pageParam: 1 })
     }
-  }, [openTicketConversation])
+  }, [openTicketConversation, ticket?.id])
 
   const handleClose = () => {
     setOpenTicketConversation(false)
@@ -54,18 +55,20 @@ const TicketSupportConversationDrawer = () => {
           <Stack>
             <Typography variant={'h6'}>{`Ticket #${ticket?.id}`}</Typography>
           </Stack>
-          <Stack maxWidth={'30%'}>
-            <LoadingButton
-              endIcon={<DoneAll />}
-              variant="contained"
-              onClick={handleFinishSupportTicket}
-              loading={isLoading || isFinishingTicket}
-              color="success"
-              // sx={{ typography: 'subtitle1' }}
-            >
-              Concluir
-            </LoadingButton>
-          </Stack>
+          {ticket && data && canCloseTicket && (
+            <Stack maxWidth={'30%'}>
+              <LoadingButton
+                endIcon={<DoneAll />}
+                variant="contained"
+                onClick={handleFinishSupportTicket}
+                loading={isLoading || isFinishingTicket}
+                color="success"
+                // sx={{ typography: 'subtitle1' }}
+              >
+                Concluir
+              </LoadingButton>
+            </Stack>
+          )}
         </Stack>
       }
       width={{ sm: '100%', lg: '50%', xl: '40%' }}

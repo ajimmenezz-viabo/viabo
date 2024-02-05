@@ -29,7 +29,7 @@ final readonly class MessageCreator
     ): void
     {
 
-        $files = $this->getFileDataAndMergeData($uploadFile['files'] , $ticketId , $messageId);
+        $files = $this->getFileDataAndMergeData($uploadFile , $ticketId , $messageId);
 
         $message = Message::create(
             $messageId ,
@@ -40,7 +40,7 @@ final readonly class MessageCreator
         );
 
         $this->repository->save($message);
-        $this->storageFile($uploadFile['files'] , $message->directoryPath());
+        $this->storageFile($uploadFile , $message->directoryPath());
 
         $this->bus->publish(...$message->pullDomainEvents());
 
@@ -49,9 +49,11 @@ final readonly class MessageCreator
 
     private function getFileDataAndMergeData(mixed $files , string $ticketId , string $messageId): array
     {
-        if (empty($files)) {
+        if (empty($files['files'])) {
             return [];
         }
+
+        $files = $files['files'];
 
         if (is_array($files)) {
             return array_map(function (object $file) use ($ticketId , $messageId) {
@@ -70,9 +72,11 @@ final readonly class MessageCreator
 
     private function storageFile(mixed $uploadFiles , string $directoryPath): void
     {
-        if (empty($uploadFiles)) {
+        if (empty($uploadFiles['files'])) {
             return;
         }
+
+        $uploadFiles= $uploadFiles['files'];
 
         if (!is_array($uploadFiles)) {
             $this->uploadFileRepository->upload($uploadFiles , $directoryPath);

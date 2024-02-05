@@ -1,4 +1,3 @@
-import { ConversationTicketMock } from '../_mock'
 import { AssignedTicketsListAdapter, GeneratedTicketsListAdapter, TicketConversationAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
@@ -9,7 +8,6 @@ export const getGeneratedTicketsSupportList = async () => {
 
   const { data } = await axios.get(fetchURL)
 
-  // const data = GeneratedTicketsMock
   return GeneratedTicketsListAdapter(data)
 }
 
@@ -19,25 +17,29 @@ export const getAssignedTicketsSupportList = async () => {
 
   const { data } = await axios.get(fetchURL)
 
-  // const data = AssignedTicketsMock
   return AssignedTicketsListAdapter(data)
 }
 
-export const getSupportTicketConversation = async ticketId => {
-  // const { data } = await axios.get('/api/support/tickets/assigned')
+export const getSupportTicketConversation = async (ticketId, page) => {
+  // const page = pageParam === 0 ? 1 : pageParam
 
-  const data = ConversationTicketMock
-  return TicketConversationAdapter(data)
+  const fetchURL = new URL('/api/tickets/messages', window.location.origin)
+  fetchURL.searchParams.set('ticket', ticketId)
+  fetchURL.searchParams.set('limit', 10)
+  fetchURL.searchParams.set('page', page)
+
+  const { data } = await axios.get(fetchURL)
+  return TicketConversationAdapter(data, page)
 }
 
 export const addMessageToSupportTicketConversation = async message => {
-  const { data } = await axios.post('/api/support/tickets/add-message', message)
+  const { data } = await axios.post('/api/tickets/message/new', message?.data)
 
-  return data
+  return message?.ticketId
 }
 
 export const finishSupportTicket = async ticket => {
-  const { data } = await axios.post('/api/support/tickets/finish-ticket', ticket)
+  const { data } = await axios.put(`/api/tickets/ticket/${ticket?.ticketId}/close`)
 
   return data
 }

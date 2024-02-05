@@ -55,18 +55,6 @@ export const useAssignedTicketsTableColumns = () => {
         }
       },
       {
-        id: 'attendant',
-        header: 'Atiende',
-        accessorKey: 'attendant',
-        maxSize: 200,
-        Cell: ({ cell, column, row, renderedCellValue }) => {
-          const { original: rowData } = row
-
-          return <Typography variant="subtitle2">{renderedCellValue}</Typography>
-        }
-      },
-
-      {
         id: 'status',
         accessorFn: originalRow => originalRow?.status?.name || null,
         header: 'Estado',

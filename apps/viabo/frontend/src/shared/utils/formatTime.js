@@ -4,12 +4,17 @@ import {
   addMonths,
   addWeeks,
   addYears,
+  differenceInHours,
+  differenceInMinutes,
+  eachDayOfInterval,
   endOfMonth,
   endOfWeek,
   endOfYear,
   format,
   formatDistanceToNow,
+  formatDistanceToNowStrict,
   getTime,
+  isWeekend,
   parseISO,
   startOfMonth,
   startOfWeek,
@@ -35,6 +40,13 @@ export function fTimestamp(date) {
 
 export function fDateTimeSuffix(date) {
   return format(new Date(date), 'dd/MM/yyyy hh:mm p', { locale: es })
+}
+
+export function fToNowStrict(date) {
+  return formatDistanceToNowStrict(new Date(date), {
+    addSuffix: true,
+    locale: es
+  })
 }
 
 export function normalizeDateString(dateString) {
@@ -117,3 +129,17 @@ export const getDateRange = (date = new Date()) => [
     endDate: endOfYear(addYears(date, -1))
   }
 ]
+
+export function calculateTimeWithoutWeekends(startDate, endDate = new Date()) {
+  const daysWithoutWeekends = eachDayOfInterval({ start: startDate, end: endDate }).filter(date => !isWeekend(date))
+
+  const adjustedEndDate = addDays(endDate, daysWithoutWeekends.length - 1)
+
+  if (adjustedEndDate > startDate) {
+    const totalMinutes = differenceInMinutes(adjustedEndDate, startDate)
+    return formatDistanceToNow(new Date(0, 0, 0, 0, totalMinutes))
+  } else {
+    const totalHours = differenceInHours(startDate, endDate)
+    return formatDistanceToNow(new Date(0, 0, 0, totalHours))
+  }
+}

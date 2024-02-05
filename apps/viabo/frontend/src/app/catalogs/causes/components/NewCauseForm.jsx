@@ -6,13 +6,15 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { NewCauseAdapter } from '../adapters'
-import { useCreateNewCause } from '../hooks'
+import { useCreateNewCause, useUpdateCause } from '../hooks'
 
 import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
-const NewCauseForm = ({ profiles, onSuccess }) => {
-  const { mutate, isLoading } = useCreateNewCause()
+const NewCauseForm = ({ profiles, onSuccess, cause }) => {
+  const { mutate: createCause, isLoading: isCreatingCause } = useCreateNewCause()
+
+  const { mutate: updateCause, isLoading: isUpdatingCause } = useUpdateCause()
 
   const ValidationSchema = Yup.object().shape({
     cause: Yup.string().trim().max(100, 'Máximo 100 caracteres').required('Es necesario la causa'),
@@ -38,17 +40,33 @@ const NewCauseForm = ({ profiles, onSuccess }) => {
 
   const formik = useFormik({
     initialValues: {
-      cause: '',
-      description: '',
-      requesterProfile: null,
-      receptorProfile: null,
-      color: ''
+      cause: cause?.cause || '',
+      description: cause?.description || '',
+      requesterProfile: profiles?.find(profile => profile?.id === cause?.requesterProfile?.id) || null,
+      receptorProfile: profiles?.find(profile => profile?.id === cause?.receptorProfile?.id) || null,
+      color: cause?.color || ''
     },
     enableReinitialize: true,
     validationSchema: ValidationSchema,
     onSubmit: (values, { setSubmitting, setFieldValue }) => {
-      const cause = NewCauseAdapter(values)
-      mutate(cause, {
+      const newCause = NewCauseAdapter(values)
+
+      if (cause) {
+        return updateCause(
+          { ...newCause, id: cause?.id },
+          {
+            onSuccess: () => {
+              setSubmitting(false)
+              onSuccess()
+            },
+            onError: () => {
+              setSubmitting(false)
+            }
+          }
+        )
+      }
+
+      return createCause(newCause, {
         onSuccess: () => {
           setSubmitting(false)
           onSuccess()
@@ -62,7 +80,7 @@ const NewCauseForm = ({ profiles, onSuccess }) => {
 
   const { isSubmitting } = formik
 
-  const loading = isLoading || isSubmitting
+  const loading = isCreatingCause || isUpdatingCause || isSubmitting
 
   return (
     <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
@@ -132,7 +150,7 @@ const NewCauseForm = ({ profiles, onSuccess }) => {
 
           <Stack sx={{ pt: 1 }}>
             <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
-              Crear
+              {cause ? 'Actualizar' : 'Crear'}
             </LoadingButton>
           </Stack>
         </Stack>
@@ -142,6 +160,17 @@ const NewCauseForm = ({ profiles, onSuccess }) => {
 }
 
 NewCauseForm.propTypes = {
+  cause: PropTypes.shape({
+    cause: PropTypes.string,
+    color: PropTypes.string,
+    description: PropTypes.string,
+    receptorProfile: PropTypes.shape({
+      id: PropTypes.any
+    }),
+    requesterProfile: PropTypes.shape({
+      id: PropTypes.any
+    })
+  }),
   onSuccess: PropTypes.func,
   profiles: PropTypes.array
 }

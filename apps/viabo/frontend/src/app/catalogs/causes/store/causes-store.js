@@ -1,7 +1,8 @@
 import { createStore } from '@/app/shared/store'
 
 const initialState = {
-  openNewCause: false
+  openNewCause: false,
+  cause: null
 }
 
 const causesStore = (set, get) => ({
@@ -13,6 +14,15 @@ const causesStore = (set, get) => ({
       }),
       false,
       'SET_OPEN_NEW_CAUSE'
+    )
+  },
+  setCause: cause => {
+    set(
+      state => ({
+        cause
+      }),
+      false,
+      'SET_CAUSE_DETAILS'
     )
   }
 })

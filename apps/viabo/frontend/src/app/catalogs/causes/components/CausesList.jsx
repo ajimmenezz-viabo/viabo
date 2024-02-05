@@ -1,5 +1,7 @@
 import { Box, Card } from '@mui/material'
 
+import { getCausesTableActions } from './CausesTableActions'
+
 import { useCausesColumns, useFindCausesList } from '../hooks'
 
 import { MaterialDataTable } from '@/shared/components/dataTables'
@@ -49,7 +51,8 @@ export const CausesList = () => {
     muiTableContainerProps: { sx: { maxHeight: { md: '350px', lg: '450px', xl: '700px' } } },
     enableColumnResizing: true,
     layoutMode: 'grid',
-    renderTopToolbarCustomActions: () => <Box></Box>
+    renderTopToolbarCustomActions: () => <Box></Box>,
+    renderRowActions: table => getCausesTableActions(table)
   })
 
   return (
@@ -59,9 +62,7 @@ export const CausesList = () => {
         !table.getState().isFullScreen
           ? {
               boxShadow: theme.customShadows.z24,
-              backgroundColor: theme.palette.mode === 'light' ? 'inherit' : theme.palette.grey[500_12],
-              backdropFilter: `blur(10px)`,
-              WebkitBackdropFilter: `blur(10px)`
+              backgroundColor: theme.palette.mode === 'light' ? 'inherit' : theme.palette.grey[500_12]
             }
           : {}
       }

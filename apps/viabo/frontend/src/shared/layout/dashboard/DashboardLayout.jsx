@@ -10,6 +10,7 @@ import AccountPopover from './header/AccountPopover'
 import News from './header/News'
 import SideBar from './SideBar'
 
+import { TicketSupport } from '@/app/support/new-ticket-support/pages/TicketSupport'
 import { cssStyles } from '@/theme/utils'
 
 export function DashboardLayout() {
@@ -52,6 +53,7 @@ export function DashboardLayout() {
             <Box sx={{ flexGrow: 1 }}>{isDesktop && <News />}</Box>
 
             <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 2 }}>
+              <TicketSupport />
               <ThemeMode />
               <AccountPopover />
             </Stack>

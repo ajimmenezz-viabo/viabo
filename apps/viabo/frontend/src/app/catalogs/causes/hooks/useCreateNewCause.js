@@ -15,7 +15,8 @@ export const useCreateNewCause = (options = {}) => {
 
     try {
       const data = await toast.promise(cause.mutateAsync(formData, mutationOptions), {
-        pending: 'Guardando nueva causa ...'
+        pending: 'Guardando nueva causa ...',
+        success: 'Se creó la causa con éxito'
       })
       client.invalidateQueries([CAUSES_KEYS.LIST])
       isFunction(onSuccess) && onSuccess(data)

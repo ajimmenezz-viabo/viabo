@@ -10,7 +10,7 @@ final class UserNoAccess extends DomainError
 {
     public function errorCode(): int
     {
-        return 401;
+        return 403;
     }
 
     public function errorMessage(): string

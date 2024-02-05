@@ -9,7 +9,20 @@ export const newCause = async cause => {
 }
 
 export const getCausesList = async () => {
-  const { data } = await axios.get('/api/support-reasons')
+  const { data } = await axios.get('/api/tickets/support-reasons')
 
   return CausesListAdapter(data)
+}
+
+export const changeStatusCause = async cause => {
+  const { data } = await axios.put(
+    `/api/tickets/support-reasons/${cause?.id}/${cause?.changeStatus ? 'disable' : 'enable'}`
+  )
+  return cause
+}
+
+export const updateCause = async cause => {
+  const { data } = await axios.put('/api/support-reason/update', cause)
+
+  return data
 }

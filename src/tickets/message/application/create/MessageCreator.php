@@ -42,6 +42,9 @@ final readonly class MessageCreator
         $this->repository->save($message);
         $this->storageFile($uploadFile['files'] , $message->directoryPath());
 
+        $this->bus->publish(...$message->pullDomainEvents());
+
+
     }
 
     private function getFileDataAndMergeData(mixed $files , string $ticketId , string $messageId): array

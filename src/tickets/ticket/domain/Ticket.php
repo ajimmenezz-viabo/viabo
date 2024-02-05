@@ -53,6 +53,16 @@ final class Ticket extends AggregateRoot
         return $this->id->value();
     }
 
+    public function isStatusDifferent(string $newStatus): bool
+    {
+        return $this->statusId->isDifferent($newStatus);
+    }
+
+    public function updateStatus(string $newStatus): void
+    {
+        $this->statusId = $this->statusId->update($newStatus);
+    }
+
     public function toArray(): array
     {
         return [

@@ -24,6 +24,11 @@ final class TicketDoctrineRepository extends DoctrineRepository implements Ticke
         $this->persist($ticket);
     }
 
+    public function search(string $ticketId): Ticket|null
+    {
+        return $this->repository(Ticket::class)->find($ticketId);
+    }
+
     public function searchIdLast(): Ticket|null
     {
         return $this->repository(Ticket::class)->findOneBy([] , ['id.value' => 'desc']);
@@ -33,5 +38,10 @@ final class TicketDoctrineRepository extends DoctrineRepository implements Ticke
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(Ticket::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function update(Ticket $ticket): void
+    {
+        $this->entityManager()->flush($ticket);
     }
 }

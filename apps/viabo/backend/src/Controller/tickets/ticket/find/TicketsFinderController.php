@@ -32,8 +32,11 @@ final readonly class TicketsFinderController extends ApiController
             ));
 
             $tickets = $this->additionalData($tickets->data , $created);
-            $tickets = $this->filterByAssigned($tickets , $assigned , $tokenData['id']);
-
+            
+            if($tokenData['profileId'] === '3'){
+                $tickets = $this->filterByAssigned($tickets , $assigned , $tokenData['id']);
+            }
+            
             return new JsonResponse($tickets);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage() , $exception->getCode());

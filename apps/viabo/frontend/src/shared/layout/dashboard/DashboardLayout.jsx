@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Menu } from '@mui/icons-material'
 import { AppBar, Box, CssBaseline, IconButton, Stack, Toolbar } from '@mui/material'
-import { useCollapseDrawer, useResponsive } from '@theme/hooks'
-import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { useCollapseDrawer, useResponsive, useSettings } from '@theme/hooks'
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom'
 
 import { ThemeMode } from './header'
 import AccountPopover from './header/AccountPopover'
@@ -19,6 +19,17 @@ export function DashboardLayout() {
   const { isCollapse, onToggleCollapse, setCollapse } = useCollapseDrawer()
 
   const [open, setOpen] = useState(false)
+
+  const { pathname } = useLocation()
+  const { onChangeThemeToCentralPay, isCentralPayTheme } = useSettings()
+
+  useEffect(() => {
+    if (pathname?.includes('viabo-spei')) {
+      onChangeThemeToCentralPay(true)
+    } else {
+      isCentralPayTheme && onChangeThemeToCentralPay(false)
+    }
+  }, [pathname])
 
   return (
     <Box sx={{ display: 'flex', height: '100dvH' }}>

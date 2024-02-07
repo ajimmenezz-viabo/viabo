@@ -10,7 +10,7 @@ import { Label } from '@/shared/components/form'
 
 export const ChargePaymentLinkDetails = ({ details }) => (
   <Stack>
-    <Paper sx={{ width: 1, p: 3, position: 'relative' }} elevation={0}>
+    <Paper sx={{ width: 1, p: 3, position: 'relative' }} elevation={1}>
       <Box
         sx={{
           textAlign: 'center',

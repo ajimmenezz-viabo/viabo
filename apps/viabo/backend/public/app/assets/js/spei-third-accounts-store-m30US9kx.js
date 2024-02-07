@@ -1,0 +1,2 @@
+import{r as o}from"./index-Nopic_A6.js";const n={account:null,openNewAccount:!1,openDeleteAccount:!1},s=(t,i)=>({...n,setSpeiThirdAccount:e=>{t(c=>({account:e}))},setOpenNewSpeiThirdAccount:e=>{t(c=>({openNewAccount:e}),!1,"SET_OPEN_SPEI_NEW_THIRD_ACCOUNT")},setOpenDeleteSpeiThirdAccount:e=>{t(c=>({openDeleteAccount:e}),!1,"SET_OPEN_SPEI_DELETE_THIRD_ACCOUNT")}}),p=o(s);export{p as u};
+//# sourceMappingURL=spei-third-accounts-store-m30US9kx.js.map

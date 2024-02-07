@@ -17,7 +17,8 @@ const initialState = {
   onChangeLayout: () => {},
   onResetSetting: () => {},
   setColor: {},
-  colorOption: []
+  colorOption: [],
+  isCentralPayTheme: false
 }
 
 const SettingsContext = createContext(initialState)
@@ -32,7 +33,8 @@ function SettingsProvider({ children }) {
     themeDirection: initialState.themeDirection,
     themeColorPresets: initialState.themeColorPresets,
     themeStretch: initialState.themeStretch,
-    themeLayout: initialState.themeLayout
+    themeLayout: initialState.themeLayout,
+    isCentralPayTheme: false
   })
 
   const onChangeMode = event => {
@@ -83,7 +85,15 @@ function SettingsProvider({ children }) {
       themeLayout: initialState.themeLayout,
       themeStretch: initialState.themeStretch,
       themeDirection: initialState.themeDirection,
-      themeColorPresets: initialState.themeColorPresets
+      themeColorPresets: initialState.themeColorPresets,
+      isCentralPayTheme: false
+    })
+  }
+
+  const onChangeThemeToCentralPay = isCentralPay => {
+    setSettings({
+      ...settings,
+      isCentralPayTheme: isCentralPay
     })
   }
 
@@ -98,6 +108,7 @@ function SettingsProvider({ children }) {
         onChangeDirection,
         // Color
         onChangeColor,
+        onChangeThemeToCentralPay,
         setColor: getColorPresets(settings.themeColorPresets),
         colorOption: colorPresets.map(color => ({
           name: color.name,
@@ -116,4 +127,4 @@ function SettingsProvider({ children }) {
   )
 }
 
-export { SettingsProvider, SettingsContext }
+export { SettingsContext, SettingsProvider }

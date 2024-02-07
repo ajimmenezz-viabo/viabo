@@ -37,7 +37,7 @@ const createShadow = color => {
   ]
 }
 
-const createCustomShadow = color => {
+const createCustomShadow = (color, palette) => {
   const transparent = alpha(color, 0.16)
   return {
     z1: `0 1px 2px 0 ${transparent}`,
@@ -60,10 +60,10 @@ const createCustomShadow = color => {
   }
 }
 
-export const customShadows = {
-  light: createCustomShadow(LIGHT_MODE),
-  dark: createCustomShadow(DARK_MODE)
-}
+export const customShadows = palette => ({
+  light: createCustomShadow(palette.light.grey[500], palette),
+  dark: createCustomShadow(palette.light.grey[500], palette)
+})
 
 export const shadows = {
   light: createShadow(LIGHT_MODE),

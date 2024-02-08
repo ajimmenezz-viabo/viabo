@@ -19,6 +19,13 @@ const ViaboSpeiRouter = {
         const { SpeiThirdAccounts } = await import('../../third-accounts/pages/SpeiThirdAccounts')
         return { Component: SpeiThirdAccounts }
       }
+    },
+    {
+      path: VIABO_SPEI_ROUTES.companies.route,
+      async lazy() {
+        const { ViaboSpeiCompanies } = await import('../../companies/pages/ViaboSpeiCompanies')
+        return { Component: ViaboSpeiCompanies }
+      }
     }
   ]
 }

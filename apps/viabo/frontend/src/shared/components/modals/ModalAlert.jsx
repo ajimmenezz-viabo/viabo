@@ -7,16 +7,19 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 
+const TYPES_ALERT = ['primary', 'secondary', 'success', 'error', 'info', 'warning']
+
 ModalAlert.propTypes = {
   onClose: PropTypes.func,
   onSuccess: PropTypes.func,
   open: PropTypes.bool,
   isSubmitting: PropTypes.bool,
-  title: PropTypes.string,
+  title: PropTypes.any,
   description: PropTypes.node,
   textButtonSuccess: PropTypes.string,
   textButtonCancel: PropTypes.string,
-  typeAlert: PropTypes.oneOf(['primary', 'secondary', 'success', 'error', 'info', 'warning'])
+  typeAlert: PropTypes.oneOf(TYPES_ALERT),
+  actionsProps: PropTypes.any
 }
 
 export function ModalAlert(props) {
@@ -30,6 +33,7 @@ export function ModalAlert(props) {
     open,
     onClose,
     onSuccess,
+    actionsProps,
     ...rest
   } = props
 
@@ -39,32 +43,41 @@ export function ModalAlert(props) {
     onClose()
   }
 
+  const dialogPaperSx = TYPES_ALERT.includes(typeAlert)
+    ? {
+        '& .MuiDialog-paper': {
+          color: theme => theme.palette[typeAlert].darker,
+          bgcolor: theme => theme.palette[typeAlert].lighter
+        }
+      }
+    : {}
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      sx={{
-        '& .MuiDialog-paper': {
-          color: theme => theme.palette[typeAlert].darker,
-          bgcolor: theme => theme.palette[typeAlert].lighter
-        }
-      }}
+      sx={dialogPaperSx}
       {...rest}
     >
       <DialogTitle sx={{ paddingBottom: 2 }} id="alert-dialog-title">
         {title}
       </DialogTitle>
       <DialogContent sx={{ paddingBottom: 0 }}>{description}</DialogContent>
-      <DialogActions>
+      <DialogActions {...actionsProps}>
         {!isSubmitting && (
           <Button variant="outlined" color="inherit" onClick={handleClose}>
             {textButtonCancel}
           </Button>
         )}
 
-        <LoadingButton onClick={onSuccess} color={typeAlert} loading={isSubmitting} variant="contained">
+        <LoadingButton
+          onClick={onSuccess}
+          color={TYPES_ALERT.includes(typeAlert) ? typeAlert : 'primary'}
+          loading={isSubmitting}
+          variant="contained"
+        >
           {textButtonSuccess}
         </LoadingButton>
       </DialogActions>

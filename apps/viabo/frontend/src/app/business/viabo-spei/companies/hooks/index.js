@@ -1,3 +1,4 @@
+export * from './useChangeSpeiCompanyStatus'
 export * from './useCreateNewSpeiCompany'
 export * from './useFindSpeiAdminCompanyUsers'
 export * from './useFindSpeiCompanies'

@@ -6,50 +6,56 @@ export const useSpeiCompaniesTableColumns = () =>
   useMemo(
     () => [
       {
-        id: 'name',
-        accessorKey: 'name',
-        header: 'Beneficiario',
+        id: 'id',
+        accessorKey: 'id',
+        header: 'ID',
         enableHiding: false,
         size: 150,
         Cell: ({ cell, column, row, renderedCellValue }) => (
-          <Typography fontWeight={'bold'} variant="subtitle2">
+          <Typography variant="subtitle2">{renderedCellValue}</Typography>
+        )
+      },
+      {
+        id: 'rfc',
+        accessorKey: 'rfc',
+        header: 'RFC',
+        Cell: ({ cell, column, row, renderedCellValue }) => {
+          const { original: rowData } = row
+          return (
+            <Typography textTransform={'uppercase'} variant="subtitle2">
+              {renderedCellValue}
+            </Typography>
+          )
+        }
+      },
+      {
+        id: 'name',
+        accessorKey: 'name',
+        header: 'Nombre',
+        enableHiding: false,
+        size: 150,
+        Cell: ({ cell, column, row, renderedCellValue }) => (
+          <Typography textTransform={'capitalize'} fontWeight={'bold'} variant="subtitle2">
             {renderedCellValue}
           </Typography>
         )
       },
+
       {
-        id: 'clabe',
-        accessorKey: 'clabe',
-        header: 'CLABE',
-        Cell: ({ cell, column, row, renderedCellValue }) => {
-          const { original: rowData } = row
-          return <Typography variant="subtitle2">{renderedCellValue}</Typography>
-        }
-      },
-      {
-        id: 'bank',
-        header: 'Banco',
-        accessorFn: originalRow => originalRow?.bank?.name || null,
+        id: 'stpAccount',
+        header: 'Cuenta STP',
+        accessorKey: 'stpAccount',
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
 
-          return <Typography variant="subtitle2">{rowData?.bank.name}</Typography>
-        }
-      },
-      {
-        id: 'email',
-        accessorKey: 'email',
-        header: 'Correo',
-        minSize: 100,
-        Cell: ({ cell, column, row, renderedCellValue }) => {
-          const { original: rowData } = row
           return <Typography variant="subtitle2">{renderedCellValue}</Typography>
         }
       },
       {
-        id: 'phone',
-        accessorKey: 'phone',
-        header: 'Teléfono',
+        id: 'balance',
+        accessorKey: 'balance',
+        header: 'Balance',
+        minSize: 100,
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
           return <Typography variant="subtitle2">{renderedCellValue}</Typography>

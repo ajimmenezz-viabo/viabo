@@ -2,13 +2,30 @@ import PropTypes from 'prop-types'
 
 import { Switch, styled } from '@mui/material'
 
+const SIZES = {
+  sm: {
+    width: 21,
+    height: 14,
+    thumb: 10
+  },
+  md: {
+    width: 34,
+    height: 18,
+    thumb: 14
+  },
+  lg: {
+    width: 42,
+    height: 26,
+    thumb: 22
+  }
+}
 const RootStyle = styled(Switch)(({ theme, ownerState }) => {
   const isLight = theme.palette.mode === 'light'
   const { color, size } = ownerState
 
   return {
-    width: size === 'sm' ? 21 : 42,
-    height: size === 'sm' ? 14 : 26,
+    width: SIZES[size]?.width || 42,
+    height: SIZES[size]?.height || 26,
     padding: 0,
     '& .MuiSwitch-switchBase': {
       padding: 0,
@@ -39,8 +56,8 @@ const RootStyle = styled(Switch)(({ theme, ownerState }) => {
     },
     '& .MuiSwitch-thumb': {
       boxSizing: 'border-box',
-      width: size === 'sm' ? 10 : 22,
-      height: size === 'sm' ? 10 : 22
+      width: SIZES[size]?.thumb || 22,
+      height: SIZES[size]?.thumb || 22
     },
     '& .MuiSwitch-track': {
       borderRadius: 26 / 2,
@@ -53,12 +70,12 @@ const RootStyle = styled(Switch)(({ theme, ownerState }) => {
   }
 })
 
-function IOSSwitch({ size = 'md', ...other }) {
+function IOSSwitch({ size = 'lg', ...other }) {
   return <RootStyle ownerState={{ size }} {...other} />
 }
 
 export default IOSSwitch
 
 IOSSwitch.propTypes = {
-  size: PropTypes.oneOf(['sm', 'md'])
+  size: PropTypes.oneOf(['sm', 'md', 'lg'])
 }

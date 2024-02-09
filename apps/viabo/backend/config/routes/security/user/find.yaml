@@ -2,3 +2,8 @@ user-find-for-username:
   path: '/api/legal-representative/verificate'
   controller: Viabo\Backend\Controller\security\user\find\LegalRepresentativeFinderController
   methods: GET
+
+find-users-of-profile-administrators-of-companies:
+  path: '/api/security/users/administrators-of-companies'
+  controller: Viabo\Backend\Controller\security\user\find\AdministratorsOfCompaniesFinderController
+  methods: GET

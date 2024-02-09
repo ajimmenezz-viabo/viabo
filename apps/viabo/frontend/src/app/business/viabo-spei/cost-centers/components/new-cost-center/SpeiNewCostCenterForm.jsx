@@ -17,36 +17,33 @@ import {
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { METHODS_NEW_COMPANY_USERS, SpeiNewCompanyAdapter } from '../../adapters'
-import { useCreateNewSpeiCompany } from '../../hooks'
+import { METHODS_NEW_COST_CENTER_USERS, SpeiNewCostCenterAdapter } from '../../adapters'
+import { useCreateNewSpeiCostCenter } from '../../hooks'
 
-import ViaboCard from '@/shared/assets/img/viabo-card.png'
-import { FormProvider, IOSSwitch, RFSelect, RFTextField } from '@/shared/components/form'
-import { Image } from '@/shared/components/images'
+import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 
-const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
-  const { mutate, isLoading } = useCreateNewSpeiCompany()
+const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
+  const { mutate, isLoading } = useCreateNewSpeiCostCenter()
 
   const ValidationSchema = Yup.object().shape({
-    fiscalName: Yup.string().trim().required('Es necesario el nombre fiscal'),
-    rfc: Yup.string().trim().required('Es necesario el rfc'),
-    commercialName: Yup.string().trim().max(100, 'Máximo 100 caracteres'),
+    name: Yup.string().trim().required('Es necesario el nombre del centro de costos'),
+    method: Yup.string(),
     adminUsers: Yup.array().when('method', {
-      is: METHODS_NEW_COMPANY_USERS.ADMIN_USERS,
-      then: schema => schema.min(1, 'Es necesario al menos un usuario administrador asignado a la empresa'),
+      is: METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS,
+      then: schema => schema.min(1, 'Es necesario al menos un usuario administrador asignado al centro de costos'),
       otherwise: schema => Yup.array()
     }),
     adminName: Yup.string()
       .trim()
       .when('method', {
-        is: METHODS_NEW_COMPANY_USERS.NEW_ADMIN_USER,
+        is: METHODS_NEW_COST_CENTER_USERS.NEW_ADMIN_USER,
         then: schema => schema.required('Es necesario el nombre del administrador'),
         otherwise: schema => Yup.string().trim()
       }),
     adminLastName: Yup.string()
       .trim()
       .when('method', {
-        is: METHODS_NEW_COMPANY_USERS.NEW_ADMIN_USER,
+        is: METHODS_NEW_COST_CENTER_USERS.NEW_ADMIN_USER,
         then: schema => schema.required('Es necesario los apellidos del administrador'),
         otherwise: schema => Yup.string().trim()
       }),
@@ -54,34 +51,28 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
       .trim()
       .email('Ingrese un correo valido')
       .when('method', {
-        is: METHODS_NEW_COMPANY_USERS.NEW_ADMIN_USER,
+        is: METHODS_NEW_COST_CENTER_USERS.NEW_ADMIN_USER,
         then: schema => schema.required('Es necesario el correo del administrador'),
         otherwise: schema => Yup.string().trim().email('Ingrese un correo valido')
       }),
-    adminPhone: Yup.string().trim(),
-    hasViaboCard: Yup.bool(),
-    costCenters: Yup.array()
+    adminPhone: Yup.string().trim()
   })
 
   const formik = useFormik({
     initialValues: {
-      fiscalName: '',
-      commercialName: '',
-      rfc: '',
-      method: METHODS_NEW_COMPANY_USERS.ADMIN_USERS,
+      name: '',
+      method: METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS,
       adminUsers: [],
-      costCenters: [],
       adminName: '',
       adminLastName: '',
       adminEmail: '',
-      adminPhone: '',
-      hasViaboCard: false
+      adminPhone: ''
     },
     enableReinitialize: true,
     validationSchema: ValidationSchema,
     onSubmit: (values, { setSubmitting, setFieldValue }) => {
-      const company = SpeiNewCompanyAdapter(values)
-      mutate(company, {
+      const costCenter = SpeiNewCostCenterAdapter(values)
+      mutate(costCenter, {
         onSuccess: () => {
           onSuccess()
           setSubmitting(false)
@@ -104,7 +95,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
       <Stack spacing={2}>
         <Stack spacing={1}>
           <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Nombre Fiscal
+            Nombre
             <Box component={'span'} color={'error.main'} ml={0.5}>
               *
             </Box>
@@ -113,40 +104,18 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
           <RFTextField
             inputProps={{ maxLength: '18' }}
             required
-            name={'fiscalName'}
+            name={'name'}
             size={'small'}
             disabled={loading}
-            placeholder={'Nombre Fiscal de la Empresa...'}
-          />
-        </Stack>
-
-        <Stack spacing={1}>
-          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            RFC
-            <Box component={'span'} color={'error.main'} ml={0.5}>
-              *
-            </Box>
-          </Typography>
-
-          <RFTextField required name={'rfc'} size={'small'} placeholder={'RFC de la Empresa...'} disabled={loading} />
-        </Stack>
-
-        <Stack spacing={1}>
-          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Nombre Comercial
-          </Typography>
-
-          <RFTextField
-            name={'commercialName'}
-            size={'small'}
-            placeholder={'Nombre Comercial de la Empresa...'}
-            disabled={loading}
+            placeholder={'Nombre del Centro de Costos...'}
           />
         </Stack>
 
         <Stack>
           <FormControl disabled={loading}>
-            <FormLabel id="demo-row-radio-buttons-group-label">Seleccione al administrador de la empresa:</FormLabel>
+            <FormLabel id="demo-row-radio-buttons-group-label">
+              Seleccione al administrador del centro de costos:
+            </FormLabel>
             <RadioGroup
               value={values.method}
               onChange={e => {
@@ -163,19 +132,19 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
               name="row-radio-buttons-group"
             >
               <FormControlLabel
-                value={METHODS_NEW_COMPANY_USERS.ADMIN_USERS}
+                value={METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS}
                 control={<Radio />}
-                label="Administrador de Empresa Existente"
+                label="Administrador de Centro de Costos Existente"
               />
               <FormControlLabel
-                value={METHODS_NEW_COMPANY_USERS.NEW_ADMIN_USER}
+                value={METHODS_NEW_COST_CENTER_USERS.NEW_ADMIN_USER}
                 control={<Radio />}
-                label="Nuevo Administrador de Empresa"
+                label="Nuevo Administrador de Centro de Costos"
               />
             </RadioGroup>
           </FormControl>
         </Stack>
-        {values.method === METHODS_NEW_COMPANY_USERS.ADMIN_USERS ? (
+        {values.method === METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS ? (
           <Stack spacing={1}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Usuarios Administradores
@@ -188,7 +157,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
               multiple
               name={'adminUsers'}
               textFieldParams={{ placeholder: 'Seleccionar ...', size: 'small' }}
-              options={adminCompanyUsers || []}
+              options={adminUsers || []}
               disabled={loading}
             />
           </Stack>
@@ -206,7 +175,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
                 name={'adminName'}
                 size={'small'}
                 required
-                placeholder={'Nombre Administrador de la Empresa...'}
+                placeholder={'Nombre Administrador del Centro de Costos...'}
                 disabled={loading}
               />
             </Stack>
@@ -223,7 +192,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
                 name={'adminLastName'}
                 size={'small'}
                 required
-                placeholder={'Apellidos del Administrador de la Empresa...'}
+                placeholder={'Apellidos del Administrador del Centro de Costos...'}
                 disabled={loading}
               />
             </Stack>
@@ -276,51 +245,6 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
           </>
         )}
 
-        <Stack spacing={1}>
-          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Centros de Costos
-          </Typography>
-
-          <RFSelect
-            multiple
-            name={'costCenters'}
-            textFieldParams={{ placeholder: 'Seleccionar ...', size: 'small' }}
-            options={[]}
-            disabled={loading}
-          />
-        </Stack>
-
-        <Stack spacing={1}>
-          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Servicios
-          </Typography>
-
-          <Stack justifyContent={'space-between'} flexDirection={'row'} alignItems={'center'}>
-            <Image
-              disabledEffect
-              visibleByDefault
-              alt="logo"
-              src={ViaboCard}
-              sx={{
-                maxWidth: 150,
-                width: 100,
-                filter: theme?.palette.mode === 'dark' ? 'brightness(0) invert(1) grayscale(100%)' : 'none'
-              }}
-            />
-
-            <IOSSwitch
-              disabled={isLoading}
-              size="md"
-              color={!values.hasViaboCard ? 'error' : 'success'}
-              checked={Boolean(values.hasViaboCard) || false}
-              inputProps={{ 'aria-label': 'controlled' }}
-              onChange={() => {
-                setFieldValue('hasViaboCard', !values.hasViaboCard)
-              }}
-            />
-          </Stack>
-        </Stack>
-
         <Stack sx={{ pt: 1 }}>
           <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
             Crear
@@ -331,9 +255,9 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
   )
 }
 
-SpeiNewCompanyForm.propTypes = {
-  adminCompanyUsers: PropTypes.array,
+SpeiNewCostCenterForm.propTypes = {
+  adminUsers: PropTypes.array,
   onSuccess: PropTypes.func
 }
 
-export default SpeiNewCompanyForm
+export default SpeiNewCostCenterForm

@@ -26,6 +26,13 @@ const ViaboSpeiRouter = {
         const { ViaboSpeiCompanies } = await import('../../companies/pages/ViaboSpeiCompanies')
         return { Component: ViaboSpeiCompanies }
       }
+    },
+    {
+      path: VIABO_SPEI_ROUTES.costCenters.route,
+      async lazy() {
+        const { ViaboSpeiCostCenters } = await import('../../cost-centers/pages/ViaboSpeiCostCenters')
+        return { Component: ViaboSpeiCostCenters }
+      }
     }
   ]
 }

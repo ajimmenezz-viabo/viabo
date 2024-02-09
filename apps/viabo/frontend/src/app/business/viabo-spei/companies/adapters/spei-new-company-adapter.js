@@ -9,5 +9,7 @@ export const SpeiNewCompanyAdapter = company => ({
   newUserName: company?.adminName?.trim(),
   newUserLastName: company?.adminLastName?.trim(),
   newUserEmail: company?.adminEmail?.trim(),
-  newUserPhone: company?.adminPhone?.trim()
+  newUserPhone: company?.adminPhone?.trim(),
+  costCenters: company?.costCenters?.map(user => user.value) || [],
+  hasViaboCard: company?.hasViaboCard
 })

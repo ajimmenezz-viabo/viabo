@@ -1,0 +1,33 @@
+import { Edit } from '@mui/icons-material'
+import { Box, IconButton } from '@mui/material'
+
+export function getViaboSpeiCostCentersTableActions(table) {
+  const { row } = table
+  const { original: rowData } = row
+  const { status } = rowData
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        gap: '8px'
+      }}
+    >
+      {status && (
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={e => {
+            e.stopPropagation()
+          }}
+        >
+          <Edit size="small" fontSize="16px" />
+        </IconButton>
+      )}
+    </Box>
+  )
+}

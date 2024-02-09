@@ -14,7 +14,7 @@ export const ViaboSpeiCompanies = () => {
   const { companies } = useViaboSpeiBreadCrumbs()
 
   return (
-    <Page title="Cuentas de Terceros - Viabo Spei">
+    <Page title="Empresas - Viabo Spei">
       <ContainerPage sx={{ pb: 3 }}>
         <HeaderPage name={'Empresas'} links={companies} />
         <ViaboSpeiCompaniesList />

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { Typography } from '@mui/material'
 
-export const useSpeiCompaniesTableColumns = () =>
+export const useSpeiCostCentersTableColumns = () =>
   useMemo(
     () => [
       {
@@ -15,19 +15,7 @@ export const useSpeiCompaniesTableColumns = () =>
           <Typography variant="subtitle2">{renderedCellValue}</Typography>
         )
       },
-      {
-        id: 'rfc',
-        accessorKey: 'rfc',
-        header: 'RFC',
-        Cell: ({ cell, column, row, renderedCellValue }) => {
-          const { original: rowData } = row
-          return (
-            <Typography textTransform={'uppercase'} variant="subtitle2">
-              {renderedCellValue}
-            </Typography>
-          )
-        }
-      },
+
       {
         id: 'name',
         accessorKey: 'name',
@@ -41,22 +29,12 @@ export const useSpeiCompaniesTableColumns = () =>
       },
 
       {
-        id: 'stpAccount',
-        header: 'Cuenta STP',
-        accessorKey: 'stpAccount',
+        id: 'companies',
+        header: 'Empresas',
+        accessorKey: 'companies',
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
 
-          return <Typography variant="subtitle2">{renderedCellValue}</Typography>
-        }
-      },
-      {
-        id: 'balance',
-        accessorKey: 'balance',
-        header: 'Balance',
-        minSize: 100,
-        Cell: ({ cell, column, row, renderedCellValue }) => {
-          const { original: rowData } = row
           return <Typography variant="subtitle2">{renderedCellValue}</Typography>
         }
       }

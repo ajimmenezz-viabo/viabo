@@ -21,8 +21,18 @@ export const useViaboSpeiBreadCrumbs = () => {
     [VIABO_SPEI_ROUTES, VIABO_SPEI_PATHS]
   )
 
+  const costCenters = useMemo(
+    () => [
+      { name: 'Inicio', href: '/' },
+      { name: VIABO_SPEI_ROUTES.root.name, href: VIABO_SPEI_PATHS.costCenters },
+      { name: 'Centro de Costos' }
+    ],
+    [VIABO_SPEI_ROUTES, VIABO_SPEI_PATHS]
+  )
+
   return {
     thirdAccounts,
-    companies
+    companies,
+    costCenters
   }
 }

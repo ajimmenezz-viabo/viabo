@@ -6,11 +6,11 @@ export const useSpeiCompaniesTableColumns = () =>
   useMemo(
     () => [
       {
-        id: 'id',
-        accessorKey: 'id',
+        id: 'folio',
+        accessorKey: 'folio',
         header: 'ID',
         enableHiding: false,
-        maxSize: 40,
+        maxSize: 50,
         Cell: ({ cell, column, row, renderedCellValue }) => (
           <Typography variant="subtitle2">{renderedCellValue}</Typography>
         )
@@ -43,11 +43,12 @@ export const useSpeiCompaniesTableColumns = () =>
       {
         id: 'stpAccount',
         header: 'Cuenta STP',
-        accessorKey: 'stpAccount',
+        enableClickToCopy: true,
+        accessorFn: originalRow => originalRow?.stpAccount?.complete || null,
         Cell: ({ cell, column, row, renderedCellValue }) => {
           const { original: rowData } = row
 
-          return <Typography variant="subtitle2">{renderedCellValue}</Typography>
+          return <Typography variant="subtitle2">{rowData?.stpAccount?.hidden}</Typography>
         }
       },
       {

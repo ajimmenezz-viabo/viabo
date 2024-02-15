@@ -59,7 +59,7 @@ export const ViaboSpeiCompaniesList = () => {
       density: 'compact',
       sorting: [
         {
-          id: 'id',
+          id: 'folio',
           desc: false
         }
       ]

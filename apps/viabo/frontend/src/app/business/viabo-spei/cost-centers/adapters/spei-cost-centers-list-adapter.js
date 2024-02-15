@@ -5,7 +5,7 @@ export const SpeiCostCentersListAdapter = costCenters => {
     costCenters?.map(company => ({
       id: company?.id,
       name: company?.name,
-      status: !!company?.active === '1',
+      status: company?.active === '1',
       companies: company?.companies,
       create: {
         user: company?.createdByUser,

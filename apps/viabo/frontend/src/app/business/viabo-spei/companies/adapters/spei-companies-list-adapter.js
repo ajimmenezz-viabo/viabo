@@ -4,11 +4,15 @@ export const SpeiCompaniesListAdapter = companies => {
   const companiesAdapted =
     companies?.map(company => ({
       id: company?.id,
-      name: company?.name,
+      folio: company?.folio,
+      name: company?.tradeName,
       balance: fCurrency(company?.balance || '0'),
-      status: !!company?.active,
+      status: company?.active === '1',
       rfc: company?.rfc,
-      stpAccount: company?.stpAccount
+      stpAccount: {
+        complete: company?.bankAccount,
+        hidden: company?.bankAccount?.replace(/.(?=.{8})/g, '*')
+      }
     })) || []
 
   return companiesAdapted

@@ -1,10 +1,9 @@
-import { SpeiAdminCompaniesMock } from '../_mock'
 import { SpeiAdminCompanyUsersAdapter, SpeiCompaniesListAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
 export const getSpeiCompaniesList = async () => {
-  const data = SpeiAdminCompaniesMock
+  const { data } = await axios.get('/api/commerces')
   return SpeiCompaniesListAdapter(data)
 }
 

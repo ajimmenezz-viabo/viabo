@@ -24,7 +24,7 @@ import ViaboCard from '@/shared/assets/img/viabo-card.png'
 import { FormProvider, IOSSwitch, RFSelect, RFTextField } from '@/shared/components/form'
 import { Image } from '@/shared/components/images'
 
-const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
+const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess }) => {
   const { mutate, isLoading } = useCreateNewSpeiCompany()
 
   const ValidationSchema = Yup.object().shape({
@@ -285,7 +285,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
             multiple
             name={'costCenters'}
             textFieldParams={{ placeholder: 'Seleccionar ...', size: 'small' }}
-            options={[]}
+            options={costCenters || []}
             disabled={loading}
           />
         </Stack>
@@ -333,6 +333,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, onSuccess }) => {
 
 SpeiNewCompanyForm.propTypes = {
   adminCompanyUsers: PropTypes.array,
+  costCenters: PropTypes.array,
   onSuccess: PropTypes.func
 }
 

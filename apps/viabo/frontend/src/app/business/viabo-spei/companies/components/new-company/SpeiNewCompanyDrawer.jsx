@@ -2,6 +2,7 @@ import { lazy, useEffect } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 
+import { useFindSpeiCostCenters } from '../../../cost-centers/hooks'
 import { useFindSpeiAdminCompanyUsers } from '../../hooks'
 import { useSpeiCompaniesStore } from '../../store'
 
@@ -16,17 +17,35 @@ const SpeiNewCompanyForm = Lodable(lazy(() => import('./SpeiNewCompanyForm')))
 const SpeiNewCompanyDrawer = () => {
   const { openNewCompany, setOpenNewSpeiCompany } = useSpeiCompaniesStore()
 
-  const { data: users, isLoading, isError, error, refetch } = useFindSpeiAdminCompanyUsers({ enabled: false })
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    isError: isErrorUsers,
+    error: errorUsers,
+    refetch
+  } = useFindSpeiAdminCompanyUsers({ enabled: false })
+  const {
+    data: costCenters,
+    isLoading: isLoadingCostCenters,
+    isError: isErrorCostCenters,
+    error: errorCostCenters,
+    refetch: refetchCostCenters
+  } = useFindSpeiCostCenters({ enabled: false })
 
   useEffect(() => {
     if (openNewCompany) {
       refetch()
+      refetchCostCenters()
     }
   }, [openNewCompany])
 
   const handleClose = () => {
     setOpenNewSpeiCompany(false)
   }
+
+  const isError = isErrorUsers || isErrorCostCenters
+  const isLoading = isLoadingUsers || isLoadingCostCenters
+  const error = errorUsers || errorCostCenters
 
   return (
     <RightPanel
@@ -42,10 +61,14 @@ const SpeiNewCompanyDrawer = () => {
         <Stack spacing={3} p={3}>
           {isLoading && <RequestLoadingComponent />}
           {isError && !isLoading && (
-            <ErrorRequestPage errorMessage={error} titleMessage={'Lista de Usuarios'} handleButton={() => refetch()} />
+            <ErrorRequestPage
+              errorMessage={error}
+              titleMessage={isErrorUsers ? 'Lista de Usuarios' : 'Lista de Centros de Costos'}
+              handleButton={() => refetch()}
+            />
           )}
           {!isError && !isLoading && openNewCompany && (
-            <SpeiNewCompanyForm adminCompanyUsers={users} onSuccess={handleClose} />
+            <SpeiNewCompanyForm adminCompanyUsers={users} costCenters={costCenters} onSuccess={handleClose} />
           )}
         </Stack>
       </Scrollbar>

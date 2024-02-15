@@ -24,7 +24,7 @@ export const useFindSpeiCostCenters = (options = {}) => {
     if (query?.isError) {
       const errorMessage = getErrorAPI(
         query.error,
-        'No se puede obtener la lista de empresas. Intente nuevamente o reporte a sistemas'
+        'No se puede obtener la lista de centros de costos. Intente nuevamente o reporte a sistemas'
       )
       setCustomError(errorMessage)
       toast.error(errorMessage, {

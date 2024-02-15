@@ -6,10 +6,10 @@ export const SpeiNewCompanyAdapter = company => ({
   commercialName: company?.commercialName?.trim(),
   isNewUser: company?.method === METHODS_NEW_COMPANY_USERS.NEW_ADMIN_USER,
   assignedUsers: company?.adminUsers?.map(user => user.value) || [],
-  newUserName: company?.adminName?.trim(),
-  newUserLastName: company?.adminLastName?.trim(),
-  newUserEmail: company?.adminEmail?.trim(),
-  newUserPhone: company?.adminPhone?.trim(),
+  userName: company?.adminName?.trim(),
+  userLastName: company?.adminLastName?.trim(),
+  userEmail: company?.adminEmail?.trim(),
+  userPhone: company?.adminPhone?.trim(),
   costCenters: company?.costCenters?.map(user => user.value) || [],
   hasViaboCard: company?.hasViaboCard
 })

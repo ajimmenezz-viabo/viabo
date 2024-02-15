@@ -1,11 +1,10 @@
-import { SpeiAdminCostCenterUsersMock, SpeiAdminCostCentersMock } from '../_mock'
+import { SpeiAdminCostCenterUsersMock } from '../_mock'
 import { SpeiAdminCostCenterUsersAdapter, SpeiCostCentersListAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
 export const getSpeiCostCentersList = async () => {
-  // const { data } = await axios.get('/api/spei/external-accounts')
-  const data = SpeiAdminCostCentersMock
+  const { data } = await axios.get('/api/backoffice/cost-centers')
   return SpeiCostCentersListAdapter(data)
 }
 

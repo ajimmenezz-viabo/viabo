@@ -6,6 +6,7 @@
 
     <entity name="Viabo\backoffice\company\domain\CompanyView" table="v_business_commerces">
         <id name="id" column="Id"/>
+        <field name="folio" column="Folio"/>
         <field name="fatherId" column="CommerceId"/>
         <field name="legalRepresentative" column="LegalRepresentative"/>
         <field name="legalRepresentativeName" column="LegalRepresentativeName"/>
@@ -21,6 +22,8 @@
         <field name="phoneNumbers" column="PhoneNumbers"/>
         <field name="logo" column="Logo"/>
         <field name="slug" column="Slug"/>
+        <field name="balance" column="Balance"/>
+        <field name="bankAccount" column="BankAccount"/>
         <field name="publicTerminal" column="PublicTerminal"/>
         <field name="employees" column="Employees"/>
         <field name="branchOffices" column="BranchOffices"/>
@@ -35,8 +38,10 @@
         <field name="stpAccountId" column="StpAccountId"/>
         <field name="registerStep" column="RegisterStep"/>
         <field name="services" column="Services"/>
+        <field name="servicesIds" column="ServicesId"/>
         <field name="documents" column="Documents"/>
         <field name="commissions" column="Commissions"/>
+        <field name="createdByUser" column="CreatedByUser"/>
         <field name="active" column="Active"/>
     </entity>
 

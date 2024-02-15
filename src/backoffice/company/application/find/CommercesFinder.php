@@ -15,15 +15,22 @@ final readonly class CommercesFinder
     {
     }
 
-    public function __invoke(): CommercesResponse
+    public function __invoke(string $userProfileId): CommercesResponse
     {
         $filters = Filters::fromValues([
-            ['field' => 'active' , 'operator' => '=' , 'value' => '1' ]
+            ['field' => 'active', 'operator' => '=', 'value' => '1']
         ]);
-        $commerces = $this->repository->searchViewCriteria(new Criteria($filters));
-        
-        return new CommercesResponse(array_map(function (CompanyView $commerce) {
-            return $commerce->toArray();
-        } , $commerces));
+        $companies = $this->repository->searchViewCriteria(new Criteria($filters));
+
+        $administratorStpProfile = '5';
+        if ($userProfileId === $administratorStpProfile) {
+            $companies = array_values(array_filter($companies, function (CompanyView $company) {
+                return $company->hasServiceSpei();
+            }));
+        }
+
+        return new CommercesResponse(array_map(function (CompanyView $company) {
+            return $company->toArray();
+        }, $companies));
     }
 }

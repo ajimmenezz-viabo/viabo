@@ -8,4 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CommercesQuery implements Query
 {
+    public function __construct(public string $userProfileId)
+    {
+    }
 }

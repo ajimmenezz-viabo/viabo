@@ -15,8 +15,8 @@ final readonly class CommercesFinderController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $this->decode($request->headers->get('Authorization'));
-            $commerces = $this->ask(new CommercesQuery());
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $commerces = $this->ask(new CommercesQuery($tokenData['profileId']));
 
             return new JsonResponse($commerces->data);
         } catch (\DomainException $exception) {

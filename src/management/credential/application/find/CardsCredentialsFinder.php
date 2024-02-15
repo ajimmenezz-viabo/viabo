@@ -4,7 +4,7 @@
 namespace Viabo\management\credential\application\find;
 
 
-use Viabo\business\credential\application\find\CredentialResponse;
+use Viabo\backoffice\credential\application\find\CredentialResponse;
 use Viabo\management\credential\domain\services\CardCredentialFinder;
 use Viabo\management\shared\domain\card\CardId;
 

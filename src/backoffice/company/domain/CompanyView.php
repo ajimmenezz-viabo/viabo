@@ -1,0 +1,93 @@
+<?php declare(strict_types=1);
+
+
+namespace Viabo\backoffice\company\domain;
+
+
+use Viabo\shared\domain\aggregate\AggregateRoot;
+
+final class CompanyView extends AggregateRoot
+{
+    public function __construct(
+        private string $id ,
+        private string $fatherId ,
+        private string $legalRepresentative ,
+        private string $legalRepresentativeName ,
+        private string $legalRepresentativeEmail ,
+        private string $legalRepresentativePhone ,
+        private string $legalRepresentativeRegister ,
+        private string $legalRepresentativeLastSession ,
+        private string $fiscalPersonType ,
+        private string $fiscalName ,
+        private string $tradeName ,
+        private string $rfc ,
+        private string $postalAddress ,
+        private string $phoneNumbers ,
+        private string $logo ,
+        private string $slug ,
+        private string $publicTerminal ,
+        private string $employees ,
+        private string $branchOffices ,
+        private string $pointSaleTerminal ,
+        private string $paymentApi ,
+        private string $register ,
+        private string $type ,
+        private string $typeName ,
+        private string $allowTransactions ,
+        private string $statusId ,
+        private string $statusName ,
+        private string $stpAccountId ,
+        private string $registerStep ,
+        private string $services ,
+        private string $documents ,
+        private string $commissions ,
+        private string $active
+    )
+    {
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id ,
+            'fatherId' => $this->fatherId ,
+            'legalRepresentative' => $this->legalRepresentative ,
+            'legalRepresentativeName' => $this->legalRepresentativeName ,
+            'legalRepresentativeEmail' => $this->legalRepresentativeEmail ,
+            'legalRepresentativePhone' => $this->legalRepresentativePhone ,
+            'legalRepresentativeRegister' => $this->legalRepresentativeRegister ,
+            'legalRepresentativeLastSession' => empty($this->legalRepresentativeLastSession) ? '' : $this->legalRepresentativeLastSession ,
+            'fiscalPersonType' => $this->fiscalPersonType ,
+            'fiscalName' => $this->fiscalName ?? '' ,
+            'tradeName' => $this->tradeName ,
+            'rfc' => $this->rfc ,
+            'postalAddress' => $this->postalAddress ?? '' ,
+            'phoneNumbers' => $this->phoneNumbers ?? '' ,
+            'logo' => $this->logo ,
+            'slug' => $this->slug ,
+            'publicTerminal' => $this->publicTerminal ,
+            'employees' => $this->employees ,
+            'branchOffices' => $this->branchOffices ,
+            'pointSaleTerminal' => $this->pointSaleTerminal ,
+            'paymentApi' => $this->paymentApi ,
+            'register' => $this->register ,
+            'type' => $this->type ,
+            'typeName' => $this->typeName ,
+            'allowTransactions' => $this->allowTransactions ,
+            'statusId' => $this->statusId ,
+            'statusName' => $this->statusName ,
+            'stpAccountId' => $this->stpAccountId ,
+            'registerStep' => $this->registerStep ,
+            'services' => empty($this->services) ? [] : json_decode("[$this->services]") ,
+            'documents' => empty($this->documents) ? [] : json_decode("[$this->documents]") ,
+            'commissions' => empty($this->commissions) ? null : json_decode("$this->commissions") ,
+            'active' => $this->active
+        ];
+    }
+
+    public function toArrayForCatalog(): array
+    {
+        return ['id' => $this->id , 'name' => $this->tradeName];
+    }
+
+}

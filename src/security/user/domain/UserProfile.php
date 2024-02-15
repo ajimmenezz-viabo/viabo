@@ -8,6 +8,11 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class UserProfile extends StringValueObject
 {
+    public static function create(string $value): static
+    {
+        return new static($value);
+    }
+
     public static function cardHolder(): static
     {
         $cardHolderProfileId = '4';

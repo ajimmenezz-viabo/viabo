@@ -4,7 +4,7 @@
 namespace Viabo\management\billing\application\create;
 
 
-use Viabo\business\commission\application\find\CommissionChargeQuery;
+use Viabo\backoffice\commission\application\find\CommissionChargeQuery;
 use Viabo\management\billing\domain\Billing;
 use Viabo\management\billing\domain\BillingAmount;
 use Viabo\management\billing\domain\BillingApiKey;

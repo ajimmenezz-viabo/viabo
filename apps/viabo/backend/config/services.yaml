@@ -5,7 +5,6 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 imports:
   - { resource: ../../../../src/analytics/shared/infrastructure/symfony/dependencyInjection/analytics_database.yaml }
-  - { resource: ../../../../src/business/shared/infrastructure/symfony/dependencyInjection/business_database.yaml }
   - { resource: ../../../../src/security/shared/infrastructure/symfony/dependencyInjection/security_database.yaml }
   - { resource: ../../../../src/catalogs/shared/infrastructure/symfony/dependencyInjection/catalogs_database.yaml }
   - { resource: ../../../../src/management/shared/infrastructure/symfony/dependencyInjection/management_database.yaml }
@@ -13,6 +12,7 @@ imports:
   - { resource: ../../../../src/landingPages/shared/infrastructure/symfony/dependencyInjection/landingPages_database.yaml }
   - { resource: ../../../../src/tickets/shared/infrastructure/symfony/dependencyInjection/tickets_database.yaml }
   - { resource: ../../../../src/spei/shared/infrastructure/symfony/dependencyInjection/spei_database.yaml }
+  - { resource: ../../../../src/backoffice/shared/infrastructure/symfony/dependencyInjection/backoffice_database.yaml }
 
 services:
   # default configuration for services in *this* file

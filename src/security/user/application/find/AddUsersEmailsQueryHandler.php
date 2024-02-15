@@ -7,14 +7,14 @@ namespace Viabo\security\user\application\find;
 use Psr\Log\LoggerInterface;
 use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
-use Viabo\security\user\domain\services\UserFinder;
+use Viabo\security\user\domain\services\UserFinderByCriteria;
 use Viabo\security\user\domain\User;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
 final readonly class AddUsersEmailsQueryHandler implements QueryHandler
 {
-    public function __construct(private UserFinder $finder , private LoggerInterface $notificationsLogger)
+    public function __construct(private UserFinderByCriteria $finder , private LoggerInterface $notificationsLogger)
     {
     }
 

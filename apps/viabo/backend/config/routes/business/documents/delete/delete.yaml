@@ -1,4 +1,0 @@
-commerce-documents-delete:
-  path: '/api/commerce/documents/delete'
-  controller: Viabo\Backend\Controller\business\documents\DocumentsDeleterController
-  methods: POST

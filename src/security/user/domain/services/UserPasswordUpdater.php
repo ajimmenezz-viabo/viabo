@@ -12,7 +12,7 @@ use Viabo\security\user\domain\UserRepository;
 
 final readonly class UserPasswordUpdater
 {
-    public function __construct(private UserRepository $repository , private UserFinder $finder)
+    public function __construct(private UserRepository $repository , private UserFinderByCriteria $finder)
     {
     }
 

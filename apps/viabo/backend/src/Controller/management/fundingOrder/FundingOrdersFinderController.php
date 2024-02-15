@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\fundingOrder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\card\application\find\MastersCardsQueryByCommerce;
 use Viabo\management\fundingOrder\application\find\FundingOrdersQueryByCards;
 use Viabo\shared\infrastructure\symfony\ApiController;

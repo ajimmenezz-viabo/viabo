@@ -4,9 +4,7 @@
 namespace Viabo\security\user\application\find;
 
 
-use Viabo\security\shared\domain\user\UserEmail;
-use Viabo\security\shared\domain\user\UserId;
-use Viabo\security\user\domain\services\UserFinder as UserFinderService;
+use Viabo\security\user\domain\services\UserFinderByCriteria as UserFinderService;
 
 final readonly class UserFinder
 {
@@ -15,9 +13,16 @@ final readonly class UserFinder
     {
     }
 
-    public function __invoke(UserId $userId , UserEmail $username): UserResponse
+    public function __invoke(string $userId, string $username): UserResponse
     {
-        $user = $this->finder->__invoke($userId , $username);
+        $filters = [];
+        if (empty($username)) {
+            $filters[] = ['field' => 'id', 'operator' => '=', 'value' => $userId];
+        } else {
+            $filters[] = ['field' => 'email', 'operator' => '=', 'value' => $username];
+        }
+
+        $user = $this->finder->__invoke($filters);
         return new UserResponse($user->toArray());
     }
 }

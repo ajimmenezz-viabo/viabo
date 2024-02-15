@@ -15,6 +15,6 @@ final class UserNameEmpty extends DomainError
 
     public function errorMessage(): string
     {
-        return 'El nombre esta vacio';
+        return 'El nombre del usuario no esta definido';
     }
 }

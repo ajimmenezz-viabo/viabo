@@ -8,7 +8,7 @@ use Viabo\management\card\application\find\CardQueryByOwner;
 use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\exceptions\UserExist;
-use Viabo\security\user\domain\services\UserFinder;
+use Viabo\security\user\domain\services\UserFinderByCriteria;
 use Viabo\security\user\domain\User;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\bus\event\EventBus;
@@ -18,10 +18,10 @@ use Viabo\shared\domain\DomainError;
 final readonly class DemoUserValidator
 {
     public function __construct(
-        private UserRepository $repository ,
-        private UserFinder     $finder ,
-        private QueryBus       $queryBus ,
-        private EventBus       $bus
+        private UserRepository       $repository ,
+        private UserFinderByCriteria $finder ,
+        private QueryBus             $queryBus ,
+        private EventBus             $bus
     )
     {
     }

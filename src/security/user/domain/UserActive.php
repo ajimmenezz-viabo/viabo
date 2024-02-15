@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class UserActive extends StringValueObject
 {
+    public static function enable(): static
+    {
+        return new static('1');
+    }
 }

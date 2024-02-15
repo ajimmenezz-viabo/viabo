@@ -4,7 +4,7 @@
 namespace Viabo\management\card\application\update;
 
 
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\management\card\domain\CardRepository;
 use Viabo\management\card\domain\services\CardFinder;
 use Viabo\management\shared\domain\card\CardCommerceId;

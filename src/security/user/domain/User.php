@@ -10,7 +10,6 @@ use Viabo\security\user\domain\events\CardOwnerDataUpdatedDomainEvent;
 use Viabo\security\user\domain\events\CommerceDemoUserCreatedDomainEvent;
 use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
-use Viabo\security\user\domain\events\SessionStartedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
 use Viabo\security\user\domain\events\UserDeletedDomainEvent;
 use Viabo\security\user\domain\events\UserPasswordResetDomainEvent;
@@ -19,83 +18,90 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class User extends AggregateRoot
 {
     public function __construct(
-        private UserId           $id ,
-        private UserProfile      $profile ,
-        private UserName         $name ,
-        private UserLastname     $lastname ,
-        private UserPhone        $phone ,
-        private UserEmail        $email ,
-        private UserPassword     $password ,
-        private UserStpAccountId $stpAccountId ,
-        private UserRegister     $register ,
+        private UserId           $id,
+        private UserProfile      $profile,
+        private UserName         $name,
+        private UserLastname     $lastname,
+        private UserPhone        $phone,
+        private UserEmail        $email,
+        private UserPassword     $password,
+        private UserStpAccountId $stpAccountId,
+        private UserRegister     $register,
         private UserActive       $active
     )
     {
     }
 
     public static function createLegalRepresentative(
-        UserName     $name ,
-        UserLastname $lastname ,
-        UserPhone    $phone ,
-        UserEmail    $email ,
+        UserName     $name,
+        UserLastname $lastname,
+        UserPhone    $phone,
+        UserEmail    $email,
         UserPassword $password
     ): self
     {
         $user = new self(
-            UserId::random() ,
-            new UserProfile('3') ,
-            $name ,
-            $lastname ,
-            $phone ,
-            $email ,
-            $password ,
+            UserId::random(),
+            new UserProfile('3'),
+            $name,
+            $lastname,
+            $phone,
+            $email,
+            $password,
             UserStpAccountId::empty(),
-            UserRegister::todayDate() ,
-            new UserActive('1') ,
+            UserRegister::todayDate(),
+            new UserActive('1'),
         );
 
-        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id()->value() , $user->toArray()));
+        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id()->value(), $user->toArray()));
 
         return $user;
     }
 
-    public static function create(UserName $name , UserEmail $email , UserPhone $phone): static
+    public static function create(
+        string $userId,
+        string $profileId,
+        string $name,
+        string $lastname,
+        string $email,
+        string $phone
+    ): static
     {
         $user = new self(
-            UserId::random() ,
-            new UserProfile('4') ,
-            $name ,
-            new UserLastname('') ,
-            $phone ,
-            $email ,
-            UserPassword::random() ,
+            new UserId($userId),
+            UserProfile::create($profileId),
+            UserName::create($name),
+            new UserLastname($lastname),
+            new UserPhone($phone),
+            UserEmail::create($email),
+            UserPassword::random(),
             UserStpAccountId::empty(),
-            UserRegister::todayDate() ,
-            new UserActive('1') ,
+            UserRegister::todayDate(),
+            UserActive::enable(),
         );
 
         $user->record(new UserCreatedDomainEvent(
-            $user->id()->value() , $user->toArray() , UserPassword::$passwordRandom
+            $user->id()->value(), $user->toArray(), UserPassword::$passwordRandom
         ));
         return $user;
     }
 
-    public static function demo(UserName $name , UserEmail $email , UserPhone $phone): static
+    public static function demo(UserName $name, UserEmail $email, UserPhone $phone): static
     {
         $user = new static(
-            UserId::random() ,
-            UserProfile::cardHolder() ,
-            $name ,
-            new UserLastname('') ,
-            $phone ,
-            $email ,
-            UserPassword::random() ,
+            UserId::random(),
+            UserProfile::cardHolder(),
+            $name,
+            new UserLastname(''),
+            $phone,
+            $email,
+            UserPassword::random(),
             UserStpAccountId::empty(),
-            UserRegister::todayDate() ,
-            new UserActive('1') ,
+            UserRegister::todayDate(),
+            new UserActive('1'),
         );
 
-        $user->record(new CommerceDemoUserCreatedDomainEvent($user->id()->value() , $user->toArray()));
+        $user->record(new CommerceDemoUserCreatedDomainEvent($user->id()->value(), $user->toArray()));
         return $user;
     }
 
@@ -124,14 +130,14 @@ final class User extends AggregateRoot
         return ['id' => $this->id->value()];
     }
 
+    public function isInvalidPassword(string $password): bool
+    {
+        return $this->password->isInvalidPassword($password);
+    }
+
     public function isDifferent(UserPassword $passwordEntered): bool
     {
         return $this->password->isDifferent($passwordEntered->value());
-    }
-
-    public function isNotPasswordBackdoor(UserPassword $passwordEntered): bool
-    {
-        return $this->password->isNotBackdoor($passwordEntered->value());
     }
 
     public function isLegalRepresentative(): bool
@@ -144,54 +150,49 @@ final class User extends AggregateRoot
         $this->password = $password;
     }
 
-    public function update(string $name , string $lastName , string $phone): void
+    public function update(string $name, string $lastName, string $phone): void
     {
         $this->name = $this->name->update($name);
         $this->lastname = $this->lastname->update($lastName);
         $this->phone = $this->phone->update($phone);
-        $this->record(new CardOwnerDataUpdatedDomainEvent($this->id->value() , $this->toArray()));
+        $this->record(new CardOwnerDataUpdatedDomainEvent($this->id->value(), $this->toArray()));
     }
 
-    public function setEventSendPassword(string $cardNumber , array $legalRepresentative): void
+    public function setEventSendPassword(string $cardNumber, array $legalRepresentative): void
     {
         $this->record(new SendUserPasswordDomainEvent(
-            $this->id->value() ,
-            $this->toArray() ,
-            $this->password::$passwordRandom ,
-            $cardNumber ,
+            $this->id->value(),
+            $this->toArray(),
+            $this->password::$passwordRandom,
+            $cardNumber,
             $legalRepresentative
         ));
     }
 
-    public function setEventSessionStarted(): void
-    {
-        $this->record(new SessionStartedDomainEvent($this->id->value()));
-    }
-
     public function setEventDeleted(): void
     {
-        $this->record(new UserDeletedDomainEvent($this->id->value() , $this->toArray()));
+        $this->record(new UserDeletedDomainEvent($this->id->value(), $this->toArray()));
     }
 
     public function setEventRestPassword(): void
     {
         $data = $this->toArray();
         $data['password'] = $this->password::$passwordRandom;
-        $this->record(new UserPasswordResetDomainEvent($this->id->value() , $data));
+        $this->record(new UserPasswordResetDomainEvent($this->id->value(), $data));
     }
 
     public function toArray(): array
     {
         return [
-            'id' => $this->id->value() ,
-            'profile' => $this->profile->value() ,
-            'name' => $this->name->value() ,
-            'lastname' => $this->lastname->value() ,
-            'phone' => $this->phone->value() ,
-            'email' => $this->email->value() ,
-            'password' => $this->password->value() ,
-            'stpAccountId' => $this->stpAccountId->value() ,
-            'register' => $this->register->value() ,
+            'id' => $this->id->value(),
+            'profile' => $this->profile->value(),
+            'name' => $this->name->value(),
+            'lastname' => $this->lastname->value(),
+            'phone' => $this->phone->value(),
+            'email' => $this->email->value(),
+            'password' => $this->password->value(),
+            'stpAccountId' => $this->stpAccountId->value(),
+            'register' => $this->register->value(),
             'active' => $this->active->value()
         ];
     }

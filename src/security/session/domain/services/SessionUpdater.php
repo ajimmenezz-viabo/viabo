@@ -5,7 +5,6 @@ namespace Viabo\security\session\domain\services;
 
 
 use Viabo\security\session\domain\SessionRepository;
-use Viabo\security\shared\domain\user\UserId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class SessionUpdater
@@ -14,7 +13,7 @@ final readonly class SessionUpdater
     {
     }
 
-    public function __invoke(UserId $userId): void
+    public function __invoke(string $userId): void
     {
         $session = $this->repository->search($userId);
 

@@ -6,16 +6,16 @@ namespace Viabo\security\user\application\update;
 
 use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
-use Viabo\security\user\domain\services\UserFinder;
+use Viabo\security\user\domain\services\UserFinderByCriteria;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CardOwnerDataUpdater
 {
     public function __construct(
-        private UserRepository $repository ,
-        private UserFinder     $finder ,
-        private EventBus       $bus
+        private UserRepository       $repository ,
+        private UserFinderByCriteria $finder ,
+        private EventBus             $bus
     )
     {
     }

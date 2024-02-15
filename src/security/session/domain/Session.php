@@ -11,23 +11,23 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class Session extends AggregateRoot
 {
     public function __construct(
-        private SessionId         $id ,
-        private UserId            $userId ,
-        private SessionLoginDate  $loginDate ,
-        private SessionLogoutDate $logoutDate ,
+        private SessionId         $id,
+        private UserId            $userId,
+        private SessionLoginDate  $loginDate,
+        private SessionLogoutDate $logoutDate,
         private SessionActive     $active
     )
     {
     }
 
-    public static function create(UserId $userId , SessionLoginDate $loginDate): self
+    public static function create(string $userId, string $loginDate): self
     {
         return new self(
-            new SessionId('') ,
-            $userId ,
-            $loginDate ,
-            new SessionLogoutDate('0000-00-00') ,
-            new SessionActive('1')
+            SessionId::empty(),
+            new UserId($userId),
+            new SessionLoginDate($loginDate),
+            SessionLogoutDate::empty(),
+            SessionActive::enable()
         );
     }
 
@@ -35,16 +35,16 @@ final class Session extends AggregateRoot
     {
         $this->logoutDate = $this->logoutDate->logout();
         $this->active = $this->active->update('0');
-        $this->record(new LogoutDomainEvent($this->userId->value() , $this->logoutDate->value()));
+        $this->record(new LogoutDomainEvent($this->userId->value(), $this->logoutDate->value()));
     }
 
     public function toArray(): array
     {
         return [
-            'id' => $this->id->value() ,
-            'userId' => $this->userId->value() ,
-            'loginDate' => $this->loginDate->value() ,
-            'logoutDate' => $this->logoutDate->value() ,
+            'id' => $this->id->value(),
+            'userId' => $this->userId->value(),
+            'loginDate' => $this->loginDate->value(),
+            'logoutDate' => $this->logoutDate->value(),
             'active' => $this->active->value()
         ];
     }

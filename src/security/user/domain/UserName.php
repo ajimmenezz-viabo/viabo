@@ -15,7 +15,7 @@ final class UserName extends StringValueObject
         return new self($value);
     }
 
-    private static function validate(?string $value)
+    private static function validate(?string $value): void
     {
         if (empty($value)) {
             throw new UserNameEmpty();

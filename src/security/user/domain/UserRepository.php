@@ -20,6 +20,8 @@ interface UserRepository
 
     public function searchView(UserId $userId): UserView|null;
 
+    public function searchViewByCriteria(Criteria $criteria): array;
+
     public function update(User $user): void;
 
     public function delete(User $user): void;

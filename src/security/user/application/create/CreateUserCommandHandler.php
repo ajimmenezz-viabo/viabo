@@ -4,9 +4,6 @@
 namespace Viabo\security\user\application\create;
 
 
-use Viabo\security\shared\domain\user\UserEmail;
-use Viabo\security\user\domain\UserName;
-use Viabo\security\user\domain\UserPhone;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateUserCommandHandler implements CommandHandler
@@ -17,10 +14,14 @@ final readonly class CreateUserCommandHandler implements CommandHandler
 
     public function __invoke(CreateUserCommand $command): void
     {
-        $name = UserName::create($command->name);
-        $email = UserEmail::create($command->email);
-        $phone = new UserPhone($command->phone);
-
-        $this->creator->__invoke($name , $email , $phone);
+        $userProfileId = '4';
+        $this->creator->__invoke(
+            $command->userId,
+            $userProfileId,
+            $command->name,
+            $command->lastName,
+            $command->email,
+            $command->phone
+        );
     }
 }

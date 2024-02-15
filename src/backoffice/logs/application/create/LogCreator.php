@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\commerceLog\application\create;
+namespace Viabo\backoffice\logs\application\create;
 
 
-use Viabo\backoffice\commerceLog\domain\Log;
-use Viabo\backoffice\commerceLog\domain\LogRepository;
+use Viabo\backoffice\logs\domain\Log;
+use Viabo\backoffice\logs\domain\LogRepository;
 
 final readonly class LogCreator
 {

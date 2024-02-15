@@ -4,6 +4,7 @@
 namespace Viabo\backoffice\company\domain;
 
 
+use Viabo\backoffice\company\domain\events\CompanyActiveUpdatedDomainEvent;
 use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;
 use Viabo\backoffice\company\domain\events\CompanyCreatedDomainEvent;
 use Viabo\backoffice\shared\domain\commerce\CompanyId;
@@ -291,6 +292,14 @@ final class Company extends AggregateRoot
     public function folio(): string
     {
         return $this->folio->value();
+    }
+
+    public function updateActive(bool $active, string $userId): void
+    {
+        $this->active = $this->active->update($active);
+        $this->updatedByUser = $this->updatedByUser->update($userId);
+        $this->updateDate = $this->updateDate->todayDate();
+        $this->record(new CommerceUpdatedDomainEvent($this->id(), $this->toArray()));
     }
 
     public function toArray(): array

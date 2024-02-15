@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\commerceLog\application\create;
+namespace Viabo\backoffice\logs\application\create;
 
 
 use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;

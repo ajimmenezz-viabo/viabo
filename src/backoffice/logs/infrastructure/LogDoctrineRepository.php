@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\commerceLog\infrastructure;
+namespace Viabo\backoffice\logs\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
-use Viabo\backoffice\commerceLog\domain\Log;
-use Viabo\backoffice\commerceLog\domain\LogRepository;
+use Viabo\backoffice\logs\domain\Log;
+use Viabo\backoffice\logs\domain\LogRepository;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 
 final class LogDoctrineRepository extends DoctrineRepository implements LogRepository

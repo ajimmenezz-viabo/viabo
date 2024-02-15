@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\commerceLog\domain;
+namespace Viabo\backoffice\logs\domain;
 
 
 interface LogRepository

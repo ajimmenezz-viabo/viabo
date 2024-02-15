@@ -4,8 +4,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <embeddable name="Viabo\backoffice\commerceLog\domain\LogBody">
-        <field name="value" column="Body"/>
+    <embeddable name="Viabo\backoffice\logs\domain\LogUpdatedByUser">
+        <field name="value" column="UpdatedByUser"/>
     </embeddable>
 
 </doctrine-mapping>

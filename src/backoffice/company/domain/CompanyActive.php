@@ -12,4 +12,10 @@ final class CompanyActive extends StringValueObject
     {
         return new static('1');
     }
+
+    public function update(bool $value): static
+    {
+        $value = empty($value) ? '0' : '1';
+        return new static($value);
+    }
 }

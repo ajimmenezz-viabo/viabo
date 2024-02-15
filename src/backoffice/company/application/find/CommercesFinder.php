@@ -17,9 +17,7 @@ final readonly class CommercesFinder
 
     public function __invoke(string $userProfileId): CommercesResponse
     {
-        $filters = Filters::fromValues([
-            ['field' => 'active', 'operator' => '=', 'value' => '1']
-        ]);
+        $filters = Filters::fromValues([]);
         $companies = $this->repository->searchViewCriteria(new Criteria($filters));
 
         $administratorStpProfile = '5';

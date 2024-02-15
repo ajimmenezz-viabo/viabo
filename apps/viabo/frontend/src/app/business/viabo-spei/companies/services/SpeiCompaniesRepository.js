@@ -19,6 +19,12 @@ export const getViaboSpeiAdminCompanyUsers = async () => {
 }
 
 export const changeSpeiCompanyStatus = async company => {
-  const { data } = await axios.put(`/api/spei/company/${company?.id}/${company?.changeStatus ? 'disable' : 'enable'}`)
+  const fetchURL = new URL('/api/backoffice/company/toggle', window.location.origin)
+
+  fetchURL.searchParams.set('company', company?.id)
+  fetchURL.searchParams.set('active', company?.changeStatus)
+
+  const { data } = await axios.put(fetchURL)
+
   return company
 }

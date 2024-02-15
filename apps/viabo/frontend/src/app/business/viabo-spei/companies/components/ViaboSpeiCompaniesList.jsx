@@ -159,7 +159,7 @@ export const ViaboSpeiCompaniesList = () => {
                 {companyData?.name}
               </Typography>
               <Typography variant="subtitle2">{companyData?.rfc}</Typography>
-              <Typography variant="subtitle2">{companyData?.stpAccount}</Typography>
+              <Typography variant="subtitle2">{companyData?.stpAccount?.hidden}</Typography>
             </Stack>
 
             <Typography textAlign={'center'}>

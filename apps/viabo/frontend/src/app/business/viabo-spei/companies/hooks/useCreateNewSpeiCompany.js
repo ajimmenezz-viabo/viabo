@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { SPEI_COMPANIES_KEYS } from '../adapters'
 import { newSpeiCompany } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
@@ -17,7 +18,7 @@ export const useCreateNewSpeiCompany = (options = {}) => {
         pending: 'Creando empresa...',
         success: {
           render({ data }) {
-            // client.invalidateQueries([SPEI_THIRD_ACCOUNTS_KEYS.THIRD_ACCOUNTS_LIST])
+            client.invalidateQueries([SPEI_COMPANIES_KEYS.COMPANIES_LIST])
             isFunction(onSuccess) && onSuccess(data)
 
             return 'Se creó la empresa con éxito'

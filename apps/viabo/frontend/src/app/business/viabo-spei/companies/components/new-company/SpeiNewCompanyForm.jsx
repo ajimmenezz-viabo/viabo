@@ -110,7 +110,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
     }
   })
 
-  const { isSubmitting, setFieldValue, values, setTouched, resetForm } = formik
+  const { isSubmitting, setFieldValue, values, setTouched } = formik
 
   const loading = isSubmitting || isLoading || isUpdatingCompany
 
@@ -128,7 +128,6 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
           </Typography>
 
           <RFTextField
-            inputProps={{ maxLength: '18' }}
             required
             name={'fiscalName'}
             size={'small'}
@@ -157,6 +156,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
           </Typography>
 
           <RFTextField
+            inputProps={{ maxLength: '100' }}
             name={'commercialName'}
             size={'small'}
             placeholder={'Nombre Comercial de la Empresa...'}
@@ -170,7 +170,11 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
             <RadioGroup
               value={values.method}
               onChange={e => {
-                resetForm()
+                !company && setFieldValue('adminUsers', [])
+                setFieldValue('adminName', '')
+                setFieldValue('adminLastName', '')
+                setFieldValue('adminEmail', '')
+                setFieldValue('adminPhone', '')
                 setFieldValue('method', e.target.value)
                 setTouched({}, false)
               }}

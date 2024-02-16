@@ -26,7 +26,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
   const { mutate: updateCostCenter, isLoading: isUpdatingCostCenter } = useUpdateCostCenter()
 
   const ValidationSchema = Yup.object().shape({
-    name: Yup.string().trim().required('Es necesario el nombre del centro de costos'),
+    name: Yup.string().trim().max(60, 'Máximo 60 caracteres').required('Es necesario el nombre del centro de costos'),
     method: Yup.string(),
     adminUsers: Yup.array().when('method', {
       is: METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS,
@@ -100,7 +100,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
     }
   })
 
-  const { isSubmitting, setFieldValue, values, setTouched, resetForm } = formik
+  const { isSubmitting, setFieldValue, values, setTouched } = formik
 
   const loading = isSubmitting || isLoading || isUpdatingCostCenter
 
@@ -116,7 +116,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
           </Typography>
 
           <RFTextField
-            inputProps={{ maxLength: '18' }}
+            inputProps={{ maxLength: '60' }}
             required
             name={'name'}
             size={'small'}
@@ -133,7 +133,11 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
             <RadioGroup
               value={values.method}
               onChange={e => {
-                resetForm()
+                !costCenter && setFieldValue('adminUsers', [])
+                setFieldValue('adminName', '')
+                setFieldValue('adminLastName', '')
+                setFieldValue('adminEmail', '')
+                setFieldValue('adminPhone', '')
                 setFieldValue('method', e.target.value)
 
                 setTouched({}, false)

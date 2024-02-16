@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types'
 
-import { Box } from '@mui/material'
+import { Edit } from '@mui/icons-material'
+import { Box, IconButton } from '@mui/material'
+
+import { useSpeiCompaniesStore } from '../store'
 
 import { IOSSwitch } from '@/shared/components/form'
 import { CircularLoading } from '@/shared/components/loadings'
@@ -11,6 +14,7 @@ export function ViaboSpeiCompaniesTableActions({ table, isChangingCauseStatus, c
   const { status } = rowData
 
   const isChangingStatus = isChangingCauseStatus && causeIdToggleStatus === rowData?.id
+  const { setSpeiCompany, setOpenNewSpeiCompany } = useSpeiCompaniesStore()
 
   return (
     <Box
@@ -42,6 +46,19 @@ export function ViaboSpeiCompaniesTableActions({ table, isChangingCauseStatus, c
             onChangeStatus(rowData)
           }}
         />
+      )}
+      {status && (
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={e => {
+            e.stopPropagation()
+            setSpeiCompany(rowData)
+            setOpenNewSpeiCompany(true)
+          }}
+        >
+          <Edit size="small" fontSize="16px" />
+        </IconButton>
       )}
     </Box>
   )

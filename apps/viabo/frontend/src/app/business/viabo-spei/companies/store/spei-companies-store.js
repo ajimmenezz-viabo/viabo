@@ -12,7 +12,7 @@ const speiCompaniesStore = (set, get) => ({
         company
       }),
       false,
-      'SET_SPEI_NEW_COMPANY'
+      'SET_SPEI_COMPANY'
     )
   },
   setOpenNewSpeiCompany: open => {

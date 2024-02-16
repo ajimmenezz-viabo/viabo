@@ -3,7 +3,7 @@ import { lazy, useEffect } from 'react'
 import { Stack, Typography } from '@mui/material'
 
 import { useFindSpeiCostCenters } from '../../../cost-centers/hooks'
-import { useFindSpeiAdminCompanyUsers } from '../../hooks'
+import { useFindSpeiAdminCompanyUsers, useFindSpeiCompanyDetails } from '../../hooks'
 import { useSpeiCompaniesStore } from '../../store'
 
 import { RightPanel } from '@/app/shared/components'
@@ -15,7 +15,8 @@ import { Scrollbar } from '@/shared/components/scroll'
 const SpeiNewCompanyForm = Lodable(lazy(() => import('./SpeiNewCompanyForm')))
 
 const SpeiNewCompanyDrawer = () => {
-  const { openNewCompany, setOpenNewSpeiCompany } = useSpeiCompaniesStore()
+  const { openNewCompany, setOpenNewSpeiCompany, setSpeiCompany } = useSpeiCompaniesStore()
+  const company = useSpeiCompaniesStore(state => state.company)
 
   const {
     data: users,
@@ -32,6 +33,13 @@ const SpeiNewCompanyDrawer = () => {
     refetch: refetchCostCenters
   } = useFindSpeiCostCenters({ enabled: false })
 
+  const {
+    data: companyDetails,
+    isError: isErrorDetails,
+    error: errorDetails,
+    isFetching: loadingDetails
+  } = useFindSpeiCompanyDetails(company?.id, { enabled: !!company?.id })
+
   useEffect(() => {
     if (openNewCompany) {
       refetch()
@@ -41,11 +49,12 @@ const SpeiNewCompanyDrawer = () => {
 
   const handleClose = () => {
     setOpenNewSpeiCompany(false)
+    setSpeiCompany(null)
   }
 
-  const isError = isErrorUsers || isErrorCostCenters
-  const isLoading = isLoadingUsers || isLoadingCostCenters
-  const error = errorUsers || errorCostCenters
+  const isError = isErrorUsers || isErrorCostCenters || isErrorDetails
+  const isLoading = isLoadingUsers || isLoadingCostCenters || loadingDetails
+  const error = errorUsers || errorCostCenters || errorDetails
 
   return (
     <RightPanel
@@ -63,12 +72,17 @@ const SpeiNewCompanyDrawer = () => {
           {isError && !isLoading && (
             <ErrorRequestPage
               errorMessage={error}
-              titleMessage={isErrorUsers ? 'Lista de Usuarios' : 'Lista de Centros de Costos'}
+              titleMessage={'Error al obtener información'}
               handleButton={() => refetch()}
             />
           )}
           {!isError && !isLoading && openNewCompany && (
-            <SpeiNewCompanyForm adminCompanyUsers={users} costCenters={costCenters} onSuccess={handleClose} />
+            <SpeiNewCompanyForm
+              adminCompanyUsers={users}
+              costCenters={costCenters}
+              company={companyDetails}
+              onSuccess={handleClose}
+            />
           )}
         </Stack>
       </Scrollbar>

@@ -18,14 +18,15 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { METHODS_NEW_COMPANY_USERS, SpeiNewCompanyAdapter } from '../../adapters'
-import { useCreateNewSpeiCompany } from '../../hooks'
+import { useCreateNewSpeiCompany, useUpdateSpeiCompany } from '../../hooks'
 
 import ViaboCard from '@/shared/assets/img/viabo-card.png'
 import { FormProvider, IOSSwitch, RFSelect, RFTextField } from '@/shared/components/form'
 import { Image } from '@/shared/components/images'
 
-const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess }) => {
+const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company }) => {
   const { mutate, isLoading } = useCreateNewSpeiCompany()
+  const { mutate: updateCompany, isLoading: isUpdatingCompany } = useUpdateSpeiCompany()
 
   const ValidationSchema = Yup.object().shape({
     fiscalName: Yup.string().trim().required('Es necesario el nombre fiscal'),
@@ -65,12 +66,12 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess }) => {
 
   const formik = useFormik({
     initialValues: {
-      fiscalName: '',
-      commercialName: '',
-      rfc: '',
+      fiscalName: company?.fiscalName || '',
+      commercialName: company?.commercialName || '',
+      rfc: company?.rfc || '',
       method: METHODS_NEW_COMPANY_USERS.ADMIN_USERS,
-      adminUsers: [],
-      costCenters: [],
+      adminUsers: adminCompanyUsers?.filter(admin => company?.adminUsers?.includes(admin?.value)) || [],
+      costCenters: costCenters?.filter(costCenter => company?.costCenters?.includes(costCenter?.value)) || [],
       adminName: '',
       adminLastName: '',
       adminEmail: '',
@@ -80,8 +81,24 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess }) => {
     enableReinitialize: true,
     validationSchema: ValidationSchema,
     onSubmit: (values, { setSubmitting, setFieldValue }) => {
-      const company = SpeiNewCompanyAdapter(values)
-      mutate(company, {
+      const newCompany = SpeiNewCompanyAdapter(values)
+
+      if (company) {
+        return updateCompany(
+          { ...newCompany, id: company?.id },
+          {
+            onSuccess: () => {
+              onSuccess()
+              setSubmitting(false)
+            },
+            onError: () => {
+              setSubmitting(false)
+            }
+          }
+        )
+      }
+
+      return mutate(newCompany, {
         onSuccess: () => {
           onSuccess()
           setSubmitting(false)
@@ -95,7 +112,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess }) => {
 
   const { isSubmitting, setFieldValue, values, setTouched } = formik
 
-  const loading = isSubmitting || isLoading
+  const loading = isSubmitting || isLoading || isUpdatingCompany
 
   const theme = useTheme()
 
@@ -333,6 +350,14 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess }) => {
 
 SpeiNewCompanyForm.propTypes = {
   adminCompanyUsers: PropTypes.array,
+  company: PropTypes.shape({
+    adminUsers: PropTypes.array,
+    commercialName: PropTypes.string,
+    costCenters: PropTypes.array,
+    fiscalName: PropTypes.string,
+    id: PropTypes.any,
+    rfc: PropTypes.string
+  }),
   costCenters: PropTypes.array,
   onSuccess: PropTypes.func
 }

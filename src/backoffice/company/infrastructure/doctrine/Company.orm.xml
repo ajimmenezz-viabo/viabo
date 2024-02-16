@@ -35,7 +35,7 @@
         <embedded name="active" class="CompanyActive" use-column-prefix="false"/>
 
         <many-to-many field="bankAccounts" target-entity="Viabo\backoffice\company\domain\CompanyBankAccount">
-            <join-table name="t_backoffice_companies_and_bankAccounts">
+            <join-table name="t_backoffice_companies_and_bankaccounts">
                 <join-columns>
                     <join-column name="CompanyId" referenced-column-name="Id"/>
                 </join-columns>

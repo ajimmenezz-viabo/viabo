@@ -4,8 +4,8 @@
 namespace Viabo\backoffice\company\domain;
 
 
-use Viabo\backoffice\company\domain\events\CompanyActiveUpdatedDomainEvent;
 use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyActiveUpdatedDomainEvent;
 use Viabo\backoffice\company\domain\events\CompanyCreatedDomainEvent;
 use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
@@ -300,6 +300,15 @@ final class Company extends AggregateRoot
         $this->updatedByUser = $this->updatedByUser->update($userId);
         $this->updateDate = $this->updateDate->todayDate();
         $this->record(new CommerceUpdatedDomainEvent($this->id(), $this->toArray()));
+    }
+
+    public function hasCostCenter(string $costCenterId): bool
+    {
+        $costCenters = array_filter($this->costCenters->toArray(), function (CompanyCostCenter $costCenter) use ($costCenterId) {
+            return $costCenter->isSame($costCenterId);
+        });
+
+        return !empty($costCenters);
     }
 
     public function toArray(): array

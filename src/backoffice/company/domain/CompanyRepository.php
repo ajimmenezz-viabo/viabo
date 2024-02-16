@@ -25,6 +25,8 @@ interface CompanyRepository
 
     public function searchAvailableBankAccount(): CompanyBankAccount|null;
 
+    public function searchAll(): array;
+
     public function searchFolioLast(): Company|null;
 
     public function update(Company $company): void;

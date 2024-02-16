@@ -41,8 +41,8 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
 
     public function searchCriteria(Criteria $criteria): array
     {
-        $criteria = DoctrineCriteriaConverter::convert($criteria);
-        return $this->repository(Company::class)->matching($criteria)->toArray();
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(Company::class)->matching($criteriaConvert)->toArray();
     }
 
     public function searchViewCriteria(Criteria $criteria): array
@@ -81,9 +81,14 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return $this->repository(CompanyBankAccount::class)->findOneBy(['available' => '1'], ['id' => 'asc']);
     }
 
+    public function searchAll(): array
+    {
+        return $this->repository(Company::class)->findAll();
+    }
+
     public function searchFolioLast(): Company|null
     {
-        return $this->repository(Company::class)->findOneBy([],['folio.value' => 'desc']);
+        return $this->repository(Company::class)->findOneBy([], ['folio.value' => 'desc']);
     }
 
     public function update(Company $company): void

@@ -1,21 +1,16 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\domain;
+namespace Viabo\backoffice\costCenter\domain;
 
 
-final class CompanyCostCenter
+final class CostCenterCompany
 {
     public function __construct(
         private string $id,
         private string $name
     )
     {
-    }
-
-    public function isSame(string $costCenterId): bool
-    {
-        return $this->id === $costCenterId;
     }
 
     public function toArray(): array

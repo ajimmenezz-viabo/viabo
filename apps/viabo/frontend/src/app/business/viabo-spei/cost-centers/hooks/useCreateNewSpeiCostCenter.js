@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { SPEI_COST_CENTERS_KEYS } from '../adapters'
 import { newSpeiCostCenter } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
@@ -17,7 +18,7 @@ export const useCreateNewSpeiCostCenter = (options = {}) => {
         pending: 'Creando centro de costos...',
         success: {
           render({ data }) {
-            // client.invalidateQueries([SPEI_THIRD_ACCOUNTS_KEYS.THIRD_ACCOUNTS_LIST])
+            client.invalidateQueries([SPEI_COST_CENTERS_KEYS.COST_CENTERS_LIST])
             isFunction(onSuccess) && onSuccess(data)
 
             return 'Se creó el centro de costos con éxito'

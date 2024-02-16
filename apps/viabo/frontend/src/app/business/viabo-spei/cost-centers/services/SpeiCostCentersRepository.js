@@ -1,4 +1,3 @@
-import { SpeiAdminCostCenterUsersMock } from '../_mock'
 import { SpeiAdminCostCenterUsersAdapter, SpeiCostCentersListAdapter } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
@@ -9,19 +8,17 @@ export const getSpeiCostCentersList = async () => {
 }
 
 export const newSpeiCostCenter = async costCenter => {
-  const { data } = await axios.post('/api/spei/cost-centers/new', costCenter)
+  const { data } = await axios.post('/api/backoffice/cost-center/new', costCenter)
   return data
 }
 
 export const getViaboSpeiAdminCostCenterUsers = async () => {
-  // const { data } = await axios.get('/api/spei/users')
-
-  const data = SpeiAdminCostCenterUsersMock
+  const { data } = await axios.get('/api/security/users/administrators-of-cost-centers')
 
   return SpeiAdminCostCenterUsersAdapter(data)
 }
 
 export const updateSpeiCostCenter = async costCenter => {
-  const { data } = await axios.put('/api/spei/cost-centers', costCenter)
-  return data
+  const { data } = await axios.put('/api/backoffice/cost-center/update', costCenter)
+  return costCenter
 }

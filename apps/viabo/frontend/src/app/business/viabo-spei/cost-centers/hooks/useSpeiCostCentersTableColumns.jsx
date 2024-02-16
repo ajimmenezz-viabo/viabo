@@ -7,7 +7,7 @@ export const useSpeiCostCentersTableColumns = () =>
     () => [
       {
         id: 'id',
-        accessorKey: 'id',
+        accessorKey: 'folio',
         header: 'ID',
         enableHiding: false,
         maxSize: 40,

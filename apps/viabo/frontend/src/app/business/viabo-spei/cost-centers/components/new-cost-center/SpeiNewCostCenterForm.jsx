@@ -58,11 +58,13 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
     adminPhone: Yup.string().trim()
   })
 
+  const adminUsersValues = adminUsers?.filter(user => costCenter?.adminUsers?.includes(user?.value)) || []
+
   const formik = useFormik({
     initialValues: {
       name: costCenter?.name || '',
       method: METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS,
-      adminUsers: adminUsers?.filter(user => costCenter?.adminUsers?.includes(user?.value)) || [],
+      adminUsers: adminUsersValues,
       adminName: '',
       adminLastName: '',
       adminEmail: '',
@@ -72,7 +74,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
     validationSchema: ValidationSchema,
     onSubmit: (values, { setSubmitting, setFieldValue }) => {
       const newCostCenter = SpeiNewCostCenterAdapter(values)
-      if (newCostCenter) {
+      if (costCenter) {
         return updateCostCenter(
           { ...newCostCenter, id: costCenter?.id },
           {
@@ -98,7 +100,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
     }
   })
 
-  const { isSubmitting, setFieldValue, values, setTouched } = formik
+  const { isSubmitting, setFieldValue, values, setTouched, resetForm } = formik
 
   const loading = isSubmitting || isLoading || isUpdatingCostCenter
 
@@ -131,12 +133,9 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
             <RadioGroup
               value={values.method}
               onChange={e => {
+                resetForm()
                 setFieldValue('method', e.target.value)
-                setFieldValue('adminUsers', [])
-                setFieldValue('adminName', '')
-                setFieldValue('adminLastName', '')
-                setFieldValue('adminEmail', '')
-                setFieldValue('adminPhone', '')
+
                 setTouched({}, false)
               }}
               row

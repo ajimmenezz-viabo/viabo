@@ -310,6 +310,27 @@ final class Company extends AggregateRoot
         return !empty($costCenters);
     }
 
+    public function updateByAdminStp(
+        string $userId,
+        string $fiscalName,
+        string $commercialName,
+        array  $users,
+        array  $costCenters
+    ): void
+    {
+        $this->costCenters->clear();
+        $this->users->clear();
+        $this->setCostCenter($costCenters);
+        $this->setUsers($users);
+
+        $this->fiscalName = $this->fiscalName->update($fiscalName);
+        $this->tradeName = $this->tradeName->update($commercialName, $this->registerStep->value());
+        $this->updatedByUser = $this->updatedByUser->update($userId);
+        $this->updateDate = $this->updateDate->todayDate();
+
+        $this->record(new CommerceUpdatedDomainEvent($this->id->value(), $this->toArray()));
+    }
+
     public function toArray(): array
     {
 

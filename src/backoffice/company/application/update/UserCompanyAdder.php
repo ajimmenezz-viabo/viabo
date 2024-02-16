@@ -7,12 +7,11 @@ namespace Viabo\backoffice\company\application\update;
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
 use Viabo\backoffice\company\domain\services\CollectionEntityFinder;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 
 final readonly class UserCompanyAdder
 {
     public function __construct(
-        private CompanyRepository $repository,
+        private CompanyRepository      $repository,
         private CollectionEntityFinder $finder
     )
     {
@@ -22,7 +21,7 @@ final readonly class UserCompanyAdder
     {
         $company = $this->repository->search($companyId);
 
-        if(empty($company)){
+        if (empty($company)) {
             throw new CompanyNotExist();
         }
 

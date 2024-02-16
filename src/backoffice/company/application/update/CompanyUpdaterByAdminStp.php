@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\application\create;
+namespace Viabo\backoffice\company\application\update;
 
 
-use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\company\domain\CompanyRepository;
+use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
 use Viabo\backoffice\company\domain\services\CollectionEntityFinder;
 use Viabo\backoffice\company\domain\services\CompanyValidator;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CompanyCreator
+final readonly class CompanyUpdaterByAdminStp
 {
     public function __construct(
         private CompanyRepository      $repository,
@@ -26,37 +26,30 @@ final readonly class CompanyCreator
         string $companyId,
         string $fiscalName,
         string $commercialName,
-        string $rfc,
         array  $users,
         array  $costCenters
     ): void
     {
-        $this->validator->ensureCompany($fiscalName, $rfc);
-        $costCenters = $this->finder->searchCostCenter($costCenters);
+        $this->validator->ensureFiscalName($fiscalName, $companyId);
         $users = $this->finder->searchUsers($users);
-        $bankAccount = $this->finder->searchAvailableBankAccount();
-        $folio = $this->searchFolioLast();
+        $costCenters = $this->finder->searchCostCenter($costCenters);
 
-        $company = Company::createByStp(
+        $company = $this->repository->search($companyId);
+
+        if (empty($company)) {
+            throw new CompanyNotExist();
+        }
+
+        $company->updateByAdminStp(
             $userId,
-            $companyId,
-            $folio,
             $fiscalName,
             $commercialName,
-            $rfc,
-            $bankAccount,
             $users,
             $costCenters
         );
-        $this->repository->save($company);
+
+        $this->repository->update($company);
 
         $this->bus->publish(...$company->pullDomainEvents());
     }
-
-    public function searchFolioLast(): string
-    {
-        $company = $this->repository->searchFolioLast();
-        return $company->folio();
-    }
-
 }

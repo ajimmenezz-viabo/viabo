@@ -340,7 +340,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
 
         <Stack sx={{ pt: 1 }}>
           <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
-            Crear
+            {company ? 'Actualizar' : 'Crear'}
           </LoadingButton>
         </Stack>
       </Stack>

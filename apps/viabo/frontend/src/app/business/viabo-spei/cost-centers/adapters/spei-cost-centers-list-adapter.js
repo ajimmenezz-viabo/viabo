@@ -2,15 +2,16 @@ import { convertCatalogToReactSelect } from '@/shared/utils'
 
 export const SpeiCostCentersListAdapter = costCenters => {
   const costCentersAdapted =
-    costCenters?.map(company => ({
-      id: company?.id,
-      name: company?.name,
-      status: company?.active === '1',
-      companies: company?.companies,
+    costCenters?.map(costCenter => ({
+      id: costCenter?.id,
+      name: costCenter?.name,
+      status: costCenter?.active === '1',
+      companies: costCenter?.companies,
       create: {
-        user: company?.createdByUser,
-        date: company?.createDate
-      }
+        user: costCenter?.createdByUser,
+        date: costCenter?.createDate
+      },
+      adminUsers: costCenter?.assignedUsers || []
     })) || []
 
   return convertCatalogToReactSelect(costCentersAdapted, 'id', 'name')

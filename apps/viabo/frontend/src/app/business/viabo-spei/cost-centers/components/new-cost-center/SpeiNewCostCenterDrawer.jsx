@@ -14,7 +14,8 @@ import { Scrollbar } from '@/shared/components/scroll'
 const SpeiNewCostCenterForm = Lodable(lazy(() => import('./SpeiNewCostCenterForm')))
 
 const SpeiNewCostCenterDrawer = () => {
-  const { openNewCostCenter, setOpenNewSpeiCostCenter } = useSpeiCostCentersStore()
+  const { openNewCostCenter, setOpenNewSpeiCostCenter, setSpeiCostCenter } = useSpeiCostCentersStore()
+  const costCenter = useSpeiCostCentersStore(state => state.costCenter)
 
   const { data: users, isLoading, isError, error, refetch } = useFindSpeiAdminCostCenterUsers({ enabled: false })
 
@@ -26,6 +27,7 @@ const SpeiNewCostCenterDrawer = () => {
 
   const handleClose = () => {
     setOpenNewSpeiCostCenter(false)
+    setSpeiCostCenter(null)
   }
 
   return (
@@ -34,7 +36,7 @@ const SpeiNewCostCenterDrawer = () => {
       handleClose={handleClose}
       titleElement={
         <Stack>
-          <Typography variant={'h6'}>{'Nuevo Centro de Costos'}</Typography>
+          <Typography variant={'h6'}>{costCenter ? 'Editar Centro de Costos' : 'Nuevo Centro de Costos'}</Typography>
         </Stack>
       }
     >
@@ -45,7 +47,7 @@ const SpeiNewCostCenterDrawer = () => {
             <ErrorRequestPage errorMessage={error} titleMessage={'Lista de Usuarios'} handleButton={() => refetch()} />
           )}
           {!isError && !isLoading && openNewCostCenter && (
-            <SpeiNewCostCenterForm adminUsers={users} onSuccess={handleClose} />
+            <SpeiNewCostCenterForm adminUsers={users} onSuccess={handleClose} costCenter={costCenter} />
           )}
         </Stack>
       </Scrollbar>

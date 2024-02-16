@@ -11,19 +11,19 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Typography,
-  useTheme
+  Typography
 } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { METHODS_NEW_COST_CENTER_USERS, SpeiNewCostCenterAdapter } from '../../adapters'
-import { useCreateNewSpeiCostCenter } from '../../hooks'
+import { useCreateNewSpeiCostCenter, useUpdateCostCenter } from '../../hooks'
 
 import { FormProvider, RFSelect, RFTextField } from '@/shared/components/form'
 
-const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
+const SpeiNewCostCenterForm = ({ adminUsers, onSuccess, costCenter }) => {
   const { mutate, isLoading } = useCreateNewSpeiCostCenter()
+  const { mutate: updateCostCenter, isLoading: isUpdatingCostCenter } = useUpdateCostCenter()
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().trim().required('Es necesario el nombre del centro de costos'),
@@ -60,9 +60,9 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: costCenter?.name || '',
       method: METHODS_NEW_COST_CENTER_USERS.ADMIN_USERS,
-      adminUsers: [],
+      adminUsers: adminUsers?.filter(user => costCenter?.adminUsers?.includes(user?.value)) || [],
       adminName: '',
       adminLastName: '',
       adminEmail: '',
@@ -71,8 +71,22 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
     enableReinitialize: true,
     validationSchema: ValidationSchema,
     onSubmit: (values, { setSubmitting, setFieldValue }) => {
-      const costCenter = SpeiNewCostCenterAdapter(values)
-      mutate(costCenter, {
+      const newCostCenter = SpeiNewCostCenterAdapter(values)
+      if (newCostCenter) {
+        return updateCostCenter(
+          { ...newCostCenter, id: costCenter?.id },
+          {
+            onSuccess: () => {
+              onSuccess()
+              setSubmitting(false)
+            },
+            onError: () => {
+              setSubmitting(false)
+            }
+          }
+        )
+      }
+      return mutate(newCostCenter, {
         onSuccess: () => {
           onSuccess()
           setSubmitting(false)
@@ -86,9 +100,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
 
   const { isSubmitting, setFieldValue, values, setTouched } = formik
 
-  const loading = isSubmitting || isLoading
-
-  const theme = useTheme()
+  const loading = isSubmitting || isLoading || isUpdatingCostCenter
 
   return (
     <FormProvider formik={formik}>
@@ -247,7 +259,7 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
 
         <Stack sx={{ pt: 1 }}>
           <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
-            Crear
+            {costCenter ? 'Actualizar' : 'Crear'}
           </LoadingButton>
         </Stack>
       </Stack>
@@ -257,6 +269,11 @@ const SpeiNewCostCenterForm = ({ adminUsers, onSuccess }) => {
 
 SpeiNewCostCenterForm.propTypes = {
   adminUsers: PropTypes.array,
+  costCenter: PropTypes.shape({
+    adminUsers: PropTypes.array,
+    id: PropTypes.any,
+    name: PropTypes.string
+  }),
   onSuccess: PropTypes.func
 }
 

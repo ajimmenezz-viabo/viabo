@@ -62,7 +62,7 @@ const SpeiNewCompanyDrawer = () => {
       handleClose={handleClose}
       titleElement={
         <Stack>
-          <Typography variant={'h6'}>{'Nueva Empresa'}</Typography>
+          <Typography variant={'h6'}>{company ? 'Editar Empresa' : 'Nueva Empresa'}</Typography>
         </Stack>
       }
     >

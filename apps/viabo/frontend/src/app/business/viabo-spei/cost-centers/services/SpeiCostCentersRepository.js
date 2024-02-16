@@ -20,3 +20,8 @@ export const getViaboSpeiAdminCostCenterUsers = async () => {
 
   return SpeiAdminCostCenterUsersAdapter(data)
 }
+
+export const updateSpeiCostCenter = async costCenter => {
+  const { data } = await axios.put('/api/spei/cost-centers', costCenter)
+  return data
+}

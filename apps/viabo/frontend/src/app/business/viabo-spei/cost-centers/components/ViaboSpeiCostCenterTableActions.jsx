@@ -1,9 +1,12 @@
 import { Edit } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/material'
 
+import { useSpeiCostCentersStore } from '../store'
+
 export function getViaboSpeiCostCentersTableActions(table) {
   const { row } = table
   const { original: rowData } = row
+  const { setSpeiCostCenter, setOpenNewSpeiCostCenter } = useSpeiCostCentersStore()
 
   return (
     <Box
@@ -21,6 +24,8 @@ export function getViaboSpeiCostCentersTableActions(table) {
         color="primary"
         onClick={e => {
           e.stopPropagation()
+          setSpeiCostCenter(rowData)
+          setOpenNewSpeiCostCenter(true)
         }}
       >
         <Edit size="small" fontSize="16px" />

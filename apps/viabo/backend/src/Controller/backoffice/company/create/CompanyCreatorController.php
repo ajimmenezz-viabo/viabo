@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\backoffice\company\application\create\CreateCompanyCommand;
 use Viabo\backoffice\company\application\delete\DeleteCompanyCommand;
 use Viabo\backoffice\company\application\update\AddUserToCompanyCommand;
-use Viabo\security\user\application\create\CreateCompaniesAdminUserCommand;
+use Viabo\security\user\application\create\CreateAdministratorUserCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CompanyCreatorController extends ApiController
@@ -47,8 +47,10 @@ final readonly class CompanyCreatorController extends ApiController
     public function createCompaniesAdminUser(array $data): string
     {
         $userId = $this->generateUuid();
-        $this->dispatch(new CreateCompaniesAdminUserCommand(
+        $companyAdministratorProfileId = '3';
+        $this->dispatch(new CreateAdministratorUserCommand(
             $userId,
+            $companyAdministratorProfileId,
             $data['userName'],
             $data['userLastName'],
             $data['userEmail'],

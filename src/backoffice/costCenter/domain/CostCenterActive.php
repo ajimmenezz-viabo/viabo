@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CostCenterActive extends StringValueObject
 {
+    public static function enable(): static
+    {
+        return new static('1');
+    }
 }

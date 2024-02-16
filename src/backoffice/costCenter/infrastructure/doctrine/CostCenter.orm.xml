@@ -6,10 +6,22 @@
 
     <entity name="Viabo\backoffice\costCenter\domain\CostCenter" table="t_backoffice_cost_centers">
         <embedded name="id" class="CostCenterId" use-column-prefix="false"/>
+        <embedded name="folio" class="CostCenterFolio" use-column-prefix="false"/>
         <embedded name="name" class="CostCenterName" use-column-prefix="false"/>
         <embedded name="createdByUser" class="CostCenterCreatedByUser" use-column-prefix="false"/>
         <embedded name="createDate" class="CostCenterCreateDate" use-column-prefix="false"/>
         <embedded name="active" class="CostCenterActive" use-column-prefix="false"/>
+
+        <many-to-many field="users" target-entity="Viabo\backoffice\costCenter\domain\CostCenterUser">
+            <join-table name="t_backoffice_cost_center_and_users">
+                <join-columns>
+                    <join-column name="CostCenterId" referenced-column-name="Id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="UserId" referenced-column-name="Id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </entity>
 
 </doctrine-mapping>

@@ -21,7 +21,7 @@ final class Log
     {
         return new static(
             LogId::random() ,
-            LogType::create($type , $data['updatedByUser']) ,
+            LogType::create($type) ,
             LogAggregateId::create($commerceId) ,
             LogBody::create($data) ,
             new LogUpdatedByUser($data['updatedByUser']) ,

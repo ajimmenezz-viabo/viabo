@@ -9,10 +9,10 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class CostCenterName extends StringValueObject
 {
-    public static function create(string $value): self
+    public static function create(string $value): static
     {
         self::validate($value);
-        return new self($value);
+        return new static($value);
     }
 
     public static function validate(string $value): void
@@ -20,5 +20,10 @@ final class CostCenterName extends StringValueObject
         if (empty($value)) {
             throw new CostCenterNameEmpty();
         }
+    }
+
+    public function update(string $name): static
+    {
+        return static::create($name);
     }
 }

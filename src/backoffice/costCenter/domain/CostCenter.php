@@ -5,6 +5,7 @@ namespace Viabo\backoffice\costCenter\domain;
 
 
 use Viabo\backoffice\costCenter\domain\events\CostCenterCreatedDomainEvent;
+use Viabo\backoffice\costCenter\domain\events\CostCenterUpdatedDomainEvent;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class CostCenter extends AggregateRoot
@@ -15,6 +16,8 @@ final class CostCenter extends AggregateRoot
         private CostCenterId            $id,
         private CostCenterFolio         $folio,
         private CostCenterName          $name,
+        private CostCenterUpdatedByUser $updatedByUser,
+        private CostCenterUpdateDate    $updateDate,
         private CostCenterCreatedByUser $createdByUser,
         private CostCenterCreateDate    $createDate,
         private CostCenterActive        $active
@@ -35,6 +38,8 @@ final class CostCenter extends AggregateRoot
             new CostCenterId($costCenterId),
             CostCenterFolio::create($folio),
             CostCenterName::create($name),
+            CostCenterUpdatedByUser::empty(),
+            CostCenterUpdateDate::empty(),
             new CostCenterCreatedByUser($userId),
             CostCenterCreateDate::todayDate(),
             CostCenterActive::enable(),
@@ -69,6 +74,21 @@ final class CostCenter extends AggregateRoot
         }, $this->users->toArray());
     }
 
+    public function update(
+        string $userId,
+        string $name,
+        array  $users
+    ): void
+    {
+        $this->users->clear();
+        $this->setUsers($users);
+        $this->name = $this->name->update($name);
+        $this->updatedByUser = $this->updatedByUser->update($userId);
+        $this->updateDate = CostCenterUpdateDate::todayDate();
+
+        $this->record(new CostCenterUpdatedDomainEvent($this->id(), $this->toArray()));
+    }
+
     public function toArray(): array
     {
         return [
@@ -76,6 +96,8 @@ final class CostCenter extends AggregateRoot
             'folio' => $this->folio->value(),
             'name' => $this->name->value(),
             'users' => $this->users(),
+            'updatedByUser' => $this->updatedByUser->value(),
+            'updateDate' => $this->updateDate->value(),
             'createdByUser' => $this->createdByUser->value(),
             'createDate' => $this->createDate->value(),
             'active' => $this->active->value()

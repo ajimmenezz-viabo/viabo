@@ -8,9 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class LogType extends StringValueObject
 {
-    public static function create(string $value , mixed $updatedByUser): static
+    public static function create(string $value): static
     {
-        $value = empty($updatedByUser) ? "$value.by.registration" : $value;
         return new static($value);
     }
 }

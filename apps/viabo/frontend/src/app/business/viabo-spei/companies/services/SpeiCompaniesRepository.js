@@ -30,17 +30,13 @@ export const changeSpeiCompanyStatus = async company => {
 }
 
 export const getViaboSpeiCompanyDetails = async companyId => {
-  const fetchURL = new URL('/api/backoffice/company', window.location.origin)
-
-  fetchURL.searchParams.set('company', companyId)
-
-  const { data } = await axios.get(fetchURL)
+  const { data } = await axios.get(`/api/backoffice/company/${companyId}`)
 
   return SpeiCompanyDetailsAdapter(data)
 }
 
 export const updateViaboSpeiCompany = async company => {
-  const { data } = await axios.put('/api/backoffice/company', company)
+  const { data } = await axios.put('/api/backoffice/company/update', company)
 
-  return data
+  return company
 }

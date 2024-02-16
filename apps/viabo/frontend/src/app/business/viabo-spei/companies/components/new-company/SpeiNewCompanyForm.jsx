@@ -110,7 +110,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
     }
   })
 
-  const { isSubmitting, setFieldValue, values, setTouched } = formik
+  const { isSubmitting, setFieldValue, values, setTouched, resetForm } = formik
 
   const loading = isSubmitting || isLoading || isUpdatingCompany
 
@@ -144,8 +144,11 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
               *
             </Box>
           </Typography>
-
-          <RFTextField required name={'rfc'} size={'small'} placeholder={'RFC de la Empresa...'} disabled={loading} />
+          {company ? (
+            <Typography variant={'subtitle1'}>{values?.rfc}</Typography>
+          ) : (
+            <RFTextField required name={'rfc'} size={'small'} placeholder={'RFC de la Empresa...'} disabled={loading} />
+          )}
         </Stack>
 
         <Stack spacing={1}>
@@ -167,12 +170,8 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
             <RadioGroup
               value={values.method}
               onChange={e => {
+                resetForm()
                 setFieldValue('method', e.target.value)
-                setFieldValue('adminUsers', [])
-                setFieldValue('adminName', '')
-                setFieldValue('adminLastName', '')
-                setFieldValue('adminEmail', '')
-                setFieldValue('adminPhone', '')
                 setTouched({}, false)
               }}
               row

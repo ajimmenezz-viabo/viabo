@@ -19,6 +19,7 @@ export const useUpdateSpeiCompany = (options = {}) => {
         success: {
           render({ data }) {
             client.invalidateQueries([SPEI_COMPANIES_KEYS.COMPANIES_LIST])
+            client.invalidateQueries([SPEI_COMPANIES_KEYS.COMPANY_DETAILS, data?.id])
             isFunction(onSuccess) && onSuccess(data)
 
             return 'Se actualizó la empresa con éxito'

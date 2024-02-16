@@ -4,8 +4,8 @@ export const SpeiCompanyDetailsAdapter = company => {
     commercialName: company?.tradeName,
     fiscalName: company?.fiscalName,
     rfc: company?.rfc,
-    adminUsers: company?.assignedUsers || [],
-    costCenters: company?.costCenters || []
+    adminUsers: company?.users?.map(user => user?.id) || [],
+    costCenters: company?.costCenters?.map(costCenter => costCenter?.id) || []
   }
 
   return companyAdapted

@@ -14,13 +14,13 @@ final readonly class CommerceFinderBySlug
     {
     }
 
-    public function __invoke(string $slug): CommerceResponse
+    public function __invoke(string $slug): CompanyResponse
     {
         $filter = Filters::fromValues([
             ['field' => 'slug.value' , 'operator' => '=' , 'value' => $slug]
         ]);
 
         $commerce = $this->finder->searchCriteria(new Criteria($filter));
-        return new CommerceResponse($commerce->toArray());
+        return new CompanyResponse($commerce->toArray());
     }
 }

@@ -17,7 +17,7 @@ final readonly class CompanyActivator
 
     public function __invoke(string $userId, string $companyId, bool $active): void
     {
-        $company = $this->repository->search(new CompanyId($companyId));
+        $company = $this->repository->search($companyId);
 
         if(empty($company)){
             throw new CompanyNotExist();

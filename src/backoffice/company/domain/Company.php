@@ -5,7 +5,6 @@ namespace Viabo\backoffice\company\domain;
 
 
 use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;
-use Viabo\backoffice\company\domain\events\CompanyActiveUpdatedDomainEvent;
 use Viabo\backoffice\company\domain\events\CompanyCreatedDomainEvent;
 use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;

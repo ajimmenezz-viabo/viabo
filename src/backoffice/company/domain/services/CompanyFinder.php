@@ -19,16 +19,16 @@ final readonly class CompanyFinder
     {
     }
 
-    public function commerce(CompanyId $commerceId , CompanyLegalRepresentative $legalRepresentative): Company
+    public function commerce(CompanyId $commerceId, CompanyLegalRepresentative $legalRepresentative): Company
     {
         $commerce = null;
         if ($commerceId->isNotEmpty()) {
-            $commerce = $this->repository->search($commerceId);
+            $commerce = $this->repository->search($commerceId->value());
         }
 
         if ($legalRepresentative->isNotEmpty()) {
             $filters = Filters::fromValues([
-                ['field' => 'legalRepresentative' , 'operator' => '=' , 'value' => $legalRepresentative->value()]
+                ['field' => 'legalRepresentative', 'operator' => '=', 'value' => $legalRepresentative->value()]
             ]);
             $commerce = $this->repository->searchCriteria(new Criteria($filters));
         }
@@ -40,7 +40,7 @@ final readonly class CompanyFinder
         return is_array($commerce) ? $commerce[0] : $commerce;
     }
 
-    public function view(CompanyId $commerceId , CompanyLegalRepresentative $legalRepresentative): CompanyView
+    public function view(CompanyId $commerceId, CompanyLegalRepresentative $legalRepresentative): CompanyView
     {
         $commerce = null;
 
@@ -50,7 +50,7 @@ final readonly class CompanyFinder
 
         if ($legalRepresentative->isNotEmpty()) {
             $filters = Filters::fromValues([
-                ['field' => 'legalRepresentative' , 'operator' => '=' , 'value' => $legalRepresentative->value()]
+                ['field' => 'legalRepresentative', 'operator' => '=', 'value' => $legalRepresentative->value()]
             ]);
             $commerce = $this->repository->searchViewCriteria(new Criteria($filters));
         }

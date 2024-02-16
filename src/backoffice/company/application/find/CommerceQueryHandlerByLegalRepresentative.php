@@ -13,7 +13,7 @@ final readonly class CommerceQueryHandlerByLegalRepresentative implements QueryH
     {
     }
 
-    public function __invoke(CommerceQueryByLegalRepresentative $command): CommerceResponse
+    public function __invoke(CommerceQueryByLegalRepresentative $command): CompanyResponse
     {
         $legalRepresentative = new CompanyLegalRepresentative($command->legalRepresentative);
         return $this->finder->__invoke($legalRepresentative);

@@ -9,7 +9,7 @@ interface CompanyRepository
 {
     public function save(Company $company): void;
 
-    public function search(CompanyId $companyId): Company|null;
+    public function search(string $companyId): Company|null;
 
     public function searchView(CompanyId $companyId): CompanyView|null;
 

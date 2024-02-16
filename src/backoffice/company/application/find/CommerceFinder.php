@@ -14,9 +14,9 @@ final readonly class CommerceFinder
     {
     }
 
-    public function __invoke(CompanyId $commerceId): CommerceResponse
+    public function __invoke(CompanyId $commerceId): CompanyResponse
     {
         $commerce = $this->finder->view($commerceId , CompanyLegalRepresentative::empty());
-        return new CommerceResponse($commerce->toArray());
+        return new CompanyResponse($commerce->toArray());
     }
 }

@@ -17,7 +17,7 @@ final readonly class AddCommerceLegalRepresentativeQueryHandler implements Query
 
     public function __invoke(AddCommerceLegalRepresentativeQuery $query): Response
     {
-        return new CommerceResponse(array_map(function (array $card) {
+        return new CompanyResponse(array_map(function (array $card) {
             $commerce = $this->commerceFinder($card['commerceId']);
             $card['ownerId'] = empty($commerce) ? '' : $commerce['legalRepresentative'];
             return $card;

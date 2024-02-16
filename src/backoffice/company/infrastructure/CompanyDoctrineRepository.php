@@ -29,9 +29,9 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         $this->updateBankAccountWithNotAvailable($company->bankAccount());
     }
 
-    public function search(CompanyId $companyId): Company|null
+    public function search(string $companyId): Company|null
     {
-        return $this->repository(Company::class)->find($companyId->value());
+        return $this->repository(Company::class)->find($companyId);
     }
 
     public function searchView(CompanyId $companyId): CompanyView|null

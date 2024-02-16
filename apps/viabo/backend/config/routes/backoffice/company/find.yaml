@@ -22,3 +22,8 @@ find-commerce-slug:
   path: "/api/commerce-slug/{slug}"
   controller: Viabo\Backend\Controller\backoffice\company\CommerceSlugFinderController
   methods: GET
+
+finder-company:
+  path: '/api/backoffice/company/{company}'
+  controller: Viabo\Backend\Controller\backoffice\company\find\CompanyFinderController
+  methods: GET

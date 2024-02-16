@@ -18,4 +18,9 @@ final class CompanyActive extends StringValueObject
         $value = empty($value) ? '0' : '1';
         return new static($value);
     }
+
+    public function value(): string
+    {
+        return empty($this->value) ? '0' : $this->value;
+    }
 }

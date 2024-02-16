@@ -20,7 +20,7 @@ final readonly class CompanyDeleter
 
     public function __invoke(string $companyId): void
     {
-        $company = $this->repository->search(new CompanyId($companyId));
+        $company = $this->repository->search($companyId);
         if (!empty($company)) {
             $this->repository->delete($company);
             $this->bus->publish(new CompanyDeletedDomainEvent($company->id(), $company->toArray()));

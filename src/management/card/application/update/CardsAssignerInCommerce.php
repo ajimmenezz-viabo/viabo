@@ -4,7 +4,7 @@
 namespace Viabo\management\card\application\update;
 
 
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\management\card\domain\Card;
 use Viabo\management\card\domain\CardPaymentProcessorId;
 use Viabo\management\card\domain\CardRepository;

@@ -7,7 +7,6 @@ namespace Viabo\security\session\infrastructure;
 use Doctrine\ORM\EntityManager;
 use Viabo\security\session\domain\Session;
 use Viabo\security\session\domain\SessionRepository;
-use Viabo\security\shared\domain\user\UserId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -24,10 +23,9 @@ final class SessionDoctrineRepository extends DoctrineRepository implements Sess
         $this->persist($session);
     }
 
-    public function search(UserId $userId): Session|null
+    public function search(string $userId): Session|null
     {
-        return $this->repository(Session::class)
-            ->findOneBy(['userId' => $userId->value() , 'active.value' => '1']);
+        return $this->repository(Session::class)->findOneBy(['userId' => $userId, 'active.value' => '1']);
     }
 
     public function matching(Criteria $criteria): array

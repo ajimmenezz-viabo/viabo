@@ -1,0 +1,2 @@
+import{r}from"./vendor-FSZoD0Ty.js";import{z as e,D as o}from"./index-c1QoFEuN.js";const c=()=>{const n=r.useMemo(()=>[{name:"Inicio",href:"/"},{name:e.root.name,href:o.third_accounts},{name:"Cuentas de Terceros"}],[e,o]),s=r.useMemo(()=>[{name:"Inicio",href:"/"},{name:e.root.name,href:o.companies},{name:"Empresas"}],[e,o]),a=r.useMemo(()=>[{name:"Inicio",href:"/"},{name:e.root.name,href:o.costCenters},{name:"Centro de Costos"}],[e,o]);return{thirdAccounts:n,companies:s,costCenters:a}};export{c as u};
+//# sourceMappingURL=useViaboSpeiBreadCrumbs-Gc1NxzaE.js.map

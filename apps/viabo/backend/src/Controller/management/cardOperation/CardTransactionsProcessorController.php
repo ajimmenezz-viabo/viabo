@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\cardOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\cardOperation\application\transactions\CardTransactionCommand;
 use Viabo\management\credential\application\find\CardCredentialQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;

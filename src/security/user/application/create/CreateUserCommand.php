@@ -8,7 +8,13 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class CreateUserCommand implements Command
 {
-    public function __construct(public string $name , public string $email , public string $phone)
+    public function __construct(
+        public string $userId,
+        public string $name,
+        public string $lastName,
+        public string $email,
+        public string $phone
+    )
     {
     }
 }

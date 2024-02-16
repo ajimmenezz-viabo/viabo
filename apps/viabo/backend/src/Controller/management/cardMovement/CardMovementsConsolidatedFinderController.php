@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\cardMovement;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\business\commerce\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\cardMovement\application\find\CardMovementsConsolidatedQuery;
 use Viabo\management\commerceTerminal\application\find\TerminalQueryBySpeiCard;

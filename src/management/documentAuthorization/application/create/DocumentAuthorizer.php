@@ -12,8 +12,8 @@ use Viabo\management\documentAuthorization\domain\DocumentAuthorizationUserProfi
 use Viabo\management\documentAuthorization\domain\DocumentAuthorizationUserProfileName;
 use Viabo\management\documentAuthorization\domain\services\DocumentAuthorizationValidator;
 use Viabo\management\shared\domain\documents\DocumentId;
-use Viabo\business\documents\application\find\FindDocumentQuery;
-use Viabo\business\documents\application\find\FindDocumentsCommerceQuery;
+use Viabo\backoffice\documents\application\find\FindDocumentQuery;
+use Viabo\backoffice\documents\application\find\FindDocumentsCommerceQuery;
 use Viabo\shared\domain\bus\query\QueryBus;
 
 final readonly class DocumentAuthorizer

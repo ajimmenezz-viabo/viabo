@@ -19,6 +19,20 @@ const ViaboSpeiRouter = {
         const { SpeiThirdAccounts } = await import('../../third-accounts/pages/SpeiThirdAccounts')
         return { Component: SpeiThirdAccounts }
       }
+    },
+    {
+      path: VIABO_SPEI_ROUTES.companies.route,
+      async lazy() {
+        const { ViaboSpeiCompanies } = await import('../../companies/pages/ViaboSpeiCompanies')
+        return { Component: ViaboSpeiCompanies }
+      }
+    },
+    {
+      path: VIABO_SPEI_ROUTES.costCenters.route,
+      async lazy() {
+        const { ViaboSpeiCostCenters } = await import('../../cost-centers/pages/ViaboSpeiCostCenters')
+        return { Component: ViaboSpeiCostCenters }
+      }
     }
   ]
 }

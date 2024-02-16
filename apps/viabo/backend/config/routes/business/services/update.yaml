@@ -1,4 +1,0 @@
-update-commerce-service:
-  path: '/api/backoffice/commerce/service/update'
-  controller: Viabo\Backend\Controller\business\services\CommerceServiceUpdaterController
-  methods: PUT

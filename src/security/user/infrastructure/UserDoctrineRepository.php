@@ -44,7 +44,13 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
 
     public function searchView(UserId $userId): UserView|null
     {
-        return $this->repository(UserView::class)->findOneBy(['id' => $userId->value() , 'active' => '1']);
+        return $this->repository(UserView::class)->findOneBy(['id' => $userId->value(), 'active' => '1']);
+    }
+
+    public function searchViewByCriteria(Criteria $criteria): array
+    {
+        $criteriaDoctrine = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(UserView::class)->matching($criteriaDoctrine)->toArray();
     }
 
     public function update(User $user): void

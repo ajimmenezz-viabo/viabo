@@ -4,7 +4,7 @@
 namespace Viabo\management\receipt\domain\services;
 
 
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\management\receipt\domain\exceptions\ReceiptFilesOrNoteInvalid;
 use Viabo\management\receipt\domain\exceptions\ReceiptNotMatchTheInvoiceAmount;
 use Viabo\management\receipt\domain\exceptions\ReceiptToInvoiceFilesInvalid;

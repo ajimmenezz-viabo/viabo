@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class SessionId extends StringValueObject
 {
+    public static function empty(): static
+    {
+        return new static('');
+    }
 }

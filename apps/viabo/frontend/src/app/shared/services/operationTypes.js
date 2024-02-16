@@ -1,4 +1,11 @@
-import { PayCashLogo, SpeiLogo, ViaboCardLogo, ViaboCoin, ViaboPayLogo } from '@/shared/components/images'
+import {
+  PayCashLogo,
+  SpeiLogo,
+  ViaboCardLogo,
+  ViaboCoin,
+  ViaboPayLogo,
+  ViaboSpeiLogo
+} from '@/shared/components/images'
 
 const OPERATION_TYPES = [
   {
@@ -8,6 +15,10 @@ const OPERATION_TYPES = [
   {
     name: 'VIABO PAY',
     component: ViaboPayLogo
+  },
+  {
+    name: 'VIABO SPEI',
+    component: ViaboSpeiLogo
   },
   {
     name: 'SPEI',

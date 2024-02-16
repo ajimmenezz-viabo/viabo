@@ -32,7 +32,7 @@ final readonly class UserView
         ];
     }
 
-    public function tokenData(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id,

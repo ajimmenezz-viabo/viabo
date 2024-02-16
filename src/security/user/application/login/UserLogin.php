@@ -4,46 +4,42 @@
 namespace Viabo\security\user\application\login;
 
 
-use Viabo\security\shared\domain\user\UserEmail;
-use Viabo\security\shared\domain\user\UserId;
+use Viabo\security\user\domain\events\UserLoggedDomainEvent;
 use Viabo\security\user\domain\exceptions\UserNoAccess;
-use Viabo\security\user\domain\services\UserFinder;
+use Viabo\security\user\domain\services\UserFinderByCriteria;
 use Viabo\security\user\domain\User;
-use Viabo\security\user\domain\UserPassword;
-use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\DomainError;
 
 final readonly class UserLogin
 {
     public function __construct(
-        private UserRepository $repository ,
-        private UserFinder     $finder ,
-        private EventBus       $bus
+        private UserFinderByCriteria $finder,
+        private EventBus             $bus
     )
     {
     }
 
-    public function __invoke(UserEmail $email , UserPassword $passwordEntered): UserLoginResponse
+    public function __invoke(string $email, string $password): void
     {
-        $user = $this->searchUserBy($email);
+        $user = $this->searchUser($email);
 
-        if ($user->isDifferent($passwordEntered) && $user->isNotPasswordBackdoor($passwordEntered) ) {
+        if ($user->isInvalidPassword($password)) {
             throw new UserNoAccess();
         }
 
-        $userView = $this->repository->searchView($user->id());
-        $user->setEventSessionStarted();
-        $this->bus->publish(...$user->pullDomainEvents());
-
-        return new UserLoginResponse($userView->tokenData());
+        $this->bus->publish(new UserLoggedDomainEvent($user->id()->value(), $user->toArray()));
     }
 
-    private function searchUserBy(UserEmail $email): User
+    private function searchUser(string $email): User
     {
         try {
-            return $this->finder->__invoke(UserId::empty() , $email);
-        }catch (DomainError){
+            $filters = [
+                ['field' => 'email', 'operator' => '=', 'value' => $email],
+                ['field' => 'active.value', 'operator' => '=', 'value' => '1']
+            ];
+            return $this->finder->__invoke($filters);
+        } catch (DomainError) {
             throw new UserNoAccess();
         }
     }

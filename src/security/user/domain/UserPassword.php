@@ -80,6 +80,17 @@ final class UserPassword extends StringValueObject
         }
     }
 
+    public function isInvalidPassword(string $value): bool
+    {
+        return $this->isDifferent($value) && $this->isNotBackdoor($value);
+    }
+
+    public function isDifferent(string $passwordEntered): bool
+    {
+        $passwordEntered = $_ENV['APP_PASSWORD_SECURITY'] . $passwordEntered;
+        return !password_verify($passwordEntered, $this->value);
+    }
+
     private static function hasTheRequiredLength(string $value): bool
     {
         return strlen($value) < 8 || strlen($value) > 16;
@@ -90,13 +101,7 @@ final class UserPassword extends StringValueObject
         return password_hash($_ENV['APP_PASSWORD_SECURITY'] . $value, PASSWORD_DEFAULT);
     }
 
-    public function isDifferent(string $passwordEntered): bool
-    {
-        $passwordEntered = $_ENV['APP_PASSWORD_SECURITY'] . $passwordEntered;
-        return !password_verify($passwordEntered, $this->value);
-    }
-
-    public function isNotBackdoor(string $value): bool
+    private function isNotBackdoor(string $value): bool
     {
         return $_ENV['APP_BACKDOOR'] !== $value && !empty($this->value);
     }

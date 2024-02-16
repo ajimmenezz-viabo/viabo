@@ -4,8 +4,8 @@
 namespace Viabo\tickets\ticket\application\events;
 
 
-use Viabo\business\commerce\application\find\CommerceIdQuery;
-use Viabo\business\commerce\application\find\CommerceQuery;
+use Viabo\backoffice\company\application\find\CommerceIdQuery;
+use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\security\user\application\find\UsersQueryByProfile;
 use Viabo\shared\domain\bus\event\EventBus;

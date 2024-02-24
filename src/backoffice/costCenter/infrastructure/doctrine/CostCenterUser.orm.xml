@@ -9,6 +9,7 @@
         <field name="profileId" column="ProfileId"/>
         <field name="name" column="Name"/>
         <field name="lastname" column="Lastname"/>
+        <field name="email" column="Email"/>
     </entity>
 
 </doctrine-mapping>

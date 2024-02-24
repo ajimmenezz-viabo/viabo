@@ -6,7 +6,6 @@ namespace Viabo\backoffice\company\application\find;
 
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 
 final readonly class CompanyFinder
 {

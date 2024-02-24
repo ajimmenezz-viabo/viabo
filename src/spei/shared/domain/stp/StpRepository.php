@@ -11,6 +11,8 @@ interface StpRepository
 {
     public function searchBalance(StpAccount $stpAccount): array;
 
+    public function searchSpeiIn(array $stpAccount, string $date): array;
+
     public function processPayment(Transaction $transaction): string;
 
     public function speiOut(array $stpAccount): array;

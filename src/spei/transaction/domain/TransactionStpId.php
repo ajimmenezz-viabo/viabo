@@ -13,6 +13,11 @@ final class TransactionStpId extends StringValueObject
         return new static('');
     }
 
+    public static function create(string $value): static
+    {
+        return new static($value);
+    }
+
     public function update(string $value): static
     {
         return new static($value);

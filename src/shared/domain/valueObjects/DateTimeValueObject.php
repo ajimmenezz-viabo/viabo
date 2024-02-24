@@ -8,7 +8,7 @@ use Viabo\shared\domain\utils\DatePHP;
 
 abstract class DateTimeValueObject
 {
-    public function __construct(protected ?string $value , protected $date = new DatePHP())
+    public function __construct(protected ?string $value, protected $date = new DatePHP())
     {
         $this->value = $this->setValue($value);
     }
@@ -22,7 +22,7 @@ abstract class DateTimeValueObject
     public static function formatDateTime(string $value): static
     {
         $value = preg_match(
-            "/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/" ,
+            "/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/",
             $value
         ) ? $value : "$value 00:00:00";
 
@@ -31,13 +31,18 @@ abstract class DateTimeValueObject
 
     public static function hasFormatDateTime(string $value): false|int
     {
-        return preg_match("/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/" , $value);
+        return preg_match("/^(\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})$/", $value);
     }
 
     public function value(): string
     {
         self::setDate();
         return empty($this->value) ? '' : $this->date->formatDateTime($this->value);
+    }
+
+    public function convertTimestampToDate(string|int $timestamp): void
+    {
+        $this->value = $this->date->convertTimestampToDate($timestamp);
     }
 
     protected function setDate(): void

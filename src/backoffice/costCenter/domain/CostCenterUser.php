@@ -10,9 +10,15 @@ final class CostCenterUser
         private string $id,
         private string $profileId,
         private string $name,
-        private string $lastname
+        private string $lastname,
+        private string $email
     )
     {
+    }
+
+    public function email(): string
+    {
+        return $this->email;
     }
 
     public function toArray(): array
@@ -22,6 +28,7 @@ final class CostCenterUser
             'profileId' => $this->profileId,
             'name' => $this->name,
             'lastname' => $this->lastname,
+            'email' => $this->email
         ];
     }
 }

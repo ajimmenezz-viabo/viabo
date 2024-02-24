@@ -67,6 +67,13 @@ final class CostCenter extends AggregateRoot
         }, $users);
     }
 
+    public function usersEmails()
+    {
+        return array_map(function (CostCenterUser $user) {
+            return $user->email();
+        }, $this->users->toArray());
+    }
+
     private function users(): array
     {
         return array_map(function (CostCenterUser $user) {

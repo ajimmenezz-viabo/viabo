@@ -5,6 +5,7 @@ namespace Viabo\backoffice\company\domain;
 
 
 use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEvent;
 use Viabo\backoffice\company\domain\events\CompanyCreatedDomainEvent;
 use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
@@ -329,6 +330,15 @@ final class Company extends AggregateRoot
         $this->updateDate = $this->updateDate->todayDate();
 
         $this->record(new CommerceUpdatedDomainEvent($this->id->value(), $this->toArray()));
+    }
+
+    public function addBalance(float $amount): void
+    {
+        $balanceOld = $this->balance->value();
+        $this->balance = $this->balance->add($amount);
+        $company = $this->toArray();
+        $company['balanceOld'] = $balanceOld;
+        $this->record(new CompanyBalanceUpdatedDomainEvent($this->id(), $company));
     }
 
     public function toArray(): array

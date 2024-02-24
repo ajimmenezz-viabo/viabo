@@ -200,4 +200,12 @@ class DatePHP
         $date->setTimestamp($timestamp);
         return $date->format(self::FORMAT_DATETIME);
     }
+
+    public function convertTimestampToDate(string|int $timestamp, string $format = 'Y-m-d H:i:s'): string
+    {
+        $this->timeZone();
+        $timestamp = is_string($timestamp) ? intval($timestamp) : $timestamp;
+        $timestamp = strlen($timestamp) === 13 ? intval($timestamp / 1000) : $timestamp;
+        return date($format, $timestamp);
+    }
 }

@@ -29,6 +29,8 @@ interface CompanyRepository
 
     public function searchFolioLast(): Company|null;
 
+    public function searchByBankAccount(string $bankAccount): Company| null;
+
     public function update(Company $company): void;
 
     public function delete(Company $company): void;

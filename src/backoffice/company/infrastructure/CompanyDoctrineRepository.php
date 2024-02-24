@@ -91,6 +91,19 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return $this->repository(Company::class)->findOneBy([], ['folio.value' => 'desc']);
     }
 
+    public function searchByBankAccount(string $bankAccount): Company|null
+    {
+        $dql = "SELECT c, ba FROM Viabo\backoffice\company\domain\Company c 
+                JOIN c.bankAccounts ba 
+                WHERE ba.number = ?1";
+
+        $result = $this->entityManager()->createQuery($dql)
+            ->setParameter(1, $bankAccount)
+            ->setMaxResults(1)
+            ->getResult();
+        return empty($result) ? null : $result[0];
+    }
+
     public function update(Company $company): void
     {
         $this->entityManager()->flush($company);

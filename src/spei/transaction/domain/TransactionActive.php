@@ -12,4 +12,9 @@ final class TransactionActive extends StringValueObject
     {
         return new static('1');
     }
+
+    public static function disable(): static
+    {
+        return new static('0');
+    }
 }

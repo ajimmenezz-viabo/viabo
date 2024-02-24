@@ -11,4 +11,6 @@ interface StpAccountRepository
     public function search(string $stpAccountId): StpAccount|null;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function searchAll(): array;
 }

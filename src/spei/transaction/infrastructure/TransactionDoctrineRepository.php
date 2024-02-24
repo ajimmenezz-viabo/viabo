@@ -10,6 +10,8 @@ use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
 use Viabo\spei\transaction\domain\Transaction;
 use Viabo\spei\transaction\domain\TransactionRepository;
+use Viabo\spei\transaction\domain\TransactionStatusId;
+use Viabo\spei\transaction\domain\TransactionTypeId;
 
 final class TransactionDoctrineRepository extends DoctrineRepository implements TransactionRepository
 {
@@ -32,5 +34,15 @@ final class TransactionDoctrineRepository extends DoctrineRepository implements 
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(Transaction::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function searchType(string $id): TransactionTypeId
+    {
+        return $this->repository(TransactionTypeId::class)->find($id);
+    }
+
+    public function searchStatus(string $id): TransactionStatusId
+    {
+        return $this->repository(TransactionStatusId::class)->find($id);
     }
 }

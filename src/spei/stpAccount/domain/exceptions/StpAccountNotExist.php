@@ -8,6 +8,12 @@ use Viabo\shared\domain\DomainError;
 
 final class StpAccountNotExist extends DomainError
 {
+    public function __construct(string $message = '')
+    {
+        parent::__construct();
+        $this->message = $message;
+    }
+
     public function errorCode(): int
     {
         return 400;
@@ -15,6 +21,6 @@ final class StpAccountNotExist extends DomainError
 
     public function errorMessage(): string
     {
-        return 'No tiene asignado ninguna credenciales de STP';
+        return empty($this->message) ? 'No tiene asignado ninguna credenciales de STP' : $this->message;
     }
 }

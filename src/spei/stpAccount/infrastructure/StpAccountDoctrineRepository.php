@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManager;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
-use Viabo\spei\stpAccount\domain\StpAccountRepository;
 use Viabo\spei\stpAccount\domain\StpAccount;
+use Viabo\spei\stpAccount\domain\StpAccountRepository;
 
 final class StpAccountDoctrineRepository extends DoctrineRepository implements StpAccountRepository
 {
@@ -27,5 +27,10 @@ final class StpAccountDoctrineRepository extends DoctrineRepository implements S
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(StpAccount::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function searchAll(): array
+    {
+        return $this->repository(StpAccount::class)->findAll();
     }
 }

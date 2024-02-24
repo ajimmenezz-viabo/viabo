@@ -10,7 +10,8 @@ final class CompanyUser
         private string $id,
         private string $profileId,
         private string $name,
-        private string $lastname
+        private string $lastname,
+        private string $email
     )
     {
     }
@@ -22,6 +23,7 @@ final class CompanyUser
             'profileId' => $this->profileId,
             'name' => $this->name,
             'lastname' => $this->lastname,
+            'email' => $this->email
         ];
     }
 

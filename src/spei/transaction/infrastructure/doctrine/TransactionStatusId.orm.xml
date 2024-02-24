@@ -4,8 +4,9 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <embeddable name="Viabo\spei\transaction\domain\TransactionStatusId">
-        <field name="value" column="StatusId"/>
-    </embeddable>
+    <entity name="Viabo\spei\transaction\domain\TransactionStatusId" table="cat_spei_status">
+        <id name="id" column="Id"/>
+        <field name="name" column="Name"/>
+    </entity>
 
 </doctrine-mapping>

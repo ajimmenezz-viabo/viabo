@@ -1,0 +1,27 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "pnpm-lock.yaml, package-lock.json, yarn.lock",
+    ".prettierrc.mjs": ".prettierignore"
+  },
+  "editor.linkedEditing": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.format": "explicit",
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit",
+    "source.addMissingImports": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.quickSuggestions": { "strings": true },
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "git.pruneOnFetch": true,
+  "cSpell.enabled": true,
+  "cSpell.showStatus": true,
+  "cSpell.enableFiletypes": ["astro", "javascript", "typescript"],
+  "cSpell.language": "es,es-ES,en,en-US,en-GB"
+}

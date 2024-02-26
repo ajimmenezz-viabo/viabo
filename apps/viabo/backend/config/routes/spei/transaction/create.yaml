@@ -4,6 +4,6 @@ transaction-process-payments:
   methods: POST
 
 register-transaction-spei-in:
-  path: "/spei/speiin-transaction/register"
+  path: "/api/spei/speiin-transaction/register"
   controller: Viabo\Backend\Controller\spei\transaction\create\SpeiInTransactionController
   methods: GET

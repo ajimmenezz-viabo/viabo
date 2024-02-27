@@ -1,9 +1,15 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "@/layouts/Layout.astro"
+import AgilitySection from "@/sections/AgilitySection.astro"
+import AllInOneSection from "@/sections/AllInOneSection.astro"
+import MainSection from "@/sections/MainSection.astro"
 ---
 
 <Layout title="Viabo - Sistema de Soluciones Tecnologicas de Pago para Comercios y Empresas">
-	<main>
-		<h1 class="animate-blurred-fade-in p-3 text-3xl">Viabo</h1>
+	<main class="flex flex-col">
+		<MainSection />
+		<AgilitySection />
+
+		<AllInOneSection />
 	</main>
 </Layout>

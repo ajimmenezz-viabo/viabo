@@ -15,14 +15,14 @@ const AccordionServiceDesktop = ({ service }) => {
 		<li
 			className={`border-b ${open ? "mt-5 pb-5" : ""} text-white transition-all transition-colors`}
 		>
-			<header
-				role="button"
+			<div
+				role={"button"}
 				onClick={() => handleClick(service.value)}
 				className={`flex items-center justify-between p-4 text-3xl  ${open ? "bg-primary-dark font-medium text-white" : "font-light text-gray-300"} rounded-lg transition `}
 			>
 				{service.title}
 				{open ? <ChevronRight className={" transition-transform"} size={16} /> : <Plus size={16} />}
-			</header>
+			</div>
 		</li>
 	)
 }

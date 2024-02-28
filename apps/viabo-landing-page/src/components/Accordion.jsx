@@ -19,11 +19,11 @@ function Accordion({ children, value, className, onChange }) {
 	}, [])
 
 	return (
-		<ul className={className}>
+		<div className={className}>
 			<AccordionContext.Provider value={{ selected, setSelected }}>
 				{children}
 			</AccordionContext.Provider>
-		</ul>
+		</div>
 	)
 }
 
@@ -41,14 +41,14 @@ export function AccordionItem({ children, value, trigger, ...props }) {
 
 	return (
 		<li className={`border-b ${open ? "mt-5 pb-5" : ""} text-white`} {...props}>
-			<header
+			<div
 				role="button"
 				onClick={handleClick}
 				className={`flex items-center justify-between p-4 text-3xl  ${open ? "bg-primary-dark font-medium text-white" : "font-light text-gray-300"} rounded-lg transition `}
 			>
 				{trigger}
 				{open ? <Chevron size={16} /> : <Plus size={16} />}
-			</header>
+			</div>
 			<div
 				className="overflow-y-hidden transition-all"
 				style={{ height: open ? ref.current?.offsetHeight ?? 0 : 0 }}

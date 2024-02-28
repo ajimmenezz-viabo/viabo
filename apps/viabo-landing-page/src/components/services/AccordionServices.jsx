@@ -37,18 +37,20 @@ const AccordionServices = () => {
 					<div className="text-center md:col-span-2">
 						<h2 className="text-4xl font-light text-white">Selecciona tu servicio</h2>
 					</div>
-					<AccordionItem value="viabo-pay" trigger="Viabo Pay">
-						<ViaboPayService />
-					</AccordionItem>
-					<AccordionItem value="viabo-card" trigger="Viabo Card">
-						<ViaboCardService />
-					</AccordionItem>
-					<AccordionItem value="viabo-spei" trigger="Viabo SPEI Cloud">
-						<ViaboSpeiService />
-					</AccordionItem>
-					<AccordionItem value="more-services" trigger="Más Servicios">
-						<ViaboMoreServices />
-					</AccordionItem>
+					<ul>
+						<AccordionItem value="viabo-pay" trigger="Viabo Pay">
+							<ViaboPayService />
+						</AccordionItem>
+						<AccordionItem value="viabo-card" trigger="Viabo Card">
+							<ViaboCardService />
+						</AccordionItem>
+						<AccordionItem value="viabo-spei" trigger="Viabo SPEI Cloud">
+							<ViaboSpeiService />
+						</AccordionItem>
+						<AccordionItem value="more-services" trigger="Más Servicios">
+							<ViaboMoreServices />
+						</AccordionItem>
+					</ul>
 				</div>
 			</div>
 			<div className={"hidden md:block"}>
@@ -57,9 +59,11 @@ const AccordionServices = () => {
 						<div className="mb-20">
 							<h2 className="text-4xl font-light text-white">Selecciona tu servicio</h2>
 						</div>
-						{services.map((service) => (
-							<AccordionServiceDesktop service={service} key={service.id} />
-						))}
+						<ul>
+							{services.map((service) => (
+								<AccordionServiceDesktop service={service} key={service.id} />
+							))}
+						</ul>
 					</div>
 
 					<ServicesDetailsDesktop />

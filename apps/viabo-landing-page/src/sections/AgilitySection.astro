@@ -9,6 +9,7 @@ const specs = [
 	"Conciliación eficiente",
 	"Accesibilidad app WEB|App Movil",
 ]
+const imagesPath = `${import.meta.env.PUBLIC_FOLDER}images`
 ---
 
 <SectionContainer class="animate-fade-up -z-14 max-w-[100%] bg-black">
@@ -22,7 +23,7 @@ const specs = [
 					specs.map((item) => (
 						<li class="flex items-center gap-4 border-b-2 border-white border-opacity-25 py-4 hover:animate-shake hover:animate-delay-100 hover:animate-ease-in-out">
 							<span class="text-blue-500">
-								<img loading="lazy" src="/images/check_icon.svg" alt="icon" class="w-10" />
+								<img loading="lazy" src={`${imagesPath}/check_icon.svg`} alt="icon" class="w-10" />
 							</span>
 							<span>{item}</span>
 						</li>
@@ -31,7 +32,7 @@ const specs = [
 			</ul>
 			<div>
 				<span>
-					<img loading="lazy" src="/images/agility.svg" alt="agilidad" />
+					<img loading="lazy" src={`${imagesPath}/agility.svg`} alt="agilidad" />
 				</span>
 			</div>
 		</div>

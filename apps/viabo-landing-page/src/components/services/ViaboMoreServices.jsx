@@ -1,3 +1,5 @@
+import { imagesPath } from "../../constants/constants"
+
 export const ViaboMoreServices = ({ isDesktop = false }) => {
 	const content = (
 		<div className={"flex flex-col items-center justify-center gap-8 text-gray-200"}>
@@ -7,7 +9,7 @@ export const ViaboMoreServices = ({ isDesktop = false }) => {
 						<img
 							loading="lazy"
 							className={"h-auto w-auto"}
-							src={"/images/viabo-admin-logo.webp"}
+							src={`${imagesPath}/viabo-admin-logo.webp`}
 							alt={"tipos de procesadores de pago"}
 						/>
 					</div>
@@ -28,7 +30,7 @@ export const ViaboMoreServices = ({ isDesktop = false }) => {
 						<img
 							loading="lazy"
 							className={"h-auto w-auto max-w-52"}
-							src={"/images/viabo-admin.webp"}
+							src={`${imagesPath}/viabo-admin.webp`}
 							alt={"tipos de procesadores de pago"}
 						/>
 					</div>
@@ -41,7 +43,7 @@ export const ViaboMoreServices = ({ isDesktop = false }) => {
 						<img
 							loading="lazy"
 							className={"h-auto w-auto  "}
-							src={"/images/viabo-admin-logo-2.webp"}
+							src={`${imagesPath}/viabo-admin-logo-2.webp`}
 							alt={"tipos de procesadores de pago"}
 						/>
 					</div>
@@ -62,7 +64,7 @@ export const ViaboMoreServices = ({ isDesktop = false }) => {
 						<img
 							loading="lazy"
 							className={"h-auto w-auto max-w-52"}
-							src={"/images/viabo-admin-2.webp"}
+							src={`${imagesPath}/viabo-admin-2.webp`}
 							alt={"tipos de procesadores de pago"}
 						/>
 					</div>

@@ -1,3 +1,5 @@
+import { imagesPath } from "../../constants/constants"
+
 export const ViaboCardService = ({ isDesktop = false }) => {
 	const content = (
 		<div className={"flex  flex-col gap-8  text-gray-200"}>
@@ -12,7 +14,7 @@ export const ViaboCardService = ({ isDesktop = false }) => {
 				<img
 					loading="lazy"
 					className={"h-auto w-auto"}
-					src={"/images/viabo-card-service.webp"}
+					src={`${imagesPath}/viabo-card-service.webp`}
 					alt={"tipos de tarjetas de pago"}
 				/>
 			</div>

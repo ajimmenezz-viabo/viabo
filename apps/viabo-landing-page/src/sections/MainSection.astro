@@ -1,5 +1,7 @@
 ---
 import ViaboService from "@/components/ViaboService.astro"
+
+const imagesPath = `${import.meta.env.PUBLIC_FOLDER}images`
 ---
 
 <div
@@ -50,7 +52,7 @@ import ViaboService from "@/components/ViaboService.astro"
 					<ViaboService
 						class="w-10"
 						acronym="pay"
-						logo="/images/viabo-pay-logo.svg"
+						logo={`${imagesPath}/viabo-pay-logo.svg`}
 						name="viabo-pay"
 					/>
 					<p class="max-w-xs text-center font-medium text-primary">
@@ -68,7 +70,7 @@ import ViaboService from "@/components/ViaboService.astro"
 					<ViaboService
 						class="w-8"
 						acronym="card"
-						logo="/images/viabo-card-logo.svg"
+						logo={`${imagesPath}/viabo-card-logo.svg`}
 						name="viabo-card"
 					/>
 					<p class="min-h-12 w-full max-w-xs text-center font-medium text-primary">
@@ -86,7 +88,7 @@ import ViaboService from "@/components/ViaboService.astro"
 					<ViaboService
 						class="w-8"
 						acronym="spei"
-						logo="/images/viabo-spei-logo.svg"
+						logo={`${imagesPath}/viabo-spei-logo.svg`}
 						name="viabo-spei"
 					/>
 					<p class="min-h-12 w-full max-w-xs text-center font-medium text-primary">

@@ -1,3 +1,5 @@
+import { imagesPath } from "@/constants/constants"
+
 export const ViaboPayService = ({ isDesktop = false }) => {
 	const content = (
 		<div className={"flex  flex-col gap-8  text-gray-200"}>
@@ -7,7 +9,7 @@ export const ViaboPayService = ({ isDesktop = false }) => {
 			<img
 				loading="lazy"
 				className={"w-96"}
-				src={"/images/payment-types.webp"}
+				src={`${imagesPath}/payment-types.webp`}
 				alt={"tipos de procesadores de pago"}
 			/>
 			<p className={"text-xl"}>
@@ -21,7 +23,7 @@ export const ViaboPayService = ({ isDesktop = false }) => {
 				<img
 					loading="lazy"
 					className={"h-auto w-auto max-w-56"}
-					src={"/images/viabo-pay-service.webp"}
+					src={`${imagesPath}/viabo-pay-service.webp`}
 					alt={"tipos de procesadores de pago"}
 				/>
 			</div>

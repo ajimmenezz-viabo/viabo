@@ -3,3 +3,4 @@ twig:
     host: "%env(APP_HOST)%"
   paths:
     "%kernel.project_dir%/public/app": App
+    "%kernel.project_dir%/public/landing-pages/viabo": ViaboLanding

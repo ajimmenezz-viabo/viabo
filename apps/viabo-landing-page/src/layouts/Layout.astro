@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title } = Astro.props
+const publicFolder = `${import.meta.env.PUBLIC_FOLDER}`
 ---
 
 <!doctype html>
@@ -15,7 +16,7 @@ const { title } = Astro.props
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={`${publicFolder}/favicon.svg`} />
 		<meta
 			content="Sistema de Soluciones Tecnologicas de Pago para Comercios y Empresas"
 			name="description"

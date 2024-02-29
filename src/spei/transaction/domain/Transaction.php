@@ -166,6 +166,11 @@ final class Transaction extends AggregateRoot
         return $this->id->value();
     }
 
+    public function amount(): float
+    {
+        return $this->amount->value();
+    }
+
     public function setStpKeys(string $key, string $url): void
     {
         $this->sptKeys['key'] = $key;
@@ -210,6 +215,16 @@ final class Transaction extends AggregateRoot
     {
         $liquidated = 'LQ';
         return $this->stpId->isSame($stpId) && $stpState === $liquidated;
+    }
+
+    public function isSpeiIn(): bool
+    {
+        return $this->typeId->isSpeiInType();
+    }
+
+    public function isSpeiOut(): bool
+    {
+        return $this->typeId->isSpeiOutType();
     }
 
     public function toArray(): array

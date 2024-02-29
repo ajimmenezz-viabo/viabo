@@ -2,3 +2,8 @@ find-transaction-spei:
   path: "/spei/transaccion/{transactionId}"
   controller: Viabo\Backend\Controller\spei\transaction\find\TransactionViewController
   methods: GET
+
+find-transactions-balance:
+  path: "/api/spei/transaccions/balance"
+  controller: Viabo\Backend\Controller\spei\transaction\find\TransactionsBalanceController
+  methods: GET

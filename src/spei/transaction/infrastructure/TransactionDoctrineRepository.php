@@ -36,6 +36,11 @@ final class TransactionDoctrineRepository extends DoctrineRepository implements 
         return $this->repository(Transaction::class)->matching($criteriaConvert)->toArray();
     }
 
+    public function searchAll(): array
+    {
+        return $this->repository(Transaction::class)->findAll();
+    }
+
     public function searchType(string $id): TransactionTypeId|null
     {
         return $this->repository(TransactionTypeId::class)->find($id);

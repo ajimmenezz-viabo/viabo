@@ -17,4 +17,9 @@ final class TransactionActive extends StringValueObject
     {
         return new static('0');
     }
+
+    public function value(): string
+    {
+        return empty($this->value) ? '0' : $this->value;
+    }
 }

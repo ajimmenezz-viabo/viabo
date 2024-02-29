@@ -1,4 +1,5 @@
 export const VIABO_SPEI_SHARED_KEYS = {
-  BALANCE: 'viabo-spei-balance',
+  ACCOUNT_INFO: 'viabo-spei-balance',
+  BALANCE_RESUME: 'viabo-spei-balance-resume',
   MOVEMENTS: 'viabo-spei-movements'
 }

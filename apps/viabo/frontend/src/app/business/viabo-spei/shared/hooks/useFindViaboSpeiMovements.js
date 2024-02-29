@@ -8,12 +8,12 @@ import { getMovementsViaboSpei } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useFindViaboSpeiMovements = (options = {}) => {
+export const useFindViaboSpeiMovements = (filters, options = {}) => {
   const [customError, setCustomError] = useState(null)
 
   const query = useQuery({
-    queryKey: [VIABO_SPEI_SHARED_KEYS.MOVEMENTS],
-    queryFn: ({ signal }) => getMovementsViaboSpei(),
+    queryKey: [VIABO_SPEI_SHARED_KEYS.MOVEMENTS, filters],
+    queryFn: ({ signal }) => getMovementsViaboSpei(filters),
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: 300000,

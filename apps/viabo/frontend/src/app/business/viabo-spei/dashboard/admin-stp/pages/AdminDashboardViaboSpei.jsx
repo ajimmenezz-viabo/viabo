@@ -1,29 +1,47 @@
-import { lazy } from 'react'
+import { lazy, useEffect } from 'react'
 
-import { Box, Stack } from '@mui/material'
+import { Box } from '@mui/material'
+import { m } from 'framer-motion'
 
-import AdminSpeiCurrentBalance from '../components/AdminSpeiCurrentBalance'
-import AdminSpeiMovements from '../components/movements/AdminSpeiMovements'
+import { AdminDashboardSpeiResume } from './AdminDashboardSpeiResume'
+import { AdminDashboardSpeiTransactionsPage } from './AdminDashboardSpeiTransactionsPage'
 
+import { useSharedViaboSpeiStore } from '../../../shared/store'
+import { useAdminDashboardSpeiStore } from '../store'
+
+import { MotionContainer, varFade } from '@/shared/components/animate'
 import { Lodable } from '@/shared/components/lodables'
 
-const SpeiOutDrawer = Lodable(lazy(() => import('../components/spei-out/SpeiOutDrawer')))
+const AdminSpeiMovementDrawer = Lodable(lazy(() => import('../components/movements/AdminSpeiMovementDrawer')))
 
-const AdminDashboardViaboSpei = () => (
-  <>
-    <Stack spacing={3}>
-      <Stack flexDirection={{ md: 'row' }}>
-        <Stack flex={{ md: 1, xl: 0.5 }}>
-          <AdminSpeiCurrentBalance />
-        </Stack>
+const AdminDashboardViaboSpei = () => {
+  const isOpenTransactions = useAdminDashboardSpeiStore(state => state.isOpenTransactions)
+  const setDashboardTitle = useSharedViaboSpeiStore(state => state.setDashboardTitle)
 
-        <Box display={'flex'} flexGrow={1} />
-      </Stack>
+  useEffect(() => {
+    if (isOpenTransactions) {
+      return setDashboardTitle('Transacciones')
+    }
+    return setDashboardTitle('Dashboard')
+  }, [isOpenTransactions])
 
-      <AdminSpeiMovements />
-    </Stack>
-    <SpeiOutDrawer />
-  </>
-)
+  return (
+    <>
+      <Box component={MotionContainer}>
+        {!isOpenTransactions && (
+          <m.div variants={varFade().in}>
+            <AdminDashboardSpeiResume />
+          </m.div>
+        )}
+        {isOpenTransactions && (
+          <m.div variants={varFade().in}>
+            <AdminDashboardSpeiTransactionsPage />
+          </m.div>
+        )}
+      </Box>
+      <AdminSpeiMovementDrawer />
+    </>
+  )
+}
 
 export default AdminDashboardViaboSpei

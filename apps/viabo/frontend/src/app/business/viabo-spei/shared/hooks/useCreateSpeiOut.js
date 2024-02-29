@@ -17,7 +17,8 @@ export const useCreateSpeiOut = (options = {}) => {
       const data = await toast.promise(transactions.mutateAsync(formData, mutationOptions), {
         pending: 'Enviando Transacciones ...'
       })
-      client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.BALANCE])
+      client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.ACCOUNT_INFO])
+      client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.BALANCE_RESUME])
       client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.MOVEMENTS])
       isFunction(onSuccess) && onSuccess(data)
     } catch (error) {

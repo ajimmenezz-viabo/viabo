@@ -31,4 +31,14 @@ class TransactionTypeId extends StringValueObject
         return $this->name;
     }
 
+    public function isSpeiInType(): bool
+    {
+        return $this->id === '2';
+    }
+
+    public function isSpeiOutType(): bool
+    {
+        return $this->id === '1';
+    }
+
 }

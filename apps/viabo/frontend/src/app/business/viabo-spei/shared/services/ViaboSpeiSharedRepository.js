@@ -1,11 +1,22 @@
-import { ViaboSpeiBalanceAdapter, ViaboSpeiMovementsAdapter } from '../adapters'
+import { ViaboSpeiBalanceAdapter, ViaboSpeiMovementsAdapter, ViaboSpeiResumeBalance } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
-export const getBalanceViaboSpei = async () => {
+export const getAccountInfoViaboSpei = async () => {
   const { data } = await axios.get('/api/spei/account/balance')
 
   return ViaboSpeiBalanceAdapter(data)
+}
+
+export const getBalanceResumeViaboSpei = async (startDate, endDate) => {
+  const { data } = await axios.get('/api/spei/transaccions/balance', {
+    params: {
+      initialDate: startDate,
+      endDate
+    }
+  })
+
+  return ViaboSpeiResumeBalance(data)
 }
 
 export const createSpeiOut = async transactions => {
@@ -20,8 +31,10 @@ export const createSpeiOut = async transactions => {
   throw new Error('Se realizo las transacciones pero no se obtuvo los comprobantes de las operaciones')
 }
 
-export const getMovementsViaboSpei = async () => {
-  const { data } = await axios.get('/api/spei/account/movements')
+export const getMovementsViaboSpei = async filters => {
+  const { data } = await axios.get('/api/spei/transaccions', {
+    params: filters
+  })
 
   return ViaboSpeiMovementsAdapter(data)
 }

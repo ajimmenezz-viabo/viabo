@@ -15,11 +15,6 @@ final readonly class TransactionsQueryHandler implements QueryHandler
 
     public function __invoke(TransactionsQuery $query): Response
     {
-        return $this->finder->__invoke(
-            $query->initialDate,
-            $query->endDate,
-            $query->limit,
-            $query->page
-        );
+        return $this->finder->__invoke($query->initialDate, $query->endDate, $query->limit);
     }
 }

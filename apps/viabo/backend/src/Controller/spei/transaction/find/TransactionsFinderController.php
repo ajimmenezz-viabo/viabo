@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\spei\transaction\application\find\TransactionsBalanceQuery;
 use Viabo\spei\transaction\application\find\TransactionsQuery;
 
 
@@ -20,13 +19,7 @@ final readonly class TransactionsFinderController extends ApiController
             $initialDate = $request->query->getString('initialDate');
             $endDate = $request->query->getString('endDate');
             $limit = $request->query->getInt('limit');
-            $page = $request->query->getInt('page');
-            $transactions = $this->ask(new TransactionsQuery(
-                $initialDate,
-                $endDate,
-                $limit,
-                $page
-            ));
+            $transactions = $this->ask(new TransactionsQuery($initialDate, $endDate, $limit));
 
             return new JsonResponse($transactions->data);
         } catch (\DomainException $exception) {

@@ -10,15 +10,8 @@ import { CardViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
 import { useFindViaboSpeiMovements } from '@/app/business/viabo-spei/shared/hooks'
 
 const AdminSpeiMovements = () => {
-  const queryMovements = useFindViaboSpeiMovements()
-  const setQueryMovements = useAdminDashboardSpeiStore(state => state.setQueryMovements)
+  const queryMovements = useFindViaboSpeiMovements({ limit: 10 })
   const { isLoading, isFetching, isError, error, data: movements } = queryMovements
-
-  useEffect(() => {
-    if (movements) {
-      setQueryMovements(queryMovements)
-    }
-  }, [movements])
 
   return (
     <Box
@@ -31,7 +24,7 @@ const AdminSpeiMovements = () => {
     >
       <CardHeader sx={{ p: 2 }} title="Últimas transacciones" />
       <Divider sx={{ borderColor: alpha('#CFDBD5', 0.7) }} />
-      <CardContent>
+      <CardContent sx={{ p: 0 }}>
         <Stack flexDirection={'row'} sx={{ height: '100%', display: 'flex', flexGrow: 1 }}>
           <AdminSpeiLastMovements movementsGrouped={movements?.groupByDay} isLoading={isLoading} />
         </Stack>

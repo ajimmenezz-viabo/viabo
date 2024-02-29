@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { List, ListSubheader, Typography } from '@mui/material'
+import { alpha, List, ListSubheader, Typography } from '@mui/material'
 
 import { AdminSpeiMovementItem } from './AdminSpeiMovementItem'
 import { AdminSpeiMovementSkeleton } from './AdminSpeiMovementSkeleton'
@@ -19,10 +19,20 @@ export const AdminSpeiLastMovements = ({ movementsGrouped, isLoading, ...others 
     subheader={<li />}
   >
     {!isLoading &&
+      movementsGrouped &&
       Object.entries(movementsGrouped)?.map(([dateKey, movements]) => (
         <li key={`section-${dateKey}`}>
           <ul>
-            <ListSubheader sx={{ backgroundColor: 'transparent', pt: 2 }}>
+            <ListSubheader
+              sx={{
+                backgroundColor: theme => (theme.palette.mode === 'dark' ? theme.palette.background.paper : '#EBF0F0'),
+                backdropFilter: `blur(10px)`,
+                WebkitBackdropFilter: `blur(10px)`,
+                fontWeight: 'bold',
+                color: 'text.primary',
+                py: 1
+              }}
+            >
               <Typography variant="subtitle1" color="text.secondary">
                 {dateKey}
               </Typography>

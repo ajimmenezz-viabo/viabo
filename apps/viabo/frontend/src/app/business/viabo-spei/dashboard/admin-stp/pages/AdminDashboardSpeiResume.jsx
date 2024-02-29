@@ -2,20 +2,19 @@ import { lazy, useEffect } from 'react'
 
 import { Box, Grid, Stack, Typography } from '@mui/material'
 
-import { useFindViaboSpeiBalance } from '../../../shared/hooks'
+import { useFindViaboSpeiAccountInfo } from '../../../shared/hooks'
 import AdminSpeiBalance from '../components/balance/AdminSpeiBalance'
 import AdminSpeiMovements from '../components/movements/AdminSpeiMovements'
 import { useAdminDashboardSpeiStore } from '../store'
 
 import { Lodable } from '@/shared/components/lodables'
-import { fCurrency } from '@/shared/utils'
 
 const SpeiOutDrawer = Lodable(lazy(() => import('../components/spei-out/SpeiOutDrawer')))
 
 export const AdminDashboardSpeiResume = () => {
-  const { data, isLoading, isError, error, refetch } = useFindViaboSpeiBalance()
-  const stpAccount = useAdminDashboardSpeiStore(state => state.stpAccount)
+  const { data, isLoading, isError, error, refetch } = useFindViaboSpeiAccountInfo()
   const setStpAccount = useAdminDashboardSpeiStore(state => state.setStpAccount)
+  const balanceResume = useAdminDashboardSpeiStore(state => state.balanceResume)
 
   useEffect(() => {
     if (data) {
@@ -27,7 +26,7 @@ export const AdminDashboardSpeiResume = () => {
     <>
       <Stack gap={3}>
         <Stack>
-          <Typography sx={{ typography: 'h2' }}>{fCurrency(stpAccount?.balance)}</Typography>
+          <Typography sx={{ typography: 'h2' }}>{balanceResume?.balance?.currency || '$0.00'}</Typography>
           <Typography sx={{ typography: 'subtitle1' }} color={'text.disabled'}>
             Total balance todas las cuentas{' '}
             <Box component={'span'} color={'info.main'}>

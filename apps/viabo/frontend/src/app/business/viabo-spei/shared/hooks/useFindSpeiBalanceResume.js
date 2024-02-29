@@ -1,19 +1,26 @@
 import { useEffect, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
+import { endOfDay, format, startOfDay } from 'date-fns'
 import { toast } from 'react-toastify'
 
 import { VIABO_SPEI_SHARED_KEYS } from '../adapters'
-import { getBalanceViaboSpei } from '../services'
+import { getBalanceResumeViaboSpei } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useFindViaboSpeiBalance = (options = {}) => {
+export const useFindSpeiBalanceResume = (startDate, endDate, options = {}) => {
+  if (!startDate || !endDate) {
+    return null
+  }
+  const initialDate = format(startOfDay(startDate), 'yyyy-MM-dd')
+  const finalDate = format(endOfDay(endDate), 'yyyy-MM-dd')
+
   const [customError, setCustomError] = useState(null)
 
   const query = useQuery({
-    queryKey: [VIABO_SPEI_SHARED_KEYS.BALANCE],
-    queryFn: ({ signal }) => getBalanceViaboSpei(),
+    queryKey: [VIABO_SPEI_SHARED_KEYS.BALANCE_RESUME],
+    queryFn: ({ signal }) => getBalanceResumeViaboSpei(initialDate, finalDate),
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: 300000,
@@ -24,7 +31,7 @@ export const useFindViaboSpeiBalance = (options = {}) => {
     if (query?.isError) {
       const errorMessage = getErrorAPI(
         query.error,
-        'No se puede obtener el balance de la cuenta stp. Intente nuevamente o reporte a sistemas'
+        'No se puede obtener el resumen del balance de la cuenta stp. Intente nuevamente o reporte a sistemas'
       )
       setCustomError(errorMessage)
       toast.error(errorMessage, {

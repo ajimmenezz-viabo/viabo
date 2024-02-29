@@ -1,16 +1,33 @@
+import { useEffect } from 'react'
+
 import { ArrowBack } from '@mui/icons-material'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 
 import { ButtonViaboSpei } from '../../../shared/components'
-import { AdminSpeiMovementsDetails } from '../components/movements/AdminSpeiAllTransactions'
+import { AdminSpeiAllTransactions } from '../components/movements/AdminSpeiAllTransactions'
 import { useAdminDashboardSpeiStore } from '../store'
 
+import { useFindViaboSpeiAccountInfo } from '@/app/business/viabo-spei/shared/hooks'
 import { fCurrency } from '@/shared/utils'
 import { stringAvatar } from '@/theme/utils'
 
 export const AdminDashboardSpeiTransactionsPage = () => {
+  const { data, refetch } = useFindViaboSpeiAccountInfo({ enabled: false })
   const stpAccount = useAdminDashboardSpeiStore(state => state.stpAccount)
+  const setStpAccount = useAdminDashboardSpeiStore(state => state.setStpAccount)
   const setOpenTransactions = useAdminDashboardSpeiStore(state => state.setOpenTransactions)
+
+  useEffect(() => {
+    if (!stpAccount) {
+      refetch()
+    }
+  }, [stpAccount])
+
+  useEffect(() => {
+    if (data) {
+      setStpAccount(data)
+    }
+  }, [data])
 
   return (
     <Stack gap={3}>
@@ -36,7 +53,7 @@ export const AdminDashboardSpeiTransactionsPage = () => {
           </Typography>
         </Stack>
       </Stack>
-      <AdminSpeiMovementsDetails />
+      <AdminSpeiAllTransactions />
     </Stack>
   )
 }

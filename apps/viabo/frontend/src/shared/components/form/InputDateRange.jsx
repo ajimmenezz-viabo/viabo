@@ -61,7 +61,7 @@ export const InputDateRange = ({ startDate, endDate, onChange, onSubmit }) => {
   const handleSetDateRangeOnSubmit = dateRange => {
     setDateRange(dateRange)
     handleClose()
-    isFunction(onChange) && onSubmit(dateRange)
+    isFunction(onSubmit) && onSubmit(dateRange)
   }
 
   return (

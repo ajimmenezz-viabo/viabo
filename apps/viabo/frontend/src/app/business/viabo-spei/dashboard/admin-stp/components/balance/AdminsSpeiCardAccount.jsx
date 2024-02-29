@@ -74,7 +74,7 @@ export const AdminSpeiCardAccount = () => {
                 <Person color="primary" sx={{ width: 25, height: 25 }} />
               </Avatar>
             }
-            title={<Typography sx={{ typography: 'subtitle1' }}>TOP SYSTEMS</Typography>}
+            title={<Typography sx={{ typography: 'subtitle1' }}>TOP SYSTEM</Typography>}
             subheader="Administrador STP"
           />
           <CardContent sx={{ p: 0, display: 'flex' }}>

@@ -1,8 +1,8 @@
-import { Skeleton, Stack, useTheme } from '@mui/material'
+import { Skeleton, Stack, useTheme, alpha } from '@mui/material'
 
 export const AdminSpeiMovementSkeleton = () => {
   const theme = useTheme()
-  const background = theme.palette.mode === 'dark' ? 'background.paper' : theme.palette.grey.A200
+  const background = theme.palette.mode === 'dark' ? alpha(theme.palette.grey.A200, 0.2) : theme.palette.grey.A200
   return (
     <Stack spacing={1} direction="row" alignItems="center" sx={{ px: 3, py: 1.5 }}>
       <Skeleton sx={{ backgroundColor: background }} variant="circular" width={48} height={48} />

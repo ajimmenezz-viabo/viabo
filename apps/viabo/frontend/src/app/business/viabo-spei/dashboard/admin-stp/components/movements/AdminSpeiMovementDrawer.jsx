@@ -1,5 +1,5 @@
 import { Close } from '@mui/icons-material'
-import { Avatar, Box, Divider, Drawer, Stack, Typography, alpha, styled } from '@mui/material'
+import { Avatar, Box, Divider, Drawer, Stack, Typography, alpha, styled, Link } from '@mui/material'
 
 import { useAdminDashboardSpeiStore } from '../../store'
 
@@ -40,7 +40,7 @@ const AdminSpeiMovementDrawer = () => {
     }
     handleClose()
   }
-  const avatar = stringAvatar(transaction?.movement || '')
+  const avatar = stringAvatar(transaction?.beneficiary?.name || '')
 
   return (
     <Drawer
@@ -71,10 +71,8 @@ const AdminSpeiMovementDrawer = () => {
             </IconButtonAnimate>
           </div>
         </Stack>
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <SvgIconStyle
-          src="https://minimal-assets-api.vercel.app/assets/icons/shape-avatar.svg"
+        <Box
+          component="span"
           sx={{
             width: 144,
             height: 62,
@@ -84,9 +82,20 @@ const AdminSpeiMovementDrawer = () => {
             bottom: -26,
             mx: 'auto',
             position: 'absolute',
+            display: 'inline-block',
+
             color: theme => theme.palette.background.paper
           }}
-        />
+        >
+          <svg height="62" viewBox="0 0 144 62" width="144" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m111.34 23.88c-10.62-10.46-18.5-23.88-38.74-23.88h-1.2c-20.24 0-28.12 13.42-38.74 23.88-7.72 9.64-19.44 11.74-32.66 12.12v26h144v-26c-13.22-.38-24.94-2.48-32.66-12.12z"
+              fill="currentColor"
+              fillRule="evenodd"
+            />
+          </svg>
+        </Box>
+
         <Avatar
           alt={'example'}
           src={'/policy/example.jpg'}
@@ -130,7 +139,7 @@ const AdminSpeiMovementDrawer = () => {
                 <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                   Movimiento:
                 </Typography>
-                <Typography variant="body2"># {transaction?.id ?? '-'}</Typography>
+                <Typography variant="body2">#{transaction?.stpId ?? '-'}</Typography>
               </Stack>
               <Stack
                 flexDirection={'row'}
@@ -154,7 +163,7 @@ const AdminSpeiMovementDrawer = () => {
                 <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                   Cuenta origen:
                 </Typography>
-                <Typography variant="body2">{'646180527700000002' ?? '-'}</Typography>
+                <Typography variant="body2">{transaction?.source?.account ?? '-'}</Typography>
               </Stack>
               <Stack
                 flexDirection={'row'}
@@ -166,7 +175,7 @@ const AdminSpeiMovementDrawer = () => {
                 <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                   Cuenta destino:
                 </Typography>
-                <Typography variant="body2">{transaction?.beneficiary?.clabe ?? '-'}</Typography>
+                <Typography variant="body2">{transaction?.beneficiary?.account ?? '-'}</Typography>
               </Stack>
               <Stack
                 flexDirection={'row'}
@@ -178,7 +187,7 @@ const AdminSpeiMovementDrawer = () => {
                 <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                   Monto:
                 </Typography>
-                <Typography variant="body2">{transaction?.amount?.format ?? '-'}</Typography>
+                <Typography variant="body2">{transaction?.amount?.format?.replace('-', '') ?? '-'}</Typography>
               </Stack>
               <Stack
                 flexDirection={'row'}
@@ -190,35 +199,40 @@ const AdminSpeiMovementDrawer = () => {
                 <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                   Clave Rastreo:
                 </Typography>
-                <Typography variant="body2">{'GE91TB775214' ?? '-'}</Typography>
+                <Typography variant="body2">{transaction?.banxicoKey ?? '-'}</Typography>
               </Stack>
             </Stack>
-            <Box sx={{ py: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <Box>
-                <ButtonViaboSpei
-                  startIcon={
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-receipt-2"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
-                      <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
-                    </svg>
-                  }
-                >
-                  Comprobante CEP
-                </ButtonViaboSpei>
+            {transaction?.fileCEP && (
+              <Box sx={{ py: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                <Box>
+                  <ButtonViaboSpei
+                    component={Link}
+                    target="_blank"
+                    href={transaction?.fileCEP}
+                    startIcon={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-receipt-2"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                        <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
+                      </svg>
+                    }
+                  >
+                    Comprobante CEP
+                  </ButtonViaboSpei>
+                </Box>
               </Box>
-            </Box>
+            )}
           </Stack>
         </Scrollbar>
       </Stack>

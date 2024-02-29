@@ -8,21 +8,20 @@ import {
   ListItemButton,
   ListItemText,
   Stack,
-  Typography
+  Typography,
+  styled
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
 
 import { useAdminDashboardSpeiStore } from '../../store'
 
 import { stringAvatar } from '@/theme/utils'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
-  borderRadius: '8px!important',
+  borderRadius: 0,
   width: 1,
   justifyContent: 'start',
   display: 'flex',
   alignItems: 'center',
-  mb: 1,
   transition: theme.transitions.create('all')
 }))
 export const AdminSpeiMovementItem = ({ movement, ...others }) => {
@@ -41,7 +40,6 @@ export const AdminSpeiMovementItem = ({ movement, ...others }) => {
       <ListItem
         {...others}
         sx={{
-          my: 1,
           padding: 0,
           borderRadius: 1,
           '& :hover': { color: 'text.primary' }
@@ -57,13 +55,11 @@ export const AdminSpeiMovementItem = ({ movement, ...others }) => {
               '& :hover': { color: 'text.primary' }
             }),
             '& :hover': { color: 'text.primary' },
-            width: 1,
-            py: 1,
-            gap: 1
+            width: 1
           }}
         >
           <ListItemAvatar>
-            <Avatar {...stringAvatar(movement?.movement)}></Avatar>
+            <Avatar title={movement?.beneficiary?.name} {...stringAvatar(movement?.beneficiary?.name)}></Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={

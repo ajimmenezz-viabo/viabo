@@ -128,15 +128,17 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed, isCentralPayTh
         <div style={{ flex: 1, marginBottom: '32px' }}>
           {menu?.map((menu, index) => (
             <Fragment key={index}>
-              <div style={{ padding: '0 24px', marginBottom: '8px' }}>
-                <Typography
-                  variant="body2"
-                  fontWeight={600}
-                  style={{ opacity: isCollapse ? 0 : 0.7, letterSpacing: '0.5px' }}
-                >
-                  {menu?.category}
-                </Typography>
-              </div>
+              {!isCollapse && (
+                <div style={{ padding: '0 24px', marginBottom: '8px' }}>
+                  <Typography
+                    variant="body2"
+                    fontWeight={600}
+                    style={{ opacity: isCollapse ? 0 : 0.7, letterSpacing: '0.5px' }}
+                  >
+                    {menu?.category}
+                  </Typography>
+                </div>
+              )}
               <Menu menuItemStyles={menuItemStyles} closeOnClick>
                 {menu?.modules?.map((module, index) => {
                   const active = getActive(module?.path, pathname)

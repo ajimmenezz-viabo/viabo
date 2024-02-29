@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Search } from '@mui/icons-material'
 import {
@@ -17,18 +17,38 @@ import { AnimatePresence, m } from 'framer-motion'
 
 import { AdminSpeiMovementItem } from './AdminSpeiMovementItem'
 
-import { useAdminDashboardSpeiStore } from '../../store'
-
+import { AdminSpeiMovementSkeleton } from '@/app/business/viabo-spei/dashboard/admin-stp/components/movements/AdminSpeiMovementSkeleton'
+import { useAdminDashboardSpeiStore } from '@/app/business/viabo-spei/dashboard/admin-stp/store'
+import { useFindViaboSpeiMovements } from '@/app/business/viabo-spei/shared/hooks'
 import { searchByTerm } from '@/app/shared/utils'
 import { varFade } from '@/shared/components/animate'
 import { InputDateRange, InputStyle } from '@/shared/components/form'
 import { SearchNotFound } from '@/shared/components/notifications'
 import { usePagination } from '@/shared/hooks'
 
-export const AdminSpeiMovementsDetails = () => {
-  const queryMovements = useAdminDashboardSpeiStore(state => state.queryMovements)
+export const AdminSpeiAllTransactions = () => {
+  const setFilter = useAdminDashboardSpeiStore(state => state.setFilterMovements)
+  const filterDate = useAdminDashboardSpeiStore(state => state.filterMovements)
+
+  const currentDate = new Date()
+
+  const initialStartDate = useMemo(
+    () => (filterDate?.startDate ? new Date(filterDate?.startDate) : sub(currentDate, { days: 30 })),
+    [filterDate?.startDate]
+  )
+  const initialEndDate = useMemo(
+    () => (filterDate?.endDate ? new Date(filterDate?.endDate) : currentDate),
+    [filterDate?.endDate]
+  )
+
+  const [startDate, setStartDate] = useState(initialStartDate)
+  const [endDate, setEndDate] = useState(initialEndDate)
+
+  const queryMovements = useFindViaboSpeiMovements({ initialDate: startDate, endDate })
 
   const movements = queryMovements?.data?.original || []
+
+  const { isLoading, refetch } = queryMovements
 
   const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
@@ -44,17 +64,6 @@ export const AdminSpeiMovementsDetails = () => {
   const length = source?.length || 0
   const count = Math.ceil(length / PER_PAGE)
   const paginatedMovements = _DATA.currentData()
-
-  const currentDate = new Date()
-  const filterDate = null
-  const startDate = useMemo(
-    () => (filterDate?.startDate ? new Date(filterDate?.startDate) : sub(currentDate, { days: 30 })),
-    [filterDate?.startDate]
-  )
-  const endDate = useMemo(
-    () => (filterDate?.endDate ? new Date(filterDate?.endDate) : currentDate),
-    [filterDate?.endDate]
-  )
 
   const handleChange = (e, p) => {
     setPage(p)
@@ -80,7 +89,22 @@ export const AdminSpeiMovementsDetails = () => {
     setSearchFocused(true)
   }
 
+  const handleDateRange = range => {
+    const { startDate, endDate } = range
+    if (endDate !== null && startDate !== null) {
+      setEndDate(endDate)
+      setStartDate(startDate)
+    }
+  }
   const displayResults = searchTerm && isSearchFocused
+  const loading = isLoading
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      refetch()
+      setFilter({ startDate, endDate })
+    }
+  }, [startDate, endDate])
 
   return (
     <Stack gap={3}>
@@ -93,7 +117,7 @@ export const AdminSpeiMovementsDetails = () => {
               value={searchTerm}
               onFocus={handleSearchFocus}
               onChange={handleChangeSearch}
-              placeholder="Buscar Movimientos..."
+              placeholder="Buscar ..."
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -105,7 +129,7 @@ export const AdminSpeiMovementsDetails = () => {
           </ClickAwayListener>
         </Box>
         <Box sx={{ flex: '1 1 auto', mb: { xs: 3 } }} />
-        <InputDateRange startDate={startDate} endDate={endDate} />
+        <InputDateRange startDate={startDate} endDate={endDate} onSubmit={handleDateRange} />
       </Box>
       <Stack>
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -145,9 +169,13 @@ export const AdminSpeiMovementsDetails = () => {
         )}
       </Stack>
 
-      <Stack alignItems={'center'} justifyContent={'center'}>
-        <Pagination count={count} page={page} onChange={handleChange} variant="outlined" shape="rounded" />
-      </Stack>
+      {loading && [...Array(10)]?.map((number, index) => <AdminSpeiMovementSkeleton key={index} />)}
+
+      {movements?.length > 0 && !isLoading && (
+        <Stack alignItems={'center'} justifyContent={'center'}>
+          <Pagination count={count} page={page} onChange={handleChange} variant="outlined" shape="rounded" />
+        </Stack>
+      )}
     </Stack>
   )
 }

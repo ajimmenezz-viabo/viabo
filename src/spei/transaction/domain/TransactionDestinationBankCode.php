@@ -9,8 +9,9 @@ use Viabo\spei\transaction\domain\exceptions\TransactionBankCodeEmpty;
 
 final class TransactionDestinationBankCode extends StringValueObject
 {
-    public static function create(string $value): self
+    public static function create(string|int $value): self
     {
+        $value = is_string($value)? $value : strval($value);
         self::validate($value);
         return new self($value);
     }

@@ -5,7 +5,8 @@ namespace Viabo\backoffice\company\domain;
 
 
 use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;
-use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceDecreasedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceIncreasedDomainEvent;
 use Viabo\backoffice\company\domain\events\CompanyCreatedDomainEvent;
 use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
@@ -18,6 +19,7 @@ final class Company extends AggregateRoot
     private $costCenters;
     private $users;
     private $bankAccounts;
+    private float $balanceOld;
 
     public function __construct(
         private CompanyId                  $id,
@@ -53,6 +55,7 @@ final class Company extends AggregateRoot
         $this->costCenters = new CompanyCostCenters();
         $this->users = new CompanyUsers();
         $this->bankAccounts = new CompanyBankAccounts();
+        $this->balanceOld = 0;
     }
 
     public static function create(string $legalRepresentative): self
@@ -338,12 +341,28 @@ final class Company extends AggregateRoot
         $this->balance = $this->balance->add($amount);
         $company = $this->toArray();
         $company['balanceOld'] = $balanceOld;
-        $this->record(new CompanyBalanceUpdatedDomainEvent($this->id(), $company));
+        $company['isBalanceDecreased'] = false;
+        $this->record(new CompanyBalanceIncreasedDomainEvent($this->id(), $company));
+    }
+
+    public function decreaseBalance(float $amount, ): void
+    {
+        $this->balanceOld = $this->balance->value();
+        $this->balance = $this->balance->decrease($amount);
+    }
+
+    public function setEventBalanceDecreased(string $destinationAccount,string $liquidationDate): void
+    {
+        $company = $this->toArray();
+        $company['balanceOld'] = $this->balanceOld;
+        $company['destinationAccount'] = $destinationAccount;
+        $company['liquidationDate'] = $liquidationDate;
+        $company['isBalanceDecreased'] = true;
+        $this->record(new CompanyBalanceDecreasedDomainEvent($this->id(), $company));
     }
 
     public function toArray(): array
     {
-
         return [
             'id' => $this->id->value(),
             'folio' => $this->folio->value(),

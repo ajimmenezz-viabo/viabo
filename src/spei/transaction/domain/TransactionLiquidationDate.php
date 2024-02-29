@@ -15,7 +15,15 @@ final class TransactionLiquidationDate extends DateTimeValueObject
         return $date;
     }
 
-    public static function createByTimestamp(string $timeStamp): static
+    public static function createByTimestamp(mixed $timeStamp): static
+    {
+
+        $date = new static('');
+        $date->convertTimestampToDate($timeStamp);
+        return $date;
+    }
+
+    public function update(mixed $timeStamp): static
     {
         $date = new static('');
         $date->convertTimestampToDate($timeStamp);

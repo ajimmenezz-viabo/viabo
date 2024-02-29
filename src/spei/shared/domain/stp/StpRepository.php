@@ -13,8 +13,8 @@ interface StpRepository
 
     public function searchSpeiIn(array $stpAccount, string $date): array;
 
-    public function processPayment(Transaction $transaction): string;
-
     public function speiOut(array $stpAccount): array;
+
+    public function processPayment(Transaction $transaction): array;
 
 }

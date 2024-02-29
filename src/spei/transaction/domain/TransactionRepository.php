@@ -14,7 +14,9 @@ interface TransactionRepository
 
     public function searchCriteria(Criteria $criteria): array;
 
-    public function searchType(string $id): TransactionTypeId;
+    public function searchType(string $id): TransactionTypeId|null;
 
-    public function searchStatus(string $id): TransactionStatusId;
+    public function searchStatus(string $id): TransactionStatusId|null;
+
+    public function update(Transaction $transaction): void;
 }

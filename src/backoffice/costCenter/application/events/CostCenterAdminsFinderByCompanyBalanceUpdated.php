@@ -4,7 +4,8 @@
 namespace Viabo\backoffice\costCenter\application\events;
 
 
-use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceDecreasedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceIncreasedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
 final readonly class CostCenterAdminsFinderByCompanyBalanceUpdated implements DomainEventSubscriber
@@ -15,10 +16,10 @@ final readonly class CostCenterAdminsFinderByCompanyBalanceUpdated implements Do
 
     public static function subscribedTo(): array
     {
-        return [CompanyBalanceUpdatedDomainEvent::class];
+        return [CompanyBalanceIncreasedDomainEvent::class, CompanyBalanceDecreasedDomainEvent::class];
     }
 
-    public function __invoke(CompanyBalanceUpdatedDomainEvent $event): void
+    public function __invoke(CompanyBalanceIncreasedDomainEvent|CompanyBalanceDecreasedDomainEvent $event): void
     {
         $company = $event->toPrimitives();
         $this->finder->__invoke($company);

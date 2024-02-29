@@ -36,7 +36,19 @@ final readonly class StpAPIRepository implements StpRepository
         return $this->request($inputData, $stpAccount['url']);
     }
 
-    public function processPayment(Transaction $transaction): string
+    public function speiOut(array $stpAccount): array
+    {
+        $inputData = [
+            'app' => 'getConciliation',
+            'keys' => $stpAccount['key'],
+            'company' => $stpAccount['company']
+        ];
+
+        $response = $this->request($inputData, $stpAccount['url']);
+        return $response['datos'];
+    }
+
+    public function processPayment(Transaction $transaction): array
     {
         $keys = $transaction->stpKeys();
         $data = $transaction->toArray();
@@ -61,20 +73,7 @@ final readonly class StpAPIRepository implements StpRepository
             'TipoCuentaBeneficiario' => 40
         ];
 
-        $response = $this->request($inputData, $keys['url']);
-        return strval($response['resultado']['id']);
-    }
-
-    public function speiOut(array $stpAccount): array
-    {
-        $inputData = [
-            'app' => 'getConciliation',
-            'keys' => $stpAccount['key'],
-            'company' => $stpAccount['company']
-        ];
-
-        $response = $this->request($inputData, $stpAccount['url']);
-        return $response['datos'];
+        return $this->request($inputData, $keys['url']);
     }
 
     public function request(array $inputData, string $api)

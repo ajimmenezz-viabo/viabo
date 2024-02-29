@@ -6,7 +6,7 @@ namespace Viabo\spei\transaction\domain;
 
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
-final class TransactionTypeId extends StringValueObject
+class TransactionTypeId extends StringValueObject
 {
     private string $id;
     private string $name;

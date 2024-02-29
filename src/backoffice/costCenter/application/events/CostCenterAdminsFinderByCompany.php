@@ -6,6 +6,7 @@ namespace Viabo\backoffice\costCenter\application\events;
 
 use Viabo\backoffice\costCenter\domain\CostCenterRepository;
 use Viabo\backoffice\costCenter\domain\events\CostCenterAdminsEmailsDomainEvent;
+use Viabo\backoffice\costCenter\domain\events\CostCenterAdminsEmailsDomainEventByTransactionUpdated;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\Utils;
 
@@ -31,6 +32,10 @@ final readonly class CostCenterAdminsFinderByCompany
         }
         $company['costCentersAdminsEmails'] = Utils::removeDuplicateElements($adminsEmails);
 
-        $this->bus->publish(new CostCenterAdminsEmailsDomainEvent($company['id'], $company));
+        if (empty($company['isTransactionUpdate'])) {
+            $this->bus->publish(new CostCenterAdminsEmailsDomainEvent($company['id'], $company));
+        } else {
+            $this->bus->publish(new CostCenterAdminsEmailsDomainEventByTransactionUpdated($company['id'], $company));
+        }
     }
 }

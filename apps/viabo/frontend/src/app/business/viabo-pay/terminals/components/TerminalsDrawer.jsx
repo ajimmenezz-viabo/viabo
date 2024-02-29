@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { useTheme } from '@emotion/react'
 import { ContactlessSharp } from '@mui/icons-material'
-import { Drawer, Stack } from '@mui/material'
+import { Drawer, Stack, useTheme } from '@mui/material'
 import { useResponsive } from '@theme/hooks'
 
 import { TerminalBalance } from './terminal-balance/TerminalBalance'

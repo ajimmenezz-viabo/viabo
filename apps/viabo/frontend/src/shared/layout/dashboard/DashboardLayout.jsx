@@ -31,10 +31,25 @@ export function DashboardLayout() {
     }
   }, [pathname])
 
+  useEffect(() => {
+    if (isCollapse && isCentralPayTheme) {
+      return setCollapse(false)
+    }
+    if (!isCollapse && !isCentralPayTheme) {
+      return setCollapse(true)
+    }
+  }, [isCentralPayTheme])
+
   return (
     <Box sx={{ display: 'flex', height: '100dvH' }}>
       <CssBaseline />
-      <SideBar toggled={open} setToggled={setOpen} isCollapse={isCollapse} setCollapsed={onToggleCollapse} />
+      <SideBar
+        toggled={open}
+        setToggled={setOpen}
+        isCollapse={isCollapse}
+        setCollapsed={onToggleCollapse}
+        isCentralPayTheme={isCentralPayTheme}
+      />
       <Stack sx={{ overflow: 'auto', flexGrow: 1 }}>
         <AppBar
           position="sticky"

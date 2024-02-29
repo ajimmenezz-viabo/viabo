@@ -1,6 +1,7 @@
 export * from './FormProvider'
 export { default as IOSSwitch } from './IOSSwitch'
 export * from './InputAmount'
+export * from './InputDateRange'
 export * from './InputStyle'
 export * from './Label'
 export * from './MaskedInput'

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { createTheme, CssBaseline, styled, StyledEngineProvider, ThemeProvider } from '@mui/material'
+import { createTheme, CssBaseline, styled, ThemeProvider } from '@mui/material'
 import { useSettings } from '@theme/hooks/useSettings'
 import { ComponentsOverrides } from '@theme/overrides/components'
 import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
@@ -51,25 +51,25 @@ export const CustomTheme = ({ children }) => {
   theme.components = ComponentsOverrides(theme)
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <StyledToastContainer
-          theme={theme}
-          position="top-center"
-          transition={Bounce}
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-        {children}
-      </ThemeProvider>
-    </StyledEngineProvider>
+    // <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <StyledToastContainer
+        theme={theme}
+        position="top-center"
+        transition={Bounce}
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {children}
+    </ThemeProvider>
+    // </StyledEngineProvider>
   )
 }
 

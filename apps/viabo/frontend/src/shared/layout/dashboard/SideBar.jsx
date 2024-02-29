@@ -1,5 +1,7 @@
 import { Fragment, useMemo, useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 import { Box, Icon, Stack, Tooltip, Typography, alpha, useTheme } from '@mui/material'
 import { Menu, MenuItem, Sidebar, SubMenu, menuClasses, sidebarClasses } from 'react-pro-sidebar'
 import { Link, useLocation } from 'react-router-dom'
@@ -11,7 +13,7 @@ import { Logo } from '@/shared/components/images'
 import { useAuth } from '@/shared/hooks'
 import { getActive, getActiveSubmenu } from '@/shared/layout/dashboard/nav-section'
 
-const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
+const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed, isCentralPayTheme }) => {
   const { user } = useAuth()
   const menu = useMemo(() => user?.menu || [], [user])
   const muiTheme = useTheme()
@@ -97,6 +99,10 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
         borderColor: toggled ? 'none' : 'rgba(145, 158, 171, 0.24)',
         borderRightStyle: toggled ? 'none' : 'dashed',
         backgroundColor: toggled ? muiTheme.palette.background.default : 'inherit',
+        ...(isCentralPayTheme &&
+          muiTheme.palette.mode === 'light' && {
+            backgroundColor: '#EBF0F0'
+          }),
 
         [`.${sidebarClasses.container}`]: {
           backgroundColor: toggled ? muiTheme.palette.background.default : 'inherit'
@@ -144,9 +150,9 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                             onClick={() => {
                               if (broken) {
                                 setToggled(false)
-                                setCollapsed(true)
+                                !isCentralPayTheme && setCollapsed(true)
                               } else {
-                                !isCollapse && setCollapsed(true)
+                                !isCollapse && !isCentralPayTheme && setCollapsed(true)
                               }
                             }}
                             component={<Link to={module?.path} />}
@@ -186,9 +192,9 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
                                   setOpenSubmenu(null)
                                   if (broken) {
                                     setToggled(false)
-                                    setCollapsed(true)
+                                    !isCentralPayTheme && setCollapsed(true)
                                   } else {
-                                    !isCollapse && setCollapsed(true)
+                                    !isCollapse && !isCentralPayTheme && setCollapsed(true)
                                   }
                                 }}
                                 key={submenu?.name}
@@ -225,6 +231,14 @@ const SideBar = ({ isCollapse, toggled, setToggled, setCollapsed }) => {
       {!broken && <CollapseButtonNew onToggleCollapse={() => setCollapsed(prev => !prev)} isCollapse={isCollapse} />}
     </Sidebar>
   )
+}
+
+SideBar.propTypes = {
+  isCentralPayTheme: PropTypes.any,
+  isCollapse: PropTypes.any,
+  setCollapsed: PropTypes.func,
+  setToggled: PropTypes.func,
+  toggled: PropTypes.any
 }
 
 export default SideBar

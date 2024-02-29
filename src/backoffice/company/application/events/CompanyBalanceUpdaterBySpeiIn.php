@@ -7,7 +7,7 @@ namespace Viabo\backoffice\company\application\events;
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class CompanyBalanceUpdater
+final readonly class CompanyBalanceUpdaterBySpeiIn
 {
     public function __construct(
         private CompanyRepository $repository,

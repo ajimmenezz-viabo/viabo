@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\notification\application\SendCostCenterAdminsBySpeiIn;
+namespace Viabo\backoffice\notification\application\SendMessageToCostCenterAdminsBySpei;
 
 
-use Viabo\backoffice\costCenter\domain\events\CostCenterAdminsEmailsDomainEvent;
+use Viabo\backoffice\costCenter\domain\events\CostCenterAdminsEmailsDomainEventByTransactionUpdated;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 
-final readonly class sendCostCenterAdminsBySpeiIn implements DomainEventSubscriber
+final readonly class sendMessageToCostCenterAdminsBySpeiOutUpdate implements DomainEventSubscriber
 {
     public function __construct(private EmailRepository $repository)
     {
@@ -17,10 +17,10 @@ final readonly class sendCostCenterAdminsBySpeiIn implements DomainEventSubscrib
 
     public static function subscribedTo(): array
     {
-        return [CostCenterAdminsEmailsDomainEvent::class];
+        return [CostCenterAdminsEmailsDomainEventByTransactionUpdated::class];
     }
 
-    public function __invoke(CostCenterAdminsEmailsDomainEvent $event): void
+    public function __invoke(CostCenterAdminsEmailsDomainEventByTransactionUpdated $event): void
     {
         $company = $event->toPrimitives();
         $emails = $company['costCentersAdminsEmails'];
@@ -32,13 +32,14 @@ final readonly class sendCostCenterAdminsBySpeiIn implements DomainEventSubscrib
         $costCenters = $this->costCentersNames($company['costCenters']);
         $email = new Email(
             $emails,
-            "Notificación de SPEI IN",
-            'spei/notification/emails/cost.centers.transaction.spei.in.html.twig',
+            "Notificación Cost Center de SPEI OUT - Actualizado",
+            'spei/notification/emails/cost.centers.admins.transaction.spei.out.update.html.twig',
             [
+                'costCenters' => implode(',', $costCenters),
                 'company' => $company['fiscalName'],
-                'balanceOld' => $company['balanceOld'],
-                'balance' => $company['balance'],
-                'costCenters' => implode(',', $costCenters)
+                'account' => $company['destinationAccount'],
+                'liquidationDate' => $company['liquidationDate'],
+                'amount' => $company['balance']
             ]
         );
         $this->repository->send($email);
@@ -48,7 +49,7 @@ final readonly class sendCostCenterAdminsBySpeiIn implements DomainEventSubscrib
     private function costCentersNames(array $costCenters): array
     {
         return array_map(function (array $costCenter) {
-           return $costCenter['name'] ;
+            return $costCenter['name'];
         }, $costCenters);
     }
 }

@@ -13,13 +13,21 @@ final class TransactionStpId extends StringValueObject
         return new static('');
     }
 
-    public static function create(string $value): static
+    public static function create(mixed $value): static
     {
+        $value = is_string($value) ? $value : strval($value);
         return new static($value);
     }
 
-    public function update(string $value): static
+    public function update(mixed $value): static
     {
+        $value = is_string($value) ? $value : strval($value);
         return new static($value);
+    }
+
+    public function isSame(mixed $value): bool
+    {
+        $value = is_string($value) ? $value : strval($value);
+        return $this->value === $value;
     }
 }

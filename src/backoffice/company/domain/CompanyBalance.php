@@ -18,4 +18,11 @@ final class CompanyBalance extends DecimalValueObject
         $balance = $this->value + $amount;
         return new static($balance);
     }
+
+    public function decrease(float $amount): static
+    {
+        $balance = $this->value - $amount;
+        return new static($balance);
+    }
+
 }

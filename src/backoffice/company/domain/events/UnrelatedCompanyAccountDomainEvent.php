@@ -6,7 +6,7 @@ namespace Viabo\backoffice\company\domain\events;
 
 use Viabo\shared\domain\bus\event\DomainEvent;
 
-final readonly class CompanyBalanceUpdatedDomainEvent extends DomainEvent
+final readonly class UnrelatedCompanyAccountDomainEvent extends DomainEvent
 {
     public function __construct(
         string        $aggregateId,
@@ -30,7 +30,7 @@ final readonly class CompanyBalanceUpdatedDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'updated.company.balance';
+        return 'validate.unrelated.company.account';
     }
 
     public function toPrimitives(): array

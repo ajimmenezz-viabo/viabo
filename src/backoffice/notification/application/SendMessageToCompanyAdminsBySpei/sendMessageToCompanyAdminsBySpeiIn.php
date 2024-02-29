@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\notification\application\SendCompanyAdminsBySpeiIn;
+namespace Viabo\backoffice\notification\application\SendMessageToCompanyAdminsBySpei;
 
 
-use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceIncreasedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 
-final class sendCompanyAdminsBySpeiIn implements DomainEventSubscriber
+final class sendMessageToCompanyAdminsBySpeiIn implements DomainEventSubscriber
 {
     public function __construct(private EmailRepository $repository)
     {
@@ -17,10 +17,10 @@ final class sendCompanyAdminsBySpeiIn implements DomainEventSubscriber
 
     public static function subscribedTo(): array
     {
-        return [CompanyBalanceUpdatedDomainEvent::class];
+        return [CompanyBalanceIncreasedDomainEvent::class];
     }
 
-    public function __invoke(CompanyBalanceUpdatedDomainEvent $event): void
+    public function __invoke(CompanyBalanceIncreasedDomainEvent $event): void
     {
         $company = $event->toPrimitives();
         $emails = $this->companyAdminsEmails($company['users']);

@@ -9,7 +9,7 @@ use Viabo\spei\transaction\domain\events\TransactionCreatedBySpeiInDomainEvent;
 
 final class CompanyBalanceUpdaterByTransactionCreatedBySpeiIn implements DomainEventSubscriber
 {
-    public function __construct(private CompanyBalanceUpdater $updater)
+    public function __construct(private CompanyBalanceUpdaterBySpeiIn $updater)
     {
     }
 

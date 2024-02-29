@@ -20,11 +20,15 @@ final readonly class TransactionsBalanceFinder
     {
         $this->ensureDates($initialDate, $endDate);
         $transactions = $this->searchTransactions("$initialDate 00:00:00", "$endDate 23:59:59");
-        $totalSpeiInAmount = $this->calculateSpeiInTransactionTotalAmount($transactions);
-        $totalSpeiOutAmount = $this->calculateSpeiOutTransactionTotalAmount($transactions);
+        $speisIn = $this->filterSpeiIn($transactions);
+        $totalSpeiInAmount = $this->calculateSpeiInTransactionTotalAmount($speisIn);
+        $speisOut = $this->filterSpeiOut($transactions);
+        $totalSpeiOutAmount = $this->calculateSpeiOutTransactionTotalAmount($speisOut);
 
         return new TransactionResponse([
+            'speiInCount' => count($speisIn),
             'speiInTotal' => $totalSpeiInAmount,
+            'speiOutCount' => count($speisOut),
             'speiOutTotal' => $totalSpeiOutAmount,
             'balance' => $totalSpeiInAmount - $totalSpeiOutAmount
         ]);
@@ -32,7 +36,7 @@ final readonly class TransactionsBalanceFinder
 
     private function ensureDates(string $initialDate, string $endDate): void
     {
-        if(empty($initialDate) || empty($endDate)){
+        if (empty($initialDate) || empty($endDate)) {
             throw new TransactionCreateDateRangeNotDefine();
         }
     }
@@ -46,22 +50,30 @@ final readonly class TransactionsBalanceFinder
         return $this->repository->searchCriteria(new Criteria($filters));
     }
 
-    public function calculateSpeiInTransactionTotalAmount(array $transactions): float
+    public function filterSpeiIn(array $transactions): array
     {
-        $speiIn = array_filter($transactions, function (Transaction $transaction) {
+        return array_filter($transactions, function (Transaction $transaction) {
             return $transaction->isSpeiIn();
         });
+    }
+
+    public function calculateSpeiInTransactionTotalAmount(array $speiIn): float
+    {
         $amounts = array_map(function (Transaction $transaction) {
             return $transaction->amount();
         }, $speiIn);
         return array_sum($amounts);
     }
 
-    public function calculateSpeiOutTransactionTotalAmount(array $transactions): float
+    public function filterSpeiOut(array $transactions): array
     {
-        $speiOut = array_filter($transactions, function (Transaction $transaction) {
+        return array_filter($transactions, function (Transaction $transaction) {
             return $transaction->isSpeiOut();
         });
+    }
+
+    public function calculateSpeiOutTransactionTotalAmount(array $speiOut): float
+    {
         $amounts = array_map(function (Transaction $transaction) {
             return $transaction->amount();
         }, $speiOut);

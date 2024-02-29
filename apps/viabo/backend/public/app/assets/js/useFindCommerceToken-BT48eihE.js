@@ -1,2 +1,0 @@
-import{t as c,c as u,e as m}from"./vendor-CEMfbhOc.js";import{C as e,g as i}from"./CommerceRegister-Ca_rSVZa.js";import{g as E}from"./index-BxvL1HP2.js";const g=(r,o={})=>{const{enqueueSnackbar:s}=c(),t=u();return m([e.TOKEN_COMMERCE],()=>i(r),{staleTime:60*5e3,onSuccess:()=>{t.removeQueries([e.COMMERCE_PROCESS])},onError:a=>{const n=E(a,"😟 Error al obtener el comercio");s(n,{variant:"error",autoHideDuration:5e3})},...o})};export{g as u};
-//# sourceMappingURL=useFindCommerceToken-BT48eihE.js.map

@@ -8,11 +8,11 @@ export const ViaboSpeiResumeBalance = balance => ({
   deposits: {
     balance: Number(balance?.speiInTotal),
     currency: fCurrency(balance?.speiInTotal || 0),
-    count: 0
+    count: balance?.speiInCount || 0
   },
   transfers: {
     balance: Number(balance?.speiOutTotal),
     currency: fCurrency(balance?.speiOutTotal || 0),
-    count: 0
+    count: balance?.speiOutCount || 0
   }
 })

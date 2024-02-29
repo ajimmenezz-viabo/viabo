@@ -19,7 +19,7 @@ const AdminSpeiBalance = () => {
           <AdminSpeiBalanceCard
             title={'Depósitos'}
             value={balance?.deposits?.currency || '$0.00'}
-            transactions={84}
+            transactions={balance?.deposits?.count || 0}
             icon={<SouthWest color="success" />}
           />
         </Grid>
@@ -27,7 +27,7 @@ const AdminSpeiBalance = () => {
           <AdminSpeiBalanceCard
             title={'Transferencias'}
             value={balance?.transfers?.currency || '$0.00'}
-            transactions={58}
+            transactions={balance?.transfers?.count || 0}
             icon={<NorthEast color="error" />}
           />
         </Grid>

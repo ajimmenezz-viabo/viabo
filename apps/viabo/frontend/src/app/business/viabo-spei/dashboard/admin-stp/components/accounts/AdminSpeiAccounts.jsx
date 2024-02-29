@@ -1,20 +1,12 @@
-import { Box, Button, CardContent, CardHeader, Divider, alpha, styled, useTheme } from '@mui/material'
-
-import { AdminSpeiCardAccount } from './AdminsSpeiCardAccount'
+import { Box, CardContent, CardHeader, Divider, alpha, useTheme } from '@mui/material'
 
 import { useAdminDashboardSpeiStore } from '../../store'
+import { AdminSpeiCardAccount } from '../balance/AdminsSpeiCardAccount'
 
-import { CardViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
-
-const CustomButton = styled(Button)(({ theme }) => ({
-  borderColor: alpha('#CFDBD5', 0.7),
-  borderRadius: Number(theme.shape.borderRadius),
-  boxShadow: 'none',
-  backgroundColor: 'transparent'
-}))
+import { ButtonViaboSpei, CardViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
 
 export const AdminSpeiAccounts = () => {
-  const { setOpenSpeiOut } = useAdminDashboardSpeiStore()
+  const { setOpenSpeiOut, setOpenTransactions } = useAdminDashboardSpeiStore()
   const theme = useTheme()
 
   return (
@@ -25,7 +17,7 @@ export const AdminSpeiAccounts = () => {
         <Box mb={2}>
           <AdminSpeiCardAccount />
         </Box>
-        <CustomButton
+        <ButtonViaboSpei
           size="large"
           variant="outlined"
           sx={{ color: 'text.primary' }}
@@ -53,11 +45,12 @@ export const AdminSpeiAccounts = () => {
           }
         >
           SPEI OUT
-        </CustomButton>
-        <CustomButton
+        </ButtonViaboSpei>
+        <ButtonViaboSpei
           size="large"
           variant="outlined"
           sx={{ color: 'text.primary' }}
+          onClick={() => setOpenTransactions(true)}
           startIcon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -79,8 +72,8 @@ export const AdminSpeiAccounts = () => {
             </svg>
           }
         >
-          Detalles
-        </CustomButton>
+          Detalles Movimientos
+        </ButtonViaboSpei>
       </CardContent>
     </Box>
   )

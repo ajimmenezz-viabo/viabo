@@ -3,6 +3,21 @@ import { es } from 'date-fns/locale'
 
 import { fCurrency, fDateTime, fTime, getDecryptInfo } from '@/shared/utils'
 
+const status = {
+  LQ: {
+    name: 'Liquidada',
+    color: 'success'
+  },
+  A: {
+    name: 'Aprobada',
+    color: 'info'
+  },
+  default: {
+    name: 'Pendiente',
+    color: 'warning'
+  }
+}
+
 export const ViaboSpeiMovementsAdapter = movements => {
   const decryptedMovements = getDecryptInfo(movements?.ciphertext, movements?.iv)
 
@@ -22,7 +37,8 @@ export const ViaboSpeiMovementsAdapter = movements => {
       unix: movement?.tsCaptura,
       original: new Date(movement?.tsCaptura),
       dateTime: fDateTime(movement?.tsCaptura),
-      time: fTime(movement?.tsCaptura)
+      time: fTime(movement?.tsCaptura),
+      groupBy: format(movement?.tsCaptura, 'dd MMMM', { locale: es })
     },
     amount: {
       number: movement?.monto,
@@ -30,17 +46,20 @@ export const ViaboSpeiMovementsAdapter = movements => {
       color: 'error'
     },
     type: 'SPEI OUT',
-    status: movement?.estado
+    status: {
+      id: movement?.estado,
+      ...(movement?.estado ? status[movement.estado] || status.default : status.default)
+    }
   }))
 
   const movementsByDay = {}
   movementsAdapted.forEach(movement => {
-    const dateKey = format(movement.date.original, 'dd MMMM', { locale: es })
+    const dateKey = movement.date.groupBy
     if (!movementsByDay[dateKey]) {
       movementsByDay[dateKey] = []
     }
     movementsByDay[dateKey].push(movement)
   })
 
-  return movementsByDay
+  return { groupByDay: movementsByDay, original: movementsAdapted }
 }

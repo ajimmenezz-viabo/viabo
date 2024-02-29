@@ -12,6 +12,8 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
+import { useAdminDashboardSpeiStore } from '../../store'
+
 import { stringAvatar } from '@/theme/utils'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
@@ -23,16 +25,21 @@ const RootStyle = styled(ListItemButton)(({ theme }) => ({
   mb: 1,
   transition: theme.transitions.create('all')
 }))
-export const AdminSpeiLastMovementItem = ({ movement }) => {
+export const AdminSpeiMovementItem = ({ movement, ...others }) => {
+  const setOpenDetailsTransaction = useAdminDashboardSpeiStore(state => state.setOpenDetailsTransaction)
+  const setTransaction = useAdminDashboardSpeiStore(state => state.setTransaction)
+  const transaction = useAdminDashboardSpeiStore(state => state.transaction)
+
   const handleSelectedRow = e => {
-    const type = e.target?.type
+    setOpenDetailsTransaction(true)
+    setTransaction(movement)
   }
 
-  const isSelected = false
-  const isOut = movement?.amount?.color === 'error'
+  const isSelected = transaction?.id === movement?.id
   return (
     <>
       <ListItem
+        {...others}
         sx={{
           my: 1,
           padding: 0,
@@ -82,7 +89,7 @@ export const AdminSpeiLastMovementItem = ({ movement }) => {
   )
 }
 
-AdminSpeiLastMovementItem.propTypes = {
+AdminSpeiMovementItem.propTypes = {
   movement: PropTypes.shape({
     amount: PropTypes.shape({
       color: PropTypes.string,
@@ -92,6 +99,7 @@ AdminSpeiLastMovementItem.propTypes = {
       dateTime: PropTypes.any,
       time: PropTypes.any
     }),
+    id: PropTypes.any,
     movement: PropTypes.any
   })
 }

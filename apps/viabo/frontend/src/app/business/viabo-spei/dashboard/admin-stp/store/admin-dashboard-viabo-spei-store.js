@@ -3,7 +3,11 @@ import { createStore } from '@/app/shared/store'
 const initialState = {
   stpAccount: null,
   openSpeiOut: false,
-  selectedAccounts: []
+  selectedAccounts: [],
+  isOpenTransactions: false,
+  queryMovements: {},
+  transaction: null,
+  isOpenDetailsTransaction: false
 }
 const adminDashboardSpeiStore = (set, get) => ({
   ...initialState,
@@ -23,6 +27,42 @@ const adminDashboardSpeiStore = (set, get) => ({
       }),
       false,
       'SET_ADMIN_DASHBOARD_OPEN_SPEI_OUT'
+    )
+  },
+  setOpenTransactions: open => {
+    set(
+      state => ({
+        isOpenTransactions: open
+      }),
+      false,
+      'SET_ADMIN_DASHBOARD_OPEN_TRANSACTIONS_DETAILS'
+    )
+  },
+  setQueryMovements: queryMovements => {
+    set(
+      state => ({
+        queryMovements
+      }),
+      false,
+      'SET_ADMIN_DASHBOARD_QUERY_MOVEMENTS'
+    )
+  },
+  setTransaction: transaction => {
+    set(
+      state => ({
+        transaction
+      }),
+      false,
+      'SET_ADMIN_DASHBOARD_TRANSACTION_INFO'
+    )
+  },
+  setOpenDetailsTransaction: open => {
+    set(
+      state => ({
+        isOpenDetailsTransaction: open
+      }),
+      false,
+      'SET_ADMIN_DASHBOARD_OPEN_TRANSACTION_DETAILS'
     )
   }
 })

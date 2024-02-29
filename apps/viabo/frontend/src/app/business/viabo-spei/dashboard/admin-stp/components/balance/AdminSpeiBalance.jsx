@@ -1,7 +1,7 @@
 import { NorthEast, SouthWest } from '@mui/icons-material'
 import { Grid, Stack } from '@mui/material'
 
-import { AdminSpeiAccounts } from './AdminSpeiAccounts'
+import { AdminSpeiAccounts } from '../accounts/AdminSpeiAccounts'
 import { AdminSpeiBalanceCard } from './AdminSpeiBalanceCard'
 import { AdminSpeiFilterBalance } from './AdminSpeiFilterBalance'
 

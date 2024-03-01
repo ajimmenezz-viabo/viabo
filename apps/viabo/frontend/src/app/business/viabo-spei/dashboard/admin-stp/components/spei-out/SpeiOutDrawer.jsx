@@ -1,6 +1,6 @@
 import { lazy, useMemo, useState } from 'react'
 
-import { Stack, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { m } from 'framer-motion'
 
 import { useAdminDashboardSpeiStore } from '../../store'
@@ -11,7 +11,6 @@ import { varFade } from '@/shared/components/animate'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { Lodable } from '@/shared/components/lodables'
 import { ErrorRequestPage } from '@/shared/components/notifications'
-import { fCurrency } from '@/shared/utils'
 
 const SpeiOutForm = Lodable(lazy(() => import('./SpeiOutForm')))
 const SpeiOutResume = Lodable(lazy(() => import('./SpeiOutResume')))
@@ -68,39 +67,13 @@ const SpeiOutDrawer = () => {
   const titleTransaction = <Typography variant="h6">SPEI Out</Typography>
 
   const renderContentTransaction = (
-    <>
-      <Stack flexDirection="column" alignItems={'center'} justifyContent={'space-between'} spacing={0} px={3} pt={2}>
-        <Typography variant="subtitle1">Saldo</Typography>
-        <Stack direction={'row'} spacing={1} alignItems={'center'}>
-          <Typography variant="h3" color={'success.main'}>
-            {fCurrency(balance)}
-          </Typography>
-          <Typography variant="caption" color={'success.main'}>
-            MXN
-          </Typography>
-        </Stack>
-        <Stack direction={'row'} spacing={1} alignItems={'center'}>
-          <Typography variant="subtitle1" color={'error'}>
-            - {fCurrency(currentBalance)}
-          </Typography>
-          <Typography variant="caption" color={'error'}>
-            MXN
-          </Typography>
-        </Stack>
-        {insufficient && (
-          <Typography variant="caption" color={'warning.main'} textAlign={'center'}>
-            Saldo insuficiente para realizar la(s) operacion(es)
-          </Typography>
-        )}
-      </Stack>
-      <SpeiOutForm
-        accounts={accounts || []}
-        insufficient={insufficient}
-        onSuccess={handleSuccessForm}
-        setCurrentBalance={setCurrentBalance}
-        initialValues={transactionForm}
-      />
-    </>
+    <SpeiOutForm
+      accounts={accounts || []}
+      insufficient={insufficient}
+      onSuccess={handleSuccessForm}
+      setCurrentBalance={setCurrentBalance}
+      initialValues={transactionForm}
+    />
   )
 
   return (

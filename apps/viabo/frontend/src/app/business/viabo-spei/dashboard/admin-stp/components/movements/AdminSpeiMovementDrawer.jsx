@@ -1,12 +1,11 @@
 import { Close } from '@mui/icons-material'
-import { Avatar, Box, Divider, Drawer, Stack, Typography, alpha, styled, Link } from '@mui/material'
+import { Avatar, Box, Drawer, Link, Stack, Typography, alpha, styled } from '@mui/material'
 
 import { useAdminDashboardSpeiStore } from '../../store'
 
 import { ButtonViaboSpei } from '@/app/business/viabo-spei/shared/components'
 import { IconButtonAnimate } from '@/shared/components/animate'
 import { Label } from '@/shared/components/form'
-import SvgIconStyle from '@/shared/components/images/SvgIconStyle'
 import { Scrollbar } from '@/shared/components/scroll'
 import { useResponsive } from '@/theme/hooks'
 import { stringAvatar } from '@/theme/utils'
@@ -58,7 +57,7 @@ const AdminSpeiMovementDrawer = () => {
         keepMounted: false
       }}
     >
-      <Stack position={'relative'} sx={{ height: 150 }}>
+      <Stack position={'relative'} sx={{ minHeight: 150, mb: 3 }}>
         <OverlayStyle />
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ zIndex: 11, px: 2.5, py: 2 }}>
           <Typography variant="h6" color={'white'}>
@@ -98,7 +97,6 @@ const AdminSpeiMovementDrawer = () => {
 
         <Avatar
           alt={'example'}
-          src={'/policy/example.jpg'}
           {...avatar}
           sx={{
             width: 60,
@@ -113,129 +111,91 @@ const AdminSpeiMovementDrawer = () => {
           }}
         />
       </Stack>
-      <Stack>
-        <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-          <Stack spacing={3} p={3}>
-            <Stack justifyContent={'center'} alignItems={'center'} pt={3}>
-              <Typography variant="h4" fontWeight={'bold'}>
-                {transaction?.amount?.format} MXN
-              </Typography>
-              <Typography variant="subtitle1">{transaction?.movement}</Typography>
-              <Typography variant="subtitle2" color={'text.secondary'}>
-                {transaction?.date?.dateTime}
-              </Typography>
-              <Label variant={'ghost'} color={transaction?.status?.color} sx={{ mt: 2 }}>
-                {transaction?.status?.name}
-              </Label>
-            </Stack>
-            <Stack spacing={2}>
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                spacing={0.5}
-                flex={1}
-              >
-                <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
-                  Movimiento:
-                </Typography>
-                <Typography variant="body2">#{transaction?.stpId ?? '-'}</Typography>
-              </Stack>
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                spacing={0.5}
-                flex={1}
-              >
-                <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
-                  Enviado a:
-                </Typography>
-                <Typography variant="body2">{transaction?.beneficiary?.name ?? '-'}</Typography>
-              </Stack>
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                spacing={0.5}
-                flex={1}
-              >
-                <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
-                  Cuenta origen:
-                </Typography>
-                <Typography variant="body2">{transaction?.source?.account ?? '-'}</Typography>
-              </Stack>
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                spacing={0.5}
-                flex={1}
-              >
-                <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
-                  Cuenta destino:
-                </Typography>
-                <Typography variant="body2">{transaction?.beneficiary?.account ?? '-'}</Typography>
-              </Stack>
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                spacing={0.5}
-                flex={1}
-              >
-                <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
-                  Monto:
-                </Typography>
-                <Typography variant="body2">{transaction?.amount?.format?.replace('-', '') ?? '-'}</Typography>
-              </Stack>
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                spacing={0.5}
-                flex={1}
-              >
-                <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
-                  Clave Rastreo:
-                </Typography>
-                <Typography variant="body2">{transaction?.banxicoKey ?? '-'}</Typography>
-              </Stack>
-            </Stack>
-            {transaction?.fileCEP && (
-              <Box sx={{ py: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-                <Box>
-                  <ButtonViaboSpei
-                    component={Link}
-                    target="_blank"
-                    href={transaction?.fileCEP}
-                    startIcon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-receipt-2"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
-                        <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
-                      </svg>
-                    }
-                  >
-                    Comprobante CEP
-                  </ButtonViaboSpei>
-                </Box>
-              </Box>
-            )}
-          </Stack>
-        </Scrollbar>
+      <Stack justifyContent={'center'} alignItems={'center'} p={3} pb={0}>
+        <Typography variant="h4" fontWeight={'bold'}>
+          {transaction?.amount?.format} MXN
+        </Typography>
+        <Typography variant="subtitle1">{transaction?.movement}</Typography>
+        <Typography variant="subtitle2" color={'text.secondary'}>
+          {transaction?.date?.dateTime}
+        </Typography>
+        <Label variant={'ghost'} color={transaction?.status?.color} sx={{ mt: 2 }}>
+          {transaction?.status?.name}
+        </Label>
       </Stack>
+      <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
+        <Stack spacing={3} p={3}>
+          <Stack spacing={2}>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Movimiento:
+              </Typography>
+              <Typography variant="body2">#{transaction?.stpId ?? '-'}</Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Enviado a:
+              </Typography>
+              <Typography variant="body2">{transaction?.beneficiary?.name ?? '-'}</Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Cuenta origen:
+              </Typography>
+              <Typography variant="body2">{transaction?.source?.account ?? '-'}</Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Cuenta destino:
+              </Typography>
+              <Typography variant="body2">{transaction?.beneficiary?.account ?? '-'}</Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Monto:
+              </Typography>
+              <Typography variant="body2">{transaction?.amount?.format?.replace('-', '') ?? '-'}</Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Clave Rastreo:
+              </Typography>
+              <Typography variant="body2">{transaction?.banxicoKey ?? '-'}</Typography>
+            </Stack>
+          </Stack>
+          {transaction?.fileCEP && (
+            <Box sx={{ py: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              <Box>
+                <ButtonViaboSpei
+                  component={Link}
+                  target="_blank"
+                  href={transaction?.fileCEP}
+                  startIcon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon icon-tabler icon-tabler-receipt-2"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                      <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
+                    </svg>
+                  }
+                >
+                  Comprobante CEP
+                </ButtonViaboSpei>
+              </Box>
+            </Box>
+          )}
+        </Stack>
+      </Scrollbar>
     </Drawer>
   )
 }

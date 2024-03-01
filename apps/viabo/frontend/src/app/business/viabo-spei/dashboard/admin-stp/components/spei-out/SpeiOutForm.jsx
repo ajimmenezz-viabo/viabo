@@ -1,12 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+
+import PropTypes from 'prop-types'
 
 import { Add, ArrowForwardIos, Delete } from '@mui/icons-material'
-import { Box, Button, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
-import { createAvatar } from '@theme/utils'
-import { FieldArray, getIn, useFormik } from 'formik'
+import {
+  Avatar,
+  Box,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material'
+import { stringAvatar } from '@theme/utils'
+import { FieldArray, useFormik } from 'formik'
+import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
-import { Avatar } from '@/shared/components/avatar'
+import { ButtonViaboSpei, borderColorViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
+import { IconButtonAnimate } from '@/shared/components/animate'
 import { FormProvider, MaskedInput, RFSelect, RFTextField } from '@/shared/components/form'
 import { Scrollbar } from '@/shared/components/scroll'
 
@@ -18,8 +33,6 @@ const SpeiOutForm = ({ accounts, setCurrentBalance, insufficient, onSuccess, ini
   const array = new Uint32Array(1)
 
   const random = crypto.getRandomValues(array)[0]
-
-  const [accountsToSelect, setAccountsToSelect] = useState(accounts)
 
   const RegisterSchema = Yup.object().shape({
     transactions: Yup.array().of(
@@ -36,29 +49,29 @@ const SpeiOutForm = ({ accounts, setCurrentBalance, insufficient, onSuccess, ini
 
   const formik = useFormik({
     initialValues: initialValues || {
-      transactions: [
-        {
-          id: random,
-          account: null,
-          amount: ''
-        }
-      ],
+      transactions: [],
+      beneficiary: null,
+      amount: '',
       concept: ''
     },
     validateOnChange: false,
     validationSchema: RegisterSchema,
-    onSubmit: values => {
+    onSubmit: (values, { setFieldValue, setSubmitting }) => {
       if (insufficient) {
+        toast.warning('Saldo insuficiente para realizar esta operación')
         return setSubmitting(false)
       }
       setSubmitting(false)
+      setFieldValue('amount', '')
+      setFieldValue('beneficiary', null)
       return onSuccess(values)
     }
   })
 
-  const { isSubmitting, setFieldValue, values, setSubmitting, errors, touched } = formik
+  const { isSubmitting, setFieldValue, values } = formik
 
   const loading = isSubmitting
+  const isDisabled = !values?.beneficiary || values?.amount === ''
 
   useEffect(() => {
     const totalAmount = values.transactions?.reduce((accumulator, currentObject) => {
@@ -76,226 +89,215 @@ const SpeiOutForm = ({ accounts, setCurrentBalance, insufficient, onSuccess, ini
     setCurrentBalance(currentBalance)
   }, [values.transactions])
 
+  const handleResetForm = () => {
+    setFieldValue('amount', '')
+    setFieldValue('beneficiary', null)
+  }
+
   return (
-    <>
-      <Stack p={3} pb={0} gap={1} flexDirection={{ xs: 'column-reverse', md: 'row' }} alignItems={'center'}>
-        <Typography variant="subtitle1" sx={{ color: 'text.disabled' }}>
-          Transacciones:
-        </Typography>
-        <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }} />
-        <Stack direction={'row'} spacing={1}>
-          <Button
-            type="button"
-            size="small"
-            variant={'outlined'}
-            startIcon={<Add />}
-            disabled={loading}
-            onClick={() =>
-              arrayHelpersRef.current.push({
-                id: random,
-                account: null,
-                amount: '',
-                concept: ''
-              })
-            }
-            sx={{ flexShrink: 0 }}
-          >
-            Agregar
-          </Button>
-        </Stack>
-      </Stack>
-
-      <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-        <FormProvider formik={formik}>
-          <Box sx={{ p: 3 }}>
-            <FieldArray
-              name="transactions"
-              render={arrayHelpers => {
-                arrayHelpersRef.current = arrayHelpers
-                return (
-                  <Stack divider={<Divider flexItem sx={{ borderStyle: 'dashed' }} />} spacing={3}>
-                    {values?.transactions.map((item, index) => {
-                      const account = `transactions[${index}].account`
-                      const errorFieldAccount = getIn(errors, account)
-                      const amount = `transactions[${index}].amount`
-
-                      return (
-                        <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
-                          <Stack
-                            direction={{ xs: 'column', md: 'row' }}
-                            spacing={2}
-                            sx={{ width: 1 }}
-                            alignItems={'flex-start'}
-                          >
-                            <Typography variant={'overline'} color={'text.disabled'}>
-                              {index + 1}
-                            </Typography>
-                            <RFSelect
-                              name={account}
-                              disabled={loading}
-                              textFieldParams={{
-                                placeholder: 'Seleccionar ...',
-                                label: 'Cuentas',
-                                required: true,
-                                size: 'small'
-                              }}
-                              options={accountsToSelect || []}
-                              onChange={(e, value) => {
-                                const filterAccounts = accountsToSelect?.map(account => {
-                                  if (!value?.value && account.value === item?.account?.value) {
-                                    return { ...account, isDisabled: false }
-                                  }
-                                  if (account.value === value?.value) {
-                                    return { ...account, isDisabled: true }
-                                  }
-
-                                  if (account.value === item?.account?.value) {
-                                    return { ...account, isDisabled: false }
-                                  }
-                                  return account
-                                })
-
-                                setAccountsToSelect(filterAccounts)
-                                setFieldValue(account, value)
-                              }}
-                              renderOption={(props, option) => {
-                                const avatar = createAvatar(option?.label)
-
-                                return (
-                                  <Box component="li" {...props}>
-                                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
-                                      <Avatar
-                                        src={option.label !== '' ? option.label : ''}
-                                        alt={option.label}
-                                        color={avatar?.color}
-                                        sx={{ width: 25, height: 25, fontSize: 12 }}
-                                      >
-                                        {avatar?.name}
-                                      </Avatar>
-                                      <span>{option.label}</span>
-                                    </Stack>
-                                  </Box>
-                                )
-                              }}
-                              renderInput={params => {
-                                const avatar = createAvatar(params?.inputProps?.value || '')
-
-                                return (
-                                  <TextField
-                                    {...params}
-                                    size="small"
-                                    placeholder="Seleccionar ..."
-                                    label={'Beneficiario'}
-                                    inputProps={{
-                                      ...params.inputProps
-                                    }}
-                                    error={Boolean(errorFieldAccount)}
-                                    helperText={errorFieldAccount || ''}
-                                    required
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      startAdornment: (
-                                        <InputAdornment position="start">
-                                          <Avatar
-                                            src={''}
-                                            alt={params.inputProps?.value || 'avatar'}
-                                            color={avatar?.color}
-                                            sx={{ width: 25, height: 25, fontSize: 12 }}
-                                          >
-                                            {avatar?.name !== 'undefined' ? avatar?.name : null}
-                                          </Avatar>
-                                        </InputAdornment>
-                                      )
-                                    }}
-                                  />
-                                )
-                              }}
-                              sx={{ width: { xs: 1, lg: 0.6 } }}
-                            />
-                            <RFTextField
-                              sx={{ width: { xs: 1, lg: 0.4 } }}
-                              size={'small'}
-                              name={amount}
-                              required={true}
-                              label={'Monto'}
-                              placeholder={'0.00'}
-                              disabled={loading}
-                              autoComplete={'off'}
-                              InputProps={{
-                                startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
-                                inputComponent: MaskedInput,
-                                inputProps: {
-                                  mask: Number,
-                                  radix: '.',
-                                  thousandsSeparator: ',',
-                                  padFractionalZeros: true,
-                                  min: 0,
-                                  scale: 2,
-                                  value: item.amount,
-                                  onAccept: value => {
-                                    setFieldValue(amount, value)
-                                  }
-                                }
-                              }}
-                            />
-                            {index !== 0 && (
-                              <IconButton
-                                size="small"
-                                color="error"
-                                title="Borrar"
-                                disabled={loading}
-                                onClick={() => {
-                                  const filterAccounts = accountsToSelect?.map(account => {
-                                    if (account.value === item?.account?.value) {
-                                      return { ...account, isDisabled: false }
-                                    }
-                                    return account
-                                  })
-
-                                  setAccountsToSelect(filterAccounts)
-                                  arrayHelpers.remove(index)
-                                }}
-                              >
-                                <Delete />
-                              </IconButton>
-                            )}
-                          </Stack>
-                        </Stack>
-                      )
-                    })}
-                  </Stack>
-                )
-              }}
-            />
-            <Divider sx={{ my: 3, borderStyle: 'dashed' }} />
-            <Stack sx={{ width: 1 }}>
-              <RFTextField
-                name={'concept'}
-                multiline
+    <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
+      <FormProvider formik={formik}>
+        <Stack sx={{ p: 3 }}>
+          <Stack gap={2}>
+            <Stack spacing={0.5}>
+              <Typography variant="caption" fontWeight={'bold'}>
+                Beneficiario:
+              </Typography>
+              <RFSelect
+                name={'beneficiary'}
                 disabled={loading}
-                rows={2}
-                label={'Concepto'}
-                placeholder={'Transferencia ..'}
+                textFieldParams={{
+                  placeholder: 'Seleccionar ...',
+                  size: 'large'
+                }}
+                options={accounts || []}
+                onChange={(e, value) => {
+                  setFieldValue('beneficiary', value)
+                }}
+                renderOption={(props, option) => {
+                  const avatar = stringAvatar(option?.label || '')
+
+                  return (
+                    <Box component="li" {...props}>
+                      <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                        <Avatar {...avatar} sx={{ ...avatar?.sx, width: 25, height: 25, fontSize: 12 }}></Avatar>
+                        <span>{option.label}</span>
+                      </Stack>
+                    </Box>
+                  )
+                }}
+                renderInput={params => {
+                  const avatar = stringAvatar(params?.inputProps?.value || '')
+
+                  return (
+                    <TextField
+                      {...params}
+                      size="large"
+                      placeholder="Seleccionar ..."
+                      inputProps={{
+                        ...params.inputProps
+                      }}
+                      InputProps={{
+                        ...params.InputProps,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Avatar {...avatar} sx={{ ...avatar?.sx, width: 25, height: 25, fontSize: 12 }}></Avatar>
+                          </InputAdornment>
+                        ),
+                        sx: {
+                          borderRadius: theme => Number(1),
+                          borderColor: borderColorViaboSpeiStyle
+                        }
+                      }}
+                    />
+                  )
+                }}
+              />
+            </Stack>
+            <Stack spacing={0.5}>
+              <Typography variant="caption" fontWeight={'bold'}>
+                Monto:
+              </Typography>
+              <RFTextField
+                size={'large'}
+                name={'amount'}
+                placeholder={'0.00'}
+                disabled={loading}
+                autoComplete={'off'}
+                InputProps={{
+                  startAdornment: <span style={{ marginRight: '5px' }}>$</span>,
+                  endAdornment: <span style={{ marginRight: '5px' }}>MXN</span>,
+                  inputComponent: MaskedInput,
+                  inputProps: {
+                    mask: Number,
+                    radix: '.',
+                    thousandsSeparator: ',',
+                    padFractionalZeros: true,
+                    min: 0,
+                    scale: 2,
+                    value: values.amount,
+                    onAccept: value => {
+                      setFieldValue('amount', value)
+                    }
+                  },
+                  sx: {
+                    borderRadius: theme => Number(1),
+                    borderColor: borderColorViaboSpeiStyle
+                  }
+                }}
               />
             </Stack>
 
-            <Stack sx={{ pt: 3 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                disabled={insufficient}
-                fullWidth
-                type="submit"
-                startIcon={<ArrowForwardIos />}
+            <Stack direction={'row'} spacing={1}>
+              <ButtonViaboSpei
+                type="button"
+                startIcon={<Add />}
+                disabled={loading || isDisabled}
+                onClick={() => {
+                  arrayHelpersRef.current.push({
+                    id: random,
+                    account: values?.beneficiary,
+                    amount: values?.amount
+                  })
+
+                  handleResetForm()
+                }}
+                sx={{ flexShrink: 0, color: 'text.primary' }}
               >
-                Siguiente
-              </Button>
+                Agregar Transacción
+              </ButtonViaboSpei>
             </Stack>
-          </Box>
-        </FormProvider>
-      </Scrollbar>
-    </>
+          </Stack>
+
+          <FieldArray
+            name="transactions"
+            render={arrayHelpers => {
+              arrayHelpersRef.current = arrayHelpers
+              return (
+                <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                  {values?.transactions.map((item, index) => (
+                    <Stack key={item.id}>
+                      <ListItem
+                        sx={{ px: 0 }}
+                        secondaryAction={
+                          <IconButtonAnimate
+                            color={'error'}
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            <Delete />
+                          </IconButtonAnimate>
+                        }
+                      >
+                        <ListItemAvatar>
+                          <Avatar
+                            title={item?.account?.label || ''}
+                            {...stringAvatar(item?.account?.label || '')}
+                          ></Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={<Typography variant="subtitle1">{item?.account?.clabeHidden}</Typography>}
+                          secondary={
+                            <Typography variant="subtitle1" fontWeight={'bold'}>
+                              {item?.amount}
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </Stack>
+                  ))}
+                </List>
+              )
+            }}
+          />
+
+          <RFTextField
+            fullWidth
+            name={'concept'}
+            multiline
+            disabled={loading}
+            rows={2}
+            label={'Concepto'}
+            placeholder={'Transferencia ..'}
+            InputProps={{
+              sx: {
+                borderRadius: theme => Number(1),
+                borderColor: borderColorViaboSpeiStyle
+              }
+            }}
+          />
+
+          <Stack sx={{ pt: 3 }}>
+            <ButtonViaboSpei
+              variant="contained"
+              size="large"
+              color="primary"
+              disabled={!!values?.transactions?.length <= 0}
+              fullWidth
+              type="submit"
+              startIcon={<ArrowForwardIos />}
+            >
+              Siguiente
+            </ButtonViaboSpei>
+          </Stack>
+        </Stack>
+      </FormProvider>
+    </Scrollbar>
   )
+}
+
+SpeiOutForm.propTypes = {
+  accounts: PropTypes.array,
+  initialValues: PropTypes.shape({
+    transactions: PropTypes.array,
+    beneficiary: PropTypes.any,
+    amount: PropTypes.string,
+    concept: PropTypes.string
+  }),
+  insufficient: PropTypes.any,
+  onSuccess: PropTypes.func,
+  setCurrentBalance: PropTypes.func
 }
 
 export default SpeiOutForm

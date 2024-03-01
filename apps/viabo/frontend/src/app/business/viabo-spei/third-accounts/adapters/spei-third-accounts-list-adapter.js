@@ -8,6 +8,7 @@ export const SpeiThirdAccountsListAdapter = accounts => {
       beneficiary: account?.beneficiary,
       alias: account?.alias,
       clabe: account?.interbankCLABE,
+      clabeHidden: `${account?.interbankCLABE?.replace(/.(?=.{4})/g, '*')?.slice(-8)}`,
       email: account?.email,
       phone: account?.phone,
       bank: { name: account?.shorNameBank, id: account?.bankId },

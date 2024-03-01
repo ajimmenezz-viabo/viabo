@@ -3,10 +3,8 @@ import { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { ArrowBackIos, GppGoodTwoTone } from '@mui/icons-material'
-import { LoadingButton } from '@mui/lab'
 import {
   Box,
-  Button,
   Stack,
   Table,
   TableBody,
@@ -19,6 +17,7 @@ import {
 } from '@mui/material'
 
 import { ViaboSpeiOutAdapter } from '@/app/business/viabo-spei/shared/adapters'
+import { ButtonViaboSpei, LoadingButtonViaboSpei } from '@/app/business/viabo-spei/shared/components'
 import { useCreateSpeiOut } from '@/app/business/viabo-spei/shared/hooks'
 import { Scrollbar } from '@/shared/components/scroll'
 import { fCurrency } from '@/shared/utils'
@@ -98,7 +97,7 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
                 <TableCell colSpan={1} />
                 <TableCell align="right">
                   <Stack flexDirection={'row'} gap={1} alignItems={'center'} justifyContent={'flex-end'}>
-                    <Typography>Saldo Disponible</Typography>
+                    <Typography>Saldo disponible</Typography>
                   </Stack>
                 </TableCell>
                 <TableCell align="right" width={120}>
@@ -121,7 +120,7 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
               <RowResultStyle>
                 <TableCell colSpan={1} />
                 <TableCell align="right">
-                  <Typography>Total después de movimiento</Typography>
+                  <Typography>Saldo actualizado</Typography>
                 </TableCell>
                 <TableCell align="right" width={140}>
                   <Typography>{fCurrency(total)}</Typography>
@@ -131,8 +130,8 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
           </Table>
         </TableContainer>
       </Scrollbar>
-      <Stack sx={{ p: 3 }} spacing={3}>
-        <LoadingButton
+      <Stack direction={{ md: 'row-reverse' }} sx={{ p: 3 }} gap={3}>
+        <LoadingButtonViaboSpei
           size={'large'}
           onClick={handleSubmit}
           endIcon={<GppGoodTwoTone />}
@@ -143,13 +142,20 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
           type="submit"
           sx={{ fontWeight: 'bold' }}
         >
-          Realizar
-        </LoadingButton>
+          Enviar
+        </LoadingButtonViaboSpei>
 
         {!isLoading && (
-          <Button onClick={onBack} variant="outlined" color="inherit" fullWidth startIcon={<ArrowBackIos />}>
+          <ButtonViaboSpei
+            size={'large'}
+            onClick={onBack}
+            variant="outlined"
+            color="inherit"
+            fullWidth
+            startIcon={<ArrowBackIos />}
+          >
             Regresar
-          </Button>
+          </ButtonViaboSpei>
         )}
       </Stack>
     </>

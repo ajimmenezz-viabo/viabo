@@ -12,9 +12,9 @@ import { Lodable } from '@/shared/components/lodables'
 const SpeiOutDrawer = Lodable(lazy(() => import('../components/spei-out/SpeiOutDrawer')))
 
 export const AdminDashboardSpeiResume = () => {
-  const { data, isLoading, isError, error, refetch } = useFindViaboSpeiAccountInfo()
+  const { data } = useFindViaboSpeiAccountInfo()
   const setStpAccount = useAdminDashboardSpeiStore(state => state.setStpAccount)
-  const balanceResume = useAdminDashboardSpeiStore(state => state.balanceResume)
+  const stpAccount = useAdminDashboardSpeiStore(state => state.stpAccount)
 
   useEffect(() => {
     if (data) {
@@ -26,7 +26,7 @@ export const AdminDashboardSpeiResume = () => {
     <>
       <Stack gap={3}>
         <Stack>
-          <Typography sx={{ typography: 'h2' }}>{balanceResume?.balance?.currency || '$0.00'}</Typography>
+          <Typography sx={{ typography: 'h2' }}>{stpAccount?.balanceFormat || '$0.00'}</Typography>
           <Typography sx={{ typography: 'subtitle1' }} color={'text.disabled'}>
             Total balance todas las cuentas{' '}
             <Box component={'span'} color={'info.main'}>

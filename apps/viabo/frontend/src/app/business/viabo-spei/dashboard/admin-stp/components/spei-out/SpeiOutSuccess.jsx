@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 
 import { CheckCircle } from '@mui/icons-material'
-import { Button, Divider, Link, Stack, Typography } from '@mui/material'
+import { Divider, Link, Stack, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Link as RouterLink } from 'react-router-dom'
 
+import { ButtonViaboSpei } from '@/app/business/viabo-spei/shared/components'
 import { Scrollbar } from '@/shared/components/scroll'
 
 const SpeiOutSuccess = ({ transactions = [], onFinish }) => (
@@ -54,9 +55,9 @@ const SpeiOutSuccess = ({ transactions = [], onFinish }) => (
       </Stack>
 
       <Stack sx={{ px: 9, pt: 3 }}>
-        <Button type="button" size="large" variant="contained" sx={{ fontWeight: 'bold' }} onClick={onFinish}>
+        <ButtonViaboSpei type="button" size="large" variant="contained" sx={{ fontWeight: 'bold' }} onClick={onFinish}>
           Finalizar
-        </Button>
+        </ButtonViaboSpei>
       </Stack>
     </Stack>
   </Scrollbar>

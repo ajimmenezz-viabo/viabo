@@ -23,9 +23,7 @@ final readonly class CompanyAdminsFinder
         }
 
         $company = $company->toArray();
-        $company['destinationAccount'] = $transaction['destinationAccount'];
-        $company['liquidationDate'] = $transaction['liquidationDate'];
-        $company['amount'] = $transaction['amountMoneyFormat'];
+        $company['transaction'] = $transaction;
         $this->bus->publish(new CompanyAdminsFoundDomainEvent($company['id'], $company));
     }
 }

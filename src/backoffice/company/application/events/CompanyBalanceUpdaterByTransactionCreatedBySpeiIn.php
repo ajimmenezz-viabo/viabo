@@ -21,6 +21,6 @@ final class CompanyBalanceUpdaterByTransactionCreatedBySpeiIn implements DomainE
     public function __invoke(TransactionCreatedBySpeiInDomainEvent $event): void
     {
         $transaction = $event->toPrimitives();
-        $this->updater->__invoke($transaction['destinationAccount'], $transaction['amount']);
+        $this->updater->__invoke($transaction);
     }
 }

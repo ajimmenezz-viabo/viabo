@@ -9,7 +9,7 @@ use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 
-final readonly class sendMessageToCostCenterAdminsBySpeiOut implements DomainEventSubscriber
+final readonly class sendMessageToCostCenterAdminsBySpeiOutNotRegistered implements DomainEventSubscriber
 {
     public function __construct(private EmailRepository $repository)
     {
@@ -23,35 +23,28 @@ final readonly class sendMessageToCostCenterAdminsBySpeiOut implements DomainEve
     public function __invoke(CostCenterAdminsEmailsDomainEvent $event): void
     {
         $company = $event->toPrimitives();
+        $transaction = $company['transaction'];
         $emails = $company['costCentersAdminsEmails'];
 
         if (empty($emails) || !$company['isBalanceDecreased']) {
             return;
         }
 
-        $costCenters = $this->costCentersNames($company['costCenters']);
         $email = new Email(
             $emails,
-            "Notificación de SPEI OUT Centro de Costos",
+            "Notificación a Admins Centro de Costos de SPEI OUT - No reconocida",
             'spei/notification/emails/cost.centers.admins.transaction.spei.out.not.registered.html.twig',
             [
-                'company' => $company['fiscalName'],
-                'balanceOld' => $company['balanceOld'],
-                'balance' => $company['balance'],
-                'destinationAccount' => $company['destinationAccount'],
-                'liquidationDate' => $company['liquidationDate'],
-                'costCenters' => implode(',', $costCenters)
-
+                'transactionType' => 'Operación SPEI No Reconocida',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);
-
     }
 
-    private function costCentersNames(array $costCenters): array
-    {
-        return array_map(function (array $costCenter) {
-            return $costCenter['name'];
-        }, $costCenters);
-    }
 }

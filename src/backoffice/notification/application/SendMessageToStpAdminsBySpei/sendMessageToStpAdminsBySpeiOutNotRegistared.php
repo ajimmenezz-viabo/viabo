@@ -31,12 +31,16 @@ final readonly class sendMessageToStpAdminsBySpeiOutNotRegistared implements Dom
 
         $email = new Email(
             $emails,
-            "Notificación de SPEI OUT - No reconocida",
+            "Notificación a Admins STP de SPEI OUT - No reconocida",
             'spei/notification/emails/stp.admins.transaction.spei.out.not.registered.html.twig',
             [
-                'account' => $transaction['destinationAccount'],
-                'liquidationDate' => $transaction['liquidationDate'],
-                'amount' => $transaction['amountMoneyFormat']
+                'transactionType' => 'Operación SPEI Out No Reconocida',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);

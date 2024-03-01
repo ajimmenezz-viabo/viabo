@@ -85,7 +85,7 @@ final readonly class SpeiOutTransactionRecorder
         return new Transactions($transactionsRegistered);
     }
 
-    private function updateTransactionsRegistered(Transactions $transactionsRegistered, array $transactions): void
+    private function  updateTransactionsRegistered(Transactions $transactionsRegistered, array $transactions): void
     {
         array_map(function (Transaction $transaction) use ($transactions) {
             foreach ($transactions as $transactionOut) {

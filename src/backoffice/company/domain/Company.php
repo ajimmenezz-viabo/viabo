@@ -337,26 +337,27 @@ final class Company extends AggregateRoot
 
     public function addBalance(float $amount): void
     {
-        $balanceOld = $this->balance->value();
         $this->balance = $this->balance->add($amount);
+    }
+
+    public function setEventBalanceIncreased(array $transaction): void
+    {
         $company = $this->toArray();
-        $company['balanceOld'] = $balanceOld;
+        $company['transaction'] = $transaction;
         $company['isBalanceDecreased'] = false;
         $this->record(new CompanyBalanceIncreasedDomainEvent($this->id(), $company));
     }
 
-    public function decreaseBalance(float $amount, ): void
+    public function decreaseBalance(float $amount,): void
     {
         $this->balanceOld = $this->balance->value();
         $this->balance = $this->balance->decrease($amount);
     }
 
-    public function setEventBalanceDecreased(string $destinationAccount,string $liquidationDate): void
+    public function setEventBalanceDecreased(array $transaction): void
     {
         $company = $this->toArray();
-        $company['balanceOld'] = $this->balanceOld;
-        $company['destinationAccount'] = $destinationAccount;
-        $company['liquidationDate'] = $liquidationDate;
+        $company['transaction'] = $transaction;
         $company['isBalanceDecreased'] = true;
         $this->record(new CompanyBalanceDecreasedDomainEvent($this->id(), $company));
     }

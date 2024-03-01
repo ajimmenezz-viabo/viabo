@@ -23,33 +23,28 @@ final readonly class sendMessageToCostCenterAdminsBySpeiOutUpdate implements Dom
     public function __invoke(CostCenterAdminsEmailsDomainEventByTransactionUpdated $event): void
     {
         $company = $event->toPrimitives();
+        $transaction = $company['transaction'];
         $emails = $company['costCentersAdminsEmails'];
 
         if (empty($emails)) {
             return;
         }
 
-        $costCenters = $this->costCentersNames($company['costCenters']);
         $email = new Email(
             $emails,
             "Notificación Cost Center de SPEI OUT - Actualizado",
             'spei/notification/emails/cost.centers.admins.transaction.spei.out.update.html.twig',
             [
-                'costCenters' => implode(',', $costCenters),
-                'company' => $company['fiscalName'],
-                'account' => $company['destinationAccount'],
-                'liquidationDate' => $company['liquidationDate'],
-                'amount' => $company['balance']
+                'transactionType' => 'Operación SPEI No Reconocida',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);
-
     }
 
-    private function costCentersNames(array $costCenters): array
-    {
-        return array_map(function (array $costCenter) {
-            return $costCenter['name'];
-        }, $costCenters);
-    }
 }

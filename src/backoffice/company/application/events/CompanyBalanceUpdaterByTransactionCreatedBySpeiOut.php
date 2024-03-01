@@ -21,11 +21,6 @@ final class CompanyBalanceUpdaterByTransactionCreatedBySpeiOut implements Domain
     public function __invoke(TransactionCreatedBySpeiOutNotRegisteredDomainEvent $event): void
     {
         $transaction = $event->toPrimitives();
-        $this->updater->__invoke(
-            $transaction['sourceAccount'],
-            $transaction['destinationAccount'],
-            $transaction['liquidationDate'],
-            $transaction['amount']
-        );
+        $this->updater->__invoke($transaction);
     }
 }

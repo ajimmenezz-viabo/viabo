@@ -23,6 +23,7 @@ final class sendMessageToCompanyAdminsBySpeiIn implements DomainEventSubscriber
     public function __invoke(CompanyBalanceIncreasedDomainEvent $event): void
     {
         $company = $event->toPrimitives();
+        $transaction = $company['transaction'];
         $emails = $this->companyAdminsEmails($company['users']);
 
         if (empty($emails)) {
@@ -31,12 +32,16 @@ final class sendMessageToCompanyAdminsBySpeiIn implements DomainEventSubscriber
 
         $email = new Email(
             $emails,
-            "Notificación de SPEI IN",
-            'spei/notification/emails/transaction.spei.in.html.twig',
+            "Notificación de SPEI IN - Admin",
+            'spei/notification/emails/admins.transaction.spei.in.html.twig',
             [
-                'company' => $company['fiscalName'],
-                'balanceOld' => $company['balanceOld'],
-                'balance' => $company['balance']
+                'transactionType' => 'Operación SPEI Entrante',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);

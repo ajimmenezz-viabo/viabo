@@ -23,6 +23,7 @@ final class sendMessageToCompanyAdminsBySpeiOutUpdated implements DomainEventSub
     public function __invoke(CompanyAdminsFoundDomainEvent $event): void
     {
         $company = $event->toPrimitives();
+        $transaction = $company['transaction'];
         $emails = $this->companyAdminsEmails($company['users']);
 
         if (empty($emails)) {
@@ -31,13 +32,16 @@ final class sendMessageToCompanyAdminsBySpeiOutUpdated implements DomainEventSub
 
         $email = new Email(
             $emails,
-            "Notificación Admins de SPEI OUT - Actualizado",
+            "Notificación Admins de SPEI OUT - Liquidado",
             'spei/notification/emails/admins.transaction.spei.out.updated.html.twig',
             [
-                'company' => $company['fiscalName'],
-                'amount' => $company['amount'],
-                'account' => $company['destinationAccount'],
-                'liquidationDate' => $company['liquidationDate']
+                'transactionType' => 'Operación SPEI Liquidado',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);

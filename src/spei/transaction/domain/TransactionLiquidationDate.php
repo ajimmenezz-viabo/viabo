@@ -29,4 +29,9 @@ final class TransactionLiquidationDate extends DateTimeValueObject
         $date->convertTimestampToDate($timeStamp);
         return $date;
     }
+
+    public function format(): string|null
+    {
+        return $this->value === '0000-00-00 00:00:00'? null : parent::value();
+    }
 }

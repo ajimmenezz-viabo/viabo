@@ -34,9 +34,13 @@ final readonly class SendTransactionCreated implements DomainEventSubscriber
             "Notificación de Viabo Spei - Transferencia" ,
             'spei/notification/emails/transaction.spei.html.twig' ,
             [
-                'reference' => $transaction['reference'] ,
-                'trackingKey' => $transaction['trackingKey'] ,
-                'amount' => $transaction['amountMoneyFormat']
+                'transactionType' => 'Operación SPEI Deposito',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['trackingKey'],
+                'date' => $transaction['createDate']
             ]
         );
 

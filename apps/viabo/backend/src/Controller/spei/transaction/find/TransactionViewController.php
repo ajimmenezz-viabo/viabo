@@ -17,10 +17,14 @@ final readonly class TransactionViewController extends ApiController
     {
         try {
             $transaction = $this->ask(new TransactionQuery($transactionId));
-            $data = [
-                'reference' => $transaction->data['reference'] ,
-                'trackingKey' => $transaction->data['trackingKey'] ,
-                'amount' => $transaction->data['amountMoneyFormat']
+            $data =  [
+                'transactionType' => 'Operación SPEI Deposito',
+                'amount' => $transaction->data['amountMoneyFormat'],
+                'concept' => $transaction->data['concept'],
+                'sourceAccount' => $transaction->data['sourceAccount'],
+                'destinationAccount' => $transaction->data['destinationAccount'],
+                'reference' => $transaction->data['trackingKey'],
+                'date' => $transaction->data['createDate']
             ];
             $html = $twig->render('spei/notification/emails/transaction.spei.html.twig' , $data);
             return new Response($html);

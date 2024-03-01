@@ -31,12 +31,16 @@ final readonly class sendMessageToStpAdminsBySpeiOutUpdated implements DomainEve
 
         $email = new Email(
             $emails,
-            "Notificación a Admins STP de SPEI OUT - Actualizado",
+            "Notificación a Admins STP de SPEI OUT - Liquidado",
             'spei/notification/emails/stp.admins.transaction.spei.out.updated.html.twig',
             [
-                'account' => $transaction['destinationAccount'],
-                'liquidationDate' => $transaction['liquidationDate'],
-                'amount' => $transaction['amountMoneyFormat']
+                'transactionType' => 'Operación SPEI OUT Liquidado',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);

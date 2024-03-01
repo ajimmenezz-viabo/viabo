@@ -30,9 +30,17 @@ final readonly class sendMessageToStpAdminsBySpeiIn implements DomainEventSubscr
 
         $email = new Email(
             $emails,
-            "Notificación de SPEI IN",
+            "Notificación de SPEI IN - StpAdmins",
             'spei/notification/emails/stp.admins.transaction.spei.in.html.twig',
-            ['account' => $transaction['destinationAccount'], 'amount' => $transaction['amountMoneyFormat']]
+            [
+                'transactionType' => 'Operación SPEI Entrante',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
+            ]
         );
         $this->repository->send($email);
 

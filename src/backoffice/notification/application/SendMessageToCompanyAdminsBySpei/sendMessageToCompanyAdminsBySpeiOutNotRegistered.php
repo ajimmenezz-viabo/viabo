@@ -9,7 +9,7 @@ use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 
-final class sendMessageToCompanyAdminsBySpeiOut implements DomainEventSubscriber
+final class sendMessageToCompanyAdminsBySpeiOutNotRegistered implements DomainEventSubscriber
 {
     public function __construct(private EmailRepository $repository)
     {
@@ -23,6 +23,7 @@ final class sendMessageToCompanyAdminsBySpeiOut implements DomainEventSubscriber
     public function __invoke(CompanyBalanceDecreasedDomainEvent $event): void
     {
         $company = $event->toPrimitives();
+        $transaction = $company['transaction'];
         $emails = $this->companyAdminsEmails($company['users']);
 
         if (empty($emails)) {
@@ -31,14 +32,16 @@ final class sendMessageToCompanyAdminsBySpeiOut implements DomainEventSubscriber
 
         $email = new Email(
             $emails,
-            "Notificación de SPEI OUT",
+            "Notificación a Admins de SPEI OUT - No reconocida",
             'spei/notification/emails/admins.transaction.spei.out.not.registered.html.twig',
             [
-                'company' => $company['fiscalName'],
-                'balanceOld' => $company['balanceOld'],
-                'balance' => $company['balance'],
-                'destinationAccount' => $company['destinationAccount'],
-                'liquidationDate' => $company['liquidationDate']
+                'transactionType' => 'Operación SPEI No Reconocida',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);

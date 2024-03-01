@@ -23,6 +23,7 @@ final readonly class sendMessageToCostCenterAdminsBySpeiIn implements DomainEven
     public function __invoke(CostCenterAdminsEmailsDomainEvent $event): void
     {
         $company = $event->toPrimitives();
+        $transaction = $company['transaction'];
         $emails = $company['costCentersAdminsEmails'];
 
         if (empty($emails) || $company['isBalanceDecreased']) {
@@ -32,13 +33,16 @@ final readonly class sendMessageToCostCenterAdminsBySpeiIn implements DomainEven
         $costCenters = $this->costCentersNames($company['costCenters']);
         $email = new Email(
             $emails,
-            "Notificación de SPEI IN",
-            'spei/notification/emails/cost.centers.transaction.spei.in.html.twig',
+            "Notificación de SPEI IN - Centro de Costos",
+            'spei/notification/emails/cost.centers.admins.transaction.spei.in.html.twig',
             [
-                'company' => $company['fiscalName'],
-                'balanceOld' => $company['balanceOld'],
-                'balance' => $company['balance'],
-                'costCenters' => implode(',', $costCenters)
+                'transactionType' => 'Operación SPEI Entrante',
+                'amount' => $transaction['amountMoneyFormat'],
+                'concept' => $transaction['concept'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'reference' => $transaction['stpId'],
+                'date' => $transaction['liquidationDate']
             ]
         );
         $this->repository->send($email);

@@ -16,15 +16,16 @@ final readonly class CompanyBalanceUpdaterBySpeiIn
     {
     }
 
-    public function __invoke(string $bankAccount, float $amount): void
+    public function __invoke(array $transaction): void
     {
-        $company = $this->repository->searchByBankAccount($bankAccount);
+        $company = $this->repository->searchByBankAccount($transaction['destinationAccount']);
 
         if (empty($company)) {
             return;
         }
 
-        $company->addBalance($amount);
+        $company->addBalance($transaction['amount']);
+        $company->setEventBalanceIncreased($transaction);
         $this->repository->update($company);
 
         $this->bus->publish(...$company->pullDomainEvents());

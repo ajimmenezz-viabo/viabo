@@ -71,7 +71,7 @@ const SpeiOutForm = ({ accounts, setCurrentBalance, insufficient, onSuccess, ini
   const { isSubmitting, setFieldValue, values } = formik
 
   const loading = isSubmitting
-  const isDisabled = !values?.beneficiary || values?.amount === ''
+  const isDisabled = !values?.beneficiary || values?.amount === '' || Number(values?.amount) <= 0
 
   useEffect(() => {
     const totalAmount = values.transactions?.reduce((accumulator, currentObject) => {

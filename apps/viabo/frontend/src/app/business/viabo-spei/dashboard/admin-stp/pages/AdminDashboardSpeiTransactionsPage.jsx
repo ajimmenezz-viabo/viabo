@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { ArrowBack } from '@mui/icons-material'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
@@ -16,6 +16,7 @@ export const AdminDashboardSpeiTransactionsPage = () => {
   const stpAccount = useAdminDashboardSpeiStore(state => state.stpAccount)
   const setStpAccount = useAdminDashboardSpeiStore(state => state.setStpAccount)
   const setOpenTransactions = useAdminDashboardSpeiStore(state => state.setOpenTransactions)
+  const ref = useRef(null)
 
   useEffect(() => {
     if (!stpAccount) {
@@ -29,8 +30,14 @@ export const AdminDashboardSpeiTransactionsPage = () => {
     }
   }, [data])
 
+  useEffect(() => {
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: 'instant' })
+    }
+  }, [])
+
   return (
-    <Stack gap={3}>
+    <Stack gap={3} ref={ref}>
       <Box>
         <ButtonViaboSpei
           variant="outlined"

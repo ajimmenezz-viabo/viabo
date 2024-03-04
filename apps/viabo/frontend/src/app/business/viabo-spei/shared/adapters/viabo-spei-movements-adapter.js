@@ -67,6 +67,8 @@ export const ViaboSpeiMovementsAdapter = movements => {
     }
   })
 
+  movementsAdapted.sort((a, b) => new Date(b.date.original) - new Date(a.date.original))
+
   const movementsByDay = {}
   movementsAdapted.forEach(movement => {
     const dateKey = movement.date.groupBy

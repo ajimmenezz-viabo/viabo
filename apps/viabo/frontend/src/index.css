@@ -128,7 +128,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

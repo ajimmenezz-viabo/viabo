@@ -156,7 +156,14 @@ const AdminSpeiMovementDrawer = () => {
               </Typography>
               <Typography variant="body2">{transaction?.amount?.format?.replace('-', '') ?? '-'}</Typography>
             </Stack>
-            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+            <Stack
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              spacing={1}
+              flex={1}
+              flexWrap={'wrap'}
+            >
               <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                 Clave Rastreo:
               </Typography>

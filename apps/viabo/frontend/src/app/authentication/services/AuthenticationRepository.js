@@ -20,3 +20,20 @@ export const changePassword = async password => {
   const { data } = await axios.put('/api/user/password/reset', password)
   return data
 }
+
+export const getGoogleAuthQRCode = async () => {
+  const { data } = await axios.get('/api/user/google-auth-qr')
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(Error(''))
+    }, 3000)
+  })
+}
+
+export const enableTwoAuth = async twoAuth =>
+  // const { data } = await axios.put('/api/user/two-auth/enable', twoAuth)
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('')
+    }, 3000)
+  })

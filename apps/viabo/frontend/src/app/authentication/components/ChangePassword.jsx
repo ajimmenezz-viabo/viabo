@@ -1,7 +1,5 @@
 import { lazy, useState } from 'react'
 
-import PropTypes from 'prop-types'
-
 import { WarningAmberOutlined } from '@mui/icons-material'
 import { Stack, Typography } from '@mui/material'
 
@@ -10,15 +8,18 @@ import { RightPanel } from '@/app/shared/components'
 import { Lodable } from '@/shared/components/lodables'
 import { ModalAlert } from '@/shared/components/modals'
 import { Scrollbar } from '@/shared/components/scroll'
+import { useUiSharedStore } from '@/shared/store'
 
 const ChangePasswordForm = Lodable(lazy(() => import('./ChangePasswordForm')))
 
-const ChangePassword = ({ open, setOpen }) => {
+const ChangePassword = () => {
+  const setOpenChangePassword = useUiSharedStore(state => state.setOpenChangePassword)
+  const openChangePassword = useUiSharedStore(state => state.openChangePassword)
   const [openPasswordForm, setOpenPasswordForm] = useState(false)
   const { mutate, isLoading } = useSendValidationCode()
 
   const handleClose = () => {
-    setOpen(false)
+    setOpenChangePassword(false)
   }
 
   const handleCloseForm = () => {
@@ -30,7 +31,7 @@ const ChangePassword = ({ open, setOpen }) => {
       {},
       {
         onSuccess: () => {
-          setOpen(false)
+          setOpenChangePassword(false)
           setOpenPasswordForm(true)
         }
       }
@@ -44,7 +45,7 @@ const ChangePassword = ({ open, setOpen }) => {
         typeAlert="warning"
         textButtonSuccess="Continuar"
         onClose={handleClose}
-        open={open}
+        open={openChangePassword}
         isSubmitting={isLoading}
         description={
           <Stack spacing={2}>
@@ -73,11 +74,6 @@ const ChangePassword = ({ open, setOpen }) => {
       </RightPanel>
     </>
   )
-}
-
-ChangePassword.propTypes = {
-  open: PropTypes.any,
-  setOpen: PropTypes.any
 }
 
 export default ChangePassword

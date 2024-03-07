@@ -1,5 +1,6 @@
 import { createElement, useRef, useState } from 'react'
 
+import { LockPersonTwoTone } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import {
   Box,
@@ -16,11 +17,11 @@ import {
 import { alpha } from '@mui/material/styles'
 import { Link as RouterLink } from 'react-router-dom'
 
-import ChangePassword from '@/app/authentication/components/ChangePassword'
 import { useLogout } from '@/app/authentication/hooks'
 import { MenuPopover } from '@/shared/components/containers'
 import { useUser } from '@/shared/hooks'
 import { MyAvatar } from '@/shared/layout/dashboard/header'
+import { useUiSharedStore } from '@/shared/store'
 
 const MENU_OPTIONS = [
   // {
@@ -33,9 +34,11 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
-  const [openChangePassword, setOpenChangePassword] = useState(false)
   const user = useUser()
   const { mutate: logout, isLoading } = useLogout()
+
+  const setOpenChangePassword = useUiSharedStore(state => state.setOpenChangePassword)
+  const setOpenTwoAuthConfig = useUiSharedStore(state => state.setOpenTwoAuthConfig)
 
   const handleOpen = () => {
     setOpen(true)
@@ -51,6 +54,11 @@ export default function AccountPopover() {
   const handleChangePassword = () => {
     setOpen(false)
     setOpenChangePassword(true)
+  }
+
+  const handleConfig2FA = () => {
+    setOpen(false)
+    setOpenTwoAuthConfig(true)
   }
 
   return (
@@ -108,7 +116,19 @@ export default function AccountPopover() {
         ))}
 
         <Stack sx={{ p: 2, pt: 1.5 }} gap={2}>
-          <Button fullWidth variant="outlined" color="info" onClick={handleChangePassword}>
+          {!user?.twoAuth && (
+            <Button
+              startIcon={<LockPersonTwoTone />}
+              fullWidth
+              variant="contained"
+              color="warning"
+              onClick={handleConfig2FA}
+            >
+              Habilitar 2FA
+            </Button>
+          )}
+
+          <Button fullWidth variant="contained" color="info" onClick={handleChangePassword}>
             Cambiar Contraseña
           </Button>
           <LoadingButton loading={isLoading} fullWidth variant="outlined" color="error" onClick={handleLogout}>
@@ -116,7 +136,6 @@ export default function AccountPopover() {
           </LoadingButton>
         </Stack>
       </MenuPopover>
-      <ChangePassword open={openChangePassword} setOpen={setOpenChangePassword} />
     </>
   )
 }

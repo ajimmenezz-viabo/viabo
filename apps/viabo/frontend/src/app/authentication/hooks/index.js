@@ -1,4 +1,6 @@
 export * from './useChangePassword'
+export * from './useEnableTwoAuth'
+export * from './useFindGoogleAuthenticatorQR'
 export * from './useFindModulesByUser'
 export * from './useLogout'
 export * from './useSignIn'

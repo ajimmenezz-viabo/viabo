@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from 'react'
+import { createContext, useEffect, useMemo, useReducer } from 'react'
 
 import PropTypes from 'prop-types'
 
@@ -45,6 +45,13 @@ const handlers = {
     isAuthenticated: false,
     isFetchingModules: false,
     user: null
+  }),
+  TWO_AUTH: (state, action) => ({
+    ...state,
+    user: {
+      ...state.user,
+      twoAuth: Boolean(action.payload)
+    }
   })
 }
 
@@ -55,6 +62,7 @@ const AuthContext = createContext({
   method: 'jwt',
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
+  setTwoAuth: () => Promise.resolve(),
   dispatch: () => {},
   state: initialState
 })
@@ -134,6 +142,7 @@ function AuthProvider({ children }) {
                 profile: decoded?.profile,
                 email: decoded?.email,
                 urlInit: decoded?.urlInit ?? '',
+                twoAuth: decoded?.twoAuth || false,
                 ...userModules
               }
             }
@@ -197,25 +206,32 @@ function AuthProvider({ children }) {
           name: decoded?.name,
           profile: decoded?.profile,
           email: decoded?.email,
-          urlInit: decoded?.urlInit ?? ''
+          urlInit: decoded?.urlInit ?? '',
+          twoAuth: decoded?.twoAuth || false
         }
       }
     })
   }
 
-  return (
-    <AuthContext.Provider
-      value={{
-        ...state,
-        method: 'jwt',
-        logout,
-        login,
-        dispatch
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const setTwoAuth = async isEnable => {
+    dispatch({
+      type: 'TWO_AUTH',
+      payload: isEnable
+    })
+  }
+  const values = useMemo(
+    () => ({
+      ...state,
+      method: 'jwt',
+      logout,
+      login,
+      setTwoAuth,
+      dispatch
+    }),
+    [state]
   )
+
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
 }
 
 export { AuthContext, AuthProvider }

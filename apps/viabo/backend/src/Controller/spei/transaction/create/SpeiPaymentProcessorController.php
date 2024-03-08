@@ -5,9 +5,10 @@ namespace Viabo\Backend\Controller\spei\transaction\create;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Viabo\backoffice\commerceUser\application\find\CommerceQueryByUser;
 use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
-use Viabo\backoffice\commerceUser\application\find\CommerceQueryByUser;
+use Viabo\security\authenticatorFactor\application\validation\ValidateGoogleAuthenticatorCommand;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\bank\application\find\BankQuery;
@@ -26,24 +27,29 @@ final readonly class SpeiPaymentProcessorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $this->opensslDecrypt($request->toArray());
+            $this->dispatch(new ValidateGoogleAuthenticatorCommand(
+                $tokenData['id'],
+                $tokenData['name'],
+                $data['googleAuthenticatorCode']
+            ));
             $commerce = $this->searchCommerce($tokenData['id']);
-            $user = $this->ask(new FindUserQuery($tokenData['id'] , ''));
+            $user = $this->ask(new FindUserQuery($tokenData['id'], ''));
             $externalAccounts = $this->searchExternalAccountsData($data['externalAccounts']);
             $stpAccount = $this->searchStpAccount(
-                $user->data['profile'] ,
-                $user->data['stpAccountId'] ,
+                $user->data['profile'],
+                $user->data['stpAccountId'],
                 $commerce['stpAccountId']
             );
             $this->dispatch(new SpeiProcessPaymentsCommand(
-                $tokenData['id'] ,
-                $stpAccount ,
-                $externalAccounts ,
+                $tokenData['id'],
+                $stpAccount,
+                $externalAccounts,
                 $data['concept']
             ));
 
             return new JsonResponse($this->searchTransactionUrls($externalAccounts));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -74,19 +80,19 @@ final readonly class SpeiPaymentProcessorController extends ApiController
             $externalAccount['transactionId'] = $this->generateUuid();
 
             return $externalAccount;
-        } , $externalAccounts);
+        }, $externalAccounts);
     }
 
-    private function searchStpAccount(string $profile , string $userStpAccountId , string $commerceStpAccountId): array
+    private function searchStpAccount(string $profile, string $userStpAccountId, string $commerceStpAccountId): array
     {
         $stpAccount = $this->ask(new StpAccountQuery(
-            $profile ,
-            $userStpAccountId ,
+            $profile,
+            $userStpAccountId,
             $commerceStpAccountId
         ));
         $stpAccountBalance = $this->ask(new AccountBalanceQuery(
-            $profile ,
-            $userStpAccountId ,
+            $profile,
+            $userStpAccountId,
             $commerceStpAccountId
         ));
         $stpAccount = $stpAccount->data;
@@ -98,7 +104,7 @@ final readonly class SpeiPaymentProcessorController extends ApiController
     {
         return array_map(function (array $externalAccount) {
             $transaction = $this->ask(new TransactionUrlQuery($externalAccount['transactionId']));
-            return ['url' => $transaction->data['url'] , 'externalAccount' => $externalAccount['beneficiary']];
-        } , $externalAccounts);
+            return ['url' => $transaction->data['url'], 'externalAccount' => $externalAccount['beneficiary']];
+        }, $externalAccounts);
     }
 }

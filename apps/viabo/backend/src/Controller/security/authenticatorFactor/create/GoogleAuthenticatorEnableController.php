@@ -23,8 +23,10 @@ final readonly class GoogleAuthenticatorEnableController extends ApiController
                 $data['secret'],
                 $data['code']
             ));
+            $tokenData['authenticatorFactors'] = true;
+            $token = $this->encode($tokenData);
 
-            return new JsonResponse();
+            return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }

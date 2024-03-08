@@ -41,6 +41,11 @@ final class AuthenticatorFactor extends AggregateRoot
         return $this->id->value();
     }
 
+    public function secret(): string
+    {
+        return $this->secretKey->value();
+    }
+
     public function toArray(): array
     {
         return [

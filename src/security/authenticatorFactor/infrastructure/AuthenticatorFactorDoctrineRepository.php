@@ -18,6 +18,11 @@ final class AuthenticatorFactorDoctrineRepository extends DoctrineRepository imp
         parent::__construct($SecurityEntityManager);
     }
 
+    public function save(AuthenticatorFactor $authenticator): void
+    {
+        $this->persist($authenticator);
+    }
+
     public function searchCriteria(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);

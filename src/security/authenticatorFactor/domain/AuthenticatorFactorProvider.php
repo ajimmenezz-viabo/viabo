@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class AuthenticatorFactorProvider extends StringValueObject
 {
+    public static function google(): static
+    {
+        return new static('GoogleAuthenticator');
+    }
 }

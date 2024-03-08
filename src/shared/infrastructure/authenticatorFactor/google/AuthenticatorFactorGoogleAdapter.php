@@ -12,7 +12,7 @@ use Viabo\shared\domain\utils\Crypt;
 final readonly class AuthenticatorFactorGoogleAdapter implements AuthenticatorFactorAdapter
 {
     public function __construct(
-        private GoogleAuthenticatorInterface $authenticator,
+        private GoogleAuthenticatorInterface $googleAuthenticator,
         private QRCodeAdapter                $QRCodeAdapter
     )
     {
@@ -20,9 +20,16 @@ final readonly class AuthenticatorFactorGoogleAdapter implements AuthenticatorFa
 
     public function getQRContent(string $userName): array
     {
-        $secret = $this->authenticator->generateSecret();
+        $secret = $this->googleAuthenticator->generateSecret();
         $authenticator = new GoogleAuthenticator($userName, $secret);
-        $qr = $this->QRCodeAdapter->generator('google_authenticator', $this->authenticator->getQRContent($authenticator));
+        $qr = $this->QRCodeAdapter->generator('google_authenticator', $this->googleAuthenticator->getQRContent($authenticator));
         return ['qr' => $qr, 'secret' => Crypt::encrypt($secret)];
+    }
+
+    public function checkCode(string $code, string $secret, string $userName): bool
+    {
+        $secret = Crypt::decrypt($secret);
+        $authenticator = new GoogleAuthenticator($userName, $secret);
+        return $this->googleAuthenticator->checkCode($authenticator,$code);
     }
 }

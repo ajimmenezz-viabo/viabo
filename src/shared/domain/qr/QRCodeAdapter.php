@@ -6,7 +6,7 @@ namespace Viabo\shared\domain\qr;
 
 interface QRCodeAdapter
 {
-    public function generator(string $value): string;
+    public function generator(string $name, string $data): string;
 
     public function generatorBarcode(string $value): string;
 

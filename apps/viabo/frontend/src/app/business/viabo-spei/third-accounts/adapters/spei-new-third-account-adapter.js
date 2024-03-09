@@ -5,5 +5,6 @@ export const SpeiNewThirdAccountAdapter = account => ({
   alias: account?.alias?.trim() || '',
   bankId: account?.bank?.value,
   email: account?.email?.trim() || '',
-  phone: account?.phone?.trim() || ''
+  phone: account?.phone?.trim() || '',
+  googleAuthenticatorCode: account?.googleCode.toString() || ''
 })

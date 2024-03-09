@@ -1,24 +1,34 @@
 import { useState } from 'react'
 
 import { useIsFetching, useMutation, useQuery } from '@tanstack/react-query'
+import { jwtDecode } from 'jwt-decode'
 
 import { AUTHENTICATION_KEYS } from '@/app/authentication/adapters'
 import { getUserModules, signIn } from '@/app/authentication/services'
-import { useAuth } from '@/shared/hooks'
-import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
+import { axios, getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 import { setSession } from '@/shared/utils'
 
 export const useSignIn = (options = {}) => {
   const [customError, setCustomError] = useState(null)
   const [tokenExists, setTokenExists] = useState(false)
-  const { login } = useAuth()
+  const [isTwoAuth, setIsTwoAuth] = useState(false)
+  const [token, setToken] = useState(null)
 
   const isFetching = useIsFetching([AUTHENTICATION_KEYS.USER_MODULES])
 
   const signInMutation = useMutation(signIn, {
     onSuccess: response => {
       setCustomError(null)
-      setSession(response?.token)
+      const token = response?.token
+      const decoded = jwtDecode(token)
+      const twoAuth = decoded?.authenticatorFactors || false
+      if (!twoAuth) {
+        setSession(token)
+      } else {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`
+      }
+      setToken(token)
+      setIsTwoAuth(twoAuth)
       setTokenExists(true)
     },
     onError: error => {
@@ -34,7 +44,6 @@ export const useSignIn = (options = {}) => {
 
   const userModules = useQuery([AUTHENTICATION_KEYS.USER_MODULES], getUserModules, {
     onSuccess: data => {
-      login()
       setCustomError(null)
       setTokenExists(false)
     },
@@ -56,6 +65,8 @@ export const useSignIn = (options = {}) => {
     isError: signInMutation.isError || userModules.isError,
     isSuccess: signInMutation.isSuccess && userModules.isSuccess,
     isLoading: signInMutation.isLoading || isFetching === 1,
-    error: customError ?? null
+    error: customError ?? null,
+    token,
+    isTwoAuth
   }
 }

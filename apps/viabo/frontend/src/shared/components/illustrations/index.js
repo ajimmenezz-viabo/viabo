@@ -1,3 +1,4 @@
+export { default as TwoAuthIllustration } from './illustration_2FA'
 export * from './illustration_404'
 export { default as CreditCardIllustration } from './illustration_credit_card'
 export * from './illustration_empty_data'

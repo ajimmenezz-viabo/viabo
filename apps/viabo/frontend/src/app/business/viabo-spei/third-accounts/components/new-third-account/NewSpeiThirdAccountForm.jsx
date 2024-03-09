@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { EmailOutlined, Phone } from '@mui/icons-material'
+import { EmailOutlined, Lock, Phone } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { Box, InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
@@ -25,7 +25,11 @@ const NewSpeiThirdAccountForm = ({ account, catalogBanks, onSuccess }) => {
     alias: Yup.string().trim().max(100, 'Máximo 100 caracteres'),
     bank: Yup.object().nullable().required('Es necesario el banco'),
     email: Yup.string().trim().email('Ingrese un correo valido'),
-    phone: Yup.string().trim()
+    phone: Yup.string().trim(),
+    googleCode: Yup.string()
+      .trim()
+      .min(6, 'Es necesario el código de 6 dígitos')
+      .required('Es necesario el código de 6 dígitos')
   })
 
   const formik = useFormik({
@@ -36,7 +40,8 @@ const NewSpeiThirdAccountForm = ({ account, catalogBanks, onSuccess }) => {
       rfc: account?.rfc || '',
       bank: catalogBanks?.find(bank => bank?.id === account?.bank?.id) || null,
       email: account?.email || '',
-      phone: account?.phone || ''
+      phone: account?.phone || '',
+      googleCode: ''
     },
     enableReinitialize: true,
     validationSchema: ValidationSchema,
@@ -168,6 +173,30 @@ const NewSpeiThirdAccountForm = ({ account, catalogBanks, onSuccess }) => {
           </Stack>
         </Stack>
 
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Token de Google{' '}
+            <Box component={'span'} color={'error.main'}>
+              *
+            </Box>
+          </Typography>
+          <RFTextField
+            name={'googleCode'}
+            type={'number'}
+            size={'small'}
+            placeholder={'000000'}
+            inputProps={{ maxLength: '6', inputMode: 'numeric', min: '1' }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              )
+            }}
+            disabled={loading}
+          />
+        </Stack>
+
         <Stack sx={{ pt: 1 }}>
           <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
             Crear
@@ -181,11 +210,12 @@ const NewSpeiThirdAccountForm = ({ account, catalogBanks, onSuccess }) => {
 NewSpeiThirdAccountForm.propTypes = {
   account: PropTypes.shape({
     alias: PropTypes.string,
-    bank: PropTypes.any,
+    bank: PropTypes.shape({
+      id: PropTypes.any
+    }),
     beneficiary: PropTypes.string,
     clabe: PropTypes.string,
     email: PropTypes.string,
-    name: PropTypes.string,
     phone: PropTypes.string,
     rfc: PropTypes.string
   }),

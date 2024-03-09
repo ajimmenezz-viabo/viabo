@@ -1,19 +1,33 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
+import { LockPersonRounded } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { AlertTitle, InputLabel, Link, Stack, Typography } from '@mui/material'
+import { AlertTitle, Box, CircularProgress, InputLabel, Link, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { m } from 'framer-motion'
+import { MuiOtpInput } from 'mui-one-time-password-input'
 import { Link as RouterLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
-import { useSignIn } from '@/app/authentication/hooks'
+import { useSignIn, useValidateGoogleAuthCode } from '@/app/authentication/hooks'
 import { AlertWithFocus } from '@/shared/components/alerts'
 import { MotionViewport, varFade } from '@/shared/components/animate'
 import { FormProvider, RFPasswordField, RFTextField, TypewriterTypography } from '@/shared/components/form'
+import { useAuth } from '@/shared/hooks'
+import { matchIsNumeric, setSession } from '@/shared/utils'
 
 export function LoginForm() {
-  const { mutate: login, error, isError, isLoading, isSuccess, setCustomError } = useSignIn()
+  const { login: loginContext } = useAuth()
+  const { mutate: login, error, isError, isLoading, isSuccess, setCustomError, isTwoAuth, token } = useSignIn()
+  const [showTwoAuth, setShowTwoAuth] = useState(false)
+  const [otp, setOtp] = useState('')
+  const {
+    mutate: validateCode,
+    isLoading: isValidatingCode,
+    error: errorCode,
+    isError: isErrorCode
+  } = useValidateGoogleAuthCode()
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Ingrese un correo valido').required('El correo es requerido'),
     password: Yup.string().required('La contraseña es requerida')
@@ -43,7 +57,109 @@ export function LoginForm() {
     if (isSuccess || isError) {
       setSubmitting(false)
     }
+    if (isSuccess && !isTwoAuth) {
+      loginContext()
+      setShowTwoAuth(false)
+    }
+    if (isSuccess && isTwoAuth) {
+      setShowTwoAuth(true)
+    }
   }, [isError, isSuccess])
+
+  const handleChange = newValue => {
+    setOtp(newValue)
+  }
+
+  const validateChar = value => matchIsNumeric(value)
+
+  const handleComplete = value => {
+    validateCode(
+      { googleAuthenticatorCode: value, token },
+      {
+        onSuccess: () => {
+          setSession(token)
+          setShowTwoAuth(false)
+          loginContext()
+        },
+        onError: () => {
+          setOtp('')
+          setSession(null)
+        }
+      }
+    )
+  }
+
+  if (showTwoAuth) {
+    return (
+      <MotionViewport>
+        <Stack gap={5} p={4} justifyContent={'center'} height={1}>
+          <Stack>
+            <m.div variants={varFade().inRight}>
+              <Typography
+                align="center"
+                variant="h3"
+                sx={{
+                  color: 'primary.main',
+                  fontWeight: 'fontWeightMedium'
+                }}
+              >
+                Ingresa tu código
+              </Typography>
+            </m.div>
+
+            <m.div variants={varFade().inRight}>
+              <Typography
+                align="center"
+                variant="h3"
+                sx={{
+                  color: 'primary.light',
+                  fontWeight: 'fontWeightMedium'
+                }}
+              >
+                de autentificación
+              </Typography>
+            </m.div>
+
+            <Stack justifyContent={'center'} alignItems={'center'} mt={3}>
+              <LockPersonRounded sx={{ width: 40, height: 40, color: isErrorCode ? 'error.main' : 'primary.main' }} />
+            </Stack>
+          </Stack>
+
+          <Stack justifyContent={'center'} alignItems={'center'} gap={3}>
+            <Typography
+              textAlign={'center'}
+              variant="body2"
+              fontWeight={600}
+              sx={{ color: 'text.secondary', textWrap: 'wrap' }}
+            >
+              Ingresa a la aplicación de{' '}
+              <Box component={'span'} color={'primary.main'}>
+                Google Authenticator
+              </Box>{' '}
+              y escribe el código a continuación
+            </Typography>
+            <MuiOtpInput
+              length={6}
+              value={otp}
+              onComplete={handleComplete}
+              onChange={handleChange}
+              validateChar={validateChar}
+              sx={{ gap: { xs: 1.5, sm: 2, md: 3 } }}
+              TextFieldsProps={{ placeholder: '0', disabled: isValidatingCode, error: isErrorCode }}
+            />
+          </Stack>
+          {isValidatingCode && (
+            <Stack justifyContent={'center'} alignItems={'center'} gap={3}>
+              <CircularProgress />
+              <Typography variant="body2" fontWeight={600} sx={{ color: 'text.primary', textWrap: 'wrap' }}>
+                Iniciando Sesión...
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
+      </MotionViewport>
+    )
+  }
 
   return (
     <MotionViewport>

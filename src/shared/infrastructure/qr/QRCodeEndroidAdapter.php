@@ -19,16 +19,16 @@ final class QRCodeEndroidAdapter implements QRCodeAdapter
         $this->rootDir = $params->get('kernel.project_dir') . '/public/storage';
     }
 
-    public function generator(string $value): string
+    public function generator(string $name, string $data): string
     {
-        $filename = "temp_qr_$value.png";
+        $filename = "temp_qr_$name.png";
         $filePath = "$this->rootDir/temp/qr";
 
         if (!file_exists($filePath)) {
             mkdir($filePath , 0777 , true);
         }
 
-        $qr = Builder::create()->size(200)->data($value)->build();
+        $qr = Builder::create()->size(200)->data($data)->build();
         $qr->saveToFile("$filePath/$filename");
         return URL::get() . "/storage/temp/qr/$filename";
     }

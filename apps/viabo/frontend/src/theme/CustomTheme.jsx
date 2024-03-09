@@ -6,7 +6,7 @@ import { createTheme, CssBaseline, styled, ThemeProvider } from '@mui/material'
 import { useSettings } from '@theme/hooks/useSettings'
 import { ComponentsOverrides } from '@theme/overrides/components'
 import { breakpoints, customShadows, palette, shadows, typography } from '@theme/overrides/options'
-import { Bounce, ToastContainer } from 'react-toastify'
+import { ToastContainer, Zoom } from 'react-toastify'
 
 import { viaboSpeiPalette } from '@/app/business/viabo-spei/shared/theme'
 
@@ -57,7 +57,7 @@ export const CustomTheme = ({ children }) => {
       <StyledToastContainer
         theme={theme}
         position="top-center"
-        transition={Bounce}
+        transition={Zoom}
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={true}
@@ -66,6 +66,7 @@ export const CustomTheme = ({ children }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        stacked
       />
       {children}
     </ThemeProvider>

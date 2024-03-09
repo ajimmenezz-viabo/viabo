@@ -3,13 +3,13 @@ import { lazy, useEffect } from 'react'
 import { Box, Grid, Stack, Typography } from '@mui/material'
 
 import { useFindViaboSpeiAccountInfo } from '../../../shared/hooks'
-import AdminSpeiBalance from '../components/balance/AdminSpeiBalance'
-import AdminSpeiMovements from '../components/movements/AdminSpeiMovements'
 import { useAdminDashboardSpeiStore } from '../store'
 
 import { Lodable } from '@/shared/components/lodables'
 
 const SpeiOutDrawer = Lodable(lazy(() => import('../components/spei-out/SpeiOutDrawer')))
+const AdminSpeiBalance = Lodable(lazy(() => import('../components/balance/AdminSpeiBalance')))
+const AdminSpeiMovements = Lodable(lazy(() => import('../components/movements/AdminSpeiMovements')))
 
 export const AdminDashboardSpeiResume = () => {
   const { data } = useFindViaboSpeiAccountInfo()

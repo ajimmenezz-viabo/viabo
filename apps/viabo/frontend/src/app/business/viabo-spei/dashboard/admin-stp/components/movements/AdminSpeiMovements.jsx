@@ -1,10 +1,6 @@
-import { useEffect } from 'react'
-
 import { Box, CardContent, CardHeader, Divider, Stack, alpha } from '@mui/material'
 
 import { AdminSpeiLastMovements } from './AdminSpeiLastMovements'
-
-import { useAdminDashboardSpeiStore } from '../../store'
 
 import { CardViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
 import { useFindViaboSpeiMovements } from '@/app/business/viabo-spei/shared/hooks'

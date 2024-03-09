@@ -31,7 +31,8 @@
     "picqer/php-barcode-generator": "^2.2",
     "symfony/monolog-bundle": "^3.8",
     "nelmio/api-doc-bundle": "^4.12",
-    "symfony/asset": "^6.3"
+    "symfony/asset": "^6.3",
+    "scheb/2fa-google-authenticator" : "^7.2.0"
   },
   "require-dev": {
     "behat/behat": "^3.12",

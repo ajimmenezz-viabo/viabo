@@ -8,18 +8,21 @@ import { useSpeiThirdAccounts } from '../../store'
 import { RightPanel } from '@/app/shared/components'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { Lodable } from '@/shared/components/lodables'
-import { ErrorRequestPage } from '@/shared/components/notifications'
+import { ErrorRequestPage, TwoAuthDisabled } from '@/shared/components/notifications'
 import { Scrollbar } from '@/shared/components/scroll'
+import { useUser } from '@/shared/hooks'
 
 const NewSpeiThirdAccountForm = Lodable(lazy(() => import('./NewSpeiThirdAccountForm')))
 
 const NewSpeiThirdAccountDrawer = () => {
   const { openNewAccount, setOpenNewSpeiThirdAccount, account, setSpeiThirdAccount } = useSpeiThirdAccounts()
 
-  const { data: catalogBanks, isLoading, isError, error, refetch } = useFindSpeiBanks({ enabled: false })
+  const { data: catalogBanks, isFetching: isLoading, isError, error, refetch } = useFindSpeiBanks({ enabled: false })
+
+  const { twoAuth } = useUser()
 
   useEffect(() => {
-    if (openNewAccount) {
+    if (openNewAccount && twoAuth) {
       refetch()
     }
   }, [openNewAccount])
@@ -45,8 +48,16 @@ const NewSpeiThirdAccountDrawer = () => {
           {isError && !isLoading && (
             <ErrorRequestPage errorMessage={error} titleMessage={'Lista de Bancos'} handleButton={() => refetch()} />
           )}
-          {!isError && !isLoading && openNewAccount && (
+          {!isError && !isLoading && openNewAccount && twoAuth && (
             <NewSpeiThirdAccountForm account={account} catalogBanks={catalogBanks} onSuccess={handleClose} />
+          )}
+          {!isError && !isLoading && openNewAccount && !twoAuth && (
+            <TwoAuthDisabled
+              titleMessage={'Google Authenticator'}
+              errorMessage={
+                'Para realizar esta operación debe activar y configurar el Doble Factor de Autentificación (2FA) desde su perfil.'
+              }
+            />
           )}
         </Stack>
       </Scrollbar>

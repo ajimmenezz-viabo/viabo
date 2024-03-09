@@ -1,6 +1,6 @@
 import { getCryptInfo } from '@/shared/utils'
 
-export const ViaboSpeiOutAdapter = (transactions, concept) => {
+export const ViaboSpeiOutAdapter = (transactions, concept, googleCode) => {
   const adaptedData = {
     externalAccounts: transactions?.map(transaction => ({
       id: transaction?.account?.id?.toString(),
@@ -8,7 +8,8 @@ export const ViaboSpeiOutAdapter = (transactions, concept) => {
         transaction?.amount.toString() === '' ? '0' : transaction?.amount?.toString().replace(/,/g, '')
       )
     })),
-    concept: concept?.toString() || ''
+    concept: concept?.toString() || '',
+    googleAuthenticatorCode: googleCode?.toString() || ''
   }
 
   return getCryptInfo(adaptedData)

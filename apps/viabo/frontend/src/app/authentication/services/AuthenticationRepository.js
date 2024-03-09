@@ -11,7 +11,7 @@ export const logout = async () => {
   return data
 }
 
-export const getUserModules = async () => {
+export const getUserModules = async token => {
   const { data } = await axios.get('/api/modules/user')
   return UserModulesAdapter(data)
 }
@@ -32,6 +32,8 @@ export const enableTwoAuth = async twoAuth => {
 }
 
 export const validateGoogleAuthCode = async code => {
-  const { data } = await axios.post('/api/security/google-authenticator/validate', code)
+  const { data } = await axios.post('/api/security/google-authenticator/validate', code, {
+    headers: { Authorization: `Bearer ${code?.token}` }
+  })
   return data
 }

@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-import { ArrowBackIos, GppGoodTwoTone } from '@mui/icons-material'
+import { ArrowBackIos, GppGoodTwoTone, Lock } from '@mui/icons-material'
 import {
   Box,
+  InputAdornment,
   Stack,
   Table,
   TableBody,
@@ -12,6 +13,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
   styled
 } from '@mui/material'
@@ -33,11 +35,12 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
   const { mutate, isLoading: isSending } = useCreateSpeiOut()
   const transactions = useMemo(() => data?.transactions || [], [data])
   const total = useMemo(() => (parseFloat(data?.balance) - data?.currentBalance).toFixed(2) || 0, [data])
+  const [googleCode, setGoogleCode] = useState('')
 
   const handleSubmit = () => {
     const { transactions, concept } = data
 
-    const dataAdapted = ViaboSpeiOutAdapter(transactions, concept)
+    const dataAdapted = ViaboSpeiOutAdapter(transactions, concept, googleCode)
     setTransactionLoading(true)
     mutate(dataAdapted, {
       onSuccess: data => {
@@ -129,6 +132,32 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
             </TableBody>
           </Table>
         </TableContainer>
+        <Stack spacing={1} p={3} justifyContent={'flex-end'} alignItems={'flex-end'}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Token de Google{' '}
+            <Box component={'span'} color={'error.main'}>
+              *
+            </Box>
+          </Typography>
+          <TextField
+            name={'googleCode'}
+            type={'number'}
+            size={'small'}
+            placeholder={'000000'}
+            required
+            value={googleCode}
+            onChange={e => setGoogleCode(e?.target?.value)}
+            inputProps={{ pattern: '/^-?d+.?d*$/', min: '1' }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              )
+            }}
+            disabled={isLoading}
+          />
+        </Stack>
       </Scrollbar>
       <Stack direction={{ md: 'row-reverse' }} sx={{ p: 3 }} gap={3}>
         <LoadingButtonViaboSpei
@@ -140,6 +169,7 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
           color="primary"
           fullWidth
           type="submit"
+          disabled={!googleCode}
           sx={{ fontWeight: 'bold' }}
         >
           Enviar

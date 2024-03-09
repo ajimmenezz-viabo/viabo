@@ -30,3 +30,8 @@ export const enableTwoAuth = async twoAuth => {
   const { data } = await axios.post('/api/security/google-authenticator/enable', twoAuth)
   return data
 }
+
+export const validateGoogleAuthCode = async code => {
+  const { data } = await axios.post('/api/security/google-authenticator/validate', code)
+  return data
+}

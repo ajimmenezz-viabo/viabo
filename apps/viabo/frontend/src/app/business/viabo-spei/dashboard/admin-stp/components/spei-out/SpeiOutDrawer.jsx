@@ -1,6 +1,6 @@
 import { lazy, useMemo, useState } from 'react'
 
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { m } from 'framer-motion'
 
 import { useAdminDashboardSpeiStore } from '../../store'
@@ -10,14 +10,16 @@ import { RightPanel } from '@/app/shared/components'
 import { varFade } from '@/shared/components/animate'
 import { RequestLoadingComponent } from '@/shared/components/loadings'
 import { Lodable } from '@/shared/components/lodables'
-import { ErrorRequestPage } from '@/shared/components/notifications'
+import { ErrorRequestPage, TwoAuthDisabled } from '@/shared/components/notifications'
+import { useUser } from '@/shared/hooks'
 
 const SpeiOutForm = Lodable(lazy(() => import('./SpeiOutForm')))
 const SpeiOutResume = Lodable(lazy(() => import('./SpeiOutResume')))
 const SpeiOutSuccess = Lodable(lazy(() => import('./SpeiOutSuccess')))
 
 const SpeiOutDrawer = () => {
-  const { data: accounts, isLoading, isError, error, refetch } = useFindSpeiThirdAccountsList()
+  const { twoAuth } = useUser()
+  const { data: accounts, isLoading, isError, error, refetch } = useFindSpeiThirdAccountsList({ enabled: !!twoAuth })
   const { setOpenSpeiOut, openSpeiOut, stpAccount } = useAdminDashboardSpeiStore()
 
   const [currentBalance, setCurrentBalance] = useState(0)
@@ -75,6 +77,21 @@ const SpeiOutDrawer = () => {
       initialValues={transactionForm}
     />
   )
+
+  if (!twoAuth) {
+    return (
+      <RightPanel open={openSpeiOut} handleClose={handleClose} titleElement={titleTransaction}>
+        <Stack p={3}>
+          <TwoAuthDisabled
+            titleMessage={'Google Authenticator'}
+            errorMessage={
+              'Para realizar esta operación debe activar y configurar el Doble Factor de Autentificación (2FA) desde su perfil.'
+            }
+          />
+        </Stack>
+      </RightPanel>
+    )
+  }
 
   return (
     <RightPanel open={openSpeiOut} handleClose={handleClose} titleElement={titleTransaction}>

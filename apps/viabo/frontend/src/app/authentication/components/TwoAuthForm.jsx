@@ -18,12 +18,11 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { MuiOtpInput } from 'mui-one-time-password-input'
 
-import QRExample from '@/shared/assets/img/qr-code.png'
 import { Image } from '@/shared/components/images'
 import { Scrollbar } from '@/shared/components/scroll'
-import { matchIsNumeric } from '@/shared/utils'
+import { matchIsNumeric, setSession } from '@/shared/utils'
 
-const TwoAuthForm = ({ onFinish, mutateTwoAuth }) => {
+const TwoAuthForm = ({ onFinish, mutateTwoAuth, googleCode }) => {
   const { mutate, isLoading, isSuccess } = mutateTwoAuth
 
   const [otp, setOtp] = useState('')
@@ -37,8 +36,13 @@ const TwoAuthForm = ({ onFinish, mutateTwoAuth }) => {
   const handleComplete = value => {
     setOtp('')
     mutate(
-      { code: value },
+      { code: value, secret: googleCode?.key },
       {
+        onSuccess: data => {
+          if (data?.token) {
+            setSession(data?.token)
+          }
+        },
         onError: () => {
           setOtp('')
         }
@@ -46,11 +50,9 @@ const TwoAuthForm = ({ onFinish, mutateTwoAuth }) => {
     )
   }
 
-  const handleRegenerateQR = () => {}
-
   return (
     <Scrollbar containerProps={{ sx: { flexGrow: 0, height: 'auto' } }}>
-      <Stack gap={2} p={3}>
+      <Stack gap={2} p={3} pb={6}>
         {isSuccess && <SuccessTwoAuth onFinish={onFinish} />}
         {!isSuccess && (
           <>
@@ -141,7 +143,7 @@ const TwoAuthForm = ({ onFinish, mutateTwoAuth }) => {
             ) : (
               <>
                 <Stack justifyContent={'center'} alignItems={'center'}>
-                  <Image src={QRExample} sx={{ width: 150, m: 0, p: 0 }} />
+                  <Image src={googleCode?.qr} sx={{ width: 150, m: 0, p: 0 }} />
                 </Stack>
                 <MuiOtpInput
                   length={6}
@@ -162,6 +164,10 @@ const TwoAuthForm = ({ onFinish, mutateTwoAuth }) => {
 }
 
 TwoAuthForm.propTypes = {
+  googleCode: PropTypes.shape({
+    key: PropTypes.any,
+    qr: PropTypes.any
+  }),
   mutateTwoAuth: PropTypes.shape({
     isLoading: PropTypes.any,
     isSuccess: PropTypes.any,

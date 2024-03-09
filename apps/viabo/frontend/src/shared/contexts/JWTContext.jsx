@@ -142,7 +142,7 @@ function AuthProvider({ children }) {
                 profile: decoded?.profile,
                 email: decoded?.email,
                 urlInit: decoded?.urlInit ?? '',
-                twoAuth: decoded?.twoAuth || false,
+                twoAuth: decoded?.authenticatorFactors || false,
                 ...userModules
               }
             }
@@ -207,7 +207,7 @@ function AuthProvider({ children }) {
           profile: decoded?.profile,
           email: decoded?.email,
           urlInit: decoded?.urlInit ?? '',
-          twoAuth: decoded?.twoAuth || false
+          twoAuth: decoded?.authenticatorFactors || false
         }
       }
     })

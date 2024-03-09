@@ -154,7 +154,7 @@ const TwoAuthDrawer = () => {
               src={GoogleAuth}
             />
           </Stack>
-          <TwoAuthForm onFinish={handleFinish} mutateTwoAuth={mutateTwoAuth} QRCode={data} />
+          <TwoAuthForm onFinish={handleFinish} mutateTwoAuth={mutateTwoAuth} googleCode={data} />
         </>
       )}
     </Drawer>

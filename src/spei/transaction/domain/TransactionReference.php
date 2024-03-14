@@ -12,6 +12,7 @@ final class TransactionReference extends StringValueObject
     public static function random(): static
     {
         $date = new DatePHP();
-        return new static($date->serializeDate());
+        $date = intval($date->serializeDate());
+        return new static(strval($date));
     }
 }

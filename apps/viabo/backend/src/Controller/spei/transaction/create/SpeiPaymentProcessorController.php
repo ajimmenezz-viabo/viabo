@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\backoffice\commerceUser\application\find\CommerceQueryByUser;
 use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\security\authenticatorFactor\application\validation\ValidateGoogleAuthenticatorCommand;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\transaction\application\create\SpeiProcessPaymentsCommand;
@@ -22,11 +23,11 @@ final readonly class SpeiPaymentProcessorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $request->toArray();
-//            $this->dispatch(new ValidateGoogleAuthenticatorCommand(
-//                $tokenData['id'],
-//                $tokenData['name'],
-//                $data['googleAuthenticatorCode']
-//            ));
+            $this->dispatch(new ValidateGoogleAuthenticatorCommand(
+                $tokenData['id'],
+                $tokenData['name'],
+                $data['googleAuthenticatorCode']
+            ));
             $destinationsAccounts = $this->addTransactionId($data['destinationsAccounts']);
             $this->dispatch(new SpeiProcessPaymentsCommand(
                 $tokenData['id'],

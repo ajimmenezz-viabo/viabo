@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { VIABO_SPEI_DASHBOARD_KEYS } from '../../dashboard/adapters'
 import { VIABO_SPEI_SHARED_KEYS } from '../adapters'
 import { createSpeiOut } from '../services'
 
@@ -17,7 +18,7 @@ export const useCreateSpeiOut = (options = {}) => {
       const data = await toast.promise(transactions.mutateAsync(formData, mutationOptions), {
         pending: 'Enviando Transacciones ...'
       })
-      client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.ACCOUNT_INFO])
+      client.invalidateQueries([VIABO_SPEI_DASHBOARD_KEYS.ACCOUNTS_INFO])
       client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.BALANCE_RESUME])
       client.invalidateQueries([VIABO_SPEI_SHARED_KEYS.MOVEMENTS])
       isFunction(onSuccess) && onSuccess(data)

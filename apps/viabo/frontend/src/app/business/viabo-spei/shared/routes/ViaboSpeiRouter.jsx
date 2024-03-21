@@ -7,8 +7,8 @@ const ViaboSpeiRouter = {
     {
       path: 'dashboard',
       async lazy() {
-        const { DashboardViaboSpeiByProfile } = await import('../../dashboard/DashboardViaboSpeiByProfile')
-        return { Component: DashboardViaboSpeiByProfile }
+        const { AdminDashboardViaboSpei } = await import('../../dashboard/pages/AdminDashboardViaboSpei')
+        return { Component: AdminDashboardViaboSpei }
       }
     },
     {

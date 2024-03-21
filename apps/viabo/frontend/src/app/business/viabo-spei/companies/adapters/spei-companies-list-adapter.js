@@ -1,4 +1,4 @@
-import { fCurrency } from '@/shared/utils'
+import { convertCatalogToReactSelect, fCurrency } from '@/shared/utils'
 
 export const SpeiCompaniesListAdapter = companies => {
   const companiesAdapted =
@@ -15,5 +15,5 @@ export const SpeiCompaniesListAdapter = companies => {
       }
     })) || []
 
-  return companiesAdapted
+  return convertCatalogToReactSelect(companiesAdapted, 'id', 'name')
 }

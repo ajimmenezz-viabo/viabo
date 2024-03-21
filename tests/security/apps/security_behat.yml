@@ -13,7 +13,7 @@ security_behat:
 
   suites:
     health_check:
-      paths: [ tests/security/apps/backend/healthCheck ]
+      paths: [ tests/security/apps/healthCheck ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\APIContext
     profile:

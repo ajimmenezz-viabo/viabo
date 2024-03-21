@@ -15,6 +15,9 @@ final readonly class TransactionUrlFinder
     public function __invoke(string $transactionId): TransactionResponse
     {
         $transaction = $this->finder->__invoke($transactionId);
-        return new TransactionResponse(['url' => $transaction->url()]);
+        return new TransactionResponse([
+            'url' => $transaction->url(),
+            'destinationsAccount' => $transaction->destinationName()
+        ]);
     }
 }

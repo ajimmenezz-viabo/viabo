@@ -26,7 +26,7 @@ final readonly class TransactionViewController extends ApiController
                 'reference' => $transaction->data['trackingKey'],
                 'date' => $transaction->data['createDate']
             ];
-            $html = $twig->render('spei/notification/emails/transaction.spei.html.twig' , $data);
+            $html = $twig->render('spei/notification/emails/spei.out.external.transaction.html.twig' , $data);
             return new Response($html);
         } catch (\DomainException) {
             $html = $twig->render('spei/notification/emails/transaction.spei.not.exist.html.twig');

@@ -3,9 +3,9 @@ finder-commerce-to-register:
   controller: Viabo\Backend\Controller\backoffice\company\CommerceFinderByLegalRepresentativeController
   methods: GET
 
-finder-commerces:
+finder-companies:
   path: '/api/commerces'
-  controller: Viabo\Backend\Controller\backoffice\company\CommercesFinderController
+  controller: Viabo\Backend\Controller\backoffice\company\CompaniesFinderController
   methods: GET
 
 finder-commerce-affiliates:

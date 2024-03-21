@@ -7,9 +7,9 @@ namespace Viabo\spei\notications\application\SendTransactionCreated;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
-use Viabo\spei\transaction\domain\events\TransactionCreatedDomainEvent;
+use Viabo\spei\transaction\domain\events\InternalSpeiOutTransactionCreatedDomainEvent;
 
-final readonly class SendTransactionCreated implements DomainEventSubscriber
+final readonly class SendMessageSpeiOutInternalTransactionCreated implements DomainEventSubscriber
 {
     public function __construct(private EmailRepository $repository)
     {
@@ -17,29 +17,29 @@ final readonly class SendTransactionCreated implements DomainEventSubscriber
 
     public static function subscribedTo(): array
     {
-        return [TransactionCreatedDomainEvent::class];
+        return [InternalSpeiOutTransactionCreatedDomainEvent::class];
     }
 
-    public function __invoke(TransactionCreatedDomainEvent $event): void
+    public function __invoke(InternalSpeiOutTransactionCreatedDomainEvent $event): void
     {
         $transaction = $event->toPrimitives();
-        $email = $transaction['destinationEmail'];
+        $emails = explode(',', $transaction['sourceEmail']);
 
-        if(empty($email)){
+        if (empty($emails)) {
             return;
         }
 
         $email = new Email(
-            [$email] ,
-            "Notificación de Viabo Spei - Transferencia" ,
-            'spei/notification/emails/transaction.spei.html.twig' ,
+            $emails,
+            "Notificación de Viabo Spei - Transferencia",
+            'spei/notification/emails/spei.out.internal.transaction.html.twig',
             [
                 'transactionType' => 'Operación SPEI Deposito',
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'sourceAccount' => $transaction['sourceAccount'],
                 'destinationAccount' => $transaction['destinationAccount'],
-                'reference' => $transaction['trackingKey'],
+                'reference' => $transaction['reference'],
                 'date' => $transaction['createDate']
             ]
         );

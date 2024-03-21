@@ -23,7 +23,7 @@ final readonly class AccountBalanceFinder
     ): AccountResponse
     {
         $account = $this->finder->__invoke($profileId , $userStpAccountId , $commerceStpAccountId);
-        $balance = $this->STPRepository->searchBalance($account);
+        $balance = $this->STPRepository->searchBalance($account->toArray());
 
         return new AccountResponse($this->format($balance , $account->number()));
     }

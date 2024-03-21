@@ -11,6 +11,7 @@
         <embedded name="concept" class="TransactionConcept" use-column-prefix="false"/>
         <embedded name="sourceAccount" class="TransactionSourceAccount" use-column-prefix="false"/>
         <embedded name="sourceName" class="TransactionSourceName" use-column-prefix="false"/>
+        <embedded name="sourceEmail" class="TransactionSourceEmail" use-column-prefix="false"/>
         <embedded name="destinationAccount" class="TransactionDestinationAccount" use-column-prefix="false"/>
         <embedded name="destinationName" class="TransactionDestinationName" use-column-prefix="false"/>
         <embedded name="destinationEmail" class="TransactionDestinationEmail" use-column-prefix="false"/>

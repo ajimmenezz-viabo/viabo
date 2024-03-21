@@ -3,6 +3,8 @@
 
 namespace Viabo\spei\externalAccount\application\find;
 
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 use Viabo\spei\externalAccount\domain\exceptions\ExternalAccountNotExist;
 use Viabo\spei\externalAccount\domain\ExternalAccountRepository;
 
@@ -12,14 +14,18 @@ final readonly class ExternalAccountFinder
     {
     }
 
-    public function __invoke(string $externalAccountId): ExternalAccountResponse
+    public function __invoke(string $externalAccountNumber): ExternalAccountResponse
     {
-        $externalAccount = $this->repository->search($externalAccountId);
+        $filters = Filters::fromValues([
+            ['field' => 'interbankCLABE.value', 'operator' => '=', 'value' => $externalAccountNumber],
+            ['field' => 'active.value', 'operator' => '=', 'value' => '1'],
+        ]);
+        $externalAccount = $this->repository->searchCriteria(new Criteria($filters));
 
-        if(empty($externalAccount)){
+        if (empty($externalAccount)) {
             throw new ExternalAccountNotExist();
         }
 
-        return new ExternalAccountResponse($externalAccount->toArray());
+        return new ExternalAccountResponse($externalAccount[0]->toArray());
     }
 }

@@ -9,13 +9,13 @@ use Viabo\backoffice\company\domain\CompanyView;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
-final readonly class CommercesFinder
+final readonly class CompaniesFinder
 {
     public function __construct(private CompanyRepository $repository)
     {
     }
 
-    public function __invoke(string $userProfileId): CommercesResponse
+    public function __invoke(string $userProfileId): CompaniesResponse
     {
         $filters = Filters::fromValues([]);
         $companies = $this->repository->searchViewCriteria(new Criteria($filters));
@@ -27,7 +27,7 @@ final readonly class CommercesFinder
             }));
         }
 
-        return new CommercesResponse(array_map(function (CompanyView $company) {
+        return new CompaniesResponse(array_map(function (CompanyView $company) {
             return $company->toArray();
         }, $companies));
     }

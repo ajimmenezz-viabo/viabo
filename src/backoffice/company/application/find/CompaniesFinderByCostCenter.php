@@ -13,14 +13,14 @@ final readonly class CompaniesFinderByCostCenter
     {
     }
 
-    public function __invoke(string $costCenterId): CommercesResponse
+    public function __invoke(string $costCenterId): CompaniesResponse
     {
         $companies = $this->repository->searchAll();
         $companies = array_filter($companies, function (Company $company) use ($costCenterId) {
             return $company->hasCostCenter($costCenterId);
         });
 
-        return new CommercesResponse(array_map(function (Company $company) {
+        return new CompaniesResponse(array_map(function (Company $company) {
             return $company->toArray();
         }, $companies));
     }

@@ -15,10 +15,6 @@ final readonly class StpAccountQueryHandler implements QueryHandler
 
     public function __invoke(StpAccountQuery $query): Response
     {
-        return $this->finder->__invoke(
-            $query->userProfileId ,
-            $query->userStpAccountId ,
-            $query->commerceStpAccountId
-        );
+        return $this->finder->__invoke($query->stpAccountId);
     }
 }

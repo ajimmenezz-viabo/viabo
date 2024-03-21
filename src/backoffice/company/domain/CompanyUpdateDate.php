@@ -14,4 +14,9 @@ final class CompanyUpdateDate extends DateTimeValueObject
         $date->value = '0000-00-00 00:00:00';
         return $date;
     }
+
+    public function update(string $date): static
+    {
+        return new static($date);
+    }
 }

@@ -15,4 +15,11 @@ final class TransactionReference extends StringValueObject
         $date = intval($date->serializeDate());
         return new static(strval($date));
     }
+
+    public static function fromIncrement(string $value): self
+    {
+        $value = intval($value) + 1;
+        return new self(strval($value));
+    }
+
 }

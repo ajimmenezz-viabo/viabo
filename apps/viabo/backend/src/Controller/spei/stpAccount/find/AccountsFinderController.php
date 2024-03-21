@@ -26,7 +26,7 @@ final readonly class AccountsFinderController extends ApiController
             $accounts['costCenters'] = $this->searchCostCenters();
             $accounts['companies'] = $this->searchCompanies($tokenData['profileId']);
 
-            return new JsonResponse($accounts);
+            return new JsonResponse($this->opensslEncrypt($accounts));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }

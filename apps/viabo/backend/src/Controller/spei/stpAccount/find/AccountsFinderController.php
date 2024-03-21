@@ -10,6 +10,7 @@ use Viabo\backoffice\company\application\find\CompaniesQueryByCostCenter;
 use Viabo\backoffice\company\application\find\CompaniesQueryByStpAccount;
 use Viabo\backoffice\costCenter\application\find\CostCentersQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
+use Viabo\spei\stpAccount\application\find\StpAccountQuery;
 use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
 
 
@@ -25,7 +26,7 @@ final readonly class AccountsFinderController extends ApiController
             $accounts['costCenters'] = $this->searchCostCenters();
             $accounts['companies'] = $this->searchCompanies($tokenData['profileId']);
 
-            return new JsonResponse($this->opensslEncrypt($accounts));
+            return new JsonResponse($accounts);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
@@ -73,7 +74,21 @@ final readonly class AccountsFinderController extends ApiController
     private function searchCompanies(string $userProfileId): array
     {
         $companies = $this->ask(new CompaniesQuery($userProfileId));
-        return $this->formatCompanies($companies->data);
+
+        return array_values(array_map(function (array $company) {
+            $stpAccount = '';
+            if(!empty($company['stpAccountId'])){
+                $stpAccount = $this->ask(new StpAccountQuery($company['stpAccountId']));
+                $stpAccount = $stpAccount->data['number'];
+            }
+            return [
+                'id' => $company['id'],
+                'name' => $company['fiscalName'],
+                'balance' => floatval($company['balance']),
+                'account' => $company['bankAccount'],
+                'stpAccount' => $stpAccount
+            ];
+        }, $companies->data));
     }
 
     function formatCompanies(array $companies): array

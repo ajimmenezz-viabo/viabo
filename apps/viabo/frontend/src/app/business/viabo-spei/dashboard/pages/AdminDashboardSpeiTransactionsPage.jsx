@@ -33,7 +33,7 @@ export const AdminDashboardSpeiTransactionsPage = () => {
       </Box>
 
       <Stack flexDirection={'row'} gap={3} alignItems={'center'}>
-        <Avatar {...stringAvatar('CENTRAL PAY')}></Avatar>
+        <Avatar {...stringAvatar(selectedAccount?.name || '')}></Avatar>
         <Stack>
           <Typography variant="subtitle1" color={'text.disabled'}>
             Cuenta {selectedAccount?.account?.hidden?.slice(-8)}

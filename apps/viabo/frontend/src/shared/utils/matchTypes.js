@@ -12,11 +12,23 @@ export function matchIsString(text) {
 
 export const convertCatalogToReactSelect = (data, valueObject, label, disabledProperty) =>
   data.map((item, index) => ({
-    value: item[`${valueObject}`],
-    label: item[`${label}`],
-    isDisabled: item[`${disabledProperty}`] === '0' || false,
+    value: getValueFromNestedObject(item, valueObject),
+    label: getValueFromNestedObject(item, label),
+    isDisabled: getValueFromNestedObject(item, disabledProperty) === '0' || false,
     index,
     ...item
   }))
-
+const getValueFromNestedObject = (object, propertyPath) => {
+  if (!propertyPath) return object
+  const properties = propertyPath.split('.')
+  let value = object
+  for (const property of properties) {
+    if (value && value.hasOwnProperty(property)) {
+      value = value[property]
+    } else {
+      return undefined // or whatever default value you want to return if property doesn't exist
+    }
+  }
+  return value
+}
 export const isFunction = posibleFunction => isLodashFunction(posibleFunction)

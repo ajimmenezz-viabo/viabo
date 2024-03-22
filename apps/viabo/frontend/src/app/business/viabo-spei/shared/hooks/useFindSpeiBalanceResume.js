@@ -9,10 +9,7 @@ import { getBalanceResumeViaboSpei } from '../services'
 
 import { getErrorAPI, getNotificationTypeByErrorCode } from '@/shared/interceptors'
 
-export const useFindSpeiBalanceResume = (startDate, endDate, options = {}) => {
-  if (!startDate || !endDate) {
-    return null
-  }
+export const useFindSpeiBalanceResume = (startDate, endDate, account, options = {}) => {
   const initialDate = format(startOfDay(startDate), 'yyyy-MM-dd')
   const finalDate = format(endOfDay(endDate), 'yyyy-MM-dd')
 
@@ -20,7 +17,7 @@ export const useFindSpeiBalanceResume = (startDate, endDate, options = {}) => {
 
   const query = useQuery({
     queryKey: [VIABO_SPEI_SHARED_KEYS.BALANCE_RESUME],
-    queryFn: ({ signal }) => getBalanceResumeViaboSpei(initialDate, finalDate),
+    queryFn: ({ signal }) => getBalanceResumeViaboSpei({ initialDate, endDate: finalDate, account }),
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: 300000,

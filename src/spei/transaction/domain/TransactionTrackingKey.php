@@ -15,6 +15,11 @@ final class TransactionTrackingKey extends DateTimeValueObject
         return $trackingKey;
     }
 
+    public static function empty(): static
+    {
+        return new static('');
+    }
+
     public function value(): string
     {
         return $this->value;

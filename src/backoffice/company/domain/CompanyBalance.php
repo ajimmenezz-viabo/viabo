@@ -25,4 +25,10 @@ final class CompanyBalance extends DecimalValueObject
         return new static($balance);
     }
 
+    public function increment(float $amount): static
+    {
+        $balance = $this->value + $amount;
+        return new static($balance);
+    }
+
 }

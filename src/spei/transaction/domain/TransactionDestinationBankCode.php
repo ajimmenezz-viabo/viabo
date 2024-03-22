@@ -22,4 +22,9 @@ final class TransactionDestinationBankCode extends StringValueObject
             throw new TransactionBankCodeEmpty();
         }
     }
+
+    public static function empty(): static
+    {
+        return new static('');
+    }
 }

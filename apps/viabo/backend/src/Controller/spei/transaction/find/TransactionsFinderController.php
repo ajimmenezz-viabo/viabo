@@ -18,8 +18,9 @@ final readonly class TransactionsFinderController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             $initialDate = $request->query->getString('initialDate');
             $endDate = $request->query->getString('endDate');
+            $account = $request->query->getString('account');
             $limit = $request->query->getInt('limit');
-            $transactions = $this->ask(new TransactionsQuery($initialDate, $endDate, $limit));
+            $transactions = $this->ask(new TransactionsQuery($initialDate, $endDate, $account, $limit));
 
             return new JsonResponse($transactions->data);
         } catch (\DomainException $exception) {

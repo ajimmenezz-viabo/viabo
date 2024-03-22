@@ -45,6 +45,22 @@ final class CostCenterDoctrineRepository extends DoctrineRepository implements C
         return $this->repository(CostCenterUser::class)->find($userId);
     }
 
+    public function searchByAdminUser(string $userId): array
+    {
+        $dql = "SELECT c FROM Viabo\backoffice\costCenter\domain\CostCenter c 
+                JOIN c.users u 
+                WHERE u.id = ?1";
+
+        return $this->entityManager()->createQuery($dql)
+            ->setParameter(1, $userId)
+            ->getResult();
+    }
+
+    public function searchFolioLast(): CostCenter|null
+    {
+        return $this->repository(CostCenter::class)->findOneBy([], ['folio.value' => 'desc']);
+    }
+
     public function update(CostCenter $costCenter): void
     {
         $this->entityManager()->flush($costCenter);
@@ -53,10 +69,5 @@ final class CostCenterDoctrineRepository extends DoctrineRepository implements C
     public function delete(CostCenter $costCenter): void
     {
         $this->remove($costCenter);
-    }
-
-    public function searchFolioLast(): CostCenter|null
-    {
-        return $this->repository(CostCenter::class)->findOneBy([], ['folio.value' => 'desc']);
     }
 }

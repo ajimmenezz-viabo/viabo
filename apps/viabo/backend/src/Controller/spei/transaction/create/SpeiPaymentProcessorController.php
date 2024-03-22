@@ -11,10 +11,6 @@ use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative
 use Viabo\security\authenticatorFactor\application\validation\ValidateGoogleAuthenticatorCommand;
 use Viabo\security\user\application\find\FindUserQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\spei\bank\application\find\BankQuery;
-use Viabo\spei\externalAccount\application\find\ExternalAccountQuery;
-use Viabo\spei\stpAccount\application\find\AccountBalanceQuery;
-use Viabo\spei\stpAccount\application\find\StpAccountQuery;
 use Viabo\spei\transaction\application\create\SpeiProcessPaymentsCommand;
 use Viabo\spei\transaction\application\find\TransactionUrlQuery;
 
@@ -32,79 +28,34 @@ final readonly class SpeiPaymentProcessorController extends ApiController
                 $tokenData['name'],
                 $data['googleAuthenticatorCode']
             ));
-            $commerce = $this->searchCommerce($tokenData['id']);
-            $user = $this->ask(new FindUserQuery($tokenData['id'], ''));
-            $externalAccounts = $this->searchExternalAccountsData($data['externalAccounts']);
-            $stpAccount = $this->searchStpAccount(
-                $user->data['profile'],
-                $user->data['stpAccountId'],
-                $commerce['stpAccountId']
-            );
+            $destinationsAccounts = $this->addTransactionId($data['destinationsAccounts']);
             $this->dispatch(new SpeiProcessPaymentsCommand(
                 $tokenData['id'],
-                $stpAccount,
-                $externalAccounts,
-                $data['concept']
+                $data['originBankAccount'],
+                $destinationsAccounts,
+                $data['concept'],
+                $data['internalTransaction']
             ));
 
-            return new JsonResponse($this->searchTransactionUrls($externalAccounts));
+            return new JsonResponse($this->searchTransactionUrls($destinationsAccounts));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 
-    private function searchCommerce(string $userId): array
+    private function addTransactionId(array $collection): array
     {
-        try {
-            $commerce = $this->ask(new CommerceQueryByUser($userId));
-            $commerceId = $commerce->data['commerceId'];
-        } catch (\DomainException) {
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($userId));
-            $commerceId = $commerce->data['id'];
-        }
-
-        $commerce = $this->ask(new CommerceQuery($commerceId));
-        return $commerce->data;
+        return array_map(function (array $data) {
+            $data['transactionId'] = $this->generateUuid();
+            return $data;
+        }, $collection);
     }
 
-    private function searchExternalAccountsData(array $externalAccounts): array
+    private function searchTransactionUrls(array $destinationsAccounts): array
     {
-        return array_map(function (array $externalAccount) {
-            $account = $this->ask(new ExternalAccountQuery($externalAccount['id']));
-            $bank = $this->ask(new BankQuery($account->data['bankId']));
-            $externalAccount['interbankCLABE'] = $account->data['interbankCLABE'];
-            $externalAccount['beneficiary'] = $account->data['beneficiary'];
-            $externalAccount['email'] = $account->data['email'];
-            $externalAccount['bankName'] = $bank->data['shortName'];
-            $externalAccount['bankCode'] = $bank->data['code'];
-            $externalAccount['transactionId'] = $this->generateUuid();
-
-            return $externalAccount;
-        }, $externalAccounts);
-    }
-
-    private function searchStpAccount(string $profile, string $userStpAccountId, string $commerceStpAccountId): array
-    {
-        $stpAccount = $this->ask(new StpAccountQuery(
-            $profile,
-            $userStpAccountId,
-            $commerceStpAccountId
-        ));
-        $stpAccountBalance = $this->ask(new AccountBalanceQuery(
-            $profile,
-            $userStpAccountId,
-            $commerceStpAccountId
-        ));
-        $stpAccount = $stpAccount->data;
-        $stpAccount['balance'] = $stpAccountBalance->data['balance'];
-        return $stpAccount;
-    }
-
-    private function searchTransactionUrls(array $externalAccounts): array
-    {
-        return array_map(function (array $externalAccount) {
-            $transaction = $this->ask(new TransactionUrlQuery($externalAccount['transactionId']));
-            return ['url' => $transaction->data['url'], 'externalAccount' => $externalAccount['beneficiary']];
-        }, $externalAccounts);
+        return array_map(function (array $destinationsAccount) {
+            $transaction = $this->ask(new TransactionUrlQuery($destinationsAccount['transactionId']));
+            return $transaction->data;
+        }, $destinationsAccounts);
     }
 }

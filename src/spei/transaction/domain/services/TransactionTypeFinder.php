@@ -25,4 +25,15 @@ final readonly class TransactionTypeFinder
 
         return $typeId;
     }
+
+    public function speiInType(): TransactionTypeId
+    {
+        $typeId = $this->repository->searchType('2');
+
+        if (empty($typeId)) {
+            throw new TransactionTypeIdNotExist();
+        }
+
+        return $typeId;
+    }
 }

@@ -10,8 +10,8 @@ final class StpAccountNotExist extends DomainError
 {
     public function __construct(string $message = '')
     {
-        parent::__construct();
         $this->message = $message;
+        parent::__construct();
     }
 
     public function errorCode(): int

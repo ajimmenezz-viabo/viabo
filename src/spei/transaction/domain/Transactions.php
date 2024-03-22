@@ -26,6 +26,40 @@ final class Transactions extends Collection
         return fn(array $values): Transaction => Transaction::fromSpeiIn($values, $transactionType, $statusId);
     }
 
+    public static function fromInternalSpeiOut(
+        array               $values,
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
+    ): static
+    {
+        return new static(array_map(self::TransactionBuilderInternalSpeiOut($transactionType, $statusId), $values));
+    }
+
+    private static function TransactionBuilderInternalSpeiOut(
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
+    ): callable
+    {
+        return fn(array $values): Transaction => Transaction::fromInternalSpeiOut($values, $transactionType, $statusId);
+    }
+
+    public static function fromExternalSpeiOut(
+        array               $values,
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
+    ): static
+    {
+        return new static(array_map(self::TransactionBuilderExternalSpeiOut($transactionType, $statusId), $values));
+    }
+
+    private static function TransactionBuilderExternalSpeiOut(
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
+    ): callable
+    {
+        return fn(array $values): Transaction => Transaction::fromExternalSpeiOut($values, $transactionType, $statusId);
+    }
+
     public function elements(): array
     {
         return $this->items();

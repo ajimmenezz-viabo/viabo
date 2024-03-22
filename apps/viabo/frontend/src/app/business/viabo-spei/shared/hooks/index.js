@@ -1,5 +1,4 @@
 export * from './useCreateSpeiOut'
-export * from './useFindViaboSpeiAccountInfo'
+export * from './useFindSpeiBalanceResume'
 export * from './useFindViaboSpeiMovements'
 export * from './useViaboSpeiBreadCrumbs'
-export * from './useFindSpeiBalanceResume'

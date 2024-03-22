@@ -4,22 +4,23 @@
 namespace Viabo\spei\stpAccount\application\find;
 
 
-use Viabo\spei\stpAccount\domain\services\StpAccountFinder as StpAccountFinderService;
+use Viabo\spei\stpAccount\domain\exceptions\StpAccountNotExist;
+use Viabo\spei\stpAccount\domain\StpAccountRepository;
 
 final readonly class StpAccountFinder
 {
-    public function __construct(private StpAccountFinderService $finder)
+    public function __construct(private StpAccountRepository $repository)
     {
     }
 
-    public function __invoke(
-        string $userProfileId ,
-        string $userStpAccountId ,
-        string $commerceStpAccountId
-    ): AccountResponse
+    public function __invoke(string $stpAccountId): AccountResponse
     {
-        $stpAccount = $this->finder->__invoke($userProfileId , $userStpAccountId , $commerceStpAccountId);
+        $account = $this->repository->search($stpAccountId);
 
-        return new AccountResponse($stpAccount->decrypt());
+        if (empty($account)) {
+            throw new StpAccountNotExist();
+        }
+
+        return new AccountResponse($account->decrypt());
     }
 }

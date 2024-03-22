@@ -1,2 +1,0 @@
-import{r}from"./vendor-B39b6gT1.js";import{V as e,a as o}from"./viabo-spei-paths-D6KJcfc8.js";const c=()=>{const n=r.useMemo(()=>[{name:"Inicio",href:"/"},{name:e.root.name,href:o.third_accounts},{name:"Cuentas de Terceros"}],[e,o]),s=r.useMemo(()=>[{name:"Inicio",href:"/"},{name:e.root.name,href:o.companies},{name:"Empresas"}],[e,o]),a=r.useMemo(()=>[{name:"Inicio",href:"/"},{name:e.root.name,href:o.costCenters},{name:"Centro de Costos"}],[e,o]);return{thirdAccounts:n,companies:s,costCenters:a}};export{c as u};
-//# sourceMappingURL=useViaboSpeiBreadCrumbs-DaixJMcW.js.map

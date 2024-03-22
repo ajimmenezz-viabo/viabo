@@ -18,6 +18,8 @@ interface CostCenterRepository
 
     public function searchUser(string $userId): CostCenterUser|null;
 
+    public function searchByAdminUser(string $userId): array;
+
     public function searchFolioLast(): CostCenter|null;
 
     public function update(CostCenter $costCenter): void;

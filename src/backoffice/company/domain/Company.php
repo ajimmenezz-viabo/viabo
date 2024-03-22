@@ -139,7 +139,8 @@ final class Company extends AggregateRoot
         string $rfc,
         array  $bankAccount,
         array  $assignedUsers,
-        array  $centerCosts
+        array  $centerCosts,
+        string $stpAccount
     ): static
     {
         $commercialName = empty($commercialName) ? $fiscalName : $commercialName;
@@ -165,7 +166,7 @@ final class Company extends AggregateRoot
             CompanyType::formal(),
             CompanyAllowTransactions::empty(),
             CompanyStatusId::affiliate(),
-            CompanyStpAccountId::empty(),
+            new CompanyStpAccountId($stpAccount),
             CompanyRegisterStep::concluded(),
             CompanyUpdatedByUser::empty(),
             CompanyUpdateDate::empty(),
@@ -223,6 +224,11 @@ final class Company extends AggregateRoot
     public function id(): string
     {
         return $this->id->value();
+    }
+
+    public function balance(): float
+    {
+        return $this->balance->value();
     }
 
     public function slug(): string
@@ -348,10 +354,20 @@ final class Company extends AggregateRoot
         $this->record(new CompanyBalanceIncreasedDomainEvent($this->id(), $company));
     }
 
-    public function decreaseBalance(float $amount,): void
+    public function decreaseBalance(float $amount, string $user = '', string $date = ''): void
     {
         $this->balanceOld = $this->balance->value();
         $this->balance = $this->balance->decrease($amount);
+        $this->updatedByUser = $this->updatedByUser->update($user);
+        $this->updateDate = $this->updateDate->update($date);
+    }
+
+    public function incrementBalance(float $amount, string $user = '', string $date = ''): void
+    {
+        $this->balanceOld = $this->balance->value();
+        $this->balance = $this->balance->increment($amount);
+        $this->updatedByUser = $this->updatedByUser->update($user);
+        $this->updateDate = $this->updateDate->update($date);
     }
 
     public function setEventBalanceDecreased(array $transaction): void

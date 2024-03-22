@@ -9,12 +9,10 @@ spei_behat:
       sessions:
         symfony:
           symfony: ~
-      base_url: ''
+      base_url: 'http://localhost/'
 
   suites:
-    external-account:
-      paths: [ tests/spei/apps/externalAccount ]
+    transaction:
+      paths: [ tests/spei/apps/transaction ]
       contexts:
-        - Viabo\Tests\spei\apps\context\SpeiContext
-        - Viabo\Tests\shared\infrastructure\behat\ApplicationFeatureContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext

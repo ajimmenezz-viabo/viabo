@@ -18,24 +18,13 @@ final readonly class TransactionsFinder
     {
     }
 
-    public function __invoke(string $initialDate, string $endDate, int $limit): TransactionResponse
+    public function __invoke(string $initialDate, string $endDate, string $account, int $limit): TransactionResponse
     {
-        $total = $this->searchTransactionsTotal();
-        $transactions = $this->searchTransactions($initialDate, $endDate, $limit);
-        return new TransactionResponse([
-            'transactions' => $transactions,
-            'limit' => $limit,
-            'total' => $total
-        ]);
+        $transactions = $this->searchTransactions($initialDate, $endDate, $account, $limit);
+        return new TransactionResponse($transactions);
     }
 
-    private function searchTransactionsTotal(): int
-    {
-        $transactions = $this->repository->searchAll();
-        return count($transactions);
-    }
-
-    public function searchTransactions(string $initialDate, string $endDate, int $limit): array
+    public function searchTransactions(string $initialDate, string $endDate, string $account, int $limit): array
     {
         $limit = empty($limit) ? null : $limit;
         $endDate = $this->setDefaultDateIfEmpty($endDate);
@@ -43,12 +32,17 @@ final readonly class TransactionsFinder
             ['field' => 'createDate.value', 'operator' => '>=', 'value' => "$initialDate 00:00:00"],
             ['field' => 'createDate.value', 'operator' => '<=', 'value' => $endDate]
         ]);
-        $transactions = $this->repository->searchCriteria(
-            new Criteria($filters,
-                Order::createDesc(new OrderBy('createDate.value')),
-                null,
-                $limit
-            ));
+        $filtersOr = Filters::fromValues([
+            ['field' => 'sourceAccount.value', 'operator' => '=', 'value' => $account],
+            ['field' => 'destinationAccount.value', 'operator' => '=', 'value' => $account]
+        ]);
+        $criteria = new Criteria($filters,
+            Order::createDesc(new OrderBy('createDate.value')),
+            null,
+            $limit
+        );
+        $criteria->addOr($filtersOr);
+        $transactions = $this->repository->searchCriteria($criteria);
 
         return array_map(function (Transaction $transaction) {
             $data = $transaction->toArray();

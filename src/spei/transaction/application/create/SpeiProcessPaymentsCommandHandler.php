@@ -15,10 +15,11 @@ final readonly class SpeiProcessPaymentsCommandHandler implements CommandHandler
     public function __invoke(SpeiProcessPaymentsCommand $command): void
     {
         $this->paymentProcessor->__invoke(
-            $command->userId ,
-            $command->stpAccount ,
-            $command->externalAccounts ,
-            $command->concept
+            $command->userId,
+            $command->originBankAccount,
+            $command->destinationsAccounts,
+            $command->concept,
+            $command->internalTransaction
         );
     }
 }

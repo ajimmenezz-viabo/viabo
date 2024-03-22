@@ -35,12 +35,18 @@ final readonly class DoctrineCriteriaConverter
 
     private function convertToDoctrineCriteria(): DoctrineCriteria
     {
-        return new DoctrineCriteria(
+        $criteria = new DoctrineCriteria(
             $this->buildExpression($this->criteria) ,
             $this->formatOrder($this->criteria) ,
             $this->criteria->offset() ,
             $this->criteria->limit()
         );
+
+        if ($this->criteria->hasFiltersOr()){
+            $criteria->andWhere($this->buildExpressionOr($this->criteria));
+        }
+
+        return $criteria;
     }
 
     private function buildExpression(Criteria $criteria): ?CompositeExpression
@@ -53,6 +59,14 @@ final readonly class DoctrineCriteriaConverter
         }
 
         return null;
+    }
+
+    private function buildExpressionOr(Criteria $criteria): CompositeExpression
+    {
+        return new CompositeExpression(
+            CompositeExpression::TYPE_OR,
+            array_map($this->buildComparison(), $criteria->filtersOr())
+        );
     }
 
     private function buildComparison(): callable

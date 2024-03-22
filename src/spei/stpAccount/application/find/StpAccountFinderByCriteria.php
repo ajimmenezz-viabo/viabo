@@ -26,7 +26,7 @@ final readonly class StpAccountFinderByCriteria
         }
 
         return new AccountResponse(array_map(function (StpAccount $account) {
-            return $account->decrypt();
+            return $account->toArray();
         }, $accounts));
     }
 }

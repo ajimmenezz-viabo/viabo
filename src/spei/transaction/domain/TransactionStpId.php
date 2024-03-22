@@ -10,7 +10,7 @@ final class TransactionStpId extends StringValueObject
 {
     public static function empty(): static
     {
-        return new static('');
+        return new static('0');
     }
 
     public static function create(mixed $value): static

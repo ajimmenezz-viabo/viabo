@@ -8,83 +8,84 @@ use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\utils\NumberFormat;
 use Viabo\spei\shared\domain\stp\StpRepository;
 use Viabo\spei\transaction\domain\exceptions\TransactionInsufficientBalance;
-use Viabo\spei\transaction\domain\services\StatusFinder;
-use Viabo\spei\transaction\domain\services\TransactionTypeFinder;
+use Viabo\spei\transaction\domain\services\AccountsDataFinder;
+use Viabo\spei\transaction\domain\services\OriginAccountDataFinder;
+use Viabo\spei\transaction\domain\services\TransactionsCreator;
 use Viabo\spei\transaction\domain\Transaction;
 use Viabo\spei\transaction\domain\TransactionRepository;
+use Viabo\spei\transaction\domain\Transactions;
 
 final readonly class SpeiPaymentProcessor
 {
 
     public function __construct(
-        private TransactionRepository $repository,
-        private StpRepository         $stpRepository,
-        private TransactionTypeFinder $typeFinder,
-        private StatusFinder          $statusFinder,
-        private EventBus              $bus
+        private TransactionRepository   $repository,
+        private StpRepository           $stpRepository,
+        private OriginAccountDataFinder $originAccountDataFinder,
+        private AccountsDataFinder      $accountsDataFinder,
+        private TransactionsCreator     $transactionsCreator,
+        private EventBus                $bus
     )
     {
     }
 
     public function __invoke(
         string $userId,
-        array  $stpAccount,
-        array  $externalAccounts,
-        string $concept
+        string $originBankAccount,
+        array  $destinationsAccounts,
+        string $concept,
+        bool   $internalTransaction
     ): void
     {
-        $this->ensureSufficientBalance($stpAccount['balance'], $externalAccounts);
-        $this->registerTransaction($userId, $concept, $stpAccount, $externalAccounts);
+        $originAccount = $this->originAccountDataFinder->__invoke($originBankAccount, $internalTransaction);
+        $this->ensureSufficientBalance($originAccount['balance'], $destinationsAccounts);
+
+        if ($internalTransaction) {
+            $destinationsAccounts = $this->accountsDataFinder->companies($destinationsAccounts);
+            $transactions = $this->transactionsCreator->internal(
+                $originAccount,
+                $destinationsAccounts,
+                $concept,
+                $userId
+            );
+        } else {
+            $destinationsAccounts = $this->accountsDataFinder->externalAccounts($destinationsAccounts);
+            $transactions = $this->transactionsCreator->external(
+                $originAccount,
+                $destinationsAccounts,
+                $concept,
+                $userId
+            );
+        }
+        $this->registerTransaction($transactions, $originAccount, $internalTransaction);
     }
 
-    private function ensureSufficientBalance(float $balance, array $externalAccounts): void
+    private function ensureSufficientBalance(float $balance, array $accounts): void
     {
-        $total = array_sum(array_map(function (array $externalAccount) {
-            return NumberFormat::float($externalAccount['amount']);
-        }, $externalAccounts));
+        $total = array_sum(array_map(function (array $account) {
+            return NumberFormat::float($account['amount']);
+        }, $accounts));
 
         if ($total > $balance) {
             throw new TransactionInsufficientBalance();
         }
-
     }
 
     private function registerTransaction(
-        string $userId,
-        string $concept,
-        array  $stpAccount,
-        array  $externalAccounts
+        Transactions $transactions,
+        array        $stpAccount,
+        bool         $internalTransaction
     ): void
     {
-        $outType = $this->typeFinder->speiOutType();
-        $inTransitStatus = $this->statusFinder->inTransit();
-
-        array_map(function (array $externalAccount) use (
-            $stpAccount, $concept, $userId, $outType, $inTransitStatus
-        ) {
-            $transaction = Transaction::create(
-                $outType,
-                $inTransitStatus,
-                $externalAccount['transactionId'],
-                $concept,
-                $stpAccount['number'],
-                $stpAccount['acronym'],
-                $stpAccount['company'],
-                $externalAccount['interbankCLABE'],
-                $externalAccount['beneficiary'],
-                $externalAccount['email'],
-                $externalAccount['bankCode'],
-                $externalAccount['amount'],
-                $userId
-            );
-            $transaction->setStpKeys($stpAccount['key'], $stpAccount['url']);
-            $stpData = $this->stpRepository->processPayment($transaction);
-            $transaction->updateStpData($stpData);
-            $transaction->eventCreated();
+        array_map(function (Transaction $transaction) use ($stpAccount, $internalTransaction) {
+            if (!$internalTransaction) {
+                $stpData = $this->stpRepository->processPayment($stpAccount, $transaction->toArray());
+                $transaction->updateStpData($stpData);
+                $transaction->eventExternalTransactionCreated();
+            }
             $this->repository->save($transaction);
 
             $this->bus->publish(...$transaction->pullDomainEvents());
-        },
-            $externalAccounts);
+        }, $transactions->elements());
     }
 }

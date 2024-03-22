@@ -5,22 +5,19 @@ namespace Viabo\spei\shared\infrastructure\stp;
 
 
 use Viabo\spei\shared\domain\stp\StpRepository;
-use Viabo\spei\stpAccount\domain\StpAccount;
-use Viabo\spei\transaction\domain\Transaction;
 
 final readonly class StpAPIRepository implements StpRepository
 {
-    public function searchBalance(StpAccount $stpAccount): array
+    public function searchBalance(array $stpAccount): array
     {
-        $data = $stpAccount->decrypt();
         $inputData = [
             'app' => 'getBalance',
-            'keys' => $data['key'],
-            'company' => $data['company'],
-            'account' => $data['number']
+            'keys' => $stpAccount['key'],
+            'company' => $stpAccount['company'],
+            'account' => $stpAccount['number']
         ];
 
-        $response = $this->request($inputData, $data['url']);
+        $response = $this->request($inputData, $stpAccount['url']);
         return $response['respuesta'];
     }
 
@@ -48,32 +45,29 @@ final readonly class StpAPIRepository implements StpRepository
         return $response['datos'];
     }
 
-    public function processPayment(Transaction $transaction): array
+    public function processPayment(array $stpAccount, array $transactionData): array
     {
-        $keys = $transaction->stpKeys();
-        $data = $transaction->toArray();
         $inputData = [
             'app' => 'getOrder',
-            'keys' => $keys['key'],
-            'Monto' => $data['amount'],
-            'Empresa' => $data['sourceName'],
+            'keys' => $stpAccount['key'],
+            'Monto' => $transactionData['amount'],
+            'Empresa' => $stpAccount['company'],
             'TipoPago' => 1,
-            'ClaveRastreo' => $data['trackingKey'],
-            'ConceptoPago' => $data['concept'],
-            'CuentaOrdenante' => $data['sourceAccount'],
-            'NombreOrdenante' => $data['sourceName'],
+            'ClaveRastreo' => $transactionData['trackingKey'],
+            'ConceptoPago' => $transactionData['concept'],
+            'CuentaOrdenante' => $stpAccount['number'],
+            'NombreOrdenante' => $stpAccount['company'],
             'RfcCurpOrdenante' => "ND",
-            'CuentaBeneficiario' => $data['destinationAccount'],
-            'NombreBeneficiario' => $data['destinationName'],
-            'ReferenciaNumerica' => $data['reference'],
+            'CuentaBeneficiario' => $transactionData['destinationAccount'],
+            'NombreBeneficiario' => $transactionData['destinationName'],
+            'ReferenciaNumerica' => $transactionData['reference'],
             'InstitucionOperante' => 90646,
             'RfcCurpBeneficiario' => "ND",
             'TipoCuentaOrdenante' => 40,
-            'InstitucionContraparte' => $data['destinationBankCode'],
+            'InstitucionContraparte' => $transactionData['destinationBankCode'],
             'TipoCuentaBeneficiario' => 40
         ];
-
-        return $this->request($inputData, $keys['url']);
+        return $this->request($inputData, $stpAccount['url']);
     }
 
     public function request(array $inputData, string $api)
@@ -95,7 +89,8 @@ final readonly class StpAPIRepository implements StpRepository
 
         $response = json_decode($response, true);
         if ($this->hasError($response)) {
-            throw new \DomainException("Error de API STP: {$response['mensaje']}", 403);
+            $mensaje = $response['resultado']['descripcionError'] ?? $response['mensaje'];
+            throw new \DomainException("Error de API STP: $mensaje", 403);
         }
 
         return $response;
@@ -103,6 +98,7 @@ final readonly class StpAPIRepository implements StpRepository
 
     private function hasError(array $response): bool
     {
-        return array_key_exists('estado', $response) && $response['estado'] != '0';
+        return array_key_exists('estado', $response) && $response['estado'] != '0' ||
+            isset($response['resultado']['descripcionError']);
     }
 }

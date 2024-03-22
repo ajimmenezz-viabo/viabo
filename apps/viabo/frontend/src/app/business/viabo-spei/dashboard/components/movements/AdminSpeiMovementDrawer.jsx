@@ -130,7 +130,7 @@ const AdminSpeiMovementDrawer = () => {
               <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                 Movimiento:
               </Typography>
-              <Typography variant="body2">#{transaction?.stpId ?? '-'}</Typography>
+              <Typography variant="body2">#{transaction?.stpId || transaction?.reference}</Typography>
             </Stack>
             <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
               <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>

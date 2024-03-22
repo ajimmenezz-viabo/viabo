@@ -82,7 +82,6 @@ const SpeiOutDrawer = () => {
   }
 
   const handleSuccessForm = values => {
-    console.log(values)
     setTransactionForm(values)
 
     setTransactionData({

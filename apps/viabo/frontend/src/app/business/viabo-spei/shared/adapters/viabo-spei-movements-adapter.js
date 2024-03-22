@@ -28,7 +28,7 @@ const SPEI_OPERATIONS = {
 }
 
 export const ViaboSpeiMovementsAdapter = movements => {
-  const movementsAdapted = movements?.transactions?.map(movement => {
+  const movementsAdapted = movements?.map(movement => {
     const date = movement?.liquidationDate ? movement?.liquidationDate : movement?.createDate
     return {
       id: movement?.id,

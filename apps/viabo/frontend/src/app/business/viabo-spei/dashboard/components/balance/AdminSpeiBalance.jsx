@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { NorthEast, SouthWest } from '@mui/icons-material'
 import { Grid, Stack } from '@mui/material'
 
@@ -8,7 +10,7 @@ import { AdminSpeiAccounts } from '../accounts/AdminSpeiAccounts'
 
 import { useAdminDashboardSpeiStore } from '@/app/business/viabo-spei/dashboard/store'
 
-const AdminSpeiBalance = () => {
+const AdminSpeiBalance = ({ isEmptyAccount, isLoading }) => {
   const balance = useAdminDashboardSpeiStore(state => state.balanceResume)
 
   return (
@@ -33,8 +35,13 @@ const AdminSpeiBalance = () => {
         </Grid>
       </Grid>
 
-      <AdminSpeiAccounts />
+      <AdminSpeiAccounts isEmptyAccount={isEmptyAccount} isLoading={isLoading} />
     </Stack>
   )
+}
+
+AdminSpeiBalance.propTypes = {
+  isEmptyAccount: PropTypes.any,
+  isLoading: PropTypes.any
 }
 export default AdminSpeiBalance

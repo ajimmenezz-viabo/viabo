@@ -29,6 +29,7 @@ import { usePagination } from '@/shared/hooks'
 export const AdminSpeiAllTransactions = () => {
   const setFilter = useAdminDashboardSpeiStore(state => state.setFilterMovements)
   const filterDate = useAdminDashboardSpeiStore(state => state.filterMovements)
+  const selectedAccount = useAdminDashboardSpeiStore(state => state.selectedAccount)
 
   const currentDate = new Date()
 
@@ -44,7 +45,10 @@ export const AdminSpeiAllTransactions = () => {
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
 
-  const queryMovements = useFindViaboSpeiMovements({ initialDate: startDate, endDate })
+  const queryMovements = useFindViaboSpeiMovements(
+    { initialDate: startDate, endDate, account: selectedAccount?.account?.number },
+    { enabled: !!selectedAccount?.account?.number }
+  )
 
   const movements = queryMovements?.data?.original || []
 

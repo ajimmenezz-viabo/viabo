@@ -2,12 +2,9 @@ import { ViaboSpeiMovementsAdapter, ViaboSpeiResumeBalance } from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
-export const getBalanceResumeViaboSpei = async (startDate, endDate) => {
+export const getBalanceResumeViaboSpei = async filters => {
   const { data } = await axios.get('/api/spei/transaccions/balance', {
-    params: {
-      initialDate: startDate,
-      endDate
-    }
+    params: filters
   })
 
   return ViaboSpeiResumeBalance(data)

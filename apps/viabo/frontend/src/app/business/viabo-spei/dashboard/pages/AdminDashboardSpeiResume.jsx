@@ -14,7 +14,7 @@ const AdminSpeiBalance = Lodable(lazy(() => import('../components/balance/AdminS
 const AdminSpeiMovements = Lodable(lazy(() => import('../components/movements/AdminSpeiMovements')))
 
 export const AdminDashboardSpeiResume = () => {
-  const { data } = useFindViaboSpeiAccountsInfo()
+  const { data, isLoading } = useFindViaboSpeiAccountsInfo()
   const { permissions } = useUser()
   const setStpAccountsByPermissions = useAdminDashboardSpeiStore(state => state.setStpAccountsByPermissions)
   const selectedAccount = useAdminDashboardSpeiStore(state => state.selectedAccount)
@@ -24,6 +24,8 @@ export const AdminDashboardSpeiResume = () => {
       setStpAccountsByPermissions(data, permissions)
     }
   }, [data, permissions])
+
+  const isEmptyAccount = !isLoading && !selectedAccount
 
   return (
     <>
@@ -57,10 +59,10 @@ export const AdminDashboardSpeiResume = () => {
         </Stack>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} xl={4}>
-            <AdminSpeiBalance />
+            <AdminSpeiBalance isEmptyAccount={isEmptyAccount} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12} md={6} xl={8}>
-            <AdminSpeiMovements />
+            <AdminSpeiMovements isEmptyAccount={isEmptyAccount} />
           </Grid>
         </Grid>
       </Stack>

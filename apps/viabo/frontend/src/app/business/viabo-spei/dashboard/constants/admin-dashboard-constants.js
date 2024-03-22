@@ -6,15 +6,15 @@ export const STP_ACCOUNT_TYPES = {
 
 export const getTitleAccountsByStpAccountType = type => {
   if (type === STP_ACCOUNT_TYPES.CONCENTRATOR) {
-    return 'Mis Concentradoras'
+    return 'Concentradoras'
   }
 
   if (type === STP_ACCOUNT_TYPES.COST_CENTER) {
-    return 'Mis Centros de Costos'
+    return 'Centros de Costos'
   }
 
   if (type === STP_ACCOUNT_TYPES.COMPANY) {
-    return 'Mis Empresas'
+    return 'Empresas'
   }
 
   return ''

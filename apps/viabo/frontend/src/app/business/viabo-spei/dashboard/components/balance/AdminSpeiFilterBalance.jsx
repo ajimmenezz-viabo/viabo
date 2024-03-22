@@ -10,6 +10,7 @@ export const AdminSpeiFilterBalance = () => {
   const setFilter = useAdminDashboardSpeiStore(state => state.setBalanceFilter)
   const setBalance = useAdminDashboardSpeiStore(state => state.setBalanceResume)
   const filterDate = useAdminDashboardSpeiStore(state => state.balanceFilter)
+  const selectedAccount = useAdminDashboardSpeiStore(state => state.selectedAccount)
 
   const currentDate = new Date()
   const initialStartDate = useMemo(
@@ -24,14 +25,16 @@ export const AdminSpeiFilterBalance = () => {
   const [startDate, setStartDate] = useState(initialStartDate)
   const [endDate, setEndDate] = useState(initialEndDate)
 
-  const { data, refetch, isError } = useFindSpeiBalanceResume(startDate, endDate)
+  const { data, refetch, isError } = useFindSpeiBalanceResume(startDate, endDate, selectedAccount?.account?.number, {
+    enabled: !!selectedAccount?.account?.number
+  })
 
   useEffect(() => {
-    if (startDate && endDate) {
+    if (startDate && endDate && selectedAccount?.account?.number) {
       refetch()
       setFilter({ startDate, endDate })
     }
-  }, [startDate, endDate])
+  }, [startDate, endDate, selectedAccount?.account?.number])
 
   useEffect(() => {
     if (data) {

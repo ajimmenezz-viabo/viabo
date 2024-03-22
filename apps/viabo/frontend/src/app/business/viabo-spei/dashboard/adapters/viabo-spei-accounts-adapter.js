@@ -4,7 +4,6 @@ import { convertCatalogToReactSelect, fCurrency, getDecryptInfo } from '@/shared
 
 export const ViaboSpeiAccountsAdapter = accounts => {
   const accountsDecrypted = getDecryptInfo(accounts?.ciphertext, accounts?.iv)
-  console.log(accountsDecrypted)
   if (accountsDecrypted) {
     return {
       type: getStpAccountType(accountsDecrypted?.sectionData),

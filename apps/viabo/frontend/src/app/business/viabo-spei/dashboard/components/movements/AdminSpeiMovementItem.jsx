@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 
 import {
   Avatar,
+  Box,
   Divider,
   ListItem,
   ListItemAvatar,
@@ -14,6 +15,7 @@ import {
 
 import { useAdminDashboardSpeiStore } from '../../store'
 
+import { Label } from '@/shared/components/form'
 import { stringAvatar } from '@/theme/utils'
 
 const RootStyle = styled(ListItemButton)(({ theme }) => ({
@@ -73,9 +75,16 @@ export const AdminSpeiMovementItem = ({ movement, ...others }) => {
               </Stack>
             }
             secondary={
-              <Typography sx={{ display: 'inline' }} component="span" variant="body2" color="text.secondary">
-                {movement?.date?.time}
-              </Typography>
+              <Stack flexDirection={'row'} gap={1}>
+                <Typography sx={{ display: 'inline' }} component="span" variant="body2" color="text.secondary">
+                  {movement?.date?.time}
+                </Typography>
+                <Box>
+                  <Label variant={'outlined'} color={movement?.status?.color}>
+                    {movement?.status?.name}
+                  </Label>
+                </Box>
+              </Stack>
             }
           />
         </RootStyle>
@@ -91,11 +100,18 @@ AdminSpeiMovementItem.propTypes = {
       color: PropTypes.string,
       format: PropTypes.any
     }),
+    beneficiary: PropTypes.shape({
+      name: PropTypes.any
+    }),
     date: PropTypes.shape({
       dateTime: PropTypes.any,
       time: PropTypes.any
     }),
     id: PropTypes.any,
-    movement: PropTypes.any
+    movement: PropTypes.any,
+    status: PropTypes.shape({
+      color: PropTypes.any,
+      name: PropTypes.any
+    })
   })
 }

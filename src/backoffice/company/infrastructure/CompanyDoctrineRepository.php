@@ -5,6 +5,7 @@ namespace Viabo\backoffice\company\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\company\domain\CompanyBankAccount;
 use Viabo\backoffice\company\domain\CompanyCostCenter;
@@ -43,6 +44,18 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
         return $this->repository(Company::class)->matching($criteriaConvert)->toArray();
+    }
+
+    public function searchAdminUsers(string $userId): array
+    {
+        $dql = "SELECT c FROM Viabo\backoffice\company\domain\Company c 
+                JOIN c.users u 
+                WHERE u.id = ?1";
+
+        $result = $this->entityManager()->createQuery($dql)
+            ->setParameter(1, $userId)
+            ->getResult();
+        return empty($result) ? [] : $result;
     }
 
     public function searchViewCriteria(Criteria $criteria): array
@@ -126,4 +139,5 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         $bankAccount->available();
         $this->entityManager()->flush($bankAccount);
     }
+
 }

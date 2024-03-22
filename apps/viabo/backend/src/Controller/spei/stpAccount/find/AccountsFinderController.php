@@ -5,10 +5,10 @@ namespace Viabo\Backend\Controller\spei\stpAccount\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CompaniesQuery;
+use Viabo\backoffice\company\application\find\CompaniesQueryByAdminUser;
 use Viabo\backoffice\company\application\find\CompaniesQueryByCostCenter;
 use Viabo\backoffice\company\application\find\CompaniesQueryByStpAccount;
-use Viabo\backoffice\costCenter\application\find\CostCentersQuery;
+use Viabo\backoffice\costCenter\application\find\CostCentersQueryByAdminUser;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\stpAccount\application\find\StpAccountQuery;
 use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
@@ -23,8 +23,8 @@ final readonly class AccountsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $accounts['sectionData'] = $this->defineSection($tokenData['profileId']);
             $accounts['stpAccounts'] = $this->searchStpAccounts();
-            $accounts['costCenters'] = $this->searchCostCenters();
-            $accounts['companies'] = $this->searchCompanies($tokenData['profileId']);
+            $accounts['costCenters'] = $this->searchCostCenters($tokenData['id']);
+            $accounts['companies'] = $this->searchCompanies($tokenData['id']);
 
             return new JsonResponse($this->opensslEncrypt($accounts));
         } catch (\DomainException $exception) {
@@ -59,9 +59,9 @@ final readonly class AccountsFinderController extends ApiController
         }, $stpAccounts->data);
     }
 
-    public function searchCostCenters(): array
+    public function searchCostCenters(string $userId): array
     {
-        $costCenters = $this->ask(new CostCentersQuery());
+        $costCenters = $this->ask(new CostCentersQueryByAdminUser($userId));
         return array_map(function (array $costCenter) {
             $data['id'] = $costCenter['id'];
             $data['name'] = $costCenter['name'];
@@ -71,13 +71,12 @@ final readonly class AccountsFinderController extends ApiController
         }, $costCenters->data);
     }
 
-    private function searchCompanies(string $userProfileId): array
+    private function searchCompanies(string $userId): array
     {
-        $companies = $this->ask(new CompaniesQuery($userProfileId));
-
+        $companies = $this->ask(new CompaniesQueryByAdminUser($userId));
         return array_values(array_map(function (array $company) {
             $stpAccount = '';
-            if(!empty($company['stpAccountId'])){
+            if (!empty($company['stpAccountId'])) {
                 $stpAccount = $this->ask(new StpAccountQuery($company['stpAccountId']));
                 $stpAccount = $stpAccount->data['number'];
             }
@@ -85,7 +84,7 @@ final readonly class AccountsFinderController extends ApiController
                 'id' => $company['id'],
                 'name' => $company['fiscalName'],
                 'balance' => floatval($company['balance']),
-                'account' => $company['bankAccount'],
+                'account' => implode(',', $company['bankAccounts']),
                 'stpAccount' => $stpAccount
             ];
         }, $companies->data));
@@ -98,9 +97,7 @@ final readonly class AccountsFinderController extends ApiController
                 'id' => $company['id'],
                 'name' => $company['fiscalName'],
                 'balance' => floatval($company['balance']),
-                'account' => isset($company['bankAccounts']) ?
-                    implode(',', $company['bankAccounts']) :
-                    $company['bankAccount']
+                'account' => implode(',', $company['bankAccounts'])
             ];
         }, $companies));
     }

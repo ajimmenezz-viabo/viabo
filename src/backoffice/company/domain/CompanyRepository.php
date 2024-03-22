@@ -31,6 +31,8 @@ interface CompanyRepository
 
     public function searchByBankAccount(string $bankAccount): Company| null;
 
+    public function searchAdminUsers(string $userId): array;
+
     public function update(Company $company): void;
 
     public function delete(Company $company): void;

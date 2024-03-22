@@ -9,6 +9,8 @@ use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\services\CollectionEntityFinder;
 use Viabo\backoffice\company\domain\services\CompanyValidator;
 use Viabo\shared\domain\bus\event\EventBus;
+use Viabo\shared\domain\bus\query\QueryBus;
+use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
 
 final readonly class CompanyCreator
 {
@@ -16,6 +18,7 @@ final readonly class CompanyCreator
         private CompanyRepository      $repository,
         private CompanyValidator       $validator,
         private CollectionEntityFinder $finder,
+        private QueryBus               $queryBus,
         private EventBus               $bus
     )
     {
@@ -36,6 +39,7 @@ final readonly class CompanyCreator
         $users = $this->finder->searchUsers($users);
         $bankAccount = $this->finder->searchAvailableBankAccount();
         $folio = $this->searchFolioLast();
+        $stpAccount = $this->searchStpAccount();
 
         $company = Company::createByStp(
             $userId,
@@ -46,7 +50,8 @@ final readonly class CompanyCreator
             $rfc,
             $bankAccount,
             $users,
-            $costCenters
+            $costCenters,
+            $stpAccount
         );
         $this->repository->save($company);
 
@@ -57,6 +62,12 @@ final readonly class CompanyCreator
     {
         $company = $this->repository->searchFolioLast();
         return $company->folio();
+    }
+
+    private function searchStpAccount(): string
+    {
+        $stpAccount = $this->queryBus->ask(new StpAccountsQuery());
+        return $stpAccount->data[0]['id'] ?? '';
     }
 
 }

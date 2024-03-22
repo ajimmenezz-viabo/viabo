@@ -139,7 +139,8 @@ final class Company extends AggregateRoot
         string $rfc,
         array  $bankAccount,
         array  $assignedUsers,
-        array  $centerCosts
+        array  $centerCosts,
+        string $stpAccount
     ): static
     {
         $commercialName = empty($commercialName) ? $fiscalName : $commercialName;
@@ -165,7 +166,7 @@ final class Company extends AggregateRoot
             CompanyType::formal(),
             CompanyAllowTransactions::empty(),
             CompanyStatusId::affiliate(),
-            CompanyStpAccountId::empty(),
+            new CompanyStpAccountId($stpAccount),
             CompanyRegisterStep::concluded(),
             CompanyUpdatedByUser::empty(),
             CompanyUpdateDate::empty(),

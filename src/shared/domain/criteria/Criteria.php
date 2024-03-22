@@ -4,15 +4,17 @@
 namespace Viabo\shared\domain\criteria;
 
 
-final readonly class Criteria
+final class Criteria
 {
+    private Filters $or;
     public function __construct(
-        private Filters $filters ,
-        private Order   $order = new Order(new OrderBy('') , OrderType::NONE) ,
-        private ?int    $offset = null ,
-        private ?int    $limit = null
+        private readonly Filters $filters ,
+        private readonly Order   $order = new Order(new OrderBy('') , OrderType::NONE) ,
+        private readonly ?int    $offset = null ,
+        private readonly ?int    $limit = null
     )
     {
+        $this->or = new Filters([]);
     }
 
     public function hasFilters(): bool
@@ -48,6 +50,21 @@ final readonly class Criteria
     public function limit(): ?int
     {
         return $this->limit;
+    }
+
+    public function addOr(Filters $filters): void
+    {
+        $this->or = $filters;
+    }
+
+    public function hasFiltersOr(): bool
+    {
+        return $this->or->count() > 0;
+    }
+
+    public function filtersOr(): array
+    {
+        return $this->or->get();
     }
 
     public function serialize(): string

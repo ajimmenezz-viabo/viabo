@@ -16,10 +16,10 @@ final readonly class TransactionsBalanceFinder
     {
     }
 
-    public function __invoke(string $initialDate, string $endDate): TransactionResponse
+    public function __invoke(string $initialDate, string $endDate, string $account): TransactionResponse
     {
         $this->ensureDates($initialDate, $endDate);
-        $transactions = $this->searchTransactions("$initialDate 00:00:00", "$endDate 23:59:59");
+        $transactions = $this->searchTransactions($initialDate, $endDate, $account);
         $speisIn = $this->filterSpeiIn($transactions);
         $totalSpeiInAmount = $this->calculateSpeiInTransactionTotalAmount($speisIn);
         $speisOut = $this->filterSpeiOut($transactions);
@@ -41,13 +41,20 @@ final readonly class TransactionsBalanceFinder
         }
     }
 
-    private function searchTransactions(string $initialDate, string $endDate): array
+    private function searchTransactions(string $initialDate, string $endDate, $account): array
     {
         $filters = Filters::fromValues([
-            ['field' => 'createDate.value', 'operator' => '>=', 'value' => $initialDate],
-            ['field' => 'createDate.value', 'operator' => '<=', 'value' => $endDate]
+            ['field' => 'createDate.value', 'operator' => '>=', 'value' => "$initialDate 00:00:00"],
+            ['field' => 'createDate.value', 'operator' => '<=', 'value' => "$endDate 23:59:59"],
         ]);
-        return $this->repository->searchCriteria(new Criteria($filters));
+        $filtersOr = Filters::fromValues([
+            ['field' => 'sourceAccount.value', 'operator' => '=', 'value' => $account],
+            ['field' => 'destinationAccount.value', 'operator' => '=', 'value' => $account]
+        ]);
+
+        $criteria = new Criteria($filters);
+        $criteria->addOr($filtersOr);
+        return $this->repository->searchCriteria($criteria);
     }
 
     public function filterSpeiIn(array $transactions): array

@@ -15,6 +15,6 @@ final readonly class TransactionsBalanceQueryHandler implements QueryHandler
 
     public function __invoke(TransactionsBalanceQuery $query): Response
     {
-        return $this->finder->__invoke($query->initialDate, $query->endDate);
+        return $this->finder->__invoke($query->initialDate, $query->endDate, $query->account);
     }
 }

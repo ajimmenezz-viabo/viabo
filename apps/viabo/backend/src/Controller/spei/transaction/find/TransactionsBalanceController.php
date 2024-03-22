@@ -18,7 +18,8 @@ final readonly class TransactionsBalanceController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             $initialDate = $request->query->getString('initialDate');
             $endDate = $request->query->getString('endDate');
-            $transactionsBalance = $this->ask(new TransactionsBalanceQuery($initialDate, $endDate));
+            $account = $request->query->getString('account');
+            $transactionsBalance = $this->ask(new TransactionsBalanceQuery($initialDate, $endDate, $account));
 
             return new JsonResponse($transactionsBalance->data);
         } catch (\DomainException $exception) {

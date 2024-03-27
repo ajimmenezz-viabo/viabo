@@ -37,7 +37,7 @@ final readonly class AccountsFinderController extends ApiController
         return match ($profileId) {
             '5' => 'stpAccounts',
             '6' => 'costCenters',
-            '3' => 'companies'
+            '7' => 'companies'
         };
     }
 

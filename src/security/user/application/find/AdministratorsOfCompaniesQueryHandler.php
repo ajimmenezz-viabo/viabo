@@ -15,7 +15,7 @@ final readonly class AdministratorsOfCompaniesQueryHandler implements QueryHandl
 
     public function __invoke(AdministratorsOfCompaniesQuery $query): Response
     {
-        $administratorCompanies = '3';
+        $administratorCompanies = '7';
         $filters = [
             ['field' => 'profile.value', 'operator' => '=', 'value' => $administratorCompanies],
             ['field' => 'active.value', 'operator' => '=', 'value' => '1']

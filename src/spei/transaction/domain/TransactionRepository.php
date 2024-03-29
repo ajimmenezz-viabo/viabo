@@ -20,5 +20,7 @@ interface TransactionRepository
 
     public function searchStatus(string $id): TransactionStatusId|null;
 
+    public function searchByAccount(string $initialDate, string $endDate, string $account, ?int $limit): array;
+
     public function update(Transaction $transaction): void;
 }

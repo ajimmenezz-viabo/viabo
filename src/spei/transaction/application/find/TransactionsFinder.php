@@ -4,10 +4,6 @@
 namespace Viabo\spei\transaction\application\find;
 
 
-use Viabo\shared\domain\criteria\Criteria;
-use Viabo\shared\domain\criteria\Filters;
-use Viabo\shared\domain\criteria\Order;
-use Viabo\shared\domain\criteria\OrderBy;
 use Viabo\shared\domain\utils\DatePHP;
 use Viabo\spei\transaction\domain\Transaction;
 use Viabo\spei\transaction\domain\TransactionRepository;
@@ -28,21 +24,7 @@ final readonly class TransactionsFinder
     {
         $limit = empty($limit) ? null : $limit;
         $endDate = $this->setDefaultDateIfEmpty($endDate);
-        $filters = Filters::fromValues([
-            ['field' => 'createDate.value', 'operator' => '>=', 'value' => "$initialDate 00:00:00"],
-            ['field' => 'createDate.value', 'operator' => '<=', 'value' => $endDate]
-        ]);
-        $filtersOr = Filters::fromValues([
-            ['field' => 'sourceAccount.value', 'operator' => '=', 'value' => $account],
-            ['field' => 'destinationAccount.value', 'operator' => '=', 'value' => $account]
-        ]);
-        $criteria = new Criteria($filters,
-            Order::createDesc(new OrderBy('createDate.value')),
-            null,
-            $limit
-        );
-        $criteria->addOr($filtersOr);
-        $transactions = $this->repository->searchCriteria($criteria);
+        $transactions = $this->repository->searchByAccount("$initialDate 00:00:00", $endDate, $account, $limit);
 
         return array_map(function (Transaction $transaction) {
             $data = $transaction->toArray();
@@ -61,8 +43,7 @@ final readonly class TransactionsFinder
     private function setDefaultDateIfEmpty(string $endDate): string
     {
         $date = new DatePHP();
-        $endDate = empty($endDate) ? $date->now() : $endDate;
-        return "$endDate 23:59:59";
+        return empty($endDate) ? $date->now() : "$endDate 23:59:59";
     }
 
 }

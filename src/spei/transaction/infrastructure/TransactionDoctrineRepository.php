@@ -51,6 +51,23 @@ final class TransactionDoctrineRepository extends DoctrineRepository implements 
         return $this->repository(TransactionStatusId::class)->find($id);
     }
 
+    public function searchByAccount(string $initialDate, string $endDate, string $account, ?int $limit): array
+    {
+        $dql = 'SELECT t FROM Viabo\spei\transaction\domain\Transaction t 
+             JOIN t.typeId tp    
+             WHERE t.createDate.value BETWEEN :initialDate  and :endDate
+             and (tp.id = 1 and t.sourceAccount.value = :sourceAccount) 
+             OR (tp.id = 2 and t.destinationAccount.value = :destinationAccount)
+             ORDER BY t.createDate.value';
+        $query = $this->entityManager()->createQuery($dql);
+        $query->setParameter('initialDate', $initialDate);
+        $query->setParameter('endDate', $endDate);
+        $query->setParameter('sourceAccount', $account);
+        $query->setParameter('destinationAccount', $account);
+        $query->setMaxResults($limit);
+        return $query->getResult();
+    }
+
     public function update(Transaction $transaction): void
     {
         $this->entityManager()->flush($transaction);

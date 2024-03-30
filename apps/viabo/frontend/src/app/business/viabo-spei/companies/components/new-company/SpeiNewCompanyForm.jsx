@@ -24,9 +24,24 @@ import ViaboCard from '@/shared/assets/img/viabo-card.png'
 import { FormProvider, IOSSwitch, RFSelect, RFTextField } from '@/shared/components/form'
 import { Image } from '@/shared/components/images'
 
+const MIN_AMOUNT = 0
+const MAX_AMOUNT_PERCENTAGE = 15
+const MAX_AMOUNT = 20
+const STEP = 0.1
+
 const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company }) => {
   const { mutate, isLoading } = useCreateNewSpeiCompany()
   const { mutate: updateCompany, isLoading: isUpdatingCompany } = useUpdateSpeiCompany()
+
+  const percentageValidation = Yup.number()
+    .min(MIN_AMOUNT, 'El valor mínimo es 0')
+    .max(MAX_AMOUNT_PERCENTAGE, 'El valor máximo es 15')
+    .required('El valor es requerido')
+
+  const amountValidation = Yup.number()
+    .min(MIN_AMOUNT, 'El valor mínimo es 0')
+    .max(MAX_AMOUNT, 'El valor máximo es 20')
+    .required('El valor es requerido')
 
   const ValidationSchema = Yup.object().shape({
     fiscalName: Yup.string().trim().required('Es necesario el nombre fiscal'),
@@ -61,7 +76,11 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
       }),
     adminPhone: Yup.string().trim(),
     hasViaboCard: Yup.bool(),
-    costCenters: Yup.array()
+    costCenters: Yup.array(),
+    speiOut: percentageValidation,
+    internalTransferCompany: percentageValidation,
+    fee: amountValidation,
+    speiIn: percentageValidation
   })
 
   const formik = useFormik({
@@ -76,7 +95,11 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
       adminLastName: '',
       adminEmail: '',
       adminPhone: '',
-      hasViaboCard: false
+      hasViaboCard: false,
+      speiOut: company?.commissions?.speiOut || 0,
+      internalTransferCompany: company?.commissions?.internalTransferCompany || 0,
+      fee: company?.commissions?.fee || 0,
+      speiIn: company?.commissions?.speiIn || 0
     },
     enableReinitialize: true,
     validationSchema: ValidationSchema,
@@ -341,6 +364,89 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
           </Stack>
         </Stack>
 
+        <Stack spacing={2}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Comisiones de salida
+          </Typography>
+          <Stack gap={3}>
+            <RFTextField
+              name="speiOut"
+              placeholder="0.0"
+              label="SPEI Out - Terceros"
+              size={'small'}
+              type="number"
+              required={true}
+              disabled={isLoading}
+              InputLabelProps={{
+                shrink: true
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="start">%</InputAdornment>
+              }}
+              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT_PERCENTAGE, step: STEP }}
+            />
+
+            <RFTextField
+              name="internalTransferCompany"
+              placeholder="0.0"
+              label="Transferencia Interna - Empresas"
+              size={'small'}
+              type="number"
+              required={true}
+              disabled={isLoading}
+              InputLabelProps={{
+                shrink: true
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="start">%</InputAdornment>
+              }}
+              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT_PERCENTAGE, step: STEP }}
+            />
+
+            <RFTextField
+              name="fee"
+              placeholder="0.0"
+              size={'small'}
+              label="Fee - STP"
+              type="number"
+              required={true}
+              disabled={isLoading}
+              InputLabelProps={{
+                shrink: true
+              }}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                endAdornment: <InputAdornment position="start">MXN</InputAdornment>
+              }}
+              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT, step: STEP }}
+            />
+          </Stack>
+        </Stack>
+
+        <Stack spacing={2}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Comisiones de entrada
+          </Typography>
+          <Stack gap={3}>
+            <RFTextField
+              name="speiIn"
+              placeholder="0.0"
+              label="SPEI In - Externo"
+              size={'small'}
+              type="number"
+              required={true}
+              disabled={isLoading}
+              InputLabelProps={{
+                shrink: true
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="start">%</InputAdornment>
+              }}
+              inputProps={{ inputMode: 'numeric', min: MIN_AMOUNT, max: MAX_AMOUNT_PERCENTAGE, step: STEP }}
+            />
+          </Stack>
+        </Stack>
+
         <Stack sx={{ pt: 1 }}>
           <LoadingButton size={'large'} loading={loading} variant="contained" color="primary" fullWidth type="submit">
             {company ? 'Actualizar' : 'Crear'}
@@ -356,6 +462,12 @@ SpeiNewCompanyForm.propTypes = {
   company: PropTypes.shape({
     adminUsers: PropTypes.array,
     commercialName: PropTypes.string,
+    commissions: PropTypes.shape({
+      fee: PropTypes.number,
+      internalTransferCompany: PropTypes.number,
+      speiIn: PropTypes.number,
+      speiOut: PropTypes.number
+    }),
     costCenters: PropTypes.array,
     fiscalName: PropTypes.string,
     id: PropTypes.any,

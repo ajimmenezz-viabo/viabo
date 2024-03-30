@@ -11,5 +11,9 @@ export const SpeiNewCompanyAdapter = company => ({
   userEmail: company?.adminEmail?.trim(),
   userPhone: company?.adminPhone?.trim(),
   costCenters: company?.costCenters?.map(user => user.value) || [],
-  hasViaboCard: company?.hasViaboCard
+  hasViaboCard: company?.hasViaboCard,
+  speiOut: company?.speiOut,
+  internalTransferCompany: company?.internalTransferCompany,
+  fee: company?.fee,
+  speiIn: company?.speiIn
 })

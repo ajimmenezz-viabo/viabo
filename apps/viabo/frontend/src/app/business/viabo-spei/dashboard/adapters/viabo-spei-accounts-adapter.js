@@ -78,6 +78,12 @@ function CompaniesAdapter(companies) {
       concentrator: {
         number: company?.stpAccount,
         hidden: company?.stpAccount?.replace(/.(?=.{4})/g, '*')
+      },
+      commissions: {
+        speiOut: 5,
+        internalTransferCompany: 4,
+        fee: 10,
+        speiIn: 4
       }
     })) || []
 

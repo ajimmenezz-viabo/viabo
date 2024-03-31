@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import { ArrowForwardIos } from '@mui/icons-material'
 import { Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { toast } from 'react-toastify'
 
 import { ButtonViaboSpei, borderColorViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
 import { FormProvider, MaskedInput, RFTextField } from '@/shared/components/form'
@@ -20,10 +19,6 @@ const SpeiOutConcentratorForm = ({ selectedAccount, setCurrentBalance, insuffici
     },
     validateOnChange: false,
     onSubmit: (values, { setFieldValue, setSubmitting }) => {
-      if (insufficient) {
-        toast.warning('Saldo insuficiente para realizar esta operación')
-        return setSubmitting(false)
-      }
       setSubmitting(false)
       setFieldValue('amount', '')
       return onSuccess({ ...values, origin: selectedAccount?.account?.number })

@@ -3,6 +3,7 @@ import { lazy, useEffect, useMemo, useState } from 'react'
 import { Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { m } from 'framer-motion'
 
+import { STP_ACCOUNT_TYPES } from '../../constants'
 import { useAdminDashboardSpeiStore } from '../../store'
 
 import { SPEI_OUT_DESTINATION, getSpeiOutOptionByPermissions } from '@/app/business/viabo-spei/shared/permissions'
@@ -50,10 +51,6 @@ const SpeiOutDrawer = () => {
 
   const companies = useAdminDashboardSpeiStore(state => state.companies)
 
-  const insufficient = useMemo(
-    () => Boolean((parseFloat(balance) - currentBalance).toFixed(2) < 0),
-    [currentBalance, balance]
-  )
   const titleTransaction = <Typography variant="h6">SPEI Out</Typography>
 
   const isLoading = isLoadingThirdAccountList
@@ -82,7 +79,59 @@ const SpeiOutDrawer = () => {
   }
 
   const handleSuccessForm = values => {
+    let commissions = {
+      speiOut: 0,
+      internalTransferCompany: 0,
+      fee: 0
+    }
+    let totalAmountCommissions = 0
+
     setTransactionForm(values)
+
+    const notAdminSTPConcentrators = selectedAccount?.type !== STP_ACCOUNT_TYPES.CONCENTRATOR
+
+    if (isThirdAccountsView && notAdminSTPConcentrators) {
+      const percentageSpeiOut = selectedAccount?.commissions?.speiOut || 0
+      const amountFee = selectedAccount?.commissions?.fee || 0
+      const commissionFee = values?.transactions?.length * amountFee
+      const commissionSpeiOut =
+        values?.transactions?.reduce((totalCommission, transaction) => {
+          const amount = parseFloat(transaction.amount.replace(/,/g, ''))
+          totalCommission += amount * (percentageSpeiOut / 100)
+
+          return totalCommission
+        }, 0) || 0
+
+      totalAmountCommissions = (commissionFee + commissionSpeiOut).toFixed(2)
+
+      commissions = {
+        speiOut: commissionSpeiOut.toFixed(2),
+        internalTransferCompany: 0,
+        fee: commissionFee.toFixed(2)
+      }
+    }
+
+    if (isCompaniesView && notAdminSTPConcentrators) {
+      const percentageInternalCompany = selectedAccount?.commissions?.internalTransferCompany || 0
+      const internalCommissionCompany =
+        values?.transactions?.reduce((totalCommission, transaction) => {
+          const amount = parseFloat(transaction.amount.replace(/,/g, ''))
+          totalCommission += amount * (percentageInternalCompany / 100)
+          return totalCommission
+        }, 0) || 0
+
+      totalAmountCommissions = internalCommissionCompany.toFixed(2)
+
+      commissions = {
+        speiOut: 0,
+        internalTransferCompany: internalCommissionCompany.toFixed(2),
+        fee: 0
+      }
+    }
+
+    const currentBalanceWithCommissions = (parseFloat(balance) - currentBalance - totalAmountCommissions).toFixed(2)
+
+    const insufficient = Boolean(currentBalanceWithCommissions < 0)
 
     setTransactionData({
       transactions: values?.transactions || [],
@@ -90,8 +139,12 @@ const SpeiOutDrawer = () => {
       balance,
       origin: values?.origin,
       internal: !isThirdAccountsView,
-      currentBalance
+      currentBalance,
+      commissions,
+      insufficient,
+      total: currentBalanceWithCommissions
     })
+
     setShowResume(true)
   }
 
@@ -140,7 +193,6 @@ const SpeiOutDrawer = () => {
       </Stack>
       {isConcentratorView ? (
         <SpeiOutConcentratorForm
-          insufficient={insufficient}
           onSuccess={handleSuccessForm}
           setCurrentBalance={setCurrentBalance}
           initialValues={transactionForm}
@@ -150,7 +202,6 @@ const SpeiOutDrawer = () => {
         <SpeiOutForm
           key={view}
           accounts={accounts || []}
-          insufficient={insufficient}
           onSuccess={handleSuccessForm}
           setCurrentBalance={setCurrentBalance}
           initialValues={transactionForm}

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import { ArrowBackIos, GppGoodTwoTone, Lock } from '@mui/icons-material'
 import {
+  Alert,
   Box,
   InputAdornment,
   Stack,
@@ -34,7 +35,7 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
 const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading, onSuccess }) => {
   const { mutate, isLoading: isSending } = useCreateSpeiOut()
   const transactions = useMemo(() => data?.transactions || [], [data])
-  const total = useMemo(() => (parseFloat(data?.balance) - data?.currentBalance).toFixed(2) || 0, [data])
+
   const [googleCode, setGoogleCode] = useState('')
 
   const handleSubmit = () => {
@@ -56,6 +57,11 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
   return (
     <>
       <Scrollbar>
+        {data?.insufficient && (
+          <Alert sx={{ borderRadius: 0 }} severity={'warning'}>
+            Saldo insuficiente para realizar la operación
+          </Alert>
+        )}
         <TableContainer sx={{ minWidth: 200 }}>
           <Table>
             <TableHead
@@ -118,45 +124,78 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
                   </Typography>
                 </TableCell>
               </RowResultStyle>
+              <RowResultStyle>
+                <TableCell colSpan={1} />
+                <TableCell align="right">
+                  <Typography variant="subtitle2">Comisión por SPEI Out</Typography>
+                </TableCell>
+                <TableCell align="right" width={140}>
+                  <Typography sx={{ color: 'error.main' }}>{fCurrency(-data?.commissions?.speiOut)}</Typography>
+                </TableCell>
+              </RowResultStyle>
 
               <RowResultStyle>
                 <TableCell colSpan={1} />
                 <TableCell align="right">
-                  <Typography>Saldo actualizado</Typography>
+                  <Typography variant="subtitle2">Fee STP</Typography>
                 </TableCell>
                 <TableCell align="right" width={140}>
-                  <Typography>{fCurrency(total)}</Typography>
+                  <Typography sx={{ color: 'error.main' }}>{fCurrency(-data?.commissions?.fee)}</Typography>
+                </TableCell>
+              </RowResultStyle>
+
+              <RowResultStyle>
+                <TableCell colSpan={1} />
+                <TableCell align="right">
+                  <Typography variant="subtitle2">Comisión por Operación Interna</Typography>
+                </TableCell>
+                <TableCell align="right" width={140}>
+                  <Typography sx={{ color: 'error.main' }}>
+                    {fCurrency(-data?.commissions?.internalTransferCompany)}
+                  </Typography>
+                </TableCell>
+              </RowResultStyle>
+
+              <RowResultStyle>
+                <TableCell colSpan={1} />
+                <TableCell align="right">
+                  <Typography variant="subtitle1">Saldo actualizado</Typography>
+                </TableCell>
+                <TableCell align="right" width={140}>
+                  <Typography>{fCurrency(data?.total)}</Typography>
                 </TableCell>
               </RowResultStyle>
             </TableBody>
           </Table>
         </TableContainer>
-        <Stack spacing={1} p={3} justifyContent={'flex-end'} alignItems={'flex-end'}>
-          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-            Token de Google{' '}
-            <Box component={'span'} color={'error.main'}>
-              *
-            </Box>
-          </Typography>
-          <TextField
-            name={'googleCode'}
-            type={'number'}
-            size={'small'}
-            placeholder={'000000'}
-            required
-            value={googleCode}
-            onChange={e => setGoogleCode(e?.target?.value)}
-            inputProps={{ pattern: '/^-?d+.?d*$/', min: '1' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              )
-            }}
-            disabled={isLoading}
-          />
-        </Stack>
+        {!data?.insufficient && (
+          <Stack spacing={1} p={3} justifyContent={'flex-end'} alignItems={'flex-end'}>
+            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+              Token de Google{' '}
+              <Box component={'span'} color={'error.main'}>
+                *
+              </Box>
+            </Typography>
+            <TextField
+              name={'googleCode'}
+              type={'number'}
+              size={'small'}
+              placeholder={'000000'}
+              required
+              value={googleCode}
+              onChange={e => setGoogleCode(e?.target?.value)}
+              inputProps={{ pattern: '/^-?d+.?d*$/', min: '1' }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock />
+                  </InputAdornment>
+                )
+              }}
+              disabled={isLoading}
+            />
+          </Stack>
+        )}
       </Scrollbar>
       <Stack direction={{ md: 'row-reverse' }} sx={{ p: 3 }} gap={3}>
         <LoadingButtonViaboSpei
@@ -194,10 +233,17 @@ const SpeiOutResume = ({ data, onBack, setTransactionLoading, transactionLoading
 SpeiOutResume.propTypes = {
   data: PropTypes.shape({
     balance: PropTypes.any,
+    commissions: PropTypes.shape({
+      fee: PropTypes.any,
+      internalTransferCompany: PropTypes.any,
+      speiOut: PropTypes.any
+    }),
     concept: PropTypes.any,
     currentBalance: PropTypes.any,
+    insufficient: PropTypes.any,
     internal: PropTypes.any,
     origin: PropTypes.any,
+    total: PropTypes.any,
     transactions: PropTypes.array
   }),
   onBack: PropTypes.func,

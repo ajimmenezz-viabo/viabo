@@ -17,7 +17,6 @@ import {
 } from '@mui/material'
 import { stringAvatar } from '@theme/utils'
 import { FieldArray, useFormik } from 'formik'
-import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import { ButtonViaboSpei, borderColorViaboSpeiStyle } from '@/app/business/viabo-spei/shared/components'
@@ -57,10 +56,6 @@ const SpeiOutForm = ({ selectedAccount, accounts, setCurrentBalance, insufficien
     validateOnChange: false,
     validationSchema: RegisterSchema,
     onSubmit: (values, { setFieldValue, setSubmitting }) => {
-      if (insufficient) {
-        toast.warning('Saldo insuficiente para realizar esta operación')
-        return setSubmitting(false)
-      }
       setSubmitting(false)
       setFieldValue('amount', '')
       setFieldValue('beneficiary', null)

@@ -8,7 +8,7 @@ final class UserModuleEmpty extends DomainError
 {
     public function errorCode(): int
     {
-        return 401;
+        return 400;
     }
 
     public function errorMessage(): string

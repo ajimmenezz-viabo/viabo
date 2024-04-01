@@ -22,6 +22,8 @@ final class APIContext extends RawMinkContext
         $this->sessionHelper = new MinkHelper($minkSession);
         $this->request = new MinkSessionRequestHelper(new MinkHelper($minkSession));
         $this->token = '';
+        $_SERVER['SERVER_NAME'] = $_ENV['BEHAT_SERVER_NAME'];
+        $_SERVER['SERVER_PORT'] = $_ENV['BEHAT_SERVER_PORT'];
     }
 
     /**

@@ -15,7 +15,8 @@ final readonly class CreateCompanyCommand implements Command
         public string $rfc,
         public string $commercialName,
         public array  $assignedUsers,
-        public array  $costCenters
+        public array  $costCenters,
+        public array  $commissions
     )
     {
     }

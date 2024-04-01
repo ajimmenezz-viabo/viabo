@@ -67,6 +67,14 @@
             </join-table>
         </many-to-many>
 
+        <one-to-one field="speiCommissions"
+                    target-entity="Viabo\backoffice\company\domain\CompanySpeiCommissions"
+                    mapped-by="company">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-one>
+
     </entity>
 
 </doctrine-mapping>

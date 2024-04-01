@@ -29,7 +29,8 @@ final readonly class CompanyCreatorController extends ApiController
                 $data['rfc'],
                 $data['commercialName'],
                 $data['assignedUsers'],
-                $data['costCenters']
+                $data['costCenters'],
+                $data['commissions']
             ));
 
             if ($data['isNewUser']) {

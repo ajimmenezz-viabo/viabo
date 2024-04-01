@@ -19,6 +19,7 @@ final class Company extends AggregateRoot
     private $costCenters;
     private $users;
     private $bankAccounts;
+    private $speiCommissions;
     private float $balanceOld;
 
     public function __construct(
@@ -55,6 +56,7 @@ final class Company extends AggregateRoot
         $this->costCenters = new CompanyCostCenters();
         $this->users = new CompanyUsers();
         $this->bankAccounts = new CompanyBankAccounts();
+        $this->speiCommissions = null;
         $this->balanceOld = 0;
     }
 
@@ -140,7 +142,8 @@ final class Company extends AggregateRoot
         array  $bankAccount,
         array  $assignedUsers,
         array  $centerCosts,
-        string $stpAccount
+        string $stpAccount,
+        array  $commissions
     ): static
     {
         $commercialName = empty($commercialName) ? $fiscalName : $commercialName;
@@ -177,6 +180,7 @@ final class Company extends AggregateRoot
         $company->setCostCenter($centerCosts);
         $company->setUsers($assignedUsers);
         $company->setBankAccount($bankAccount);
+        $company->setSpeiCommissions($commissions);
         $company->record(new CompanyCreatedDomainEvent($company->id(), $company->toArray()));
 
         return $company;
@@ -236,6 +240,11 @@ final class Company extends AggregateRoot
         return $this->slug->value();
     }
 
+    public function createdByUser(): string
+    {
+        return $this->createdByUser->value();
+    }
+
     public function isInformal(): bool
     {
         return $this->type->isInformal();
@@ -272,6 +281,11 @@ final class Company extends AggregateRoot
         }, $bankAccount);
     }
 
+    private function setSpeiCommissions(array $commissions): void
+    {
+        $this->speiCommissions = CompanySpeiCommissions::create($this, $commissions);
+    }
+
     private function users(): array
     {
         return array_map(function (CompanyUser $user) {
@@ -284,6 +298,14 @@ final class Company extends AggregateRoot
         return array_map(function (CompanyCostCenter $costCenter) {
             return $costCenter->toArray();
         }, $this->costCenters->toArray());
+    }
+
+    private function speiCommissions(): array
+    {
+        if (empty($this->speiCommissions)) {
+            return [];
+        }
+        return $this->speiCommissions->value();
     }
 
     private function bankAccounts()
@@ -405,6 +427,7 @@ final class Company extends AggregateRoot
             'type' => $this->type->value(),
             'allowTransactions' => $this->allowTransactions->value(),
             'statusId' => $this->statusId->value(),
+            'speiCommissions' => $this->speiCommissions(),
             'stpAccountId' => $this->stpAccountId->value(),
             'registerStep' => $this->registerStep->value(),
             'updatedByUser' => $this->updatedByUser->value(),

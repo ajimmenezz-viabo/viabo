@@ -21,7 +21,8 @@ final readonly class CreateCompanyCommandHandler implements CommandHandler
             $command->commercialName,
             $command->rfc,
             $command->assignedUsers,
-            $command->costCenters
+            $command->costCenters,
+            $command->commissions,
         );
     }
 }

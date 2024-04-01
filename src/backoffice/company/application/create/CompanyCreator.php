@@ -31,10 +31,13 @@ final readonly class CompanyCreator
         string $commercialName,
         string $rfc,
         array  $users,
-        array  $costCenters
+        array  $costCenters,
+        array  $commissions
+
     ): void
     {
         $this->validator->ensureCompany($fiscalName, $rfc);
+        $this->validator->ensureCommissions($commissions);
         $costCenters = $this->finder->searchCostCenter($costCenters);
         $users = $this->finder->searchUsers($users);
         $bankAccount = $this->finder->searchAvailableBankAccount();
@@ -51,7 +54,8 @@ final readonly class CompanyCreator
             $bankAccount,
             $users,
             $costCenters,
-            $stpAccount
+            $stpAccount,
+            $commissions
         );
         $this->repository->save($company);
 

@@ -1,4 +1,4 @@
-spei_behat:
+backoffice_behat:
   extensions:
     FriendsOfBehat\SymfonyExtension:
       kernel:
@@ -12,7 +12,7 @@ spei_behat:
       base_url: ''
 
   suites:
-    transaction:
-      paths: [ tests/spei/apps/transaction ]
+    company:
+      paths: [ tests/backoffice/apps/company ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\APIContext

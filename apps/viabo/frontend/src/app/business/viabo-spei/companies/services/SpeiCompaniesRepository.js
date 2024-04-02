@@ -51,3 +51,12 @@ export const getViaboSpeiConcentratorsList = async () => {
 
   return SpeiConcentratorListAdapter(data)
 }
+
+export const getViaboSpeiCommissions = async () => {
+  const { data } = await axios.get('/api/spei/concentrator')
+
+  return {
+    percentage: 15,
+    amount: 20
+  }
+}

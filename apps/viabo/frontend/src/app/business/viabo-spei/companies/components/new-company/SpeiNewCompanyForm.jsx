@@ -25,22 +25,23 @@ import { FormProvider, IOSSwitch, RFSelect, RFTextField } from '@/shared/compone
 import { Image } from '@/shared/components/images'
 
 const MIN_AMOUNT = 0
-const MAX_AMOUNT_PERCENTAGE = 15
-const MAX_AMOUNT = 20
 const STEP = 0.1
 
-const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, concentrators, company, onSuccess }) => {
+const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, concentrators, company, commissions, onSuccess }) => {
   const { mutate, isLoading } = useCreateNewSpeiCompany()
   const { mutate: updateCompany, isLoading: isUpdatingCompany } = useUpdateSpeiCompany()
 
+  const MAX_AMOUNT_PERCENTAGE = commissions?.percentage || 15
+  const MAX_AMOUNT = commissions?.amount || 20
+
   const percentageValidation = Yup.number()
     .min(MIN_AMOUNT, 'El valor mínimo es 0')
-    .max(MAX_AMOUNT_PERCENTAGE, 'El valor máximo es 15')
+    .max(MAX_AMOUNT_PERCENTAGE, `El valor máximo es ${MAX_AMOUNT_PERCENTAGE}`)
     .required('El valor es requerido')
 
   const amountValidation = Yup.number()
     .min(MIN_AMOUNT, 'El valor mínimo es 0')
-    .max(MAX_AMOUNT, 'El valor máximo es 20')
+    .max(MAX_AMOUNT, `El valor máximo es ${MAX_AMOUNT}`)
     .required('El valor es requerido')
 
   const ValidationSchema = Yup.object().shape({
@@ -477,6 +478,10 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, concentrators, com
 
 SpeiNewCompanyForm.propTypes = {
   adminCompanyUsers: PropTypes.array,
+  commissions: PropTypes.shape({
+    amount: PropTypes.number,
+    percentage: PropTypes.number
+  }),
   company: PropTypes.shape({
     adminUsers: PropTypes.array,
     commercialName: PropTypes.string,

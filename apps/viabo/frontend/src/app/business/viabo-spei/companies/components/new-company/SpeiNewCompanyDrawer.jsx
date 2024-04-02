@@ -3,7 +3,12 @@ import { lazy, useEffect } from 'react'
 import { Stack, Typography } from '@mui/material'
 
 import { useFindSpeiCostCenters } from '../../../cost-centers/hooks'
-import { useFindConcentratorsList, useFindSpeiAdminCompanyUsers, useFindSpeiCompanyDetails } from '../../hooks'
+import {
+  useFindConcentratorsList,
+  useFindSpeiAdminCompanyUsers,
+  useFindSpeiCommissions,
+  useFindSpeiCompanyDetails
+} from '../../hooks'
 import { useSpeiCompaniesStore } from '../../store'
 
 import { RightPanel } from '@/app/shared/components'
@@ -48,6 +53,8 @@ const SpeiNewCompanyDrawer = () => {
     isLoading: loadingConcentrators
   } = useFindConcentratorsList({ enabled: !!openNewCompany })
 
+  const { data: commissions, isLoading: loadingCommissions } = useFindSpeiCommissions({ enabled: !!openNewCompany })
+
   useEffect(() => {
     if (openNewCompany) {
       refetch()
@@ -61,7 +68,8 @@ const SpeiNewCompanyDrawer = () => {
   }
 
   const isError = isErrorUsers || isErrorCostCenters || isErrorDetails || isErrorConcentrators
-  const isLoading = isLoadingUsers || isLoadingCostCenters || loadingDetails || loadingConcentrators
+  const isLoading =
+    isLoadingUsers || isLoadingCostCenters || loadingDetails || loadingConcentrators || loadingCommissions
   const error = errorUsers || errorCostCenters || errorDetails || errorConcentrators
 
   return (
@@ -90,6 +98,7 @@ const SpeiNewCompanyDrawer = () => {
               costCenters={costCenters}
               concentrators={concentrators}
               company={companyDetails}
+              commissions={commissions}
               onSuccess={handleClose}
             />
           )}

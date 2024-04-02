@@ -29,7 +29,7 @@ const MAX_AMOUNT_PERCENTAGE = 15
 const MAX_AMOUNT = 20
 const STEP = 0.1
 
-const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company }) => {
+const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, concentrators, company, onSuccess }) => {
   const { mutate, isLoading } = useCreateNewSpeiCompany()
   const { mutate: updateCompany, isLoading: isUpdatingCompany } = useUpdateSpeiCompany()
 
@@ -47,6 +47,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
     fiscalName: Yup.string().trim().required('Es necesario el nombre fiscal'),
     rfc: Yup.string().trim().required('Es necesario el rfc'),
     commercialName: Yup.string().trim().max(100, 'Máximo 100 caracteres'),
+    concentrator: Yup.object().nullable().required('Es necesario la concentradora'),
     adminUsers: Yup.array().when('method', {
       is: METHODS_NEW_COMPANY_USERS.ADMIN_USERS,
       then: schema => schema.min(1, 'Es necesario al menos un usuario administrador asignado a la empresa'),
@@ -87,6 +88,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
     initialValues: {
       fiscalName: company?.fiscalName || '',
       commercialName: company?.commercialName || '',
+      concentrator: concentrators?.find(concentrator => concentrator?.value === company?.concentrator?.id) || null,
       rfc: company?.rfc || '',
       method: METHODS_NEW_COMPANY_USERS.ADMIN_USERS,
       adminUsers: adminCompanyUsers?.filter(admin => company?.adminUsers?.includes(admin?.value)) || [],
@@ -183,6 +185,22 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
             name={'commercialName'}
             size={'small'}
             placeholder={'Nombre Comercial de la Empresa...'}
+            disabled={loading}
+          />
+        </Stack>
+
+        <Stack spacing={1}>
+          <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
+            Concentradora STP{' '}
+            <Box component={'span'} color={'error.main'} ml={0.5}>
+              *
+            </Box>
+          </Typography>
+
+          <RFSelect
+            name={'concentrator'}
+            textFieldParams={{ placeholder: 'Seleccionar ...', size: 'small', required: true }}
+            options={concentrators || []}
             disabled={loading}
           />
         </Stack>
@@ -352,7 +370,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
             />
 
             <IOSSwitch
-              disabled={isLoading}
+              disabled={loading}
               size="md"
               color={!values.hasViaboCard ? 'error' : 'success'}
               checked={Boolean(values.hasViaboCard) || false}
@@ -376,7 +394,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
               size={'small'}
               type="number"
               required={true}
-              disabled={isLoading}
+              disabled={loading}
               InputLabelProps={{
                 shrink: true
               }}
@@ -393,7 +411,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
               size={'small'}
               type="number"
               required={true}
-              disabled={isLoading}
+              disabled={loading}
               InputLabelProps={{
                 shrink: true
               }}
@@ -410,7 +428,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
               label="Fee - STP"
               type="number"
               required={true}
-              disabled={isLoading}
+              disabled={loading}
               InputLabelProps={{
                 shrink: true
               }}
@@ -435,7 +453,7 @@ const SpeiNewCompanyForm = ({ adminCompanyUsers, costCenters, onSuccess, company
               size={'small'}
               type="number"
               required={true}
-              disabled={isLoading}
+              disabled={loading}
               InputLabelProps={{
                 shrink: true
               }}
@@ -468,11 +486,15 @@ SpeiNewCompanyForm.propTypes = {
       speiIn: PropTypes.number,
       speiOut: PropTypes.number
     }),
+    concentrator: PropTypes.shape({
+      id: PropTypes.any
+    }),
     costCenters: PropTypes.array,
     fiscalName: PropTypes.string,
     id: PropTypes.any,
     rfc: PropTypes.string
   }),
+  concentrators: PropTypes.array,
   costCenters: PropTypes.array,
   onSuccess: PropTypes.func
 }

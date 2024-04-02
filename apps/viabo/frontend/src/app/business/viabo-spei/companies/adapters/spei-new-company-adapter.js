@@ -4,6 +4,7 @@ export const SpeiNewCompanyAdapter = company => ({
   fiscalName: company?.fiscalName?.trim(),
   rfc: company?.rfc?.trim(),
   commercialName: company?.commercialName?.trim(),
+  stpAccount: company?.concentrator?.value,
   isNewUser: company?.method === METHODS_NEW_COMPANY_USERS.NEW_ADMIN_USER,
   assignedUsers: company?.adminUsers?.map(user => user.value) || [],
   userName: company?.adminName?.trim(),
@@ -12,8 +13,10 @@ export const SpeiNewCompanyAdapter = company => ({
   userPhone: company?.adminPhone?.trim(),
   costCenters: company?.costCenters?.map(user => user.value) || [],
   hasViaboCard: company?.hasViaboCard,
-  speiOut: company?.speiOut,
-  internalTransferCompany: company?.internalTransferCompany,
-  fee: company?.fee,
-  speiIn: company?.speiIn
+  commissions: {
+    speiOut: company?.speiOut,
+    speiIn: company?.speiIn,
+    internal: company?.internalTransferCompany,
+    feeStp: company?.fee
+  }
 })

@@ -1,5 +1,6 @@
 export * from './useChangeSpeiCompanyStatus'
 export * from './useCreateNewSpeiCompany'
+export * from './useFindConcentratorsList'
 export * from './useFindSpeiAdminCompanyUsers'
 export * from './useFindSpeiCompanies'
 export * from './useFindSpeiCompanyDetails'

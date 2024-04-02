@@ -10,6 +10,7 @@ use Viabo\backoffice\company\domain\exceptions\CompanyCommissionLessThanZero;
 use Viabo\backoffice\company\domain\exceptions\CompanyCommissionNotAllowed;
 use Viabo\backoffice\company\domain\exceptions\CompanyFiscalNameExist;
 use Viabo\backoffice\company\domain\exceptions\CompanyRFCExist;
+use Viabo\backoffice\company\domain\exceptions\CompanyStpAccountEmpty;
 use Viabo\backoffice\fee\application\find\RatesQuery;
 use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
@@ -21,10 +22,11 @@ final readonly class CompanyValidator
     {
     }
 
-    public function ensureCompany(string $fiscalName, string $rfc): void
+    public function ensureCompany(string $fiscalName, string $rfc, string $stpAccount): void
     {
         $this->ensureFiscalName($fiscalName);
         $this->ensureRfc($rfc);
+        $this->ensureStpAccount($stpAccount);
     }
 
     public function ensureFiscalName(string $fiscalName, string $companyId = ''): void
@@ -46,9 +48,15 @@ final readonly class CompanyValidator
     {
         $filters = Filters::fromValues([['field' => 'rfc.value', 'operator' => '=', 'value' => $rfc]]);
         $company = $this->repository->searchCriteria(new Criteria($filters));
-
         if (!empty($company)) {
             throw new CompanyRFCExist();
+        }
+    }
+
+    private function ensureStpAccount(string $stpAccount): void
+    {
+        if (empty($stpAccount)) {
+            throw new CompanyStpAccountEmpty();
         }
     }
 

@@ -16,11 +16,11 @@ final readonly class StpAccountCriteriaFinder
     {
     }
 
-    public function __invoke(array $filters): AccountResponse
+    public function __invoke(array $filters): StpAccountResponse
     {
         $filters = Filters::fromValues($filters);
         $account = $this->repository->searchCriteria(new Criteria($filters));
-        return new AccountResponse(array_map(function (StpAccount $account) {
+        return new StpAccountResponse(array_map(function (StpAccount $account) {
             $data = $account->decrypt();
             $balance = $this->STPRepository->searchBalance($data);
             $data['balance'] = $balance['saldo'];

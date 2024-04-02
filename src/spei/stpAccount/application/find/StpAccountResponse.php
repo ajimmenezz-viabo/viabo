@@ -6,7 +6,7 @@ namespace Viabo\spei\stpAccount\application\find;
 
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class AccountResponse implements Response
+final readonly class StpAccountResponse implements Response
 {
     public function __construct(public array $data)
     {

@@ -16,7 +16,7 @@ final readonly class StpAccountFinderByCriteria
     {
     }
 
-    public function __invoke(array $filter): AccountResponse
+    public function __invoke(array $filter): StpAccountResponse
     {
         $filter = Filters::fromValues($filter);
         $accounts = $this->repository->searchCriteria(new Criteria($filter));
@@ -25,7 +25,7 @@ final readonly class StpAccountFinderByCriteria
             throw new StpAccountNotExist('No existe la company');
         }
 
-        return new AccountResponse(array_map(function (StpAccount $account) {
+        return new StpAccountResponse(array_map(function (StpAccount $account) {
             return $account->toArray();
         }, $accounts));
     }

@@ -119,7 +119,11 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
 
     public function update(Company $company): void
     {
+        $speiCommissions = $company->speiCommissions();
         $this->entityManager()->flush($company);
+        if(!empty($speiCommissions)){
+            $this->entityManager()->flush($speiCommissions);
+        }
     }
 
     public function delete(Company $company): void

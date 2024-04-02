@@ -14,7 +14,8 @@ final readonly class UpdateCompanyByAdminStpCommand implements Command
         public string $fiscalName,
         public string $commercialName,
         public array  $assignedUsers,
-        public array  $costCenters
+        public array  $costCenters,
+        public array  $commissions
     )
     {
     }

@@ -20,7 +20,8 @@ final readonly class UpdateCompanyByAdminStpCommandHandler implements CommandHan
             $command->fiscalName,
             $command->commercialName,
             $command->assignedUsers,
-            $command->costCenters
+            $command->costCenters,
+            $command->commissions
         );
     }
 }

@@ -245,6 +245,11 @@ final class Company extends AggregateRoot
         return $this->createdByUser->value();
     }
 
+    public function updateByUser(): string
+    {
+        return $this->updatedByUser->value();
+    }
+
     public function isInformal(): bool
     {
         return $this->type->isInformal();
@@ -300,14 +305,6 @@ final class Company extends AggregateRoot
         }, $this->costCenters->toArray());
     }
 
-    private function speiCommissions(): array
-    {
-        if (empty($this->speiCommissions)) {
-            return [];
-        }
-        return $this->speiCommissions->value();
-    }
-
     private function bankAccounts()
     {
         return array_map(function (CompanyBankAccount $bankAccount) {
@@ -323,6 +320,11 @@ final class Company extends AggregateRoot
     public function folio(): string
     {
         return $this->folio->value();
+    }
+
+    public function speiCommissions(): CompanySpeiCommissions|null
+    {
+        return $this->speiCommissions;
     }
 
     public function updateActive(bool $active, string $userId): void
@@ -347,7 +349,8 @@ final class Company extends AggregateRoot
         string $fiscalName,
         string $commercialName,
         array  $users,
-        array  $costCenters
+        array  $costCenters,
+        array  $commissions
     ): void
     {
         $this->costCenters->clear();
@@ -359,8 +362,18 @@ final class Company extends AggregateRoot
         $this->tradeName = $this->tradeName->update($commercialName, $this->registerStep->value());
         $this->updatedByUser = $this->updatedByUser->update($userId);
         $this->updateDate = $this->updateDate->todayDate();
+        $this->updateSpeiCommissions($commissions);
 
         $this->record(new CommerceUpdatedDomainEvent($this->id->value(), $this->toArray()));
+    }
+
+    private function updateSpeiCommissions(array $commissions): void
+    {
+        if (empty($this->speiCommissions)) {
+            $this->speiCommissions = CompanySpeiCommissions::create($this, $commissions);
+        } else {
+            $this->speiCommissions->update($commissions);
+        }
     }
 
     public function addBalance(float $amount): void
@@ -400,6 +413,14 @@ final class Company extends AggregateRoot
         $this->record(new CompanyBalanceDecreasedDomainEvent($this->id(), $company));
     }
 
+    public function speiCommissionsArray(): array
+    {
+        if (empty($this->speiCommissions)) {
+            return [];
+        }
+        return $this->speiCommissions->value();
+    }
+
     public function toArray(): array
     {
         return [
@@ -427,7 +448,7 @@ final class Company extends AggregateRoot
             'type' => $this->type->value(),
             'allowTransactions' => $this->allowTransactions->value(),
             'statusId' => $this->statusId->value(),
-            'speiCommissions' => $this->speiCommissions(),
+            'speiCommissions' => $this->speiCommissionsArray(),
             'stpAccountId' => $this->stpAccountId->value(),
             'registerStep' => $this->registerStep->value(),
             'updatedByUser' => $this->updatedByUser->value(),

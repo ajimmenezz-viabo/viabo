@@ -53,10 +53,10 @@ export const getViaboSpeiConcentratorsList = async () => {
 }
 
 export const getViaboSpeiCommissions = async () => {
-  const { data } = await axios.get('/api/spei/concentrator')
+  const { data } = await axios.get('/api/backoffice/rates')
 
   return {
-    percentage: 15,
-    amount: 20
+    percentage: data?.CommisionPercentage,
+    amount: data?.FeeStp
   }
 }

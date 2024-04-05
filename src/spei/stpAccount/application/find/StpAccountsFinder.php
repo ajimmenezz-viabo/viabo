@@ -14,10 +14,10 @@ final readonly class StpAccountsFinder
     {
     }
 
-    public function __invoke(): AccountResponse
+    public function __invoke(): StpAccountResponse
     {
         $accounts = $this->repository->searchAll();
-        return new AccountResponse(array_map(function (StpAccount $account) {
+        return new StpAccountResponse(array_map(function (StpAccount $account) {
             $data = $account->decrypt();
             $balance = $this->STPRepository->searchBalance($data);
             $data['balance'] = $balance['saldo'];

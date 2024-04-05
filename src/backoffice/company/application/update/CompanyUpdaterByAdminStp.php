@@ -27,10 +27,12 @@ final readonly class CompanyUpdaterByAdminStp
         string $fiscalName,
         string $commercialName,
         array  $users,
-        array  $costCenters
+        array  $costCenters,
+        array  $commissions
     ): void
     {
         $this->validator->ensureFiscalName($fiscalName, $companyId);
+        $this->validator->ensureCommissions($commissions);
         $users = $this->finder->searchUsers($users);
         $costCenters = $this->finder->searchCostCenter($costCenters);
 
@@ -45,7 +47,8 @@ final readonly class CompanyUpdaterByAdminStp
             $fiscalName,
             $commercialName,
             $users,
-            $costCenters
+            $costCenters,
+            $commissions
         );
 
         $this->repository->update($company);

@@ -3,7 +3,12 @@ import { lazy, useEffect } from 'react'
 import { Stack, Typography } from '@mui/material'
 
 import { useFindSpeiCostCenters } from '../../../cost-centers/hooks'
-import { useFindSpeiAdminCompanyUsers, useFindSpeiCompanyDetails } from '../../hooks'
+import {
+  useFindConcentratorsList,
+  useFindSpeiAdminCompanyUsers,
+  useFindSpeiCommissions,
+  useFindSpeiCompanyDetails
+} from '../../hooks'
 import { useSpeiCompaniesStore } from '../../store'
 
 import { RightPanel } from '@/app/shared/components'
@@ -20,14 +25,15 @@ const SpeiNewCompanyDrawer = () => {
 
   const {
     data: users,
-    isLoading: isLoadingUsers,
+    isFetching: isLoadingUsers,
     isError: isErrorUsers,
     error: errorUsers,
     refetch
   } = useFindSpeiAdminCompanyUsers({ enabled: false })
+
   const {
     data: costCenters,
-    isLoading: isLoadingCostCenters,
+    isFetching: isLoadingCostCenters,
     isError: isErrorCostCenters,
     error: errorCostCenters,
     refetch: refetchCostCenters
@@ -39,6 +45,15 @@ const SpeiNewCompanyDrawer = () => {
     error: errorDetails,
     isFetching: loadingDetails
   } = useFindSpeiCompanyDetails(company?.id, { enabled: !!company?.id })
+
+  const {
+    data: concentrators,
+    isError: isErrorConcentrators,
+    error: errorConcentrators,
+    isLoading: loadingConcentrators
+  } = useFindConcentratorsList({ enabled: !!openNewCompany })
+
+  const { data: commissions, isLoading: loadingCommissions } = useFindSpeiCommissions({ enabled: !!openNewCompany })
 
   useEffect(() => {
     if (openNewCompany) {
@@ -52,9 +67,10 @@ const SpeiNewCompanyDrawer = () => {
     setSpeiCompany(null)
   }
 
-  const isError = isErrorUsers || isErrorCostCenters || isErrorDetails
-  const isLoading = isLoadingUsers || isLoadingCostCenters || loadingDetails
-  const error = errorUsers || errorCostCenters || errorDetails
+  const isError = isErrorUsers || isErrorCostCenters || isErrorDetails || isErrorConcentrators
+  const isLoading =
+    isLoadingUsers || isLoadingCostCenters || loadingDetails || loadingConcentrators || loadingCommissions
+  const error = errorUsers || errorCostCenters || errorDetails || errorConcentrators
 
   return (
     <RightPanel
@@ -80,7 +96,9 @@ const SpeiNewCompanyDrawer = () => {
             <SpeiNewCompanyForm
               adminCompanyUsers={users}
               costCenters={costCenters}
+              concentrators={concentrators}
               company={companyDetails}
+              commissions={commissions}
               onSuccess={handleClose}
             />
           )}

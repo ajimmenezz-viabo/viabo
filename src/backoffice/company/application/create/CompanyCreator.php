@@ -30,16 +30,19 @@ final readonly class CompanyCreator
         string $fiscalName,
         string $commercialName,
         string $rfc,
+        string $stpAccount,
         array  $users,
-        array  $costCenters
+        array  $costCenters,
+        array  $commissions
+
     ): void
     {
-        $this->validator->ensureCompany($fiscalName, $rfc);
+        $this->validator->ensureCompany($fiscalName, $rfc, $stpAccount);
+        $this->validator->ensureCommissions($commissions);
         $costCenters = $this->finder->searchCostCenter($costCenters);
         $users = $this->finder->searchUsers($users);
         $bankAccount = $this->finder->searchAvailableBankAccount();
         $folio = $this->searchFolioLast();
-        $stpAccount = $this->searchStpAccount();
 
         $company = Company::createByStp(
             $userId,
@@ -51,7 +54,8 @@ final readonly class CompanyCreator
             $bankAccount,
             $users,
             $costCenters,
-            $stpAccount
+            $stpAccount,
+            $commissions
         );
         $this->repository->save($company);
 
@@ -62,12 +66,6 @@ final readonly class CompanyCreator
     {
         $company = $this->repository->searchFolioLast();
         return $company->folio();
-    }
-
-    private function searchStpAccount(): string
-    {
-        $stpAccount = $this->queryBus->ask(new StpAccountsQuery());
-        return $stpAccount->data[0]['id'] ?? '';
     }
 
 }

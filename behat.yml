@@ -3,3 +3,4 @@ imports:
   - tests/tickets/apps/tickets_behat.yml
   - tests/management/apps/management_behat.yml
   - tests/spei/apps/spei_behat.yml
+  - tests/backoffice/apps/backoffice_behat.yml

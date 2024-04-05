@@ -36,7 +36,7 @@ final readonly class CompanyBalanceUpdaterByInternalTransaction
     {
         if (!empty($sourceCompany)) {
             $sourceCompany->decreaseBalance(
-                $transaction['amount'],
+                $transaction['commissions']['total'],
                 $transaction['createdByUser'],
                 $transaction['createDate']
             );

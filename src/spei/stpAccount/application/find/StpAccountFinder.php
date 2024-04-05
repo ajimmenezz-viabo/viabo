@@ -13,7 +13,7 @@ final readonly class StpAccountFinder
     {
     }
 
-    public function __invoke(string $stpAccountId): AccountResponse
+    public function __invoke(string $stpAccountId): StpAccountResponse
     {
         $account = $this->repository->search($stpAccountId);
 
@@ -21,6 +21,6 @@ final readonly class StpAccountFinder
             throw new StpAccountNotExist();
         }
 
-        return new AccountResponse($account->decrypt());
+        return new StpAccountResponse($account->decrypt());
     }
 }

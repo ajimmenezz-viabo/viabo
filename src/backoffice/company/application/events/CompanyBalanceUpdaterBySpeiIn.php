@@ -24,7 +24,7 @@ final readonly class CompanyBalanceUpdaterBySpeiIn
             return;
         }
 
-        $company->addBalance($transaction['amount']);
+        $company->addBalance($transaction['commissions']['total']);
         $company->setEventBalanceIncreased($transaction);
         $this->repository->update($company);
 

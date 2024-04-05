@@ -58,7 +58,7 @@ final class TransactionDoctrineRepository extends DoctrineRepository implements 
              WHERE t.createDate.value BETWEEN :initialDate  and :endDate
              and (tp.id = 1 and t.sourceAccount.value = :sourceAccount) 
              OR (tp.id = 2 and t.destinationAccount.value = :destinationAccount)
-             ORDER BY t.createDate.value';
+             ORDER BY t.createDate.value DESC';
         $query = $this->entityManager()->createQuery($dql);
         $query->setParameter('initialDate', $initialDate);
         $query->setParameter('endDate', $endDate);

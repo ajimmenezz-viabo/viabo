@@ -17,6 +17,7 @@
         <embedded name="destinationEmail" class="TransactionDestinationEmail" use-column-prefix="false"/>
         <embedded name="destinationBankCode" class="TransactionDestinationBankCode" use-column-prefix="false"/>
         <embedded name="amount" class="TransactionAmount" use-column-prefix="false"/>
+        <embedded name="commissions" class="TransactionCommissions" use-column-prefix="false"/>
         <embedded name="liquidationDate" class="TransactionLiquidationDate" use-column-prefix="false"/>
         <embedded name="urlCEP" class="TransactionUrlCEP" use-column-prefix="false"/>
         <embedded name="stpId" class="TransactionStpId" use-column-prefix="false"/>

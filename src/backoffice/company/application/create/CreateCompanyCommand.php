@@ -12,10 +12,12 @@ final readonly class CreateCompanyCommand implements Command
         public string $userId,
         public string $companyId,
         public string $fiscalName,
-        public string $rfc,
         public string $commercialName,
+        public string $rfc,
+        public string $stpAccount,
         public array  $assignedUsers,
-        public array  $costCenters
+        public array  $costCenters,
+        public array  $commissions
     )
     {
     }

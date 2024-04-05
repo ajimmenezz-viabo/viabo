@@ -20,8 +20,10 @@ final readonly class CreateCompanyCommandHandler implements CommandHandler
             $command->fiscalName,
             $command->commercialName,
             $command->rfc,
+            $command->stpAccount,
             $command->assignedUsers,
-            $command->costCenters
+            $command->costCenters,
+            $command->commissions,
         );
     }
 }

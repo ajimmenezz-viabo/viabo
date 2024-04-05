@@ -1,0 +1,18 @@
+backoffice_behat:
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      kernel:
+        class: Viabo\Backend\ViaboKernel
+        environment: ~
+      bootstrap: apps/bootstrap.php
+    Behat\MinkExtension:
+      sessions:
+        symfony:
+          symfony: ~
+      base_url: ''
+
+  suites:
+    company:
+      paths: [ tests/backoffice/apps/company ]
+      contexts:
+        - Viabo\Tests\shared\infrastructure\behat\APIContext

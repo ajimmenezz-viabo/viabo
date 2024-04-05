@@ -20,12 +20,12 @@ final readonly class AccountBalanceFinder
         string $profileId ,
         string $userStpAccountId ,
         string $commerceStpAccountId
-    ): AccountResponse
+    ): StpAccountResponse
     {
         $account = $this->finder->__invoke($profileId , $userStpAccountId , $commerceStpAccountId);
         $balance = $this->STPRepository->searchBalance($account->toArray());
 
-        return new AccountResponse($this->format($balance , $account->number()));
+        return new StpAccountResponse($this->format($balance , $account->number()));
     }
 
     private function format(array $balance , string $number): array

@@ -11,13 +11,19 @@ use Viabo\shared\domain\valueObjects\UuidValueObject;
 
 final class CompanyId extends UuidValueObject
 {
+    public function __construct(string|null $value)
+    {
+        if (!is_null($value)) {
+            parent::__construct($value);
+        }
+    }
 
     public static function create(string $value): self
     {
         try {
             self::validate($value);
             return new self($value);
-        }catch (InvalidArgumentException){
+        } catch (InvalidArgumentException) {
             throw new CompanyNotExist();
         }
 

@@ -28,7 +28,8 @@ final readonly class CompanyUpdaterByAdminStpController extends ApiController
                 $data['fiscalName'],
                 $data['commercialName'],
                 $data['assignedUsers'],
-                $data['costCenters']
+                $data['costCenters'],
+                $data['commissions']
             ));
             $this->addUserNewInCompany($data);
 

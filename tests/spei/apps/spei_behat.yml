@@ -9,7 +9,7 @@ spei_behat:
       sessions:
         symfony:
           symfony: ~
-      base_url: 'http://localhost/'
+      base_url: ''
 
   suites:
     transaction:

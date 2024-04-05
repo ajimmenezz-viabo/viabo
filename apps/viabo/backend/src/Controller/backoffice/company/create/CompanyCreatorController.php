@@ -26,10 +26,12 @@ final readonly class CompanyCreatorController extends ApiController
                 $tokenData['id'],
                 $companyId,
                 $data['fiscalName'],
-                $data['rfc'],
                 $data['commercialName'],
+                $data['rfc'],
+                $data['stpAccount'],
                 $data['assignedUsers'],
-                $data['costCenters']
+                $data['costCenters'],
+                $data['commissions']
             ));
 
             if ($data['isNewUser']) {

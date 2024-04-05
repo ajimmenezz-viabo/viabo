@@ -1,4 +1,9 @@
-import { SpeiAdminCompanyUsersAdapter, SpeiCompaniesListAdapter, SpeiCompanyDetailsAdapter } from '../adapters'
+import {
+  SpeiAdminCompanyUsersAdapter,
+  SpeiCompaniesListAdapter,
+  SpeiCompanyDetailsAdapter,
+  SpeiConcentratorListAdapter
+} from '../adapters'
 
 import { axios } from '@/shared/interceptors'
 
@@ -39,4 +44,19 @@ export const updateViaboSpeiCompany = async company => {
   const { data } = await axios.put('/api/backoffice/company/update', company)
 
   return company
+}
+
+export const getViaboSpeiConcentratorsList = async () => {
+  const { data } = await axios.get('/api/spei/concentrator')
+
+  return SpeiConcentratorListAdapter(data)
+}
+
+export const getViaboSpeiCommissions = async () => {
+  const { data } = await axios.get('/api/backoffice/rates')
+
+  return {
+    percentage: data?.CommisionPercentage,
+    amount: data?.FeeStp
+  }
 }

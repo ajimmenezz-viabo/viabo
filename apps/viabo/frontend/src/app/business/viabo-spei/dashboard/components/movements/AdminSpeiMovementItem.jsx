@@ -7,7 +7,6 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemButton,
-  ListItemText,
   Stack,
   Typography,
   styled
@@ -43,50 +42,44 @@ export const AdminSpeiMovementItem = ({ movement, ...others }) => {
         {...others}
         sx={{
           padding: 0,
-          borderRadius: 1,
-          '& :hover': { color: 'text.primary' }
+          borderRadius: 1
         }}
         disablePadding
       >
         <RootStyle
+          component={'div'}
           onClick={handleSelectedRow}
           sx={{
             ...(isSelected && {
               bgcolor: 'secondary.light',
-              color: 'text.primary.contrastText',
-              '& :hover': { color: 'text.primary' }
+              color: 'text.primary.contrastText'
             }),
-            '& :hover': { color: 'text.primary' },
             width: 1
           }}
         >
           <ListItemAvatar>
             <Avatar title={movement?.beneficiary?.name} {...stringAvatar(movement?.beneficiary?.name)}></Avatar>
           </ListItemAvatar>
-          <ListItemText
-            primary={
-              <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
-                <Typography variant="subtitle1" fontWeight={600}>
-                  {movement?.movement}
-                </Typography>
-                <Typography variant="subtitle1" color={movement?.amount?.color || 'text.primary'} fontWeight={'bold'}>
-                  {movement?.amount?.format}
-                </Typography>
-              </Stack>
-            }
-            secondary={
-              <Stack flexDirection={'row'} gap={1}>
-                <Typography sx={{ display: 'inline' }} component="span" variant="body2" color="text.secondary">
-                  {movement?.date?.time}
-                </Typography>
-                <Box>
-                  <Label variant={'outlined'} color={movement?.status?.color}>
-                    {movement?.status?.name}
-                  </Label>
-                </Box>
-              </Stack>
-            }
-          />
+          <Stack flex={1}>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+              <Typography variant="subtitle1" fontWeight={600}>
+                {movement?.movement}
+              </Typography>
+              <Typography variant="subtitle1" color={movement?.amount?.color || 'text.primary'} fontWeight={'bold'}>
+                {movement?.amount?.format}
+              </Typography>
+            </Stack>
+            <Stack flexDirection={'row'} gap={1} alignItems={'center'}>
+              <Typography sx={{ display: 'inline' }} component="span" variant="body2" color="text.secondary">
+                {movement?.date?.time}
+              </Typography>
+              <Box>
+                <Label variant={'outlined'} color={movement?.status?.color}>
+                  {movement?.status?.name}
+                </Label>
+              </Box>
+            </Stack>
+          </Stack>
         </RootStyle>
       </ListItem>
       <Divider />

@@ -7,10 +7,27 @@ Característica: Transferir de Concentradora a Empresa
   Antecedentes:
     Dado que se ingresa con el usuario "fpalma+09@siccob.com.mx"
 
-  Escenario: Concetradora a cuenta externa
+  Escenario: Concetradora a Empresa
     Dado Envio una solicitud "POST" a "/api/spei/transaction/process-payments" con datos:
     """
-   {
+    {
+      "originBankAccount": "646180527700000002",
+      "destinationsAccounts": [
+          {
+              "bankAccount": "646180527700000015",
+              "amount": 10
+          }
+      ],
+      "concept": "Concentradora a empresa desde Behat",
+      "internalTransaction": true
+    }
+    """
+    Entonces el codigo de estado de respuesta debe ser "200"
+
+  Escenario: Concetradora a Terceros
+    Dado Envio una solicitud "POST" a "/api/spei/transaction/process-payments" con datos:
+    """
+    {
       "originBankAccount": "646180527700000002",
       "destinationsAccounts": [
           {
@@ -18,7 +35,7 @@ Característica: Transferir de Concentradora a Empresa
               "amount": 10
           }
       ],
-      "concept": "Empresa a empresa",
+      "concept": "Concetradora a terceros desde Behat",
       "internalTransaction": false
     }
     """

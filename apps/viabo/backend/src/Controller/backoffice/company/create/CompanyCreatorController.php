@@ -49,7 +49,7 @@ final readonly class CompanyCreatorController extends ApiController
     public function createCompaniesAdminUser(array $data): string
     {
         $userId = $this->generateUuid();
-        $companyAdministratorProfileId = '3';
+        $companyAdministratorProfileId = '7';
         $this->dispatch(new CreateAdministratorUserCommand(
             $userId,
             $companyAdministratorProfileId,

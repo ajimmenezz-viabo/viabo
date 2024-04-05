@@ -80,10 +80,10 @@ function CompaniesAdapter(companies) {
         hidden: company?.stpAccount?.replace(/.(?=.{4})/g, '*')
       },
       commissions: {
-        speiOut: 5,
-        internalTransferCompany: 4,
-        fee: 10,
-        speiIn: 4
+        speiOut: company?.commissions?.speiOut || 0,
+        internalTransferCompany: company?.commissions?.internal || 0,
+        fee: company?.commissions?.feeStp || 0,
+        speiIn: company?.commissions?.speiIn || 0
       }
     })) || []
 

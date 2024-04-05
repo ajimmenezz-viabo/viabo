@@ -21,6 +21,7 @@ final readonly class AccountsDataFinder
     {
         return array_map(function (array $company) {
             $bankAccountData = $this->getBankAccountData($company['bankAccount']);
+            $company['type'] = $bankAccountData['type'];
             $company['beneficiary'] = $bankAccountData['beneficiary'];
             $company['email'] = $bankAccountData['emails'];
             $company['bankName'] = '';
@@ -35,6 +36,7 @@ final readonly class AccountsDataFinder
         return array_map(function (array $externalAccount) {
             $account = $this->queryBus->ask(new ExternalAccountQuery($externalAccount['bankAccount']));
             $bank = $this->queryBus->ask(new BankQuery($account->data['bankId']));
+            $externalAccount['type'] = 'externalAccount';
             $externalAccount['bankAccount'] = $account->data['interbankCLABE'];
             $externalAccount['beneficiary'] = $account->data['beneficiary'];
             $externalAccount['email'] = $account->data['email'];
@@ -52,12 +54,14 @@ final readonly class AccountsDataFinder
             $admins = $this->queryBus->ask(new AdministratorsStpQuery());
             $data = $stpAccount->data[0];
             return [
+                'type' => 'stpAccount',
                 'beneficiary' => $data['company'],
                 'emails' => $this->getEmails($admins->data)
             ];
         } else {
             $companyData = $this->queryBus->ask(new CompanyQueryByBankAccount($bankAccount));
             return [
+                'type' => 'company',
                 'beneficiary' => $companyData->data['fiscalName'],
                 'emails' => $this->getEmails($companyData->data['users'])
             ];

@@ -30,13 +30,16 @@ final readonly class TransactionsCreator
             $transactionsData[] = [
                 'transactionId' => $destinationsAccount['transactionId'],
                 'concept' => $concept,
+                'sourceAccountType' => $originAccount['type'],
                 'sourceAccount' => $originAccount['bankAccount'],
                 'sourceName' => $originAccount['name'],
                 'sourceEmail' => $originAccount['emails'],
+                'destinationAccountType' => $destinationsAccount['type'],
                 'destinationAccount' => $destinationsAccount['bankAccount'],
                 'destinationName' => $destinationsAccount['beneficiary'],
                 'destinationEmail' => $destinationsAccount['email'],
                 'amount' => $destinationsAccount['amount'],
+                'commissions' => $originAccount['commissions'],
                 'userId' => $userId
             ];
         }
@@ -58,15 +61,18 @@ final readonly class TransactionsCreator
             $transactionsData[] = [
                 'transactionId' => $destinationsAccount['transactionId'],
                 'concept' => $concept,
+                'sourceAccountType' => $originAccount['type'],
                 'sourceAccount' => $originAccount['bankAccount'],
                 'sourceAcronym' => $originAccount['acronym'],
                 'sourceName' => $originAccount['name'],
                 'sourceEmail' => $originAccount['emails'],
+                'destinationAccountType' => $destinationsAccount['type'],
                 'destinationAccount' => $destinationsAccount['bankAccount'],
                 'destinationName' => $destinationsAccount['beneficiary'],
                 'destinationEmail' => $destinationsAccount['email'],
                 'bankCode' => $destinationsAccount['bankCode'],
                 'amount' => $destinationsAccount['amount'],
+                'commissions' => $originAccount['commissions'],
                 'userId' => $userId
             ];
         }

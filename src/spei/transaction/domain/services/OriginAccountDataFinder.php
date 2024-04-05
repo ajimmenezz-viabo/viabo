@@ -24,6 +24,7 @@ final readonly class OriginAccountDataFinder
         if (!empty($stpAccount->data)) {
             $data = $stpAccount->data[0];
             return [
+                'type' => 'stpAccount',
                 'bankAccount' => $data['number'],
                 'acronym' => $data['acronym'],
                 'name' => $data['company'],
@@ -31,6 +32,7 @@ final readonly class OriginAccountDataFinder
                 'emails' => $this->AdminsStpEmails(),
                 'number' => $data['number'],
                 'company' => $data['company'],
+                'commissions' => [],
                 'key' => $data['key'],
                 'url' => $data['url'],
             ];
@@ -43,11 +45,13 @@ final readonly class OriginAccountDataFinder
         }
 
         return array_merge([
+            'type' => 'company',
             'bankAccount' => $originBankAccount,
             'acronym' => '',
             'name' => $company->data['fiscalName'],
             'balance' => $company->data['balance'],
             'emails' => $this->AdminsStpEmails(),
+            'commissions' => $company->data['speiCommissions']
         ], $stpAccount);
     }
 

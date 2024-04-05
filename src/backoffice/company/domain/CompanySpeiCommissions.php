@@ -16,6 +16,7 @@ final class CompanySpeiCommissions
         private float   $speiIn,
         private float   $internal,
         private float   $feeStp,
+        private float   $stpAccount,
         private string  $updatedByUser,
         private string  $updatedDate,
         private string  $createdByUser,
@@ -34,6 +35,7 @@ final class CompanySpeiCommissions
             $commissions['speiIn'],
             $commissions['internal'],
             $commissions['feeStp'],
+            $commissions['stpAccount'] ?? 0,
             '',
             '0000-00-00 00:00:00',
             $company->createdByUser(),
@@ -48,6 +50,7 @@ final class CompanySpeiCommissions
         $this->speiIn = $commissions['speiIn'];
         $this->internal = $commissions['internal'];
         $this->feeStp = $commissions['feeStp'];
+        $this->stpAccount = $commissions['stpAccount'] ?? 0;
         $this->updatedByUser = $this->company->updateByUser();
         $this->updatedDate = $date->dateTime();
     }
@@ -59,6 +62,7 @@ final class CompanySpeiCommissions
             'speiIn' => $this->speiIn,
             'internal' => $this->internal,
             'feeStp' => $this->feeStp,
+            'stpAccount' => $this->stpAccount,
             'updatedByUser' => $this->updatedByUser
         ];
     }

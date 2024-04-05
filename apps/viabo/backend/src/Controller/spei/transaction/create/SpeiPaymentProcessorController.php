@@ -19,11 +19,11 @@ final readonly class SpeiPaymentProcessorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $request->toArray();
-//            $this->dispatch(new ValidateGoogleAuthenticatorCommand(
-//                $tokenData['id'],
-//                $tokenData['name'],
-//                $data['googleAuthenticatorCode']
-//            ));
+            $this->dispatch(new ValidateGoogleAuthenticatorCommand(
+                $tokenData['id'],
+                $tokenData['name'],
+                $data['googleAuthenticatorCode']
+            ));
             $destinationsAccounts = $this->addTransactionId($data['destinationsAccounts']);
             $this->dispatch(new SpeiProcessPaymentsCommand(
                 $tokenData['id'],

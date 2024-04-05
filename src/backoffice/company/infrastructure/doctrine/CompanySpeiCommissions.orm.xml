@@ -11,6 +11,7 @@
         <field name="speiIn" column="SpeiIn"/>
         <field name="internal" column="Internal"/>
         <field name="feeStp" column="FeeStp"/>
+        <field name="stpAccount" column="stpAccount"/>
         <field name="updatedByUser" column="UpdatedByUser"/>
         <field name="updatedDate" column="UpdatedDate"/>
         <field name="createdByUser" column="CreatedByUser"/>

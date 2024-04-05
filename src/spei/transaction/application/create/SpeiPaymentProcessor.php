@@ -5,10 +5,9 @@ namespace Viabo\spei\transaction\application\create;
 
 
 use Viabo\shared\domain\bus\event\EventBus;
-use Viabo\shared\domain\utils\NumberFormat;
 use Viabo\spei\shared\domain\stp\StpRepository;
-use Viabo\spei\transaction\domain\exceptions\TransactionInsufficientBalance;
 use Viabo\spei\transaction\domain\services\AccountsDataFinder;
+use Viabo\spei\transaction\domain\services\BalanceValidator;
 use Viabo\spei\transaction\domain\services\OriginAccountDataFinder;
 use Viabo\spei\transaction\domain\services\TransactionsCreator;
 use Viabo\spei\transaction\domain\Transaction;
@@ -22,6 +21,7 @@ final readonly class SpeiPaymentProcessor
         private TransactionRepository   $repository,
         private StpRepository           $stpRepository,
         private OriginAccountDataFinder $originAccountDataFinder,
+        private BalanceValidator        $balanceValidator,
         private AccountsDataFinder      $accountsDataFinder,
         private TransactionsCreator     $transactionsCreator,
         private EventBus                $bus
@@ -38,9 +38,9 @@ final readonly class SpeiPaymentProcessor
     ): void
     {
         $originAccount = $this->originAccountDataFinder->__invoke($originBankAccount, $internalTransaction);
-        $this->ensureSufficientBalance($originAccount['balance'], $destinationsAccounts);
 
         if ($internalTransaction) {
+            $this->balanceValidator->__invoke($originAccount, $destinationsAccounts, true);
             $destinationsAccounts = $this->accountsDataFinder->companies($destinationsAccounts);
             $transactions = $this->transactionsCreator->internal(
                 $originAccount,
@@ -49,6 +49,7 @@ final readonly class SpeiPaymentProcessor
                 $userId
             );
         } else {
+            $this->balanceValidator->__invoke($originAccount, $destinationsAccounts);
             $destinationsAccounts = $this->accountsDataFinder->externalAccounts($destinationsAccounts);
             $transactions = $this->transactionsCreator->external(
                 $originAccount,
@@ -58,17 +59,6 @@ final readonly class SpeiPaymentProcessor
             );
         }
         $this->registerTransaction($transactions, $originAccount, $internalTransaction);
-    }
-
-    private function ensureSufficientBalance(float $balance, array $accounts): void
-    {
-        $total = array_sum(array_map(function (array $account) {
-            return NumberFormat::float($account['amount']);
-        }, $accounts));
-
-        if ($total > $balance) {
-            throw new TransactionInsufficientBalance();
-        }
     }
 
     private function registerTransaction(

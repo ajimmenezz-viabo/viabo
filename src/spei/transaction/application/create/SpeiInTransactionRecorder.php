@@ -4,6 +4,7 @@
 namespace Viabo\spei\transaction\application\create;
 
 
+use Viabo\backoffice\company\application\find\CompanyQueryByBankAccount;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
@@ -40,6 +41,7 @@ final readonly class SpeiInTransactionRecorder
         $transactions = $this->searchSpeiInsTransactions($date, $stpAccounts);
         $transactions = $this->filterSpeiInsNotRegistered($transactions);
         $transactions = $this->removeDuplicate($transactions);
+        $transactions = $this->addCommissions($transactions);
         $transactions = Transactions::fromSpeiIn($transactions, $TransactionType, $statusId);
         $this->save($transactions);
     }
@@ -92,6 +94,31 @@ final readonly class SpeiInTransactionRecorder
                 return false;
             }
         });
+    }
+
+    private function addCommissions(array $transactions): array
+    {
+        return array_map(function (array $transaction) {
+            $transaction['commissions'] = $this->searchCompanyCommissions($transaction['cuentaBeneficiario']);
+            return $transaction;
+        }, $transactions);
+    }
+
+    function searchCompanyCommissions(string $bankAccountNumber): array
+    {
+        try {
+            $company = $this->queryBus->ask(new CompanyQueryByBankAccount($bankAccountNumber));
+            return $company->data['speiCommissions'];
+        } catch (\DomainException) {
+            return [
+                'speiOut' => 0,
+                'speiIn' => 0,
+                'internal' => 0,
+                'feeStp' => 0,
+                'stpAccount' => 0,
+                'total' => 0
+            ];
+        }
     }
 
     private function save(Transactions $transactions): void

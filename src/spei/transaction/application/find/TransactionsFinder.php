@@ -43,7 +43,7 @@ final readonly class TransactionsFinder
     private function setDefaultDateIfEmpty(string $endDate): string
     {
         $date = new DatePHP();
-        return empty($endDate) ? $date->now() : "$endDate 23:59:59";
+        return empty($endDate) ? $date->dateTime() : "$endDate 23:59:59";
     }
 
 }

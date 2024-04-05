@@ -415,9 +415,15 @@ final class Company extends AggregateRoot
 
     public function speiCommissionsArray(): array
     {
+        return empty($this->speiCommissions) ? [] : $this->speiCommissions->value();
+    }
+
+    private function commissionsArray(): array
+    {
         if (empty($this->speiCommissions)) {
-            return [];
+            $this->speiCommissions = CompanySpeiCommissions::empty($this);
         }
+
         return $this->speiCommissions->value();
     }
 
@@ -449,6 +455,7 @@ final class Company extends AggregateRoot
             'allowTransactions' => $this->allowTransactions->value(),
             'statusId' => $this->statusId->value(),
             'speiCommissions' => $this->speiCommissionsArray(),
+            'commissions' => $this->commissionsArray(),
             'stpAccountId' => $this->stpAccountId->value(),
             'registerStep' => $this->registerStep->value(),
             'updatedByUser' => $this->updatedByUser->value(),

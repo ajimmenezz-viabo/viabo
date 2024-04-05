@@ -80,13 +80,13 @@ final readonly class AccountsFinderController extends ApiController
                 $stpAccount = $this->ask(new StpAccountQuery($company['stpAccountId']));
                 $stpAccount = $stpAccount->data['number'];
             }
-            unset($company['speiCommissions']['updatedByUser'], $company['speiCommissions']['stpAccount']);
+            unset($company['commissions']['updatedByUser'], $company['commissions']['stpAccount']);
             return [
                 'id' => $company['id'],
                 'name' => $company['fiscalName'],
                 'balance' => floatval($company['balance']),
                 'account' => implode(',', $company['bankAccounts']),
-                'commissions' => $company['speiCommissions'],
+                'commissions' => $company['commissions'],
                 'stpAccount' => $stpAccount
             ];
         }, $companies->data));
@@ -95,13 +95,13 @@ final readonly class AccountsFinderController extends ApiController
     function formatCompanies(array $companies): array
     {
         return array_values(array_map(function (array $company) {
-            unset($company['speiCommissions']['updatedByUser'], $company['speiCommissions']['stpAccount']);
+            unset($company['commissions']['updatedByUser'], $company['commissions']['stpAccount']);
             return [
                 'id' => $company['id'],
                 'name' => $company['fiscalName'],
                 'balance' => floatval($company['balance']),
                 'account' => implode(',', $company['bankAccounts']),
-                'commissions' => $company['speiCommissions']
+                'commissions' => $company['commissions']
             ];
         }, $companies));
     }

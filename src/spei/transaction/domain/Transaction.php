@@ -283,7 +283,8 @@ final class Transaction extends AggregateRoot
     public function isSameStpIdAndIsLiquidated(int|string $stpId, string $stpState): bool
     {
         $liquidated = 'LQ';
-        return $this->stpId->isSame($stpId) && $stpState === $liquidated;
+        $transactionLiquidated = 'TLQ';
+        return $this->stpId->isSame($stpId) && ($stpState === $liquidated || $stpState === $transactionLiquidated);
     }
 
     public function isSpeiIn(): bool

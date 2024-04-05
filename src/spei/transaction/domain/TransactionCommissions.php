@@ -105,4 +105,13 @@ final class TransactionCommissions extends StringValueObject
     {
         return empty($this->value) ? [] : json_decode($this->value, true);
     }
+
+    public function format(float $amount): array
+    {
+        if(empty($this->value)){
+            self::$data['total'] = $amount;
+            return self::$data;
+        }
+        return json_decode($this->value, true);
+    }
 }

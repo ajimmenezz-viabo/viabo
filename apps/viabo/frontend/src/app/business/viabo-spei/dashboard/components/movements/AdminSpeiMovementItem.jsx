@@ -66,7 +66,7 @@ export const AdminSpeiMovementItem = ({ movement, ...others }) => {
                 {movement?.movement}
               </Typography>
               <Typography variant="subtitle1" color={movement?.amount?.color || 'text.primary'} fontWeight={'bold'}>
-                {movement?.amount?.format}
+                {movement?.commissions?.total}
               </Typography>
             </Stack>
             <Stack flexDirection={'row'} gap={1} alignItems={'center'}>
@@ -95,6 +95,9 @@ AdminSpeiMovementItem.propTypes = {
     }),
     beneficiary: PropTypes.shape({
       name: PropTypes.any
+    }),
+    commissions: PropTypes.shape({
+      total: PropTypes.any
     }),
     date: PropTypes.shape({
       dateTime: PropTypes.any,

@@ -63,6 +63,17 @@ export const ViaboSpeiMovementsAdapter = movements => {
       status: {
         ...(movement?.statusName ? status[movement.statusName] || status.default : status.default)
       },
+      commissions: {
+        fee: fCurrency(-movement?.commissions?.feeStp || 0),
+        internalCompany: fCurrency(-movement?.commissions?.internal || 0),
+        speiIn: fCurrency(-movement?.commissions?.speiIn || 0),
+        speiOut: fCurrency(-movement?.commissions?.speiOut || 0),
+        stpAccount: fCurrency(-movement?.commissions?.stpAccount || 0),
+        total:
+          movement?.typeName === SPEI_OPERATIONS.SPEI_IN
+            ? fCurrency(movement?.commissions?.total || 0)
+            : `- ${fCurrency(movement?.commissions?.total || 0)}`
+      },
       fileCEP: movement?.urlCEP
     }
   })

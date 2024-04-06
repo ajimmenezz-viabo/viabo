@@ -317,7 +317,7 @@ final class Transaction extends AggregateRoot
             'destinationBankCode' => $this->destinationBankCode->value(),
             'amount' => $this->amount->value(),
             'amountMoneyFormat' => $this->amount->moneyFormat(),
-            'commissions' => $this->commissions->toArray(),
+            'commissions' => $this->commissions->format($this->amount->value()),
             'liquidationDate' => $this->liquidationDate->format(),
             'urlCEP' => $this->urlCEP->value(),
             'stpId' => $this->stpId->value(),

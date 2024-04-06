@@ -154,7 +154,39 @@ const AdminSpeiMovementDrawer = () => {
               <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
                 Monto:
               </Typography>
-              <Typography variant="body2">{transaction?.amount?.format?.replace('-', '') ?? '-'}</Typography>
+              <Typography variant="body2">{transaction?.commissions?.total?.replace('-', '') ?? '-'}</Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Comisión por SPEI Out:
+              </Typography>
+              <Typography variant="body2" color={'error'}>
+                {transaction?.commissions?.speiOut ?? '-'}
+              </Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Fee STP:
+              </Typography>
+              <Typography variant="body2" color={'error'}>
+                {transaction?.commissions?.fee ?? '-'}
+              </Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Comisión por Operación Interna:
+              </Typography>
+              <Typography variant="body2" color={'error'}>
+                {transaction?.commissions?.internalCompany ?? '-'}
+              </Typography>
+            </Stack>
+            <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5} flex={1}>
+              <Typography paragraph variant="caption" sx={{ color: 'text.disabled' }}>
+                Comisión por SPEI In:
+              </Typography>
+              <Typography variant="body2" color={'error'}>
+                {transaction?.commissions?.speiIn ?? '-'}
+              </Typography>
             </Stack>
             <Stack
               flexDirection={'row'}

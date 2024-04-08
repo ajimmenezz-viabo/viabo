@@ -33,4 +33,9 @@ final class StpAccountDoctrineRepository extends DoctrineRepository implements S
     {
         return $this->repository(StpAccount::class)->findAll();
     }
+
+    public function update(StpAccount $stpAccount): void
+    {
+        $this->entityManager()->flush($stpAccount);
+    }
 }

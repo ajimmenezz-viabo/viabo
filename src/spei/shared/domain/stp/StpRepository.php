@@ -4,8 +4,6 @@
 namespace Viabo\spei\shared\domain\stp;
 
 
-use Viabo\spei\stpAccount\domain\StpAccount;
-
 interface StpRepository
 {
     public function searchBalance(array $stpAccount): array;

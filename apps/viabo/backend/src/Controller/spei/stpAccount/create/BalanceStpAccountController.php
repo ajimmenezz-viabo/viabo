@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\stpAccount\application\create\RegisterBalanceStpAccountCommand;
-use Viabo\spei\transaction\application\create\RegisterSpeiInTransactionCommand;
 
 
 final readonly class BalanceStpAccountController extends ApiController

@@ -36,7 +36,7 @@ final readonly class BalanceStpAccountCreator
     {
         array_map(function (StpAccount $stpAccount) {
             $balance = $this->STPRepository->searchBalance($stpAccount->decrypt());
-            $stpAccount->updateBalance($balance['saldo']);
+            $stpAccount->updateBalance($balance['cargosPendientes'], $balance['saldo']);
             $this->repository->update($stpAccount);
         }, $stpAccounts);
     }

@@ -4,6 +4,7 @@
 namespace Viabo\spei\transaction\domain\services;
 
 
+use Viabo\shared\domain\utils\NumberFormat;
 use Viabo\spei\transaction\domain\Transactions;
 
 final readonly class TransactionsCreator
@@ -38,7 +39,7 @@ final readonly class TransactionsCreator
                 'destinationAccount' => $destinationsAccount['bankAccount'],
                 'destinationName' => $destinationsAccount['beneficiary'],
                 'destinationEmail' => $destinationsAccount['email'],
-                'amount' => $destinationsAccount['amount'],
+                'amount' => NumberFormat::float($destinationsAccount['amount']),
                 'commissions' => $originAccount['commissions'],
                 'userId' => $userId
             ];
@@ -71,7 +72,7 @@ final readonly class TransactionsCreator
                 'destinationName' => $destinationsAccount['beneficiary'],
                 'destinationEmail' => $destinationsAccount['email'],
                 'bankCode' => $destinationsAccount['bankCode'],
-                'amount' => $destinationsAccount['amount'],
+                'amount' => NumberFormat::float($destinationsAccount['amount']),
                 'commissions' => $originAccount['commissions'],
                 'userId' => $userId
             ];

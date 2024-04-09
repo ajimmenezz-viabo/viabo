@@ -50,6 +50,8 @@ final readonly class AccountsFinderController extends ApiController
             $data['name'] = $stpAccount['company'];
             $data['account'] = $stpAccount['number'];
             $data['balance'] = $stpAccount['balance'];
+            $data['balanceDate'] = $stpAccount['balanceDate'];
+            $data['pendingCharges'] = $stpAccount['pendingCharges'];
             $data['companiesBalance'] = array_sum(array_map(function (array $company) {
                 return $company['balance'];
             }, $companies->data));

@@ -7,13 +7,16 @@ namespace Viabo\spei\stpAccount\domain;
 final class StpAccount
 {
     public function __construct(
-        private StpAccountId      $id,
-        private StpAccountNumber  $number,
-        private StpAccountAcronym $acronym,
-        private StpAccountCompany $company,
-        private StpAccountKey     $key,
-        private StpAccountUrl     $url,
-        private StpAccountActive  $active
+        private StpAccountId             $id,
+        private StpAccountNumber         $number,
+        private StpAccountAcronym        $acronym,
+        private StpAccountCompany        $company,
+        private StpAccountKey            $key,
+        private StpAccountUrl            $url,
+        private StpAccountPendingCharges $pendingCharges,
+        private StpAccountBalance        $balance,
+        private StpAccountBalanceDate    $balanceDate,
+        private StpAccountActive         $active
     )
     {
     }
@@ -33,6 +36,13 @@ final class StpAccount
         return $this->company->value();
     }
 
+    public function updateBalance(float $pendingCharges, float $balance): void
+    {
+        $this->pendingCharges = $this->pendingCharges->update($pendingCharges);
+        $this->balance = $this->balance->update($balance);
+        $this->balanceDate = $this->balanceDate->update();
+    }
+
     public function toArray(): array
     {
         return [
@@ -42,6 +52,9 @@ final class StpAccount
             'company' => $this->company->value(),
             'key' => $this->key->value(),
             'url' => $this->url->value(),
+            'pendingCharges' => $this->pendingCharges->value(),
+            'balance' => $this->balance->value(),
+            'balanceDate' => $this->balanceDate->value(),
             'active' => $this->active->value()
         ];
     }
@@ -55,6 +68,9 @@ final class StpAccount
             'company' => $this->company->value(),
             'key' => $this->key->decrypt(),
             'url' => $this->url->decrypt(),
+            'pendingCharges' => $this->pendingCharges->value(),
+            'balance' => $this->balance->value(),
+            'balanceDate' => $this->balanceDate->value(),
             'active' => $this->active->value()
         ];
     }

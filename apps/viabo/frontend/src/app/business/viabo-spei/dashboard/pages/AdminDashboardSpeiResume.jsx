@@ -27,13 +27,23 @@ export const AdminDashboardSpeiResume = () => {
 
   const isEmptyAccount = !isLoading && !selectedAccount
 
+  const isConcentrator = Boolean(selectedAccount?.type === STP_ACCOUNT_TYPES.CONCENTRATOR)
+
   return (
     <>
       <Stack gap={3}>
-        <Stack>
-          <Typography sx={{ typography: 'h2' }}>{selectedAccount?.totalBalance?.format || '$0.00'}</Typography>
-          {selectedAccount?.type === STP_ACCOUNT_TYPES.CONCENTRATOR && (
-            <>
+        <Stack gap={isConcentrator ? 1 : 0}>
+          <Stack>
+            <Typography sx={{ typography: 'h2' }}>{selectedAccount?.totalBalance?.format || '$0.00'}</Typography>
+            {isConcentrator && (
+              <Typography sx={{ typography: 'subtitle2' }}>
+                Última Actualización: <Box component={'span'}>{selectedAccount?.balanceDate?.format}</Box>
+              </Typography>
+            )}
+          </Stack>
+
+          {isConcentrator && (
+            <Stack>
               <Typography sx={{ typography: 'subtitle1' }}>
                 Saldo Empresas:{' '}
                 <Box component={'span'} color={'error.main'}>
@@ -46,7 +56,7 @@ export const AdminDashboardSpeiResume = () => {
                   {selectedAccount?.balance?.format || '$0.00'}
                 </Box>
               </Typography>
-            </>
+            </Stack>
           )}
 
           <Typography sx={{ typography: 'subtitle1' }} color={'text.disabled'}>

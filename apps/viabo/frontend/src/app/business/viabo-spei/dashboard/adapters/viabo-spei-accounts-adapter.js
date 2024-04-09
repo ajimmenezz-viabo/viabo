@@ -1,6 +1,6 @@
 import { STP_ACCOUNT_TYPES, getStpAccountType } from '../constants'
 
-import { convertCatalogToReactSelect, fCurrency, getDecryptInfo } from '@/shared/utils'
+import { convertCatalogToReactSelect, fCurrency, fDateTime, getDecryptInfo } from '@/shared/utils'
 
 export const ViaboSpeiAccountsAdapter = accounts => {
   const accountsDecrypted = getDecryptInfo(accounts?.ciphertext, accounts?.iv)
@@ -25,6 +25,10 @@ function ConcentratorsAdapter(concentrators) {
       account: {
         number: concentrator?.account,
         hidden: concentrator?.account?.replace(/.(?=.{4})/g, '*')
+      },
+      balanceDate: {
+        original: concentrator?.balanceDate,
+        format: concentrator?.balanceDate ? fDateTime(concentrator?.balanceDate) : null
       },
       totalBalance: {
         number: concentrator?.balance,

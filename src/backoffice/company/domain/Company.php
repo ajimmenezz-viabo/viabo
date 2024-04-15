@@ -74,6 +74,20 @@ final class Company extends AggregateRoot
         return $this->folio->value();
     }
 
+    public function update(
+        string $fiscalPersonType,
+        string $fiscalName,
+        string $tradeName,
+        string $rfc,
+        string $registerStep
+    ): void
+    {
+        $this->fiscalPersonType = $this->fiscalPersonType->update($fiscalPersonType);
+        $this->fiscalName = $this->fiscalName->update($fiscalName);
+        $this->tradeName = $this->tradeName->update($tradeName, $registerStep);
+        $this->rfc = $this->rfc->update($rfc);
+        $this->registerStep = $this->registerStep->update($registerStep);
+    }
 
     public function toArray(): array
     {

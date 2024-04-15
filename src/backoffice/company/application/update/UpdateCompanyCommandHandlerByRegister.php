@@ -24,7 +24,8 @@ final readonly class UpdateCompanyCommandHandlerByRegister implements CommandHan
             $command->branchOffices ,
             $command->pointSaleTerminal ,
             $command->paymentApi ,
-            $command->registerStep
+            $command->registerStep,
+            $command->services
         );
     }
 }

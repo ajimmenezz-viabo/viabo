@@ -6,7 +6,6 @@ namespace Viabo\backoffice\company\application\find_company_by_user;
 
 use Viabo\backoffice\company\application\find\CompanyResponse;
 use Viabo\backoffice\company\domain\CompanyRepository;
-use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
 use Viabo\backoffice\company\domain\exceptions\CompanyUserNotAssociated;
 use Viabo\backoffice\company\domain\projection\CompanyProjection;
 use Viabo\shared\domain\criteria\Criteria;
@@ -25,25 +24,26 @@ final readonly class CompanyFinderByUser
         ]);
         $companies = $this->repository->searchCriteria(new Criteria($filters), true);
 
-        if(empty($companies)){
+        if (empty($companies)) {
             throw new CompanyUserNotAssociated();
         }
 
-        return new CompanyResponse(array_map(function (CompanyProjection $projection){
-            $data = $projection->toArray();
-            return $this->toArrayOld($data);
-        },$companies));
+        $company = array_filter($companies, function (CompanyProjection $projection) {
+            return $projection->hasUserProfileOfType('3');
+        });
+        return new CompanyResponse($this->toArrayOld($company[0]->toArray()));
     }
 
     function toArrayOld(array $data): array
     {
+        $admin = $data['users'][0];
         return [
             'id' => $data['id'],
             'folio' => $data['folio'],
             'fatherId' => $data['fatherId'],
-            'legalRepresentative' => '',
-            'legalRepresentativeName' => '',
-            'legalRepresentativeEmail' => '',
+            'legalRepresentative' => $admin['id'],
+            'legalRepresentativeName' => $admin['name'],
+            'legalRepresentativeEmail' => $admin['email'],
             'legalRepresentativePhone' => '',
             'legalRepresentativeRegister' => '',
             'legalRepresentativeLastSession' => '',

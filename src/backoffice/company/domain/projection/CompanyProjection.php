@@ -73,9 +73,22 @@ final class CompanyProjection extends AggregateRoot
         );
     }
 
+    public function id(): string
+    {
+        return $this->id;
+    }
+
     public function updateUsers(array $users): void
     {
         $this->users = json_encode($users);
+    }
+
+    public function hasUserProfileOfType(string $profileId): bool
+    {
+        $users = array_filter($this->users(), function (array $user) use ($profileId) {
+            return $user['profile'] === $profileId;
+        });
+        return !empty($users);
     }
 
     private function users(): array

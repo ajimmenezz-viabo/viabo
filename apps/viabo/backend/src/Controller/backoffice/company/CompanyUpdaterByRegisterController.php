@@ -18,10 +18,8 @@ final readonly class CompanyUpdaterByRegisterController extends ApiController
         try {
             $this->decode($request->headers->get('Authorization'));
             $request = $request->toArray();
-            var_dump($request);
-            $companyId = $request['companyId'];
             $this->dispatch(new UpdateCompanyCommandByRegister(
-                $companyId ,
+                $request['companyId'] ,
                 $request['fiscalPersonType'] ,
                 $request['fiscalName'] ,
                 $request['tradeName'] ,
@@ -30,7 +28,8 @@ final readonly class CompanyUpdaterByRegisterController extends ApiController
                 $request['branchOffices'] ,
                 $request['pointSaleTerminal'] ,
                 $request['paymentApi'] ,
-                $request['registerStep']
+                $request['registerStep'],
+                $request['services']
             ));
 //            $this->dispatch(new UpdateViaboServicesCommand($companyId , $request['services']));
 

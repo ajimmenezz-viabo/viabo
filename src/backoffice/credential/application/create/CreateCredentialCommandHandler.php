@@ -7,7 +7,7 @@ namespace Viabo\backoffice\credential\application\create;
 use Viabo\backoffice\credential\domain\CredentialCarnetKey;
 use Viabo\backoffice\credential\domain\CredentialMainKey;
 use Viabo\backoffice\credential\domain\CredentialMasterCardKey;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateCredentialCommandHandler implements CommandHandler

@@ -15,7 +15,7 @@ final readonly class CompanyFinder
 
     public function __invoke(string $companyId): CompanyResponse
     {
-        $company = $this->repository->search($companyId);
+        $company = $this->repository->search($companyId, false);
 
         if (empty($company)) {
             throw new CompanyNotExist();

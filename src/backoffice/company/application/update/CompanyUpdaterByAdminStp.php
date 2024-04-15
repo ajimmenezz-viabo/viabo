@@ -36,7 +36,7 @@ final readonly class CompanyUpdaterByAdminStp
         $users = $this->finder->searchUsers($users);
         $costCenters = $this->finder->searchCostCenter($costCenters);
 
-        $company = $this->repository->search($companyId);
+        $company = $this->repository->search($companyId, false);
 
         if (empty($company)) {
             throw new CompanyNotExist();

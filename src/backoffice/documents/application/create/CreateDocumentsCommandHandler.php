@@ -4,7 +4,7 @@
 namespace Viabo\backoffice\documents\application\create;
 
 
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateDocumentsCommandHandler implements CommandHandler

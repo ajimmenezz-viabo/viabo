@@ -45,7 +45,20 @@ final class CompanySpeiCommissions
 
     public static function empty(Company $company): static
     {
-        return new static(RamseyUuid::uuid4()->toString(), $company, 0, 0, 0, 0, 0, '', '', '', '');
+        $date = new DatePHP();
+        return new static(
+            RamseyUuid::uuid4()->toString(),
+            $company,
+            0,
+            0,
+            0,
+            0,
+            0,
+            '',
+            '0000-00-00 00:00:00',
+            '',
+            $date->dateTime()
+        );
     }
 
     public function update(array $commissions): void

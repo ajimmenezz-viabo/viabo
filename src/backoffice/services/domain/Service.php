@@ -5,7 +5,7 @@ namespace Viabo\backoffice\services\domain;
 
 
 use Viabo\backoffice\services\domain\events\ServiceCreatedDomainEvent;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Service extends AggregateRoot

@@ -10,8 +10,8 @@ use Viabo\backoffice\company\domain\services\CompanyFinder;
 use Viabo\backoffice\company\domain\services\CompanyUpdater as CommerceUpdaterService;
 use Viabo\backoffice\company\domain\services\EnsureBusinessRules;
 use Viabo\backoffice\company\domain\services\LogoDataFinder;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\uploadFile\UploadFileRepository;
 

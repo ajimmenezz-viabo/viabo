@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Viabo\backoffice\documents\domain\Document;
 use Viabo\backoffice\documents\domain\DocumentName;
 use Viabo\backoffice\documents\domain\DocumentRepository;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\backoffice\shared\domain\documents\DocumentId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;

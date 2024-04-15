@@ -19,7 +19,7 @@ final readonly class UserCompanyAdder
 
     public function __invoke(string $companyId, array $users): void
     {
-        $company = $this->repository->search($companyId);
+        $company = $this->repository->search($companyId, false);
 
         if (empty($company)) {
             throw new CompanyNotExist();

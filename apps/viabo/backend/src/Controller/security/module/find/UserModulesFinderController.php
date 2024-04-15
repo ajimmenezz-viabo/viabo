@@ -5,8 +5,8 @@ namespace Viabo\Backend\Controller\security\module\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
 use Viabo\backoffice\commerceUser\application\find\CommerceQueryByUser;
+use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\backoffice\services\application\find\CommerceServicesQuery;
 use Viabo\security\module\application\find\UserModulesQuery;
 use Viabo\security\user\application\find\FindUserPermissionQuery;
@@ -47,7 +47,7 @@ final readonly class UserModulesFinderController extends ApiController
             $commerce = $this->ask(new CommerceQueryByUser($userId));
             return $commerce->data;
         } catch (\DomainException) {
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($userId));
+            $commerce = $this->ask(new CompanyQueryByUser($userId));
             return $commerce->data;
         }
     }

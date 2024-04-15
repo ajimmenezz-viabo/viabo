@@ -4,7 +4,7 @@
 namespace Viabo\backoffice\commission\domain;
 
 
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 
 interface CommissionRepository
 {

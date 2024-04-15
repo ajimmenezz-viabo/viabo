@@ -11,29 +11,26 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final  class Code extends AggregateRoot
 {
     public function __construct(
-        private readonly CodeId       $id ,
-        private readonly UserId       $userId ,
-        private readonly CodeValue    $value ,
-        private readonly CodeRegister $register ,
+        private readonly CodeId       $id,
+        private readonly UserId       $userId,
+        private readonly CodeValue    $value,
+        private readonly CodeRegister $register,
     )
     {
     }
 
-    public static function create(UserId $userId): self
+    public static function create(array $user): self
     {
-        return new self(
-            new CodeId('') ,
-            $userId ,
-            CodeValue::random() ,
+        $code = new self(
+            new CodeId(''),
+            new UserId($user['id']),
+            CodeValue::random(),
             CodeRegister::todayDate()
         );
+        $user['code'] = $code->value->value();
+        $code->record(new CodeCreatedDomainEvent($user['id'], $user));
+        return $code;
 
-    }
-
-    public function setEventCreated(array $userData): void
-    {
-        $userData['code'] = $this->value->value();
-        $this->record(new CodeCreatedDomainEvent($this->userId->value() , $userData));
     }
 
     public function isNotSame(string $code): bool

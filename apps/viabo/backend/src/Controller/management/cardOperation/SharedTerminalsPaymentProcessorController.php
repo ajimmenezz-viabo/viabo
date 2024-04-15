@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\cardOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\CardQueryBySpei;
 use Viabo\management\card\application\find\MasterCardQueryByPaymentProcessor;
 use Viabo\management\cardOperation\application\transactions\CardTransactionTerminalCommand;
@@ -28,7 +28,7 @@ final readonly class SharedTerminalsPaymentProcessorController extends ApiContro
                 $teminalData['commerceId'] ,
                 $originCard->data['paymentProcessorId']
             ));
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
             $this->dispatch(new CardTransactionTerminalCommand(
                 $tokenData['id'] ,
                 $originCard->data['id'] ,

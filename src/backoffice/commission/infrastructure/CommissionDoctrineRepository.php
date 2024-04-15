@@ -7,7 +7,7 @@ namespace Viabo\backoffice\commission\infrastructure;
 use Doctrine\ORM\EntityManager;
 use Viabo\backoffice\commission\domain\Commission;
 use Viabo\backoffice\commission\domain\CommissionRepository;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 
 final class CommissionDoctrineRepository extends DoctrineRepository implements CommissionRepository

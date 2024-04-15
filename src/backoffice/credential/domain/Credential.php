@@ -4,9 +4,8 @@
 namespace Viabo\backoffice\credential\domain;
 
 
-use Viabo\backoffice\credential\domain\events\CommerceCredentialCreatedDomainEvent;
 use Viabo\backoffice\credential\domain\exceptions\CredentialPaymentProcessorEmpty;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Credential extends AggregateRoot

@@ -7,7 +7,7 @@ namespace Viabo\backoffice\credential\domain\services;
 use Viabo\backoffice\credential\domain\Credential;
 use Viabo\backoffice\credential\domain\CredentialRepository;
 use Viabo\backoffice\credential\domain\exceptions\CredentialNotExist;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 

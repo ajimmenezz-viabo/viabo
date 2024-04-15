@@ -18,9 +18,8 @@ final readonly class CreateCodeCommandHandler implements CommandHandler
     public function __invoke(CreateCodeCommand $command): void
     {
         $userEmail = '';
-        $userId = new UserId($command->userId);
-        $data = $this->queryBus->ask(new FindUserQuery($command->userId, $userEmail));
+        $user = $this->queryBus->ask(new FindUserQuery($command->userId, $userEmail));
 
-        $this->creator->__invoke($userId , $data->data);
+        $this->creator->__invoke($user->data);
     }
 }

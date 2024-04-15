@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\cardMovement;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\management\cardMovement\application\find\CardMovementsConsolidatedQuery;
 use Viabo\management\commerceTerminal\application\find\TerminalQueryBySpeiCard;
@@ -20,7 +20,7 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $terminalId = $request->query->getString('terminalId');
             $startDate = $request->query->getString('startDate');
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
             $terminal = $this->ask(new TerminalQueryBySpeiCard($terminalId));
             $card = $this->ask(new CardQuery($terminal->data['cardId'] ?? ''));
             $movementsConsolidated = $this->ask(new TerminalConciliationsQuery(

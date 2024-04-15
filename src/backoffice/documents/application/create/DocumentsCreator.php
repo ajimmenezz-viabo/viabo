@@ -7,8 +7,7 @@ namespace Viabo\backoffice\documents\application\create;
 use Viabo\backoffice\documents\domain\Document;
 use Viabo\backoffice\documents\domain\DocumentName;
 use Viabo\backoffice\documents\domain\DocumentRepository;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
-use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class DocumentsCreator

@@ -1,6 +1,6 @@
 legal-representative-create:
   path: '/api/security/legalRepresentative/new'
-  controller: Viabo\Backend\Controller\security\user\create\LegalRepresentativeCreatorController
+  controller: Viabo\Backend\Controller\security\user\create\CompanyAdminCreatorController
   methods: POST
 
 create-user-of-commerce-demo:

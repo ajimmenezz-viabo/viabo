@@ -5,11 +5,9 @@ namespace Viabo\backoffice\commerceUser\domain\services;
 
 
 use Viabo\backoffice\commerceUser\domain\CommerceUser;
-use Viabo\backoffice\commerceUser\domain\CommerceUserId;
 use Viabo\backoffice\commerceUser\domain\CommerceUserKey;
 use Viabo\backoffice\commerceUser\domain\CommerceUserRepository;
 use Viabo\backoffice\commerceUser\domain\exceptions\CommerceUserNotExist;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 

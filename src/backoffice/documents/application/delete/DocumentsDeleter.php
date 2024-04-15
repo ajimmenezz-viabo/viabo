@@ -5,7 +5,7 @@ namespace Viabo\backoffice\documents\application\delete;
 
 
 use Viabo\backoffice\documents\domain\DocumentRepository;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\criteria\Criteria;

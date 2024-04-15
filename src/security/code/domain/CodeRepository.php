@@ -11,7 +11,7 @@ interface CodeRepository
 {
     public function save(Code $code): void;
 
-    public function search(UserId $userId): ?Code;
+    public function search(string $userId): Code|null;
 
     public function searchCriteria(Criteria $criteria): Code|null;
 

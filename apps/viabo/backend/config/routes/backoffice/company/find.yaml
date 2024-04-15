@@ -1,6 +1,6 @@
-finder-commerce-to-register:
+find-company-by-register-of-outside:
   path: '/api/commerce/legal-representative'
-  controller: Viabo\Backend\Controller\backoffice\company\CommerceFinderByLegalRepresentativeController
+  controller: Viabo\Backend\Controller\backoffice\company\CompanyFinderByUserController
   methods: GET
 
 finder-companies:

@@ -5,7 +5,7 @@ namespace Viabo\backoffice\credential\application\find;
 
 
 use Viabo\backoffice\credential\domain\services\CredentialCriteriaFinder;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 
 final readonly class CredentialFinder
 {

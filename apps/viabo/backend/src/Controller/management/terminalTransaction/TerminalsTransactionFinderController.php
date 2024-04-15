@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\terminalTransaction;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\commercePayCredentials\application\find\PayServiceCredentialsQuery;
 use Viabo\management\commerceTerminal\application\find\TerminalsQuery;
 use Viabo\management\terminalConsolidation\application\find\TerminalConciliationsQuery;
@@ -23,7 +23,7 @@ final readonly class TerminalsTransactionFinderController extends ApiController
             $terminalId = $request->query->getString('terminalId');
             $page = $request->query->get('page');
             $pageSize = $request->query->get('pageSize');
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
             $credentials = $this->ask(new PayServiceCredentialsQuery($commerce->data['id']));
             $terminals = $this->ask(new TerminalsQuery($commerce->data['id']));
             $conciliations = $this->ask(new TerminalConciliationsQuery($terminals->data , $terminalId));

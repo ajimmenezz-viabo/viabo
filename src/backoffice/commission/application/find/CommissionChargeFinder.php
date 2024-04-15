@@ -6,7 +6,7 @@ namespace Viabo\backoffice\commission\application\find;
 
 use Viabo\backoffice\commission\domain\Commission;
 use Viabo\backoffice\commission\domain\CommissionRepository;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 
 final readonly class CommissionChargeFinder
 {

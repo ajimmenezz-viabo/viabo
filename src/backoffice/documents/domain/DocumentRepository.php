@@ -4,7 +4,7 @@
 namespace Viabo\backoffice\documents\domain;
 
 
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\backoffice\shared\domain\documents\DocumentId;
 use Viabo\shared\domain\criteria\Criteria;
 

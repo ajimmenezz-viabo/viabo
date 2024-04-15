@@ -6,7 +6,7 @@ namespace Viabo\backoffice\commission\domain;
 
 use Viabo\backoffice\commission\domain\events\CommissionCreatedDomainEvent;
 use Viabo\backoffice\commission\domain\events\CommissionUpdatedDomainEvent;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class Commission extends AggregateRoot

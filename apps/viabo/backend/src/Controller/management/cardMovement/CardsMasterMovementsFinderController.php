@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\cardMovement;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\MainCardsInformationQuery;
 use Viabo\management\cardMovement\application\find\CardsMasterMovementsQuery;
 use Viabo\management\cardOperation\application\find\CardsOperationsQuery;
@@ -22,7 +22,7 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $startDate = $request->query->getString('startDate');
             $endDate = $request->query->getString('endDate');
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
             $cardsInformation = $this->ask(new MainCardsInformationQuery($commerce->data['id']));
             $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data , $startDate , $endDate));
             $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($commerce->data['id']));

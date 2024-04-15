@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\MainCardIdQuery;
 use Viabo\management\card\application\find\MainCardInformationQuery;
 use Viabo\management\credential\application\find\CardCredentialQuery;
@@ -20,7 +20,7 @@ final readonly class MainCardInformationFinderController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $paymentProcessorId = $request->get('paymentProcessorId');
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
             $cardData = $this->ask(new MainCardIdQuery($commerce->data['id'] , $paymentProcessorId));
             $card = $this->searchCardData($cardData->data);
 

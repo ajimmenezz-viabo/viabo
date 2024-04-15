@@ -9,8 +9,6 @@ use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\services\CollectionEntityFinder;
 use Viabo\backoffice\company\domain\services\CompanyValidator;
 use Viabo\shared\domain\bus\event\EventBus;
-use Viabo\shared\domain\bus\query\QueryBus;
-use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
 
 final readonly class CompanyCreator
 {
@@ -18,7 +16,6 @@ final readonly class CompanyCreator
         private CompanyRepository      $repository,
         private CompanyValidator       $validator,
         private CollectionEntityFinder $finder,
-        private QueryBus               $queryBus,
         private EventBus               $bus
     )
     {

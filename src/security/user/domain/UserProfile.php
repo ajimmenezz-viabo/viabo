@@ -13,6 +13,11 @@ final class UserProfile extends StringValueObject
         return new static($value);
     }
 
+    public static function companyAdmin(): static
+    {
+        return new static('3');
+    }
+
     public static function cardHolder(): static
     {
         $cardHolderProfileId = '4';

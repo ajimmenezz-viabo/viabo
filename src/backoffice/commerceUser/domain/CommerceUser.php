@@ -6,7 +6,7 @@ namespace Viabo\backoffice\commerceUser\domain;
 
 use Viabo\backoffice\commerceUser\domain\events\CommerceUserCreatedDomainEvent;
 use Viabo\backoffice\commerceUser\domain\events\CommerceUserDeleted;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class CommerceUser extends AggregateRoot

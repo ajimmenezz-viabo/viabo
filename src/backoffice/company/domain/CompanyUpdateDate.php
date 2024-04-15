@@ -19,4 +19,12 @@ final class CompanyUpdateDate extends DateTimeValueObject
     {
         return new static($date);
     }
+
+    public function value(): string
+    {
+        return empty($this->value) || $this->value === '0000-00-00 00:00:00' ?
+            '0000-00-00 00:00:00' :
+            $this->date->formatDateTime($this->value);
+    }
+
 }

@@ -6,7 +6,6 @@ namespace Viabo\backoffice\company\application\update;
 
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CompanyActivator
@@ -17,7 +16,7 @@ final readonly class CompanyActivator
 
     public function __invoke(string $userId, string $companyId, bool $active): void
     {
-        $company = $this->repository->search($companyId);
+        $company = $this->repository->search($companyId, false);
 
         if(empty($company)){
             throw new CompanyNotExist();

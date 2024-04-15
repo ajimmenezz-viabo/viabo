@@ -9,7 +9,7 @@ use Viabo\backoffice\commerceUser\domain\CommerceUserKey;
 use Viabo\backoffice\commerceUser\domain\CommerceUserRepository;
 use Viabo\backoffice\commerceUser\domain\exceptions\CommerceUserNotSameCommerce;
 use Viabo\backoffice\commerceUser\domain\services\CommerceUserFinder;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\DomainError;
 

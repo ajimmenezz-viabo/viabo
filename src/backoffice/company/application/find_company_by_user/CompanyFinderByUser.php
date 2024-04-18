@@ -17,10 +17,11 @@ final readonly class CompanyFinderByUser
     {
     }
 
-    public function __invoke(string $userId): CompanyResponse
+    public function __invoke(string $userId, string $businessId): CompanyResponse
     {
         $filters = Filters::fromValues([
             ['field' => 'users', 'operator' => 'CONTAINS', 'value' => $userId],
+            ['field' => 'businessId', 'operator' => '=', 'value' => $businessId],
         ]);
         $companies = $this->repository->searchCriteria(new Criteria($filters));
 

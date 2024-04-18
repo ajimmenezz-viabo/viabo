@@ -17,7 +17,7 @@ final readonly class LegalRepresentativeFinderController extends ApiController
         try {
             $username = $request->headers->get('Username');
             $user = $this->ask(new UserQueryByRegisterCompany($username));
-            $token = $this->encode(['id' => $user->data['id']]);
+            $token = $this->encode(['id' => $user->data['id'], 'businessId' => $user->data['businessId']]);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {

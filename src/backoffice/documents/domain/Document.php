@@ -4,7 +4,6 @@
 namespace Viabo\backoffice\documents\domain;
 
 
-use Viabo\backoffice\documents\domain\events\DocumentCreatedDomainEvent;
 use Viabo\backoffice\documents\domain\events\DocumentDeletedDomainEvent;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\backoffice\shared\domain\documents\DocumentId;
@@ -24,15 +23,13 @@ final  class Document extends AggregateRoot
 
     public static function create(string $companyId, string $name): Document
     {
-        $document = new self(
+        return new self(
             DocumentId::random(),
             CompanyId::create($companyId),
             DocumentName::create($name),
             DocumentStorePath::empty(),
             DocumentRegister::todayDate()
         );
-        $document->record(new DocumentCreatedDomainEvent($document->id->value(), $document->toArray()));
-        return $document;
     }
 
     public function name(): DocumentName
@@ -50,7 +47,7 @@ final  class Document extends AggregateRoot
         return "/Business/Commerce_{$this->companyId->value()}/Documents";
     }
 
-    public function recordUploadFileData(string $fileName, string $path): void
+    public function recordUploadFileData(string $path, string $fileName = '' ): void
     {
         $this->name = $this->name->update($fileName);
         $this->storePath = $this->storePath->update($path);

@@ -4,7 +4,6 @@
 namespace Viabo\backoffice\services\application\update_services_by_register_company;
 
 
-use Viabo\backoffice\services\domain\events\ServicesCreatedDomainEventByRegisterCompany;
 use Viabo\backoffice\services\domain\events\ServicesUpdateDomainEventByRegisterCompany;
 use Viabo\backoffice\services\domain\new\ServiceRepository;
 use Viabo\shared\domain\bus\event\EventBus;

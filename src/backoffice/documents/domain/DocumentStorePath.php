@@ -15,6 +15,7 @@ final class DocumentStorePath extends StringValueObject
 
     public function update(string $value): self
     {
+        $value = str_replace('/storage', '', $value);
         return new self("/storage$value");
     }
 

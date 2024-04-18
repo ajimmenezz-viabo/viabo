@@ -16,7 +16,7 @@ final readonly class CompanyFinderByUserController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
 
             return new JsonResponse($company->data);
         } catch (\DomainException $exception) {

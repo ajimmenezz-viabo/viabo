@@ -118,8 +118,23 @@ final class CompanyProjection extends AggregateRoot
         $services = json_decode($this->services, true);
         return array_map(function (array $service) {
             unset($service['updateByUser'], $service['updateDate'], $service['createdByUser'], $service['createDate']);
+            $service['cardNumbers'] = $service['numbers'] ?? '0';
+            $service['cardUse'] = $service['purpose'] ?? '0';
             return $service;
         }, $services);
+    }
+
+    public function updateDocuments(array $documents): void
+    {
+        $this->documents = json_encode($documents);
+    }
+
+    private function documents(): array
+    {
+        $documents = json_decode($this->documents, true);
+        return array_map(function (array $document) {
+            return ['Id' => $document['id'], 'Name' => $document['name'], 'storePath' => $document['storePath']];
+        },$documents);
     }
 
     public function update(
@@ -160,7 +175,7 @@ final class CompanyProjection extends AggregateRoot
             'registerStep' => $this->registerStep,
             'users' => $this->users(),
             'services' => $this->services(),
-            'documents' => $this->documents,
+            'documents' => $this->documents(),
             'commissions' => $this->commissions,
             'updatedByUser' => $this->updatedByUser,
             'updateDate' => $this->updateDate,
@@ -173,6 +188,7 @@ final class CompanyProjection extends AggregateRoot
     public function toArrayOld(): array
     {
         $admin = $this->users();
+        $services = $this->services();
         return [
             'id' => $this->id,
             'folio' => $this->folio,
@@ -194,10 +210,10 @@ final class CompanyProjection extends AggregateRoot
             'balance' => $this->balance,
             'bankAccount' => '',
             'publicTerminal' => '',
-            'employees' => '0',
-            'branchOffices' => '0',
-            'pointSaleTerminal' => '0',
-            'paymentApi' => '0',
+            'employees' => $services[0]['employees'] ?? '0',
+            'branchOffices' => $services[0]['branchOffices'] ?? '0',
+            'pointSaleTerminal' => $services[0]['pointSaleTerminal'] ?? '0',
+            'paymentApi' => $services[0]['paymentApi'] ?? '0',
             'type' => $this->type,
             'typeName' => $this->typeName,
             'allowTransactions' => '',
@@ -205,9 +221,9 @@ final class CompanyProjection extends AggregateRoot
             'statusName' => $this->statusName,
             'stpAccountId' => '',
             'registerStep' => $this->registerStep,
-            'services' => $this->services(),
+            'services' => $services,
             'servicesIds' => [],
-            'documents' => json_decode($this->documents, true),
+            'documents' => $this->documents(),
             'commissions' => json_decode($this->commissions, true),
             'createdByUser' => $this->createdByUser,
             'register' => $this->createDate,

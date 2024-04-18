@@ -15,6 +15,6 @@ final readonly class CompanyQueryHandlerByUser implements QueryHandler
 
     public function __invoke(CompanyQueryByUser $command): CompanyResponse
     {
-        return $this->finder->__invoke($command->userId);
+        return $this->finder->__invoke($command->userId, $command->businessId);
     }
 }

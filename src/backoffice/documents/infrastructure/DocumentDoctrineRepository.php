@@ -5,6 +5,7 @@ namespace Viabo\backoffice\documents\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Viabo\backoffice\documents\domain\Document;
 use Viabo\backoffice\documents\domain\DocumentRepository;
 use Viabo\backoffice\shared\domain\documents\DocumentId;
@@ -26,13 +27,17 @@ final class DocumentDoctrineRepository extends DoctrineRepository implements Doc
 
     public function save(Document $document, $uploadDocument): void
     {
-        $this->uploadedFile->upload(
-            $uploadDocument,
-            $document->directoryPath(),
-            ['pdf', 'img', 'jpg', 'png'],
-            $document->name()->value()
-        );
-        $document->recordUploadFileData($this->uploadedFile->fileName(), $this->uploadedFile->path());
+        if ($uploadDocument instanceof UploadedFile) {
+            $this->uploadedFile->upload(
+                $uploadDocument,
+                $document->directoryPath(),
+                ['pdf', 'img', 'jpg', 'png'],
+                $document->name()->value()
+            );
+            $document->recordUploadFileData($this->uploadedFile->path(), $this->uploadedFile->fileName());
+        } else {
+            $document->recordUploadFileData($uploadDocument);
+        }
         $this->persist($document);
     }
 

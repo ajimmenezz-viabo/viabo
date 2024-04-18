@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\backoffice\documents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\documents\application\create\CreateDocumentsCommand;
+use Viabo\backoffice\documents\application\create_documents_by_register_company\CreateDocumentsCommandByRegisterCompany;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class DocumentsCreatorController extends ApiController
@@ -16,14 +16,13 @@ final readonly class DocumentsCreatorController extends ApiController
     {
         try {
             $this->decode($request->headers->get('Authorization'));
-            
-            $uploadDocuments = $request->files->all();
             $companyId = $request->request->get('commerceId');
-            $this->dispatch(new CreateDocumentsCommand($companyId , $uploadDocuments));
+            $uploadDocuments = array_merge($request->request->all(), $request->files->all());
+            $this->dispatch(new CreateDocumentsCommandByRegisterCompany($companyId, $uploadDocuments));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

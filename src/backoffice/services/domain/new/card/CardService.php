@@ -68,8 +68,8 @@ final class CardService extends Service
     {
         $this->employees = $this->employees->update(strval($data['employees']));
         $this->branchOffices = $this->branchOffices->update(strval($data['branchOffices']));
-        $this->numbers = $this->numbers->update(strval($data['numbers']));
-        $this->purpose = $this->purpose->update($data['purpose']);
+        $this->numbers = $this->numbers->update(strval($data['cardNumbers']));
+        $this->purpose = $this->purpose->update($data['cardUse']);
         $this->personalized = $this->personalized->update(strval($data['personalized']));
     }
 

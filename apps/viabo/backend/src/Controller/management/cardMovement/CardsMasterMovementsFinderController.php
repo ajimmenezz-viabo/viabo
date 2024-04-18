@@ -22,33 +22,56 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $startDate = $request->query->getString('startDate');
             $endDate = $request->query->getString('endDate');
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
-            $cardsInformation = $this->ask(new MainCardsInformationQuery($commerce->data['id']));
-            $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data , $startDate , $endDate));
-            $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($commerce->data['id']));
-            $terminalsData = $this->ask(new TerminalsQuery($commerce->data['id'] , []));
-            $payTransaction = $this->ask(new TerminalsTransactionsQuery(
-                $commerce->data['id'],
-                $commercePayCredential->data['apiKey'] ,
-                "" ,
-                $terminalsData->data ,
-                [] ,
-                $startDate ,
-                $endDate ,
-                "" ,
-                ""
-            ));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $cardsInformation = $this->ask(new MainCardsInformationQuery($company->data['id']));
+            $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data, $startDate, $endDate));
+            $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($company->data['id']));
+            $terminalsData = $this->ask(new TerminalsQuery($company->data['id']));
+            $payTransaction = $this->searchPayTransactions(
+                $company->data['id'],
+                $commercePayCredential->data['apiKey'],
+                $terminalsData->data,
+                $startDate,
+                $endDate
+            );
             $movements = $this->ask(new CardsMasterMovementsQuery(
-                $cardsInformation->data ,
-                $operationData->data ,
-                $payTransaction->data ,
-                $startDate ,
+                $cardsInformation->data,
+                $operationData->data,
+                $payTransaction,
+                $startDate,
                 $endDate
             ));
 
             return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
+    }
+
+    public function searchPayTransactions(
+        string $companyId,
+        string $payCredential,
+        array  $terminalsData,
+        string $startDate,
+        string $endDate
+    ): array
+    {
+        if (empty($terminalsData)) {
+            return [];
+        }
+
+        $payTransaction = $this->ask(new TerminalsTransactionsQuery(
+            $companyId,
+            $payCredential,
+            "",
+            $terminalsData,
+            [],
+            $startDate,
+            $endDate,
+            "",
+            ""
+        ));
+
+        return $payTransaction->data;
     }
 }

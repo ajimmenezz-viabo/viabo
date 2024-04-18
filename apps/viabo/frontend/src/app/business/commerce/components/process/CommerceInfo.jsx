@@ -43,6 +43,7 @@ export default function CommerceInfo({ store }) {
       const services = resumeAdapter?.services?.map(service => {
         if (service?.type === '2') {
           return {
+            ...service,
             type: service.type.toString(),
             cardNumbers: cardsNumber.toString(),
             cardUse: cardsUse,

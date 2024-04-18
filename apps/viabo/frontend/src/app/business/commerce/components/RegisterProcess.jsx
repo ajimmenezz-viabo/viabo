@@ -1,17 +1,18 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
 
 import { Box, Button, CircularProgress, Stack } from '@mui/material'
-import { shallow } from 'zustand/shallow'
 
 import { useFindCommerceProcess } from '@/app/business/commerce/hooks'
 import { PROCESS_LIST } from '@/app/business/commerce/services'
 import { useRegisterProcessStore } from '@/app/business/commerce/store'
 
 export const RegisterProcess = () => {
+  const store = useRegisterProcessStore()
   const component = useRegisterProcessStore(state => state.getComponent)
   const getBackProcess = useRegisterProcessStore(state => state.getBackProcess)
-  const store = useRegisterProcessStore(state => state, shallow)
-  const { actualProcess, setToken, setActualProcess, setResume, token, resume } = store
+  const { setActualProcess, setResume, setToken } = useRegisterProcessStore()
+  const actualProcess = useRegisterProcessStore(state => state.actualProcess)
+  const token = useRegisterProcessStore(state => state.token)
 
   const { data: commerceProcess, isSuccess: isSuccessCommerceProcess } = useFindCommerceProcess({
     enabled: !!token

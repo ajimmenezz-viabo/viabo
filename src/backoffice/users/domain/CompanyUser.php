@@ -21,17 +21,24 @@ final class CompanyUser extends AggregateRoot
     {
     }
 
-    public
-    static function create(array $values): self
+    public static function create(
+        string $userId,
+        string $companyId,
+        string $profileId,
+        string $name,
+        string $lastname,
+        string $email,
+        string $createDate,
+    ): self
     {
         return new static(
-            CompanyUserId::create($values['user']['id']),
-            CompanyId::create($values['id']),
-            CompanyUserProfileId::create($values['user']['profile']),
-            CompanyUserName::create($values['user']['name']),
-            CompanyUserLastname::create($values['user']['lastname']),
-            CompanyUserEmail::create($values['user']['email']),
-            CompanyUserCreateDate::create($values['createDate'])
+            CompanyUserId::create($userId),
+            CompanyId::create($companyId),
+            CompanyUserProfileId::create($profileId),
+            CompanyUserName::create($name),
+            CompanyUserLastname::create($lastname),
+            CompanyUserEmail::create($email),
+            CompanyUserCreateDate::create($createDate),
         );
     }
 

@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\command\Command;
 
 final readonly class CreateDocumentsCommand implements Command
 {
-    public function __construct(public string $commerceId , public array $uploadDocuments)
+    public function __construct(public string $companyId , public array $uploadDocuments)
     {
     }
 }

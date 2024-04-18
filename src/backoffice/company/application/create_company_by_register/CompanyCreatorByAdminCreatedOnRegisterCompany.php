@@ -18,7 +18,11 @@ final readonly class CompanyCreatorByAdminCreatedOnRegisterCompany
     public function __invoke(array $administrator): void
     {
         $folioLast = $this->repository->searchFolioLast();
-        $company = Company::createFromClient($administrator['businessId'], $folioLast);
+        $company = Company::createFromClient(
+            $administrator['id'],
+            $administrator['businessId'],
+            $folioLast
+        );
         $this->repository->save($company);
 
         $company = array_merge($company->toArray(), ['user' => $administrator]);

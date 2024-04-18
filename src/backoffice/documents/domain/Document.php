@@ -13,25 +13,25 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final  class Document extends AggregateRoot
 {
     public function __construct(
-        private DocumentId        $id ,
-        private CompanyId         $commerceId ,
-        private DocumentName      $name ,
-        private DocumentStorePath $storePath ,
+        private DocumentId        $id,
+        private CompanyId         $companyId,
+        private DocumentName      $name,
+        private DocumentStorePath $storePath,
         private DocumentRegister  $register
     )
     {
     }
 
-    public static function create(CompanyId $commerceId , DocumentName $name): Document
+    public static function create(string $companyId, string $name): Document
     {
         $document = new self(
-            DocumentId::random() ,
-            $commerceId ,
-            $name ,
-            new DocumentStorePath('') ,
+            DocumentId::random(),
+            CompanyId::create($companyId),
+            DocumentName::create($name),
+            DocumentStorePath::empty(),
             DocumentRegister::todayDate()
         );
-        $document->record(new DocumentCreatedDomainEvent($document->id->value() , $document->toArray()));
+        $document->record(new DocumentCreatedDomainEvent($document->id->value(), $document->toArray()));
         return $document;
     }
 
@@ -47,10 +47,10 @@ final  class Document extends AggregateRoot
 
     public function directoryPath(): string
     {
-        return "/Business/Commerce_{$this->commerceId->value()}/Documents";
+        return "/Business/Commerce_{$this->companyId->value()}/Documents";
     }
 
-    public function recordUploadFileData(string $fileName , string $path): void
+    public function recordUploadFileData(string $fileName, string $path): void
     {
         $this->name = $this->name->update($fileName);
         $this->storePath = $this->storePath->update($path);
@@ -58,16 +58,16 @@ final  class Document extends AggregateRoot
 
     public function setEventDelete(): void
     {
-        $this->record(new DocumentDeletedDomainEvent($this->id->value() , $this->toArray()));
+        $this->record(new DocumentDeletedDomainEvent($this->id->value(), $this->toArray()));
     }
 
     public function toArray(): array
     {
         return [
-            'id' => $this->id->value() ,
-            'commerceId' => $this->commerceId->value() ,
-            'name' => $this->name->value() ,
-            'storePath' => $this->storePath->value() ,
+            'id' => $this->id->value(),
+            'commerceId' => $this->companyId->value(),
+            'name' => $this->name->value(),
+            'storePath' => $this->storePath->value(),
             'register' => $this->register->value()
         ];
     }

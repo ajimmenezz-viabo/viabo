@@ -5,25 +5,21 @@ namespace Viabo\backoffice\documents\application\create;
 
 
 use Viabo\backoffice\documents\domain\Document;
-use Viabo\backoffice\documents\domain\DocumentName;
 use Viabo\backoffice\documents\domain\DocumentRepository;
-use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class DocumentsCreator
 {
-    public function __construct(private DocumentRepository $repository , private EventBus $bus)
+    public function __construct(private DocumentRepository $repository, private EventBus $bus)
     {
     }
 
-    public function __invoke(CompanyId $commerceId , array $uploadDocuments): void
+    public function __invoke(string $companyId, array $uploadDocuments): void
     {
         foreach ($uploadDocuments as $documentName => $uploadDocument) {
-            $name = DocumentName::create($documentName);
-            $this->repository->deleteBy($commerceId , $name);
-
-            $document = Document::create($commerceId , $name);
-            $this->repository->save($document , $uploadDocument);
+            $document = Document::create($companyId, $documentName);
+            $this->repository->deleteBy($companyId, $documentName);
+            $this->repository->save($document, $uploadDocument);
 
             $this->bus->publish(...$document->pullDomainEvents());
         }

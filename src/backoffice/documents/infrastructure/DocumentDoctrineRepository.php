@@ -6,9 +6,7 @@ namespace Viabo\backoffice\documents\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\backoffice\documents\domain\Document;
-use Viabo\backoffice\documents\domain\DocumentName;
 use Viabo\backoffice\documents\domain\DocumentRepository;
-use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\backoffice\shared\domain\documents\DocumentId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
@@ -18,7 +16,7 @@ use Viabo\shared\infrastructure\symfony\uploadFile\UploadedFileSymfonyAdapter;
 final class DocumentDoctrineRepository extends DoctrineRepository implements DocumentRepository
 {
     public function __construct(
-        EntityManager                               $BackofficeEntityManager ,
+        EntityManager                               $BackofficeEntityManager,
         private readonly UploadedFileSymfonyAdapter $uploadedFile
     )
     {
@@ -26,15 +24,15 @@ final class DocumentDoctrineRepository extends DoctrineRepository implements Doc
     }
 
 
-    public function save(Document $document , $uploadDocument): void
+    public function save(Document $document, $uploadDocument): void
     {
         $this->uploadedFile->upload(
-            $uploadDocument ,
-            $document->directoryPath() ,
-            ['pdf' , 'img' , 'jpg' , 'png'] ,
+            $uploadDocument,
+            $document->directoryPath(),
+            ['pdf', 'img', 'jpg', 'png'],
             $document->name()->value()
         );
-        $document->recordUploadFileData($this->uploadedFile->fileName() , $this->uploadedFile->path());
+        $document->recordUploadFileData($this->uploadedFile->fileName(), $this->uploadedFile->path());
         $this->persist($document);
     }
 
@@ -49,10 +47,10 @@ final class DocumentDoctrineRepository extends DoctrineRepository implements Doc
         return $this->repository(Document::class)->matching($criteriaDoctrine)->toArray();
     }
 
-    public function deleteBy(CompanyId $commerceId , DocumentName $name): void
+    public function deleteBy(string $companyId, string $name): void
     {
-        $this->entityManager()->getConnection()->delete('t_business_commerces_documents' ,
-            ['CommerceId' => $commerceId->value() , 'Name' => $name->value()]
+        $this->entityManager()->getConnection()->delete('t_backoffice_companies_documents',
+            ['CompanyId' => $companyId, 'Name' => $name]
         );
     }
 

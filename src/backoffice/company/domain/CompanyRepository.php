@@ -10,11 +10,11 @@ interface CompanyRepository
 {
     public function save(Company $company): void;
 
-    public function search(string $companyId, bool $projection = false): Company|CompanyProjection|null;
-
-    public function searchView(CompanyId $companyId): CompanyProjection|null;
+    public function search(string $companyId): Company|null;
 
     public function searchCriteria(Criteria $criteria, bool $projection = false): array;
+
+    public function searchView(CompanyId $companyId): CompanyProjection|null;
 
     public function searchViewCriteria(Criteria $criteria): array;
 

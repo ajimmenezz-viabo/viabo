@@ -24,17 +24,18 @@ final class CompanyFiscalPersonType extends StringValueObject
 
     public static function empty(): static
     {
-        return new static('');
+        return new static('0');
     }
 
-    public static function enable(): static
+    public function update(string|null $value): static
     {
-        return new static('1');
-    }
-
-    public function update(string $value): static
-    {
+        $value = empty($value) ? '1' : $value;
         return new static($value);
+    }
+
+    public function value(): string
+    {
+        return $this->value;
     }
 
 }

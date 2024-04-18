@@ -40,13 +40,14 @@ final class CompanyProjection extends AggregateRoot
     {
     }
 
-    public static function fromCompany(array $values): static
+    public static function create(array $values): static
     {
+        $values['users'] = empty($values['users']) ? '[]' : json_encode($values['users']);
         return new static(
             $values['id'],
             $values['folio'],
             $values['type'],
-            $values['typeName'],
+            $values['typeName'] ?? '',
             $values['businessId'],
             $values['fatherId'],
             $values['fiscalPersonType'],
@@ -61,7 +62,7 @@ final class CompanyProjection extends AggregateRoot
             $values['statusId'],
             $values['statusName'] ?? '',
             $values['registerStep'],
-            $values['users'] ?? '[]',
+            $values['users'],
             $values['services'] ?? '[]',
             $values['documents'] ?? '[]',
             $values['commissions'] ?? '[]',
@@ -78,9 +79,20 @@ final class CompanyProjection extends AggregateRoot
         return $this->id;
     }
 
-    public function updateUsers(array $users): void
+    public function type(): string
     {
-        $this->users = json_encode($users);
+        return $this->type;
+    }
+
+    public function status(): string
+    {
+        return $this->statusId;
+    }
+
+    public function updateStatusNameAndTypeName(string $typeName, string $statusName): void
+    {
+        $this->typeName = $typeName;
+        $this->statusName = $statusName;
     }
 
     public function hasUserProfileOfType(string $profileId): bool
@@ -91,9 +103,38 @@ final class CompanyProjection extends AggregateRoot
         return !empty($users);
     }
 
+    public function updateServices(array $services): void
+    {
+        $this->services = json_encode($services);
+    }
+
     private function users(): array
     {
         return json_decode($this->users, true);
+    }
+
+    private function services(): array
+    {
+        $services = json_decode($this->services, true);
+        return array_map(function (array $service) {
+            unset($service['updateByUser'], $service['updateDate'], $service['createdByUser'], $service['createDate']);
+            return $service;
+        }, $services);
+    }
+
+    public function update(
+        string $fiscalPersonType,
+        string $fiscalName,
+        string $tradeName,
+        string $rfc,
+        string $registerStep,
+    ): void
+    {
+        $this->fiscalPersonType = $fiscalPersonType;
+        $this->fiscalName = $fiscalName;
+        $this->tradeName = $tradeName;
+        $this->rfc = $rfc;
+        $this->registerStep = $registerStep;
     }
 
     public function toArray(): array
@@ -118,13 +159,58 @@ final class CompanyProjection extends AggregateRoot
             'statusName' => $this->statusName,
             'registerStep' => $this->registerStep,
             'users' => $this->users(),
-            'services' => $this->services,
+            'services' => $this->services(),
             'documents' => $this->documents,
             'commissions' => $this->commissions,
             'updatedByUser' => $this->updatedByUser,
             'updateDate' => $this->updateDate,
             'createdByUser' => $this->createdByUser,
             'createDate' => $this->createDate,
+            'active' => $this->active
+        ];
+    }
+
+    public function toArrayOld(): array
+    {
+        $admin = $this->users();
+        return [
+            'id' => $this->id,
+            'folio' => $this->folio,
+            'fatherId' => $this->fatherId,
+            'legalRepresentative' => $admin[0]['id'],
+            'legalRepresentativeName' => $admin[0]['name'],
+            'legalRepresentativeEmail' => $admin[0]['email'],
+            'legalRepresentativePhone' => '',
+            'legalRepresentativeRegister' => '',
+            'legalRepresentativeLastSession' => '',
+            'fiscalPersonType' => $this->fiscalPersonType,
+            'fiscalName' => $this->fiscalName ?? '',
+            'tradeName' => $this->tradeName,
+            'rfc' => $this->rfc,
+            'postalAddress' => $this->postalAddress,
+            'phoneNumbers' => $this->phoneNumbers,
+            'logo' => $this->logo,
+            'slug' => $this->slug,
+            'balance' => $this->balance,
+            'bankAccount' => '',
+            'publicTerminal' => '',
+            'employees' => '0',
+            'branchOffices' => '0',
+            'pointSaleTerminal' => '0',
+            'paymentApi' => '0',
+            'type' => $this->type,
+            'typeName' => $this->typeName,
+            'allowTransactions' => '',
+            'statusId' => $this->statusId,
+            'statusName' => $this->statusName,
+            'stpAccountId' => '',
+            'registerStep' => $this->registerStep,
+            'services' => $this->services(),
+            'servicesIds' => [],
+            'documents' => json_decode($this->documents, true),
+            'commissions' => json_decode($this->commissions, true),
+            'createdByUser' => $this->createdByUser,
+            'register' => $this->createDate,
             'active' => $this->active
         ];
     }

@@ -37,7 +37,7 @@ final class Company extends AggregateRoot
     {
     }
 
-    public static function createFromClient(string $business, string $folio): static
+    public static function createFromClient(string $userId,string $business, string $folio): static
     {
         return new static(
             CompanyId::random(),
@@ -45,7 +45,7 @@ final class Company extends AggregateRoot
             CompanyBusinessId::create($business),
             CompanyFolio::create($folio),
             CompanyFatherId::empty(),
-            CompanyFiscalPersonType::enable(),
+            CompanyFiscalPersonType::empty(),
             CompanyFiscalName::empty(),
             CompanyTradeName::empty(),
             CompanyRfc::empty(),
@@ -58,7 +58,7 @@ final class Company extends AggregateRoot
             CompanyRegisterStep::start(),
             CompanyUpdatedByUser::empty(),
             CompanyUpdateDate::empty(),
-            CompanyCreatedByUser::empty(),
+            CompanyCreatedByUser::create($userId),
             CompanyCreateDate::todayDate(),
             CompanyActive::enable()
         );
@@ -75,7 +75,7 @@ final class Company extends AggregateRoot
     }
 
     public function update(
-        string $fiscalPersonType,
+        string|null $fiscalPersonType,
         string $fiscalName,
         string $tradeName,
         string $rfc,

@@ -29,10 +29,11 @@ final class CompanyTradeName extends StringValueObject
 
     public function update(string $value, string $registerStep): static
     {
-        $registerStep = intval($registerStep);
-        if ($registerStep > 2) {
+        if (intval($registerStep) === 3) {
             return self::create($value);
         }
+
+        $value = empty($value) ? $this->value : $value;
         return new static($value);
     }
 

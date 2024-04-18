@@ -8,6 +8,11 @@ use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class DocumentStorePath extends StringValueObject
 {
+    public static function empty(): static
+    {
+        return new static('');
+    }
+
     public function update(string $value): self
     {
         return new self("/storage$value");
@@ -15,6 +20,6 @@ final class DocumentStorePath extends StringValueObject
 
     public function directory(): string
     {
-        return str_replace('/storage' , '' , $this->value);
+        return str_replace('/storage', '', $this->value);
     }
 }

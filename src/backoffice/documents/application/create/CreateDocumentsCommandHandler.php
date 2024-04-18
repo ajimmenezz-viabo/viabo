@@ -4,7 +4,6 @@
 namespace Viabo\backoffice\documents\application\create;
 
 
-use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class CreateDocumentsCommandHandler implements CommandHandler
@@ -15,8 +14,6 @@ final readonly class CreateDocumentsCommandHandler implements CommandHandler
 
     public function __invoke(CreateDocumentsCommand $command): void
     {
-        $commerceId = new CompanyId($command->commerceId);
-        ($this->creator)($commerceId , $command->uploadDocuments);
-
+        $this->creator->__invoke($command->companyId, $command->uploadDocuments);
     }
 }

@@ -26,17 +26,12 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
     public function save(Company $company): void
     {
         $this->persist($company);
-        $this->persistProjection($company->toArray());
-
 //        $this->updateBankAccountWithNotAvailable($company->bankAccount());
 
     }
 
-    public function search(string $companyId, bool $projection = false): Company|CompanyProjection|null
+    public function search(string $companyId): Company|null
     {
-        if ($projection) {
-            return $this->repository(CompanyProjection::class)->find($companyId);
-        }
         return $this->repository(Company::class)->find($companyId);
     }
 
@@ -154,21 +149,6 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
     {
         $bankAccount->available();
         $this->entityManager()->flush($bankAccount);
-    }
-
-    private function persistProjection(array $company): void
-    {
-        $company['typeName'] = $this->searchType($company['type']);
-        $projection = CompanyProjection::fromCompany($company);
-        $this->persist($projection);
-    }
-
-    private function searchType($type): string
-    {
-        $query = "select Name from cat_backoffice_companies_types where Id = :type";
-        $statement = $this->entityManager()->getConnection()->prepare($query);
-        $statement->bindValue('type', $type);
-        return $statement->execute()->fetchOne();
     }
 
 }

@@ -18,8 +18,8 @@ final readonly class DocumentsCreatorController extends ApiController
             $this->decode($request->headers->get('Authorization'));
             
             $uploadDocuments = $request->files->all();
-            $commerceId = $request->request->get('commerceId');
-            $this->dispatch(new CreateDocumentsCommand($commerceId , $uploadDocuments));
+            $companyId = $request->request->get('commerceId');
+            $this->dispatch(new CreateDocumentsCommand($companyId , $uploadDocuments));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {

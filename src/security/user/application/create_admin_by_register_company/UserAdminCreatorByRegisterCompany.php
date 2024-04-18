@@ -34,7 +34,7 @@ final readonly class UserAdminCreatorByRegisterCompany
     {
         $this->validator->validateNotExist($email);
 
-        $viaboBusiness = $this->searchViaboBusiness();
+        $viaboBusinessId = $this->searchViaboBusinessId();
         $user = User::createUserAdmin(
             $name,
             $lastname,
@@ -42,16 +42,16 @@ final readonly class UserAdminCreatorByRegisterCompany
             $email,
             $password,
             $confirmPassword,
-            $viaboBusiness['id']
+            $viaboBusinessId
         );
         $this->repository->save($user);
 
         $this->bus->publish(...$user->pullDomainEvents());
     }
 
-    public function searchViaboBusiness(): array
+    public function searchViaboBusinessId(): string
     {
         $viaboBusiness = $this->queryBus->ask(new ViaboBusinessQuery());
-        return $viaboBusiness->data[0];
+        return $viaboBusiness->data[0]['id'];
     }
 }

@@ -16,7 +16,7 @@ interface DocumentRepository
 
     public function searchCriteria(Criteria $criteria): array;
 
-    public function deleteBy(CompanyId $commerceId , DocumentName $name): void;
+    public function deleteBy(string $companyId , string $name): void;
 
     public function delete(Document $document): void;
 }

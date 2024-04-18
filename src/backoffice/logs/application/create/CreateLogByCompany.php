@@ -4,7 +4,7 @@
 namespace Viabo\backoffice\logs\application\create;
 
 
-use Viabo\backoffice\company\domain\events\CommerceUpdatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyUpdatedDomainEventByRegister;
 use Viabo\backoffice\company\domain\events\CompanyCreatedDomainEventByAdminCreatedOnRegisterCompany;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
@@ -17,10 +17,10 @@ final readonly class CreateLogByCompany implements DomainEventSubscriber
 
     public static function subscribedTo(): array
     {
-        return [CompanyCreatedDomainEventByAdminCreatedOnRegisterCompany::class,CommerceUpdatedDomainEvent::class];
+        return [CompanyCreatedDomainEventByAdminCreatedOnRegisterCompany::class,CompanyUpdatedDomainEventByRegister::class];
     }
 
-    public function __invoke(CompanyCreatedDomainEventByAdminCreatedOnRegisterCompany|CommerceUpdatedDomainEvent $event): void
+    public function __invoke(CompanyCreatedDomainEventByAdminCreatedOnRegisterCompany|CompanyUpdatedDomainEventByRegister $event): void
     {
         $aggregateId = $event->aggregateId();
         $data = $event->toPrimitives();

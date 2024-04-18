@@ -4,7 +4,6 @@
 namespace Viabo\backoffice\documents\application\delete;
 
 
-use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\command\CommandHandler;
 
 final readonly class DeleteDocumentsCommandHandler implements CommandHandler
@@ -15,8 +14,6 @@ final readonly class DeleteDocumentsCommandHandler implements CommandHandler
 
     public function __invoke(DeleteDocumentsCommand $command): void
     {
-        $commerceId = new CompanyId($command->commerceId);
-
-        ($this->deleter)($commerceId , $command->uploadDocuments);
+        $this->deleter->__invoke($command->commerceId, $command->uploadDocuments);
     }
 }

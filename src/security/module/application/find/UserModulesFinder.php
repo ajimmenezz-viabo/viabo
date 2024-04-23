@@ -15,16 +15,16 @@ final readonly class UserModulesFinder
     {
     }
 
-    public function __invoke(array $userPermissions, array $commerceServices ): UserModelsResponse
+    public function __invoke(array $userPermissions, array $companyServices ): UserModelsResponse
     {
-        $moduleViews = $this->repository->searchBy(new ModulePermission($userPermissions['permissionModules']));
+        $modules = $this->repository->searchBy(new ModulePermission($userPermissions['permissionModules']));
 
-        if (empty($moduleViews)) {
+        if (empty($modules)) {
             throw new UserModuleEmpty();
         }
 
-        $modules = new Modules($moduleViews);
-        $modules->filterModulesByServices($commerceServices);
+        $modules = new Modules($modules);
+        $modules->filterModulesByServices($companyServices);
         $modules->formatDataToArray();
 
         $userModules = array_merge(

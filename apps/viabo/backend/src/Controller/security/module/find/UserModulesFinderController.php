@@ -17,7 +17,7 @@ final readonly class UserModulesFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $companyServices = $this->searchCompanyServices($tokenData);
+            $companyServices = $this->searchCompanyServicesId($tokenData);
             $permission = $this->ask(new UserPermissionQuery($tokenData['id']));
             $modules = $this->ask(new UserModulesQuery($permission->data, $companyServices));
 
@@ -27,14 +27,16 @@ final readonly class UserModulesFinderController extends ApiController
         }
     }
 
-    private function searchCompanyServices(array $tokenData): array
+    private function searchCompanyServicesId(array $tokenData): array
     {
         $administrator = '2';
         if ($tokenData['profileId'] === $administrator) {
             return [];
         }
         $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
-        return $company->data['services'];
+        return array_map(function (array $service) {
+            return $service['type'];
+        }, $company->data['services']);
     }
 
 }

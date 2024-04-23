@@ -51,13 +51,13 @@ final class ModuleView
         $this->submodule[] = $subModule;
     }
 
-    public function hasService(array $commerceServices): bool
+    public function hasService(array $companyServices): bool
     {
         if(empty($this->serviceId)){
             return true;
         }
 
-        return in_array($this->serviceId, $commerceServices);
+        return in_array($this->serviceId, $companyServices);
     }
 
     public function toArray(): array

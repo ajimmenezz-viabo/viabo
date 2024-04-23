@@ -15,6 +15,6 @@ final readonly class UserModulesQueryHandler implements QueryHandler
 
     public function __invoke(UserModulesQuery $query): Response
     {
-        return $this->finder->__invoke($query->userPermissions , $query->commerceServices);
+        return $this->finder->__invoke($query->userPermissions , $query->companyServices);
     }
 }

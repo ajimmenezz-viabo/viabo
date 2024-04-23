@@ -19,20 +19,20 @@ final readonly class SharedTerminalsTransactionFinderController extends ApiContr
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $startDate = $request->query->get('startDate');
             $endDate = $request->query->get('endDate');
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
-            $credentials = $this->ask(new PayServiceCredentialsQuery($commerce->data['id']));
-            $terminals = $this->ask(new TerminalsQuery($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $credentials = $this->ask(new PayServiceCredentialsQuery($company->data['id']));
+            $terminals = $this->ask(new TerminalsQuery($company->data['id']));
             $transactions = $this->ask(new SharedTerminalsTransactionsQuery(
-                $commerce->data['id'],
+                $company->data['id'],
                 $credentials->data['apiKey'],
-                $terminals->data ,
-                $startDate ,
-                $endDate ,
+                $terminals->data,
+                $startDate,
+                $endDate,
             ));
 
             return new JsonResponse($transactions->data);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

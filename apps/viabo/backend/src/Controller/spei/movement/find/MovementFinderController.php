@@ -5,7 +5,6 @@ namespace Viabo\Backend\Controller\spei\movement\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\commerceUser\application\find\CommerceQueryByUser;
 use Viabo\backoffice\company\application\find\CommerceQuery;
 use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\security\user\application\find\FindUserQuery;
@@ -21,32 +20,13 @@ final readonly class MovementFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->searchCommerce($tokenData['id']);
-            $user = $this->ask(new FindUserQuery($tokenData['id'] , ''));
-            $stpAccount = $this->ask(new StpAccountQuery(
-                $user->data['profile'] ,
-                $user->data['stpAccountId'] ,
-                $commerce['stpAccountId']
-            ));
+            $user = $this->ask(new FindUserQuery($tokenData['id'], ''));
+            $stpAccount = $this->ask(new StpAccountQuery($user->data['profile']));
             $movements = $this->ask(new MovementsQuery($stpAccount->data));
 
             return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
-    }
-
-    private function searchCommerce(string $userId): array
-    {
-        try {
-            $commerce = $this->ask(new CommerceQueryByUser($userId));
-            $commerceId = $commerce->data['commerceId'];
-        } catch (\DomainException) {
-            $commerce = $this->ask(new CompanyQueryByUser($userId));
-            $commerceId = $commerce->data['id'];
-        }
-
-        $commerce = $this->ask(new CommerceQuery($commerceId));
-        return $commerce->data;
     }
 }

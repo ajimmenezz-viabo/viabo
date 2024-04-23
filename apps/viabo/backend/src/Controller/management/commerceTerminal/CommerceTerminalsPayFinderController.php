@@ -16,9 +16,9 @@ final readonly class CommerceTerminalsPayFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
-            $commerceData =  $commerce->data;
-            $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($commerceData['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $companyData =  $company->data;
+            $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($companyData['id']));
             $commercePayCredentialData = $commercePayCredential->data;
             $terminals = $this->ask(new FindTerminalsCommercePayQuery(
                 $commercePayCredentialData['merchantId'] ,

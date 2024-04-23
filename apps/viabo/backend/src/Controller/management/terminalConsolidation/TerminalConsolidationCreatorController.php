@@ -17,10 +17,10 @@ final readonly class TerminalConsolidationCreatorController extends ApiControlle
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $request->toArray();
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
             $threshold = $this->ask(new PayThresholdQuery('ViaboPay'));
             $this->dispatch(new CreatorTerminalConsolidationCommand(
-                $commerce->data['id'],
+                $company->data['id'],
                 $tokenData['id'],
                 $data['speiCardTransactionId'],
                 $data['speiCardTransactionAmount'],
@@ -31,7 +31,7 @@ final readonly class TerminalConsolidationCreatorController extends ApiControlle
 
             return new JsonResponse([]);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

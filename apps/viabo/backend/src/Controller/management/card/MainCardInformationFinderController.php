@@ -20,13 +20,13 @@ final readonly class MainCardInformationFinderController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $paymentProcessorId = $request->get('paymentProcessorId');
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
-            $cardData = $this->ask(new MainCardIdQuery($commerce->data['id'] , $paymentProcessorId));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $cardData = $this->ask(new MainCardIdQuery($commerce->data['id'], $paymentProcessorId));
             $card = $this->searchCardData($cardData->data);
 
             return new JsonResponse($this->opensslEncrypt($card));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -37,7 +37,7 @@ final readonly class MainCardInformationFinderController extends ApiController
         }
 
         $credential = $this->ask(new CardCredentialQuery($cardData['cardId']));
-        $card = $this->ask(new MainCardInformationQuery($cardData['cardId'] , $credential->data));
+        $card = $this->ask(new MainCardInformationQuery($cardData['cardId'], $credential->data));
         return $card->data;
 
     }

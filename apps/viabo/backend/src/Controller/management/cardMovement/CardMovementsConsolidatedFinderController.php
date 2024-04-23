@@ -20,22 +20,22 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $terminalId = $request->query->getString('terminalId');
             $startDate = $request->query->getString('startDate');
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
             $terminal = $this->ask(new TerminalQueryBySpeiCard($terminalId));
             $card = $this->ask(new CardQuery($terminal->data['cardId'] ?? ''));
             $movementsConsolidated = $this->ask(new TerminalConciliationsQuery(
-                $commerce->data['id'] ,
+                $company->data['id'],
                 $terminalId
             ));
             $movements = $this->ask(new CardMovementsConsolidatedQuery(
-                $card->data ,
-                $startDate ,
+                $card->data,
+                $startDate,
                 $movementsConsolidated->data
             ));
 
             return new JsonResponse($this->opensslEncrypt($movements->data));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

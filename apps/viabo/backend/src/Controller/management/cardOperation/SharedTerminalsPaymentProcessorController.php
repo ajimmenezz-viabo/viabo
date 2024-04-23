@@ -25,27 +25,27 @@ final readonly class SharedTerminalsPaymentProcessorController extends ApiContro
             $originCard = $this->ask(new CardQueryBySpei($teminalData['terminal_spei_card']));
             $originCardCredential = $this->ask(new CardCredentialQuery($originCard->data['id']));
             $destinationCard = $this->ask(new MasterCardQueryByPaymentProcessor(
-                $teminalData['commerceId'] ,
+                $teminalData['commerceId'],
                 $originCard->data['paymentProcessorId']
             ));
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
             $this->dispatch(new CardTransactionTerminalCommand(
-                $tokenData['id'] ,
-                $originCard->data['id'] ,
-                $destinationCard->data ,
-                $originCardCredential->data ,
-                $commerce->data['legalRepresentativeEmail'] ,
+                $tokenData['id'],
+                $originCard->data['id'],
+                $destinationCard->data,
+                $originCardCredential->data,
+                $company->data['legalRepresentativeEmail'],
                 $teminalData
             ));
             $liquidationStatusId = '13';
             $this->dispatch(new UpdateTerminalTransactionLiquidationStatusCommand(
-                $teminalData['id'] ,
+                $teminalData['id'],
                 $liquidationStatusId
             ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

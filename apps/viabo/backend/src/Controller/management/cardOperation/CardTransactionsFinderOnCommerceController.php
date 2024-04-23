@@ -19,13 +19,13 @@ final readonly class CardTransactionsFinderOnCommerceController extends ApiContr
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $paymentProcessorId = $request->get('paymentProcessorId');
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
-            $cards = $this->ask(new CardsQueryByPaymentProcessor($commerce->data['id'] , $paymentProcessorId));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $cards = $this->ask(new CardsQueryByPaymentProcessor($company->data['id'], $paymentProcessorId));
             $balanceInTransaction = $this->ask(new BalanceInTransactionQuery($cards->data));
 
             return new JsonResponse($balanceInTransaction->total);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

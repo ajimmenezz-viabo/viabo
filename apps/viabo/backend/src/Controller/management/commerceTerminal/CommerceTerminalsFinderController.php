@@ -16,12 +16,12 @@ final readonly class CommerceTerminalsFinderController extends ApiController
         try {
 
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
-            $terminal = $this->ask(new TerminalsQuery($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $terminal = $this->ask(new TerminalsQuery($company->data['id']));
 
             return new JsonResponse($terminal->data);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

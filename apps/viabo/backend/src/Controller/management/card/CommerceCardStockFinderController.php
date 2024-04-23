@@ -20,14 +20,14 @@ final readonly class CommerceCardStockFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id']));
+            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
             $cards = $this->ask(new CardsQuery($commerce->data['id']));
             $cards = $this->addSessionLast($cards->data);
             $cards = $this->addCardBlock($cards);
 
             return new JsonResponse($this->opensslEncrypt($cards));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -40,16 +40,16 @@ final readonly class CommerceCardStockFinderController extends ApiController
                 $card['sessionLastDate'] = $session->data['loginDate'] ?? '';
             }
             return $card;
-        } , $cards);
+        }, $cards);
     }
 
     private function addCardBlock(array $cards): array
     {
         return array_map(function (array $card) {
             $credential = $this->ask(new CardCredentialQuery($card['id']));
-            $cardInformation = $this->ask(new CardInformationQuery($card['id'] , $credential->data));
+            $cardInformation = $this->ask(new CardInformationQuery($card['id'], $credential->data));
             $card['block'] = $cardInformation->data['block'];
             return $card;
-        } , $cards);
+        }, $cards);
     }
 }

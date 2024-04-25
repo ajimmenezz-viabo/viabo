@@ -17,9 +17,13 @@ final readonly class PaymentProcessorsCommerceFinderController extends ApiContro
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerceId = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $data = $this->ask(new PaymentProcessorsOfCommerceQuery(
-                $commerceId->data['id'],
+                $company->data['id'],
                 $tokenData['id'],
                 $tokenData['profileId']
             ));

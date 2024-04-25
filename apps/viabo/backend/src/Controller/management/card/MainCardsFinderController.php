@@ -18,7 +18,11 @@ final readonly class MainCardsFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'],$tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $cardsInformation = $this->ask(new MainCardsInformationQuery($company->data['id']));
             $cards = $this->ask(new CardsNumberQuery($company->data['id']));
             $masterBalanceInTransaction = $this->ask(new BalanceMasterInTransactionQuery($cards->data));

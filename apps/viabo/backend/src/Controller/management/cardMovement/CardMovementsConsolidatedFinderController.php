@@ -20,7 +20,11 @@ final readonly class CardMovementsConsolidatedFinderController extends ApiContro
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $terminalId = $request->query->getString('terminalId');
             $startDate = $request->query->getString('startDate');
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $terminal = $this->ask(new TerminalQueryBySpeiCard($terminalId));
             $card = $this->ask(new CardQuery($terminal->data['cardId'] ?? ''));
             $movementsConsolidated = $this->ask(new TerminalConciliationsQuery(

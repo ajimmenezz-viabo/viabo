@@ -98,7 +98,7 @@ final class CompanyProjection extends AggregateRoot
     public function hasUserProfileOfType(string $profileId): bool
     {
         $users = array_filter($this->users(), function (array $user) use ($profileId) {
-            return $user['profile'] === $profileId;
+            return strval($user['profile']) === $profileId;
         });
         return !empty($users);
     }
@@ -135,6 +135,11 @@ final class CompanyProjection extends AggregateRoot
         return array_map(function (array $document) {
             return ['Id' => $document['id'], 'Name' => $document['name'], 'storePath' => $document['storePath']];
         },$documents);
+    }
+
+    private function commissions(): array
+    {
+        return json_decode($this->commissions, true);
     }
 
     public function update(
@@ -176,7 +181,7 @@ final class CompanyProjection extends AggregateRoot
             'users' => $this->users(),
             'services' => $this->services(),
             'documents' => $this->documents(),
-            'commissions' => $this->commissions,
+            'commissions' => $this->commissions(),
             'updatedByUser' => $this->updatedByUser,
             'updateDate' => $this->updateDate,
             'createdByUser' => $this->createdByUser,

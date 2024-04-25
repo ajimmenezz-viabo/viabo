@@ -16,7 +16,11 @@ final readonly class CommerceTerminalsFinderController extends ApiController
         try {
 
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $terminal = $this->ask(new TerminalsQuery($company->data['id']));
 
             return new JsonResponse($terminal->data);

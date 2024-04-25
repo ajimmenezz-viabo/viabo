@@ -20,8 +20,12 @@ final readonly class CommerceCardStockFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
-            $cards = $this->ask(new CardsQuery($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
+            $cards = $this->ask(new CardsQuery($company->data['id']));
             $cards = $this->addSessionLast($cards->data);
             $cards = $this->addCardBlock($cards);
 

@@ -12,7 +12,7 @@ interface CompanyRepository
 
     public function search(string $companyId): Company|null;
 
-    public function searchCriteria(Criteria $criteria, bool $projection = false): array;
+    public function searchCriteria(Criteria $criteria): array;
 
     public function searchView(CompanyId $companyId): CompanyProjection|null;
 

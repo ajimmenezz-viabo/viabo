@@ -19,8 +19,12 @@ final readonly class CardMovementsFinderByCommerceController extends ApiControll
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $filters = $request->get('filters');
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
-            $cards = $this->ask(new AllCardsQueryByCommerce($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
+            $cards = $this->ask(new AllCardsQueryByCommerce($company->data['id']));
             $movements = $this->ask(new CardsMovementsQueryByCommerce($cards->data , $filters));
 
             return new JsonResponse($this->opensslEncrypt($movements->data));

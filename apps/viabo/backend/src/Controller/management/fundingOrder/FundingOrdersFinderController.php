@@ -19,8 +19,12 @@ final readonly class FundingOrdersFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CompanyQueryByUser($tokenData['id'],$tokenData['businessId']));
-            $cards = $this->ask(new MastersCardsQueryByCommerce($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
+            $cards = $this->ask(new MastersCardsQueryByCommerce($company->data['id']));
             $fundingOrders = $this->ask(new FundingOrdersQueryByCards($cards->data));
 
             return new JsonResponse($this->opensslEncrypt($fundingOrders->data));

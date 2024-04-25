@@ -17,20 +17,19 @@ final readonly class CompanyFinderByUser
     {
     }
 
-    public function __invoke(string $userId, string $businessId): CompanyResponse
+    public function __invoke(string $userId, string $businessId, string $profileId): CompanyResponse
     {
         $filters = Filters::fromValues([
             ['field' => 'users', 'operator' => 'CONTAINS', 'value' => $userId],
             ['field' => 'businessId', 'operator' => '=', 'value' => $businessId],
         ]);
         $companies = $this->repository->searchCriteria(new Criteria($filters));
-
         if (empty($companies)) {
             throw new CompanyUserNotAssociated();
         }
 
-        $company = array_filter($companies, function (CompanyProjection $projection) {
-            return $projection->hasUserProfileOfType('3');
+        $company = array_filter($companies, function (CompanyProjection $projection) use ($profileId) {
+            return $projection->hasUserProfileOfType($profileId);
         });
 
         return new CompanyResponse($company[0]->toArrayOld());

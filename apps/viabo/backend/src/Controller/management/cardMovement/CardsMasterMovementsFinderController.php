@@ -22,14 +22,18 @@ final readonly class CardsMasterMovementsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $startDate = $request->query->getString('startDate');
             $endDate = $request->query->getString('endDate');
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $cardsInformation = $this->ask(new MainCardsInformationQuery($company->data['id']));
             $operationData = $this->ask(new CardsOperationsQuery($cardsInformation->data, $startDate, $endDate));
-            $commercePayCredential = $this->ask(new PayServiceCredentialsQuery($company->data['id']));
+            $companyPayCredential = $this->ask(new PayServiceCredentialsQuery($company->data['id']));
             $terminalsData = $this->ask(new TerminalsQuery($company->data['id']));
             $payTransaction = $this->searchPayTransactions(
                 $company->data['id'],
-                $commercePayCredential->data['apiKey'],
+                $companyPayCredential->data['apiKey'],
                 $terminalsData->data,
                 $startDate,
                 $endDate

@@ -16,7 +16,7 @@ final readonly class CompaniesQueryHandlerByStpAccount implements QueryHandler
     public function __invoke(CompaniesQueryByStpAccount $query): Response
     {
         $filters = [
-            ['field' => 'stpAccountId.value' , 'operator' => '=' , 'value' => $query->stpAccountId ]
+            ['field' => 'services' , 'operator' => 'CONTAINS' , 'value' => $query->stpAccountId ]
         ];
         return $this->finder->__invoke($filters);
     }

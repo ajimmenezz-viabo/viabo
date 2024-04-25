@@ -13,6 +13,6 @@ final readonly class PayServiceCredentialsQueryHandler implements QueryHandler
 
     public function __invoke(PayServiceCredentialsQuery $query): Response
     {
-        return $this->finder->__invoke($query->commerceId);
+        return $this->finder->__invoke($query->companyId);
     }
 }

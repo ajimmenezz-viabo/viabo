@@ -19,7 +19,11 @@ final readonly class EnabledCommerceCardsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $paymentProcessorId = $request->get('paymentProcessorId');
             $userId = $tokenData['id'];
-            $company = $this->ask(new CompanyQueryByUser($userId, $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $data = $this->ask(new EnabledCardsQuery(
                 $company->data['id'],
                 $userId,

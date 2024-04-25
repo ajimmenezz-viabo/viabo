@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CompanyQueryByUser implements Query
 {
-    public function __construct(public string $userId, public string $businessId)
+    public function __construct(public string $userId, public string $businessId, public string $profileId)
     {
     }
 }

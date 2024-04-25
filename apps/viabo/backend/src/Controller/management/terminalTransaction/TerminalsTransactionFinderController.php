@@ -23,7 +23,11 @@ final readonly class TerminalsTransactionFinderController extends ApiController
             $terminalId = $request->query->getString('terminalId');
             $page = $request->query->getString('page');
             $pageSize = $request->query->getString('pageSize');
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $credentials = $this->ask(new PayServiceCredentialsQuery($company->data['id']));
             $terminals = $this->ask(new TerminalsQuery($company->data['id']));
             $conciliation = $this->searchConciliation($terminals->data, $terminalId);

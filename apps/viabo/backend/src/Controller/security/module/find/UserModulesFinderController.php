@@ -17,9 +17,9 @@ final readonly class UserModulesFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $companyServices = $this->searchCompanyServicesId($tokenData);
+            $companyServicesId = $this->searchCompanyServicesId($tokenData);
             $permission = $this->ask(new UserPermissionQuery($tokenData['id']));
-            $modules = $this->ask(new UserModulesQuery($permission->data, $companyServices));
+            $modules = $this->ask(new UserModulesQuery($permission->data, $companyServicesId));
 
             return new JsonResponse($modules->data);
         } catch (\DomainException $exception) {
@@ -33,7 +33,11 @@ final readonly class UserModulesFinderController extends ApiController
         if ($tokenData['profileId'] === $administrator) {
             return [];
         }
-        $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+        $company = $this->ask(new CompanyQueryByUser(
+            $tokenData['id'],
+            $tokenData['businessId'],
+            $tokenData['profileId']
+        ));
         return array_map(function (array $service) {
             return $service['type'];
         }, $company->data['services']);

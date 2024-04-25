@@ -40,14 +40,9 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return $this->repository(CompanyProjection::class)->find($companyId->value());
     }
 
-    public function searchCriteria(Criteria $criteria, bool $projection = false): array
+    public function searchCriteria(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
-
-        if ($projection) {
-            return $this->repository(CompanyProjection::class)->matching($criteriaConvert)->toArray();;
-        }
-
         return $this->repository(Company::class)->matching($criteriaConvert)->toArray();
     }
 

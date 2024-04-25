@@ -19,7 +19,11 @@ final readonly class CardTransactionsProcessorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $this->opensslDecrypt($request->toArray());
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $credential = $this->ask(new CardCredentialQuery($data['originCardId']));
             $this->dispatch(new CardTransactionCommand(
                 $tokenData['id'],

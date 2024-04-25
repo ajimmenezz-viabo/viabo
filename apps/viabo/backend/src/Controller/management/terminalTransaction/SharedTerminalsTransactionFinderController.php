@@ -19,7 +19,11 @@ final readonly class SharedTerminalsTransactionFinderController extends ApiContr
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $startDate = $request->query->get('startDate');
             $endDate = $request->query->get('endDate');
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $credentials = $this->ask(new PayServiceCredentialsQuery($company->data['id']));
             $terminals = $this->ask(new TerminalsQuery($company->data['id']));
             $transactions = $this->ask(new SharedTerminalsTransactionsQuery(

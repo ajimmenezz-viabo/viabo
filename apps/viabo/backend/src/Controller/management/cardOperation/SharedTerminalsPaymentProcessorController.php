@@ -28,7 +28,11 @@ final readonly class SharedTerminalsPaymentProcessorController extends ApiContro
                 $teminalData['commerceId'],
                 $originCard->data['paymentProcessorId']
             ));
-            $company = $this->ask(new CompanyQueryByUser($tokenData['id'], $tokenData['businessId']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $this->dispatch(new CardTransactionTerminalCommand(
                 $tokenData['id'],
                 $originCard->data['id'],

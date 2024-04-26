@@ -8,20 +8,30 @@ nelmio_api_doc:
     openapi: 3.0.0
     servers:
       # Added by API Auto Mocking Plugin
-      - description: Viabo Services API
+      - description: Viabo Services QA API
         url: https://qa.viabo.com
-      - description: SwaggerHub API Auto Mocking
-        url: https://virtserver.swaggerhub.com/Viabo/Viabo/1.0.0
+      - description: Deployment API
+        url: /
 
     info:
-      description: Esta API permite a los desarrolladores consumir los servicios de Viabo Pay y Viabo Card. Proporciona métodos y endpoints para realizar transacciones financieras, gestionar tarjetas y acceder a información relacionada con los servicios de Viabo Pay y Viabo Card de manera programática. Facilita la integración de estos servicios en aplicaciones y sistemas externos.
-      version: "1.1.0"
+      description:
+        "Esta API permite a los desarrolladores consumir los servicios de Viabo Pay , Viabo Card , Viabo Spei Cloud.
+        Proporciona métodos y endpoints para realizar transacciones financieras, gestionar tarjetas
+        y acceder a información relacionada con los servicios de Viabo Pay y Viabo Card de manera programática.
+        Facilita la integración de estos servicios en aplicaciones y sistemas externos.
+        \n\n
+        This API allows developers to consume Viabo Pay, Viabo Card, and Viabo Spei Cloud services.
+        It provides methods and endpoints to perform financial transactions, manage cards,
+        and access information related to Viabo Pay and Viabo Card services programmatically.
+        It facilitates the integration of these services into external applications and systems.
+        "
+      version: "1.2.0"
       title: Viabo API
       contact:
         email: alonso@viabo.com
       license:
         name: Apache 2.0
-        url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 
     components:
       securitySchemes:
@@ -30,15 +40,16 @@ nelmio_api_doc:
           scheme: bearer
           bearerFormat: JWT
       schemas:
-        #-------------- INICIO SCHEMAS SEGURIDAD--------------#
+        #-------------- START SCHEMAS SEGURIDAD--------------#
         Encrypted:
           type: object
-          description: "Este endpoint devuelve datos encriptados utilizando el algoritmo AES-256 en modo de operación CBC.\n\n Las respuestas se envían en formato Base64 y constan de dos partes: el texto cifrado (cypher text) y el vector de inicialización (IV).\n\n Para desencriptar los datos, siga estos pasos:\n\n
-           1. Decode el texto cifrado y el IV desde Base64 a bytes.\n\n
-           2. Configure la clave de cifrado AES-256.\n\n
-           3. Utilice el IV como vector de inicialización para descifrar el texto cifrado.\n\n
-           4. El resultado será el contenido original en su formato legible.\n\n
-           Tenga en cuenta que para desencriptar con éxito, necesita la clave de cifrado AES-256, que no se proporciona en este documento. Asegúrese de contar con la clave adecuada antes de intentar desencriptar los datos."
+          description:
+            "Este endpoint devuelve datos encriptados utilizando el algoritmo AES-256 en modo de operación CBC.\n\n Las respuestas se envían en formato Base64 y constan de dos partes: el texto cifrado (cypher text) y el vector de inicialización (IV).\n\n Para desencriptar los datos, siga estos pasos:\n\n
+            1. Decode el texto cifrado y el IV desde Base64 a bytes.\n\n
+            2. Configure la clave de cifrado AES-256.\n\n
+            3. Utilice el IV como vector de inicialización para descifrar el texto cifrado.\n\n
+            4. El resultado será el contenido original en su formato legible.\n\n
+            Tenga en cuenta que para desencriptar con éxito, necesita la clave de cifrado AES-256, que no se proporciona en este documento. Asegúrese de contar con la clave adecuada antes de intentar desencriptar los datos."
           required:
             - ciphertext
             - iv
@@ -74,18 +85,51 @@ nelmio_api_doc:
         TokenDecodeData:
           type: object
           properties:
-            id: { type: string,format: uuid, example: "xxxxx-06d3-4d5c-bca6-963714eec5b5", readOnly: true }
-            name: { type: string, example: "Usuario Prueba Empresa Uno", readOnly: true }
-            email: { type: string,format: email, example: "test@test.com", readOnly: true }
+            id:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxx-06d3-4d5c-bca6-963714eec5b5",
+                readOnly: true,
+              }
+            name:
+              {
+                type: string,
+                example: "Usuario Prueba Empresa Uno",
+                readOnly: true,
+              }
+            email:
+              {
+                type: string,
+                format: email,
+                example: "test@test.com",
+                readOnly: true,
+              }
             profileId: { type: string, example: "7", readOnly: true }
-            profile: { type: string, example: "Administrador de Empresa", readOnly: true }
-            authenticatorFactors: { type: boolean, example: false, readOnly: true }
+            profile:
+              {
+                type: string,
+                example: "Administrador de Empresa",
+                readOnly: true,
+              }
+            authenticatorFactors:
+              { type: boolean, example: false, readOnly: true }
         GoogleAuthenticatorSyncApp:
           type: object
           properties:
-            qr: { type: string, example: "URL con la imagen del QR", description: "Codigo QR a escanear en aplicacion" }
-            key: { type: string, example: "DSFSD234S124", description: "Clave para ingresar manualmente en aplicacion" }
-        #-------------- FIN SCHEMAS SEGURIDAD--------------#
+            qr:
+              {
+                type: string,
+                example: "URL con la imagen del QR",
+                description: "Codigo QR a escanear en aplicacion",
+              }
+            key:
+              {
+                type: string,
+                example: "DSFSD234S124",
+                description: "Clave para ingresar manualmente en aplicacion",
+              }
+        #-------------- END SCHEMAS SEGURIDAD--------------#
 
         NewCardUser:
           type: object
@@ -128,7 +172,11 @@ nelmio_api_doc:
           items:
             type: object
             properties:
-              id: { type: string, example: "7c213897-20b1-4b65-8e4a-364bd86060c0" }
+              id:
+                {
+                  type: string,
+                  example: "7c213897-20b1-4b65-8e4a-364bd86060c0",
+                }
               main: { type: string, example: "0" }
               number: { type: string, example: "2309581104469419" }
               CVV: { type: string, example: "000" }
@@ -137,14 +185,26 @@ nelmio_api_doc:
               paymentProcessorName: { type: string, example: "Mastercard" }
               statusId: { type: string, example: "5" }
               statusName: { type: string, example: "Activa" }
-              commerceId: { type: string, example: "xxxxxxxx-c681-0000-af4f-eaa712345678" }
+              commerceId:
+                {
+                  type: string,
+                  example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
+                }
               commerceName: { type: string, example: "" }
-              ownerId: { type: string, example: "xxxxxxxx-c681-0000-af4f-eaa712345678" }
+              ownerId:
+                {
+                  type: string,
+                  example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
+                }
               ownerName: { type: string, example: "Nombre" }
               ownerLastname: { type: string, example: "Apellidos" }
               ownerEmail: { type: string, example: "propietario@email.com" }
               ownerPhone: { type: string, example: "+52 55 0000 1111" }
-              recorderId: { type: string, example: "xxxxxxxx-c681-0000-af4f-eaa712345678" }
+              recorderId:
+                {
+                  type: string,
+                  example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
+                }
               recorderName: { type: string, example: "Administrador" }
               assignmentDate: { type: string, example: "2023-01-01 18:00:00" }
               register: { type: string, example: "2023-01-01 14:59:56" }
@@ -174,7 +234,8 @@ nelmio_api_doc:
         CardInformation:
           type: object
           properties:
-            id: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+            id:
+              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
             main: { type: string, example: "0" }
             number: { type: string, example: "5064520000029917" }
             CVV: { type: string, example: "000" }
@@ -188,9 +249,12 @@ nelmio_api_doc:
             balance: { type: string, example: "200" }
             block: { type: string, example: "UnBlocked" }
             statusId: { type: string, example: "5" }
-            commerceId: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
-            ownerId: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
-            recorderId: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+            commerceId:
+              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+            ownerId:
+              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+            recorderId:
+              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
             assignmentDate: { type: string, example: "2023-10-11 13:29:48" }
             register: { type: string, example: "2023-08-24 12:29:33" }
             active: { type: string, example: "1" }
@@ -199,15 +263,28 @@ nelmio_api_doc:
           items:
             type: object
             properties:
-              id: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+              id:
+                {
+                  type: string,
+                  example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
+                }
               transactionId: { type: string, example: "5405318" }
-              cardId: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+              cardId:
+                {
+                  type: string,
+                  example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
+                }
               cardNumber: { type: string, example: "1234567890123456" }
               cardPaymentProcessor: { type: string, example: "Carnet" }
-              cardCommerceId: { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+              cardCommerceId:
+                {
+                  type: string,
+                  example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
+                }
               receiptId: { type: string, example: "" }
               receiptFile: { type: string, example: "" }
-              description: { type: string, example: "Trasferencia a cuenta global" }
+              description:
+                { type: string, example: "Trasferencia a cuenta global" }
               concept: { type: string, example: "prueba" }
               amount: { type: string, example: "40" }
               type: { type: string, example: "Gasto" }
@@ -233,29 +310,67 @@ nelmio_api_doc:
               date: "2023-08-18 12:21:49"
               checked: false
 
-        #-------------- INICIO SCHEMAS VIABO SPEI CLOUD--------------#
+        #-------------- START SCHEMAS VIABO SPEI CLOUD--------------#
         CommissionsSpei:
           type: object
           properties:
-            speiOut: { type: number, format: float,minimum: 0, example: 0, description: "Porcentaje" }
-            speiIn: { type: number, format: float, minimum: 0, example: 0, description: "Porcentaje" }
-            internal: { type: number, format: float, minimum: 0, example: 1, description: "Porcentaje" }
-            feeStp: { type: number, format: float, minimum: 0, example: 10, description: "Cantidad $" }
+            speiOut:
+              {
+                type: number,
+                format: float,
+                minimum: 0,
+                example: 0,
+                description: "Porcentaje",
+              }
+            speiIn:
+              {
+                type: number,
+                format: float,
+                minimum: 0,
+                example: 0,
+                description: "Porcentaje",
+              }
+            internal:
+              {
+                type: number,
+                format: float,
+                minimum: 0,
+                example: 1,
+                description: "Porcentaje",
+              }
+            feeStp:
+              {
+                type: number,
+                format: float,
+                minimum: 0,
+                example: 10,
+                description: "Cantidad $",
+              }
 
         CompanySpei:
           type: object
           properties:
-            id: { type: string,format: uuid, example: "xxxxxx-c40b-4515-8462-bc0f1138c03a" }
+            id:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxxx-c40b-4515-8462-bc0f1138c03a",
+              }
             name: { type: string, example: "Empresa Prueba 1" }
             account: { type: string, example: "146180518300000031" }
             balance: { type: float, example: 10 }
             commissions:
-              $ref: '#/components/schemas/CommissionsSpei'
+              $ref: "#/components/schemas/CommissionsSpei"
 
         StpAccount:
           type: object
           properties:
-            id: { type: string,format: uuid, example: "xxxxxx-a8c7-41ac-9454-0dbb041bcd9a" }
+            id:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxxx-a8c7-41ac-9454-0dbb041bcd9a",
+              }
             name: { type: string, example: "SYSTEM" }
             account: { type: string, example: "546582727700000002" }
             balance: { type: float, example: 1045 }
@@ -266,7 +381,7 @@ nelmio_api_doc:
             companies:
               type: array
               items:
-                $ref: '#/components/schemas/CompanySpei'
+                $ref: "#/components/schemas/CompanySpei"
 
         AccountsSpeiInfo:
           type: object
@@ -275,7 +390,7 @@ nelmio_api_doc:
             stpAccounts:
               type: array
               items:
-                $ref: '#/components/schemas/StpAccount'
+                $ref: "#/components/schemas/StpAccount"
 
         BalanceAndTotalSpei:
           type: object
@@ -291,30 +406,43 @@ nelmio_api_doc:
           items:
             type: object
             properties:
-              id: { type: string,format: uuid, example: "xxxxxxxx-f5c0-4991-9e69-6d7cea0137f3" }
-              typeName: { type: string,example: "Spei Out" }
-              statusName: { type: string,example: "Liquidado" }
-              reference: { type: "string",example: "2354572" }
-              trackingKey: { type: string,example: "" }
-              concept: { type: string,example: "Internal Transaction Test" }
-              sourceAccount: { type: string,example: "346123527700000031" }
-              sourceName: { type: string,example: "Empresa Prueba 1" }
-              sourceEmail: { type: string,example: "test+1@viabo.com,test+2@gmail.com" }
-              destinationAccount: { type: string,example: "343284627700000060" }
-              destinationName: { type: string,example: "Empresa Prueba" }
-              destinationBankCode: { type: "string",example: "" }
-              amount: { type: integer,format: int32,example: 19 }
-              amountMoneyFormat: { type: string,example: "$19.00" }
+              id:
+                {
+                  type: string,
+                  format: uuid,
+                  example: "xxxxxxxx-f5c0-4991-9e69-6d7cea0137f3",
+                }
+              typeName: { type: string, example: "Spei Out" }
+              statusName: { type: string, example: "Liquidado" }
+              reference: { type: "string", example: "2354572" }
+              trackingKey: { type: string, example: "" }
+              concept: { type: string, example: "Internal Transaction Test" }
+              sourceAccount: { type: string, example: "346123527700000031" }
+              sourceName: { type: string, example: "Empresa Prueba 1" }
+              sourceEmail:
+                { type: string, example: "test+1@viabo.com,test+2@gmail.com" }
+              destinationAccount:
+                { type: string, example: "343284627700000060" }
+              destinationName: { type: string, example: "Empresa Prueba" }
+              destinationBankCode: { type: "string", example: "" }
+              amount: { type: integer, format: int32, example: 19 }
+              amountMoneyFormat: { type: string, example: "$19.00" }
               commissions:
                 allOf: # Combines the BasicErrorModel and the inline model
-                  - $ref: '#/components/schemas/CommissionsSpei'
+                  - $ref: "#/components/schemas/CommissionsSpei"
                   - type: object
                     properties:
-                      total: { type: number, format: float, example: 192, description: "Cantidad despues de comisiones" }
-              liquidationDate: { type: string,example: "2024-04-05 16:02:52" }
-              urlCEP: { type: "string",example: "" }
-              stpId: { type: "string",example: "" }
-              createDate: { type: "string",example: "2024-04-05 16:02:52" }
+                      total:
+                        {
+                          type: number,
+                          format: float,
+                          example: 192,
+                          description: "Cantidad despues de comisiones",
+                        }
+              liquidationDate: { type: string, example: "2024-04-05 16:02:52" }
+              urlCEP: { type: "string", example: "" }
+              stpId: { type: "string", example: "" }
+              createDate: { type: "string", example: "2024-04-05 16:02:52" }
 
         SpeiOutRequest:
           type: object
@@ -324,15 +452,46 @@ nelmio_api_doc:
               items:
                 type: object
                 properties:
-                  bankAccount: { type: string, example: "346123527700000031", description: "cuenta CLABE destino a enviar transferencia" }
-                  amount: { type: number, format: float, example: 150.50, description: "monto a enviar a cuenta destino" }
+                  bankAccount:
+                    {
+                      type: string,
+                      example: "346123527700000031",
+                      description: "cuenta CLABE destino a enviar transferencia",
+                    }
+                  amount:
+                    {
+                      type: number,
+                      format: float,
+                      example: 150.50,
+                      description: "monto a enviar a cuenta destino",
+                    }
                 required:
                   - bankAccount
                   - amount
-            concept: { type: string, example: "test", description: "concepto que se enviara a todas las cuentas destino" }
-            googleAuthenticatorCode: { type: string, example: "123456", description: "Codigo de google authenticator para realizar operaciones de spei" }
-            originBankAccount: { type: string, example: "346123527700000002", description: "cuenta CLABE origen para a enviar transferencia" }
-            internal: { type: boolean , example: false, description: "En caso de envio a cuenta de terceros (externas) sera false , cualquier otro caso true" }
+            concept:
+              {
+                type: string,
+                example: "test",
+                description: "concepto que se enviara a todas las cuentas destino",
+              }
+            googleAuthenticatorCode:
+              {
+                type: string,
+                example: "123456",
+                description: "Codigo de google authenticator para realizar operaciones de spei",
+              }
+            originBankAccount:
+              {
+                type: string,
+                example: "346123527700000002",
+                description: "cuenta CLABE origen para a enviar transferencia",
+              }
+            internal:
+              {
+                type: boolean,
+                example: false,
+                description: "En caso de envio a cuenta de terceros (externas) sera false , cualquier otro caso true",
+              }
           required:
             - destinationsAccounts
             - originBankAccount
@@ -344,8 +503,18 @@ nelmio_api_doc:
           items:
             type: object
             properties:
-              destinationsAccount: { type: string, example: "346123527700000031", description: "cuenta CLABE destino a donde se enviö transferencia" }
-              url: { type: string, example: "https://example/transfers/xxxxx-xxxxx-xxxx-xxxxx", description: "url para obtener o ver comprabante de transferencia" }
+              destinationsAccount:
+                {
+                  type: string,
+                  example: "346123527700000031",
+                  description: "cuenta CLABE destino a donde se enviö transferencia",
+                }
+              url:
+                {
+                  type: string,
+                  example: "https://example/transfers/xxxxx-xxxxx-xxxx-xxxxx",
+                  description: "url para obtener o ver comprabante de transferencia",
+                }
 
         BanksListSpeiResponse:
           type: array
@@ -368,18 +537,79 @@ nelmio_api_doc:
         SpeiThirdAccountRequest:
           type: object
           properties:
-            id: { type: string,format: uuid, example: "xxxxx-06d3-4d5c-bca6-963714eec5b5", readOnly: true }
-            interbankCLABE: { type: string, example: "346123527700000031", description: "Cuenta clabe a dar de alta" }
-            beneficiary: { type: string, example: "TEST 1", description: "Nombre del beneficiario" }
-            rfc: { type: string, example: "TSDF21321SDF23", description: "Opcional" }
-            alias: { type: string, example: "cuenta de test", description: "Opcional" }
-            bankId: { type: string, example: "4", description: "Id del banco de la lista de bancos" }
-            email: { type: string,format: email,  example: "test@test.com", description: "Opcional" }
-            phone: { type: string,format: phone,  example: "555555555", description: "Opcional" }
-            googleAuthenticatorCode: { type: string, example: "123456", description: "Codigo de google authenticator", writeOnly: true }
+            id:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxx-06d3-4d5c-bca6-963714eec5b5",
+                readOnly: true,
+              }
+            interbankCLABE:
+              {
+                type: string,
+                example: "346123527700000031",
+                description: "Cuenta clabe a dar de alta",
+              }
+            beneficiary:
+              {
+                type: string,
+                example: "TEST 1",
+                description: "Nombre del beneficiario",
+              }
+            rfc:
+              {
+                type: string,
+                example: "TSDF21321SDF23",
+                description: "Opcional",
+              }
+            alias:
+              {
+                type: string,
+                example: "cuenta de test",
+                description: "Opcional",
+              }
+            bankId:
+              {
+                type: string,
+                example: "4",
+                description: "Id del banco de la lista de bancos",
+              }
+            email:
+              {
+                type: string,
+                format: email,
+                example: "test@test.com",
+                description: "Opcional",
+              }
+            phone:
+              {
+                type: string,
+                format: phone,
+                example: "555555555",
+                description: "Opcional",
+              }
+            googleAuthenticatorCode:
+              {
+                type: string,
+                example: "123456",
+                description: "Codigo de google authenticator",
+                writeOnly: true,
+              }
             active: { type: string, example: "1", readOnly: true }
-            createdByUser: { type: string,format: uuid, example: "xxxxx-06d3-4d5c-bca6-963714eec5b5", readOnly: true }
-            date: { type: string,format: date, example: "2024-03-08 21:14:05", readOnly: true }
+            createdByUser:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxx-06d3-4d5c-bca6-963714eec5b5",
+                readOnly: true,
+              }
+            date:
+              {
+                type: string,
+                format: date,
+                example: "2024-03-08 21:14:05",
+                readOnly: true,
+              }
           required:
             - interbankCLABE
             - beneficiary
@@ -391,58 +621,183 @@ nelmio_api_doc:
           items:
             type: object
             allOf:
-              - $ref: '#/components/schemas/SpeiThirdAccountRequest'
-        #-------------- FIN SCHEMAS VIABO SPEI CLOUD--------------#
+              - $ref: "#/components/schemas/SpeiThirdAccountRequest"
+        #-------------- END SCHEMAS VIABO SPEI CLOUD--------------#
+
+        #-------------- START SCHEMAS VIABO PAY CLOUD--------------#
+        PayTerminal:
+          type: object
+          properties:
+            id:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxxxxx-f5c0-4991-9e69-6d7cea0137f3",
+              }
+            active: { type: string, example: "1" }
+            apiData:
+              {
+                type: string,
+                example: '{"id":2939,"ksn":"","status":1,"terminal_type":"API 1.6.1","country":"México","created_at":"2022-02-21T23:55:47.643Z","updated_at":"2023-08-08T18:01:21.327Z"}',
+              }
+            cardId:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxxxxx-f5c0-4991-9e69-6d7cea0137f3",
+              }
+            commerceId:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxxxxx-f5c0-4991-9e69-6d7cea0137f3",
+              }
+            createdByUser:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxxxxx-f5c0-4991-9e69-6d7cea0137f3",
+              }
+            isConciliationExternal:
+              {
+                type: boolean,
+                example: true,
+                description: "if spei card number is external of viabo card service",
+              }
+            main: { type: string, example: "0" }
+            merchantId: { type: string, example: "1452" }
+            name: { type: string, example: "Terminal-MerchantId" }
+            registerDate: { type: string, example: "2023-08-06 13:17:50" }
+            shared:
+              {
+                type: boolean,
+                example: false,
+                description: "true if terminal is shared with others users",
+              }
+            speiCard:
+              {
+                type: string,
+                example: "12321343543123",
+                description: "card number to send terminal payments",
+              }
+            terminalId: { type: string, example: "1234" }
+            typeId: { type: string, example: "1" }
+            typeName: { type: string, example: "Virtual" }
+
+        PayTerminalsListResponse:
+          type: array
+          items:
+            $ref: "#/components/schemas/PayTerminal"
+
+        VirtualTerminalPaymentRequest:
+          type: object
+          properties:
+            commerceId:
+              {
+                type: string,
+                format: uuid,
+                example: "xxxxx-06d3-4d5c-bca6-963714eec5b5",
+              }
+            terminalId: { type: string, example: "1243" }
+            amount: { type: string, example: "10.50" }
+            description:
+              {
+                type: string,
+                example: "Test Payment",
+                description: "Concept of payment",
+              }
+            cardNumber: { type: string, example: "12343456657721" }
+            expMonth:
+              { type: string, example: "05", description: "number of month" }
+            expYear:
+              {
+                type: string,
+                example: "24",
+                description: "last 2 digits of year",
+              }
+            security:
+              { type: string, example: "123", description: "CVV security" }
+            clientName:
+              {
+                type: string,
+                example: "Test User Name",
+                description: "Cardholder of card number",
+              }
+            phone:
+              {
+                type: string,
+                example: "(+52)123245531123",
+                description: "Phone Number",
+              }
+            email: { type: string, format: email, example: "test@test.com" }
+          required:
+            - commerceId
+            - terminalId
+            - amount
+            - description
+            - cardNumber
+            - expMonth
+            - expYear
+            - security
+            - clientName
+            - phone
+            - email
+
+        #-------------- END SCHEMAS VIABO PAY CLOUD--------------#
 
         Empty:
           type: object
       security:
-        - Bearer: [ ]
-
+        - Bearer: []
 
     tags:
       - name: Control de Acceso
-        description: "Esta sección de la API proporciona endpoints relacionados con la autenticación y 
-           la autorización para acceder a los servicios de Viabo Pay y Viabo Card.
-           Incluye métodos para la gestión de tokens de acceso, autenticación de usuarios y autorización para realizar transacciones 
-           y operaciones en la plataforma."
-
-
-
+        description:
+          "Esta sección de la API proporciona endpoints relacionados con la autenticación y
+          la autorización para acceder a los servicios de Viabo Pay, Viabo Card y Viabo Spei Cloud.
+          Incluye métodos para la gestión de tokens de acceso, autenticación de usuarios y autorización para realizar transacciones
+          y operaciones en la plataforma."
+      - name: Access Control [EN]
+        description:
+          "This section of the API provides endpoints related to authentication and
+          authorization for accessing Viabo Pay, Viabo Card, and Viabo Spei Cloud services.
+          It includes methods for managing access tokens, user authentication, and authorization to perform transactions
+          and operations on the platform"
 
     paths:
       /api/login:
         post:
           tags:
             - Control de Acceso
-          summary: Generación de token
+            - Access Control [EN]
+
           operationId: login
-          description: Inicio de sesión y generación de token
+          description: "EN: Sign In to generate jwt token to request api operations \n\n  ES: Inicio de sesión y generación de token"
           requestBody:
-            description: Datos del usuario para el inicio de sesion
+            description: "EN: User Information to Sign in \n\n ES: Datos del usuario para el inicio de sesion"
             required: true
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/UserCredentials'
+                  $ref: "#/components/schemas/UserCredentials"
 
           responses:
             200:
-              description: "Token generado"
+              description: "EN: Generated Token \n\n ES: Token generado"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/UserToken'
+                    $ref: "#/components/schemas/UserToken"
 
             400:
               description: "Bad Request"
-            401:
-              description: "Credenciales incorrectas"
+            403:
+              description: "EN: Wrong Credentials \n\n ES: Credenciales incorrectas"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: "El usuario o password son incorrectos"
+                    example: "EN: Invalid user or password \n\nES: El usuario o password son incorrectos"
       /api/security/google-authenticator/qr:
         get:
           tags:
@@ -456,7 +811,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/GoogleAuthenticatorSyncApp'
+                    $ref: "#/components/schemas/GoogleAuthenticatorSyncApp"
 
             400:
               description: "Bad Request"
@@ -481,8 +836,18 @@ nelmio_api_doc:
                 schema:
                   type: object
                   properties:
-                    code: { type: string, example: "123456", description: "codigo generado en Google Authenticator" }
-                    secret: { type: string, example: "DSFSD234S124", description: "clave generado al generar QR para sincronizar con Google Authenticator " }
+                    code:
+                      {
+                        type: string,
+                        example: "123456",
+                        description: "codigo generado en Google Authenticator",
+                      }
+                    secret:
+                      {
+                        type: string,
+                        example: "DSFSD234S124",
+                        description: "clave generado al generar QR para sincronizar con Google Authenticator ",
+                      }
 
           responses:
             200:
@@ -490,8 +855,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/UserToken'
-
+                    $ref: "#/components/schemas/UserToken"
 
             400:
               description: "Bad Request"
@@ -506,7 +870,7 @@ nelmio_api_doc:
       /api/card-demo/information/{cardNumber}:
         get:
           tags:
-            - Registro de Tarjetas
+            - Registro de Tarjetas [ES]
           summary: Valida existencia de tarjeta
           description: Verifica si la tarjeta está registrada como parte del stock de tarjetas sin asociar de algun comercio
           parameters:
@@ -523,18 +887,18 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/UserToken'
+                    $ref: "#/components/schemas/UserToken"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'La tarjeta no esta registrada o los datos ingresados no son correctos'
+                    example: "La tarjeta no esta registrada o los datos ingresados no son correctos"
       /api/security/commerce-demo/user/new:
         post:
           tags:
-            - Registro de Tarjetas
+            - Registro de Tarjetas [ES]
           summary: Registro de nuevo tarjetahabiente [Encrypted]
           description: Recibe los datos del usuario para asociarlo con la tarjeta previamente definida
           requestBody:
@@ -543,21 +907,21 @@ nelmio_api_doc:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/NewCardUser'
+                  $ref: "#/components/schemas/NewCardUser"
           responses:
             200:
               description: "Retorna un token asociado al usuario registrado. Se utilizará en el siguiente envío de información"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/UserToken'
+                    $ref: "#/components/schemas/UserToken"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'Error general, parámetros inválidos o faltantes'
+                    example: "Error general, parámetros inválidos o faltantes"
             401:
               description: "Token inválido o usuario existente"
               content:
@@ -568,7 +932,7 @@ nelmio_api_doc:
       /api/code/verificate:
         post:
           tags:
-            - Registro de Tarjetas
+            - Registro de Tarjetas [ES]
           summary: Verificación de identidad para nuevo usuario [Encrypted]
           description: Verifica la identidad del usuario para asociarlo con la tarjeta previamente definida
           requestBody:
@@ -577,21 +941,21 @@ nelmio_api_doc:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/VerificationCode'
+                  $ref: "#/components/schemas/VerificationCode"
           responses:
             200:
               description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/Empty'
+                    $ref: "#/components/schemas/Empty"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'Error general, parámetros inválidos o faltantes'
+                    example: "Error general, parámetros inválidos o faltantes"
             401:
               description: "Token inválido o código de verificación incorrecto"
               content:
@@ -602,7 +966,7 @@ nelmio_api_doc:
       /api/assign/commerce-demo-card/to/user:
         put:
           tags:
-            - Registro de Tarjetas
+            - Registro de Tarjetas [ES]
           summary: Validación de datos de tarjeta y asociación a usuario [Encrypted]
           description: Valida el CVV y los datos de vencimiento de la tarjeta. En caso de ser correctos, asocia la tarjeta al usuario previamente registrado
           requestBody:
@@ -611,26 +975,26 @@ nelmio_api_doc:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/Encrypted'
+                  $ref: "#/components/schemas/Encrypted"
           responses:
             200:
               description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/Empty'
+                    $ref: "#/components/schemas/Empty"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'Los datos de la tarjeta son incorrectos'
+                    example: "Los datos de la tarjeta son incorrectos"
 
       /api/payment-processors/of/commerce:
         get:
           tags:
-            - Viabo Card
+            - Viabo Card [ES]
           summary: Lista de procesadores de pago del comercio [Encrypted]
           description: Obtiene los tipos de procesadores de pago para las tarjetas del comercio o usuario loggeado
           responses:
@@ -639,7 +1003,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/PaymentProcessorsArray'
+                    $ref: "#/components/schemas/PaymentProcessorsArray"
             400:
               description: "Bad Request"
             401:
@@ -652,7 +1016,7 @@ nelmio_api_doc:
       /api/enabled-cards/commerce:
         get:
           tags:
-            - Viabo Card
+            - Viabo Card [ES]
           summary: Lista de tarjetas por procesador de pago [Encrypted]
           description: Obtiene las tarjetas asociadas al usuario logueado y por procesador de pago (MasterCard o Carnet)
           parameters:
@@ -669,7 +1033,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/CardsArray'
+                    $ref: "#/components/schemas/CardsArray"
             400:
               description: "Bad Request"
             401:
@@ -682,7 +1046,7 @@ nelmio_api_doc:
       /api/card/information/{cardId}:
         get:
           tags:
-            - Viabo Card
+            - Viabo Card [ES]
           summary: Información de tarjeta [Encrypted]
           description: Obtiene la información de la tarjeta seleccionada
           parameters:
@@ -699,7 +1063,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/CardInformation'
+                    $ref: "#/components/schemas/CardInformation"
             400:
               description: "Bad Request"
             401:
@@ -712,9 +1076,9 @@ nelmio_api_doc:
       /api/card/movements:
         get:
           security:
-            - Bearer: [ ]
+            - Bearer: []
           tags:
-            - Viabo Card
+            - Viabo Card [ES]
           summary: Movimientos de tarjeta [Encrypted]
           description: Obtiene los movimientos de la tarjeta seleccionada en un rango de fechas
           parameters:
@@ -745,7 +1109,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/CardMovementsArray'
+                    $ref: "#/components/schemas/CardMovementsArray"
             400:
               description: "Bad Request"
             401:
@@ -758,7 +1122,7 @@ nelmio_api_doc:
       /api/card/{cardId}/block/blocked:
         put:
           tags:
-            - Viabo Card
+            - Viabo Card [ES]
           summary: Bloqueo de tarjeta [Encrypted]
           description: Bloquea la tarjeta seleccionada
           parameters:
@@ -775,7 +1139,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/Empty'
+                    $ref: "#/components/schemas/Empty"
             400:
               description: "Bad Request"
             401:
@@ -788,7 +1152,7 @@ nelmio_api_doc:
       /api/card/{cardId}/block/unblocked:
         put:
           tags:
-            - Viabo Card
+            - Viabo Card [ES]
           summary: Desbloqueo de tarjeta [Encrypted]
           description: Desbloquea la tarjeta seleccionada
           parameters:
@@ -805,7 +1169,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/Empty'
+                    $ref: "#/components/schemas/Empty"
             400:
               description: "Bad Request"
             401:
@@ -816,10 +1180,71 @@ nelmio_api_doc:
                     type: string
                     example: "Sin acceso"
 
+      /api/commerces/terminals:
+        get:
+          security:
+            - Bearer: []
+          tags:
+            - Viabo Pay [EN]
+          summary: Get Terminals List
+          description: This endpoint allows to get terminals list associated with user
+          responses:
+            200:
+              description: Object Array with terminal properties
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/PayTerminalsListResponse"
+            400:
+              description: "Bad Request"
+            401:
+              description: Unauthorized
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso"
+      /api/commerce/virtual/pay:
+        post:
+          security:
+            - Bearer: []
+          tags:
+            - Viabo Pay [EN]
+          summary: Generate New Payment For Virtual Terminals
+          description: This endpoint allows to create new payment from virtual terminal
+          requestBody:
+            description: Data to generate a new payment from a virtual terminal
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/VirtualTerminalPaymentRequest"
+          responses:
+            200:
+              description: "Objeto json vacío. Validar únicamente el status de la respuesta"
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/Empty"
+            400:
+              description: "Bad Request"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Bad Request, Unexcept exception or missing params"
+            401:
+              description: Unauthorized or Invalid Token
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso"
+
       /api/spei/accounts:
         get:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Obtencion de cuentas spei [Encrypted]
           description: Obtener cuentas,empresas o centros de costos dependiendo del perfil
           responses:
@@ -828,7 +1253,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/AccountsSpeiInfo'
+                    $ref: "#/components/schemas/AccountsSpeiInfo"
             400:
               description: "Bad Request"
             401:
@@ -841,7 +1266,7 @@ nelmio_api_doc:
       /api/spei/transaccions/balance:
         get:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Balance - Total de depositos y transferencias
           description: Obtener balance y total de depositos (speiIn, speiInCount), transferencias (speiOut,speiOutCount)
           parameters:
@@ -873,7 +1298,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/BalanceAndTotalSpei'
+                    $ref: "#/components/schemas/BalanceAndTotalSpei"
             400:
               description: "Bad Request"
             401:
@@ -886,7 +1311,7 @@ nelmio_api_doc:
       /api/spei/transaccions:
         get:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Movimientos de una cuenta SPEI
           description: Obtener los movimientos de una SPEI
           parameters:
@@ -925,7 +1350,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/TransactionsSpeiAccountArray'
+                    $ref: "#/components/schemas/TransactionsSpeiAccountArray"
             400:
               description: "Bad Request"
             401:
@@ -938,9 +1363,9 @@ nelmio_api_doc:
       /api/spei/transaction/process-payments:
         post:
           security:
-            - Bearer: [ ]
+            - Bearer: []
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Realizar transferencia a cuentas (SPEI OUT) [Encrypted]
           description: Realiza transferencia a cuentas externas (terceros) o internas (empresa,concentradora)
           requestBody:
@@ -949,21 +1374,21 @@ nelmio_api_doc:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/SpeiOutRequest'
+                  $ref: "#/components/schemas/SpeiOutRequest"
           responses:
             200:
               description: "Retorna un arreglo con las operaciones realizadas y sus comprobantes"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/SpeiOutResponse'
+                    $ref: "#/components/schemas/SpeiOutResponse"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'Error general, parámetros inválidos o faltantes'
+                    example: "Error general, parámetros inválidos o faltantes"
             401:
               description: "Token inválido o código de verificación incorrecto"
               content:
@@ -974,7 +1399,7 @@ nelmio_api_doc:
       /api/spei/banks:
         get:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Obtencion de lista de bancos SPEI
           description: Obtener lista de bancos para utilizarlos para crear una cuenta tercero
           responses:
@@ -983,7 +1408,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/BanksListSpeiResponse'
+                    $ref: "#/components/schemas/BanksListSpeiResponse"
             400:
               description: "Bad Request"
             401:
@@ -996,7 +1421,7 @@ nelmio_api_doc:
       /api/spei/external-account/new:
         post:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Alta cuenta de tercero
           description: Crea una cuenta de tercero asociado al usuario(empresa) para realizar spei out
           requestBody:
@@ -1005,21 +1430,21 @@ nelmio_api_doc:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/SpeiThirdAccountRequest'
+                  $ref: "#/components/schemas/SpeiThirdAccountRequest"
           responses:
             200:
               description: "Objeto json vacío. Validar únicamente el status de la respuesta"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/Empty'
+                    $ref: "#/components/schemas/Empty"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'Error general, parámetros inválidos o faltantes'
+                    example: "Error general, parámetros inválidos o faltantes"
             401:
               description: "Token inválido o código de verificación incorrecto"
               content:
@@ -1030,7 +1455,7 @@ nelmio_api_doc:
       /api/spei/external-accounts:
         get:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Lista de cuentas de terceros (externas)
           description: Obtener lista de cuentas externas para utilizarlos para realizar un spei out
           responses:
@@ -1039,7 +1464,7 @@ nelmio_api_doc:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/SpeiExternalAccounts'
+                    $ref: "#/components/schemas/SpeiExternalAccounts"
             400:
               description: "Bad Request"
             401:
@@ -1052,7 +1477,7 @@ nelmio_api_doc:
       /api/spei/external-account/disable:
         put:
           tags:
-            - Viabo SPEI Cloud
+            - Viabo SPEI Cloud [ES]
           summary: Eliminar Cuenta de Tercero (Externa)
           description: Elimina una cuenta de tercero asociado al usuario(empresa)
           requestBody:
@@ -1063,21 +1488,26 @@ nelmio_api_doc:
                 schema:
                   type: object
                   properties:
-                    externalAccountId: { type: string,format: uuid, example: "xxxxx-06d3-4d5c-bca6-963714eec5b5" }
+                    externalAccountId:
+                      {
+                        type: string,
+                        format: uuid,
+                        example: "xxxxx-06d3-4d5c-bca6-963714eec5b5",
+                      }
           responses:
             200:
               description: "Objeto json vacío. Validar únicamente el status de la respuesta"
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/Empty'
+                    $ref: "#/components/schemas/Empty"
             400:
               description: "Bad Request"
               content:
                 text/plain:
                   schema:
                     type: string
-                    example: 'Error general, parámetros inválidos o faltantes'
+                    example: "Error general, parámetros inválidos o faltantes"
             401:
               description: "Token inválido o código de verificación incorrecto"
               content:
@@ -1087,6 +1517,4 @@ nelmio_api_doc:
                     example: "Sin acceso || El código ingresado es incorrecto"
 
     security:
-      - Bearer: [ ]
-
-
+      - Bearer: []

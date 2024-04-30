@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\application\update_projection_services_by_register;
+namespace Viabo\backoffice\projection\application\update_projection_services_by_register;
 
 
 use Viabo\backoffice\services\domain\events\ServicesCreatedDomainEventByRegisterCompany;

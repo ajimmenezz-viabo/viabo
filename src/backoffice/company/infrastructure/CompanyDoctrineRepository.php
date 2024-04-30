@@ -10,7 +10,7 @@ use Viabo\backoffice\company\domain\CompanyBankAccount;
 use Viabo\backoffice\company\domain\CompanyCostCenter;
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\CompanyUserOld;
-use Viabo\backoffice\company\domain\projection\CompanyProjection;
+use Viabo\backoffice\projection\domain\CompanyProjection;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;

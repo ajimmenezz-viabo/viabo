@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\infrastructure;
+namespace Viabo\backoffice\projection\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
-use Viabo\backoffice\company\domain\projection\CompanyProjection;
-use Viabo\backoffice\company\domain\projection\CompanyProjectionRepository;
+use Viabo\backoffice\projection\domain\CompanyProjection;
+use Viabo\backoffice\projection\domain\CompanyProjectionRepository;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;

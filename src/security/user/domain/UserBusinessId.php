@@ -18,4 +18,9 @@ final class UserBusinessId extends StringValueObject
         return new static('');
     }
 
+    public function isNotDefined(): bool
+    {
+        return empty($this->value);
+    }
+
 }

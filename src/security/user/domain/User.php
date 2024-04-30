@@ -186,6 +186,11 @@ final class User extends AggregateRoot
         $this->record(new UserPasswordResetDomainEvent($this->id->value(), $data));
     }
 
+    public function isNotBusinessId(): bool
+    {
+        return $this->businessId->isNotDefined();
+    }
+
     public function toArray(): array
     {
         return [

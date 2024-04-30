@@ -53,6 +53,7 @@ final class TransactionCommissions extends StringValueObject
     private static function calculateExternalCommissions(array $commissions, float|string $amount): array
     {
         if (empty($commissions)) {
+            self::$data['total'] = $amount;
             return self::$data;
         }
 
@@ -70,6 +71,7 @@ final class TransactionCommissions extends StringValueObject
     ): array
     {
         if (empty($commissions)) {
+            self::$data['total'] = $amount;
             return self::$data;
         }
 
@@ -88,6 +90,7 @@ final class TransactionCommissions extends StringValueObject
     private static function calculateSpeinInCommissions(array $commissions, float|string $amount): array
     {
         if (empty($commissions)) {
+            self::$data['total'] = $amount;
             return self::$data;
         }
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\backoffice\company\domain\projection;
+namespace Viabo\backoffice\projection\domain;
 
 use Viabo\shared\domain\criteria\Criteria;
 

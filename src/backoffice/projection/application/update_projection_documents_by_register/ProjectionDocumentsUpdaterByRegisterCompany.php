@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\application\update_projection_documents_by_register;
+namespace Viabo\backoffice\projection\application\update_projection_documents_by_register;
 
 
-use Viabo\backoffice\company\domain\projection\CompanyProjectionRepository;
+use Viabo\backoffice\projection\domain\CompanyProjectionRepository;
 
 final readonly class ProjectionDocumentsUpdaterByRegisterCompany
 {

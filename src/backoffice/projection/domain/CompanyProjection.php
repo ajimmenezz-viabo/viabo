@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\domain\projection;
+namespace Viabo\backoffice\projection\domain;
 
 
 use Viabo\shared\domain\aggregate\AggregateRoot;
@@ -113,7 +113,7 @@ final class CompanyProjection extends AggregateRoot
         return json_decode($this->users, true);
     }
 
-    private function services(): array
+    public function services(): array
     {
         $services = json_decode($this->services, true);
         return array_map(function (array $service) {
@@ -134,7 +134,7 @@ final class CompanyProjection extends AggregateRoot
         $documents = json_decode($this->documents, true);
         return array_map(function (array $document) {
             return ['Id' => $document['id'], 'Name' => $document['name'], 'storePath' => $document['storePath']];
-        },$documents);
+        }, $documents);
     }
 
     private function commissions(): array
@@ -155,6 +155,28 @@ final class CompanyProjection extends AggregateRoot
         $this->tradeName = $tradeName;
         $this->rfc = $rfc;
         $this->registerStep = $registerStep;
+    }
+
+    public function hasNotCompletedRegistration(): bool
+    {
+        return intval($this->registerStep) < 4;
+    }
+
+    public function servicesIdByProfileId(string $profileId): array
+    {
+        $adminViabo = '2';
+        if ($profileId === $adminViabo) {
+            return [];
+        }
+
+        $adminSTP = '5';
+        if ($profileId === $adminSTP) {
+            return ['4'];
+        }
+
+        return array_map(function (array $service) {
+            return $service['type'];
+        }, $this->services());
     }
 
     public function toArray(): array

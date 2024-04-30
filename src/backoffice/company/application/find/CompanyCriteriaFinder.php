@@ -4,9 +4,8 @@
 namespace Viabo\backoffice\company\application\find;
 
 
-use Viabo\backoffice\company\domain\Company;
-use Viabo\backoffice\company\domain\projection\CompanyProjection;
-use Viabo\backoffice\company\domain\projection\CompanyProjectionRepository;
+use Viabo\backoffice\projection\domain\CompanyProjection;
+use Viabo\backoffice\projection\domain\CompanyProjectionRepository;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 

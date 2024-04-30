@@ -33,6 +33,11 @@ final readonly class UserView
         ];
     }
 
+    public function isNotBusinessId(): bool
+    {
+        return empty($this->businessId);
+    }
+
     public function toArray(): array
     {
         return [

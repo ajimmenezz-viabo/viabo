@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\cardOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\CardsQueryByPaymentProcessor;
 use Viabo\management\cardOperation\application\find\BalanceInTransactionQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;

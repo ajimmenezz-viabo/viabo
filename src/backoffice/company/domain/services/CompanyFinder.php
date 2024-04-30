@@ -7,7 +7,7 @@ namespace Viabo\backoffice\company\domain\services;
 use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\company\domain\projection\CompanyProjection;
+use Viabo\backoffice\projection\domain\CompanyProjection;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;

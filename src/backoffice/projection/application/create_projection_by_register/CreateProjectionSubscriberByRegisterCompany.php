@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\application\create_projection_by_register;
+namespace Viabo\backoffice\projection\application\create_projection_by_register;
 
 
 use Viabo\backoffice\users\domain\events\CompanyUserCreatedDomainEventOnRegisterCompany;

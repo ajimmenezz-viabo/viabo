@@ -2,7 +2,7 @@
 
 namespace Viabo\backoffice\company\domain;
 
-use Viabo\backoffice\company\domain\projection\CompanyProjection;
+use Viabo\backoffice\projection\domain\CompanyProjection;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 

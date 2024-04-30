@@ -28,7 +28,7 @@ final readonly class ExternalAccountCreator
         string $phone
     ): void
     {
-        $this->ensureInterbankCLABE($interbankCLABE);
+        $this->ensureInterbankCLABE($interbankCLABE, $userId);
 
         $externalAccount = ExternalAccount::create(
             $userId ,
@@ -46,10 +46,12 @@ final readonly class ExternalAccountCreator
         $this->bus->publish(...$externalAccount->pullDomainEvents());
     }
 
-    private function ensureInterbankCLABE(string $interbankCLABE): void
+    private function ensureInterbankCLABE(string $interbankCLABE, string $userId): void
     {
         $filters = Filters::fromValues([
-            ['field' => 'interbankCLABE.value' , 'operator' => '=' , 'value' => $interbankCLABE]
+            ['field' => 'interbankCLABE.value' , 'operator' => '=' , 'value' => $interbankCLABE],
+            ['field' => 'createdByUser.value' , 'operator' => '=' , 'value' => $userId],
+            ['field' => 'active.value', 'operator' => '=', 'value' => '1']
         ]);
 
         $externalAccount = $this->repository->searchCriteria(new Criteria($filters));

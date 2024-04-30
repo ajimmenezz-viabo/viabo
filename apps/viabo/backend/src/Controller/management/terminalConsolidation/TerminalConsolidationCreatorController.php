@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\terminalConsolidation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find_company_by_user\CompanyQueryByUser;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\catalogs\threshold\application\find\PayThresholdQuery;
 use Viabo\management\terminalConsolidation\application\create\CreatorTerminalConsolidationCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;

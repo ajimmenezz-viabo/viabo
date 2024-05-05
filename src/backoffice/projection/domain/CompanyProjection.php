@@ -43,6 +43,7 @@ final class CompanyProjection extends AggregateRoot
     public static function create(array $values): static
     {
         $values['users'] = empty($values['users']) ? '[]' : json_encode($values['users']);
+        $values['commissions'] = empty($values['commissions']) ? '[]' : json_encode($values['commissions']);
         return new static(
             $values['id'],
             $values['folio'],
@@ -65,7 +66,7 @@ final class CompanyProjection extends AggregateRoot
             $values['users'],
             $values['services'] ?? '[]',
             $values['documents'] ?? '[]',
-            $values['commissions'] ?? '[]',
+            $values['commissions'],
             $values['updatedByUser'],
             $values['updateDate'],
             $values['createdByUser'],
@@ -103,14 +104,19 @@ final class CompanyProjection extends AggregateRoot
         return !empty($users);
     }
 
-    public function updateServices(array $services): void
+    public function updateUsers(array $users): void
     {
-        $this->services = json_encode($services);
+        $this->users = empty($users) ? '[]' : json_encode($users);
     }
 
     private function users(): array
     {
         return json_decode($this->users, true);
+    }
+
+    public function updateServices(array $services): void
+    {
+        $this->services = empty($services) ? '[]' : json_encode($services);
     }
 
     public function services(): array
@@ -142,6 +148,11 @@ final class CompanyProjection extends AggregateRoot
         return json_decode($this->commissions, true);
     }
 
+    public function updateCommissions(array $commissions): void
+    {
+        $this->commissions = empty($commissions) ? '[]' : json_encode($commissions);
+    }
+
     public function update(
         string $fiscalPersonType,
         string $fiscalName,
@@ -162,21 +173,21 @@ final class CompanyProjection extends AggregateRoot
         return intval($this->registerStep) < 4;
     }
 
-    public function servicesIdByProfileId(string $profileId): array
+    public function hasServiceSpei(): bool
     {
-        $adminViabo = '2';
-        if ($profileId === $adminViabo) {
-            return [];
-        }
+        $serviceSpei = '4';
+        return in_array($serviceSpei, $this->serviceTypes());
+    }
 
-        $adminSTP = '5';
-        if ($profileId === $adminSTP) {
-            return ['4'];
+    public function serviceTypes(): array
+    {
+        $typeIds = [];
+        foreach ($this->services() as $service) {
+            if (!in_array($service['type'], $typeIds)) {
+                $typeIds[] = $service['type'];
+            }
         }
-
-        return array_map(function (array $service) {
-            return $service['type'];
-        }, $this->services());
+        return $typeIds;
     }
 
     public function toArray(): array

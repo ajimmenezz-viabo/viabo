@@ -5,7 +5,7 @@ namespace Viabo\backoffice\company\application\delete;
 
 
 use Viabo\backoffice\company\domain\CompanyRepository;
-use Viabo\backoffice\company\domain\events\CompanyDeletedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyDeletedDomainEventByAdminStp;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CompanyDeleter
@@ -19,10 +19,10 @@ final readonly class CompanyDeleter
 
     public function __invoke(string $companyId): void
     {
-        $company = $this->repository->search($companyId, false);
+        $company = $this->repository->search($companyId);
         if (!empty($company)) {
             $this->repository->delete($company);
-            $this->bus->publish(new CompanyDeletedDomainEvent($company->id(), $company->toArray()));
+            $this->bus->publish(new CompanyDeletedDomainEventByAdminStp($company->id(), $company->toArray()));
         }
     }
 }

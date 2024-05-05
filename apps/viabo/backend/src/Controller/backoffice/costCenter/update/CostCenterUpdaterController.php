@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\backoffice\costCenter\application\update\AddUserToCostCenterCommand;
 use Viabo\backoffice\costCenter\application\update\UpdateCostCenterCommand;
-use Viabo\security\user\application\create\CreateAdministratorUserCommand;
+use Viabo\security\user\application\create_admin_stp\CreateAdminStpUserCommand;
 use Viabo\security\user\application\find\ValidateUserNewCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -55,7 +55,7 @@ final readonly class CostCenterUpdaterController extends ApiController
     {
         $userId = $this->generateUuid();
         $costCenterAdministratorProfileId = '6';
-        $this->dispatch(new CreateAdministratorUserCommand(
+        $this->dispatch(new CreateAdminStpUserCommand(
             $userId,
             $costCenterAdministratorProfileId,
             $data['userName'],

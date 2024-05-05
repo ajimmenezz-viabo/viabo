@@ -13,9 +13,9 @@ final readonly class CostCentersFinder
     {
     }
 
-    public function __invoke(): CostCenterResponse
+    public function __invoke(string $businessId): CostCenterResponse
     {
-        $costCenters = $this->repository->searchAll();
+        $costCenters = $this->repository->searchAll($businessId);
         return new CostCenterResponse(array_map(function (CostCenter $costCenter) {
             return $costCenter->toArray();
         }, $costCenters));

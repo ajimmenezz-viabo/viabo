@@ -10,8 +10,8 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class CompanyUser extends AggregateRoot
 {
     public function __construct(
-        private CompanyUserId         $userId,
         private CompanyId             $companyId,
+        private CompanyUserId         $userId,
         private CompanyUserProfileId  $profileId,
         private CompanyUserName       $name,
         private CompanyUserLastname   $lastname,
@@ -32,8 +32,8 @@ final class CompanyUser extends AggregateRoot
     ): self
     {
         return new static(
-            CompanyUserId::create($userId),
             CompanyId::create($companyId),
+            CompanyUserId::create($userId),
             CompanyUserProfileId::create($profileId),
             CompanyUserName::create($name),
             CompanyUserLastname::create($lastname),

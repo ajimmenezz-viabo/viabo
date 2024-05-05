@@ -8,8 +8,8 @@ use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\CardOwnerDataUpdatedDomainEvent;
 use Viabo\security\user\domain\events\CommerceDemoUserCreatedDomainEvent;
-use Viabo\security\user\domain\events\UserAdminCreatedDomainEvent;
 use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
+use Viabo\security\user\domain\events\UserAdminCreatedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
 use Viabo\security\user\domain\events\UserDeletedDomainEvent;
 use Viabo\security\user\domain\events\UserPasswordResetDomainEvent;
@@ -67,7 +67,8 @@ final class User extends AggregateRoot
         string $name,
         string $lastname,
         string $email,
-        string $phone
+        string $phone,
+        string $businessId
     ): static
     {
         $user = new self(
@@ -79,7 +80,7 @@ final class User extends AggregateRoot
             UserEmail::create($email),
             UserPassword::random(),
             UserStpAccountId::empty(),
-            UserBusinessId::empty(),
+            new UserBusinessId($businessId),
             UserRegister::todayDate(),
             UserActive::enable(),
         );

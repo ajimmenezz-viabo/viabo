@@ -4,6 +4,7 @@
 namespace Viabo\backoffice\services\domain\new;
 
 
+use Viabo\backoffice\services\domain\new\stp\ServiceStpBankAccount;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface ServiceRepository
@@ -13,6 +14,8 @@ interface ServiceRepository
     public function search(string $id): Service|null;
 
     public function searchCriteria(Criteria $criteria): array;
+
+    public function searchAvailableBankAccount(): ServiceStpBankAccount;
 
     public function update(Service $service): void;
 

@@ -27,6 +27,11 @@ final class CompanyFiscalPersonType extends StringValueObject
         return new static('0');
     }
 
+    public static function enable(): static
+    {
+        return new static('1');
+    }
+
     public function update(string|null $value): static
     {
         $value = empty($value) ? '1' : $value;

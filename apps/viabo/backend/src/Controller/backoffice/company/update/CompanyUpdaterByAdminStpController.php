@@ -5,9 +5,9 @@ namespace Viabo\Backend\Controller\backoffice\company\update;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\update\AddUserToCompanyCommand;
 use Viabo\backoffice\company\application\update\UpdateCompanyByAdminStpCommand;
-use Viabo\security\user\application\create\CreateAdministratorUserCommand;
+use Viabo\backoffice\users\application\create_users_by_admin_stp\CreateCompanyUserCommand;
+use Viabo\security\user\application\create_admin_stp\CreateAdminStpUserCommand;
 use Viabo\security\user\application\find\ValidateUserNewCommand;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -50,7 +50,7 @@ final readonly class CompanyUpdaterByAdminStpController extends ApiController
     {
         if ($data['isNewUser']) {
             $userId = $this->createCompaniesAdminUser($data);
-            $this->dispatch(new AddUserToCompanyCommand($data['id'], [$userId]));
+            $this->dispatch(new CreateCompanyUserCommand($data['id'], [$userId]));
         }
     }
 
@@ -58,7 +58,7 @@ final readonly class CompanyUpdaterByAdminStpController extends ApiController
     {
         $userId = $this->generateUuid();
         $companyAdministratorProfileId = '7';
-        $this->dispatch(new CreateAdministratorUserCommand(
+        $this->dispatch(new CreateAdminStpUserCommand(
             $userId,
             $companyAdministratorProfileId,
             $data['userName'],

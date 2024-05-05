@@ -130,7 +130,7 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
 
     public function delete(Company $company): void
     {
-        $this->updateBankAccountWithAvailable($company->bankAccount());
+//        $this->updateBankAccountWithAvailable($company->bankAccount());
         $this->remove($company);
     }
 

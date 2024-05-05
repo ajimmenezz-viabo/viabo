@@ -6,7 +6,6 @@ namespace Viabo\backoffice\company\application\update;
 
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\company\domain\services\CollectionEntityFinder;
 use Viabo\backoffice\company\domain\services\CompanyValidator;
 use Viabo\shared\domain\bus\event\EventBus;
 
@@ -15,7 +14,7 @@ final readonly class CompanyUpdaterByAdminStp
     public function __construct(
         private CompanyRepository      $repository,
         private CompanyValidator       $validator,
-        private CollectionEntityFinder $finder,
+//        private CollectionEntityFinder $finder,
         private EventBus               $bus
     )
     {
@@ -33,8 +32,8 @@ final readonly class CompanyUpdaterByAdminStp
     {
         $this->validator->ensureFiscalName($fiscalName, $companyId);
         $this->validator->ensureCommissions($commissions);
-        $users = $this->finder->searchUsers($users);
-        $costCenters = $this->finder->searchCostCenter($costCenters);
+//        $users = $this->finder->searchUsers($users);
+//        $costCenters = $this->finder->searchCostCenter($costCenters);
 
         $company = $this->repository->search($companyId, false);
 

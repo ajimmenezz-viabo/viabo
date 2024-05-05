@@ -64,6 +64,42 @@ final class Company extends AggregateRoot
         );
     }
 
+    public static function createByAdminStp(
+        string $userId,
+        string $businessId,
+        string $companyId,
+        string $folio,
+        string $fiscalName,
+        string $commercialName,
+        string $rfc
+    ): static
+    {
+        $commercialName = empty($commercialName) ? $fiscalName : $commercialName;
+        return new static(
+            CompanyId::create($companyId),
+            CompanyType::formal(),
+            CompanyBusinessId::create($businessId),
+            CompanyFolio::create($folio),
+            CompanyFatherId::empty(),
+            CompanyFiscalPersonType::enable(),
+            CompanyFiscalName::create($fiscalName),
+            CompanyTradeName::create($commercialName),
+            CompanyRfc::create($rfc),
+            CompanyPostalAddress::empty(),
+            CompanyPhoneNumbers::empty(),
+            CompanyLogo::empty(),
+            CompanySlug::empty(),
+            CompanyBalance::empty(),
+            CompanyStatusId::affiliate(),
+            CompanyRegisterStep::concluded(),
+            CompanyUpdatedByUser::empty(),
+            CompanyUpdateDate::empty(),
+            CompanyCreatedByUser::create($userId),
+            CompanyCreateDate::todayDate(),
+            CompanyActive::enable()
+        );
+    }
+
     public function id(): string
     {
         return $this->id->value();

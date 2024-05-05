@@ -5,6 +5,7 @@ namespace Viabo\backoffice\services\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Viabo\backoffice\services\domain\new\stp\ServiceStpBankAccount;
 use Viabo\backoffice\services\domain\Service;
 use Viabo\backoffice\services\domain\ServiceRepository;
 use Viabo\shared\domain\criteria\Criteria;
@@ -36,6 +37,6 @@ final class ServiceDoctrineRepository extends DoctrineRepository implements Serv
 
     public function delete(string $companyId): void
     {
-        $this->entityManager()->getConnection()->delete('t_business_commerces_services' , ['CommerceId' => $companyId]);
+        $this->entityManager()->getConnection()->delete('t_business_commerces_services', ['CommerceId' => $companyId]);
     }
 }

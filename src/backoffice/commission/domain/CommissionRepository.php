@@ -5,6 +5,7 @@ namespace Viabo\backoffice\commission\domain;
 
 
 use Viabo\backoffice\shared\domain\company\CompanyId;
+use Viabo\shared\domain\criteria\Criteria;
 
 interface CommissionRepository
 {
@@ -12,5 +13,9 @@ interface CommissionRepository
 
     public function search(CompanyId $commerceId): Commission|null;
 
+    public function searchCriteria(Criteria $criteria): array;
+
     public function update(Commission $commission): void;
+
+    public function delete(Commission $commission): void;
 }

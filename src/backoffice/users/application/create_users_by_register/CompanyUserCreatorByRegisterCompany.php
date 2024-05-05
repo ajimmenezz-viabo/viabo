@@ -18,8 +18,8 @@ final readonly class CompanyUserCreatorByRegisterCompany
     public function __invoke(array $company): void
     {
         $user = CompanyUser::create(
-            $company['user']['id'],
             $company['id'],
+            $company['user']['id'],
             $company['user']['profile'],
             $company['user']['name'],
             $company['user']['lastname'],

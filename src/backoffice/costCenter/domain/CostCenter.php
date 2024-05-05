@@ -11,9 +11,11 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class CostCenter extends AggregateRoot
 {
     private $users;
+    private CostCenterCompanies $companies;
 
     public function __construct(
         private CostCenterId            $id,
+        private CostCenterBusinessId    $businessId,
         private CostCenterFolio         $folio,
         private CostCenterName          $name,
         private CostCenterUpdatedByUser $updatedByUser,
@@ -24,6 +26,7 @@ final class CostCenter extends AggregateRoot
     )
     {
         $this->users = new CostCenterUsers();
+        $this->companies = new CostCenterCompanies([]);
     }
 
     public static function create(
@@ -36,6 +39,7 @@ final class CostCenter extends AggregateRoot
     {
         $costCenter = new static(
             new CostCenterId($costCenterId),
+            CostCenterBusinessId::empty(),
             CostCenterFolio::create($folio),
             CostCenterName::create($name),
             CostCenterUpdatedByUser::empty(),
@@ -50,7 +54,7 @@ final class CostCenter extends AggregateRoot
         return $costCenter;
     }
 
-    private function id(): string
+    public function id(): string
     {
         return $this->id->value();
     }
@@ -96,13 +100,31 @@ final class CostCenter extends AggregateRoot
         $this->record(new CostCenterUpdatedDomainEvent($this->id(), $this->toArray()));
     }
 
+    public function setCompanies(array $companies): void
+    {
+        $this->companies = CostCenterCompanies::fromValues($companies);
+    }
+
+    public function addCompany(string $companyId): void
+    {
+        $this->companies = $this->companies->add($companyId);
+    }
+
+    public function companies(): array
+    {
+        return $this->companies->elements();
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->id->value(),
+            'businessId' => $this->businessId->value(),
             'folio' => $this->folio->value(),
             'name' => $this->name->value(),
             'users' => $this->users(),
+            'companies' => $this->companies->toArray(),
+            'companyTotal' => $this->companies->count(),
             'updatedByUser' => $this->updatedByUser->value(),
             'updateDate' => $this->updateDate->value(),
             'createdByUser' => $this->createdByUser->value(),

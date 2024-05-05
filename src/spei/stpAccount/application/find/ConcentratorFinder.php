@@ -13,9 +13,9 @@ final readonly class ConcentratorFinder
     {
     }
 
-    public function __invoke(): StpAccountResponse
+    public function __invoke(string $businessId): StpAccountResponse
     {
-        $accounts = $this->repository->searchAll();
+        $accounts = $this->repository->searchAll($businessId);
         return new StpAccountResponse(array_map(function (StpAccount $account) {
             return ['id' => $account->id(), 'name' => $account->company()];
         }, $accounts));

@@ -7,20 +7,28 @@
     <entity name="Viabo\backoffice\services\domain\new\Service"
             table="t_backoffice_companies_services"
             inheritance-type="JOINED">
-        <discriminator-column name="type" type="string" />
+        <discriminator-column name="type" type="string"/>
         <discriminator-map>
-            <discriminator-mapping value="1" class="Viabo\backoffice\services\domain\new\pay\PayService" />
-            <discriminator-mapping value="2" class="Viabo\backoffice\services\domain\new\card\CardService" />
-<!--            <discriminator-mapping value="cloud" class="Viabo\backoffice\services\domain\new\card\CloudService" />-->
-<!--            <discriminator-mapping value="spei" class="Viabo\backoffice\services\domain\new\card\SpeiService" />-->
+            <discriminator-mapping value="1" class="Viabo\backoffice\services\domain\new\pay\PayService"/>
+            <discriminator-mapping value="2" class="Viabo\backoffice\services\domain\new\card\CardService"/>
+            <!--            <discriminator-mapping value="cloud" class="Viabo\backoffice\services\domain\new\card\CloudService" />-->
+            <discriminator-mapping value="4" class="Viabo\backoffice\services\domain\new\stp\ServiceStp"/>
         </discriminator-map>
 
-        <embedded name="id" class="Viabo\backoffice\services\domain\new\ServiceId" use-column-prefix="false" />
+        <embedded name="id" class="Viabo\backoffice\services\domain\new\ServiceId" use-column-prefix="false"/>
         <field name="companyId" type="company_id" column="CompanyId"/>
-        <embedded name="updateByUser" class="Viabo\backoffice\services\domain\new\ServiceUpdateByUser" use-column-prefix="false" />
-        <embedded name="updateDate" class="Viabo\backoffice\services\domain\new\ServiceUpdateDate" use-column-prefix="false" />
-        <embedded name="createdByUser" class="Viabo\backoffice\services\domain\new\ServiceCreatedByUser" use-column-prefix="false" />
-        <embedded name="createDate" class="Viabo\backoffice\services\domain\new\ServiceCreateDate" use-column-prefix="false" />
+        <embedded name="updateByUser"
+                  class="Viabo\backoffice\services\domain\new\ServiceUpdateByUser"
+                  use-column-prefix="false"/>
+        <embedded name="updateDate"
+                  class="Viabo\backoffice\services\domain\new\ServiceUpdateDate"
+                  use-column-prefix="false"/>
+        <embedded name="createdByUser"
+                  class="Viabo\backoffice\services\domain\new\ServiceCreatedByUser"
+                  use-column-prefix="false"/>
+        <embedded name="createDate"
+                  class="Viabo\backoffice\services\domain\new\ServiceCreateDate"
+                  use-column-prefix="false"/>
     </entity>
 
 </doctrine-mapping>

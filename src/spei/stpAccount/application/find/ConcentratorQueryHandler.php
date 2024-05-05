@@ -15,6 +15,6 @@ final readonly class ConcentratorQueryHandler implements QueryHandler
 
     public function __invoke(ConcentratorQuery $query): Response
     {
-        return $this->finder->__invoke();
+        return $this->finder->__invoke($query->businessId);
     }
 }

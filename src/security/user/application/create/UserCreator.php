@@ -27,12 +27,13 @@ final readonly class UserCreator
         string $name,
         string $lastname,
         string $phone,
-        string $email
+        string $email,
+        string $businessId = ''
     ): void
     {
         $this->ensureUser($email);
 
-        $user = User::create($userId, $userProfileId, $name, $lastname, $email, $phone);
+        $user = User::create($userId, $userProfileId, $name, $lastname, $email, $phone, $businessId);
         $this->repository->save($user);
 
         $this->bus->publish(...$user->pullDomainEvents());

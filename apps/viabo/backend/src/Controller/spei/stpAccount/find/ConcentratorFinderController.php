@@ -15,8 +15,8 @@ final readonly class ConcentratorFinderController extends ApiController
     public function __invoke(Request $request): Response
     {
         try {
-            $this->decode($request->headers->get('Authorization'));
-            $stpAccounts = $this->ask(new ConcentratorQuery());
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $stpAccounts = $this->ask(new ConcentratorQuery($tokenData['businessId']));
 
             return new JsonResponse($stpAccounts->data);
         } catch (\DomainException $exception) {

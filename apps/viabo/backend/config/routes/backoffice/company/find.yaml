@@ -5,7 +5,7 @@ find-company-by-register-of-outside:
 
 finder-companies:
   path: '/api/commerces'
-  controller: Viabo\Backend\Controller\backoffice\company\CompaniesFinderController
+  controller: Viabo\Backend\Controller\backoffice\company\find\CompaniesFinderController
   methods: GET
 
 finder-commerce-affiliates:

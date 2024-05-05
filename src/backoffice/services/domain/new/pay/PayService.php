@@ -22,12 +22,12 @@ final class PayService extends Service
         private PayServicePointSaleTerminal $pointSaleTerminal,
         private PayServicePaymentApi        $paymentApi,
         ServiceUpdateByUser                 $updateByUser,
-        ServiceUpdateDate                   $updateDate,
+        ServiceUpdateDate                   $updatedDate,
         ServiceCreatedByUser                $createdByUser,
         ServiceCreateDate                   $createDate
     )
     {
-        parent::__construct($id, $companyId, $updateByUser, $updateDate, $createdByUser, $createDate);
+        parent::__construct($id, $companyId, $updateByUser, $updatedDate, $createdByUser, $createDate);
     }
 
     public static function create(

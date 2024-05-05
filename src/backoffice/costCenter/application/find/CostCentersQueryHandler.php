@@ -15,6 +15,6 @@ final readonly class CostCentersQueryHandler implements QueryHandler
 
     public function __invoke(CostCentersQuery $query): Response
     {
-        return $this->finder->__invoke();
+        return $this->finder->__invoke($query->businessId);
     }
 }

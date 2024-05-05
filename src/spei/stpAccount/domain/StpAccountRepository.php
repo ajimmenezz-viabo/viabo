@@ -12,7 +12,7 @@ interface StpAccountRepository
 
     public function searchCriteria(Criteria $criteria): array;
 
-    public function searchAll(): array;
+    public function searchAll(string $businessId): array;
 
     public function update(StpAccount $stpAccount): void;
 }

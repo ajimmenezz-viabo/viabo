@@ -26,8 +26,6 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
     public function save(Company $company): void
     {
         $this->persist($company);
-//        $this->updateBankAccountWithNotAvailable($company->bankAccount());
-
     }
 
     public function search(string $companyId): Company|null
@@ -118,32 +116,14 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return empty($result) ? null : $result[0];
     }
 
-    public function update(Company|CompanyProjection $company): void
+    public function update(Company $company): void
     {
         $this->entityManager()->flush($company);
-//        $speiCommissions = $company->speiCommissions();
-//        $this->entityManager()->flush($company);
-//        if (!empty($speiCommissions)) {
-//            $this->entityManager()->flush($speiCommissions);
-//        }
     }
 
     public function delete(Company $company): void
     {
-//        $this->updateBankAccountWithAvailable($company->bankAccount());
         $this->remove($company);
-    }
-
-    private function updateBankAccountWithNotAvailable(CompanyBankAccount $bankAccount): void
-    {
-        $bankAccount->notAvailable();
-        $this->entityManager()->flush($bankAccount);
-    }
-
-    private function updateBankAccountWithAvailable(CompanyBankAccount $bankAccount): void
-    {
-        $bankAccount->available();
-        $this->entityManager()->flush($bankAccount);
     }
 
 }

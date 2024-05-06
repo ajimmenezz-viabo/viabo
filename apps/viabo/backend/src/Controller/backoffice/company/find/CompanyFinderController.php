@@ -6,7 +6,7 @@ namespace Viabo\Backend\Controller\backoffice\company\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CompanyQuery;
+use Viabo\backoffice\projection\application\find_company\CompanyQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CompanyFinderController extends ApiController

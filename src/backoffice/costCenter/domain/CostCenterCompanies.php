@@ -26,8 +26,8 @@ final class CostCenterCompanies extends Collection
 
     public function toArray(): array
     {
-        return array_map(function (CostCenterCompany $obj) {
-            return $obj->toArray();
+        return array_map(function (CostCenterCompany $company) {
+            return $company->id();
         }, $this->items());
     }
 

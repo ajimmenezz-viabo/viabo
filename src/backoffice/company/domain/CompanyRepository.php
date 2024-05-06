@@ -34,7 +34,7 @@ interface CompanyRepository
 
     public function searchAdminUsers(string $userId): array;
 
-    public function update(Company|CompanyProjection $company): void;
+    public function update(Company $company): void;
 
     public function delete(Company $company): void;
 

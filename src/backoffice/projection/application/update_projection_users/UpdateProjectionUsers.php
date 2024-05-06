@@ -5,6 +5,7 @@ namespace Viabo\backoffice\projection\application\update_projection_users;
 
 
 use Viabo\backoffice\users\domain\events\CompanyUsersCreatedDomainEventByAdminStp;
+use Viabo\backoffice\users\domain\events\CompanyUsersUpdatedDomainEventByAdminStp;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
 final readonly class UpdateProjectionUsers implements DomainEventSubscriber
@@ -15,10 +16,16 @@ final readonly class UpdateProjectionUsers implements DomainEventSubscriber
 
     public static function subscribedTo(): array
     {
-        return [CompanyUsersCreatedDomainEventByAdminStp::class];
+        return [
+            CompanyUsersCreatedDomainEventByAdminStp::class,
+            CompanyUsersUpdatedDomainEventByAdminStp::class
+        ];
     }
 
-    public function __invoke(CompanyUsersCreatedDomainEventByAdminStp $event): void
+    public function __invoke(
+        CompanyUsersCreatedDomainEventByAdminStp|
+        CompanyUsersUpdatedDomainEventByAdminStp $event
+    ): void
     {
         $this->updater->__invoke($event->toPrimitives());
     }

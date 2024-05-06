@@ -5,6 +5,7 @@ namespace Viabo\backoffice\costCenter\application\add_companies_by_admin_stp;
 
 
 use Viabo\backoffice\projection\domain\events\CompanyProjectionCreatedDomainEventByAdminStp;
+use Viabo\backoffice\projection\domain\events\CompanyProjectionUpdatedDomainEventByAdminStp;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
 final readonly class UpdateCostCenterCompaniesOnCompanyCreatedByAdminStp implements DomainEventSubscriber
@@ -15,10 +16,16 @@ final readonly class UpdateCostCenterCompaniesOnCompanyCreatedByAdminStp impleme
 
     public static function subscribedTo(): array
     {
-        return [CompanyProjectionCreatedDomainEventByAdminStp::class];
+        return [
+            CompanyProjectionCreatedDomainEventByAdminStp::class,
+            CompanyProjectionUpdatedDomainEventByAdminStp::class
+        ];
     }
 
-    public function __invoke(CompanyProjectionCreatedDomainEventByAdminStp $event): void
+    public function __invoke(
+        CompanyProjectionCreatedDomainEventByAdminStp|
+        CompanyProjectionUpdatedDomainEventByAdminStp $event
+    ): void
     {
         $this->updater->__invoke($event->toPrimitives());
     }

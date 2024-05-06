@@ -5,6 +5,7 @@ namespace Viabo\backoffice\projection\application\find_company_services_by_user;
 
 
 use Viabo\backoffice\company\domain\exceptions\CompanyUserNotAssociated;
+use Viabo\backoffice\projection\application\CompanyProjectionResponse;
 use Viabo\backoffice\projection\domain\CompanyProjection;
 use Viabo\backoffice\projection\domain\CompanyProjectionRepository;
 use Viabo\backoffice\projection\domain\exceptions\CompanyProjectionNotCompletedRegistration;
@@ -17,22 +18,22 @@ final readonly class CompanyServicesIdFinderByUser
     {
     }
 
-    public function __invoke(string $userId, string $profileId, string $businessId): ProjectionResponse
+    public function __invoke(string $userId, string $profileId, string $businessId): CompanyProjectionResponse
     {
         $adminViabo = '2';
         if ($profileId === $adminViabo) {
-            return new ProjectionResponse([]);
+            return new CompanyProjectionResponse([]);
         }
 
         $adminSTP = '5';
         if ($profileId === $adminSTP) {
-            return new ProjectionResponse(['4']);
+            return new CompanyProjectionResponse(['4']);
         }
 
         $companies = $this->searchCompanies($userId, $businessId);
         $this->ensureRegisterCompany($companies);
         $servicesTypesId = $this->servicesTypesId($companies, $profileId);
-        return new ProjectionResponse($servicesTypesId);
+        return new CompanyProjectionResponse($servicesTypesId);
     }
 
     public function searchCompanies(string $userId, string $businessId): array

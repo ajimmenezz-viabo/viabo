@@ -4,6 +4,7 @@
 namespace Viabo\backoffice\company\domain;
 
 
+use Viabo\backoffice\company\domain\events\CompanyActiveUpdatedDomainEventByAdminStp;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -37,7 +38,7 @@ final class Company extends AggregateRoot
     {
     }
 
-    public static function createFromClient(string $userId,string $business, string $folio): static
+    public static function createFromClient(string $userId, string $business, string $folio): static
     {
         return new static(
             CompanyId::random(),
@@ -110,12 +111,12 @@ final class Company extends AggregateRoot
         return $this->folio->value();
     }
 
-    public function update(
+    public function updateByClient(
         string|null $fiscalPersonType,
-        string $fiscalName,
-        string $tradeName,
-        string $rfc,
-        string $registerStep
+        string      $fiscalName,
+        string      $tradeName,
+        string      $rfc,
+        string      $registerStep
     ): void
     {
         $this->fiscalPersonType = $this->fiscalPersonType->update($fiscalPersonType);
@@ -123,6 +124,26 @@ final class Company extends AggregateRoot
         $this->tradeName = $this->tradeName->update($tradeName, $registerStep);
         $this->rfc = $this->rfc->update($rfc);
         $this->registerStep = $this->registerStep->update($registerStep);
+    }
+
+    public function updateByAdminStp(
+        string $userId,
+        string $fiscalName,
+        string $tradeName
+    ): void
+    {
+        $this->fiscalName = $this->fiscalName->update($fiscalName);
+        $this->tradeName = $this->tradeName->update($tradeName);
+        $this->updatedByUser = $this->updatedByUser->update($userId);
+        $this->updateDate = CompanyUpdateDate::todayDate();
+    }
+
+    public function updateActive(bool $active, string $userId): void
+    {
+        $this->active = $this->active->update($active);
+        $this->updatedByUser = $this->updatedByUser->update($userId);
+        $this->updateDate = $this->updateDate->todayDate();
+        $this->record(new CompanyActiveUpdatedDomainEventByAdminStp($this->id(), $this->toArray()));
     }
 
     public function toArray(): array
@@ -151,7 +172,6 @@ final class Company extends AggregateRoot
             'active' => $this->active->value()
         ];
     }
-
 //    private $costCenters;
 //    private $users;
 //    private $bankAccounts;

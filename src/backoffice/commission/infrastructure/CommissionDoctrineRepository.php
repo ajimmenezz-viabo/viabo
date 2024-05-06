@@ -9,7 +9,6 @@ use Viabo\backoffice\commission\domain\card\CommissionCard;
 use Viabo\backoffice\commission\domain\Commission;
 use Viabo\backoffice\commission\domain\CommissionRepository;
 use Viabo\backoffice\commission\domain\spei\CommissionSpei;
-use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -26,9 +25,9 @@ final class CommissionDoctrineRepository extends DoctrineRepository implements C
         $this->persist($commission);
     }
 
-    public function search(CompanyId $commerceId): Commission|null
+    public function search(string $companyId): Commission|null
     {
-        return $this->repository(Commission::class)->findOneBy(['commerceId' => $commerceId->value()]);
+        return $this->repository(Commission::class)->findOneBy(['companyId' => $companyId]);
     }
 
     public function searchCriteria(Criteria $criteria): array

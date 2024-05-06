@@ -27,6 +27,7 @@
         <field name="services" column="Services"/>
         <field name="documents" column="Documents"/>
         <field name="commissions" column="Commissions"/>
+        <field name="costCenters" column="CostCenters"/>
         <field name="updatedByUser" column="UpdatedByUser"/>
         <field name="updateDate" column="UpdateDate"/>
         <field name="createdByUser" column="CreatedByUser"/>

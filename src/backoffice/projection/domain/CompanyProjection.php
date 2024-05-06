@@ -8,6 +8,7 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class CompanyProjection extends AggregateRoot
 {
+
     public function __construct(
         private string  $id,
         private string  $folio,
@@ -31,6 +32,7 @@ final class CompanyProjection extends AggregateRoot
         private string  $services,
         private string  $documents,
         private string  $commissions,
+        private string  $costCenters,
         private string  $updatedByUser,
         private string  $updateDate,
         private string  $createdByUser,
@@ -44,6 +46,7 @@ final class CompanyProjection extends AggregateRoot
     {
         $values['users'] = empty($values['users']) ? '[]' : json_encode($values['users']);
         $values['commissions'] = empty($values['commissions']) ? '[]' : json_encode($values['commissions']);
+        $values['costCenters'] = empty($values['costCenters']) ? '[]' : json_encode($values['costCenters']);
         return new static(
             $values['id'],
             $values['folio'],
@@ -67,6 +70,7 @@ final class CompanyProjection extends AggregateRoot
             $values['services'] ?? '[]',
             $values['documents'] ?? '[]',
             $values['commissions'],
+            $values['costCenters'],
             $values['updatedByUser'],
             $values['updateDate'],
             $values['createdByUser'],
@@ -111,7 +115,11 @@ final class CompanyProjection extends AggregateRoot
 
     private function users(): array
     {
-        return json_decode($this->users, true);
+        $users = json_decode($this->users, true);
+        return array_map(function (array $user) {
+            $user['profileId'] = $user['profile'];
+            return $user;
+        }, $users);
     }
 
     public function updateServices(array $services): void
@@ -126,6 +134,7 @@ final class CompanyProjection extends AggregateRoot
             unset($service['updateByUser'], $service['updateDate'], $service['createdByUser'], $service['createDate']);
             $service['cardNumbers'] = $service['numbers'] ?? '0';
             $service['cardUse'] = $service['purpose'] ?? '0';
+            $service['stpAccountId'] = $service['stpAccountId'] ?? '';
             return $service;
         }, $services);
     }
@@ -153,7 +162,15 @@ final class CompanyProjection extends AggregateRoot
         $this->commissions = empty($commissions) ? '[]' : json_encode($commissions);
     }
 
-    public function update(
+    public function updateCostCenters(array $costCenters): void
+    {
+        $costCenters = array_map(function (array $costCenter) {
+            return ['id' => $costCenter['id'], 'name' => $costCenter['name']];
+        }, $costCenters);
+        $this->costCenters = empty($costCenters) ? '[]' : json_encode($costCenters);
+    }
+
+    public function updateByClient(
         string $fiscalPersonType,
         string $fiscalName,
         string $tradeName,
@@ -166,6 +183,24 @@ final class CompanyProjection extends AggregateRoot
         $this->tradeName = $tradeName;
         $this->rfc = $rfc;
         $this->registerStep = $registerStep;
+    }
+
+    public function updateByAdminStp(
+        string $fiscalName,
+        string $tradeName,
+        string $updatedByUser,
+        string $updateDate
+    ): void
+    {
+        $this->fiscalName = $fiscalName;
+        $this->tradeName = $tradeName;
+        $this->updatedByUser = $updatedByUser;
+        $this->updateDate = $updateDate;
+    }
+
+    public function updateActive(string $active): void
+    {
+        $this->active = $active;
     }
 
     public function hasNotCompletedRegistration(): bool
@@ -188,6 +223,47 @@ final class CompanyProjection extends AggregateRoot
             }
         }
         return $typeIds;
+    }
+
+    private function commissionsStp(): array
+    {
+        $commissions = $this->commissions();
+        $commissionStp = array_filter($commissions, function (array $commission) {
+            $stpType = '2';
+            return $commission['type'] === $stpType;
+        });
+
+        if (empty($commissionStp)) {
+            return ['speiOut' => 0, 'speiIn' => 0, 'internal' => 0, 'feeStp' => 0, 'stpAccount' => 0];
+        }
+
+        unset(
+            $commissionStp[0]['id'],
+            $commissionStp[0]['type'],
+            $commissionStp[0]['companyId'],
+            $commissionStp[0]['createdByUser'],
+            $commissionStp[0]['createDate'],
+            $commissionStp[0]['updateByUser'],
+            $commissionStp[0]['updateDate']
+        );
+
+        return $commissionStp[0];
+
+    }
+
+    private function costCenters()
+    {
+        return json_decode($this->costCenters, true);
+    }
+
+    private function stpAccountId(): string
+    {
+        $services = $this->services();
+        $serviceStp = array_filter($services, function (array $service) {
+            $stpType = '4';
+            return $service['type'] === $stpType;
+        });
+        return empty($serviceStp) ? '' : $serviceStp[0]['stpAccountId'];
     }
 
     public function toArray(): array
@@ -215,6 +291,7 @@ final class CompanyProjection extends AggregateRoot
             'services' => $this->services(),
             'documents' => $this->documents(),
             'commissions' => $this->commissions(),
+            'costCenters' => $this->costCenters(),
             'updatedByUser' => $this->updatedByUser,
             'updateDate' => $this->updateDate,
             'createdByUser' => $this->createdByUser,
@@ -227,6 +304,8 @@ final class CompanyProjection extends AggregateRoot
     {
         $admin = $this->users();
         $services = $this->services();
+        $commissions = $this->commissionsStp();
+        $stpAccountId = $this->stpAccountId();
         return [
             'id' => $this->id,
             'folio' => $this->folio,
@@ -247,6 +326,7 @@ final class CompanyProjection extends AggregateRoot
             'slug' => $this->slug,
             'balance' => $this->balance,
             'bankAccount' => '',
+            'bankAccounts' => [],
             'publicTerminal' => '',
             'employees' => $services[0]['employees'] ?? '0',
             'branchOffices' => $services[0]['branchOffices'] ?? '0',
@@ -257,12 +337,15 @@ final class CompanyProjection extends AggregateRoot
             'allowTransactions' => '',
             'statusId' => $this->statusId,
             'statusName' => $this->statusName,
-            'stpAccountId' => '',
+            'stpAccountId' => $stpAccountId,
             'registerStep' => $this->registerStep,
+            'users' => $this->users(),
             'services' => $services,
             'servicesIds' => [],
+            'costCenters' => $this->costCenters(),
             'documents' => $this->documents(),
-            'commissions' => json_decode($this->commissions, true),
+            'commissions' => $commissions,
+            'speiCommissions' => $commissions,
             'createdByUser' => $this->createdByUser,
             'register' => $this->createDate,
             'active' => $this->active

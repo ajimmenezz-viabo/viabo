@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backoffice\company\application\find;
+namespace Viabo\backoffice\projection\application\find_company;
 
 
 use Viabo\shared\domain\bus\query\Query;

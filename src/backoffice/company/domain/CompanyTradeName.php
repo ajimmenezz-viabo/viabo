@@ -27,7 +27,7 @@ final class CompanyTradeName extends StringValueObject
         }
     }
 
-    public function update(string $value, string $registerStep): static
+    public function update(string $value, string $registerStep = '0'): static
     {
         if (intval($registerStep) === 3) {
             return self::create($value);

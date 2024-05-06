@@ -13,4 +13,9 @@ final class CommissionSpeiOut extends DecimalValueObject
         return new static($value);
     }
 
+    public function update(float $value): static
+    {
+        return new static($value);
+    }
+
 }

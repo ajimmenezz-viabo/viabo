@@ -59,7 +59,12 @@ final class CommissionSpei extends Commission
 
     public function update(array $data): void
     {
-        // TODO: Implement update() method.
+        $this->speiOut = $this->speiOut->update($data['commissions']['speiOut']);
+        $this->speiIn = $this->speiIn->update($data['commissions']['speiIn']);
+        $this->internal = $this->internal->update($data['commissions']['internal']);
+        $this->feeStp = $this->feeStp->update($data['commissions']['feeStp']);
+        $this->updatedByUser = $this->updatedByUser->update($data['updatedByUser']);
+        $this->updateDate = $this->updateDate->update($data['updateDate']);
     }
 
     protected function type(): string

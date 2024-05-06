@@ -4,14 +4,13 @@
 namespace Viabo\backoffice\commission\domain;
 
 
-use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface CommissionRepository
 {
     public function save(Commission $commission): void;
 
-    public function search(CompanyId $commerceId): Commission|null;
+    public function search(string $companyId): Commission|null;
 
     public function searchCriteria(Criteria $criteria): array;
 

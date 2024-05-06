@@ -105,11 +105,6 @@ final class CostCenter extends AggregateRoot
         $this->companies = CostCenterCompanies::fromValues($companies);
     }
 
-    public function addCompany(string $companyId): void
-    {
-        $this->companies = $this->companies->add($companyId);
-    }
-
     public function companies(): array
     {
         return $this->companies->elements();

@@ -6,10 +6,7 @@ namespace Viabo\backoffice\costCenter\domain;
 
 final class CostCenterCompany
 {
-    public function __construct(
-        private string $id,
-        private string $name
-    )
+    public function __construct(private string $id)
     {
     }
 
@@ -20,11 +17,12 @@ final class CostCenterCompany
 
     public static function fromValue(array $values): static
     {
-        return new static($values['CompanyId'], '');
+        $companyId = $values['CompanyId'] ?? $values['companyId'];
+        return new static($companyId);
     }
 
     public function toArray(): array
     {
-        return ['id' => $this->id, 'name' => $this->name];
+        return ['id' => $this->id];
     }
 }

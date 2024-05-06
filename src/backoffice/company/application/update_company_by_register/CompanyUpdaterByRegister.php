@@ -33,7 +33,7 @@ final readonly class CompanyUpdaterByRegister
         $this->ensureTradeName($tradeName, $companyId, $registerStep);
         $company = $this->repository->search($companyId);
 
-        $company->update(
+        $company->updateByClient(
             $fiscalPersonType,
             $fiscalName,
             $tradeName,

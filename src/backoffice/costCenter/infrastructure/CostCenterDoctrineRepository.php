@@ -97,10 +97,6 @@ final class CostCenterDoctrineRepository extends DoctrineRepository implements C
     {
         $costCenterId = $costCenter->id();
         array_map(function (CostCenterCompany $company) use ($costCenterId) {
-               $this->deleteCostCenterCompanies($company->id());
-        }, $costCenter->companies());
-
-        array_map(function (CostCenterCompany $company) use ($costCenterId) {
             $this->insertCostCenterCompany($company->id(), $costCenterId);
         }, $costCenter->companies());
     }

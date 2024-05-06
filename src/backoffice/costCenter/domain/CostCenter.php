@@ -31,6 +31,7 @@ final class CostCenter extends AggregateRoot
 
     public static function create(
         string $userId,
+        string $businessId,
         string $costCenterId,
         string $folio,
         string $name,
@@ -39,7 +40,7 @@ final class CostCenter extends AggregateRoot
     {
         $costCenter = new static(
             new CostCenterId($costCenterId),
-            CostCenterBusinessId::empty(),
+            CostCenterBusinessId::create($businessId),
             CostCenterFolio::create($folio),
             CostCenterName::create($name),
             CostCenterUpdatedByUser::empty(),

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\backoffice\company\application\create_company_by_admin_stp\CreateCompanyCommandByAdminStp;
 use Viabo\backoffice\company\application\delete\DeleteCompanyCommand;
 use Viabo\backoffice\users\application\create_users_by_admin_stp\CreateCompanyUserCommand;
-use Viabo\security\user\application\create_admin_stp\CreateAdminStpUserCommand;
+use Viabo\security\user\application\create_user_by_admin_stp\CreateUserCommandByAdminStp;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CompanyCreatorControllerByAdminStp extends ApiController
@@ -55,7 +55,7 @@ final readonly class CompanyCreatorControllerByAdminStp extends ApiController
     {
         $userId = $this->generateUuid();
         $adminStpProfileId = '7';
-        $this->dispatch(new CreateAdminStpUserCommand(
+        $this->dispatch(new CreateUserCommandByAdminStp(
             $userId,
             $businessId,
             $adminStpProfileId,

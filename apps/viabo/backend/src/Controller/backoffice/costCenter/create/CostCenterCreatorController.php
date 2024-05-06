@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\backoffice\costCenter\application\create\CreateCostCenterCommand;
 use Viabo\backoffice\costCenter\application\delete\DeleteCostCenterCommand;
 use Viabo\backoffice\costCenter\application\update\AddUserToCostCenterCommand;
-use Viabo\security\user\application\create_admin_stp\CreateAdminStpUserCommand;
+use Viabo\security\user\application\create_user_by_admin_stp\CreateUserCommandByAdminStp;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 final readonly class CostCenterCreatorController extends ApiController
@@ -21,16 +21,18 @@ final readonly class CostCenterCreatorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $request->toArray();
+            $businessId = $tokenData['businessId'];
 
             $this->dispatch(new CreateCostCenterCommand(
                 $tokenData['id'],
+                $businessId,
                 $costCenterId,
                 $data['name'],
                 $data['assignedUsers']
             ));
 
             if ($data['isNewUser']) {
-                $userId = $this->createCostCenterAdminUser($data);
+                $userId = $this->createCostCenterAdminUser($data, $businessId);
                 $this->dispatch(new AddUserToCostCenterCommand($costCenterId, $userId));
             }
 
@@ -41,12 +43,13 @@ final readonly class CostCenterCreatorController extends ApiController
         }
     }
 
-    public function createCostCenterAdminUser(array $data): string
+    public function createCostCenterAdminUser(array $data, string $businessId): string
     {
         $userId = $this->generateUuid();
         $costCenterAdministratorProfileId = '6';
-        $this->dispatch(new CreateAdminStpUserCommand(
+        $this->dispatch(new CreateUserCommandByAdminStp(
             $userId,
+            $businessId,
             $costCenterAdministratorProfileId,
             $data['userName'],
             $data['userLastName'],

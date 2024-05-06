@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\security\user\application\create_admin_stp;
+namespace Viabo\security\user\application\create_user_by_admin_stp;
 
 
 use Viabo\shared\domain\bus\command\Command;
 
-final readonly class CreateAdminStpUserCommand implements Command
+final readonly class CreateUserCommandByAdminStp implements Command
 {
     public function __construct(
         public string $userId,

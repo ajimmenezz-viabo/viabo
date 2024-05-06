@@ -1,23 +1,26 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\security\user\application\find;
+namespace Viabo\security\user\application\find_admin_cost_centers;
 
 
+use Viabo\security\user\application\find\UserResponse;
+use Viabo\security\user\application\find\UsersFinderByCriteria;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 
-final readonly class AdministratorsOfCostCenterQueryHandler implements QueryHandler
+final readonly class CostCenterAdminsQueryHandler implements QueryHandler
 {
     public function __construct(private UsersFinderByCriteria $finder)
     {
     }
 
-    public function __invoke(AdministratorsOfCostCenterQuery $query): Response
+    public function __invoke(CostCenterAdminsQuery $query): Response
     {
-        $administratorCostCenterProfileId = '6';
+        $costCenterAdminProfileId = '6';
         $filters = [
-            ['field' => 'profile.value', 'operator' => '=', 'value' => $administratorCostCenterProfileId],
+            ['field' => 'profile.value', 'operator' => '=', 'value' => $costCenterAdminProfileId],
+            ['field' => 'businessId.value', 'operator' => '=', 'value' => $query->businessId],
             ['field' => 'active.value', 'operator' => '=', 'value' => '1']
         ];
         $users = $this->finder->__invoke($filters);

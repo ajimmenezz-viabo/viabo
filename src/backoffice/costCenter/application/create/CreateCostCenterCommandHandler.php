@@ -16,6 +16,7 @@ final readonly class CreateCostCenterCommandHandler implements CommandHandler
     {
         $this->creator->__invoke(
             $command->userId,
+            $command->businessId,
             $command->costCenterId,
             $command->name,
             $command->assignedUsers

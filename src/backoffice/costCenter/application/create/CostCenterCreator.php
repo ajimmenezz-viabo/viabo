@@ -19,6 +19,7 @@ final readonly class CostCenterCreator
 
     public function __invoke(
         string $userId,
+        string $businessId,
         string $costCenterId,
         string $name,
         array  $users
@@ -30,6 +31,7 @@ final readonly class CostCenterCreator
 
         $costCenter = CostCenter::create(
             $userId,
+            $businessId,
             $costCenterId,
             $folio,
             $name,

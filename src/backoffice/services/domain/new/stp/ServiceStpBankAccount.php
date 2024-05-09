@@ -19,6 +19,11 @@ final class ServiceStpBankAccount
         return $this->id;
     }
 
+    public function number(): string
+    {
+        return $this->number;
+    }
+
     public function disable(): void
     {
         $this->available = '0';

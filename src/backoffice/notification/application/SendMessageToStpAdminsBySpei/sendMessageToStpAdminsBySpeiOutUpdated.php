@@ -38,7 +38,9 @@ final readonly class sendMessageToStpAdminsBySpeiOutUpdated implements DomainEve
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'sourceAccount' => $transaction['sourceAccount'],
+                'sourceName' => $transaction['sourceName'],
                 'destinationAccount' => $transaction['destinationAccount'],
+                'destinationName' => $transaction['destinationName'],
                 'reference' => $transaction['stpId'],
                 'date' => $transaction['liquidationDate']
             ]

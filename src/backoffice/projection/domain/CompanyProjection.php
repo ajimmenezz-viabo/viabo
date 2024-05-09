@@ -94,6 +94,11 @@ final class CompanyProjection extends AggregateRoot
         return $this->statusId;
     }
 
+    public function balance(): float
+    {
+        return $this->balance;
+    }
+
     public function updateStatusNameAndTypeName(string $typeName, string $statusName): void
     {
         $this->typeName = $typeName;
@@ -185,6 +190,11 @@ final class CompanyProjection extends AggregateRoot
         $this->registerStep = $registerStep;
     }
 
+    public function updateBalance(float $balance): void
+    {
+        $this->balance = $balance;
+    }
+
     public function updateByAdminStp(
         string $fiscalName,
         string $tradeName,
@@ -266,6 +276,22 @@ final class CompanyProjection extends AggregateRoot
         return empty($serviceStp) ? '' : $serviceStp[0]['stpAccountId'];
     }
 
+    private function bankAccounts(): array
+    {
+        $services = $this->services();
+        $serviceStp = array_filter($services, function (array $service) {
+            $stpType = '4';
+            return $service['type'] === $stpType;
+        });
+        return empty($serviceStp) ? [] : [$serviceStp[0]['bankAccountNumber']];
+    }
+
+    public function isBankAccount(string $bankAccount): bool
+    {
+        $bankAccounts = $this->bankAccounts();
+        return in_array($bankAccount,$bankAccounts);
+    }
+
     public function toArray(): array
     {
         return [
@@ -326,7 +352,7 @@ final class CompanyProjection extends AggregateRoot
             'slug' => $this->slug,
             'balance' => $this->balance,
             'bankAccount' => '',
-            'bankAccounts' => [],
+            'bankAccounts' => $this->bankAccounts(),
             'publicTerminal' => '',
             'employees' => $services[0]['employees'] ?? '0',
             'branchOffices' => $services[0]['branchOffices'] ?? '0',

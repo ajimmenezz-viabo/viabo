@@ -16,55 +16,25 @@ final readonly class TransactionsCreator
     {
     }
 
-    public function internal(
+    public function __invoke(
         array  $originAccount,
         array  $destinationsAccounts,
         string $concept,
-        string $userId
+        string $userId,
+        bool   $isInternalTransaction
     ): Transactions
     {
         $outType = $this->typeFinder->speiOutType();
-        $liquidateStatus = $this->statusFinder->liquidated();
-
+        $statusId = $isInternalTransaction ?
+            $this->statusFinder->liquidated() :
+            $this->statusFinder->inTransit();
         $transactionsData = [];
         foreach ($destinationsAccounts as $destinationsAccount) {
-            $transactionsData[] = [
-                'transactionId' => $destinationsAccount['transactionId'],
+            $transactionsData[] = ['transactionId' => $destinationsAccount['transactionId'],
                 'concept' => $concept,
                 'sourceAccountType' => $originAccount['type'],
                 'sourceAccount' => $originAccount['bankAccount'],
-                'sourceName' => $originAccount['name'],
-                'sourceEmail' => $originAccount['emails'],
-                'destinationAccountType' => $destinationsAccount['type'],
-                'destinationAccount' => $destinationsAccount['bankAccount'],
-                'destinationName' => $destinationsAccount['beneficiary'],
-                'destinationEmail' => $destinationsAccount['email'],
-                'amount' => NumberFormat::float($destinationsAccount['amount']),
-                'commissions' => $originAccount['commissions'],
-                'userId' => $userId
-            ];
-        }
-        return Transactions::fromInternalSpeiOut($transactionsData, $outType, $liquidateStatus);
-    }
-
-    public function external(
-        array  $originAccount,
-        array  $destinationsAccounts,
-        string $concept,
-        mixed  $userId
-    ): Transactions
-    {
-        $outType = $this->typeFinder->speiOutType();
-        $inTransitStatus = $this->statusFinder->inTransit();
-
-        $transactionsData = [];
-        foreach ($destinationsAccounts as $destinationsAccount) {
-            $transactionsData[] = [
-                'transactionId' => $destinationsAccount['transactionId'],
-                'concept' => $concept,
-                'sourceAccountType' => $originAccount['type'],
-                'sourceAccount' => $originAccount['bankAccount'],
-                'sourceAcronym' => $originAccount['acronym'],
+                'sourceAcronym' => $originAccount['acronym'] ?? '',
                 'sourceName' => $originAccount['name'],
                 'sourceEmail' => $originAccount['emails'],
                 'destinationAccountType' => $destinationsAccount['type'],
@@ -74,10 +44,18 @@ final readonly class TransactionsCreator
                 'bankCode' => $destinationsAccount['bankCode'],
                 'amount' => NumberFormat::float($destinationsAccount['amount']),
                 'commissions' => $originAccount['commissions'],
-                'userId' => $userId
+                'userId' => $userId,
+                'additionalData' => [
+                    'isInternalTransaction' => $isInternalTransaction,
+                    'sourceCompanyId' => $originAccount['companyId'],
+                    'sourceRfc' => $originAccount['rfc'],
+                    'destinationCompanyId' => $destinationsAccount['companyId'],
+                    'destinationRfc' => $destinationsAccount['rfc'],
+                    'destinationBankName' => $destinationsAccount['bankName']
+                ]
             ];
         }
-        return Transactions::fromExternalSpeiOut($transactionsData, $outType, $inTransitStatus);
+        return Transactions::fromValues($transactionsData, $outType, $statusId);
     }
 
 }

@@ -4,12 +4,12 @@
 namespace Viabo\spei\transaction\domain\services;
 
 
-use Viabo\backoffice\company\application\find\BalanceCompaniesQueryByStpAccount;
-use Viabo\backoffice\company\application\find\CompanyQueryByBankAccount;
+use Viabo\backoffice\projection\application\find_companies_balance\BalanceCompaniesQueryByStpAccount;
+use Viabo\backoffice\projection\application\find_company_by_bank_account\CompanyQueryByBankAccount;
 use Viabo\security\user\application\find\AdministratorsStpQuery;
 use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\spei\stpAccount\application\find\StpAccountQuery;
-use Viabo\spei\stpAccount\application\find\StpAccountQueryByNumber;
+use Viabo\spei\stpAccount\application\find_stp_account_by_number\StpAccountQueryByNumber;
 use Viabo\spei\transaction\domain\exceptions\StpAccountCompanyNotExist;
 
 final readonly class OriginAccountDataFinder
@@ -25,6 +25,8 @@ final readonly class OriginAccountDataFinder
             $data = $stpAccount->data[0];
             return [
                 'type' => 'stpAccount',
+                'companyId' => '',
+                'rfc' => '',
                 'bankAccount' => $data['number'],
                 'acronym' => $data['acronym'],
                 'name' => $data['company'],
@@ -46,6 +48,8 @@ final readonly class OriginAccountDataFinder
 
         return array_merge([
             'type' => 'company',
+            'companyId' => $company->data['id'],
+            'rfc' => $company->data['rfc'],
             'bankAccount' => $originBankAccount,
             'acronym' => '',
             'name' => $company->data['fiscalName'],

@@ -9,6 +9,23 @@ use Viabo\shared\domain\Collection;
 final class Transactions extends Collection
 {
 
+    public static function fromValues(
+        array               $values,
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
+    ): static
+    {
+        return new static(array_map(self::TransactionBuilderFromValues($transactionType, $statusId), $values));
+    }
+
+    private static function TransactionBuilderFromValues(
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
+    ): callable
+    {
+        return fn(array $values): Transaction => Transaction::fromValues($values, $transactionType, $statusId);
+    }
+
     public static function fromSpeiIn(
         array               $values,
         TransactionTypeId   $transactionType,
@@ -24,40 +41,6 @@ final class Transactions extends Collection
     ): callable
     {
         return fn(array $values): Transaction => Transaction::fromSpeiIn($values, $transactionType, $statusId);
-    }
-
-    public static function fromInternalSpeiOut(
-        array               $values,
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): static
-    {
-        return new static(array_map(self::TransactionBuilderInternalSpeiOut($transactionType, $statusId), $values));
-    }
-
-    private static function TransactionBuilderInternalSpeiOut(
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): callable
-    {
-        return fn(array $values): Transaction => Transaction::fromInternalSpeiOut($values, $transactionType, $statusId);
-    }
-
-    public static function fromExternalSpeiOut(
-        array               $values,
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): static
-    {
-        return new static(array_map(self::TransactionBuilderExternalSpeiOut($transactionType, $statusId), $values));
-    }
-
-    private static function TransactionBuilderExternalSpeiOut(
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): callable
-    {
-        return fn(array $values): Transaction => Transaction::fromExternalSpeiOut($values, $transactionType, $statusId);
     }
 
     public function elements(): array

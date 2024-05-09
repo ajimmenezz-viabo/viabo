@@ -31,14 +31,18 @@ final readonly class SendMessageSpeiInInternalTransactionCreated implements Doma
 
         $email = new Email(
             $emails,
-            "Notificación de Viabo Spei - Transferencia",
-            'spei/notification/emails/spei.in.internal.transaction.html.twig',
+            "Notificación Spei In - Transferencia Interna",
+            'spei/notification/emails/spei.internal.transaction.html.twig',
             [
                 'transactionType' => 'Operación SPEI Deposito',
+                'sourceName' => $transaction['sourceName'],
+                'sourceAccount' => $transaction['sourceAccount'],
+                'sourceRfc' => $transaction['additionalData']['sourceRfc'],
+                'destinationAccount' => $transaction['destinationAccount'],
+                'destinationName' => $transaction['destinationName'],
+                'destinationRfc' => $transaction['additionalData']['destinationRfc'],
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
-                'sourceAccount' => $transaction['sourceAccount'],
-                'destinationAccount' => $transaction['destinationAccount'],
                 'reference' => $transaction['reference'],
                 'date' => $transaction['createDate']
             ]

@@ -52,6 +52,7 @@ final class TransactionCommissions extends StringValueObject
 
     private static function calculateExternalCommissions(array $commissions, float|string $amount): array
     {
+        self::clearData();
         if (empty($commissions)) {
             self::$data['total'] = $amount;
             return self::$data;
@@ -70,6 +71,7 @@ final class TransactionCommissions extends StringValueObject
         string $destinationAccountType = ''
     ): array
     {
+        self::clearData();
         if (empty($commissions)) {
             self::$data['total'] = $amount;
             return self::$data;
@@ -89,11 +91,7 @@ final class TransactionCommissions extends StringValueObject
 
     private static function calculateSpeinInCommissions(array $commissions, float|string $amount): array
     {
-        if (empty($commissions)) {
-            self::$data['total'] = $amount;
-            return self::$data;
-        }
-
+        self::clearData();
         self::$data['speiIn'] = self::calculatePercentage($amount, $commissions['speiIn']);
         self::$data['total'] = $amount - array_sum(self::$data);
         return self::$data;
@@ -102,6 +100,18 @@ final class TransactionCommissions extends StringValueObject
     private static function calculatePercentage(float|string $amount, $percentage): float
     {
         return $amount * $percentage / 100;
+    }
+
+    private static function clearData(): void
+    {
+        self::$data = [
+            'speiOut' => 0,
+            'speiIn' => 0,
+            'internal' => 0,
+            'feeStp' => 0,
+            'stpAccount' => 0,
+            'total' => 0
+        ];
     }
 
     public function toArray(): array
@@ -117,4 +127,6 @@ final class TransactionCommissions extends StringValueObject
         }
         return json_decode($this->value, true);
     }
+
+
 }

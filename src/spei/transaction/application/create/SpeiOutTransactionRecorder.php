@@ -10,7 +10,7 @@ use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 use Viabo\spei\shared\domain\stp\StpRepository;
 use Viabo\spei\stpAccount\application\find\StpAccountQueryByCompany;
-use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
+use Viabo\spei\stpAccount\application\find_stp_accounts\StpAccountsQuery;
 use Viabo\spei\transaction\domain\services\StatusFinder;
 use Viabo\spei\transaction\domain\services\TransactionTypeFinder;
 use Viabo\spei\transaction\domain\Transaction;

@@ -22,4 +22,10 @@ final class TransactionReference extends StringValueObject
         return new self(strval($value));
     }
 
+    public function increment(): static
+    {
+        $value = intval($this->value) + 1;
+        return new static(strval($value));
+    }
+
 }

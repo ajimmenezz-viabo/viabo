@@ -4,7 +4,7 @@
 namespace Viabo\spei\transaction\application\create;
 
 
-use Viabo\backoffice\company\application\find\CompanyQueryByBankAccount;
+use Viabo\backoffice\projection\application\find_company_by_bank_account\CompanyQueryByBankAccount;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
@@ -12,7 +12,7 @@ use Viabo\shared\domain\criteria\Filters;
 use Viabo\shared\domain\utils\DatePHP;
 use Viabo\spei\shared\domain\stp\StpRepository;
 use Viabo\spei\stpAccount\application\find\StpAccountQueryByCompany;
-use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
+use Viabo\spei\stpAccount\application\find_stp_accounts\StpAccountsQuery;
 use Viabo\spei\transaction\domain\Transaction;
 use Viabo\spei\transaction\domain\TransactionRepository;
 use Viabo\spei\transaction\domain\Transactions;

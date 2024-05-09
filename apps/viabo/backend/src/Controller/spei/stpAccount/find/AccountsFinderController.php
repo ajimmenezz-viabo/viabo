@@ -5,13 +5,13 @@ namespace Viabo\Backend\Controller\spei\stpAccount\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CompaniesQueryByAdminUser;
 use Viabo\backoffice\company\application\find\CompaniesQueryByCostCenter;
-use Viabo\backoffice\company\application\find\CompaniesQueryByStpAccount;
 use Viabo\backoffice\costCenter\application\find\CostCentersQueryByAdminUser;
+use Viabo\backoffice\projection\application\find_companies_by_account_stp\CompaniesQueryByStpAccount;
+use Viabo\backoffice\projection\application\find_companies_by_user\CompaniesQueryByUser;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\stpAccount\application\find\StpAccountQuery;
-use Viabo\spei\stpAccount\application\find\StpAccountsQuery;
+use Viabo\spei\stpAccount\application\find_stp_accounts\StpAccountsQuery;
 
 
 final readonly class AccountsFinderController extends ApiController
@@ -22,9 +22,9 @@ final readonly class AccountsFinderController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $accounts['sectionData'] = $this->defineSection($tokenData['profileId']);
-            $accounts['stpAccounts'] = $this->searchStpAccounts();
+            $accounts['stpAccounts'] = $this->searchStpAccounts($tokenData['businessId']);
             $accounts['costCenters'] = $this->searchCostCenters($tokenData['id']);
-            $accounts['companies'] = $this->searchCompanies($tokenData['id']);
+            $accounts['companies'] = $this->searchCompanies($tokenData['id'], $tokenData['businessId']);
 
             return new JsonResponse($this->opensslEncrypt($accounts));
         } catch (\DomainException $exception) {
@@ -42,9 +42,9 @@ final readonly class AccountsFinderController extends ApiController
         };
     }
 
-    public function searchStpAccounts(): array
+    public function searchStpAccounts(string $businessId): array
     {
-        $stpAccounts = $this->ask(new StpAccountsQuery());
+        $stpAccounts = $this->ask(new StpAccountsQuery($businessId));
         return array_map(function (array $stpAccount) {
             $companies = $this->ask(new CompaniesQueryByStpAccount($stpAccount['id']));
             $data['id'] = $stpAccount['id'];
@@ -74,9 +74,9 @@ final readonly class AccountsFinderController extends ApiController
         }, $costCenters->data);
     }
 
-    private function searchCompanies(string $userId): array
+    private function searchCompanies(string $userId, string $businessId): array
     {
-        $companies = $this->ask(new CompaniesQueryByAdminUser($userId));
+        $companies = $this->ask(new CompaniesQueryByUser($userId,$businessId));
         return array_values(array_map(function (array $company) {
             $stpAccount = '';
             if (!empty($company['stpAccountId'])) {

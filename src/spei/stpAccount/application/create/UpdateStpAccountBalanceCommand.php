@@ -6,7 +6,7 @@ namespace Viabo\spei\stpAccount\application\create;
 
 use Viabo\shared\domain\bus\command\Command;
 
-final readonly class RegisterBalanceStpAccountCommand implements Command
+final readonly class UpdateStpAccountBalanceCommand implements Command
 {
     public function __construct(public string $company)
     {

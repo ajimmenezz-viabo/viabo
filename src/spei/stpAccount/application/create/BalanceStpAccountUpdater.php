@@ -9,7 +9,7 @@ use Viabo\spei\stpAccount\domain\services\StpAccountFinderByCriteria;
 use Viabo\spei\stpAccount\domain\StpAccount;
 use Viabo\spei\stpAccount\domain\StpAccountRepository;
 
-final readonly class BalanceStpAccountCreator
+final readonly class BalanceStpAccountUpdater
 {
     public function __construct(
         private StpRepository              $STPRepository,
@@ -23,7 +23,7 @@ final readonly class BalanceStpAccountCreator
     {
         $stpAccounts = [];
         if (empty($company)) {
-            $stpAccounts = $this->repository->searchByBusiness('');
+            $stpAccounts = $this->repository->searchAll();
         } else {
             $filter = [['field' => 'company.value', 'operator' => '=', 'value' => $company]];
             $stpAccounts[] = $this->finder->__invoke($filter);

@@ -5,7 +5,7 @@ namespace Viabo\backoffice\company\domain;
 
 
 use Viabo\backoffice\company\domain\events\CompanyActiveUpdatedDomainEventByAdminStp;
-use Viabo\backoffice\company\domain\events\TransactionCreatedDomainEvent;
+use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEventByTransaction;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
@@ -153,7 +153,7 @@ final class Company extends AggregateRoot
         $this->balance = $this->balance->decrease($amount);
         $this->updatedByUser = $this->updatedByUser->update($user);
         $this->updateDate = $this->updateDate->update($date);
-        $this->record(new TransactionCreatedDomainEvent($this->id(), $this->toArray()));
+        $this->record(new CompanyBalanceUpdatedDomainEventByTransaction($this->id(), $this->toArray()));
     }
 
     public function incrementBalance(float $amount, string $user = '', string $date = ''): void
@@ -162,7 +162,7 @@ final class Company extends AggregateRoot
         $this->balance = $this->balance->increment($amount);
         $this->updatedByUser = $this->updatedByUser->update($user);
         $this->updateDate = $this->updateDate->update($date);
-        $this->record(new TransactionCreatedDomainEvent($this->id(), $this->toArray()));
+        $this->record(new CompanyBalanceUpdatedDomainEventByTransaction($this->id(), $this->toArray()));
     }
 
     public function toArray(): array

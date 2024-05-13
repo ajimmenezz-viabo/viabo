@@ -30,7 +30,9 @@ final readonly class TransactionsCreator
             $this->statusFinder->inTransit();
         $transactionsData = [];
         foreach ($destinationsAccounts as $destinationsAccount) {
-            $transactionsData[] = ['transactionId' => $destinationsAccount['transactionId'],
+            $transactionsData[] = [
+                'transactionId' => $destinationsAccount['transactionId'],
+                'businessId' => $originAccount['businessId'],
                 'concept' => $concept,
                 'sourceAccountType' => $originAccount['type'],
                 'sourceAccount' => $originAccount['bankAccount'],

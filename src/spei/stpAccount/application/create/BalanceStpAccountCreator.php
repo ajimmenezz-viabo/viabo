@@ -23,7 +23,7 @@ final readonly class BalanceStpAccountCreator
     {
         $stpAccounts = [];
         if (empty($company)) {
-            $stpAccounts = $this->repository->searchAll('');
+            $stpAccounts = $this->repository->searchByBusiness('');
         } else {
             $filter = [['field' => 'company.value', 'operator' => '=', 'value' => $company]];
             $stpAccounts[] = $this->finder->__invoke($filter);

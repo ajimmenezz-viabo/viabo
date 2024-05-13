@@ -14,9 +14,9 @@ final readonly class StpAccountsFinder
     {
     }
 
-    public function __invoke(string $businessId): StpAccountResponse
+    public function __invoke(): StpAccountResponse
     {
-        $accounts = $this->repository->searchAll($businessId);
+        $accounts = $this->repository->searchAll();
         return new StpAccountResponse(array_map(function (StpAccount $account) {
             return $account->decrypt();
         }, $accounts));

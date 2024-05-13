@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\spei\transaction\application\create\RegisterSpeiInTransactionCommand;
+use Viabo\spei\transaction\application\cretate_spei_in_transaction_by_stp\CreateSpeiInStpTransactionCommand;
 
 
 final readonly class SpeiInTransactionController extends ApiController
@@ -17,10 +17,9 @@ final readonly class SpeiInTransactionController extends ApiController
         try {
             $date = $request->query->getInt('date');
             $company = $request->query->getString('company');
-            $this->dispatch(new RegisterSpeiInTransactionCommand($date, $company));
+            $this->dispatch(new CreateSpeiInStpTransactionCommand($date, $company));
 
             return new JsonResponse();
-
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }

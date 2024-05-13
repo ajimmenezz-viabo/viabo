@@ -289,7 +289,16 @@ final class CompanyProjection extends AggregateRoot
     public function isBankAccount(string $bankAccount): bool
     {
         $bankAccounts = $this->bankAccounts();
-        return in_array($bankAccount,$bankAccounts);
+        return in_array($bankAccount, $bankAccounts);
+    }
+
+    public function adminEmails(): array
+    {
+        $users = $this->users();
+        $admins = array_filter($users, function (array $user) {
+            return $user['profileId'] === '7';
+        });
+        return array_map(fn(array $user): string => $user['email'], $admins);
     }
 
     public function toArray(): array
@@ -334,6 +343,7 @@ final class CompanyProjection extends AggregateRoot
         $stpAccountId = $this->stpAccountId();
         return [
             'id' => $this->id,
+            'businessId' => $this->businessId,
             'folio' => $this->folio,
             'fatherId' => $this->fatherId,
             'legalRepresentative' => $admin[0]['id'],

@@ -26,6 +26,7 @@ final readonly class OriginAccountDataFinder
             return [
                 'type' => 'stpAccount',
                 'companyId' => '',
+                'businessId' => $data['businessId'],
                 'rfc' => '',
                 'bankAccount' => $data['number'],
                 'acronym' => $data['acronym'],
@@ -49,6 +50,7 @@ final readonly class OriginAccountDataFinder
         return array_merge([
             'type' => 'company',
             'companyId' => $company->data['id'],
+            'businessId' => $company->data['businessId'],
             'rfc' => $company->data['rfc'],
             'bankAccount' => $originBankAccount,
             'acronym' => '',

@@ -39,7 +39,7 @@ final class TransactionCommissions extends StringValueObject
             $commissions,
             $amount,
             $sourceAccountType,
-            $destinationAccountType,
+            $destinationAccountType
         );
         return new static(json_encode($commissions));
     }

@@ -6,6 +6,7 @@
 
     <entity name="Viabo\spei\transaction\domain\Transaction" table="t_spei_transactions">
         <embedded name="id" class="TransactionId" use-column-prefix="false"/>
+        <embedded name="businessId" class="TransactionBusinessId" use-column-prefix="false"/>
         <embedded name="reference" class="TransactionReference" use-column-prefix="false"/>
         <embedded name="trackingKey" class="TransactionTrackingKey" use-column-prefix="false"/>
         <embedded name="concept" class="TransactionConcept" use-column-prefix="false"/>

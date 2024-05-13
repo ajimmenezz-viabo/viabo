@@ -60,7 +60,7 @@ final readonly class AccountsDataFinder
         }, $externalAccounts);
     }
 
-    private function getBankAccountData($bankAccount): array
+    private function getBankAccountData(string $bankAccount): array
     {
         $stpAccount = $this->queryBus->ask(new StpAccountQueryByNumber($bankAccount));
 
@@ -75,14 +75,24 @@ final readonly class AccountsDataFinder
                 'emails' => $this->getEmails($admins->data)
             ];
         } else {
-            $companyData = $this->queryBus->ask(new CompanyQueryByBankAccount($bankAccount));
+            $companyData = $this->searchCompany($bankAccount);
             return [
                 'type' => 'company',
-                'companyId' => $companyData->data['id'],
-                'rfc' => $companyData->data['rfc'],
-                'beneficiary' => $companyData->data['fiscalName'],
-                'emails' => $this->getEmails($companyData->data['users'])
+                'companyId' => $companyData['id'],
+                'rfc' => $companyData['rfc'],
+                'beneficiary' => $companyData['fiscalName'],
+                'emails' => $this->getEmails($companyData['users'])
             ];
+        }
+    }
+
+    public function searchCompany(string $bankAccount): array
+    {
+        try {
+            $companyData = $this->queryBus->ask(new CompanyQueryByBankAccount($bankAccount));
+            return $companyData->data;
+        } catch (\DomainException) {
+            return ['id' => '', 'rfc' => '', 'fiscalName' => '', 'users' => []];
         }
     }
 

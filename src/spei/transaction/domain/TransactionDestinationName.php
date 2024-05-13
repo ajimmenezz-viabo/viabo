@@ -12,7 +12,7 @@ final class TransactionDestinationName extends StringValueObject
     public static function create(string $value): self
     {
         self::validate($value);
-        return new self($value);
+        return new self(trim($value));
     }
 
     public static function validate(string $value): void

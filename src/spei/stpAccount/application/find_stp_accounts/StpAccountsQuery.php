@@ -8,7 +8,4 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class StpAccountsQuery implements Query
 {
-    public function __construct(public string $businessId)
-    {
-    }
 }

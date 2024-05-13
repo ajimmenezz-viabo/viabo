@@ -26,7 +26,7 @@ final class Transactions extends Collection
         return fn(array $values): Transaction => Transaction::fromValues($values, $transactionType, $statusId);
     }
 
-    public static function fromSpeiIn(
+    public static function fromStp(
         array               $values,
         TransactionTypeId   $transactionType,
         TransactionStatusId $statusId
@@ -40,7 +40,7 @@ final class Transactions extends Collection
         TransactionStatusId $statusId
     ): callable
     {
-        return fn(array $values): Transaction => Transaction::fromSpeiIn($values, $transactionType, $statusId);
+        return fn(array $values): Transaction => Transaction::fromSpt($values, $transactionType, $statusId);
     }
 
     public function elements(): array

@@ -29,9 +29,14 @@ final class StpAccountDoctrineRepository extends DoctrineRepository implements S
         return $this->repository(StpAccount::class)->matching($criteriaConvert)->toArray();
     }
 
-    public function searchAll(string $businessId): array
+    public function searchByBusiness(string $businessId): StpAccount|null
     {
-        return $this->repository(StpAccount::class)->findBy(['businessId.value' => $businessId]);
+        return $this->repository(StpAccount::class)->findOneBy(['businessId.value' => $businessId]);
+    }
+
+    public function searchAll(): array
+    {
+        return $this->repository(StpAccount::class)->findAll();
     }
 
     public function update(StpAccount $stpAccount): void

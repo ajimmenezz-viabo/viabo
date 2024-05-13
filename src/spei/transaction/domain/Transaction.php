@@ -8,9 +8,9 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 use Viabo\shared\domain\utils\URL;
 use Viabo\spei\transaction\domain\events\InternalSpeiInTransactionCreatedDomainEvent;
 use Viabo\spei\transaction\domain\events\StpTransactionCreatedDomainEvent;
-use Viabo\spei\transaction\domain\events\TransactionCreatedBySpeiInDomainEvent;
-use Viabo\spei\transaction\domain\events\TransactionCreatedBySpeiOutNotRegisteredDomainEvent;
-use Viabo\spei\transaction\domain\events\TransactionUpdatedBySpeiOutDomainEvent;
+use Viabo\spei\transaction\domain\events\TransactionCreatedDomainEventBySpeiOutNotRegistered;
+use Viabo\spei\transaction\domain\events\TransactionCreatedDomainEventByStp;
+use Viabo\spei\transaction\domain\events\TransactionUpdatedDomainEventByStpSpeiOut;
 
 final class Transaction extends AggregateRoot
 {
@@ -19,6 +19,7 @@ final class Transaction extends AggregateRoot
 
     public function __construct(
         private TransactionId                  $id,
+        private TransactionBusinessId          $businessId,
         private TransactionTypeId              $typeId,
         private TransactionStatusId            $statusId,
         private TransactionReference           $reference,
@@ -45,38 +46,15 @@ final class Transaction extends AggregateRoot
         $this->additionalData = [];
     }
 
-    public static function create(
-        array               $value,
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): static
+    public static function create(array $value): static
     {
-        if ($value['additionalData']['isInternalTransaction']) {
-            $trackingKey = TransactionTrackingKey::empty();
-            $commissions = TransactionCommissions::fromInternal(
-                $value['commissions'],
-                $value['amount'],
-                $value['sourceAccountType'] ?? '',
-                $value['destinationAccountType'] ?? ''
-            );
-            $liquidationDate = TransactionLiquidationDate::todayDate();
-            $bankCode = TransactionDestinationBankCode::empty();
-            $active = TransactionActive::disable();
-        } else {
-            $commissions = TransactionCommissions::fromExternal($value['commissions'], $value['amount']);
-            $liquidationDate = TransactionLiquidationDate::empty();
-            $active = TransactionActive::enable();
-            $bankCode = TransactionDestinationBankCode::create($value['bankCode']);
-            $trackingKey = TransactionTrackingKey::create($value['sourceAcronym']);
-        }
-
-        $id = empty($value['transactionId']) ? TransactionId::random() : new TransactionId($value['transactionId']);
         $transaction = new static(
-            $id,
-            $transactionType,
-            $statusId,
-            TransactionReference::random(),
-            $trackingKey,
+            $value['transactionId'],
+            TransactionBusinessId::create($value['businessId']),
+            $value['transactionType'],
+            $value['statusId'],
+            $value['reference'] ?? TransactionReference::random(),
+            $value['trackingKey'],
             TransactionConcept::create($value['concept']),
             TransactionSourceAccount::create($value['sourceAccount']),
             TransactionSourceName::create($value['sourceName']),
@@ -84,16 +62,16 @@ final class Transaction extends AggregateRoot
             TransactionDestinationAccount::create($value['destinationAccount']),
             TransactionDestinationName::create($value['destinationName']),
             new TransactionDestinationEmail($value['destinationEmail']),
-            $bankCode,
+            $value['bankCode'],
             TransactionAmount::create($value['amount']),
-            $commissions,
-            $liquidationDate,
-            TransactionUrlCEP::empty(),
-            TransactionStpId::empty(),
-            TransactionApiData::empty(),
+            $value['commissions'],
+            $value['liquidationDate'],
+            $value['urlCEP'] ?? TransactionUrlCEP::empty(),
+            $value['stpId'] ?? TransactionStpId::empty(),
+            $value['api'] ?? TransactionApiData::empty(),
             new TransactionCreatedByUser($value['userId'] ?? $value['createdByUser']),
             TransactionCreateDate::todayDate(),
-            $active
+            $value['active']
         );
         $transaction->setAdditionData($value['additionalData']);
         return $transaction;
@@ -105,7 +83,28 @@ final class Transaction extends AggregateRoot
         TransactionStatusId $statusId
     ): static
     {
-        $transaction = self::create($value, $transactionType, $statusId);
+        if ($value['additionalData']['isInternalTransaction']) {
+            $value['trackingKey'] = TransactionTrackingKey::empty();
+            $value['commissions'] = TransactionCommissions::fromInternal(
+                $value['commissions'],
+                $value['amount'],
+                $value['sourceAccountType'] ?? '',
+                $value['destinationAccountType'] ?? ''
+            );
+            $value['liquidationDate'] = TransactionLiquidationDate::todayDate();
+            $value['bankCode'] = TransactionDestinationBankCode::empty();
+            $value['active'] = TransactionActive::disable();
+        } else {
+            $value['trackingKey'] = TransactionTrackingKey::create($value['sourceAcronym']);
+            $value['commissions'] = TransactionCommissions::fromExternal($value['commissions'], $value['amount']);
+            $value['liquidationDate'] = TransactionLiquidationDate::empty();
+            $value['bankCode'] = TransactionDestinationBankCode::create($value['bankCode']);
+            $value['active'] = TransactionActive::enable();
+        }
+        $value['transactionType'] = $transactionType;
+        $value['statusId'] = $statusId;
+        $value['transactionId'] = new TransactionId($value['transactionId']);
+        $transaction = self::create($value);
         $transaction->record(
             new StpTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())
         );
@@ -118,96 +117,46 @@ final class Transaction extends AggregateRoot
         TransactionStatusId $statusId
     ): static
     {
-        $transaction = self::create($value, $transactionType, $statusId);
-        $transaction->incrementReference();
-        $transaction->setCommissionsEmpty();
+        $value['transactionId'] = TransactionId::random();
+        $value['reference'] = TransactionReference::fromIncrement($value['reference']);
+        $value['trackingKey'] = TransactionTrackingKey::empty();
+        $value['commissions'] = TransactionCommissions::empty();
+        $value['liquidationDate'] = TransactionLiquidationDate::todayDate();
+        $value['bankCode'] = TransactionDestinationBankCode::empty();
+        $value['active'] = TransactionActive::disable();
+        $value['transactionType'] = $transactionType;
+        $value['statusId'] = $statusId;
+        $transaction = self::create($value);
         $transaction->record(
             new InternalSpeiInTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())
         );
         return $transaction;
     }
 
-    public static function fromSpeiIn(
+    public static function fromSpt(
         array               $value,
-        TransactionTypeId   $transactionInType,
-        TransactionStatusId $liquidatedStatus
+        TransactionTypeId   $transactionType,
+        TransactionStatusId $statusId
     ): static
     {
-        $transaction = new static(
-            TransactionId::random(),
-            $transactionInType,
-            $liquidatedStatus,
-            TransactionReference::random(),
-            TransactionTrackingKey::create($value['claveRastreo']),
-            TransactionConcept::create($value['conceptoPago']),
-            TransactionSourceAccount::create($value['cuentaOrdenante']),
-            TransactionSourceName::create($value['nombreOrdenante']),
-            TransactionSourceEmail::empty(),
-            TransactionDestinationAccount::create($value['cuentaBeneficiario']),
-            TransactionDestinationName::create($value['nombreBeneficiario']),
-            TransactionDestinationEmail::empty(),
-            TransactionDestinationBankCode::create($value['institucionOrdenante']),
-            TransactionAmount::create($value['monto']),
-            TransactionCommissions::fromSpeiIn($value['commissions'], $value['monto']),
-            TransactionLiquidationDate::createByTimestamp($value['tsLiquidacion']),
-            TransactionUrlCEP::empty(),
-            TransactionStpId::create($value['id']),
-            TransactionApiData::create($value),
-            TransactionCreatedByUser::empty(),
-            TransactionCreateDate::todayDate(),
-            TransactionActive::disable()
-        );
-        $transactionData = $transaction->toArray();
-        $transactionData['isSpeiIn'] = true;
-        $transactionData['isSpeiOutUpdated'] = false;
-        $transactionData['isSpeiOutNotRegistered'] = false;
-        $transaction->record(new TransactionCreatedBySpeiInDomainEvent(
-            $transaction->id(),
-            $transactionData
-        ));
+        $commissions = empty($value['commissions']) ?
+            TransactionCommissions::empty() :
+            TransactionCommissions::fromSpeiIn($value['commissions'], $value['amount']);
+        $value['transactionId'] = TransactionId::random();
+        $value['transactionType'] = $transactionType;
+        $value['statusId'] = $statusId;
+        $value['reference'] = TransactionReference::random();
+        $value['trackingKey'] = TransactionTrackingKey::create($value['sourceAcronym']);
+        $value['commissions'] = $commissions;
+        $value['liquidationDate'] = TransactionLiquidationDate::createByTimestamp($value['liquidationDate']);
+        $value['urlCEP'] = TransactionUrlCEP::create($value['urlCEP']);
+        $value['bankCode'] = TransactionDestinationBankCode::create($value['bankCode']);
+        $value['stpId'] = TransactionStpId::create($value['stpId']);
+        $value['api'] = TransactionApiData::create($value['api']);
+        $value['active'] = TransactionActive::disable();
+        $transaction = self::create($value);
 
-        return $transaction;
-    }
-
-    public static function fromSpeiOutNotRegistered(
-        array               $value,
-        TransactionTypeId   $outType,
-        TransactionStatusId $liquidatedStatus
-    ): static
-    {
-        $transaction = new static(
-            TransactionId::random(),
-            $outType,
-            $liquidatedStatus,
-            TransactionReference::random(),
-            TransactionTrackingKey::create($value['claveRastreo']),
-            TransactionConcept::create($value['conceptoPago']),
-            TransactionSourceAccount::create($value['cuentaOrdenante']),
-            TransactionSourceName::create($value['nombreOrdenante']),
-            TransactionSourceEmail::empty(),
-            TransactionDestinationAccount::create($value['cuentaBeneficiario']),
-            TransactionDestinationName::create($value['nombreBeneficiario']),
-            TransactionDestinationEmail::empty(),
-            TransactionDestinationBankCode::create($value['institucionOperante']),
-            TransactionAmount::create($value['monto']),
-            TransactionCommissions::empty(),
-            TransactionLiquidationDate::createByTimestamp($value['tsLiquidacion']),
-            TransactionUrlCEP::create($value['urlCEP']),
-            TransactionStpId::create($value['idEF']),
-            TransactionApiData::create($value),
-            TransactionCreatedByUser::empty(),
-            TransactionCreateDate::todayDate(),
-            TransactionActive::disable()
-        );
-        $transactionData = $transaction->toArray();
-        $transactionData['isSpeiOutNotRegistered'] = true;
-        $transactionData['isSpeiOutUpdated'] = false;
-        $transactionData['isSpeiIn'] = false;
-        $transaction->record(new TransactionCreatedBySpeiOutNotRegisteredDomainEvent(
-            $transaction->id(),
-            $transactionData
-        ));
-
+        $transaction->record(new TransactionCreatedDomainEventByStp($transaction->id(), $transaction->toArray()));
         return $transaction;
     }
 
@@ -231,16 +180,6 @@ final class Transaction extends AggregateRoot
         return URL::get() . "/spei/transaccion/" . $this->id();
     }
 
-    public function incrementReference(): void
-    {
-        $this->reference = $this->reference->increment();
-    }
-
-    public function setCommissionsEmpty(): void
-    {
-        $this->commissions = TransactionCommissions::empty();
-    }
-
     public function updateStpData(array $stpData): void
     {
         $this->stpId = $this->stpId->update($stpData['resultado']['id']);
@@ -253,11 +192,7 @@ final class Transaction extends AggregateRoot
         $this->liquidationDate = $this->liquidationDate->update($stpData['tsLiquidacion']);
         $this->urlCEP = $this->urlCEP->update($stpData['urlCEP']);
         $this->active = $this->active->disable();
-        $transaction = $this->toArray();
-        $transaction['isSpeiOutUpdated'] = true;
-        $transaction['isSpeiIn'] = false;
-        $transaction['isSpeiOutNotRegistered'] = false;
-        $this->record(new TransactionUpdatedBySpeiOutDomainEvent($this->id(), $transaction));
+        $this->record(new TransactionUpdatedDomainEventByStpSpeiOut($this->id(), $this->toArray()));
     }
 
     public function isSameStpIdAndIsLiquidated(int|string $stpId, string $stpState): bool
@@ -277,7 +212,7 @@ final class Transaction extends AggregateRoot
         return $this->typeId->isSpeiOutType();
     }
 
-    private function setAdditionData(array $additionalData): void
+    public function setAdditionData(array $additionalData): void
     {
         $this->additionalData = $additionalData;
     }
@@ -286,6 +221,7 @@ final class Transaction extends AggregateRoot
     {
         return [
             'id' => $this->id->value(),
+            'businessId' => $this->businessId->value(),
             'typeId' => $this->typeId->id(),
             'typeName' => $this->typeId->name(),
             'statusId' => $this->statusId->id(),

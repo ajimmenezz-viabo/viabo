@@ -11,7 +11,7 @@ use Viabo\backoffice\projection\application\find_companies_by_account_stp\Compan
 use Viabo\backoffice\projection\application\find_companies_by_user\CompaniesQueryByUser;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\spei\stpAccount\application\find\StpAccountQuery;
-use Viabo\spei\stpAccount\application\find_stp_accounts\StpAccountsQuery;
+use Viabo\spei\stpAccount\application\find_stp_account_by_business\StpAccountQueryByBusiness;
 
 
 final readonly class AccountsFinderController extends ApiController
@@ -44,22 +44,20 @@ final readonly class AccountsFinderController extends ApiController
 
     public function searchStpAccounts(string $businessId): array
     {
-        $stpAccounts = $this->ask(new StpAccountsQuery($businessId));
-        return array_map(function (array $stpAccount) {
-            $companies = $this->ask(new CompaniesQueryByStpAccount($stpAccount['id']));
-            $data['id'] = $stpAccount['id'];
-            $data['name'] = $stpAccount['company'];
-            $data['account'] = $stpAccount['number'];
-            $data['balance'] = $stpAccount['balance'];
-            $data['balanceDate'] = $stpAccount['balanceDate'];
-            $data['pendingCharges'] = $stpAccount['pendingCharges'];
-            $data['companiesBalance'] = array_sum(array_map(function (array $company) {
-                return $company['balance'];
-            }, $companies->data));
-            $data['availableBalance'] = $data['balance'] - $data['companiesBalance'];
-            $data['companies'] = $this->formatCompanies($companies->data);
-            return $data;
-        }, $stpAccounts->data);
+        $stpAccount = $this->ask(new StpAccountQueryByBusiness($businessId));
+        $companies = $this->ask(new CompaniesQueryByStpAccount($stpAccount->data['id']));
+        $data['id'] = $stpAccount->data['id'];
+        $data['name'] = $stpAccount->data['company'];
+        $data['account'] = $stpAccount->data['number'];
+        $data['balance'] = $stpAccount->data['balance'];
+        $data['balanceDate'] = $stpAccount->data['balanceDate'];
+        $data['pendingCharges'] = $stpAccount->data['pendingCharges'];
+        $data['companiesBalance'] = array_sum(array_map(function (array $company) {
+            return $company['balance'];
+        }, $companies->data));
+        $data['availableBalance'] = $data['balance'] - $data['companiesBalance'];
+        $data['companies'] = $this->formatCompanies($companies->data);
+        return [$data];
     }
 
     public function searchCostCenters(string $userId): array
@@ -76,7 +74,7 @@ final readonly class AccountsFinderController extends ApiController
 
     private function searchCompanies(string $userId, string $businessId): array
     {
-        $companies = $this->ask(new CompaniesQueryByUser($userId,$businessId));
+        $companies = $this->ask(new CompaniesQueryByUser($userId, $businessId));
         return array_values(array_map(function (array $company) {
             $stpAccount = '';
             if (!empty($company['stpAccountId'])) {

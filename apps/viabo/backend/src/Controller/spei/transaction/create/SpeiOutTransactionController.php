@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\spei\transaction\application\create\RegisterSpeiOutTransactionCommand;
+use Viabo\spei\transaction\application\create_spei_out_transaction_by_stp\CreateSpeiOutTransactionCommandByStp;
 
 
 final readonly class SpeiOutTransactionController extends ApiController
@@ -16,7 +16,7 @@ final readonly class SpeiOutTransactionController extends ApiController
     {
         try {
             $company = $request->query->getString('company');
-            $this->dispatch(new RegisterSpeiOutTransactionCommand($company));
+            $this->dispatch(new CreateSpeiOutTransactionCommandByStp($company));
 
             return new JsonResponse();
 

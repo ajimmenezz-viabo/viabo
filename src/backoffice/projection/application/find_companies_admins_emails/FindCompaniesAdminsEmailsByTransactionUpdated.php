@@ -5,7 +5,7 @@ namespace Viabo\backoffice\projection\application\find_companies_admins_emails;
 
 
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
-use Viabo\spei\transaction\domain\events\TransactionUpdatedDomainEventByStpSpeiOut;
+use Viabo\stp\transaction\domain\events\TransactionUpdatedDomainEventByStpSpeiOut;
 
 final readonly class FindCompaniesAdminsEmailsByTransactionUpdated implements DomainEventSubscriber
 {

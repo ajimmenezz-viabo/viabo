@@ -5,7 +5,7 @@ namespace Viabo\backoffice\company\application\update_company_balance_by_transac
 
 
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
-use Viabo\spei\transaction\domain\events\StpTransactionCreatedDomainEvent;
+use Viabo\stp\transaction\domain\events\StpTransactionCreatedDomainEvent;
 
 final readonly class UpdateCompanyBalanceByTransactionCreated implements DomainEventSubscriber
 {

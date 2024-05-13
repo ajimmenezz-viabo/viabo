@@ -5,7 +5,7 @@ namespace Viabo\security\user\application\find_stp_admin_emails;
 
 
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
-use Viabo\spei\transaction\domain\events\TransactionCreatedDomainEventByStp;
+use Viabo\stp\transaction\domain\events\TransactionCreatedDomainEventByStp;
 
 final readonly class FindStpAdminsEmailsByStp implements DomainEventSubscriber
 {

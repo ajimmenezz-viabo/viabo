@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backofficeBusiness\business\application\find;
+namespace Viabo\backofficeBusiness\business\application\find_business_by_criteria;
 
 
+use Viabo\backofficeBusiness\business\application\BusinessResponse;
 use Viabo\backofficeBusiness\business\domain\Business;
 use Viabo\backofficeBusiness\business\domain\BusinessRepository;
 use Viabo\backofficeBusiness\business\domain\exceptions\BusinessNotExist;

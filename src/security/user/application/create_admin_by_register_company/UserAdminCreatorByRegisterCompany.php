@@ -4,7 +4,7 @@
 namespace Viabo\security\user\application\create_admin_by_register_company;
 
 
-use Viabo\backofficeBusiness\business\application\find\ViaboBusinessQuery;
+use Viabo\backofficeBusiness\business\application\find_business_viabo\ViaboBusinessQuery;
 use Viabo\security\user\domain\services\UserValidator;
 use Viabo\security\user\domain\User;
 use Viabo\security\user\domain\UserRepository;

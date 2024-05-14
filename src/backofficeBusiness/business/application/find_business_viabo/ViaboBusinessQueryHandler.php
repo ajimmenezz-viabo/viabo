@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\backofficeBusiness\business\application\find;
+namespace Viabo\backofficeBusiness\business\application\find_business_viabo;
 
 
+use Viabo\backofficeBusiness\business\application\find_business_by_criteria\BusinessFinderByCriteria;
 use Viabo\shared\domain\bus\query\QueryHandler;
 use Viabo\shared\domain\bus\query\Response;
 

@@ -9,9 +9,10 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 final class Business extends AggregateRoot
 {
     public function __construct(
-        private BusinessId     $id,
-        private BusinessName   $name,
-        private BusinessActive $active
+        private BusinessId           $id,
+        private BusinessName         $name,
+        private BusinessTemplateFile $templateFile,
+        private BusinessActive       $active
     )
     {
     }
@@ -21,6 +22,7 @@ final class Business extends AggregateRoot
         return [
             'id' => $this->id->value(),
             'name' => $this->name->value(),
+            'templateFile' => $this->templateFile->value(),
             'active' => $this->active->value()
         ];
     }

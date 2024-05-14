@@ -7,11 +7,15 @@ namespace Viabo\stp\notifications\application\SendTransactionCreated;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
+use Viabo\shared\domain\service\find_busines_template_file\BusinessTemplateFileFinder;
 use Viabo\stp\transaction\domain\events\StpTransactionCreatedDomainEvent;
 
 final readonly class SendMessageExternalTransactionCreated implements DomainEventSubscriber
 {
-    public function __construct(private EmailRepository $repository)
+    public function __construct(
+        private EmailRepository $repository,
+        private BusinessTemplateFileFinder $templateFileFinder
+    )
     {
     }
 
@@ -23,6 +27,7 @@ final readonly class SendMessageExternalTransactionCreated implements DomainEven
     public function __invoke(StpTransactionCreatedDomainEvent $event): void
     {
         $transaction = $event->toPrimitives();
+        $templateFile = $this->templateFileFinder->__invoke($transaction['businessId']);
         $email = $transaction['destinationEmail'];
 
         if ($transaction['additionalData']['isInternalTransaction']) {
@@ -36,7 +41,7 @@ final readonly class SendMessageExternalTransactionCreated implements DomainEven
         $email = new Email(
             [$email],
             "Notificación Spei Out- Transferencia Externa",
-            'stp/notification/emails/spei.external.transaction.html.twig',
+            "stp/$templateFile/notification/emails/spei.external.transaction.html.twig",
             [
                 'transactionType' => 'Operación SPEI Deposito',
                 'statusName' => $transaction['statusName'],

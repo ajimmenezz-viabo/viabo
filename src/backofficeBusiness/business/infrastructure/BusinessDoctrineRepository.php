@@ -18,6 +18,11 @@ final class BusinessDoctrineRepository extends DoctrineRepository implements Bus
         parent::__construct($BusinessEntityManager);
     }
 
+    public function search(string $businessId): Business|null
+    {
+        return $this->repository(Business::class)->find($businessId);
+    }
+
     public function searchCriteria(Criteria $criteria): array
     {
         $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);

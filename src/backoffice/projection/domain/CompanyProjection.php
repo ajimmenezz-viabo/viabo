@@ -286,6 +286,12 @@ final class CompanyProjection extends AggregateRoot
         return empty($serviceStp) ? [] : [$serviceStp[0]['bankAccountNumber']];
     }
 
+    private function bankAccount(): string
+    {
+        $bankAccounts = $this->bankAccounts();
+        return empty($bankAccounts) ? '' : strval($bankAccounts[0]);
+    }
+
     public function isBankAccount(string $bankAccount): bool
     {
         $bankAccounts = $this->bankAccounts();
@@ -361,7 +367,7 @@ final class CompanyProjection extends AggregateRoot
             'logo' => $this->logo,
             'slug' => $this->slug,
             'balance' => $this->balance,
-            'bankAccount' => '',
+            'bankAccount' => $this->bankAccount(),
             'bankAccounts' => $this->bankAccounts(),
             'publicTerminal' => '',
             'employees' => $services[0]['employees'] ?? '0',

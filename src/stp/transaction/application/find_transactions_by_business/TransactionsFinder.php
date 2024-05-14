@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\stp\transaction\application\find;
+namespace Viabo\stp\transaction\application\find_transactions_by_business;
 
 
 use Viabo\shared\domain\utils\DatePHP;
+use Viabo\stp\transaction\application\TransactionResponse;
 use Viabo\stp\transaction\domain\Transaction;
 use Viabo\stp\transaction\domain\TransactionRepository;
 
@@ -14,17 +15,41 @@ final readonly class TransactionsFinder
     {
     }
 
-    public function __invoke(string $initialDate, string $endDate, string $account, int $limit): TransactionResponse
+    public function __invoke(
+        string $businessId,
+        string $initialDate,
+        string $endDate,
+        string $account,
+        int    $limit
+    ): TransactionResponse
     {
-        $transactions = $this->searchTransactions($initialDate, $endDate, $account, $limit);
+        $transactions = $this->searchTransactions(
+            $businessId,
+            $initialDate,
+            $endDate,
+            $account,
+            $limit
+        );
         return new TransactionResponse($transactions);
     }
 
-    public function searchTransactions(string $initialDate, string $endDate, string $account, int $limit): array
+    public function searchTransactions(
+        string $businessId,
+        string $initialDate,
+        string $endDate,
+        string $account,
+        int    $limit
+    ): array
     {
         $limit = empty($limit) ? null : $limit;
         $endDate = $this->setDefaultDateIfEmpty($endDate);
-        $transactions = $this->repository->searchByAccount("$initialDate 00:00:00", $endDate, $account, $limit);
+        $transactions = $this->repository->searchByAccount(
+            $businessId,
+            "$initialDate 00:00:00",
+            $endDate,
+            $account,
+            $limit
+        );
 
         return array_map(function (Transaction $transaction) {
             $data = $transaction->toArray();

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Viabo\backoffice\projection\application\find_company_by_bank_account\CompanyQueryByBankAccount;
+use Viabo\shared\domain\service\find_busines_template_file\BusinessTemplateFileFinder;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\stp\bank\application\find\BankQuery;
 use Viabo\stp\externalAccount\application\find\ExternalAccountQuery;
@@ -17,10 +18,16 @@ use Viabo\stp\transaction\application\find\TransactionQuery;
 final readonly class TransactionViewController extends ApiController
 {
 
-    public function __invoke(string $transactionId, Request $request, Environment $twig): Response
+    public function __invoke(
+        string                     $transactionId,
+        Request                    $request,
+        Environment                $twig,
+        BusinessTemplateFileFinder $templateFileFinder
+    ): Response
     {
         try {
             $transaction = $this->search($transactionId);
+            $templateFile = $templateFileFinder->__invoke($transaction['businessId']);
             $data = [
                 'transactionType' => 'Operación SPEI Deposito',
                 'statusName' => $transaction['statusName'],
@@ -36,10 +43,10 @@ final readonly class TransactionViewController extends ApiController
                 'reference' => $transaction['trackingKey'],
                 'date' => $transaction['createDate']
             ];
-            $html = $twig->render('stp/notification/emails/spei.external.transaction.html.twig', $data);
+            $html = $twig->render("stp/$templateFile/notification/emails/spei.external.transaction.html.twig", $data);
             return new Response($html);
         } catch (\DomainException) {
-            $html = $twig->render('stp/notification/emails/transaction.spei.not.exist.html.twig');
+            $html = $twig->render('stp/shared/notification/emails/transaction.spei.not.exist.html.twig');
             return new Response($html);
         }
     }

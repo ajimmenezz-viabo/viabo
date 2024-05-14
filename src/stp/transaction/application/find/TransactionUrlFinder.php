@@ -4,6 +4,7 @@
 namespace Viabo\stp\transaction\application\find;
 
 
+use Viabo\stp\transaction\application\TransactionResponse;
 use Viabo\stp\transaction\domain\services\TransactionFinder;
 
 final readonly class TransactionUrlFinder

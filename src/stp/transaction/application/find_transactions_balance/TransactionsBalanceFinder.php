@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\stp\transaction\application\find;
+namespace Viabo\stp\transaction\application\find_transactions_balance;
 
 
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
+use Viabo\stp\transaction\application\TransactionResponse;
 use Viabo\stp\transaction\domain\exceptions\TransactionCreateDateRangeNotDefine;
 use Viabo\stp\transaction\domain\Transaction;
 use Viabo\stp\transaction\domain\TransactionRepository;
@@ -16,10 +17,15 @@ final readonly class TransactionsBalanceFinder
     {
     }
 
-    public function __invoke(string $initialDate, string $endDate, string $account): TransactionResponse
+    public function __invoke(
+        string $businessId,
+        string $initialDate,
+        string $endDate,
+        string $account
+    ): TransactionResponse
     {
         $this->ensureDates($initialDate, $endDate);
-        $transactions = $this->searchTransactions($initialDate, $endDate, $account);
+        $transactions = $this->searchTransactions($businessId, $initialDate, $endDate, $account);
         $speisIn = $this->filterSpeiIn($transactions);
         $totalSpeiInAmount = $this->calculateSpeiInTransactionTotalAmount($speisIn);
         $speisOut = $this->filterSpeiOut($transactions);
@@ -41,9 +47,10 @@ final readonly class TransactionsBalanceFinder
         }
     }
 
-    private function searchTransactions(string $initialDate, string $endDate, $account): array
+    private function searchTransactions(string $businessId, string $initialDate, string $endDate, $account): array
     {
         $filters = Filters::fromValues([
+            ['field' => 'businessId.value', 'operator' => '=', 'value' => $businessId],
             ['field' => 'createDate.value', 'operator' => '>=', 'value' => "$initialDate 00:00:00"],
             ['field' => 'createDate.value', 'operator' => '<=', 'value' => "$endDate 23:59:59"],
         ]);

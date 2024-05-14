@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Viabo\stp\transaction\application\find;
+namespace Viabo\stp\transaction\application\find_transactions_by_business;
 
 
 use Viabo\shared\domain\bus\query\QueryHandler;
@@ -16,6 +16,7 @@ final readonly class TransactionsQueryHandler implements QueryHandler
     public function __invoke(TransactionsQuery $query): Response
     {
         return $this->finder->__invoke(
+            $query->businessId,
             $query->initialDate,
             $query->endDate,
             $query->account,

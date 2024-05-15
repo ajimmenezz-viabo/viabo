@@ -15,6 +15,7 @@ final class TransactionStpId extends StringValueObject
 
     public static function create(mixed $value): static
     {
+        $value = empty($value)? '0': $value;
         $value = is_string($value) ? $value : strval($value);
         return new static($value);
     }

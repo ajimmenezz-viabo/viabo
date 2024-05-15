@@ -104,6 +104,7 @@ final class Transaction extends AggregateRoot
         $value['transactionType'] = $transactionType;
         $value['statusId'] = $statusId;
         $value['transactionId'] = new TransactionId($value['transactionId']);
+        $value['urlCEP'] = TransactionUrlCEP::empty();
         $transaction = self::create($value);
         $transaction->record(
             new StpTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())

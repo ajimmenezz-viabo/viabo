@@ -127,7 +127,7 @@ final class Transaction extends AggregateRoot
         $value['statusId'] = $statusId;
         $value['urlCEP'] = TransactionUrlCEP::create($value['urlCEP'] ?? '');
         $value['stpId'] = TransactionStpId::create($value['stpId'] ?? '');
-        $value['api'] = TransactionApiData::create($value['api'] ?? '');
+        $value['api'] = TransactionApiData::create($value['api'] ?? []);
         $transaction = self::create($value);
         $transaction->record(
             new InternalSpeiInTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())

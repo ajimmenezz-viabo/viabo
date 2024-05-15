@@ -8,7 +8,6 @@ use Viabo\shared\domain\aggregate\AggregateRoot;
 use Viabo\shared\domain\utils\URL;
 use Viabo\stp\transaction\domain\events\InternalSpeiInTransactionCreatedDomainEvent;
 use Viabo\stp\transaction\domain\events\StpTransactionCreatedDomainEvent;
-use Viabo\stp\transaction\domain\events\TransactionCreatedDomainEventBySpeiOutNotRegistered;
 use Viabo\stp\transaction\domain\events\TransactionCreatedDomainEventByStp;
 use Viabo\stp\transaction\domain\events\TransactionUpdatedDomainEventByStpSpeiOut;
 
@@ -104,7 +103,6 @@ final class Transaction extends AggregateRoot
         $value['transactionType'] = $transactionType;
         $value['statusId'] = $statusId;
         $value['transactionId'] = new TransactionId($value['transactionId']);
-        $value['urlCEP'] = TransactionUrlCEP::empty();
         $transaction = self::create($value);
         $transaction->record(
             new StpTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())
@@ -127,6 +125,7 @@ final class Transaction extends AggregateRoot
         $value['active'] = TransactionActive::disable();
         $value['transactionType'] = $transactionType;
         $value['statusId'] = $statusId;
+        $value['urlCEP'] = TransactionUrlCEP::create($value['urlCEP'] ?? '');
         $transaction = self::create($value);
         $transaction->record(
             new InternalSpeiInTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())

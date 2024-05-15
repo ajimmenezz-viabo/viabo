@@ -27,6 +27,7 @@ final readonly class ProjectionUpdaterByAdminStp
             $company['updateDate']
         );
         $this->repository->update($projection);
+//        var_dump($projection);
 
         $this->bus->publish(new CompanyProjectionUpdatedDomainEventByAdminStp($company['id'], $company));
     }

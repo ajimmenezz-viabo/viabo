@@ -20,7 +20,7 @@ final readonly class ServicesCreatorByAdminStp
 
     public function __invoke(array $company): void
     {
-        $bankAccount = $this->repository->searchAvailableBankAccount();
+        $bankAccount = $this->repository->searchAvailableBankAccount($company['businessId']);
         $company['type'] = '4';
         $company['bankAccountId'] = $bankAccount->id();
         $service = ServiceFactory::create($company);

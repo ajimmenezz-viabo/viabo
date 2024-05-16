@@ -8,6 +8,7 @@ final class ServiceStpBankAccount
 {
     public function __construct(
         private string $id,
+        private string $businessId,
         private string $number,
         private string $available
     )

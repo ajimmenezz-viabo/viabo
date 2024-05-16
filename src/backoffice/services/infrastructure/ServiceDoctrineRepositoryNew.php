@@ -39,9 +39,12 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
         return $this->repository(Service::class)->matching($criteriaConvert)->toArray();
     }
 
-    public function searchAvailableBankAccount(): ServiceStpBankAccount
+    public function searchAvailableBankAccount(string $businessId): ServiceStpBankAccount
     {
-        return $this->repository(ServiceStpBankAccount::class)->findOneBy(['available' => '1'], ['id' => 'asc']);
+        return $this->repository(ServiceStpBankAccount::class)->findOneBy(
+            ['available' => '1', 'businessId' => $businessId],
+            ['id' => 'asc']
+        );
     }
 
     public function update(Service $service): void
@@ -51,7 +54,7 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
 
     private function updateBankAccount(Service $service): void
     {
-        if($service instanceof ServiceStp){
+        if ($service instanceof ServiceStp) {
             $bankAccount = $this->repository(ServiceStpBankAccount::class)->find($service->bankAccountId());
             $bankAccount->disable();
             $this->entityManager()->flush($bankAccount);

@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\security\user\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\security\user\application\find\AdministratorsOfCompaniesQuery;
+use Viabo\security\user\application\find_companies_admins_by_business\AdministratorsOfCompaniesQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 
@@ -15,8 +15,8 @@ final readonly class AdministratorsOfCompaniesFinderController extends ApiContro
     public function __invoke(Request $request): Response
     {
         try {
-            $this->decode($request->headers->get('Authorization'));
-            $administrators = $this->ask(new AdministratorsOfCompaniesQuery());
+            $tokenData = $this->decode($request->headers->get('Authorization'));
+            $administrators = $this->ask(new AdministratorsOfCompaniesQuery($tokenData['businessId']));
 
             return new JsonResponse($administrators->data);
         } catch (\DomainException $exception) {

@@ -24,9 +24,9 @@ final class CodeDoctrineRepository extends DoctrineRepository implements CodeRep
         $this->persist($code);
     }
 
-    public function search(UserId $userId): ?Code
+    public function search(string $userId): Code|null
     {
-        return $this->repository(Code::class)->findOneBy(['userId' => $userId->value()]);
+        return $this->repository(Code::class)->findOneBy(['userId' => $userId]);
     }
 
     public function searchCriteria(Criteria $criteria): Code|null

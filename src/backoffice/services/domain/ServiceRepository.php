@@ -4,7 +4,6 @@
 namespace Viabo\backoffice\services\domain;
 
 
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface ServiceRepository

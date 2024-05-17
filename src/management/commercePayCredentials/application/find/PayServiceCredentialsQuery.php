@@ -6,7 +6,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class PayServiceCredentialsQuery implements Query
 {
-    public function __construct (public string $commerceId)
+    public function __construct (public string $companyId)
     {
     }
 }

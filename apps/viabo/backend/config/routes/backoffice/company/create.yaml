@@ -5,5 +5,5 @@ informal-commerce-create:
 
 create-company-by-admin-stp:
   path: '/api/backoffice/company/new'
-  controller: Viabo\Backend\Controller\backoffice\company\create\CompanyCreatorController
+  controller: Viabo\Backend\Controller\backoffice\company\create\CompanyCreatorControllerByAdminStp
   methods: POST

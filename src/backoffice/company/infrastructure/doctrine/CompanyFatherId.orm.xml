@@ -5,7 +5,7 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <embeddable name="Viabo\backoffice\company\domain\CompanyFatherId">
-        <field name="value" column="CommerceId"/>
+        <field name="value" column="CompanyId"/>
     </embeddable>
 
 </doctrine-mapping>

@@ -7,8 +7,7 @@ namespace Viabo\Backend\Controller\management\card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
-use Viabo\backoffice\commerceUser\application\find\CommerceQueryByUser;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\EnabledCardsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
@@ -20,28 +19,21 @@ final readonly class EnabledCommerceCardsFinderController extends ApiController
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $paymentProcessorId = $request->get('paymentProcessorId');
             $userId = $tokenData['id'];
-            $commerceId = $this->getCommerceId($userId);
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $data = $this->ask(new EnabledCardsQuery(
-                $commerceId ,
-                $userId ,
-                $tokenData['profileId'] ,
+                $company->data['id'],
+                $userId,
+                $tokenData['profileId'],
                 $paymentProcessorId
             ));
 
             return new JsonResponse($this->opensslEncrypt($data->data));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
-        }
-    }
-
-    private function getCommerceId(string $userId): string
-    {
-        try {
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($userId));
-            return $commerce->data['id'];
-        } catch (\DomainException) {
-            $commerce = $this->ask(new CommerceQueryByUser($userId));
-            return $commerce->data['commerceId'];
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

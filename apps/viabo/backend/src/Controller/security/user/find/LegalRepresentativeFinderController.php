@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\security\user\find;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\security\user\application\find\FindLegalRepresentativeCommand;
+use Viabo\security\user\application\find_user_by_register\UserQueryByRegisterCompany;
 use Viabo\shared\infrastructure\symfony\ApiController;
 
 
@@ -16,8 +16,8 @@ final readonly class LegalRepresentativeFinderController extends ApiController
     {
         try {
             $username = $request->headers->get('Username');
-            $legalRepresentative = $this->ask(new FindLegalRepresentativeCommand($username));
-            $token = $this->encode($legalRepresentative->data);
+            $user = $this->ask(new UserQueryByRegisterCompany($username));
+            $token = $this->encode(['id' => $user->data['id'], 'businessId' => $user->data['businessId']]);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {

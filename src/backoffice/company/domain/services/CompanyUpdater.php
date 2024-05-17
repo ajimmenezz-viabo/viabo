@@ -31,7 +31,7 @@ final readonly class CompanyUpdater
 
     private function update(Company $commerce , array $data): Company
     {
-        $commerce->update(
+        $commerce->updateByClient(
             $data['userId'] ,
             $data['fiscalPersonType'] ,
             $data['fiscalName'] ,

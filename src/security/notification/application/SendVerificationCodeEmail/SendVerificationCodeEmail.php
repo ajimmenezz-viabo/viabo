@@ -8,10 +8,14 @@ use Viabo\security\code\domain\events\CodeCreatedDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
+use Viabo\shared\domain\service\find_busines_template_file\BusinessTemplateFileFinder;
 
 final readonly class SendVerificationCodeEmail implements DomainEventSubscriber
 {
-    public function __construct(private EmailRepository $repository)
+    public function __construct(
+        private EmailRepository            $repository,
+        private BusinessTemplateFileFinder $templateFileFinder
+    )
     {
     }
 
@@ -23,11 +27,12 @@ final readonly class SendVerificationCodeEmail implements DomainEventSubscriber
     public function __invoke(CodeCreatedDomainEvent $event): void
     {
         $userData = $event->toPrimitives();
+        $templateFile = $this->templateFileFinder->__invoke($userData['businessId']);
 
         $email = new Email(
             [$userData['email']],
-            'Viabo - Verificiación de Identidad',
-            'security/notification/emails/verification.code.html.twig',
+            'Verificiación de Identidad',
+            "security/$templateFile/notification/emails/verification.code.html.twig",
             [
                 'name' => "{$userData['name']} {$userData['lastname']}",
                 'code' => $userData['code']

@@ -6,7 +6,6 @@ namespace Viabo\backoffice\company\application\update;
 
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CompanyActivator

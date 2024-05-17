@@ -5,14 +5,13 @@ namespace Viabo\backoffice\company\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\company\domain\CompanyBankAccount;
 use Viabo\backoffice\company\domain\CompanyCostCenter;
 use Viabo\backoffice\company\domain\CompanyRepository;
-use Viabo\backoffice\company\domain\CompanyUser;
-use Viabo\backoffice\company\domain\CompanyView;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\company\domain\CompanyUserOld;
+use Viabo\backoffice\projection\domain\CompanyProjection;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -27,7 +26,6 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
     public function save(Company $company): void
     {
         $this->persist($company);
-        $this->updateBankAccountWithNotAvailable($company->bankAccount());
     }
 
     public function search(string $companyId): Company|null
@@ -35,9 +33,9 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return $this->repository(Company::class)->find($companyId);
     }
 
-    public function searchView(CompanyId $companyId): CompanyView|null
+    public function searchView(CompanyId $companyId): CompanyProjection|null
     {
-        return $this->repository(CompanyView::class)->find($companyId->value());
+        return $this->repository(CompanyProjection::class)->find($companyId->value());
     }
 
     public function searchCriteria(Criteria $criteria): array
@@ -61,7 +59,7 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
     public function searchViewCriteria(Criteria $criteria): array
     {
         $criteria = DoctrineCriteriaConverter::convert($criteria);
-        return $this->repository(CompanyView::class)->matching($criteria)->toArray();
+        return $this->repository(CompanyProjection::class)->matching($criteria)->toArray();
     }
 
     public function searchCommerceIdBy(string $userId, string $userProfileId): string
@@ -84,9 +82,9 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return $this->repository(CompanyCostCenter::class)->find($centerCostsId);
     }
 
-    public function searchUser(string $userId): CompanyUser|null
+    public function searchUser(string $userId): CompanyUserOld|null
     {
-        return $this->repository(CompanyUser::class)->find($userId);
+        return $this->repository(CompanyUserOld::class)->find($userId);
     }
 
     public function searchAvailableBankAccount(): CompanyBankAccount|null
@@ -99,9 +97,10 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
         return $this->repository(Company::class)->findAll();
     }
 
-    public function searchFolioLast(): Company|null
+    public function searchFolioLast(): string
     {
-        return $this->repository(Company::class)->findOneBy([], ['folio.value' => 'desc']);
+        $company = $this->repository(Company::class)->findOneBy([], ['folio.value' => 'desc']);
+        return $company->folio();
     }
 
     public function searchByBankAccount(string $bankAccount): Company|null
@@ -119,29 +118,12 @@ final class CompanyDoctrineRepository extends DoctrineRepository implements Comp
 
     public function update(Company $company): void
     {
-        $speiCommissions = $company->speiCommissions();
         $this->entityManager()->flush($company);
-        if(!empty($speiCommissions)){
-            $this->entityManager()->flush($speiCommissions);
-        }
     }
 
     public function delete(Company $company): void
     {
-        $this->updateBankAccountWithAvailable($company->bankAccount());
         $this->remove($company);
-    }
-
-    private function updateBankAccountWithNotAvailable(CompanyBankAccount $bankAccount): void
-    {
-        $bankAccount->notAvailable();
-        $this->entityManager()->flush($bankAccount);
-    }
-
-    private function updateBankAccountWithAvailable(CompanyBankAccount $bankAccount): void
-    {
-        $bankAccount->available();
-        $this->entityManager()->flush($bankAccount);
     }
 
 }

@@ -12,7 +12,7 @@ use Viabo\backoffice\credential\domain\CredentialMasterCardKey;
 use Viabo\backoffice\credential\domain\CredentialRepository;
 use Viabo\backoffice\credential\domain\exceptions\CredentialCommerceInformal;
 use Viabo\backoffice\credential\domain\services\CredentialValidator;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 

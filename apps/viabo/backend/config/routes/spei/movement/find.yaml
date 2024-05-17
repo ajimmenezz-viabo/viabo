@@ -1,4 +1,0 @@
-find-account-movements:
-  path: '/api/spei/account/movements'
-  controller: Viabo\Backend\Controller\spei\movement\find\MovementFinderController
-  methods: GET

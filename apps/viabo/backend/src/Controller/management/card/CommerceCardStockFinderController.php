@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\CardInformationQuery;
 use Viabo\management\card\application\find\CardsQuery;
 use Viabo\management\credential\application\find\CardCredentialQuery;
@@ -20,14 +20,18 @@ final readonly class CommerceCardStockFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
-            $cards = $this->ask(new CardsQuery($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
+            $cards = $this->ask(new CardsQuery($company->data['id']));
             $cards = $this->addSessionLast($cards->data);
             $cards = $this->addCardBlock($cards);
 
             return new JsonResponse($this->opensslEncrypt($cards));
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -40,16 +44,16 @@ final readonly class CommerceCardStockFinderController extends ApiController
                 $card['sessionLastDate'] = $session->data['loginDate'] ?? '';
             }
             return $card;
-        } , $cards);
+        }, $cards);
     }
 
     private function addCardBlock(array $cards): array
     {
         return array_map(function (array $card) {
             $credential = $this->ask(new CardCredentialQuery($card['id']));
-            $cardInformation = $this->ask(new CardInformationQuery($card['id'] , $credential->data));
+            $cardInformation = $this->ask(new CardInformationQuery($card['id'], $credential->data));
             $card['block'] = $cardInformation->data['block'];
             return $card;
-        } , $cards);
+        }, $cards);
     }
 }

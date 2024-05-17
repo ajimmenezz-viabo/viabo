@@ -2,7 +2,8 @@
 
 namespace Viabo\backoffice\company\domain;
 
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\projection\domain\CompanyProjection;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface CompanyRepository
@@ -11,9 +12,9 @@ interface CompanyRepository
 
     public function search(string $companyId): Company|null;
 
-    public function searchView(CompanyId $companyId): CompanyView|null;
-
     public function searchCriteria(Criteria $criteria): array;
+
+    public function searchView(CompanyId $companyId): CompanyProjection|null;
 
     public function searchViewCriteria(Criteria $criteria): array;
 
@@ -21,15 +22,15 @@ interface CompanyRepository
 
     public function searchCenterCost(string $centerCostsId): CompanyCostCenter|null;
 
-    public function searchUser(string $userId): CompanyUser|null;
+    public function searchUser(string $userId): CompanyUserOld|null;
 
     public function searchAvailableBankAccount(): CompanyBankAccount|null;
 
     public function searchAll(): array;
 
-    public function searchFolioLast(): Company|null;
+    public function searchFolioLast(): string;
 
-    public function searchByBankAccount(string $bankAccount): Company| null;
+    public function searchByBankAccount(string $bankAccount): Company|null;
 
     public function searchAdminUsers(string $userId): array;
 

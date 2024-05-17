@@ -10,6 +10,7 @@ final readonly class CreateCostCenterCommand implements Command
 {
     public function __construct(
         public string $userId,
+        public string $businessId,
         public string $costCenterId,
         public string $name,
         public array $assignedUsers

@@ -6,7 +6,7 @@ namespace Viabo\backoffice\documents\application\find;
 
 use Viabo\backoffice\documents\domain\Document;
 use Viabo\backoffice\documents\domain\DocumentRepository;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 

@@ -8,7 +8,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class UserModulesQuery implements Query
 {
-    public function __construct(public array $userPermissions, public array $commerceServices)
+    public function __construct(public array $userPermissions, public array $companyServices)
     {
     }
 }

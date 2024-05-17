@@ -26,9 +26,13 @@ final class UserDoctrineRepository extends DoctrineRepository implements UserRep
         $this->persist($user);
     }
 
-    public function search(UserId $userId): User|null
+    public function search(string $userId, string $businessId = null): User|null
     {
-        return $this->repository(User::class)->find($userId->value());
+        if (empty($businessId)) {
+            return $this->repository(User::class)->find($userId);
+        }
+        return $this->repository(User::class)->findOneBy(['id' => $userId,'businessId.value' => $businessId]);
+
     }
 
     public function searchBy(UserEmail $email): User|null

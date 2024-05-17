@@ -5,7 +5,7 @@ namespace Viabo\backoffice\commerceUser\application\create;
 
 
 use Viabo\backoffice\commerceUser\domain\CommerceUserKey;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\management\card\application\find\CardQuery;
 use Viabo\shared\domain\bus\command\CommandHandler;
 use Viabo\shared\domain\bus\query\QueryBus;

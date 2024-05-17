@@ -1,6 +1,6 @@
-update-commerce-by-registration:
+update-company-by-register-of-ouside:
   path: '/api/commerce/update'
-  controller: Viabo\Backend\Controller\backoffice\company\CommerceUpdaterByRegistrationController
+  controller: Viabo\Backend\Controller\backoffice\company\CompanyUpdaterByRegisterController
   methods: PUT
 
 update-commerce-by-backoffice:
@@ -8,7 +8,7 @@ update-commerce-by-backoffice:
   controller: Viabo\Backend\Controller\backoffice\company\CommerceUpdaterByBackofficeController
   methods: POST
 
-update-company-for-disable-and-enable:
+update-company-for-disable-and-enable-by-admin-stp:
   path: '/api/backoffice/company/toggle'
   controller: Viabo\Backend\Controller\backoffice\company\update\CompanyToggleController
   methods: PUT

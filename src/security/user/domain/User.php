@@ -8,8 +8,8 @@ use Viabo\security\shared\domain\user\UserEmail;
 use Viabo\security\shared\domain\user\UserId;
 use Viabo\security\user\domain\events\CardOwnerDataUpdatedDomainEvent;
 use Viabo\security\user\domain\events\CommerceDemoUserCreatedDomainEvent;
-use Viabo\security\user\domain\events\LegalRepresentativeCreatedDomainEvent;
 use Viabo\security\user\domain\events\SendUserPasswordDomainEvent;
+use Viabo\security\user\domain\events\UserAdminCreatedDomainEvent;
 use Viabo\security\user\domain\events\UserCreatedDomainEvent;
 use Viabo\security\user\domain\events\UserDeletedDomainEvent;
 use Viabo\security\user\domain\events\UserPasswordResetDomainEvent;
@@ -26,34 +26,37 @@ final class User extends AggregateRoot
         private UserEmail        $email,
         private UserPassword     $password,
         private UserStpAccountId $stpAccountId,
+        private UserBusinessId   $businessId,
         private UserRegister     $register,
         private UserActive       $active
     )
     {
     }
 
-    public static function createLegalRepresentative(
-        UserName     $name,
-        UserLastname $lastname,
-        UserPhone    $phone,
-        UserEmail    $email,
-        UserPassword $password
+    public static function createUserAdmin(
+        string $name,
+        string $lastname,
+        string $phone,
+        string $email,
+        string $password,
+        string $confirmPassword,
+        string $businessId
     ): self
     {
         $user = new self(
             UserId::random(),
-            new UserProfile('3'),
-            $name,
-            $lastname,
-            $phone,
-            $email,
-            $password,
+            UserProfile::companyAdmin(),
+            UserName::create($name),
+            UserLastname::create($lastname),
+            UserPhone::create($phone),
+            UserEmail::create($email),
+            UserPassword::create($password, $confirmPassword),
             UserStpAccountId::empty(),
+            UserBusinessId::create($businessId),
             UserRegister::todayDate(),
-            new UserActive('1'),
+            UserActive::enable()
         );
-
-        $user->record(new LegalRepresentativeCreatedDomainEvent($user->id()->value(), $user->toArray()));
+        $user->record(new UserAdminCreatedDomainEvent($user->id()->value(), $user->toArray()));
 
         return $user;
     }
@@ -64,7 +67,8 @@ final class User extends AggregateRoot
         string $name,
         string $lastname,
         string $email,
-        string $phone
+        string $phone,
+        string $businessId
     ): static
     {
         $user = new self(
@@ -76,6 +80,7 @@ final class User extends AggregateRoot
             UserEmail::create($email),
             UserPassword::random(),
             UserStpAccountId::empty(),
+            new UserBusinessId($businessId),
             UserRegister::todayDate(),
             UserActive::enable(),
         );
@@ -97,6 +102,7 @@ final class User extends AggregateRoot
             $email,
             UserPassword::random(),
             UserStpAccountId::empty(),
+            UserBusinessId::empty(),
             UserRegister::todayDate(),
             new UserActive('1'),
         );
@@ -181,6 +187,11 @@ final class User extends AggregateRoot
         $this->record(new UserPasswordResetDomainEvent($this->id->value(), $data));
     }
 
+    public function isNotBusinessId(): bool
+    {
+        return $this->businessId->isNotDefined();
+    }
+
     public function toArray(): array
     {
         return [
@@ -192,6 +203,7 @@ final class User extends AggregateRoot
             'email' => $this->email->value(),
             'password' => $this->password->value(),
             'stpAccountId' => $this->stpAccountId->value(),
+            'businessId' => $this->businessId->value(),
             'register' => $this->register->value(),
             'active' => $this->active->value()
         ];

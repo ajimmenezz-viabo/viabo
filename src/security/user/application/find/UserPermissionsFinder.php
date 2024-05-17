@@ -14,14 +14,14 @@ final readonly class UserPermissionsFinder
     {
     }
 
-    public function __invoke(UserId $userId): UserPermissionsResponde
+    public function __invoke(string $userId): UserPermissionsResponse
     {
-        $user = $this->repository->searchView($userId);
+        $user = $this->repository->searchView(new UserId($userId));
 
         if (empty($user)) {
             throw new UserNotExist('');
         }
 
-        return new UserPermissionsResponde($user->permissions());
+        return new UserPermissionsResponse($user->permissions());
     }
 }

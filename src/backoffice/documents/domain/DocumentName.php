@@ -15,6 +15,7 @@ final class DocumentName extends StringValueObject
 
     public function update(string $value): self
     {
+        $value = empty($value) ? $this->value : $value;
         return new self($value);
     }
 }

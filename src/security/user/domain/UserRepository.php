@@ -12,7 +12,7 @@ interface UserRepository
 {
     public function save(User $user): void;
 
-    public function search(UserId $userId): User|null;
+    public function search(string $userId, string $businessId = null): User|null;
 
     public function searchBy(UserEmail $email): User|null;
 

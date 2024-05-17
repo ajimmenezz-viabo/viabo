@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\cardOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\CardQueryBySpei;
 use Viabo\management\card\application\find\MasterCardQueryByPaymentProcessor;
 use Viabo\management\cardOperation\application\transactions\CardTransactionTerminalCommand;
@@ -25,27 +25,31 @@ final readonly class SharedTerminalsPaymentProcessorController extends ApiContro
             $originCard = $this->ask(new CardQueryBySpei($teminalData['terminal_spei_card']));
             $originCardCredential = $this->ask(new CardCredentialQuery($originCard->data['id']));
             $destinationCard = $this->ask(new MasterCardQueryByPaymentProcessor(
-                $teminalData['commerceId'] ,
+                $teminalData['commerceId'],
                 $originCard->data['paymentProcessorId']
             ));
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $this->dispatch(new CardTransactionTerminalCommand(
-                $tokenData['id'] ,
-                $originCard->data['id'] ,
-                $destinationCard->data ,
-                $originCardCredential->data ,
-                $commerce->data['legalRepresentativeEmail'] ,
+                $tokenData['id'],
+                $originCard->data['id'],
+                $destinationCard->data,
+                $originCardCredential->data,
+                $company->data['legalRepresentativeEmail'],
                 $teminalData
             ));
             $liquidationStatusId = '13';
             $this->dispatch(new UpdateTerminalTransactionLiquidationStatusCommand(
-                $teminalData['id'] ,
+                $teminalData['id'],
                 $liquidationStatusId
             ));
 
             return new JsonResponse();
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

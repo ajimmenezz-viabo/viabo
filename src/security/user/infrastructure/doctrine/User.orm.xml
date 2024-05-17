@@ -13,6 +13,7 @@
         <field name="email" type="user_email" column="Email"/>
         <embedded name="password" class="UserPassword" use-column-prefix="false"/>
         <embedded name="stpAccountId" class="UserStpAccountId" use-column-prefix="false"/>
+        <embedded name="businessId" class="UserBusinessId" use-column-prefix="false"/>
         <embedded name="register" class="UserRegister" use-column-prefix="false"/>
         <embedded name="active" class="UserActive" use-column-prefix="false"/>
     </entity>

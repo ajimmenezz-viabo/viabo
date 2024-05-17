@@ -10,9 +10,9 @@ final readonly class PayServiceCredentialsFinder
     {
     }
 
-    public function __invoke(string $commerceId): PayServiceCredentialsResponse
+    public function __invoke(string $companyId): PayServiceCredentialsResponse
     {
-        $credential = $this->repository->searchBy($commerceId);
+        $credential = $this->repository->searchBy($companyId);
         $data = empty($credential) ? [] : $credential->toArray();
 
         return new PayServiceCredentialsResponse($data);

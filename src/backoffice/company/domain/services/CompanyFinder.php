@@ -6,10 +6,10 @@ namespace Viabo\backoffice\company\domain\services;
 
 use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\company\domain\CompanyRepository;
-use Viabo\backoffice\company\domain\CompanyView;
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
+use Viabo\backoffice\projection\domain\CompanyProjection;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 
@@ -23,7 +23,7 @@ final readonly class CompanyFinder
     {
         $commerce = null;
         if ($commerceId->isNotEmpty()) {
-            $commerce = $this->repository->search($commerceId->value());
+            $commerce = $this->repository->search($commerceId->value(), false);
         }
 
         if ($legalRepresentative->isNotEmpty()) {
@@ -40,7 +40,7 @@ final readonly class CompanyFinder
         return is_array($commerce) ? $commerce[0] : $commerce;
     }
 
-    public function view(CompanyId $commerceId, CompanyLegalRepresentative $legalRepresentative): CompanyView
+    public function view(CompanyId $commerceId, CompanyLegalRepresentative $legalRepresentative): CompanyProjection
     {
         $commerce = null;
 

@@ -15,6 +15,7 @@
         <field name="register" column="Register"/>
         <field name="active" column="Active"/>
         <field name="profileName" column="ProfileName"/>
+        <field name="businessId" column="BusinessId"/>
         <field name="permissionModules" column="PermissionModules"/>
         <field name="actionsModules" column="ActionsModules"/>
         <field name="urlInit" column="UrlInit"/>

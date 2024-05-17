@@ -13,10 +13,10 @@ final class Modules extends Collection
 
     private array $modules;
 
-    public function filterModulesByServices(array $commerceServices): void
+    public function filterModulesByServices(array $companyServicesTypeId): void
     {
-        $this->modules = array_filter($this->items() , function (ModuleView $module) use ($commerceServices){
-            return $module->hasService($commerceServices);
+        $this->modules = array_filter($this->items() , function (ModuleView $module) use ($companyServicesTypeId){
+            return $module->hasService($companyServicesTypeId);
         });
     }
 

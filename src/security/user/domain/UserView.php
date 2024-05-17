@@ -15,6 +15,7 @@ final readonly class UserView
         private string      $email,
         private string      $password,
         private string      $register,
+        private string      $businessId,
         private string      $active,
         private string      $profileName,
         private string|null $permissionModules,
@@ -32,6 +33,11 @@ final readonly class UserView
         ];
     }
 
+    public function isNotBusinessId(): bool
+    {
+        return empty($this->businessId);
+    }
+
     public function toArray(): array
     {
         return [
@@ -40,7 +46,8 @@ final readonly class UserView
             'profileId' => $this->profileId,
             'profile' => $this->profileName,
             'email' => $this->email,
-            'urlInit' => $this->urlInit
+            'urlInit' => $this->urlInit,
+            'businessId' => $this->businessId
         ];
     }
 

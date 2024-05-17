@@ -7,7 +7,7 @@ namespace Viabo\Backend\Controller\management\cardOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\cardOperation\application\transactions\CardTransactionCommand;
 use Viabo\management\credential\application\find\CardCredentialQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
@@ -19,14 +19,18 @@ final readonly class CardTransactionsProcessorController extends ApiController
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $data = $this->opensslDecrypt($request->toArray());
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
             $credential = $this->ask(new CardCredentialQuery($data['originCardId']));
             $this->dispatch(new CardTransactionCommand(
                 $tokenData['id'],
                 $data['originCardId'],
                 $data['destinationCards'],
                 $credential->data,
-                $commerce->data['legalRepresentativeEmail']
+                $company->data['legalRepresentativeEmail']
             ));
 
             return new JsonResponse();

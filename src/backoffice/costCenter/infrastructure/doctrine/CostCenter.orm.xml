@@ -6,6 +6,7 @@
 
     <entity name="Viabo\backoffice\costCenter\domain\CostCenter" table="t_backoffice_cost_centers">
         <embedded name="id" class="CostCenterId" use-column-prefix="false"/>
+        <embedded name="businessId" class="CostCenterBusinessId" use-column-prefix="false"/>
         <embedded name="folio" class="CostCenterFolio" use-column-prefix="false"/>
         <embedded name="name" class="CostCenterName" use-column-prefix="false"/>
         <embedded name="updatedByUser" class="CostCenterUpdatedByUser" use-column-prefix="false"/>
@@ -24,6 +25,7 @@
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
+
     </entity>
 
 </doctrine-mapping>

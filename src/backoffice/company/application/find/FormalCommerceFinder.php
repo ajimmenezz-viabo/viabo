@@ -5,8 +5,8 @@ namespace Viabo\backoffice\company\application\find;
 
 
 use Viabo\backoffice\company\domain\services\CompanyFinder;
-use Viabo\backoffice\shared\domain\commerce\CompanyId;
 use Viabo\backoffice\shared\domain\commerce\CompanyLegalRepresentative;
+use Viabo\backoffice\shared\domain\company\CompanyId;
 
 final readonly class FormalCommerceFinder
 {

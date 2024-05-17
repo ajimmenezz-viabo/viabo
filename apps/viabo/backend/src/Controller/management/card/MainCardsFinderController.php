@@ -5,7 +5,7 @@ namespace Viabo\Backend\Controller\management\card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\backoffice\company\application\find\CommerceQueryByLegalRepresentative;
+use Viabo\backoffice\projection\application\find_company_by_user\CompanyQueryByUser;
 use Viabo\management\card\application\find\CardsMasterGlobalQuery;
 use Viabo\management\card\application\find\CardsNumberQuery;
 use Viabo\management\card\application\find\MainCardsInformationQuery;
@@ -18,9 +18,13 @@ final readonly class MainCardsFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $commerce = $this->ask(new CommerceQueryByLegalRepresentative($tokenData['id']));
-            $cardsInformation = $this->ask(new MainCardsInformationQuery($commerce->data['id']));
-            $cards = $this->ask(new CardsNumberQuery($commerce->data['id']));
+            $company = $this->ask(new CompanyQueryByUser(
+                $tokenData['id'],
+                $tokenData['businessId'],
+                $tokenData['profileId']
+            ));
+            $cardsInformation = $this->ask(new MainCardsInformationQuery($company->data['id']));
+            $cards = $this->ask(new CardsNumberQuery($company->data['id']));
             $masterBalanceInTransaction = $this->ask(new BalanceMasterInTransactionQuery($cards->data));
             $data = $this->ask(new CardsMasterGlobalQuery($cardsInformation->data , $masterBalanceInTransaction->data));
 

@@ -12,4 +12,9 @@ final class CompanyCreatedByUser extends StringValueObject
     {
         return new static('');
     }
+
+    public static function create(string $userId): static
+    {
+        return new static($userId);
+    }
 }

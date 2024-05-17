@@ -12,7 +12,7 @@ interface CostCenterRepository
 
     public function search(string $costCenterId): CostCenter|null;
 
-    public function searchAll(): array;
+    public function searchAll(string $businessId): array;
 
     public function searchCriteria(Criteria $criteria): array;
 
@@ -25,4 +25,6 @@ interface CostCenterRepository
     public function update(CostCenter $costCenter): void;
 
     public function delete(CostCenter $costCenter): void;
+
+    public function deleteCostCenterCompanies(string $companyId): void;
 }

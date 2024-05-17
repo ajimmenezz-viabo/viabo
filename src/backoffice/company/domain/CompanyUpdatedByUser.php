@@ -15,6 +15,7 @@ final class CompanyUpdatedByUser extends StringValueObject
 
     public function update(string $value): static
     {
+        $value = empty($value) ? $this->value : $value;
         return new static($value);
     }
 }

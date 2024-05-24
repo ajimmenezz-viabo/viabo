@@ -50,7 +50,7 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
     public function searchStpCardCredentials(string $businessId): ServiceCardCloudCredentials
     {
         return $this->repository(ServiceCardCloudCredentials::class)->findOneBy(
-            ['businessId' => $businessId],
+            ['businessId' => $businessId]
         );
     }
 

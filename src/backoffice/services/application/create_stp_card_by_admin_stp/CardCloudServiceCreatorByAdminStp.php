@@ -10,7 +10,7 @@ use Viabo\backoffice\services\domain\new\ServiceRepository;
 use Viabo\backoffice\shared\domain\cardCloud\CardCloudRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
-final readonly class StpCardServiceCreatorByAdminStp
+final readonly class CardCloudServiceCreatorByAdminStp
 {
     public function __construct(
         private ServiceRepository   $repository,

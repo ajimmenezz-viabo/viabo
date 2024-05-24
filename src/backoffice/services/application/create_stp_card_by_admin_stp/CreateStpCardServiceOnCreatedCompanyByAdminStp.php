@@ -9,7 +9,7 @@ use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
 final readonly class CreateStpCardServiceOnCreatedCompanyByAdminStp implements DomainEventSubscriber
 {
-    public function __construct(private StpCardServiceCreatorByAdminStp $updater)
+    public function __construct(private CardCloudServiceCreatorByAdminStp $updater)
     {
     }
 

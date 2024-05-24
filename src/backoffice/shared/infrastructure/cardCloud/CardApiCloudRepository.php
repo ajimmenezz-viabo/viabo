@@ -31,15 +31,19 @@ final class CardApiCloudRepository implements CardCloudRepository
 
     private function request(array $inputData, string $api, string $token, string $request): array
     {
+        $jsonData = json_encode($inputData);
 
-        $httpHeader = empty($token) ? ['Accept: application/json'] : ['Accept: application/json', $token];
+        $httpHeader = empty($token) ?
+            ['Content-Type: application/json', 'Content-Length: ' . strlen($jsonData)] :
+            ['Content-Type: application/json', 'Content-Length: ' . strlen($jsonData), $token];
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $api);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request);
+        curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($inputData));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
         $response = curl_exec($curl);
         curl_close($curl);
 
@@ -58,6 +62,6 @@ final class CardApiCloudRepository implements CardCloudRepository
 
     private function hasError(array $response): bool
     {
-        return array_key_exists('error', $response) && $response['error'] === 'Unauthorized';
+        return array_key_exists('error', $response);
     }
 }

@@ -8,6 +8,7 @@ use Viabo\backoffice\services\domain\exceptions\ServiceTypeNotExist;
 use Viabo\backoffice\services\domain\new\card\CardService;
 use Viabo\backoffice\services\domain\new\pay\PayService;
 use Viabo\backoffice\services\domain\new\stp\ServiceStp;
+use Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud;
 
 final class ServiceFactory
 {
@@ -41,6 +42,12 @@ final class ServiceFactory
                 $values['bankAccountId'],
                 $values['createdByUser'],
                 $values['createDate']
+            ),
+            5 => ServiceCardCloud::create(
+                $values['id'],
+                $values['createdByUser'],
+                $values['createDate'],
+                $values['serviceCardCloud']
             ),
             default => throw new ServiceTypeNotExist()
         };

@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\backoffice\services\domain\services\create_spei_cloud;
+namespace Viabo\backoffice\services\domain\services\create_spei_service;
 
 use Viabo\backoffice\services\domain\new\ServiceFactory;
 use Viabo\backoffice\services\domain\new\ServiceRepository;
 
-final readonly class SpeiCloudServiceCreator
+final readonly class StpServiceCreator
 {
     public function __construct(
         private ServiceRepository $repository
@@ -18,9 +18,10 @@ final readonly class SpeiCloudServiceCreator
         $bankAccount = $this->repository->searchAvailableBankAccount($company['businessId']);
         $company['type'] = '4';
         $company['bankAccountId'] = $bankAccount->id();
+        $company['bankAccountNumber'] = $bankAccount->number();
         $service = ServiceFactory::create($company);
         $this->repository->save($service);
-        $this->repository->updateBankAccount($service);
-        return array_merge($service->toArray(), ['bankAccountNumber' => $bankAccount->number()]);
+        $this->repository->updateBankAccount($bankAccount->id());
+        return $service->toArray();
     }
 }

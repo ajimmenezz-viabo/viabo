@@ -48,28 +48,26 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
     {
         $jsonData = json_encode($inputData);
 
-        $httpHeader = empty($token) ?
-            ['Content-Type: application/json', 'Content-Length: ' . strlen($jsonData)] :
-            ['Content-Type: application/json', 'Content-Length: ' . strlen($jsonData), $token];
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $api);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request);
         curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json', 'Content-Length: ' . strlen($jsonData), $token
+        ]);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
         $response = curl_exec($curl);
         curl_close($curl);
 
         if (empty($response)) {
-            throw new \DomainException("Error de API STP CARD: DOES NOT RESPOND ", 403);
+            throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 403);
         }
 
         $response = json_decode($response, true);
         if ($this->hasError($response)) {
-            $message = $response['error'];
-            throw new \DomainException("Error de API STP CARD: $message", 403);
+            throw new \DomainException("Error de API CARD CLOUD", 403);
         }
 
         return $response;
@@ -77,6 +75,6 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
     private function hasError(array $response): bool
     {
-        return array_key_exists('error', $response);
+        return array_key_exists('error', $response) || array_key_exists('message', $response);
     }
 }

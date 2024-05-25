@@ -40,6 +40,7 @@ final class ServiceFactory
                 $values['id'],
                 $values['stpAccount'],
                 $values['bankAccountId'],
+                $values['bankAccountNumber'],
                 $values['createdByUser'],
                 $values['createDate']
             ),

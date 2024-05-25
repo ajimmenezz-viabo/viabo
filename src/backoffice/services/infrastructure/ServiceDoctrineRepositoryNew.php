@@ -51,13 +51,11 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
         $this->entityManager()->flush($service);
     }
 
-    public function updateBankAccount(Service $service): void
+    public function updateBankAccount(string $bankAccountId): void
     {
-        if ($service instanceof ServiceStp) {
-            $bankAccount = $this->repository(ServiceStpBankAccount::class)->find($service->bankAccountId());
-            $bankAccount->disable();
-            $this->entityManager()->flush($bankAccount);
-        }
+        $bankAccount = $this->repository(ServiceStpBankAccount::class)->find($bankAccountId);
+        $bankAccount->disable();
+        $this->entityManager()->flush($bankAccount);
     }
 
     public function delete(Service $service): void

@@ -15,14 +15,15 @@ use Viabo\backoffice\shared\domain\company\CompanyId;
 final class ServiceStp extends Service
 {
     public function __construct(
-        ServiceId                       $id,
-        CompanyId                       $companyId,
-        private ServiceStpAccountId     $stpAccountId,
-        private ServiceStpBankAccountId $bankAccountId,
-        ServiceUpdateByUser             $updateByUser,
-        ServiceUpdateDate               $updatedDate,
-        ServiceCreatedByUser            $createdByUser,
-        ServiceCreateDate               $createDate
+        ServiceId                           $id,
+        CompanyId                           $companyId,
+        private ServiceStpAccountId         $stpAccountId,
+        private ServiceStpBankAccountId     $bankAccountId,
+        private ServiceStpBankAccountNumber $bankAccountNumber,
+        ServiceUpdateByUser                 $updateByUser,
+        ServiceUpdateDate                   $updatedDate,
+        ServiceCreatedByUser                $createdByUser,
+        ServiceCreateDate                   $createDate
     )
     {
         parent::__construct($id, $companyId, $updateByUser, $updatedDate, $createdByUser, $createDate);
@@ -32,6 +33,7 @@ final class ServiceStp extends Service
         string $companyId,
         string $stpAccountId,
         string $bankAccountId,
+        string $bankAccountNumber,
         string $createdByUser,
         string $createDate
     ): static
@@ -41,6 +43,7 @@ final class ServiceStp extends Service
             CompanyId::create($companyId),
             ServiceStpAccountId::create($stpAccountId),
             ServiceStpBankAccountId::create($bankAccountId),
+            ServiceStpBankAccountNumber::create($bankAccountNumber),
             ServiceUpdateByUser::empty(),
             ServiceUpdateDate::empty(),
             ServiceCreatedByUser::create($createdByUser),
@@ -50,7 +53,7 @@ final class ServiceStp extends Service
 
     public function bankAccountId(): string
     {
-        return $this->bankAccountId->value();
+        return $this->bankAccountNumber->value();
     }
 
     protected function type(): string
@@ -70,6 +73,7 @@ final class ServiceStp extends Service
             'companyId' => $this->companyId->value(),
             'stpAccountId' => $this->stpAccountId->value(),
             'bankAccountId' => $this->bankAccountId->value(),
+            'bankAccountNumber' => $this->bankAccountNumber->value(),
             'updateByUser' => $this->updateByUser->value(),
             'updateDate' => $this->updateDate->value(),
             'createdByUser' => $this->createdByUser->value(),

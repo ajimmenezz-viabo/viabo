@@ -6,8 +6,6 @@
 
     <entity name="Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud"
             table="t_backoffice_companies_service_card_cloud">
-        <embedded name="externalId" class="Viabo\backoffice\services\domain\new\cardCloud\CardCloudExternalId"
-                  use-column-prefix="false"/>
         <embedded name="subAccountId" class="Viabo\backoffice\services\domain\new\cardCloud\CardCloudSubAccountId"
                   use-column-prefix="false"/>
         <embedded name="subAccount" class="Viabo\backoffice\services\domain\new\cardCloud\CardCloudSubAccount"

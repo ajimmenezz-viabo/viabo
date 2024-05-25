@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\backoffice\services\domain\new\cardCloud\credentials;
+namespace Viabo\stp\cardCloud\domain;
 
 use Viabo\shared\domain\utils\Crypt;
 
-class ServiceCardCloudCredentials
+class CardCloudCredentials
 {
     public function __construct(
         private string $uuid,
@@ -15,6 +15,21 @@ class ServiceCardCloudCredentials
         private string $active
     )
     {
+    }
+
+    public function apiUrl(): string
+    {
+        return $this->decrypt($this->apiUrl);
+    }
+
+    public function user(): string
+    {
+        return $this->decrypt($this->user);
+    }
+
+    public function password(): string
+    {
+        return $this->decrypt($this->password);
     }
 
     public function toArray(): array

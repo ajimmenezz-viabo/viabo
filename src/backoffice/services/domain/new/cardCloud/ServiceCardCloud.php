@@ -15,7 +15,6 @@ final class ServiceCardCloud extends Service
     public function __construct(
         ServiceId                     $id,
         CompanyId                     $companyId,
-        private CardCloudExternalId   $externalId,
         private CardCloudSubAccountId $subAccountId,
         private CardCloudSubAccount   $subAccount,
         ServiceUpdateByUser           $updateByUser,
@@ -37,7 +36,6 @@ final class ServiceCardCloud extends Service
         return new ServiceCardCloud(
             ServiceId::random(),
             CompanyId::create($companyId),
-            CardCloudExternalId::create($companyId),
             CardCloudSubAccountId::create($serviceCardCloud['subaccount_id']),
             CardCloudSubAccount::create(json_encode($serviceCardCloud)),
             ServiceUpdateByUser::empty(),
@@ -61,7 +59,7 @@ final class ServiceCardCloud extends Service
         return [
             'id' => $this->id->value(),
             'type' => $this->type(),
-            'companyId' => $this->externalId->value(),
+            'companyId' => $this->companyId->value(),
             'subAccountId' => $this->subAccountId->value(),
             'subAccount' => $this->subAccount->value(),
             'updateByUser' => $this->updateByUser->value(),

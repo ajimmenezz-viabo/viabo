@@ -1,22 +1,37 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\backoffice\shared\infrastructure\cardCloud;
+namespace Viabo\stp\cardCloud\infrastructure;
 
-use Viabo\backoffice\shared\domain\cardCloud\CardCloudRepository;
+use Doctrine\ORM\EntityManager;
+use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
+use Viabo\stp\cardCloud\domain\CardCloudCredentials;
+use Viabo\stp\cardCloud\domain\CardCloudRepository;
 
-final class CardApiCloudRepository implements CardCloudRepository
+final class CardCloudApiRepository extends DoctrineRepository implements CardCloudRepository
 {
-
-    public function createAccount(array $company, array $credentials): array
+    public function __construct(EntityManager $StpEntityManager)
     {
-        $signResponse = $this->signIn($credentials);
+        parent::__construct($StpEntityManager);
+    }
+
+    public function createAccount(string $businessId, string $companyId, string $rfc): array
+    {
+        $credentials = $this->searchCredentials($businessId);
+        $signResponse = $this->signIn($credentials->toArray());
         $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials['apiUrl']}/v1/subaccounts";
+        $api = "{$credentials->apiUrl()}/v1/subaccounts";
         $apiData = [
-            "ExternalId" => $company['id'],
-            "Description" => $company['rfc'],
+            "ExternalId" => $companyId,
+            "Description" => $rfc,
         ];
         return $this->request($apiData, $api, $token, 'POST');
+    }
+
+    private function searchCredentials(string $businessId): CardCloudCredentials
+    {
+        return $this->repository(CardCloudCredentials::class)->findOneBy(
+            ['businessId' => $businessId]
+        );
     }
 
     private function signIn(array $credentials): array

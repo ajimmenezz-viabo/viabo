@@ -11,7 +11,6 @@ use Viabo\backoffice\services\domain\new\Service;
 use Viabo\backoffice\services\domain\new\ServiceRepository;
 use Viabo\backoffice\services\domain\new\stp\ServiceStp;
 use Viabo\backoffice\services\domain\new\stp\ServiceStpBankAccount;
-use Viabo\backoffice\services\domain\new\cardCloud\credentials\ServiceCardCloudCredentials;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\infrastructure\doctrine\DoctrineRepository;
 use Viabo\shared\infrastructure\persistence\DoctrineCriteriaConverter;
@@ -44,13 +43,6 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
         return $this->repository(ServiceStpBankAccount::class)->findOneBy(
             ['available' => '1', 'businessId' => $businessId],
             ['id' => 'asc']
-        );
-    }
-
-    public function searchStpCardCredentials(string $businessId): ServiceCardCloudCredentials
-    {
-        return $this->repository(ServiceCardCloudCredentials::class)->findOneBy(
-            ['businessId' => $businessId]
         );
     }
 

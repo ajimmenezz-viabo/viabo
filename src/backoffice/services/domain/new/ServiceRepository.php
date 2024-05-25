@@ -5,7 +5,6 @@ namespace Viabo\backoffice\services\domain\new;
 
 
 use Viabo\backoffice\services\domain\new\stp\ServiceStpBankAccount;
-use Viabo\backoffice\services\domain\new\cardCloud\credentials\ServiceCardCloudCredentials;
 use Viabo\shared\domain\criteria\Criteria;
 
 interface ServiceRepository
@@ -24,5 +23,4 @@ interface ServiceRepository
 
     public function delete(Service $service): void;
 
-    public function searchStpCardCredentials(string $businessId):ServiceCardCloudCredentials;
 }

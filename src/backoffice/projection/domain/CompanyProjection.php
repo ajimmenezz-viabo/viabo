@@ -129,13 +129,7 @@ final class CompanyProjection extends AggregateRoot
 
     public function updateServices(array $services): void
     {
-        if (empty($this->services)) {
-            $this->services = json_encode($services);
-        } else {
-            $existingServices = json_decode($this->services, true);
-            $mergedServices = array_merge($existingServices, $services);
-            $this->services = json_encode($mergedServices);
-        }
+        $this->services = empty($services) ? '[]' : json_encode($services);
     }
 
     public function services(): array

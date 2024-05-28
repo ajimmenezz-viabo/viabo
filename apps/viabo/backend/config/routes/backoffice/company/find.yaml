@@ -8,6 +8,11 @@ finder-companies:
   controller: Viabo\Backend\Controller\backoffice\company\find\CompaniesFinderController
   methods: GET
 
+find-companies-by-card-cloud-service:
+  path: '/api/commerces/card-cloud-service'
+  controller: Viabo\Backend\Controller\backoffice\company\find\CompaniesByCardCloudServiceFinderController
+  methods: GET
+
 finder-commerce-affiliates:
   path: '/api/commerces/affiliates'
   controller: Viabo\Backend\Controller\backoffice\company\CommerceAffiliatesFinderController

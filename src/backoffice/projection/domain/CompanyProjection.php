@@ -224,6 +224,12 @@ final class CompanyProjection extends AggregateRoot
         return in_array($serviceSpei, $this->serviceTypes());
     }
 
+    public function hasCardCloudService(): bool
+    {
+        $cardCloudService = '5';
+        return in_array($cardCloudService, $this->serviceTypes());
+    }
+
     public function serviceTypes(): array
     {
         $typeIds = [];

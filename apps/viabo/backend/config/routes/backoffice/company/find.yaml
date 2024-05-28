@@ -23,6 +23,11 @@ finder-commerce:
   controller: Viabo\Backend\Controller\backoffice\company\CommerceFinderController
   methods: GET
 
+find-sub-account-company:
+  path: '/api/commerce/{companyId}/sub-account'
+  controller: Viabo\Backend\Controller\backoffice\company\find\CommerceSubAccountFinderController
+  methods: GET
+
 find-commerce-slug:
   path: "/api/commerce-slug/{slug}"
   controller: Viabo\Backend\Controller\backoffice\company\CommerceSlugFinderController

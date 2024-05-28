@@ -144,25 +144,25 @@ final class CompanyProjection extends AggregateRoot
         }, $services);
     }
 
-    public function cardCloudService(): array
+    public function cardCloudServiceSubAccountId(): string
     {
         $services = json_decode($this->services, true);
-        return array_map(function (array $service) {
-            unset($service['updateByUser'], $service['updateDate'], $service['createdByUser'], $service['createDate']);
-            return $service;
+        $carCloudService = [];
+        array_map(function (array $service) use (&$carCloudService) {
+            $cardCloudService['subAccountId'] = $service['subAccountId'] ?? '';
         }, $services);
+        return $cardCloudService['subAccountId'] ?? '';
     }
 
     public function cardCloudServiceData(): array
     {
-        $cardCloudService = $this->cardCloudService();
         return [
             'id' => $this->id,
             'businessId' => $this->businessId,
             'fiscalName' => $this->fiscalName,
             'tradeName' => $this->tradeName,
             'rfc' => $this->rfc,
-            'subAccountId ' => $cardCloudService['subAccountId'] ?? '',
+            'subAccountId' => $this->cardCloudServiceSubAccountId(),
             'updatedByUser' => $this->updatedByUser,
             'updateDate' => $this->updateDate,
             'createdByUser' => $this->createdByUser,

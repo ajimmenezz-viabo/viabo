@@ -6,6 +6,7 @@ namespace Viabo\backoffice\services\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\backoffice\services\domain\new\card\CardService;
+use Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud;
 use Viabo\backoffice\services\domain\new\pay\PayService;
 use Viabo\backoffice\services\domain\new\Service;
 use Viabo\backoffice\services\domain\new\ServiceRepository;
@@ -77,6 +78,9 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
             $this->entityManager()->flush($bankAccount);
         }
 
+        if ($service instanceof ServiceCardCloud) {
+            $table = 't_backoffice_companies_service_card_cloud';
+        }
         $query = "DELETE FROM $table WHERE Id = :id";
         $statement = $this->entityManager()->getConnection()->prepare($query);
         $statement->bindValue('id', $service->id());

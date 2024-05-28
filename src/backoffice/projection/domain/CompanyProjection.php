@@ -155,7 +155,7 @@ final class CompanyProjection extends AggregateRoot
 
     public function cardCloudServiceData(): array
     {
-        $cardCloudService = $this->cardCloudServiceData();
+        $cardCloudService = $this->cardCloudService();
         return [
             'id' => $this->id,
             'businessId' => $this->businessId,

@@ -15,7 +15,8 @@ abstract class Service extends AggregateRoot
         protected ServiceUpdateByUser  $updateByUser,
         protected ServiceUpdateDate    $updateDate,
         protected ServiceCreatedByUser $createdByUser,
-        protected ServiceCreateDate    $createDate
+        protected ServiceCreateDate    $createDate,
+        protected ServiceActive        $active
     )
     {
     }

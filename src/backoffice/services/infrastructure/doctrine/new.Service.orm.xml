@@ -30,6 +30,9 @@
         <embedded name="createDate"
                   class="Viabo\backoffice\services\domain\new\ServiceCreateDate"
                   use-column-prefix="false"/>
+        <embedded name="active"
+                  class="Viabo\backoffice\services\domain\new\ServiceActive"
+                  use-column-prefix="false"/>
     </entity>
 
 </doctrine-mapping>

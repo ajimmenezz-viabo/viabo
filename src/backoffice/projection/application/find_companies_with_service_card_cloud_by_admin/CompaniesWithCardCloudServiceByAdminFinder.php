@@ -31,7 +31,7 @@ final class CompaniesWithCardCloudServiceByAdminFinder
         }));
 
         return new CompaniesResponse(array_map(function (CompanyProjection $company) {
-            return $company->toArray();
+            return $company->cardCloudServiceData();
         }, $companies));
     }
 }

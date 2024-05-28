@@ -28,13 +28,24 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
     }
 
 
-    public function searchSubAccount(string $businessId, string $externalId): array
+    public function searchSubAccount(string $businessId, string $companyId): array
     {
         $credentials = $this->searchCredentials($businessId);
         $signResponse = $this->signIn($credentials->toArray());
         $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$externalId}";
+        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$companyId}";
         $apiData = [];
+        return $this->request($apiData, $api, $token, 'GET');
+    }
+
+
+    public function searchMovements(string $businessId, string $companyId, string $fromDate, string $toDate): array
+    {
+        $credentials = $this->searchCredentials($businessId);
+        $signResponse = $this->signIn($credentials->toArray());
+        $token = "Authorization: Bearer {$signResponse['access_token']}";
+        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$companyId}/movements";
+        $apiData = ['from' => $fromDate, 'to' => $toDate];
         return $this->request($apiData, $api, $token, 'GET');
     }
 
@@ -75,7 +86,6 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         if (empty($response)) {
             throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 403);
         }
-
         $response = json_decode($response, true);
         if ($this->hasError($response)) {
             throw new \DomainException("Error de API CARD CLOUD", 403);

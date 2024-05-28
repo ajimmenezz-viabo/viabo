@@ -6,18 +6,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\stp\cardCloud\application\find_sub_account_by_company\SubAccountCardCloudServiceByCompanyQuery;
+use Viabo\stp\cardCloud\application\find_sub_account_movements_by_company\SubAccountCardCloudServiceMovementsByCompanyQuery;
 
-final readonly class CommerceSubAccountFinderController extends ApiController
+final readonly class CompanySubAccountMovementsFinderController extends ApiController
 {
 
     public function __invoke(string $companyId, Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $company = $this->ask(new SubAccountCardCloudServiceByCompanyQuery(
+            $fromDate = $request->query->get('fromDate');
+            $toDate = $request->query->get('toDate');
+            $company = $this->ask(new SubAccountCardCloudServiceMovementsByCompanyQuery(
                 $tokenData['businessId'],
-                $companyId
+                $companyId,
+                $fromDate,
+                $toDate
             ));
             return new JsonResponse($company->data);
         } catch (\DomainException $exception) {

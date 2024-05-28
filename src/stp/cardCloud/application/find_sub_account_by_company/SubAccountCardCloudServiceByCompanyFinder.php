@@ -2,6 +2,7 @@
 
 namespace Viabo\stp\cardCloud\application\find_sub_account_by_company;
 
+use Viabo\stp\cardCloud\application\CardCloudServiceResponse;
 use Viabo\stp\cardCloud\domain\CardCloudRepository;
 
 final readonly class SubAccountCardCloudServiceByCompanyFinder
@@ -10,10 +11,10 @@ final readonly class SubAccountCardCloudServiceByCompanyFinder
     {
     }
 
-    public function __invoke(string $businessId, string $externalId): SubAccountCardCloudServiceResponse
+    public function __invoke(string $businessId, string $companyId): CardCloudServiceResponse
     {
-        return new SubAccountCardCloudServiceResponse(
-            $this->repository->searchSubAccount($businessId, $externalId)
+        return new CardCloudServiceResponse(
+            $this->repository->searchSubAccount($businessId, $companyId)
         );
     }
 }

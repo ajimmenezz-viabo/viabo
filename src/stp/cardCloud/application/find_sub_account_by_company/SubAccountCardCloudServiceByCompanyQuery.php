@@ -6,7 +6,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class SubAccountCardCloudServiceByCompanyQuery implements Query
 {
-    public function __construct(public string $businessId, public string $externalId)
+    public function __construct(public string $businessId, public string $companyId)
     {
     }
 }

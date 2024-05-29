@@ -6,6 +6,7 @@ namespace Viabo\backoffice\services\infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Viabo\backoffice\services\domain\new\card\CardService;
+use Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud;
 use Viabo\backoffice\services\domain\new\pay\PayService;
 use Viabo\backoffice\services\domain\new\Service;
 use Viabo\backoffice\services\domain\new\ServiceRepository;
@@ -25,7 +26,6 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
     public function save(Service $service): void
     {
         $this->persist($service);
-        $this->updateBankAccount($service);
     }
 
     public function search(string $id): Service|null
@@ -52,13 +52,11 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
         $this->entityManager()->flush($service);
     }
 
-    private function updateBankAccount(Service $service): void
+    public function updateBankAccount(string $bankAccountId): void
     {
-        if ($service instanceof ServiceStp) {
-            $bankAccount = $this->repository(ServiceStpBankAccount::class)->find($service->bankAccountId());
-            $bankAccount->disable();
-            $this->entityManager()->flush($bankAccount);
-        }
+        $bankAccount = $this->repository(ServiceStpBankAccount::class)->find($bankAccountId);
+        $bankAccount->disable();
+        $this->entityManager()->flush($bankAccount);
     }
 
     public function delete(Service $service): void
@@ -80,6 +78,9 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
             $this->entityManager()->flush($bankAccount);
         }
 
+        if ($service instanceof ServiceCardCloud) {
+            $table = 't_backoffice_companies_service_card_cloud';
+        }
         $query = "DELETE FROM $table WHERE Id = :id";
         $statement = $this->entityManager()->getConnection()->prepare($query);
         $statement->bindValue('id', $service->id());

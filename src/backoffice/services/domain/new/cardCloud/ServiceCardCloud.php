@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-
-namespace Viabo\backoffice\services\domain\new\stp;
-
+namespace Viabo\backoffice\services\domain\new\cardCloud;
 
 use Viabo\backoffice\services\domain\new\Service;
 use Viabo\backoffice\services\domain\new\ServiceActive;
@@ -13,39 +11,34 @@ use Viabo\backoffice\services\domain\new\ServiceUpdateByUser;
 use Viabo\backoffice\services\domain\new\ServiceUpdateDate;
 use Viabo\backoffice\shared\domain\company\CompanyId;
 
-final class ServiceStp extends Service
+final class ServiceCardCloud extends Service
 {
     public function __construct(
-        ServiceId                           $id,
-        CompanyId                           $companyId,
-        private ServiceStpAccountId         $stpAccountId,
-        private ServiceStpBankAccountId     $bankAccountId,
-        private ServiceStpBankAccountNumber $bankAccountNumber,
-        ServiceUpdateByUser                 $updateByUser,
-        ServiceUpdateDate                   $updatedDate,
-        ServiceCreatedByUser                $createdByUser,
-        ServiceCreateDate                   $createDate
+        ServiceId                     $id,
+        CompanyId                     $companyId,
+        private CardCloudSubAccountId $subAccountId,
+        private CardCloudSubAccount   $subAccount,
+        ServiceUpdateByUser           $updateByUser,
+        ServiceUpdateDate             $updatedDate,
+        ServiceCreatedByUser          $createdByUser,
+        ServiceCreateDate             $createDate
     )
     {
         parent::__construct($id, $companyId, $updateByUser, $updatedDate, $createdByUser, $createDate, ServiceActive::active());
-
     }
 
     public static function create(
         string $companyId,
-        string $stpAccountId,
-        string $bankAccountId,
-        string $bankAccountNumber,
         string $createdByUser,
-        string $createDate
-    ): static
+        string $createDate,
+        array  $serviceCardCloud
+    ): ServiceCardCloud
     {
-        return new static(
+        return new ServiceCardCloud(
             ServiceId::random(),
             CompanyId::create($companyId),
-            ServiceStpAccountId::create($stpAccountId),
-            ServiceStpBankAccountId::create($bankAccountId),
-            ServiceStpBankAccountNumber::create($bankAccountNumber),
+            CardCloudSubAccountId::create($serviceCardCloud['subaccount_id']),
+            CardCloudSubAccount::create(json_encode($serviceCardCloud)),
             ServiceUpdateByUser::empty(),
             ServiceUpdateDate::empty(),
             ServiceCreatedByUser::create($createdByUser),
@@ -53,14 +46,9 @@ final class ServiceStp extends Service
         );
     }
 
-    public function bankAccountId(): string
-    {
-        return $this->bankAccountNumber->value();
-    }
-
     protected function type(): string
     {
-        return '4';
+        return '5';
     }
 
     public function update(array $data): void
@@ -73,9 +61,8 @@ final class ServiceStp extends Service
             'id' => $this->id->value(),
             'type' => $this->type(),
             'companyId' => $this->companyId->value(),
-            'stpAccountId' => $this->stpAccountId->value(),
-            'bankAccountId' => $this->bankAccountId->value(),
-            'bankAccountNumber' => $this->bankAccountNumber->value(),
+            'subAccountId' => $this->subAccountId->value(),
+            'subAccount' => $this->subAccount->value(),
             'updateByUser' => $this->updateByUser->value(),
             'updateDate' => $this->updateDate->value(),
             'createdByUser' => $this->createdByUser->value(),

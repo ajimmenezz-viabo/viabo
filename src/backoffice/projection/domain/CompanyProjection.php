@@ -144,6 +144,36 @@ final class CompanyProjection extends AggregateRoot
         }, $services);
     }
 
+    public function cardCloudServiceSubAccountId(): string
+    {
+        $services = array_filter(json_decode($this->services, true), function (array $service) {
+            $cardCloudServiceType = '5';
+            return $service['type'] === $cardCloudServiceType;
+        });
+        $cardCloudService = [];
+        array_map(function (array $service) use (&$cardCloudService) {
+            $cardCloudService['subAccountId'] = $service['subAccountId'];
+        }, $services);
+        return $cardCloudService['subAccountId'] ?? '';
+    }
+
+    public function cardCloudServiceData(): array
+    {
+        return [
+            'id' => $this->id,
+            'businessId' => $this->businessId,
+            'fiscalName' => $this->fiscalName,
+            'tradeName' => $this->tradeName,
+            'rfc' => $this->rfc,
+            'subAccountId' => $this->cardCloudServiceSubAccountId(),
+            'updatedByUser' => $this->updatedByUser,
+            'updateDate' => $this->updateDate,
+            'createdByUser' => $this->createdByUser,
+            'createDate' => $this->createDate,
+            'active' => $this->active
+        ];
+    }
+
     public function updateDocuments(array $documents): void
     {
         $this->documents = json_encode($documents);
@@ -222,6 +252,12 @@ final class CompanyProjection extends AggregateRoot
     {
         $serviceSpei = '4';
         return in_array($serviceSpei, $this->serviceTypes());
+    }
+
+    public function hasCardCloudService(): bool
+    {
+        $cardCloudService = '5';
+        return in_array($cardCloudService, $this->serviceTypes());
     }
 
     public function serviceTypes(): array

@@ -19,5 +19,8 @@ interface ServiceRepository
 
     public function update(Service $service): void;
 
+    public function updateBankAccount(string $bankAccountId): void;
+
     public function delete(Service $service): void;
+
 }

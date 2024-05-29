@@ -5,6 +5,7 @@ namespace Viabo\backoffice\services\domain\new\pay;
 
 
 use Viabo\backoffice\services\domain\new\Service;
+use Viabo\backoffice\services\domain\new\ServiceActive;
 use Viabo\backoffice\services\domain\new\ServiceCreateDate;
 use Viabo\backoffice\services\domain\new\ServiceCreatedByUser;
 use Viabo\backoffice\services\domain\new\ServiceId;
@@ -27,7 +28,7 @@ final class PayService extends Service
         ServiceCreateDate                   $createDate
     )
     {
-        parent::__construct($id, $companyId, $updateByUser, $updatedDate, $createdByUser, $createDate);
+        parent::__construct($id, $companyId, $updateByUser, $updatedDate, $createdByUser, $createDate, ServiceActive::active());
     }
 
     public static function create(
@@ -80,7 +81,8 @@ final class PayService extends Service
             'updateByUser' => $this->updateByUser->value(),
             'updateDate' => $this->updateDate->value(),
             'createdByUser' => $this->createdByUser->value(),
-            'createDate' => $this->createDate->value()
+            'createDate' => $this->createDate->value(),
+            'active' => $this->active->value()
         ];
     }
 }

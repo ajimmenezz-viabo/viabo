@@ -7,6 +7,7 @@
     <entity name="Viabo\backoffice\services\domain\new\stp\ServiceStp" table="t_backoffice_companies_service_stp">
         <embedded name="stpAccountId" class="Viabo\backoffice\services\domain\new\stp\ServiceStpAccountId" use-column-prefix="false" />
         <embedded name="bankAccountId" class="Viabo\backoffice\services\domain\new\stp\ServiceStpBankAccountId" use-column-prefix="false" />
+        <embedded name="bankAccountNumber" class="Viabo\backoffice\services\domain\new\stp\ServiceStpBankAccountNumber" use-column-prefix="false" />
     </entity>
 
 </doctrine-mapping>

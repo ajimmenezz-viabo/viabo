@@ -13,6 +13,7 @@
             <discriminator-mapping value="2" class="Viabo\backoffice\services\domain\new\card\CardService"/>
             <!--            <discriminator-mapping value="cloud" class="Viabo\backoffice\services\domain\new\card\CloudService" />-->
             <discriminator-mapping value="4" class="Viabo\backoffice\services\domain\new\stp\ServiceStp"/>
+            <discriminator-mapping value="5" class="Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud"/>
         </discriminator-map>
 
         <embedded name="id" class="Viabo\backoffice\services\domain\new\ServiceId" use-column-prefix="false"/>
@@ -28,6 +29,9 @@
                   use-column-prefix="false"/>
         <embedded name="createDate"
                   class="Viabo\backoffice\services\domain\new\ServiceCreateDate"
+                  use-column-prefix="false"/>
+        <embedded name="active"
+                  class="Viabo\backoffice\services\domain\new\ServiceActive"
                   use-column-prefix="false"/>
     </entity>
 

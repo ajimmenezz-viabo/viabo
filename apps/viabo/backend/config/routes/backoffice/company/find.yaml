@@ -8,11 +8,6 @@ finder-companies:
   controller: Viabo\Backend\Controller\backoffice\company\find\CompaniesFinderController
   methods: GET
 
-find-companies-by-card-cloud-service:
-  path: '/api/commerces/card-cloud-service'
-  controller: Viabo\Backend\Controller\backoffice\company\find\CompaniesByCardCloudServiceFinderController
-  methods: GET
-
 finder-commerce-affiliates:
   path: '/api/commerces/affiliates'
   controller: Viabo\Backend\Controller\backoffice\company\CommerceAffiliatesFinderController
@@ -21,16 +16,6 @@ finder-commerce-affiliates:
 finder-commerce:
   path: '/api/commerce/{commerceId}'
   controller: Viabo\Backend\Controller\backoffice\company\CommerceFinderController
-  methods: GET
-
-find-sub-account-company:
-  path: '/api/commerce/{companyId}/sub-account'
-  controller: Viabo\Backend\Controller\backoffice\company\find\CompanySubAccountFinderController
-  methods: GET
-
-find-sub-account-company-movements:
-  path: '/api/commerce/{companyId}/sub-account/movements'
-  controller: Viabo\Backend\Controller\backoffice\company\find\CompanySubAccountMovementsFinderController
   methods: GET
 
 find-commerce-slug:

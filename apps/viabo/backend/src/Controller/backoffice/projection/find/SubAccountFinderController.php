@@ -1,27 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\Backend\Controller\backoffice\company\find;
+namespace Viabo\Backend\Controller\backoffice\projection\find;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\stp\cardCloud\application\find_sub_account_movements_by_company\SubAccountCardCloudServiceMovementsByCompanyQuery;
+use Viabo\stp\cardCloud\application\find_sub_account_by_company\SubAccountCardCloudServiceByCompanyQuery;
 
-final readonly class CompanySubAccountMovementsFinderController extends ApiController
+final readonly class SubAccountFinderController extends ApiController
 {
 
     public function __invoke(string $companyId, Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $fromDate = $request->query->get('fromDate');
-            $toDate = $request->query->get('toDate');
-            $company = $this->ask(new SubAccountCardCloudServiceMovementsByCompanyQuery(
+            $company = $this->ask(new SubAccountCardCloudServiceByCompanyQuery(
                 $tokenData['businessId'],
-                $companyId,
-                $fromDate,
-                $toDate
+                $companyId
             ));
             return new JsonResponse($company->data);
         } catch (\DomainException $exception) {

@@ -4,27 +4,17 @@ namespace Viabo\backoffice\projection\application\find_companies_with_service_ca
 
 use Viabo\backoffice\company\application\find\CompaniesResponse;
 use Viabo\backoffice\projection\domain\CompanyProjection;
-use Viabo\backoffice\projection\domain\CompanyProjectionRepository;
-use Viabo\shared\domain\criteria\Criteria;
-use Viabo\shared\domain\criteria\Filters;
+use Viabo\backoffice\projection\domain\services\find_companies_by_admin_profile\CompaniesByAdminProfileFinder;
 
-final class CompaniesWithCardCloudServiceByAdminFinder
+final readonly class CompaniesWithCardCloudServiceByAdminFinder
 {
-    public function __construct(private CompanyProjectionRepository $repository)
+    public function __construct(private CompaniesByAdminProfileFinder $companiesByAdminProfileFinder)
     {
     }
 
     public function __invoke(string $userId, string $businessId, string $profileId): CompaniesResponse
     {
-        $filters = [['field' => 'businessId', 'operator' => '=', 'value' => $businessId]];
-
-        $companiesAdminProfileId = '7';
-        if ($profileId === $companiesAdminProfileId) {
-            $filters[] = ['field' => 'users', 'operator' => 'CONTAINS', 'value' => $userId];
-        }
-
-        $filters = Filters::fromValues($filters);
-        $companies = $this->repository->searchCriteria(new Criteria($filters));
+        $companies = $this->companiesByAdminProfileFinder->__invoke($businessId, $profileId, $userId);
 
         $companies = array_values(array_filter($companies, function (CompanyProjection $company) {
             return $company->hasCardCloudService();

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\Backend\Controller\backoffice\company\find;
+namespace Viabo\Backend\Controller\backoffice\projection\find;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

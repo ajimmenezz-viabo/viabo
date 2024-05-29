@@ -13,6 +13,6 @@ final readonly class SubAccountCardCloudServiceMovementsByCompanyQueryHandler im
 
     public function __invoke(SubAccountCardCloudServiceMovementsByCompanyQuery $query): Response
     {
-        return $this->finder->__invoke($query->businessId, $query->companyId, $query->fromDate, $query->toDate);
+        return $this->finder->__invoke($query->businessId, $query->subAccountId, $query->fromDate, $query->toDate);
     }
 }

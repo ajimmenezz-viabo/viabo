@@ -4,11 +4,11 @@ find-companies-by-card-cloud-service:
   methods: GET
 
 find-sub-account:
-  path: '/api/commerce/{companyId}/sub-account'
+  path: '/api/commerce/{subAccountId}/sub-account'
   controller: Viabo\Backend\Controller\backoffice\projection\find\SubAccountFinderController
   methods: GET
 
 find-sub-account-movements:
-  path: '/api/commerce/{companyId}/sub-account/movements'
+  path: '/api/commerce/{subAccountId}/sub-account/movements'
   controller: Viabo\Backend\Controller\backoffice\projection\find\SubAccountMovementsFinderController
   methods: GET

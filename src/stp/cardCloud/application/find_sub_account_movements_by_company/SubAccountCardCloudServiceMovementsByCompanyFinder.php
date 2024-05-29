@@ -13,13 +13,13 @@ final readonly class SubAccountCardCloudServiceMovementsByCompanyFinder
 
     public function __invoke(
         string  $businessId,
-        string  $companyId,
+        string  $subAccountId,
         ?string $fromDate,
         ?string $toDate
     ): CardCloudServiceResponse
     {
         return new CardCloudServiceResponse(
-            $this->repository->searchMovements($businessId, $companyId, $fromDate, $toDate)
+            $this->repository->searchMovements($businessId, $subAccountId, $fromDate, $toDate)
         );
     }
 }

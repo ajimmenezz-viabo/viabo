@@ -11,7 +11,7 @@ use Viabo\stp\cardCloud\application\find_sub_account_movements_by_company\SubAcc
 final readonly class SubAccountMovementsFinderController extends ApiController
 {
 
-    public function __invoke(string $companyId, Request $request): Response
+    public function __invoke(string $subAccountId, Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
@@ -19,7 +19,7 @@ final readonly class SubAccountMovementsFinderController extends ApiController
             $toDate = $request->query->get('toDate');
             $company = $this->ask(new SubAccountCardCloudServiceMovementsByCompanyQuery(
                 $tokenData['businessId'],
-                $companyId,
+                $subAccountId,
                 $fromDate,
                 $toDate
             ));

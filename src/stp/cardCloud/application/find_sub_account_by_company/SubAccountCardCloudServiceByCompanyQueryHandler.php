@@ -13,7 +13,7 @@ final readonly class SubAccountCardCloudServiceByCompanyQueryHandler implements 
 
     public function __invoke(SubAccountCardCloudServiceByCompanyQuery $query): Response
     {
-        return $this->finder->__invoke($query->businessId, $query->companyId);
+        return $this->finder->__invoke($query->businessId, $query->subAccountId);
     }
 
 }

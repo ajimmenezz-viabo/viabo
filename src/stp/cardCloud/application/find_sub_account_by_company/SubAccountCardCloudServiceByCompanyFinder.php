@@ -11,10 +11,10 @@ final readonly class SubAccountCardCloudServiceByCompanyFinder
     {
     }
 
-    public function __invoke(string $businessId, string $companyId): CardCloudServiceResponse
+    public function __invoke(string $businessId, string $subAccountId): CardCloudServiceResponse
     {
         return new CardCloudServiceResponse(
-            $this->repository->searchSubAccount($businessId, $companyId)
+            $this->repository->searchSubAccount($businessId, $subAccountId)
         );
     }
 }

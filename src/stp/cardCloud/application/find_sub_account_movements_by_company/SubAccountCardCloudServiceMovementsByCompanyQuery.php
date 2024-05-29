@@ -8,7 +8,7 @@ final readonly class SubAccountCardCloudServiceMovementsByCompanyQuery implement
 {
     public function __construct(
         public string  $businessId,
-        public string  $companyId,
+        public string  $subAccountId,
         public ?string $fromDate,
         public ?string $toDate
     )

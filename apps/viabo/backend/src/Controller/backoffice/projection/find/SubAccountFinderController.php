@@ -11,13 +11,13 @@ use Viabo\stp\cardCloud\application\find_sub_account_by_company\SubAccountCardCl
 final readonly class SubAccountFinderController extends ApiController
 {
 
-    public function __invoke(string $companyId, Request $request): Response
+    public function __invoke(string $subAccountId, Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
             $company = $this->ask(new SubAccountCardCloudServiceByCompanyQuery(
                 $tokenData['businessId'],
-                $companyId
+                $subAccountId
             ));
             return new JsonResponse($company->data);
         } catch (\DomainException $exception) {

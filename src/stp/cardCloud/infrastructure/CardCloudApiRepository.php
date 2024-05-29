@@ -28,23 +28,23 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
     }
 
 
-    public function searchSubAccount(string $businessId, string $companyId): array
+    public function searchSubAccount(string $businessId, string $subAccountId): array
     {
         $credentials = $this->searchCredentials($businessId);
         $signResponse = $this->signIn($credentials->toArray());
         $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$companyId}";
+        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$subAccountId}";
         $apiData = [];
         return $this->request($apiData, $api, $token, 'GET');
     }
 
 
-    public function searchMovements(string $businessId, string $companyId, string $fromDate, string $toDate): array
+    public function searchMovements(string $businessId, string $subAccountId, string $fromDate, string $toDate): array
     {
         $credentials = $this->searchCredentials($businessId);
         $signResponse = $this->signIn($credentials->toArray());
         $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$companyId}/movements";
+        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$subAccountId}/movements";
         $apiData = ['from' => $fromDate, 'to' => $toDate];
         return $this->request($apiData, $api, $token, 'GET');
     }

@@ -5,7 +5,6 @@ namespace Viabo\backoffice\services\application\create_card_cloud_service_by_adm
 
 
 use Viabo\backoffice\company\domain\events\CompanyUpdatedDomainEventByAdminStp;
-use Viabo\backoffice\projection\application\update_projection_by_admin_stp\ProjectionUpdaterByAdminStp;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 
 final readonly class CreateCardCloudServiceOnCompanyUpdatedByAdminStp implements DomainEventSubscriber

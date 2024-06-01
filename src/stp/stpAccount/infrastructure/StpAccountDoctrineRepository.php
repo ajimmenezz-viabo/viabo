@@ -36,7 +36,7 @@ final class StpAccountDoctrineRepository extends DoctrineRepository implements S
 
     public function searchAll(): array
     {
-        return $this->repository(StpAccount::class)->findAll();
+        return $this->repository(StpAccount::class)->findBy(['active.value'=>'1']);
     }
 
     public function update(StpAccount $stpAccount): void

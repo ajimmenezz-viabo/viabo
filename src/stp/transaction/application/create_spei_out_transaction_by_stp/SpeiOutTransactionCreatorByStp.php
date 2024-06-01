@@ -8,6 +8,7 @@ use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
+use Viabo\stp\shared\domain\stp\exceptions\StpApiError;
 use Viabo\stp\shared\domain\stp\StpRepository;
 use Viabo\stp\stpAccount\application\find\StpAccountQueryByCompany;
 use Viabo\stp\stpAccount\application\find_stp_accounts\StpAccountsQuery;
@@ -35,13 +36,16 @@ final readonly class SpeiOutTransactionCreatorByStp
 
     public function __invoke(string $company): void
     {
-        $stpAccounts = $this->searchStpAccounts($company);
-        $transactions = $this->searchSpeiOutsTransactions($stpAccounts);
-        $transactions = $this->addData($transactions);
-        $transactionsNotRegistered = $this->filterSpeiOutsNotRegistered($transactions);
-        $transactionsRegistered = $this->filterSpeiOutsRegistered($transactions);
-        $this->registerTransactionNotRegistered($transactionsNotRegistered);
-        $this->updateTransactionsRegistered($transactionsRegistered, $transactions);
+        try {
+            $stpAccounts = $this->searchStpAccounts($company);
+            $transactions = $this->searchSpeiOutsTransactions($stpAccounts);
+            $transactions = $this->addData($transactions);
+            $transactionsNotRegistered = $this->filterSpeiOutsNotRegistered($transactions);
+            $transactionsRegistered = $this->filterSpeiOutsRegistered($transactions);
+            $this->registerTransactionNotRegistered($transactionsNotRegistered);
+            $this->updateTransactionsRegistered($transactionsRegistered, $transactions);
+        } catch (StpApiError $apiError) {
+        };
     }
 
     public function searchStpAccounts(string $company): array
@@ -73,7 +77,8 @@ final readonly class SpeiOutTransactionCreatorByStp
     {
         return array_map(function (array $transaction) {
             $sourceCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaOrdenante']]]);
-            $destinationCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaBeneficiario']]]);
+            $destinationCompany =
+                $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaBeneficiario']]]);
             $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
             return array_merge($transaction, $data, ['commissions' => []]);
         }, $transactions);

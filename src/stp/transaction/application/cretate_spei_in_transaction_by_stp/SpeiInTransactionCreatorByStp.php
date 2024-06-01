@@ -10,10 +10,10 @@ use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
 use Viabo\shared\domain\utils\DatePHP;
+use Viabo\stp\shared\domain\stp\exceptions\StpApiError;
 use Viabo\stp\shared\domain\stp\StpRepository;
 use Viabo\stp\stpAccount\application\find\StpAccountQueryByCompany;
 use Viabo\stp\stpAccount\application\find_stp_accounts\StpAccountsQuery;
-use Viabo\stp\stpAccount\domain\StpAccount;
 use Viabo\stp\transaction\domain\services\AccountsDataFinder;
 use Viabo\stp\transaction\domain\services\TransactionsCreatorByStp;
 use Viabo\stp\transaction\domain\Transaction;
@@ -38,14 +38,18 @@ final readonly class SpeiInTransactionCreatorByStp
 
     public function __invoke(string $company, int $date): void
     {
-        $stpAccounts = $this->searchStpAccounts($company);
-        $transactions = $this->searchSpeiInsTransactions($date, $stpAccounts);
-        $transactions = $this->filterSpeiInsNotRegistered($transactions);
-        $transactions = $this->removeDuplicate($transactions);
-        $transactions = $this->addCommissions($transactions);
-        $transactions = $this->addData($transactions);
-        $transactions = $this->transactionsCreator->__invoke($transactions, 'speiIn');
-        $this->save($transactions);
+        try {
+            $stpAccounts = $this->searchStpAccounts($company);
+            $transactions = $this->searchSpeiInsTransactions($date, $stpAccounts);
+            $transactions = $this->filterSpeiInsNotRegistered($transactions);
+            $transactions = $this->removeDuplicate($transactions);
+            $transactions = $this->addCommissions($transactions);
+            $transactions = $this->addData($transactions);
+            $transactions = $this->transactionsCreator->__invoke($transactions, 'speiIn');
+            $this->save($transactions);
+        } catch (StpApiError $apiError) {
+
+        }
     }
 
     public function searchStpAccounts(string $company): array
@@ -77,7 +81,8 @@ final readonly class SpeiInTransactionCreatorByStp
     private function filterSpeiInsNotRegistered(array $transactions): array
     {
         return array_filter($transactions, function (array $transaction) {
-            $filter = Filters::fromValues([['field' => 'stpId.value', 'operator' => '=', 'value' => $transaction['id']]]);
+            $filter =
+                Filters::fromValues([['field' => 'stpId.value', 'operator' => '=', 'value' => $transaction['id']]]);
             $transaction = $this->repository->searchCriteria(new Criteria($filter));
             return empty($transaction);
         });

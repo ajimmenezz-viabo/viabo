@@ -4,6 +4,7 @@
 namespace Viabo\stp\stpAccount\application\create;
 
 
+use Viabo\stp\shared\domain\stp\exceptions\StpApiError;
 use Viabo\stp\shared\domain\stp\StpRepository;
 use Viabo\stp\stpAccount\domain\services\StpAccountFinderByCriteria;
 use Viabo\stp\stpAccount\domain\StpAccount;
@@ -21,15 +22,17 @@ final readonly class BalanceStpAccountUpdater
 
     public function __invoke(string $company): void
     {
-        $stpAccounts = [];
-        if (empty($company)) {
-            $stpAccounts = $this->repository->searchAll();
-        } else {
-            $filter = [['field' => 'company.value', 'operator' => '=', 'value' => $company]];
-            $stpAccounts[] = $this->finder->__invoke($filter);
+        try {
+            $stpAccounts = [];
+            if (empty($company)) {
+                $stpAccounts = $this->repository->searchAll();
+            } else {
+                $filter = [['field' => 'company.value', 'operator' => '=', 'value' => $company]];
+                $stpAccounts[] = $this->finder->__invoke($filter);
+            }
+            $this->updateBalanceStpAccounts($stpAccounts);
+        }catch (StpApiError $apiError){
         }
-
-        $this->updateBalanceStpAccounts($stpAccounts);
     }
 
     private function updateBalanceStpAccounts(array $stpAccounts): void

@@ -4,6 +4,7 @@
 namespace Viabo\stp\shared\infrastructure\stp;
 
 
+use Viabo\stp\shared\domain\stp\exceptions\StpApiError;
 use Viabo\stp\shared\domain\stp\StpRepository;
 
 final readonly class StpAPIRepository implements StpRepository
@@ -84,13 +85,13 @@ final readonly class StpAPIRepository implements StpRepository
         curl_close($curl);
 
         if (empty($response)) {
-            throw new \DomainException("Error de API STP: DOES NOT RESPOND ", 403);
+            throw new StpApiError("Error de API STP: DOES NOT RESPOND ", 403);
         }
 
         $response = json_decode($response, true);
         if ($this->hasError($response)) {
             $mensaje = $response['resultado']['descripcionError'] ?? $response['mensaje'];
-            throw new \DomainException("Error de API STP: $mensaje", 403);
+            throw new StpApiError("Error de API STP: $mensaje", 403);
         }
 
         return $response;

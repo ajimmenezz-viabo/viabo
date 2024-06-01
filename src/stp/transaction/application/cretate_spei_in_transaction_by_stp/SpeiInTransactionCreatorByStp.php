@@ -138,7 +138,7 @@ final readonly class SpeiInTransactionCreatorByStp
     {
         array_map(function (Transaction $transaction) {
             $this->repository->save($transaction);
-//            $this->bus->publish(...$transaction->pullDomainEvents());
+            $this->bus->publish(...$transaction->pullDomainEvents());
         }, $transactions->elements());
     }
 }

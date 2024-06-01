@@ -132,7 +132,7 @@ final readonly class SpeiOutTransactionCreatorByStp
                     $transaction->updateToLiquidated($transactionOut, $liquidatedStatus);
                     $this->repository->update($transaction);
 
-//                    $this->bus->publish(...$transaction->pullDomainEvents());
+                    $this->bus->publish(...$transaction->pullDomainEvents());
                 }
             }
         }, $transactionsRegistered->elements());
@@ -152,7 +152,7 @@ final readonly class SpeiOutTransactionCreatorByStp
     {
         array_map(function (Transaction $transaction) {
             $this->repository->save($transaction);
-//            $this->bus->publish(...$transaction->pullDomainEvents());
+            $this->bus->publish(...$transaction->pullDomainEvents());
         }, $transactions->elements());
     }
 

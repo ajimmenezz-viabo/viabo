@@ -6,20 +6,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
-use Viabo\stp\cardCloud\application\find_card_details\CardCloudCardDetailsQuery;
+use Viabo\stp\cardCloud\application\find_card_movements\CardCloudCardMovementsQuery;
 
-final readonly class CardCloudCardDetailsFinderController extends ApiController
+final readonly class CardCloudCardMovementsFinderController extends ApiController
 {
-
     public function __invoke(string $cardId, Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $cardDetails = $this->ask(new CardCloudCardDetailsQuery(
+            $cardMovements = $this->ask(new CardCloudCardMovementsQuery(
                 $tokenData['businessId'],
                 $cardId
             ));
-            return new JsonResponse($cardDetails->data);
+            return new JsonResponse($cardMovements->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }

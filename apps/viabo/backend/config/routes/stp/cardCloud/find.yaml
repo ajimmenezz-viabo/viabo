@@ -7,3 +7,8 @@ find-card-details:
   path: '/api/cardCloud/card/{cardId}/details'
   controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardDetailsFinderController
   methods: GET
+
+find-card-movements:
+  path: '/api/cardCloud/card/{cardId}/movements'
+  controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardMovementsFinderController
+  methods: GET

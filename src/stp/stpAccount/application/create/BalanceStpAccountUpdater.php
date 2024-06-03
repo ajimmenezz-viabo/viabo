@@ -4,7 +4,6 @@
 namespace Viabo\stp\stpAccount\application\create;
 
 
-use Viabo\stp\shared\domain\stp\exceptions\StpApiError;
 use Viabo\stp\shared\domain\stp\StpRepository;
 use Viabo\stp\stpAccount\domain\services\StpAccountFinderByCriteria;
 use Viabo\stp\stpAccount\domain\StpAccount;
@@ -31,7 +30,7 @@ final readonly class BalanceStpAccountUpdater
                 $stpAccounts[] = $this->finder->__invoke($filter);
             }
             $this->updateBalanceStpAccounts($stpAccounts);
-        }catch (StpApiError $apiError){
+        } catch (\DomainException) {
         }
     }
 

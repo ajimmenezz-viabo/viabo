@@ -8,7 +8,6 @@ use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
 use Viabo\shared\domain\criteria\Criteria;
 use Viabo\shared\domain\criteria\Filters;
-use Viabo\stp\shared\domain\stp\exceptions\StpApiError;
 use Viabo\stp\shared\domain\stp\StpRepository;
 use Viabo\stp\stpAccount\application\find\StpAccountQueryByCompany;
 use Viabo\stp\stpAccount\application\find_stp_accounts\StpAccountsQuery;
@@ -44,7 +43,7 @@ final readonly class SpeiOutTransactionCreatorByStp
             $transactionsRegistered = $this->filterSpeiOutsRegistered($transactions);
             $this->registerTransactionNotRegistered($transactionsNotRegistered);
             $this->updateTransactionsRegistered($transactionsRegistered, $transactions);
-        } catch (StpApiError $apiError) {
+        } catch (\DomainException) {
         };
     }
 

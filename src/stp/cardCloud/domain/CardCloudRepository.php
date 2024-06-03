@@ -9,4 +9,10 @@ interface CardCloudRepository
     public function searchSubAccount(string $businessId, string $subAccountId): array;
 
     public function searchMovements(string $businessId, string $subAccountId, string $fromDate, string $toDate): array;
+
+    public function searchSubAccountCards(string $businessId, string $subAccountId): array;
+
+    public function searchCardDetails(string $businessId, string $cardId): array;
+
+    public function searchCardMovements(string $businessId, string $cardId):array;
 }

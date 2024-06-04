@@ -88,13 +88,13 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($apiData, $api, $token, 'GET');
     }
 
-    public function searchCardMovements(string $businessId, string $cardId): array
+    public function searchCardMovements(string $businessId, string $cardId, string $fromDate, string $toDate): array
     {
         $credentials = $this->searchCredentials($businessId);
         $signResponse = $this->signIn($credentials->toArray());
         $token = "Authorization: Bearer {$signResponse['access_token']}";
         $api = "{$credentials->apiUrl()}/v1/card/{$cardId}/movements";
-        $apiData = [];
+        $apiData = ['from' => $fromDate, 'to' => $toDate];
         return $this->request($apiData, $api, $token, 'GET');
     }
 
@@ -125,6 +125,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
         return $response;
     }
+
     private function hasError(array $response): bool
     {
         return array_key_exists('error', $response) || array_key_exists('message', $response);

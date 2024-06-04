@@ -11,8 +11,13 @@ final  readonly class CardCloudCardMovementsQueryHandler implements QueryHandler
     {
     }
 
-    public function __invoke(CardCloudCardMovementsQuery $query):Response
+    public function __invoke(CardCloudCardMovementsQuery $query): Response
     {
-        return $this->finder->__invoke($query->businessId, $query->cardId);
+        return $this->finder->__invoke(
+            $query->businessId,
+            $query->cardId,
+            $query->fromDate,
+            $query->toDate
+        );
     }
 }

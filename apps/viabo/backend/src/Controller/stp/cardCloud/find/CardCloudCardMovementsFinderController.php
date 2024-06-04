@@ -14,9 +14,13 @@ final readonly class CardCloudCardMovementsFinderController extends ApiControlle
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $fromDate = $request->query->get('fromDate') ?? '';
+            $toDate = $request->query->get('toDate') ?? '';
             $cardMovements = $this->ask(new CardCloudCardMovementsQuery(
                 $tokenData['businessId'],
-                $cardId
+                $cardId,
+                $fromDate,
+                $toDate
             ));
             return new JsonResponse($cardMovements->data);
         } catch (\DomainException $exception) {

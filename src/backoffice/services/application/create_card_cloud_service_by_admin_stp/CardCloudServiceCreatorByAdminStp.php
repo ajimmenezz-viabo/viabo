@@ -2,7 +2,6 @@
 
 namespace Viabo\backoffice\services\application\create_card_cloud_service_by_admin_stp;
 
-use Viabo\backoffice\projection\application\find_company_by_criteria\CompanyProjectionCriteriaQuery;
 use Viabo\backoffice\services\domain\events\ServicesCreatedDomainEventByAdminStp;
 use Viabo\backoffice\services\domain\new\Service;
 use Viabo\backoffice\services\domain\new\ServiceRepository;

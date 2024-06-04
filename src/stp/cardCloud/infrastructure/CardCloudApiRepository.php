@@ -98,6 +98,16 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($apiData, $api, $token, 'GET');
     }
 
+    public function searchSubAccounts(string $businessId): array
+    {
+        $credentials = $this->searchCredentials($businessId);
+        $signResponse = $this->signIn($credentials->toArray());
+        $token = "Authorization: Bearer {$signResponse['access_token']}";
+        $api = "{$credentials->apiUrl()}/v1/subaccounts";
+        $apiData = [];
+        return $this->request($apiData, $api, $token, 'GET');
+    }
+
     private function request(array $inputData, string $api, string $token, string $request): array
     {
         $jsonData = json_encode($inputData);

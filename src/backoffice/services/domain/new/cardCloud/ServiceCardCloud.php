@@ -30,7 +30,6 @@ final class ServiceCardCloud extends Service
     public static function create(
         string $companyId,
         string $createdByUser,
-        string $createDate,
         array  $serviceCardCloud
     ): ServiceCardCloud
     {
@@ -42,7 +41,7 @@ final class ServiceCardCloud extends Service
             ServiceUpdateByUser::empty(),
             ServiceUpdateDate::empty(),
             ServiceCreatedByUser::create($createdByUser),
-            new ServiceCreateDate($createDate)
+            ServiceCreateDate::now()
         );
     }
 

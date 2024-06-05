@@ -8,4 +8,8 @@ use Viabo\shared\domain\valueObjects\DateTimeValueObject;
 
 final class ServiceCreateDate extends DateTimeValueObject
 {
+    public static function now(): ServiceCreateDate
+    {
+        return self::todayDate();
+    }
 }

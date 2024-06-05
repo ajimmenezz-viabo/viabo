@@ -12,3 +12,8 @@ find-card-movements:
   path: '/api/cardCloud/card/{cardId}/movements'
   controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardMovementsFinderController
   methods: GET
+
+find-card-sensitive:
+  path: '/api/cardCloud/card/{cardId}/sensitive'
+  controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardSensitiveFinderController
+  methods: GET

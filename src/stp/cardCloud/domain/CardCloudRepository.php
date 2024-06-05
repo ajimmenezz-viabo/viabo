@@ -19,4 +19,6 @@ interface CardCloudRepository
     public function searchSubAccounts(string $businessId): array;
 
     public function searchCardSensitive(string $businessId, string $cardId): array;
+
+    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array;
 }

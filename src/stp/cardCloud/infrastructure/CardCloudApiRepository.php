@@ -119,6 +119,16 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($apiData, $api, $token, 'GET');
     }
 
+    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array
+    {
+        $credentials = $this->searchCredentials($businessId);
+        $signResponse = $this->signIn($credentials->toArray());
+        $token = "Authorization: Bearer {$signResponse['access_token']}";
+        $api = "{$credentials->apiUrl()}/v1/card/{$cardId}/{$blockStatus}";
+        $apiData = [];
+        return $this->request($apiData, $api, $token, 'POST');
+    }
+
     private function request(array $inputData, string $api, string $token, string $request): array
     {
         $jsonData = json_encode($inputData);
@@ -137,11 +147,11 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         curl_close($curl);
 
         if (empty($response)) {
-            throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 403);
+            throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 400);
         }
         $response = json_decode($response, true);
         if ($this->hasError($response)) {
-            throw new \DomainException("Error de API CARD CLOUD", 403);
+            throw new \DomainException("Error de API CARD CLOUD: {$response['message']}", 400);
         }
 
         return $response;
@@ -149,6 +159,6 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
     private function hasError(array $response): bool
     {
-        return array_key_exists('error', $response) || array_key_exists('message', $response);
+        return array_key_exists('error', $response);
     }
 }

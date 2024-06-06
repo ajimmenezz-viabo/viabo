@@ -139,6 +139,16 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($apiData, $api, $token, 'GET');
     }
 
+
+    public function createTransfer(string $businessId, array $transferData): array
+    {
+        $credentials = $this->searchCredentials($businessId);
+        $signResponse = $this->signIn($credentials->toArray());
+        $token = "Authorization: Bearer {$signResponse['access_token']}";
+        $api = "{$credentials->apiUrl()}/v1/transfer";
+        return $this->request($transferData, $api, $token, 'POST');
+    }
+
     private function request(array $inputData, string $api, string $token, string $request): array
     {
         $jsonData = json_encode($inputData);
@@ -153,6 +163,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         ]);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $response = curl_exec($curl);
         curl_close($curl);
 
@@ -160,15 +171,26 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
             throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 400);
         }
         $response = json_decode($response, true);
-        if ($this->hasError($response)) {
-            throw new \DomainException("Error de API CARD CLOUD: {$response['message']}", 400);
+        if ($this->hasError($httpCode)) {
+            $errorMessage = $this->getErrorMessage($response);
+            throw new \DomainException("Error de API CARD CLOUD: {$errorMessage}", 400);
         }
 
         return $response;
     }
 
-    private function hasError(array $response): bool
+    private function hasError(int $httpCode): bool
     {
-        return array_key_exists('error', $response);
+        return $httpCode !== 200;
+    }
+    public function getErrorMessage(mixed $response): string
+    {
+        $errorMessage = '';
+        if (isset($response['error'])) {
+            $errorMessage = $response['error'];
+        } elseif (isset($response['message'])) {
+            $errorMessage = $response['message'];
+        }
+        return $errorMessage;
     }
 }

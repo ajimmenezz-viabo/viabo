@@ -20,8 +20,7 @@ final readonly class CardCloudCardCVVFinder
 
     public function encrypt(array $cardCVV): array
     {
-        $cvv = Crypt::encrypt($cardCVV['cvv']) ?? '';
-        $expirationDate = Crypt::encrypt(strval($cardCVV['expiration_date'])) ?? '';
-        return ['cvv' => $cvv, 'expiration_date' => $expirationDate];
+        $data = json_encode($cardCVV);
+        return ['data' => Crypt::encrypt($data)];
     }
 }

@@ -17,3 +17,8 @@ find-card-sensitive:
   path: '/api/cardCloud/card/{cardId}/sensitive'
   controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardSensitiveFinderController
   methods: GET
+
+find-card-cvv:
+  path: '/api/cardCloud/card/{cardId}/cvv'
+  controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardCVVFinderController
+  methods: GET

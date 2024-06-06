@@ -15,8 +15,13 @@ final readonly class CardCloudCardCVVFinder
     public function __invoke(string $businessId, string $cardId): CardCloudServiceResponse
     {
         $cardCVV = $this->repository->searchCardCVV($businessId, $cardId);
+        return new CardCloudServiceResponse($this->encrypt($cardCVV));
+    }
+
+    public function encrypt(array $cardCVV): array
+    {
         $cvv = Crypt::encrypt($cardCVV['cvv']) ?? '';
         $expirationDate = Crypt::encrypt(strval($cardCVV['expiration_date'])) ?? '';
-        return new CardCloudServiceResponse(['cvv' => $cvv, 'expiration_date' => $expirationDate]);
+        return ['cvv' => $cvv, 'expiration_date' => $expirationDate];
     }
 }

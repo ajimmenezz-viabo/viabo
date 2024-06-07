@@ -163,8 +163,8 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         ]);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
         if (empty($response)) {
@@ -173,7 +173,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         $response = json_decode($response, true);
         if ($this->hasError($httpCode)) {
             $errorMessage = $this->getErrorMessage($response);
-            throw new \DomainException("Error de API CARD CLOUD: {$errorMessage}", 400);
+            throw new \DomainException($errorMessage, 400);
         }
 
         return $response;
@@ -183,7 +183,8 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
     {
         return $httpCode !== 200;
     }
-    public function getErrorMessage(mixed $response): string
+
+    public function getErrorMessage(array $response): string
     {
         $errorMessage = '';
         if (isset($response['error'])) {
@@ -191,6 +192,20 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         } elseif (isset($response['message'])) {
             $errorMessage = $response['message'];
         }
-        return $errorMessage;
+        return match ($errorMessage) {
+            "Error while decoding the token" => "Error al decodificar el token",
+            "You don't have permission to access this resource" => "No tienes permiso para acceder a este recurso",
+            "Error blocking card" => "Error al bloquear la tarjeta",
+            "Unauthorized" => "No autorizado",
+            "Card not found or you do not have permission to access it" => "Tarjeta no encontrada o no tienes 
+            permiso para acceder a ella",
+            "Error getting sensitive data" => "Error al obtener datos confidenciales",
+            "Error getting CVV, please try again later" => "Error al obtener CVV, inténtelo de nuevo más tarde",
+            "Subaccount with this ExternalId already exists" => "La subcuenta con este Id ya existe",
+            "Subaccount with this Description already exists" => "La subcuenta con esta descripción ya existe",
+            "Error creating subaccount" => "Error al crear subcuenta",
+            "Error transferring funds" => "Error al transferir fondos",
+            default => "Error de API CARD CLOUD: {$errorMessage}",
+        };
     }
 }

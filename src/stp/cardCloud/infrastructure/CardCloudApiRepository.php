@@ -139,6 +139,16 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($apiData, $api, $token, 'GET');
     }
 
+
+    public function createTransfer(string $businessId, array $transferData): array
+    {
+        $credentials = $this->searchCredentials($businessId);
+        $signResponse = $this->signIn($credentials->toArray());
+        $token = "Authorization: Bearer {$signResponse['access_token']}";
+        $api = "{$credentials->apiUrl()}/v1/transfer";
+        return $this->request($transferData, $api, $token, 'POST');
+    }
+
     private function request(array $inputData, string $api, string $token, string $request): array
     {
         $jsonData = json_encode($inputData);
@@ -154,21 +164,44 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
         $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
         if (empty($response)) {
             throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 400);
         }
         $response = json_decode($response, true);
-        if ($this->hasError($response)) {
-            throw new \DomainException("Error de API CARD CLOUD: {$response['message']}", 400);
+        if ($this->hasError($httpCode)) {
+            $errorMessage = $this->getErrorMessage($response);
+            throw new \DomainException($errorMessage, 400);
         }
 
         return $response;
     }
 
-    private function hasError(array $response): bool
+    private function hasError(int $httpCode): bool
     {
-        return array_key_exists('error', $response);
+        return $httpCode !== 200;
+    }
+
+    public function getErrorMessage(array $response): string
+    {
+        $errorMessage = $response['error'] ?? $response['message'] ?? '';
+
+        return match ($errorMessage) {
+            "Error while decoding the token" => "Error al decodificar el token",
+            "You don't have permission to access this resource" => "No tienes permiso para acceder a este recurso",
+            "Error blocking card" => "Error al bloquear la tarjeta",
+            "Unauthorized" => "No autorizado",
+            "Card not found or you do not have permission to access it" => "Tarjeta no encontrada o no tienes 
+            permiso para acceder a ella",
+            "Error getting sensitive data" => "Error al obtener datos confidenciales",
+            "Error getting CVV, please try again later" => "Error al obtener CVV, inténtelo de nuevo más tarde",
+            "Subaccount with this ExternalId already exists" => "La subcuenta con este Id ya existe",
+            "Subaccount with this Description already exists" => "La subcuenta con esta descripción ya existe",
+            "Error creating subaccount" => "Error al crear subcuenta",
+            "Error transferring funds" => "Error al transferir fondos",
+            default => "Error de API CARD CLOUD: {$errorMessage}",
+        };
     }
 }

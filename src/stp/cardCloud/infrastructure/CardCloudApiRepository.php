@@ -186,12 +186,8 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
     public function getErrorMessage(array $response): string
     {
-        $errorMessage = '';
-        if (isset($response['error'])) {
-            $errorMessage = $response['error'];
-        } elseif (isset($response['message'])) {
-            $errorMessage = $response['message'];
-        }
+        $errorMessage = $response['error'] ?? $response['message'] ?? '';
+
         return match ($errorMessage) {
             "Error while decoding the token" => "Error al decodificar el token",
             "You don't have permission to access this resource" => "No tienes permiso para acceder a este recurso",

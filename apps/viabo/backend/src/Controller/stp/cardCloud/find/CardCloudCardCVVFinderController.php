@@ -19,7 +19,7 @@ final readonly class CardCloudCardCVVFinderController extends ApiController
                 $tokenData['businessId'],
                 $cardId
             ));
-            return new JsonResponse($cardCVV->data);
+            return new JsonResponse($this->opensslEncrypt($cardCVV->data));
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }

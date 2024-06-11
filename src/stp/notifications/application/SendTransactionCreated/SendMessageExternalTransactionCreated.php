@@ -55,6 +55,7 @@ final readonly class SendMessageExternalTransactionCreated implements DomainEven
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'reference' => $transaction['trackingKey'],
+                'urlCEP' => $transaction['urlCEP'],
                 'date' => $transaction['createDate']
             ]
         );

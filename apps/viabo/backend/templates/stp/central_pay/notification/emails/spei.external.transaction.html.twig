@@ -200,20 +200,22 @@
                     <b>{{ statusName }}</b>
                 </td>
             </tr>
-            <tr>
-                <td class="subtitle">Clave de Rastreo:</td>
-                <td class="separator"></td>
-                <td class="value">
-                    <b>{{ reference }}</b>
-                </td>
-            </tr>
-            <tr>
-                <td class="subtitle">Validar Transferencia:</td>
-                <td class="separator"></td>
-                <td class="value">
-                    <a href="https://www.banxico.org.mx/cep/" target="_blank" rel="noopener noreferrer"><b>https:/www.banxico.org.mx/cep/</b></a>
-                </td>
-            </tr>
+            {% if urlCEP is not empty %}
+                <tr>
+                    <td class="subtitle">Clave de Rastreo:</td>
+                    <td class="separator"></td>
+                    <td class="value">
+                        <b>{{ reference }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="subtitle">Validar Transferencia:</td>
+                    <td class="separator"></td>
+                    <td class="value">
+                        <a href={{ urlCEP }} target="_blank" rel="noopener noreferrer"><b>ver comprobante</b></a>
+                    </td>
+                </tr>
+            {% endif %}
         </table>
     </div>
 

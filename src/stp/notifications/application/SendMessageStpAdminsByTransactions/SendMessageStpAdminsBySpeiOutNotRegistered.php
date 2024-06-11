@@ -50,6 +50,7 @@ final readonly class SendMessageStpAdminsBySpeiOutNotRegistered implements Domai
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'reference' => $transaction['stpId'],
+                'urlCEP' => $transaction['urlCEP'],
                 'date' => $transaction['liquidationDate']
             ]
         );

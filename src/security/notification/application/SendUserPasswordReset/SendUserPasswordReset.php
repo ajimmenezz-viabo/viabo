@@ -4,19 +4,18 @@
 namespace Viabo\security\notification\application\SendUserPasswordReset;
 
 
-use Viabo\backofficeBusiness\business\application\find_business\BusinessQuery;
 use Viabo\security\user\domain\events\UserPasswordResetDomainEvent;
 use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
-use Viabo\shared\domain\service\find_busines_template_file\BusinessTemplateFileFinder;
+use Viabo\shared\domain\service\find_business\BusinessFinder;
 use Viabo\shared\domain\utils\URL;
 
 final readonly class SendUserPasswordReset implements DomainEventSubscriber
 {
     public function __construct(
-        private EmailRepository            $repository,
-        private BusinessTemplateFileFinder $templateFileFinder
+        private EmailRepository $repository,
+        private BusinessFinder  $businessFinder
     )
     {
     }
@@ -29,7 +28,9 @@ final readonly class SendUserPasswordReset implements DomainEventSubscriber
     public function __invoke(UserPasswordResetDomainEvent $event): void
     {
         $userData = $event->toPrimitives();
-        $templateFile = $this->templateFileFinder->__invoke($userData['businessId']);
+        $business = $this->businessFinder->__invoke($userData['businessId']);
+        $templateFile = $business['templateFile'];
+        $host = URL::protocol() . $business['domain'];
 
         $userEmail = $userData['email'];
         $email = new Email(
@@ -40,7 +41,7 @@ final readonly class SendUserPasswordReset implements DomainEventSubscriber
                 'name' => $userData['name'],
                 'password' => $userData['password'],
                 'userEmail' => $userEmail,
-                'host' => URL::get() . "/auth/login"
+                'host' => "$host/auth/login"
             ]
         );
         $this->repository->send($email);

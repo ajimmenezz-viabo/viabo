@@ -12,6 +12,7 @@ final class Business extends AggregateRoot
         private BusinessId           $id,
         private BusinessName         $name,
         private BusinessTemplateFile $templateFile,
+        private BusinessDomain       $domain,
         private BusinessActive       $active
     )
     {
@@ -23,6 +24,7 @@ final class Business extends AggregateRoot
             'id' => $this->id->value(),
             'name' => $this->name->value(),
             'templateFile' => $this->templateFile->value(),
+            'domain' => $this->domain->value(),
             'active' => $this->active->value()
         ];
     }

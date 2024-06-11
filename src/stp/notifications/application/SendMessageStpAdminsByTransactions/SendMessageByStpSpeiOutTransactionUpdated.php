@@ -50,6 +50,7 @@ final readonly class SendMessageByStpSpeiOutTransactionUpdated implements Domain
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'reference' => $transaction['stpId'],
+                'urlCEP' => $transaction['urlCEP'],
                 'date' => $transaction['liquidationDate']
             ]
         );

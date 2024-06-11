@@ -49,6 +49,7 @@ final readonly class SendMessageSpeiInInternalTransactionCreated implements Doma
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'reference' => $transaction['reference'],
+                'urlCEP' => $transaction['urlCEP'],
                 'date' => $transaction['createDate']
             ]
         );

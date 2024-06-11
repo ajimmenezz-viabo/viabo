@@ -5,6 +5,7 @@ namespace Viabo\security\user\domain\services;
 
 
 use Viabo\security\user\domain\exceptions\UserNotExist;
+use Viabo\security\user\domain\exceptions\UserRepeated;
 use Viabo\security\user\domain\User;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\security\user\domain\UserView;
@@ -36,6 +37,10 @@ final readonly class UserFinderByCriteria
 
         if (empty($user)) {
             throw new UserNotExist();
+        }
+
+        if(count($user) > 1){
+            throw new UserRepeated();
         }
 
         return $user[0];

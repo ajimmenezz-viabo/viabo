@@ -11,7 +11,7 @@
         <discriminator-map>
             <discriminator-mapping value="1" class="Viabo\backoffice\services\domain\new\pay\PayService"/>
             <discriminator-mapping value="2" class="Viabo\backoffice\services\domain\new\card\CardService"/>
-            <!--            <discriminator-mapping value="cloud" class="Viabo\backoffice\services\domain\new\card\CloudService" />-->
+            <discriminator-mapping value="3" class="Viabo\backoffice\services\domain\new\payCloud\PayCloudService" />
             <discriminator-mapping value="4" class="Viabo\backoffice\services\domain\new\stp\ServiceStp"/>
             <discriminator-mapping value="5" class="Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud"/>
         </discriminator-map>

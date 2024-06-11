@@ -15,4 +15,5 @@ tickets_behat:
     supportReason:
       paths: [ tests/tickets/apps/supportReason ]
       contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext

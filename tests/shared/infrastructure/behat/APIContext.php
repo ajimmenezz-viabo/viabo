@@ -14,14 +14,15 @@ final class APIContext extends RawMinkContext
 {
     private readonly MinkHelper $sessionHelper;
     private readonly MinkSessionRequestHelper $request;
-    private string $token;
 
 
-    public function __construct(private readonly Session $minkSession)
+    public function __construct(
+        private readonly Session $minkSession,
+        private readonly VariablesContext $variables
+    )
     {
         $this->sessionHelper = new MinkHelper($minkSession);
         $this->request = new MinkSessionRequestHelper(new MinkHelper($minkSession));
-        $this->token = '';
         $_SERVER['SERVER_NAME'] = $_ENV['BEHAT_SERVER_NAME'];
         $_SERVER['SERVER_PORT'] = $_ENV['BEHAT_SERVER_PORT'];
     }
@@ -33,28 +34,41 @@ final class APIContext extends RawMinkContext
     {
         $body = ['content' => json_encode(['username' => $user , 'password' => 'B4CKD00RVI4B0.'])];
         $this->request->sendRequest('POST' , $this->locatePath('/api/login') , $body);
-        $data = json_decode($this->sessionHelper->getResponse() , true);
-        if (empty($data)) {
-            throw new RuntimeException(sprintf("No se pudo ingresar con el usuario y no se genero el token"));
+        $response = $this->sessionHelper->getResponse();
+
+        if ($this->minkSession->getStatusCode() !== 200 ) {
+            throw new RuntimeException(sprintf($response));
         }
-        $this->token = $data['token'];
+
+        $data = json_decode($response, true);
+        $this->variables->setToken($data['token']);
     }
 
     /**
-     * @Given /^Envio una solicitud "([^"]*)" a "([^"]*)"$/
+     * @Given /^envio una solicitud "([^"]*)" a "([^"]*)"$/
      */
     public function envioUnaSolicitudA(string $method , string $url): void
     {
-        $this->sessionHelper->sendRequest($method , $this->locatePath($url) , [] , $this->token);
+        $this->sessionHelper->sendRequest(
+            $method,
+            $this->locatePath($url),
+            [],
+            ['authorization' => $this->variables->getToken()]
+        );
     }
 
     /**
-     * @When /^Envio una solicitud "([^"]*)" a "([^"]*)" con datos:$/
+     * @When /^envio una solicitud "([^"]*)" a "([^"]*)" con datos:$/
      */
     public function envioUnaSolicitudAConDatos($method , $url , PyStringNode $body): void
     {
         $body = ['content' => $body->getRaw()];
-        $this->request->request($method , $this->locatePath($url) , $body , $this->token);
+        $this->request->request(
+            $method,
+            $this->locatePath($url),
+            $body,
+            ['authorization' => $this->variables->getToken()]
+        );
     }
 
     /**
@@ -100,7 +114,7 @@ final class APIContext extends RawMinkContext
             throw new RuntimeException(sprintf("No se recibe token: \nActual:\n%s  " , json_encode($tokenData)));
         }
 
-        $this->token = $tokenData['token'];
+        $this->variables->setToken($tokenData['token']);
     }
 
     /**

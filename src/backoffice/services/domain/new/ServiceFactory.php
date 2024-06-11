@@ -8,6 +8,7 @@ use Viabo\backoffice\services\domain\exceptions\ServiceTypeNotExist;
 use Viabo\backoffice\services\domain\new\card\CardService;
 use Viabo\backoffice\services\domain\new\cardCloud\ServiceCardCloud;
 use Viabo\backoffice\services\domain\new\pay\PayService;
+use Viabo\backoffice\services\domain\new\payCloud\PayCloudService;
 use Viabo\backoffice\services\domain\new\stp\ServiceStp;
 
 final class ServiceFactory
@@ -33,6 +34,11 @@ final class ServiceFactory
                 $values['cardNumbers'],
                 $values['cardUse'],
                 $values['personalized'],
+                $values['createdByUser'],
+                $values['createDate']
+            ),
+            3 => PayCloudService::create(
+                $values['companyId'],
                 $values['createdByUser'],
                 $values['createDate']
             ),

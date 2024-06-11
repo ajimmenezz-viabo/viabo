@@ -15,4 +15,5 @@ spei_behat:
     transaction:
       paths: [ tests/spei/apps/transaction ]
       contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext

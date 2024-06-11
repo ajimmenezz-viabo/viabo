@@ -15,9 +15,11 @@ management_behat:
     health_check:
       paths: [ tests/management/apps/healthCheck ]
       contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
     card:
       paths: [ tests/management/apps/card ]
       contexts:
-        - Viabo\Tests\shared\infrastructure\behat\ApplicationFeatureContext
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
+        - Viabo\Tests\shared\infrastructure\behat\ApplicationFeatureContext

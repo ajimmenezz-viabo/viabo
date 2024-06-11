@@ -8,7 +8,7 @@ Característica: Establecer comisiones por empresa
     Dado que se ingresa con el usuario "fpalma+09@siccob.com.mx"
 
   Escenario: Crear empresa
-    Dado Envio una solicitud "POST" a "/api/backoffice/company/new" con datos:
+    Dado envio una solicitud "POST" a "/api/backoffice/company/new" con datos:
     """
     {
       "fiscalName": "Company x",

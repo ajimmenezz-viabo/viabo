@@ -15,4 +15,6 @@ backoffice_behat:
     company:
       paths: [ tests/backoffice/apps/company ]
       contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
+        - Viabo\Tests\backoffice\apps\company\contexts\CompanyContext

@@ -4,6 +4,7 @@
 namespace Viabo\stp\transaction\application\cretate_spei_in_transaction_by_stp;
 
 
+use Viabo\backoffice\logs\domain\Log;
 use Viabo\backoffice\projection\application\find_company_by_bank_account\CompanyQueryByBankAccount;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
@@ -47,7 +48,6 @@ final readonly class SpeiInTransactionCreatorByStp
             $transactions = $this->transactionsCreator->__invoke($transactions, 'speiIn');
             $this->save($transactions);
         } catch (\DomainException) {
-
         }
     }
 
@@ -80,8 +80,9 @@ final readonly class SpeiInTransactionCreatorByStp
     private function filterSpeiInsNotRegistered(array $transactions): array
     {
         return array_filter($transactions, function (array $transaction) {
-            $filter =
-                Filters::fromValues([['field' => 'stpId.value', 'operator' => '=', 'value' => $transaction['id']]]);
+            $filter = Filters::fromValues([
+                ['field' => 'stpId.value', 'operator' => '=', 'value' => $transaction['id']]
+            ]);
             $transaction = $this->repository->searchCriteria(new Criteria($filter));
             return empty($transaction);
         });
@@ -128,8 +129,10 @@ final readonly class SpeiInTransactionCreatorByStp
     private function addData(array $transactions): array
     {
         return array_map(function (array $transaction) {
-            $companyData = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaOrdenante']]]);
-            return array_merge($transaction, $companyData[0]);
+            $sourceCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaOrdenante']]]);
+            $destinationCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaBeneficiario']]]);
+            $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
+            return array_merge($transaction, $data);
         }, $transactions);
     }
 

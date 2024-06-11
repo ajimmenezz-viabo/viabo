@@ -76,8 +76,9 @@ final readonly class SpeiOutTransactionCreatorByStp
     {
         return array_map(function (array $transaction) {
             $sourceCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaOrdenante']]]);
-            $destinationCompany =
-                $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaBeneficiario']]]);
+            $destinationCompany = $this->accountsDataFinder->companies([
+                ['bankAccount' => $transaction['cuentaBeneficiario']]
+            ]);
             $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
             return array_merge($transaction, $data, ['commissions' => []]);
         }, $transactions);

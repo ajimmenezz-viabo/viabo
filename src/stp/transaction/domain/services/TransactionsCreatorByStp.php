@@ -44,19 +44,24 @@ final readonly class TransactionsCreatorByStp
                 'stpId' => $transaction['id'] ?? $transaction['idEF'],
                 'api' => $transaction['api'],
                 'userId' => '',
-                'additionalData' => [
-                    'stpOperationType' => $stpOperationType,
-                    'stpAccountId' => $transaction['stpAccountId'],
-                    'stpAccountNumber' => $transaction['stpAccountNumber'],
-                    'sourceCompanyId' => $transaction['companyId'] ?? $transaction['sourceCompany']['companyId'],
-                    'sourceRfc' => $transaction['rfc'] ?? $transaction['sourceCompany']['rfc'],
-                    'destinationCompanyId' => $transaction['companyId'] ?? $transaction['destinationCompany']['companyId'],
-                    'destinationRfc' => $transaction['rfc'] ?? $transaction['destinationCompany']['rfc'],
-                    'destinationBankName' => $transaction['bankName'] ?? $transaction['destinationCompany']['bankName']
-                ]
+                'additionalData' => $this->setAdditionalData($stpOperationType, $transaction)
             ];
         }
         return Transactions::fromStp($transactionsData, $transactionType, $statusId);
+    }
+
+    public function setAdditionalData(string $stpOperationType, array $transaction): array
+    {
+        return [
+            'stpOperationType' => $stpOperationType,
+            'stpAccountId' => $transaction['stpAccountId'],
+            'stpAccountNumber' => $transaction['stpAccountNumber'],
+            'sourceCompanyId' => $transaction['companyId'] ?? $transaction['sourceCompany']['companyId'],
+            'sourceRfc' => $transaction['rfc'] ?? $transaction['sourceCompany']['rfc'],
+            'destinationCompanyId' => $transaction['companyId'] ?? $transaction['destinationCompany']['companyId'],
+            'destinationRfc' => $transaction['rfc'] ?? $transaction['destinationCompany']['rfc'],
+            'destinationBankName' => $transaction['bankName'] ?? $transaction['destinationCompany']['bankName']
+        ];
     }
 
 }

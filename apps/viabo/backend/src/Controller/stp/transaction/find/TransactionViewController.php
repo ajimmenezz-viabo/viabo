@@ -41,6 +41,7 @@ final readonly class TransactionViewController extends ApiController
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'reference' => $transaction['trackingKey'],
+                'urlCEP' => $transaction['urlCEP'],
                 'date' => $transaction['createDate']
             ];
             $html = $twig->render("stp/$templateFile/notification/emails/spei.external.transaction.html.twig", $data);

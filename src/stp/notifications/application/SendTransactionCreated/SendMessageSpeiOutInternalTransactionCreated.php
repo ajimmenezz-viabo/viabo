@@ -53,6 +53,7 @@ final readonly class SendMessageSpeiOutInternalTransactionCreated implements Dom
                 'amount' => $transaction['amountMoneyFormat'],
                 'concept' => $transaction['concept'],
                 'reference' => $transaction['reference'],
+                'urlCEP' => $transaction['urlCEP'],
                 'date' => $transaction['createDate']
             ]
         );

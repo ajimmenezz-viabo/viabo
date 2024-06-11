@@ -73,7 +73,7 @@
         h2 {
             font-size: 18px;
             font-weight: 500;
-            color: #221F20;
+            color: white;
             margin: 20px 0 10px;
         }
 
@@ -117,6 +117,7 @@
 
         .value {
             width: 70%;
+            color: #004FE7;
         }
 
         .note {
@@ -127,6 +128,15 @@
         img {
             max-width: 100%;
             height: auto;
+        }
+
+        .title {
+            background-color: #001750;
+            vertical-align: center;
+            padding-bottom: 1px;
+            padding-top: 1px;
+            padding-inline: 8px;
+            border-radius: 8px 8px 0 0;
         }
     </style>
 </head>
@@ -145,51 +155,52 @@
         </div>
     </header>
 
-    <section>
-        <div>
+    <div>
+        <div class="title">
             <h2>
                 <img alt="cpay-money-icon" src="https://viabo.com/production_images/cpay/cpay-icon-money.png"
-                     style="width: 25px; height: 25px; vertical-align: middle;">
+                     style="width: 25px; height: 25px; vertical-align: middle;margin-right:8px">
                 Resumen Transacción
             </h2>
-            <hr class="solid">
-            <table class="details-table">
-                <tr>
-                    <td class="subtitle">Monto:</td>
-                    <td class="separator"></td>
+        </div>
+        <table class="details-table">
+            <tr>
+                <td class="subtitle">Monto:</td>
+                <td class="separator"></td>
 
-                    <td class="value">
-                        <b>{{ amount }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Tipo:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ transactionType }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Concepto:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ concept }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Fecha:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ date }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Estatus:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ statusName }}</b>
-                    </td>
-                </tr>
+                <td class="value">
+                    <b>{{ amount }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Tipo:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ transactionType }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Concepto:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ concept }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Fecha:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ date }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Estatus:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ statusName }}</b>
+                </td>
+            </tr>
+            {% if urlCEP is not empty %}
                 <tr>
                     <td class="subtitle">Clave de Rastreo:</td>
                     <td class="separator"></td>
@@ -201,101 +212,99 @@
                     <td class="subtitle">Validar Transferencia:</td>
                     <td class="separator"></td>
                     <td class="value">
-                        <a href="https://www.banxico.org.mx/cep/" target="_blank" rel="noopener noreferrer"><b>https:/www.banxico.org.mx/cep/</b></a>
+                        <a href={{ urlCEP }} target="_blank" rel="noopener noreferrer"><b>ver comprobante</b></a>
                     </td>
                 </tr>
-            </table>
-        </div>
-    </section>
+            {% endif %}
+        </table>
+    </div>
 
-    <section>
-        <div>
+    <div>
+        <div class="title">
             <h2>
                 <img alt="cpay-icon=wallet" src="https://viabo.com/production_images/cpay/cpay-icon-wallet.png"
-                     style="width: 25px; height: 25px; vertical-align: middle;">
+                     style="width: 25px; height: 25px; vertical-align: middle;margin-right:8px">
                 Ordenante
             </h2>
-            <hr class="solid">
-            <table class="details-table">
-                <tr>
-                    <td class="subtitle">Nombre:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ sourceName }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">RFC:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ sourceRfc }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">CLABE:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ sourceAccount }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Medio de Pago:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>SPEI</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Institución:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>STP</b>
-                    </td>
-                </tr>
-            </table>
         </div>
-    </section>
+        <table class="details-table">
+            <tr>
+                <td class="subtitle">Nombre:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ sourceName }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">RFC:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ sourceRfc }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">CLABE:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ sourceAccount }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Medio de Pago:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>SPEI</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Institución:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>STP</b>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-    <section>
-        <div>
+    <div>
+        <div class="title">
             <h2>
                 <img alt="cpay-icon=wallet" src="https://viabo.com/production_images/cpay/cpay-icon-wallet.png"
-                     style="width: 25px; height: 25px; vertical-align: middle;">
+                     style="width: 25px; height: 25px; vertical-align: middle;margin-right:8px">
                 Beneficiario
             </h2>
-            <hr class="solid">
-            <table class="details-table">
-                <tr>
-                    <td class="subtitle">Nombre:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ destinationName }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">RFC:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ destinationRfc }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">CLABE:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ destinationAccount }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="subtitle">Banco:</td>
-                    <td class="separator"></td>
-                    <td class="value">
-                        <b>{{ destinationBankName }}</b>
-                    </td>
-                </tr>
-            </table>
         </div>
-    </section>
+        <table class="details-table">
+            <tr>
+                <td class="subtitle">Nombre:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ destinationName }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">RFC:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ destinationRfc }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">CLABE:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ destinationAccount }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="subtitle">Banco:</td>
+                <td class="separator"></td>
+                <td class="value">
+                    <b>{{ destinationBankName }}</b>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <footer>
         <p class="note">

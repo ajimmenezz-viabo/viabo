@@ -8,11 +8,14 @@ final class URL
 {
     public static function get(): string
     {
-        $host = $_SERVER['SERVER_NAME'];
-        $protocol = self::isNotEmptyHttps() && self::isNotDisableHttps() || self::isServerPort443()
+        return self::protocol() . $_SERVER['SERVER_NAME'];
+    }
+
+    public static function protocol(): string
+    {
+        return self::isNotEmptyHttps() && self::isNotDisableHttps() || self::isServerPort443()
             ? "https://"
             : "http://";
-        return $protocol . $host;
     }
 
     private static function isNotEmptyHttps(): bool

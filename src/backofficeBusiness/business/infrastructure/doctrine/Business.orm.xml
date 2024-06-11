@@ -8,6 +8,7 @@
         <embedded name="id" class="BusinessId" use-column-prefix="false"/>
         <embedded name="name" class="BusinessName" use-column-prefix="false"/>
         <embedded name="templateFile" class="BusinessTemplateFile" use-column-prefix="false"/>
+        <embedded name="domain" class="BusinessDomain" use-column-prefix="false"/>
         <embedded name="active" class="BusinessActive" use-column-prefix="false"/>
     </entity>
 

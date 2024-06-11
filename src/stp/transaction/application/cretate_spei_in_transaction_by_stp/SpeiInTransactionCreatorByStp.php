@@ -4,7 +4,6 @@
 namespace Viabo\stp\transaction\application\cretate_spei_in_transaction_by_stp;
 
 
-use Viabo\backoffice\logs\domain\Log;
 use Viabo\backoffice\projection\application\find_company_by_bank_account\CompanyQueryByBankAccount;
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\shared\domain\bus\query\QueryBus;
@@ -38,17 +37,15 @@ final readonly class SpeiInTransactionCreatorByStp
 
     public function __invoke(string $company, int $date): void
     {
-        try {
-            $stpAccounts = $this->searchStpAccounts($company);
-            $transactions = $this->searchSpeiInsTransactions($date, $stpAccounts);
-            $transactions = $this->filterSpeiInsNotRegistered($transactions);
-            $transactions = $this->removeDuplicate($transactions);
-            $transactions = $this->addCommissions($transactions);
-            $transactions = $this->addData($transactions);
-            $transactions = $this->transactionsCreator->__invoke($transactions, 'speiIn');
-            $this->save($transactions);
-        } catch (\DomainException) {
-        }
+
+        $stpAccounts = $this->searchStpAccounts($company);
+        $transactions = $this->searchSpeiInsTransactions($date, $stpAccounts);
+        $transactions = $this->filterSpeiInsNotRegistered($transactions);
+        $transactions = $this->removeDuplicate($transactions);
+        $transactions = $this->addCommissions($transactions);
+        $transactions = $this->addData($transactions);
+        $transactions = $this->transactionsCreator->__invoke($transactions, 'speiIn');
+        $this->save($transactions);
     }
 
     public function searchStpAccounts(string $company): array
@@ -64,14 +61,18 @@ final readonly class SpeiInTransactionCreatorByStp
         $date = empty($date) ? $this->date->formatDateTime($this->date->dateTime(), 'Ymd') : strval($date);
         $transactions = [];
         foreach ($stpAccounts as $stpAccount) {
-            $stpTransactions = $this->stpRepository->searchSpeiIn($stpAccount, $date);
-            $stpTransactions = array_map(function (array $transaction) use ($stpAccount) {
-                $transaction['api'] = $transaction;
-                $transaction['stpAccountId'] = $stpAccount['id'];
-                $transaction['stpAccountNumber'] = $stpAccount['number'];
-                $transaction['businessId'] = $stpAccount['businessId'];
-                return $transaction;
-            }, $stpTransactions);
+            try {
+                $stpTransactions = $this->stpRepository->searchSpeiIn($stpAccount, $date);
+                $stpTransactions = array_map(function (array $transaction) use ($stpAccount) {
+                    $transaction['api'] = $transaction;
+                    $transaction['stpAccountId'] = $stpAccount['id'];
+                    $transaction['stpAccountNumber'] = $stpAccount['number'];
+                    $transaction['businessId'] = $stpAccount['businessId'];
+                    return $transaction;
+                }, $stpTransactions);
+            } catch (\DomainException) {
+                continue;
+            }
             $transactions = array_merge($transactions, $stpTransactions);
         }
         return $transactions;

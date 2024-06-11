@@ -35,16 +35,15 @@ final readonly class SpeiOutTransactionCreatorByStp
 
     public function __invoke(string $company): void
     {
-        try {
-            $stpAccounts = $this->searchStpAccounts($company);
-            $transactions = $this->searchSpeiOutsTransactions($stpAccounts);
-            $transactions = $this->addData($transactions);
-            $transactionsNotRegistered = $this->filterSpeiOutsNotRegistered($transactions);
-            $transactionsRegistered = $this->filterSpeiOutsRegistered($transactions);
-            $this->registerTransactionNotRegistered($transactionsNotRegistered);
-            $this->updateTransactionsRegistered($transactionsRegistered, $transactions);
-        } catch (\DomainException) {
-        };
+
+        $stpAccounts = $this->searchStpAccounts($company);
+        $transactions = $this->searchSpeiOutsTransactions($stpAccounts);
+        $transactions = $this->addData($transactions);
+        $transactionsNotRegistered = $this->filterSpeiOutsNotRegistered($transactions);
+        $transactionsRegistered = $this->filterSpeiOutsRegistered($transactions);
+        $this->registerTransactionNotRegistered($transactionsNotRegistered);
+        $this->updateTransactionsRegistered($transactionsRegistered, $transactions);
+
     }
 
     public function searchStpAccounts(string $company): array
@@ -59,14 +58,18 @@ final readonly class SpeiOutTransactionCreatorByStp
     {
         $transactions = [];
         foreach ($stpAccounts as $stpAccount) {
-            $stpTransactions = $this->stpRepository->speiOut($stpAccount);
-            $stpTransactions = array_map(function (array $transaction) use ($stpAccount) {
-                $transaction['api'] = $transaction;
-                $transaction['stpAccountId'] = $stpAccount['id'];
-                $transaction['stpAccountNumber'] = $stpAccount['number'];
-                $transaction['businessId'] = $stpAccount['businessId'];
-                return $transaction;
-            }, $stpTransactions);
+            try {
+                $stpTransactions = $this->stpRepository->speiOut($stpAccount);
+                $stpTransactions = array_map(function (array $transaction) use ($stpAccount) {
+                    $transaction['api'] = $transaction;
+                    $transaction['stpAccountId'] = $stpAccount['id'];
+                    $transaction['stpAccountNumber'] = $stpAccount['number'];
+                    $transaction['businessId'] = $stpAccount['businessId'];
+                    return $transaction;
+                }, $stpTransactions);
+            } catch (\DomainException) {
+                continue;
+            };
             $transactions = array_merge($transactions, $stpTransactions);
         }
         return $transactions;

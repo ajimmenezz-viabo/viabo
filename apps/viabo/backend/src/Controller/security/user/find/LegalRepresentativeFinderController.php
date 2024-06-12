@@ -17,11 +17,11 @@ final readonly class LegalRepresentativeFinderController extends ApiController
         try {
             $username = $request->headers->get('Username');
             $user = $this->ask(new UserQueryByRegisterCompany($username));
-            $token = $this->encode(['id' => $user->data['id'], 'businessId' => $user->data['businessId']]);
+            $token = $this->encode($user->data);
 
             return new JsonResponse(['token' => $token]);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

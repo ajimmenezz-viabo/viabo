@@ -19,12 +19,12 @@ final readonly class CompanyFinderByUserController extends ApiController
             $company = $this->ask(new CompanyQueryByUser(
                 $tokenData['id'],
                 $tokenData['businessId'],
-                $tokenData['profileId']
+                $tokenData['profile']
             ));
 
             return new JsonResponse($company->data);
         } catch (\DomainException $exception) {
-            return new JsonResponse($exception->getMessage() , $exception->getCode());
+            return new JsonResponse($exception->getMessage(), $exception->getCode());
         }
     }
 }

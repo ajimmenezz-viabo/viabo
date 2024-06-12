@@ -18,8 +18,10 @@ final class MinkHelper
         $this->session = $session;
     }
 
-    public function sendRequest(string $method , string $url , array $optionalParams = [], string $authorization = ''): Crawler
+    public function sendRequest(string $method , string $url , array $optionalParams = [], array $headers = []): Crawler
     {
+        $authorization = $headers['authorization'] ?? '';
+        $username = $headers['username'] ?? '';
         $defaultOptionalParams = [
             'parameters' => [] ,
             'files' => [] ,
@@ -27,7 +29,8 @@ final class MinkHelper
                 'HTTP_ACCEPT' => 'application/json' ,
                 'CONTENT_TYPE' => 'application/json',
                 'HTTP_Authorization' => 'Bearer '.$authorization,
-                'HTTP_Host' => 'system.viabo.com:80'
+                'HTTP_Host' => 'system.viabo.com:80',
+                'HTTP_Username' => $username
             ] ,
             'content' => null ,
             'changeHistory' => true ,

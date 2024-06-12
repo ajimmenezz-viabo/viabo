@@ -5,7 +5,7 @@ Característica: Buscar tarjetas maestras
   Quiero ver la informacion de las tarjetas.
 
   Escenario: Buscar tarjetas maestras
-    Dado Envio una solicitud "GET" a "/api/main-cards/information"
+    Dado envio una solicitud "GET" a "/api/main-cards/information"
     Entonces el codigo de estado de respuesta debe ser "200"
     Entonces el contenido de la respuesta debe contener
     """

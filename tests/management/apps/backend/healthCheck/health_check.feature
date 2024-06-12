@@ -5,7 +5,7 @@ Característica: Api status Security
   Quiero validar el estatus de la API
 
   Escenario: Check the api status
-    Dado Envio una solicitud "GET" a "/api/health-check"
+    Dado envio una solicitud "GET" a "/api/health-check"
     Entonces el codigo de estado de respuesta debe ser "201"
     Entonces el contenido de la respuesta debe contener
     """

@@ -22,9 +22,9 @@ final readonly class MinkSessionRequestHelper
         $this->request($method , $url , ['content' => $body->getRaw()]);
     }
 
-    public function request($method , $url , array $optionalParams = [] , string $authorization = ''): Crawler
+    public function request($method , $url , array $optionalParams = [] , array $headers = []): Crawler
     {
-        return $this->sessionHelper->sendRequest($method , $url , $optionalParams , $authorization);
+        return $this->sessionHelper->sendRequest($method , $url , $optionalParams , $headers);
     }
 
 }

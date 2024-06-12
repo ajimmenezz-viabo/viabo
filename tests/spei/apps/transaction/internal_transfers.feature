@@ -8,7 +8,7 @@ Característica: Transferir de Concentradora a Empresa
     Dado que se ingresa con el usuario "fpalma+09@siccob.com.mx"
 
   Escenario: Concetradora a Empresa
-    Dado Envio una solicitud "POST" a "/api/spei/transaction/process-payments" con datos:
+    Dado envio una solicitud "POST" a "/api/spei/transaction/process-payments" con datos:
     """
     {
       "originBankAccount": "646180527700000002",
@@ -25,7 +25,7 @@ Característica: Transferir de Concentradora a Empresa
     Entonces el codigo de estado de respuesta debe ser "200"
 
   Escenario: Concetradora a Terceros
-    Dado Envio una solicitud "POST" a "/api/spei/transaction/process-payments" con datos:
+    Dado envio una solicitud "POST" a "/api/spei/transaction/process-payments" con datos:
     """
     {
       "originBankAccount": "646180527700000002",

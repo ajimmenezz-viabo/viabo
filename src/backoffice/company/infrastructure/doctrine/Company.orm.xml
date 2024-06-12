@@ -19,62 +19,13 @@
         <embedded name="logo" class="CompanyLogo" use-column-prefix="false"/>
         <embedded name="slug" class="CompanySlug" use-column-prefix="false"/>
         <embedded name="balance" class="CompanyBalance" use-column-prefix="false"/>
-<!--        <embedded name="publicTerminal" class="CompanyPublicTerminal" use-column-prefix="false"/>-->
-<!--        <embedded name="employees" class="CompanyEmployees" use-column-prefix="false"/>-->
-<!--        <embedded name="branchOffices" class="CompanyBranchOffices" use-column-prefix="false"/>-->
-<!--        <embedded name="pointSaleTerminal" class="CompanyPointSaleTerminal" use-column-prefix="false"/>-->
-<!--        <embedded name="paymentApi" class="CompanyPaymentApi" use-column-prefix="false"/>-->
-<!--        <embedded name="allowTransactions" class="CompanyAllowTransactions" use-column-prefix="false"/>-->
         <embedded name="statusId" class="CompanyStatusId" use-column-prefix="false"/>
-<!--        <embedded name="stpAccountId" class="CompanyStpAccountId" use-column-prefix="false"/>-->
         <embedded name="registerStep" class="CompanyRegisterStep" use-column-prefix="false"/>
         <embedded name="updatedByUser" class="CompanyUpdatedByUser" use-column-prefix="false"/>
         <embedded name="updateDate" class="CompanyUpdateDate" use-column-prefix="false"/>
         <embedded name="createdByUser" class="CompanyCreatedByUser" use-column-prefix="false"/>
         <embedded name="createDate" class="CompanyCreateDate" use-column-prefix="false"/>
         <embedded name="active" class="CompanyActive" use-column-prefix="false"/>
-
-<!--        <many-to-many field="bankAccounts" target-entity="Viabo\backoffice\company\domain\CompanyBankAccount">-->
-<!--            <join-table name="t_backoffice_companies_and_bankaccounts">-->
-<!--                <join-columns>-->
-<!--                    <join-column name="CompanyId" referenced-column-name="Id"/>-->
-<!--                </join-columns>-->
-<!--                <inverse-join-columns>-->
-<!--                    <join-column name="BankAccountId" referenced-column-name="Id"/>-->
-<!--                </inverse-join-columns>-->
-<!--            </join-table>-->
-<!--        </many-to-many>-->
-
-<!--        <many-to-many field="costCenters" target-entity="Viabo\backoffice\company\domain\CompanyCostCenter">-->
-<!--            <join-table name="t_backoffice_company_and_cost_centers">-->
-<!--                <join-columns>-->
-<!--                    <join-column name="CompanyId" referenced-column-name="Id"/>-->
-<!--                </join-columns>-->
-<!--                <inverse-join-columns>-->
-<!--                    <join-column name="CostCenterId" referenced-column-name="Id"/>-->
-<!--                </inverse-join-columns>-->
-<!--            </join-table>-->
-<!--        </many-to-many>-->
-
-<!--        <many-to-many field="users" target-entity="Viabo\backoffice\company\domain\CompanyUser">-->
-<!--            <join-table name="t_backoffice_companies_and_users">-->
-<!--                <join-columns>-->
-<!--                    <join-column name="CompanyId" referenced-column-name="Id"/>-->
-<!--                </join-columns>-->
-<!--                <inverse-join-columns>-->
-<!--                    <join-column name="UserId" referenced-column-name="Id"/>-->
-<!--                </inverse-join-columns>-->
-<!--            </join-table>-->
-<!--        </many-to-many>-->
-
-<!--        <one-to-one field="speiCommissions"-->
-<!--                    target-entity="Viabo\backoffice\company\domain\CompanySpeiCommissions"-->
-<!--                    mapped-by="company">-->
-<!--            <cascade>-->
-<!--                <cascade-all/>-->
-<!--            </cascade>-->
-<!--        </one-to-one>-->
-
     </entity>
 
 </doctrine-mapping>

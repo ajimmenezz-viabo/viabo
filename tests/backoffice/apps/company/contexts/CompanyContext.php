@@ -2,6 +2,7 @@
 
 namespace Viabo\Tests\backoffice\apps\company\contexts;
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use RuntimeException;
@@ -27,10 +28,15 @@ final class CompanyContext extends RawMinkContext
         $_SERVER['SERVER_PORT'] = $_ENV['BEHAT_SERVER_PORT'];
     }
 
-    /** @BeforeScenario */
-    public function cleanClient(): void
+    /**
+     * @When /^que el usuario "([^"]*)" no existe$/
+     */
+    public function queElUsuarioNoExiste($arg1)
     {
-        $this->connections->clearRecords();
+        $this->connections->clearRecords([
+            ['table' => 't_users', 'field' => 'Email', 'operator' => '=', 'value' => $arg1],
+            ['table' => 't_backoffice_companies_and_users', 'field' => 'Email', 'operator' => '=', 'value' => 'fpalma@siccob.com.mx']
+        ]);
     }
 
     /**

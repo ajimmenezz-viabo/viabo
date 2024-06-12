@@ -8,7 +8,7 @@ use Viabo\Tests\shared\infrastructure\doctrine\MySqlDatabaseCleaner;
 use function Lambdish\Phunctional\apply;
 use function Lambdish\Phunctional\each;
 
-final readonly class DatabaseConnections
+final class DatabaseConnections
 {
     private array $connections;
 
@@ -31,9 +31,9 @@ final readonly class DatabaseConnections
     {
         each(function (EntityManager $entityManager) use ($records) {
             foreach ($records as $record) {
-                $query = "";
+                $clause = "{$record['field']} {$record['operator']} '{$record['value']}'";
+                $query = "DELETE FROM {$record['table']} WHERE $clause";
                 $entityManager->getConnection()->executeQuery($query);
-
             }
         }, $this->connections);
     }

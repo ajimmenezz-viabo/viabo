@@ -32,31 +32,4 @@ final readonly class UserModulesFinderController extends ApiController
         }
     }
 
-    private function searchCompanyServicesId(array $tokenData): array
-    {
-        $adminViabo = '2';
-        if ($tokenData['profileId'] === $adminViabo) {
-            return [];
-        }
-
-        $adminSTP = '5';
-        if ($tokenData['profileId'] === $adminSTP) {
-            return ['4'];
-        }
-
-        $company = $this->ask(new CompanyQueryByUser(
-            $tokenData['id'],
-            $tokenData['businessId'],
-            $tokenData['profileId']
-        ));
-
-        if (intval($company->data['registerStep']) < 4) {
-            throw new \DomainException('No esposible ingresar hasta que se termine de registrar la empresa', 400);
-        }
-
-        return array_map(function (array $service) {
-            return $service['type'];
-        }, $company->data['services']);
-    }
-
 }

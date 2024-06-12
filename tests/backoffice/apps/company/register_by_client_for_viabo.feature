@@ -1,13 +1,14 @@
 # language: es
-Característica: Registro de Empresa por el cliente
+Característica: Registro de empresa por el cliente
   Yo como cliente
   Quiero registrame en el sistema viabo
   Para poder utilizar los servicios que ofrece la plataforma
 
-  Antecedentes:
-    Dado verifico al usuario "fpalma@siccob.com.mx"
+#  Antecedentes:
+#    Dado verifico al usuario "fpalma@siccob.com.mx"
 
   Escenario: Registrando el administrador de comercio
+    Dado que el usuario "fpalma@siccob.com.mx" no existe
     Dado envio una solicitud "POST" a "/api/security/legalRepresentative/new" con datos:
     """
     {
@@ -22,10 +23,12 @@ Característica: Registro de Empresa por el cliente
     Entonces el codigo de estado de respuesta debe ser "200"
 
   Escenario: Validar usuario para continuar con Proceso de registro
+    Dado verifico al usuario "fpalma@siccob.com.mx"
     Dado envio una solicitud "GET" a "/api/commerce/legal-representative"
     Entonces el codigo de estado de respuesta debe ser "200"
 
   Escenario: Seleccionando servicios para la empresa (Paso 2)
+    Dado verifico al usuario "fpalma@siccob.com.mx"
     Dado envio una solicitud "PUT" a "/api/commerce/update" con datos:
     """
     {
@@ -52,6 +55,7 @@ Característica: Registro de Empresa por el cliente
     Entonces el codigo de estado de respuesta debe ser "200"
 
   Escenario: Estableciendo datos de la empresa (Paso 3)
+    Dado verifico al usuario "fpalma@siccob.com.mx"
     Dado envio una solicitud "PUT" a "/api/commerce/update" con datos:
     """
     {

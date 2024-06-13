@@ -23,6 +23,7 @@ final readonly class FundingOrderSender
 
         $email = new Email(
             $emails ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "Notificación de Viabo - Orden de Fondeo" ,
             'management/notification/emails/funding.order.spei.html.twig' ,
             [

@@ -35,6 +35,7 @@ final readonly class SendFundingOrderStatusChanged implements DomainEventSubscri
 
         $email = new Email(
             $emails ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "Notificación de Viabo - Orden de Fondeo" ,
             'management/notification/emails/funding.order.status.changed.html.twig' ,
             [

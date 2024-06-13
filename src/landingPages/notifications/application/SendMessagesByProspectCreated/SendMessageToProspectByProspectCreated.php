@@ -25,6 +25,7 @@ final readonly class SendMessageToProspectByProspectCreated implements DomainEve
 
         $email = new Email(
             [$emails] ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "SET Pay - Banca Digital 24/7" ,
             'landing-pages/set/notifications/emails/notification.prospect.set.html.twig' ,
             []

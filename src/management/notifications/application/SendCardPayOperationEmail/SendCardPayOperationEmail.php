@@ -31,6 +31,7 @@ final readonly class SendCardPayOperationEmail implements DomainEventSubscriber
 
         $email = new Email(
             [$emails] ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             'Notificación de Transferencia' ,
             'management/notification/emails/card.pay.operation.html.twig' ,
             [

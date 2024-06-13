@@ -27,7 +27,8 @@ final readonly class SendCardSPEI
 
         $email = new Email(
             $emails ,
-            "Notificación de Viabo - SPEI" ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
+            "Notificación - SPEI" ,
             'management/notification/emails/card.spei.key.html.twig' ,
             ['spei' => $spei ]
         );

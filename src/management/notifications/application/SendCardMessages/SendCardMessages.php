@@ -22,6 +22,7 @@ final readonly class SendCardMessages
 
         $email = new Email(
             $emails ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "Notificación de Viabo - $subject" ,
             'management/notification/emails/cards.message.html.twig' ,
             ['subject' => $subject , 'message' => $message]

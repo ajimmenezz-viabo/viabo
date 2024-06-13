@@ -25,9 +25,10 @@ final readonly class SendMessageToAdminViaboByProspectCreated implements DomainE
         unset($data['email']);
 
         $email = new Email(
-            ['pay@viabo.com','ramses@viabo.com'] ,
-            "Registro Nuevo - SET Pay - Banca Digital 24/7" ,
-            'landing-pages/set/notifications/emails/notification.admin.set.html.twig' ,
+            ['pay@viabo.com', 'ramses@viabo.com'],
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
+            "Registro Nuevo - SET Pay - Banca Digital 24/7",
+            'landing-pages/set/notifications/emails/notification.admin.set.html.twig',
             $data
         );
 

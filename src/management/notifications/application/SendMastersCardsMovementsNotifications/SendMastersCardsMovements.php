@@ -30,6 +30,7 @@ final readonly class SendMastersCardsMovements
             $todayDate = $this->date->now();
             $email = new Email(
                 [$card['ownerEmail']] ,
+                ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
                 "Notificación de Viabo - Resumen de Movimientos de Cuentas Maestras - {$todayDate}" ,
                 'management/notification/emails/summary.masters.cards.movements.today.html.twig' ,
                 [

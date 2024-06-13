@@ -31,6 +31,7 @@ final readonly class SendMessageByTicketClosed implements DomainEventSubscriber
 
         $email = new Email(
             $emails ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "Notificación de Ticket #{$ticket['id']}" ,
             'tickets/notification/emails/message.ticket.closed.html.twig' ,
             [

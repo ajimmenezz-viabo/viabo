@@ -31,6 +31,7 @@ final readonly class SendCardReverseOperationEmail implements DomainEventSubscri
 
         $email = new Email(
             [$emails],
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             'Notificación de Transferencia',
             'management/notification/emails/card.reverse.operation.html.twig',
             [

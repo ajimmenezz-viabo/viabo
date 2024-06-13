@@ -21,6 +21,7 @@ final readonly class NotificationSender
 
         $email = new Email(
             [$terminalTransaction['email']] ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "Notificación de ViaboPay - Enlace de pago" ,
             'management/notification/emails/commerce.pay.notification.html.twig' ,
             [

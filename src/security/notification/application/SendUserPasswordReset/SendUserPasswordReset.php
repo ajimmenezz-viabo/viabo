@@ -9,7 +9,6 @@ use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 use Viabo\shared\domain\service\find_business\BusinessFinder;
-use Viabo\shared\domain\utils\URL;
 
 final readonly class SendUserPasswordReset implements DomainEventSubscriber
 {
@@ -29,14 +28,14 @@ final readonly class SendUserPasswordReset implements DomainEventSubscriber
     {
         $userData = $event->toPrimitives();
         $business = $this->businessFinder->__invoke($userData['businessId']);
-        $templateFile = $business['templateFile'];
-        $host = URL::protocol() . $business['domain'];
+        $host = $business['host'];
 
         $userEmail = $userData['email'];
         $email = new Email(
             [$userEmail],
-            'Notificación de Viabo - Restablecimiento de Password',
-            "security/$templateFile/notification/emails/user.password.reset.html.twig",
+            ['email' => "no-responder@{$business['domain']}", 'name' => 'Notificaciones'],
+            'Notificación - Restablecimiento de Password',
+            "security/{$business['templateFile']}/notification/emails/user.password.reset.html.twig",
             [
                 'name' => $userData['name'],
                 'password' => $userData['password'],

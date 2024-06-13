@@ -25,6 +25,7 @@ final class Business extends AggregateRoot
             'name' => $this->name->value(),
             'templateFile' => $this->templateFile->value(),
             'domain' => $this->domain->value(),
+            'host' => $this->domain->host(),
             'active' => $this->active->value()
         ];
     }

@@ -31,6 +31,7 @@ final readonly class sendMessageByMessageCreated implements DomainEventSubscribe
 
         $email = new Email(
             $emails ,
+            ['email' => 'no-responder@qa.viabo.com', 'name' => 'Notificaciones'],
             "Notificación de Ticket #{$message['ticketId']}" ,
             'tickets/notification/emails/new.message.created.html.twig' ,
             [

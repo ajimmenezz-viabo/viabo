@@ -28,16 +28,16 @@ final readonly class SendPasswordToUserCreatedByAssignedCard implements DomainEv
     public function __invoke(UserCreatedDomainEvent $event): void
     {
         $userData = $event->toPrimitives();
-        $business = $this->businessFinder->__invoke($userData['businessId']);
-        $templateFile = $business['templateFile'];
-        $host = URL::protocol() . $business['domain'];
         $password = $event->password();
+        $business = $this->businessFinder->__invoke($userData['businessId']);
+        $host = $business['host'];
 
         $userEmail = $userData['email'];
         $email = new Email(
             [$userEmail],
-            'Notificación de Acceso a Viabo',
-            "security/$templateFile/notification/emails/user.created.by.assigned.card.html.twig",
+            ['email' => "no-responder@{$business['domain']}", 'name' => 'Notificaciones'],
+            'Notificación de Acceso',
+            "security/{$business['templateFile']}/notification/emails/user.created.by.assigned.card.html.twig",
             [
                 'name' => $userData['name'],
                 'password' => $password,

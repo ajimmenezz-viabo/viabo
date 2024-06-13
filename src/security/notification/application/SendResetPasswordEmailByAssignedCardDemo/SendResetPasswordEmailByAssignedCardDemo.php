@@ -9,7 +9,6 @@ use Viabo\shared\domain\bus\event\DomainEventSubscriber;
 use Viabo\shared\domain\email\Email;
 use Viabo\shared\domain\email\EmailRepository;
 use Viabo\shared\domain\service\find_business\BusinessFinder;
-use Viabo\shared\domain\utils\URL;
 
 final readonly class SendResetPasswordEmailByAssignedCardDemo implements DomainEventSubscriber
 {
@@ -28,16 +27,16 @@ final readonly class SendResetPasswordEmailByAssignedCardDemo implements DomainE
     public function __invoke(SendUserPasswordDomainEvent $event): void
     {
         $userData = $event->toPrimitives();
-        $business = $this->businessFinder->__invoke($userData['businessId']);
-        $templateFile = $business['templateFile'];
-        $host = URL::protocol() . $business['domain'];
         $password = $event->password();
+        $business = $this->businessFinder->__invoke($userData['businessId']);
+        $host = $business['host'];
 
         $userEmail = $userData['email'];
         $email = new Email(
             [$userEmail],
-            'Notificación de Acceso a Viabo',
-            "security/$templateFile/notification/emails/user.created.by.assigned.card.html.twig",
+            ['email' => "no-responder@{$business['domain']}", 'name' => 'Notificaciones'],
+            'Notificación de Acceso',
+            "security/{$business['templateFile']}/notification/emails/user.created.by.assigned.card.html.twig",
             [
                 'name' => $userData['name'],
                 'password' => $password,

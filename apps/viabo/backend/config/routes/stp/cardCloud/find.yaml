@@ -22,3 +22,8 @@ find-card-cvv:
   path: '/api/cardCloud/card/{cardId}/cvv'
   controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardCVVFinderController
   methods: GET
+
+find-cards-stock:
+  path: '/api/cardCloud/cards-stock'
+  controller: Viabo\Backend\Controller\stp\cardCloud\find\CardCloudCardsStockFinderController
+  methods: GET

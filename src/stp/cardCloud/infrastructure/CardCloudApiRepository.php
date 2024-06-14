@@ -16,37 +16,82 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
     public function createAccount(string $businessId, string $companyId, string $rfc): array
     {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts";
-        $apiData = [
-            "ExternalId" => $companyId,
-            "Description" => $rfc,
-        ];
-        return $this->request($apiData, $api, $token, 'POST');
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/subaccounts");
+        return $this->request($url, $token, 'POST', ["ExternalId" => $companyId, "Description" => $rfc]);
+    }
+
+    public function createTransfer(string $businessId, array $transferData): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/transfer");
+        return $this->request($url, $token, 'POST', $transferData);
     }
 
 
     public function searchSubAccount(string $businessId, string $subAccountId): array
     {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$subAccountId}";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'GET');
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/subaccounts/$subAccountId");
+        return $this->request($url, $token, 'GET');
     }
-
 
     public function searchMovements(string $businessId, string $subAccountId, string $fromDate, string $toDate): array
     {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/subaccounts/$subAccountId/movements");
+        return $this->request($url, $token, 'GET', ['from' => $fromDate, 'to' => $toDate]);
+    }
+
+    public function searchSubAccountCards(string $businessId, string $subAccountId): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/subaccounts/$subAccountId/cards");
+        return $this->request($url, $token, 'GET');
+    }
+
+    public function searchCardDetails(string $businessId, string $cardId): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId");
+        return $this->request($url, $token, 'GET');
+    }
+
+    public function searchCardMovements(string $businessId, string $cardId, string $fromDate, string $toDate): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/movements");
+        return $this->request($url, $token, 'GET', ['from' => $fromDate, 'to' => $toDate]);
+    }
+
+    public function searchSubAccounts(string $businessId): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/subaccounts");
+        return $this->request($url, $token, 'GET');
+    }
+
+    public function searchCardSensitive(string $businessId, string $cardId): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/sensitive");
+        return $this->request($url, $token, 'GET');
+    }
+
+    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/$blockStatus");
+        return $this->request($url, $token, 'POST');
+    }
+
+    public function searchCardCVV(string $businessId, string $cardId): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/cvv");
+        return $this->request($url, $token, 'GET');
+    }
+
+    public function searchCardsStock(string $businessId): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, '/v1/account/cards');
+        return $this->request($url, $token, 'GET');
+    }
+
+    public function getUrlAndToken(string $businessId, string $url): array
+    {
         $credentials = $this->searchCredentials($businessId);
         $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$subAccountId}/movements";
-        $apiData = ['from' => $fromDate, 'to' => $toDate];
-        return $this->request($apiData, $api, $token, 'GET');
+        return [$signResponse['access_token'], $credentials->apiUrl() . $url];
     }
 
     private function searchCredentials(string $businessId): CardCloudCredentials
@@ -58,108 +103,23 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
     private function signIn(array $credentials): array
     {
-        $api = "{$credentials['apiUrl']}/auth/login";
-        $apiData = [
-            'email' => $credentials['user'],
-            'password' => $credentials['password'],
-        ];
-        return $this->request($apiData, $api, '', 'POST');
+        $data = ['email' => $credentials['user'], 'password' => $credentials['password']];
+        return $this->request("{$credentials['apiUrl']}/auth/login", '', 'POST', $data);
     }
 
-
-    public function searchSubAccountCards(string $businessId, string $subAccountId): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts/{$subAccountId}/cards";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'GET');
-    }
-
-
-    public function searchCardDetails(string $businessId, string $cardId): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/card/{$cardId}";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'GET');
-    }
-
-    public function searchCardMovements(string $businessId, string $cardId, string $fromDate, string $toDate): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/card/{$cardId}/movements";
-        $apiData = ['from' => $fromDate, 'to' => $toDate];
-        return $this->request($apiData, $api, $token, 'GET');
-    }
-
-    public function searchSubAccounts(string $businessId): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/subaccounts";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'GET');
-    }
-
-
-    public function searchCardSensitive(string $businessId, string $cardId): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/card/{$cardId}/sensitive";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'GET');
-    }
-
-    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/card/{$cardId}/{$blockStatus}";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'POST');
-    }
-
-    public function searchCardCVV(string $businessId, string $cardId): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/card/{$cardId}/cvv";
-        $apiData = [];
-        return $this->request($apiData, $api, $token, 'GET');
-    }
-
-
-    public function createTransfer(string $businessId, array $transferData): array
-    {
-        $credentials = $this->searchCredentials($businessId);
-        $signResponse = $this->signIn($credentials->toArray());
-        $token = "Authorization: Bearer {$signResponse['access_token']}";
-        $api = "{$credentials->apiUrl()}/v1/transfer";
-        return $this->request($transferData, $api, $token, 'POST');
-    }
-
-    private function request(array $inputData, string $api, string $token, string $request): array
+    private function request(string $url, string $token, string $method, array $inputData = []): array
     {
         $jsonData = json_encode($inputData);
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $api);
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json', 'Content-Length: ' . strlen($jsonData), $token
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData),
+            "Authorization: Bearer $token"
         ]);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
@@ -170,6 +130,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         if (empty($response)) {
             throw new \DomainException("Error de API CARD CLOUD: DOES NOT RESPOND ", 400);
         }
+
         $response = json_decode($response, true);
         if ($this->hasError($httpCode)) {
             $errorMessage = $this->getErrorMessage($response);

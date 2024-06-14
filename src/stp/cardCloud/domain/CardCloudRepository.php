@@ -6,6 +6,8 @@ interface CardCloudRepository
 {
     public function createAccount(string $businessId, string $companyId, string $rfc): array;
 
+    public function createTransfer(string $businessId, array $transferData): array;
+
     public function searchSubAccount(string $businessId, string $subAccountId): array;
 
     public function searchMovements(string $businessId, string $subAccountId, string $fromDate, string $toDate): array;
@@ -20,11 +22,11 @@ interface CardCloudRepository
 
     public function searchCardSensitive(string $businessId, string $cardId): array;
 
-    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array;
-
     public function searchCardCVV(string $businessId, string $cardId): array;
 
-    public function createTransfer(string $businessId, array $transferData): array;
-
     public function searchCardsStock(string $businessId): array;
+
+    public function assignCards(string $businessId, array $data): void;
+
+    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array;
 }

@@ -10,6 +10,7 @@ final readonly class CardCloudCardDetailsFinder
     public function __construct(private CardCloudRepository $repository)
     {
     }
+
     public function __invoke(string $businessId, string $cardId): CardCloudServiceResponse
     {
         return new CardCloudServiceResponse(

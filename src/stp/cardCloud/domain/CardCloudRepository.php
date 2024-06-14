@@ -25,4 +25,6 @@ interface CardCloudRepository
     public function searchCardCVV(string $businessId, string $cardId): array;
 
     public function createTransfer(string $businessId, array $transferData): array;
+
+    public function searchCardsStock(string $businessId): array;
 }

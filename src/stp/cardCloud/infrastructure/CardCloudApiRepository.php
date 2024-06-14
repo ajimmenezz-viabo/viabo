@@ -69,12 +69,6 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($url, $token, 'GET');
     }
 
-    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array
-    {
-        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/$blockStatus");
-        return $this->request($url, $token, 'POST');
-    }
-
     public function searchCardCVV(string $businessId, string $cardId): array
     {
         list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/cvv");
@@ -87,6 +81,18 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($url, $token, 'GET');
     }
 
+    public function assignCards(string $businessId, array $data): void
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/account/cards/assign");
+        $this->request($url, $token, 'POST', $data);
+    }
+
+    public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array
+    {
+        list($token, $url) = $this->getUrlAndToken($businessId, "/v1/card/$cardId/$blockStatus");
+        return $this->request($url, $token, 'POST');
+    }
+
     public function getUrlAndToken(string $businessId, string $url): array
     {
         $credentials = $this->searchCredentials($businessId);
@@ -96,9 +102,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
 
     private function searchCredentials(string $businessId): CardCloudCredentials
     {
-        return $this->repository(CardCloudCredentials::class)->findOneBy(
-            ['businessId' => $businessId]
-        );
+        return $this->repository(CardCloudCredentials::class)->findOneBy(['businessId' => $businessId]);
     }
 
     private function signIn(array $credentials): array
@@ -160,9 +164,11 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
             "Error getting CVV, please try again later" => "Error al obtener CVV, inténtelo de nuevo más tarde",
             "Subaccount with this ExternalId already exists" => "La subcuenta con este Id ya existe",
             "Subaccount with this Description already exists" => "La subcuenta con esta descripción ya existe",
+            "Subaccount not found or you do not have permission to access it" => "Subcuenta no encontrada o no tienes permiso para acceder a ella",
             "Error creating subaccount" => "Error al crear subcuenta",
             "Error transferring funds" => "Error al transferir fondos",
-            default => "Error de API CARD CLOUD: {$errorMessage}",
+            "Error assigning card" => "Error al assignar tarjeta",
+            default => "Error de API CARD CLOUD: $errorMessage"
         };
     }
 }

@@ -2,3 +2,8 @@ update-card-cloud-card-status:
   path: '/api/cardCloud/card/{cardId}/block/{blockStatus}'
   controller: Viabo\Backend\Controller\stp\cardCloud\update\CardCloudCardBlockController
   methods: PUT
+
+assigned-cards-to-company:
+  path: '/api/cardCloud/cards/assign'
+  controller: Viabo\Backend\Controller\stp\cardCloud\update\CardCloudCardsAssignController
+  methods: PUT

@@ -26,5 +26,9 @@ security_behat:
       paths: [ tests/security/apps/profile ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\VariablesContext
-        - Viabo\Tests\shared\infrastructure\behat\ApplicationFeatureContext
+        - Viabo\Tests\shared\infrastructure\behat\APIContext
+    user:
+      paths: [ tests/security/apps/user ]
+      contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext

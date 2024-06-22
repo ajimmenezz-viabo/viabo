@@ -23,7 +23,7 @@ Característica: Asignar tarjetas a usuario (Card Cloud)
 
   Escenario: Asignando tarjeta y creando un tarjetahabiente
     Dado que elimina el registro "96967896594625" para quitar la asignacion
-    Dado se limpia el registro del usuario "fpalma+06@siccob.com.mx"
+    Dado se limpia el registro del usuario "fpalma+06@siccob.com.mx" de la empresa "647fe4a8-a83c-40f4-bec9-df8772379156"
     Dado envio una solicitud "PUT" a "/api/cardCloud/cards/assign-user" con datos:
     """
     {

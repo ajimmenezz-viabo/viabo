@@ -12,9 +12,8 @@ backoffice_behat:
       base_url: ''
 
   suites:
-    company:
-      paths: [ tests/backoffice/apps/company ]
+    projection:
+      paths: [ tests/backoffice/apps/projection ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
-        - Viabo\Tests\backoffice\apps\company\contexts\CompanyContext

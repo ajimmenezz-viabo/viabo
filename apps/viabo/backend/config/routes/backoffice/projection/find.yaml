@@ -12,3 +12,8 @@ find-sub-account-movements:
   path: '/api/commerce/{subAccountId}/sub-account/movements'
   controller: Viabo\Backend\Controller\backoffice\projection\find\SubAccountMovementsFinderController
   methods: GET
+
+find-users-of-profile-card-cloud-owner-by-company:
+  path: '/api/company/users/card-cloud-owners/{companyId}'
+  controller: Viabo\Backend\Controller\backoffice\projection\find\CardCloudOwnersFinderController
+  methods: GET

@@ -37,4 +37,16 @@ final class DatabaseConnections
             }
         }, $this->connections);
     }
+
+    public function updateRecords(array $records, array $where): void
+    {
+        each(function (EntityManager $entityManager) use ($records, $where) {
+            foreach ($records as $record) {
+                $clause = "{$record['field']} {$record['operator']} '{$record['value']}'";
+                $filter = "{$where['field']} {$where['operator']} '{$where['value']}'";
+                $query = "UPDATE {$record['table']} SET $clause WHERE $filter";
+                $entityManager->getConnection()->executeQuery($query);
+            }
+        }, $this->connections);
+    }
 }

@@ -5,16 +5,19 @@ namespace Viabo\backoffice\users\application\assign_user_in_company;
 
 
 use Viabo\backoffice\company\domain\exceptions\CompanyNotExist;
-use Viabo\backoffice\users\domain\CompanyUser;
 use Viabo\backoffice\users\domain\CompanyUserRepository;
-use Viabo\security\user\application\find_user\UserQuery;
-use Viabo\shared\domain\bus\query\QueryBus;
+use Viabo\backoffice\users\domain\events\CompanyUserCreatedDomainEventOnAssign;
+use Viabo\backoffice\users\domain\services\CompanyUserCreator;
+use Viabo\backoffice\users\domain\services\CompanyUsersFinder;
+use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CompanyUserAssigner
 {
     public function __construct(
         private CompanyUserRepository $repository,
-        private QueryBus              $queryBus
+        private CompanyUserCreator    $creator,
+        private CompanyUsersFinder    $usersFinder,
+        private EventBus              $bus
     )
     {
     }
@@ -22,19 +25,13 @@ final readonly class CompanyUserAssigner
     public function __invoke(string $businessId, string $companyId, string $userId): void
     {
         $this->ensureCompany($companyId);
-        $user = $this->searchUser($businessId, $userId);
+        $this->creator->__invoke($userId, $companyId, $businessId);
+        $users = $this->usersFinder->__invoke($companyId);
 
-        $user = CompanyUser::create(
-            $userId,
+        $this->bus->publish(new CompanyUserCreatedDomainEventOnAssign(
             $companyId,
-            $user['profile'],
-            $user['name'],
-            $user['lastname'],
-            $user['email'],
-            $user['register']
-        );
-
-        $this->repository->save($user);
+            ['id' => $companyId, 'users' => $users]
+        ));
     }
 
     private function ensureCompany(string $companyId): void
@@ -45,9 +42,4 @@ final readonly class CompanyUserAssigner
         }
     }
 
-    private function searchUser(string $businessId, string $userId): array
-    {
-        $user = $this->queryBus->ask(new UserQuery($userId, $businessId));
-        return $user->data;
-    }
 }

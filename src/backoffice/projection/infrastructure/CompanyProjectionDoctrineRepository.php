@@ -22,14 +22,14 @@ final class CompanyProjectionDoctrineRepository extends DoctrineRepository imple
     {
         $typeName = $this->searchType($company->type());
         $statusName = $this->searchStatus($company->status());
-        $company->updateStatusNameAndTypeName($typeName,$statusName);
+        $company->updateStatusNameAndTypeName($typeName, $statusName);
 
         $this->persist($company);
     }
 
     public function search(string $companyId): CompanyProjection|null
     {
-        return $this->repository(CompanyProjection::class)->find($companyId);
+        return $this->repository(CompanyProjection::class)->findOneBy(['id' => $companyId, 'active' => '1']);
     }
 
     public function searchCriteria(Criteria $criteria): array

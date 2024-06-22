@@ -343,6 +343,18 @@ final class CompanyProjection extends AggregateRoot
         return array_map(fn(array $user): string => $user['email'], $admins);
     }
 
+    public function cardOwners(): array
+    {
+        $users = $this->users();
+        $cardOwners = array_values(array_filter($users, function (array $user) {
+            return $user['profileId'] === '8';
+        }));
+        return array_map(fn(array $user): array => [
+            'id' => $user['id'],
+            'name' => "{$user['name']} {$user['lastname']}"
+        ], $cardOwners);
+    }
+
     public function toArray(): array
     {
         return [

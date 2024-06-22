@@ -5,6 +5,7 @@ namespace Viabo\backoffice\users\domain;
 
 
 use Viabo\backoffice\shared\domain\company\CompanyId;
+use Viabo\backoffice\users\domain\events\CompanyUserCreatedDomainEventOnAssign;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 
 final class CompanyUser extends AggregateRoot

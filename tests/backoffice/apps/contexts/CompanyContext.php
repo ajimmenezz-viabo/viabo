@@ -1,6 +1,6 @@
 <?php
 
-namespace Viabo\Tests\backoffice\apps\company\contexts;
+namespace Viabo\Tests\backoffice\apps\contexts;
 
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Session;

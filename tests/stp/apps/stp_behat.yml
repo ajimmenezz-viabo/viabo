@@ -18,3 +18,9 @@ stp_behat:
         - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
         - Viabo\Tests\stp\apps\context\StpContext
+    cardCloud:
+      paths: [ tests/stp/apps/cardCloud ]
+      contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
+        - Viabo\Tests\shared\infrastructure\behat\APIContext
+        - Viabo\Tests\stp\apps\context\StpContext

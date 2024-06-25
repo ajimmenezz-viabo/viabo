@@ -14,7 +14,7 @@ Característica: Asignar tarjetas a usuario (Card Cloud)
     {
       "companyId": "647fe4a8-a83c-40f4-bec9-df8772379156",
       "cards": ["96967896594625"],
-      "user": "95a3611a-a79e-46dd-9e50-6bc9642e339a",
+      "user": "3cb5b8e0-962a-40dd-8fbb-049bc3cb7deb",
       "newUser": null,
       "isNewUser": false
     }
@@ -23,7 +23,7 @@ Característica: Asignar tarjetas a usuario (Card Cloud)
 
   Escenario: Asignando tarjeta y creando un tarjetahabiente
     Dado que elimina el registro "96967896594625" para quitar la asignacion
-    Dado se limpia el registro del usuario "fpalma+06@siccob.com.mx" de la empresa "647fe4a8-a83c-40f4-bec9-df8772379156"
+    Dado se limpia el registro del usuario "fpalma+02@siccob.com.mx" de la empresa "647fe4a8-a83c-40f4-bec9-df8772379156"
     Dado envio una solicitud "PUT" a "/api/cardCloud/cards/assign-user" con datos:
     """
     {
@@ -31,10 +31,10 @@ Característica: Asignar tarjetas a usuario (Card Cloud)
       "cards": ["96967896594625"],
       "user": "",
       "newUser": {
-          "name": "Test 06",
+          "name": "Test 02",
           "lastname": "T",
           "phone": "55555555",
-          "email": "fpalma+06@siccob.com.mx"
+          "email": "fpalma+02@siccob.com.mx"
       },
       "isNewUser": true
     }
@@ -47,7 +47,7 @@ Característica: Asignar tarjetas a usuario (Card Cloud)
     {
       "companyId": "647fe4a8-a83c-40f4-bec9-df8772379156",
       "cards": ["96967896594625"],
-      "user": "95a3611a-a79e-46dd-9e50-6bc9642e339a",
+      "user": "3cb5b8e0-962a-40dd-8fbb-049bc3cb7deb",
       "newUser": null,
       "isNewUser": false
     }

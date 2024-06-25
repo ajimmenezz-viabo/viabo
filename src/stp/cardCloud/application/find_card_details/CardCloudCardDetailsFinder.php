@@ -11,10 +11,9 @@ final readonly class CardCloudCardDetailsFinder
     {
     }
 
-    public function __invoke(string $businessId, string $cardId): CardCloudServiceResponse
+    public function __invoke(string $businessId, string $cardId, array $owner): CardCloudServiceResponse
     {
-        return new CardCloudServiceResponse(
-            $this->repository->searchCardDetails($businessId, $cardId)
-        );
+        $card = $this->repository->searchCardDetails($businessId, $cardId);
+        return new CardCloudServiceResponse(array_merge($card, $owner));
     }
 }

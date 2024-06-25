@@ -15,6 +15,6 @@ final readonly class CardCloudCardsStockQueryHandler implements QueryHandler
 
     public function __invoke(CardCloudCardsStockQuery $query): Response
     {
-        return $this->finder->__invoke($query->businessId, $query->owners);
+        return $this->finder->__invoke($query->businessId);
     }
 }

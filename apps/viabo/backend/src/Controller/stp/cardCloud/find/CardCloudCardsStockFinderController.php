@@ -16,8 +16,7 @@ final readonly class CardCloudCardsStockFinderController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $users = $this->ask(new CardCloudUsersQuery($tokenData['businessId']));
-            $cardDetails = $this->ask(new CardCloudCardsStockQuery($tokenData['businessId'], $users->data));
+            $cardDetails = $this->ask(new CardCloudCardsStockQuery($tokenData['businessId']));
 
             return new JsonResponse($cardDetails->data);
         } catch (\DomainException $exception) {

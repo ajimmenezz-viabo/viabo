@@ -29,4 +29,9 @@ final class UserProfile extends StringValueObject
         $legalRepresentativeProfileId = '3';
         return $this->value === $legalRepresentativeProfileId;
     }
+
+    public function isNotOwnerCardCloud(): bool
+    {
+        return $this->value !== '8';
+    }
 }

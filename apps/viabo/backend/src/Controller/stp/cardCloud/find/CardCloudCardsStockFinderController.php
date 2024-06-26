@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\stp\cardCloud\application\find_cards_stock\CardCloudCardsStockQuery;
+use Viabo\stp\users\application\find_users_by_business\CardCloudUsersQuery;
 
 final readonly class CardCloudCardsStockFinderController extends ApiController
 {

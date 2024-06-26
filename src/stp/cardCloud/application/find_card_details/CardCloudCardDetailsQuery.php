@@ -6,7 +6,7 @@ use Viabo\shared\domain\bus\query\Query;
 
 final readonly class CardCloudCardDetailsQuery implements Query
 {
-    public function __construct(public string $businessId, public string $cardId)
+    public function __construct(public string $businessId, public string $cardId, public array $owner)
     {
     }
 }

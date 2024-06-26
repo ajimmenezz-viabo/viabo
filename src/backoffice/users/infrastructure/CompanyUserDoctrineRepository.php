@@ -5,6 +5,7 @@ namespace Viabo\backoffice\users\infrastructure;
 
 
 use Doctrine\ORM\EntityManager;
+use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\users\domain\CompanyUser;
 use Viabo\backoffice\users\domain\CompanyUserRepository;
 use Viabo\shared\domain\criteria\Criteria;
@@ -21,6 +22,11 @@ final class CompanyUserDoctrineRepository extends DoctrineRepository implements 
     public function save(CompanyUser $user): void
     {
         $this->persist($user);
+    }
+
+    public function search(string $companyId): Company|null
+    {
+        return $this->repository(Company::class)->find($companyId);
     }
 
     public function searchCriteria(Criteria $criteria): array

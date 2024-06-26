@@ -13,6 +13,6 @@ final readonly class CardCloudSubAccountCardsQueryHandler implements QueryHandle
 
     public function __invoke(CardCloudSubAccountCardsQuery $query): Response
     {
-        return $this->finder->__invoke($query->businessId, $query->subAccountId);
+        return $this->finder->__invoke($query->businessId, $query->subAccountId, $query->owners);
     }
 }

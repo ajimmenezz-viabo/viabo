@@ -7,3 +7,8 @@ assigned-cards-to-company:
   path: '/api/cardCloud/cards/assign'
   controller: Viabo\Backend\Controller\stp\cardCloud\update\CardCloudCardsAssignController
   methods: PUT
+
+assign-card-to-user:
+  path: '/api/cardCloud/cards/assign-user'
+  controller: Viabo\Backend\Controller\stp\cardCloud\update\CardCloudCardsAssignUserController
+  methods: PUT

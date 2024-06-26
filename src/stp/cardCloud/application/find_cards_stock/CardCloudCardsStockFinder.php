@@ -17,4 +17,5 @@ final readonly class CardCloudCardsStockFinder
     {
         return new CardCloudServiceResponse($this->repository->searchCardsStock($businessId));
     }
+
 }

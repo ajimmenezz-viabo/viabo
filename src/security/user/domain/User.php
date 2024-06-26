@@ -192,6 +192,11 @@ final class User extends AggregateRoot
         return $this->businessId->isNotDefined();
     }
 
+    public function isNotOwnerCardCloud(): bool
+    {
+        return $this->profile->isNotOwnerCardCloud();
+    }
+
     public function toArray(): array
     {
         return [

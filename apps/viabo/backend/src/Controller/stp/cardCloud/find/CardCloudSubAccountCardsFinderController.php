@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\stp\cardCloud\application\find_sub_account_cards\CardCloudSubAccountCardsQuery;
+use Viabo\stp\users\application\find_users_by_business\CardCloudUsersQuery;
 
 final readonly class CardCloudSubAccountCardsFinderController extends ApiController
 {
@@ -15,9 +16,11 @@ final readonly class CardCloudSubAccountCardsFinderController extends ApiControl
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
+            $users = $this->ask(new CardCloudUsersQuery($tokenData['businessId']));
             $cardCloudCards = $this->ask(new CardCloudSubAccountCardsQuery(
                 $tokenData['businessId'],
-                $subAccountId
+                $subAccountId,
+                $users->data
             ));
             return new JsonResponse($cardCloudCards->data);
         } catch (\DomainException $exception) {

@@ -1,4 +1,4 @@
-spei_behat:
+stp_behat:
   extensions:
     FriendsOfBehat\SymfonyExtension:
       kernel:
@@ -12,8 +12,15 @@ spei_behat:
       base_url: ''
 
   suites:
-    transaction:
-      paths: [ tests/spei/apps/transaction ]
+    users:
+      paths: [ tests/stp/apps/users ]
       contexts:
         - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
+        - Viabo\Tests\stp\apps\context\StpContext
+    cardCloud:
+      paths: [ tests/stp/apps/cardCloud ]
+      contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
+        - Viabo\Tests\shared\infrastructure\behat\APIContext
+        - Viabo\Tests\stp\apps\context\StpContext

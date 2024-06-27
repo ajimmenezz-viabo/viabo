@@ -36,7 +36,7 @@ final readonly class DocumentAuthorizer
     {
         $commerceId = $this->getCommerceIdOf($documentId);
         $documentsCommerce = $this->getAllDocumentsOf($commerceId);
-        var_dump($documentsCommerce);
+
 
         $documentAuthorization = DocumentAuthorization::createAuthorized(
             $documentId , $userId , $userName , $userProfileId , $userProfileName

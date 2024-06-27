@@ -119,7 +119,7 @@ final class Transaction extends AggregateRoot
         $value['transactionId'] = TransactionId::random();
         $value['reference'] = TransactionReference::fromIncrement($value['reference']);
         $value['trackingKey'] = TransactionTrackingKey::empty();
-        $value['commissions'] = TransactionCommissions::empty();
+        $value['commissions'] = new TransactionCommissions($value['commissions']);
         $value['liquidationDate'] = TransactionLiquidationDate::todayDate();
         $value['bankCode'] = TransactionDestinationBankCode::empty();
         $value['active'] = TransactionActive::disable();

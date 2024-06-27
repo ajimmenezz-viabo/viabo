@@ -18,6 +18,7 @@ final readonly class AdministratorsStpQueryHandler implements QueryHandler
         $adminStpProfile = '5';
         $filters = [
             ['field' => 'profile.value', 'operator' => '=', 'value' => $adminStpProfile],
+            ['field' => 'businessId.value', 'operator' => '=', 'value' => $query->businessId],
             ['field' => 'active.value', 'operator' => '=', 'value' => '1']
         ];
         $users = $this->finder->__invoke($filters);

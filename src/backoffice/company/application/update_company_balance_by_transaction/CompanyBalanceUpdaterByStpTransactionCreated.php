@@ -7,6 +7,7 @@ namespace Viabo\backoffice\company\application\update_company_balance_by_transac
 use Viabo\backoffice\company\domain\Company;
 use Viabo\backoffice\company\domain\CompanyRepository;
 use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEventByStpTransactionCreated;
+use Viabo\backoffice\company\domain\events\CompanyBalanceUpdatedDomainEventByTransactionCreated;
 use Viabo\shared\domain\bus\event\EventBus;
 
 final readonly class CompanyBalanceUpdaterByStpTransactionCreated
@@ -32,6 +33,8 @@ final readonly class CompanyBalanceUpdaterByStpTransactionCreated
                 $transaction
             ));
         }
+
+        $this->bus->publish(new CompanyBalanceUpdatedDomainEventByTransactionCreated($transaction['id'], $transaction));
     }
 
     private function decreaseBalance(?Company $sourceCompany, array $transaction): void

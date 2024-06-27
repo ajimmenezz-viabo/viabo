@@ -32,7 +32,7 @@ final readonly class OriginAccountDataFinder
                 'acronym' => $data['acronym'],
                 'name' => $data['company'],
                 'balance' => $this->calculateBalanceStpAccount($data['id'], $data['balance']),
-                'emails' => $this->AdminsStpEmails(),
+                'emails' => $this->AdminsStpEmails($data['businessId']),
                 'number' => $data['number'],
                 'company' => $data['company'],
                 'commissions' => [],
@@ -56,7 +56,7 @@ final readonly class OriginAccountDataFinder
             'acronym' => '',
             'name' => $company->data['fiscalName'],
             'balance' => $company->data['balance'],
-            'emails' => $this->AdminsStpEmails(),
+            'emails' => $this->AdminsStpEmails($company->data['businessId']),
             'commissions' => $company->data['speiCommissions']
         ], $stpAccount);
     }
@@ -78,9 +78,9 @@ final readonly class OriginAccountDataFinder
         return max($balance, 0);
     }
 
-    private function AdminsStpEmails(): string
+    private function AdminsStpEmails(string $businessId): string
     {
-        $admins = $this->queryBus->ask(new AdministratorsStpQuery());
+        $admins = $this->queryBus->ask(new AdministratorsStpQuery($businessId));
         $emails = array_map(function (array $user) {
             return $user['email'];
         }, $admins->data);

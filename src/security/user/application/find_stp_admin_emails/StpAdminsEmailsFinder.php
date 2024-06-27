@@ -22,6 +22,7 @@ final readonly class StpAdminsEmailsFinder
         $stpAccountId = $transaction['additionalData']['stpAccountId'];
         $filters = Filters::fromValues([
             ['field' => 'profile.value', 'operator' => '=', 'value' => '5'],
+            ['field' => 'businessId.value', 'operator' => '=', 'value' => $transaction['businessId']],
             ['field' => 'stpAccountId.value', 'operator' => '=', 'value' => $stpAccountId],
         ]);
         $users = $this->repository->searchCriteria(new Criteria($filters));

@@ -25,6 +25,7 @@ final readonly class StpTransactionCreatorByInternalTransaction
     {
         $speiInType = $this->typeFinder->speiInType();
         $statusId = $this->statusFinder->liquidated();
+        $transaction['commissions'] = '';
         $transaction = Transaction::fromInternalSpeiIn($transaction, $speiInType, $statusId);
         $this->repository->save($transaction);
 

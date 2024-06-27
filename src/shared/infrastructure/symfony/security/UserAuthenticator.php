@@ -16,7 +16,7 @@ final class UserAuthenticator extends JWTAuthenticator
     public function authenticate(Request $request): Passport
     {
         $apiToken = $request->headers->get('X-AUTH-TOKEN');
-        var_dump('atenticador');
+
         if (null === $apiToken) {
             throw new CustomUserMessageAuthenticationException('No API token provided');
         }

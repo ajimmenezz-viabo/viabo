@@ -50,6 +50,11 @@ final class UserCardCloud extends AggregateRoot
         return $this->id->value();
     }
 
+    public function cardId(): string
+    {
+        return $this->cardId->value();
+    }
+
     public function toArray(): array
     {
         return [

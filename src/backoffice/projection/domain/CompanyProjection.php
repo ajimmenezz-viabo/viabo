@@ -355,6 +355,22 @@ final class CompanyProjection extends AggregateRoot
         ], $cardOwners);
     }
 
+    public function hasNotServiceType(string $serviceId): bool
+    {
+        $services = $this->serviceTypes();
+        return !in_array($serviceId, $services);
+    }
+
+    public function service(string $serviceId): array
+    {
+        $services = $this->services();
+        $service = array_values(array_filter($services, function (array $service) use ($serviceId) {
+            return $service['type'] === $serviceId;
+        }));
+
+        return $service[0] ?? [];
+    }
+
     public function toArray(): array
     {
         return [

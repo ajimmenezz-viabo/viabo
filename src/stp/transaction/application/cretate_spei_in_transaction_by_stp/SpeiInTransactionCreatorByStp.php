@@ -43,7 +43,7 @@ final readonly class SpeiInTransactionCreatorByStp
         $transactions = $this->filterSpeiInsNotRegistered($transactions);
         $transactions = $this->removeDuplicate($transactions);
         $transactions = $this->addCommissions($transactions);
-        $transactions = $this->addData($transactions);
+        $transactions = $this->accountsDataFinder->addData($transactions);
         $transactions = $this->transactionsCreator->__invoke($transactions, 'speiIn');
         $this->save($transactions);
     }
@@ -125,16 +125,6 @@ final readonly class SpeiInTransactionCreatorByStp
                 'total' => 0
             ];
         }
-    }
-
-    private function addData(array $transactions): array
-    {
-        return array_map(function (array $transaction) {
-            $sourceCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaOrdenante']]]);
-            $destinationCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaBeneficiario']]]);
-            $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
-            return array_merge($transaction, $data);
-        }, $transactions);
     }
 
     private function save(Transactions $transactions): void

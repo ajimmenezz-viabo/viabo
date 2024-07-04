@@ -24,3 +24,9 @@ stp_behat:
         - Viabo\Tests\shared\infrastructure\behat\VariablesContext
         - Viabo\Tests\shared\infrastructure\behat\APIContext
         - Viabo\Tests\stp\apps\context\StpContext
+    transactions:
+      paths: [ tests/stp/apps/transaction ]
+      contexts:
+        - Viabo\Tests\shared\infrastructure\behat\VariablesContext
+        - Viabo\Tests\shared\infrastructure\behat\APIContext
+        - Viabo\Tests\stp\apps\context\StpContext

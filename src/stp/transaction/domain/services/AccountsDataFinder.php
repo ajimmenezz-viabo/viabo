@@ -26,22 +26,6 @@ final readonly class AccountsDataFinder
         }
     }
 
-    public function companies(array $companies): array
-    {
-        return array_map(function (array $company) {
-            $bankAccountData = $this->getBankAccountData($company['bankAccount']);
-            $company['type'] = $bankAccountData['type'];
-            $company['companyId'] = $bankAccountData['companyId'];
-            $company['rfc'] = $bankAccountData['rfc'];
-            $company['beneficiary'] = $bankAccountData['beneficiary'];
-            $company['email'] = $bankAccountData['emails'];
-            $company['bankName'] = '';
-            $company['bankCode'] = '';
-
-            return $company;
-        }, $companies);
-    }
-
     public function externalAccounts(array $externalAccounts): array
     {
         return array_map(function (array $externalAccount) {
@@ -60,12 +44,52 @@ final readonly class AccountsDataFinder
         }, $externalAccounts);
     }
 
-    private function getBankAccountData(string $bankAccount): array
+    public function searchCompany(string $bankAccount): array
+    {
+        try {
+            $companyData = $this->queryBus->ask(new CompanyQueryByBankAccount($bankAccount));
+            return $companyData->data;
+        } catch (\DomainException) {
+            return ['id' => '', 'rfc' => '', 'fiscalName' => '', 'users' => []];
+        }
+    }
+
+    public function addData(array $transactions): array
+    {
+        return array_map(function (array $transaction) {
+            $sourceCompany = $this->companies([
+                ['bankAccount' => $transaction['cuentaOrdenante'], 'businessId' => $transaction['businessId']]
+            ]);
+            $destinationCompany = $this->companies([
+                ['bankAccount' => $transaction['cuentaBeneficiario'], 'businessId' => $transaction['businessId']]
+            ]);
+            $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
+            return array_merge($transaction, $data, ['commissions' => []]);
+        }, $transactions);
+    }
+
+    private function companies(array $companies): array
+    {
+        return array_map(function (array $company) {
+            $bankAccountData = $this->getBankAccountData($company['bankAccount'], $company['businessId']);
+            $company['type'] = $bankAccountData['type'];
+            $company['companyId'] = $bankAccountData['companyId'];
+            $company['rfc'] = $bankAccountData['rfc'];
+            $company['beneficiary'] = $bankAccountData['beneficiary'];
+            $company['email'] = $bankAccountData['emails'];
+            $company['bankName'] = '';
+            $company['bankCode'] = '';
+
+            return $company;
+        }, $companies);
+    }
+
+    private function getBankAccountData(string $bankAccount, string $businessId): array
     {
         $stpAccount = $this->queryBus->ask(new StpAccountQueryByNumber($bankAccount));
 
         if (!empty($stpAccount->data)) {
-            $admins = $this->queryBus->ask(new AdministratorsStpQuery());
+            $admins = $this->queryBus->ask(new AdministratorsStpQuery($businessId));
             $data = $stpAccount->data[0];
             return [
                 'type' => 'stpAccount',
@@ -83,16 +107,6 @@ final readonly class AccountsDataFinder
                 'beneficiary' => $companyData['fiscalName'],
                 'emails' => $this->getEmails($companyData['users'])
             ];
-        }
-    }
-
-    public function searchCompany(string $bankAccount): array
-    {
-        try {
-            $companyData = $this->queryBus->ask(new CompanyQueryByBankAccount($bankAccount));
-            return $companyData->data;
-        } catch (\DomainException) {
-            return ['id' => '', 'rfc' => '', 'fiscalName' => '', 'users' => []];
         }
     }
 

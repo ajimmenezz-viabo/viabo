@@ -38,7 +38,7 @@ final readonly class SpeiOutTransactionCreatorByStp
 
         $stpAccounts = $this->searchStpAccounts($company);
         $transactions = $this->searchSpeiOutsTransactions($stpAccounts);
-        $transactions = $this->addData($transactions);
+        $transactions = $this->accountsDataFinder->addData($transactions);
         $transactionsNotRegistered = $this->filterSpeiOutsNotRegistered($transactions);
         $transactionsRegistered = $this->filterSpeiOutsRegistered($transactions);
         $this->registerTransactionNotRegistered($transactionsNotRegistered);
@@ -73,18 +73,6 @@ final readonly class SpeiOutTransactionCreatorByStp
             $transactions = array_merge($transactions, $stpTransactions);
         }
         return $transactions;
-    }
-
-    private function addData(array $transactions): array
-    {
-        return array_map(function (array $transaction) {
-            $sourceCompany = $this->accountsDataFinder->companies([['bankAccount' => $transaction['cuentaOrdenante']]]);
-            $destinationCompany = $this->accountsDataFinder->companies([
-                ['bankAccount' => $transaction['cuentaBeneficiario']]
-            ]);
-            $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
-            return array_merge($transaction, $data, ['commissions' => []]);
-        }, $transactions);
     }
 
     private function filterSpeiOutsNotRegistered(array $transactions): array

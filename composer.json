@@ -32,7 +32,8 @@
     "symfony/monolog-bundle": "^3.8",
     "nelmio/api-doc-bundle": "^4.12",
     "symfony/asset": "^6.3",
-    "scheb/2fa-google-authenticator" : "^7.2.0"
+    "scheb/2fa-google-authenticator" : "^7.2.0",
+    "knplabs/knp-snappy-bundle": "^1.10"
   },
   "require-dev": {
     "behat/behat": "^3.14",

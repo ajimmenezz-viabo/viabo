@@ -8,7 +8,6 @@ find-transactions-balance:
   controller: Viabo\Backend\Controller\stp\transaction\find\TransactionsBalanceController
   methods: GET
 
-
 find-transactions:
   path: "/api/spei/transaccions"
   controller: Viabo\Backend\Controller\stp\transaction\find\TransactionsFinderController

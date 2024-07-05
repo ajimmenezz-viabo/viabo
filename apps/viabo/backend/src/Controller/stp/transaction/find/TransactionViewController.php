@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Viabo\backoffice\projection\application\find_company_by_bank_account\CompanyQueryByBankAccount;
+use Viabo\shared\domain\pdf\PdfRepository;
 use Viabo\shared\domain\service\find_busines_template_file\BusinessTemplateFileFinder;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\stp\bank\application\find\BankQuery;
@@ -22,7 +23,8 @@ final readonly class TransactionViewController extends ApiController
         string                     $transactionId,
         Request                    $request,
         Environment                $twig,
-        BusinessTemplateFileFinder $templateFileFinder
+        BusinessTemplateFileFinder $templateFileFinder,
+        PdfRepository              $pdfRepository
     ): Response
     {
         try {
@@ -45,7 +47,16 @@ final readonly class TransactionViewController extends ApiController
                 'date' => $transaction['createDate']
             ];
             $html = $twig->render("stp/$templateFile/notification/emails/spei.external.transaction.html.twig", $data);
-            return new Response($html);
+            $pdf = $pdfRepository->output($html, [
+                'margin-top' => 0,
+                'margin-bottom' => 0 ,
+                'page-width' => '180mm',
+                'page-height' => '310mm',
+            ]);
+            return new Response($pdf, 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="file.pdf"',
+            ]);
         } catch (\DomainException) {
             $html = $twig->render('stp/shared/notification/emails/transaction.spei.not.exist.html.twig');
             return new Response($html);

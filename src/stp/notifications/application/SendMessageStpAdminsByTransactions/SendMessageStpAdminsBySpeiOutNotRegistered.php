@@ -44,6 +44,7 @@ final readonly class SendMessageStpAdminsBySpeiOutNotRegistered implements Domai
                 'statusName' => $transaction['statusName'],
                 'sourceAccount' => $transaction['sourceAccount'],
                 'sourceName' => $transaction['sourceName'],
+                'sourceRfc' => $transaction['additionalData']['sourceRfc'],
                 'destinationAccount' => $transaction['destinationAccount'],
                 'destinationName' => $transaction['destinationName'],
                 'destinationRfc' => $transaction['additionalData']['destinationRfc'],

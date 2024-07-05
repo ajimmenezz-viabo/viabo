@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Viabo\shared\infrastructure\symfony\ApiController;
 use Viabo\stp\stpAccount\application\create\UpdateStpAccountBalanceCommand;
 use Viabo\stp\transaction\application\create_spei_out_transaction_by_stp\CreateSpeiOutTransactionCommandByStp;
-use Viabo\stp\transaction\application\create_spei_transactions_by_stp\CreateSpeiStpCommand;
 use Viabo\stp\transaction\application\cretate_spei_in_transaction_by_stp\CreateSpeiInStpTransactionCommand;
 
 

@@ -14,7 +14,7 @@ final readonly class UserFinder
     {
     }
 
-    public function __invoke(string $userId, string $businessId): User
+    public function __invoke(string $userId, string $businessId = null): User
     {
         $user = $this->repository->search($userId, $businessId);
 

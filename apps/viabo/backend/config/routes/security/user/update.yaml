@@ -12,3 +12,8 @@ reset-password-user:
   path: '/api/user/password/reset'
   controller: Viabo\Backend\Controller\security\user\update\UserPasswordUpdaterController
   methods: PUT
+
+reset-user-password-by-url:
+  path: '/api/user/password/reset/{userId}'
+  controller: Viabo\Backend\Controller\security\user\update\UpdateUserPasswordByUrlController
+  methods: GET

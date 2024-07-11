@@ -25,6 +25,6 @@ Característica: Login
     Entonces el codigo de estado de respuesta debe ser "200"
 
   Escenario: Ingresar como Administrador de Empresas STP
-    Dado que se ingresa con el usuario "ajimmenezz@icloud.com"
+    Dado que se ingresa con el usuario "ajimmenezz+001@gmail.com"
     Dado envio una solicitud "GET" a "/api/modules/user"
     Entonces el codigo de estado de respuesta debe ser "200"

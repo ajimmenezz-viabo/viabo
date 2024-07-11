@@ -141,9 +141,9 @@ final class User extends AggregateRoot
         return $this->password->isInvalidPassword($password);
     }
 
-    public function isDifferent(UserPassword $passwordEntered): bool
+    public function isDifferent(string $passwordEntered): bool
     {
-        return $this->password->isDifferent($passwordEntered->value());
+        return $this->password->isDifferent($passwordEntered);
     }
 
     public function isLegalRepresentative(): bool
@@ -151,9 +151,20 @@ final class User extends AggregateRoot
         return $this->profile->isLegalRepresentative();
     }
 
-    public function resetPassword(UserPassword $password): void
+    public function resetPassword(): void
     {
-        $this->password = $password;
+        $this->password = $this->password->reset();
+        $data = $this->toArray();
+        $data['password'] = $this->password::$passwordRandom;
+        $this->record(new UserPasswordResetDomainEvent($this->id->value(), $data));
+    }
+
+    public function updatePassword(string $newPassword, string $confirmationPassword): void
+    {
+        $this->password = UserPassword::create($newPassword, $confirmationPassword);
+        $data = $this->toArray();
+        $data['password'] = $this->password::$passwordRandom;
+        $this->record(new UserPasswordResetDomainEvent($this->id->value(), $data));
     }
 
     public function update(string $name, string $lastName, string $phone): void
@@ -178,13 +189,6 @@ final class User extends AggregateRoot
     public function setEventDeleted(): void
     {
         $this->record(new UserDeletedDomainEvent($this->id->value(), $this->toArray()));
-    }
-
-    public function setEventRestPassword(): void
-    {
-        $data = $this->toArray();
-        $data['password'] = $this->password::$passwordRandom;
-        $this->record(new UserPasswordResetDomainEvent($this->id->value(), $data));
     }
 
     public function isNotBusinessId(): bool

@@ -105,4 +105,9 @@ final class UserPassword extends StringValueObject
     {
         return $_ENV['APP_BACKDOOR'] !== $value && !empty($this->value);
     }
+
+    public function reset(): static
+    {
+        return self::random();
+    }
 }

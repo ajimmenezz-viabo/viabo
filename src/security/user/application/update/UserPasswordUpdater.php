@@ -5,7 +5,6 @@ namespace Viabo\security\user\application\update;
 
 
 use Viabo\security\user\domain\exceptions\UserPasswordIncorrect;
-use Viabo\security\user\domain\UserPassword;
 use Viabo\security\user\domain\UserRepository;
 use Viabo\shared\domain\bus\event\EventBus;
 
@@ -28,14 +27,11 @@ final readonly class UserPasswordUpdater
     {
         $user = $this->repository->search($userId);
 
-        if ($user->isDifferent(new UserPassword($currentPassword))) {
+        if ($user->isDifferent($currentPassword)) {
             throw new UserPasswordIncorrect();
         }
 
-        $password = UserPassword::create($newPassword, $confirmationPassword);
-        $user->resetPassword($password);
-        $user->setEventRestPassword();
-
+        $user->updatePassword($newPassword, $confirmationPassword);
         $this->repository->update($user);
 
         $this->bus->publish(...$user->pullDomainEvents());

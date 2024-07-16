@@ -6,27 +6,25 @@ nelmio_api_doc:
       - ^api\.
   documentation:
     openapi: 3.0.0
-    servers:
-      # Added by API Auto Mocking Plugin
-      - description: Viabo Services QA API
-        url: https://qa.viabo.com
-      - description: Deployment API
-        url: /
+    # servers:
+    #   # Added by API Auto Mocking Plugin
+    #   - description: Deployment API
+    #     url: /
 
     info:
       description:
-        "Esta API permite a los desarrolladores consumir los servicios de Viabo Pay , Viabo Card , Viabo Spei Cloud.
+        "Esta API permite a los desarrolladores consumir los servicios de Pay Cloud , Card Cloud , SPEI Cloud .
         Proporciona métodos y endpoints para realizar transacciones financieras, gestionar tarjetas
-        y acceder a información relacionada con los servicios de Viabo Pay y Viabo Card de manera programática.
+        y acceder a información relacionada con los servicios de Pay Cloud y Card Cloud de manera programática.
         Facilita la integración de estos servicios en aplicaciones y sistemas externos.
         \n\n
-        This API allows developers to consume Viabo Pay, Viabo Card, and Viabo Spei Cloud services.
+        This API allows developers to consume Pay Cloud, Card Cloud, and SPEI Cloud services.
         It provides methods and endpoints to perform financial transactions, manage cards,
-        and access information related to Viabo Pay and Viabo Card services programmatically.
+        and access information related to Pay Cloud and Card Cloud services programmatically.
         It facilitates the integration of these services into external applications and systems.
         "
-      version: "1.2.0"
-      title: Viabo API
+      version: "1.3.0"
+      title: Soluciones Electrónicas Transaccionales API
       contact:
         email: alonso@viabo.com
       license:
@@ -131,186 +129,417 @@ nelmio_api_doc:
               }
         #-------------- END SCHEMAS SEGURIDAD--------------#
 
-        NewCardUser:
+        # NewCardUser:
+        #   type: object
+        #   properties:
+        #     name:
+        #       type: string
+        #       example: Ramsés de Hoyos
+        #     email:
+        #       type: string
+        #       example: ramses@viabo.com
+        #     phone:
+        #       type: string
+        #       example: +52 12 3456 7890
+        #     privacy:
+        #       type: boolean
+        #       example: true
+        # VerificationCode:
+        #   type: object
+        #   properties:
+        #     verificationCode:
+        #       type: string
+        #       example: 123456
+        #     token:
+        #       type: string
+        #       example: WQzeDGjL0PMqT4ucaICZNgx8oszCpM...
+        # PaymentProcessorsArray:
+        #   type: array
+        #   items:
+        #     type: object
+        #     properties:
+        #       id: { type: string, example: "1" }
+        #       name: { type: string, example: MasterCard }
+        #   example:
+        #     - id: "1"
+        #       name: MasterCard
+        #     - id: "2"
+        #       name: Carnet
+        # CardsArray:
+        #   type: array
+        #   items:
+        #     type: object
+        #     properties:
+        #       id:
+        #         {
+        #           type: string,
+        #           example: "7c213897-20b1-4b65-8e4a-364bd86060c0",
+        #         }
+        #       main: { type: string, example: "0" }
+        #       number: { type: string, example: "2309581104469419" }
+        #       CVV: { type: string, example: "000" }
+        #       expirationDate: { type: string, example: "09/29" }
+        #       paymentProcessorId: { type: string, example: "1" }
+        #       paymentProcessorName: { type: string, example: "Mastercard" }
+        #       statusId: { type: string, example: "5" }
+        #       statusName: { type: string, example: "Activa" }
+        #       commerceId:
+        #         {
+        #           type: string,
+        #           example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
+        #         }
+        #       commerceName: { type: string, example: "" }
+        #       ownerId:
+        #         {
+        #           type: string,
+        #           example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
+        #         }
+        #       ownerName: { type: string, example: "Nombre" }
+        #       ownerLastname: { type: string, example: "Apellidos" }
+        #       ownerEmail: { type: string, example: "propietario@email.com" }
+        #       ownerPhone: { type: string, example: "+52 55 0000 1111" }
+        #       recorderId:
+        #         {
+        #           type: string,
+        #           example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
+        #         }
+        #       recorderName: { type: string, example: "Administrador" }
+        #       assignmentDate: { type: string, example: "2023-01-01 18:00:00" }
+        #       register: { type: string, example: "2023-01-01 14:59:56" }
+        #       active: { type: string, example: "1" }
+        #   example:
+        #     - id: "7c213897-20b1-4b65-8e4a-364bd86060c0"
+        #       main: "0"
+        #       number: "2309581104469419"
+        #       CVV: "000"
+        #       expirationDate: "09/29"
+        #       paymentProcessorId: "1"
+        #       paymentProcessorName: "Mastercard"
+        #       statusId: "5"
+        #       statusName: "Activa"
+        #       commerceId: "xxxxxxxx-c681-0000-af4f-eaa712345678"
+        #       commerceName: ""
+        #       ownerId: "xxxxxxxx-c681-0000-af4f-eaa712345678"
+        #       ownerName: "Nombre"
+        #       ownerLastname: "Apellidos"
+        #       ownerEmail: "propietario@email.com"
+        #       ownerPhone: "+52 55 0000 1111"
+        #       recorderId: "xxxxxxxx-c681-0000-af4f-eaa712345678"
+        #       recorderName: "Administrador"
+        #       assignmentDate: "2023-01-01 18:00:00"
+        #       register: "2023-01-01 14:59:56"
+        #       active: "1"
+        # CardInformation:
+        #   type: object
+        #   properties:
+        #     id:
+        #       { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+        #     main: { type: string, example: "0" }
+        #     number: { type: string, example: "5064520000029917" }
+        #     CVV: { type: string, example: "000" }
+        #     expirationDate: { type: string, example: "09/29" }
+        #     expirationMonth: { type: string, example: "4" }
+        #     expirationYear: { type: string, example: "27" }
+        #     paymentProcessorId: { type: string, example: "2" }
+        #     nip: { type: string, example: "1010" }
+        #     spei: { type: string, example: "646180300800000000" }
+        #     paynet: { type: string, example: "" }
+        #     balance: { type: string, example: "200" }
+        #     block: { type: string, example: "UnBlocked" }
+        #     statusId: { type: string, example: "5" }
+        #     commerceId:
+        #       { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+        #     ownerId:
+        #       { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+        #     recorderId:
+        #       { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
+        #     assignmentDate: { type: string, example: "2023-10-11 13:29:48" }
+        #     register: { type: string, example: "2023-08-24 12:29:33" }
+        #     active: { type: string, example: "1" }
+        # CardMovementsArray:
+        #   type: array
+        #   items:
+        #     type: object
+        #     properties:
+        #       id:
+        #         {
+        #           type: string,
+        #           example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
+        #         }
+        #       transactionId: { type: string, example: "5405318" }
+        #       cardId:
+        #         {
+        #           type: string,
+        #           example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
+        #         }
+        #       cardNumber: { type: string, example: "1234567890123456" }
+        #       cardPaymentProcessor: { type: string, example: "Carnet" }
+        #       cardCommerceId:
+        #         {
+        #           type: string,
+        #           example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
+        #         }
+        #       receiptId: { type: string, example: "" }
+        #       receiptFile: { type: string, example: "" }
+        #       description:
+        #         { type: string, example: "Trasferencia a cuenta global" }
+        #       concept: { type: string, example: "prueba" }
+        #       amount: { type: string, example: "40" }
+        #       type: { type: string, example: "Gasto" }
+        #       operationType: { type: string, example: "VIABO CARD" }
+        #       apiData: { type: string, example: "json api data set movement" }
+        #       date: { type: string, example: "2023-08-18 12:21:49" }
+        #       checked: { type: boolean, example: false }
+        #   example:
+        #     - id: "xxxxxxxx-6d6b-0000-add5-68d800112233"
+        #       transactionId: "5405318"
+        #       cardId: "xxxxxxxx-6d6b-0000-add5-68d800112233"
+        #       cardNumber: "1234567890123456"
+        #       cardPaymentProcessor: "Carnet"
+        #       cardCommerceId: "xxxxxxxx-6d6b-0000-add5-68d800112233"
+        #       receiptId: ""
+        #       receiptFiles: ""
+        #       description: "Trasferencia a cuenta global"
+        #       concept: "prueba"
+        #       amount: "40"
+        #       type: "Gasto"
+        #       operationType: "VIABO CARD"
+        #       apiData: ""
+        #       date: "2023-08-18 12:21:49"
+        #       checked: false
+
+        #-------------- START SCHEMAS CARD CLOUD--------------#
+        CardOfCardCloud:
           type: object
           properties:
+            card_id:
+              type: string
+              format: uuid
+              example: xxxxxx-xxxx-xxxx-xxxx-be04249c950f
+            card_external_id:
+              type: string
+              format: uuid
+              example: xxxxxx-xxxx-xxxx-xxxx-ee732069b105
+            card_type:
+              type: string
+              example: virtual
+              enum: ["physical", "virtual"]
+            brand:
+              type: string
+              example: MASTER
+            bin:
+              type: string
+              example: 91234567
+            pan:
+              type: string
+              example: 1234567891234567
+            client_id:
+              type: string
+              example: CP00000XX
+            masked_pan:
+              type: string
+              example: 123456XXXXXX4567
+            balance:
+              type: string
+              example: 178.00
+            clabe:
+              type: string
+              format: nullable
+              nullable: true
+            status:
+              type: string
+              example: NORMAL
+              enum: [NORMAL, BLOCKED]
+            ownerId:
+              type: string
+              format: uuid
+              example: xxxxxx-xxxx-xxxx-xxxx-e47f12114fb3
+              readOnly: true
             name:
               type: string
-              example: Ramsés de Hoyos
-            email:
+              example: User Test
+              readOnly: true
+            subAccountId:
               type: string
-              example: ramses@viabo.com
-            phone:
+              format: uuid
+              example: xxxxxx-xxxx-xxxx-xxxx-38e3364f30d9
+              readOnly: true
+            companyId:
               type: string
-              example: +52 12 3456 7890
-            privacy:
-              type: boolean
-              example: true
-        VerificationCode:
-          type: object
-          properties:
-            verificationCode:
-              type: string
-              example: 123456
-            token:
-              type: string
-              example: WQzeDGjL0PMqT4ucaICZNgx8oszCpM...
-        PaymentProcessorsArray:
-          type: array
-          items:
-            type: object
-            properties:
-              id: { type: string, example: "1" }
-              name: { type: string, example: MasterCard }
-          example:
-            - id: "1"
-              name: MasterCard
-            - id: "2"
-              name: Carnet
-        CardsArray:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                {
-                  type: string,
-                  example: "7c213897-20b1-4b65-8e4a-364bd86060c0",
-                }
-              main: { type: string, example: "0" }
-              number: { type: string, example: "2309581104469419" }
-              CVV: { type: string, example: "000" }
-              expirationDate: { type: string, example: "09/29" }
-              paymentProcessorId: { type: string, example: "1" }
-              paymentProcessorName: { type: string, example: "Mastercard" }
-              statusId: { type: string, example: "5" }
-              statusName: { type: string, example: "Activa" }
-              commerceId:
-                {
-                  type: string,
-                  example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
-                }
-              commerceName: { type: string, example: "" }
-              ownerId:
-                {
-                  type: string,
-                  example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
-                }
-              ownerName: { type: string, example: "Nombre" }
-              ownerLastname: { type: string, example: "Apellidos" }
-              ownerEmail: { type: string, example: "propietario@email.com" }
-              ownerPhone: { type: string, example: "+52 55 0000 1111" }
-              recorderId:
-                {
-                  type: string,
-                  example: "xxxxxxxx-c681-0000-af4f-eaa712345678",
-                }
-              recorderName: { type: string, example: "Administrador" }
-              assignmentDate: { type: string, example: "2023-01-01 18:00:00" }
-              register: { type: string, example: "2023-01-01 14:59:56" }
-              active: { type: string, example: "1" }
-          example:
-            - id: "7c213897-20b1-4b65-8e4a-364bd86060c0"
-              main: "0"
-              number: "2309581104469419"
-              CVV: "000"
-              expirationDate: "09/29"
-              paymentProcessorId: "1"
-              paymentProcessorName: "Mastercard"
-              statusId: "5"
-              statusName: "Activa"
-              commerceId: "xxxxxxxx-c681-0000-af4f-eaa712345678"
-              commerceName: ""
-              ownerId: "xxxxxxxx-c681-0000-af4f-eaa712345678"
-              ownerName: "Nombre"
-              ownerLastname: "Apellidos"
-              ownerEmail: "propietario@email.com"
-              ownerPhone: "+52 55 0000 1111"
-              recorderId: "xxxxxxxx-c681-0000-af4f-eaa712345678"
-              recorderName: "Administrador"
-              assignmentDate: "2023-01-01 18:00:00"
-              register: "2023-01-01 14:59:56"
-              active: "1"
-        CardInformation:
-          type: object
-          properties:
-            id:
-              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
-            main: { type: string, example: "0" }
-            number: { type: string, example: "5064520000029917" }
-            CVV: { type: string, example: "000" }
-            expirationDate: { type: string, example: "09/29" }
-            expirationMonth: { type: string, example: "4" }
-            expirationYear: { type: string, example: "27" }
-            paymentProcessorId: { type: string, example: "2" }
-            nip: { type: string, example: "1010" }
-            spei: { type: string, example: "646180300800000000" }
-            paynet: { type: string, example: "" }
-            balance: { type: string, example: "200" }
-            block: { type: string, example: "UnBlocked" }
-            statusId: { type: string, example: "5" }
-            commerceId:
-              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
-            ownerId:
-              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
-            recorderId:
-              { type: string, example: "xxxxxxxx-6d6b-0000-add5-68d800112233" }
-            assignmentDate: { type: string, example: "2023-10-11 13:29:48" }
-            register: { type: string, example: "2023-08-24 12:29:33" }
-            active: { type: string, example: "1" }
-        CardMovementsArray:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                {
-                  type: string,
-                  example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
-                }
-              transactionId: { type: string, example: "5405318" }
-              cardId:
-                {
-                  type: string,
-                  example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
-                }
-              cardNumber: { type: string, example: "1234567890123456" }
-              cardPaymentProcessor: { type: string, example: "Carnet" }
-              cardCommerceId:
-                {
-                  type: string,
-                  example: "xxxxxxxx-6d6b-0000-add5-68d800112233",
-                }
-              receiptId: { type: string, example: "" }
-              receiptFile: { type: string, example: "" }
-              description:
-                { type: string, example: "Trasferencia a cuenta global" }
-              concept: { type: string, example: "prueba" }
-              amount: { type: string, example: "40" }
-              type: { type: string, example: "Gasto" }
-              operationType: { type: string, example: "VIABO CARD" }
-              apiData: { type: string, example: "json api data set movement" }
-              date: { type: string, example: "2023-08-18 12:21:49" }
-              checked: { type: boolean, example: false }
-          example:
-            - id: "xxxxxxxx-6d6b-0000-add5-68d800112233"
-              transactionId: "5405318"
-              cardId: "xxxxxxxx-6d6b-0000-add5-68d800112233"
-              cardNumber: "1234567890123456"
-              cardPaymentProcessor: "Carnet"
-              cardCommerceId: "xxxxxxxx-6d6b-0000-add5-68d800112233"
-              receiptId: ""
-              receiptFiles: ""
-              description: "Trasferencia a cuenta global"
-              concept: "prueba"
-              amount: "40"
-              type: "Gasto"
-              operationType: "VIABO CARD"
-              apiData: ""
-              date: "2023-08-18 12:21:49"
-              checked: false
+              format: uuid
+              example: xxxxxx-xxxx-xxxx-xxxx-38e3364f30d9
+              readOnly: true
 
-        #-------------- START SCHEMAS VIABO SPEI CLOUD--------------#
+        CardsListOfCardCloud:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/CardOfCardCloud"
+
+        CardChangeResponseOfCardCloud:
+          type: object
+          properties:
+            card:
+              properties:
+                card_id:
+                  type: string
+                  format: uuid
+                  example: xxxxxx-xxxx-xxxx-xxxx-be04249c950f
+                card_external_id:
+                  type: string
+                  format: uuid
+                  example: xxxxxx-xxxx-xxxx-xxxx-ee732069b105
+                card_type:
+                  type: string
+                  example: virtual
+                  enum: ["physical", "virtual"]
+                brand:
+                  type: string
+                  example: MASTER
+                bin:
+                  type: string
+                  example: 91234567
+                pan:
+                  type: string
+                  example: 1234567891234567
+                client_id:
+                  type: string
+                  example: CP00000XX
+                masked_pan:
+                  type: string
+                  example: 123456XXXXXX4567
+                balance:
+                  type: string
+                  example: 178.00
+                clabe:
+                  type: string
+                  format: nullable
+                  nullable: true
+                status:
+                  type: string
+                  example: NORMAL
+                  enum: [NORMAL, BLOCKED]
+
+            message:
+              type: string
+              example: Tarjeta bloqueada correctamente
+
+        CardMovementOfCardCloud:
+          type: object
+          properties:
+            movement_id:
+              type: string
+              example: xxxxxx-xxxx-xxxx-a2c5-d5fcc76d55f1
+            date:
+              type: number
+              example: 1720672234
+              description: Unix Timestamp
+            type:
+              type: string
+              example: TRANSFER
+            amount:
+              type: string
+              example: 1.00
+            authorization_code:
+              type: string
+              example: 059582
+            description:
+              type: string
+              example: Transfer from subaccount. test
+
+        CardMovementsListOfCardCloud:
+          type: object
+          properties:
+            from:
+              type: number
+              example: 1718517600
+              description: Unix Timestamp
+            to:
+              type: number
+              example: 1721195999
+              description: Unix Timestamp
+            total_records:
+              type: number
+              example: 6
+            movements:
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/CardMovementOfCardCloud"
+
+        CardSensiveDataOfCardCloud:
+          type: object
+          properties:
+            expiration_date:
+              type: date
+              example: 2020-05-24
+            pan:
+              type: string
+              example: 1234567891234567
+            pin:
+              type: string
+              example: 1234
+
+        CardDynamicCVVOfCardCloud:
+          type: object
+          properties:
+            cvv:
+              type: string
+              example: 123
+            expiration_date:
+              type: number
+              example: 1720672234
+              description: Unix Timestamp
+
+        CardTransferRequest:
+          type: object
+          properties:
+            sourceType:
+              type: string
+              example: "account"
+            source:
+              type: string
+              example: xxxxxx-xxxx-xxxx-xxxx-be04249c950f
+              description: card_id de la tarjeta
+            destinationType:
+              type: string
+              example: subaccount
+              description: account (otras tarjetas), subaccount (subcuenta a la que pertenece la tarjeta)
+              enum: ["account", "subaccount"]
+            destination:
+              type: string
+              example: xxxxxx-xxxx-xxxx-xxxx-38e3364f30d9
+              description: account - card_id (otras tarjetas), subaccount - subAccountId (subcuenta a la que pertenece la tarjeta)
+            amount:
+              type: number
+              example: 10.50
+            description:
+              type: string
+              example: transferencia prueba
+          required:
+            - sourceType
+            - source
+            - destinationType
+            - destination
+            - amount
+            - description
+
+        CardTransferResponse:
+          type: object
+          properties:
+            new_balance:
+              type: string
+              example: "3500.5"
+            movement:
+              type: object
+              allOf:
+                - $ref: "#/components/schemas/CardMovementOfCardCloud"
+
+        #-------------- START SCHEMAS CARD CLOUD--------------#
+
+        #-------------- START SCHEMAS SPEI CLOUD--------------#
         CommissionsSpei:
           type: object
           properties:
@@ -622,9 +851,9 @@ nelmio_api_doc:
             type: object
             allOf:
               - $ref: "#/components/schemas/SpeiThirdAccountRequest"
-        #-------------- END SCHEMAS VIABO SPEI CLOUD--------------#
+        #-------------- END SCHEMAS SPEI CLOUD--------------#
 
-        #-------------- START SCHEMAS VIABO PAY CLOUD--------------#
+        #-------------- START SCHEMAS PAY CLOUD--------------#
         PayTerminal:
           type: object
           properties:
@@ -743,7 +972,7 @@ nelmio_api_doc:
             - phone
             - email
 
-        #-------------- END SCHEMAS VIABO PAY CLOUD--------------#
+        #-------------- END SCHEMAS PAY CLOUD--------------#
 
         Empty:
           type: object
@@ -754,13 +983,13 @@ nelmio_api_doc:
       - name: Control de Acceso
         description:
           "Esta sección de la API proporciona endpoints relacionados con la autenticación y
-          la autorización para acceder a los servicios de Viabo Pay, Viabo Card y Viabo Spei Cloud.
+          la autorización para acceder a los servicios de Pay Cloud, Card Cloud y SPEI Cloud.
           Incluye métodos para la gestión de tokens de acceso, autenticación de usuarios y autorización para realizar transacciones
           y operaciones en la plataforma."
       - name: Access Control [EN]
         description:
           "This section of the API provides endpoints related to authentication and
-          authorization for accessing Viabo Pay, Viabo Card, and Viabo Spei Cloud services.
+          authorization for accessing Pay Cloud, Card Cloud, and SPEI Cloud services.
           It includes methods for managing access tokens, user authentication, and authorization to perform transactions
           and operations on the platform"
 
@@ -867,249 +1096,386 @@ nelmio_api_doc:
                     type: string
                     example: "Sin acceso || El código ingresado es incorrecto"
 
-      /api/card-demo/information/{cardNumber}:
-        get:
-          tags:
-            - Registro de Tarjetas [ES]
-          summary: Valida existencia de tarjeta
-          description: Verifica si la tarjeta está registrada como parte del stock de tarjetas sin asociar de algun comercio
-          parameters:
-            - name: cardNumber
-              in: path
-              description: Bin de tarjeta (ultimos 8 digitos)
-              required: true
-              schema:
-                type: string
-                example: 12345678
-          responses:
-            200:
-              description: "Retorna un token confirmando que la tarjeta esta registrada como parte del stock de tarjetas sin asociar de algun comercio. Se utiliza pará en el siguiente envío de información"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/UserToken"
-            400:
-              description: "Bad Request"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "La tarjeta no esta registrada o los datos ingresados no son correctos"
-      /api/security/commerce-demo/user/new:
-        post:
-          tags:
-            - Registro de Tarjetas [ES]
-          summary: Registro de nuevo tarjetahabiente [Encrypted]
-          description: Recibe los datos del usuario para asociarlo con la tarjeta previamente definida
-          requestBody:
-            description: Datos del usuario para el registro
-            required: true
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/NewCardUser"
-          responses:
-            200:
-              description: "Retorna un token asociado al usuario registrado. Se utilizará en el siguiente envío de información"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/UserToken"
-            400:
-              description: "Bad Request"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Error general, parámetros inválidos o faltantes"
-            401:
-              description: "Token inválido o usuario existente"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Sin acceso || El usuario ya esta registrado en el sistema"
-      /api/code/verificate:
-        post:
-          tags:
-            - Registro de Tarjetas [ES]
-          summary: Verificación de identidad para nuevo usuario [Encrypted]
-          description: Verifica la identidad del usuario para asociarlo con la tarjeta previamente definida
-          requestBody:
-            description: Datos del usuario para el registro
-            required: true
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/VerificationCode"
-          responses:
-            200:
-              description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/Empty"
-            400:
-              description: "Bad Request"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Error general, parámetros inválidos o faltantes"
-            401:
-              description: "Token inválido o código de verificación incorrecto"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Sin acceso || El código ingresado es incorrecto"
-      /api/assign/commerce-demo-card/to/user:
-        put:
-          tags:
-            - Registro de Tarjetas [ES]
-          summary: Validación de datos de tarjeta y asociación a usuario [Encrypted]
-          description: Valida el CVV y los datos de vencimiento de la tarjeta. En caso de ser correctos, asocia la tarjeta al usuario previamente registrado
-          requestBody:
-            description: Datos del usuario para el registro
-            required: true
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Encrypted"
-          responses:
-            200:
-              description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/Empty"
-            400:
-              description: "Bad Request"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Los datos de la tarjeta son incorrectos"
+      # /api/card-demo/information/{cardNumber}:
+      #   get:
+      #     tags:
+      #       - Registro de Tarjetas [ES]
+      #     summary: Valida existencia de tarjeta
+      #     description: Verifica si la tarjeta está registrada como parte del stock de tarjetas sin asociar de algun comercio
+      #     parameters:
+      #       - name: cardNumber
+      #         in: path
+      #         description: Bin de tarjeta (ultimos 8 digitos)
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 12345678
+      #     responses:
+      #       200:
+      #         description: "Retorna un token confirmando que la tarjeta esta registrada como parte del stock de tarjetas sin asociar de algun comercio. Se utiliza pará en el siguiente envío de información"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/UserToken"
+      #       400:
+      #         description: "Bad Request"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "La tarjeta no esta registrada o los datos ingresados no son correctos"
+      # /api/security/commerce-demo/user/new:
+      #   post:
+      #     tags:
+      #       - Registro de Tarjetas [ES]
+      #     summary: Registro de nuevo tarjetahabiente [Encrypted]
+      #     description: Recibe los datos del usuario para asociarlo con la tarjeta previamente definida
+      #     requestBody:
+      #       description: Datos del usuario para el registro
+      #       required: true
+      #       content:
+      #         application/json:
+      #           schema:
+      #             $ref: "#/components/schemas/NewCardUser"
+      #     responses:
+      #       200:
+      #         description: "Retorna un token asociado al usuario registrado. Se utilizará en el siguiente envío de información"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/UserToken"
+      #       400:
+      #         description: "Bad Request"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Error general, parámetros inválidos o faltantes"
+      #       401:
+      #         description: "Token inválido o usuario existente"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso || El usuario ya esta registrado en el sistema"
+      # /api/code/verificate:
+      #   post:
+      #     tags:
+      #       - Registro de Tarjetas [ES]
+      #     summary: Verificación de identidad para nuevo usuario [Encrypted]
+      #     description: Verifica la identidad del usuario para asociarlo con la tarjeta previamente definida
+      #     requestBody:
+      #       description: Datos del usuario para el registro
+      #       required: true
+      #       content:
+      #         application/json:
+      #           schema:
+      #             $ref: "#/components/schemas/VerificationCode"
+      #     responses:
+      #       200:
+      #         description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/Empty"
+      #       400:
+      #         description: "Bad Request"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Error general, parámetros inválidos o faltantes"
+      #       401:
+      #         description: "Token inválido o código de verificación incorrecto"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso || El código ingresado es incorrecto"
+      # /api/assign/commerce-demo-card/to/user:
+      #   put:
+      #     tags:
+      #       - Registro de Tarjetas [ES]
+      #     summary: Validación de datos de tarjeta y asociación a usuario [Encrypted]
+      #     description: Valida el CVV y los datos de vencimiento de la tarjeta. En caso de ser correctos, asocia la tarjeta al usuario previamente registrado
+      #     requestBody:
+      #       description: Datos del usuario para el registro
+      #       required: true
+      #       content:
+      #         application/json:
+      #           schema:
+      #             $ref: "#/components/schemas/Encrypted"
+      #     responses:
+      #       200:
+      #         description: "Retorna un objeto vacío. Validar únicamente el status de la respuesta"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/Empty"
+      #       400:
+      #         description: "Bad Request"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Los datos de la tarjeta son incorrectos"
 
-      /api/payment-processors/of/commerce:
-        get:
-          tags:
-            - Viabo Card [ES]
-          summary: Lista de procesadores de pago del comercio [Encrypted]
-          description: Obtiene los tipos de procesadores de pago para las tarjetas del comercio o usuario loggeado
-          responses:
-            200:
-              description: "Arreglo de objetos json con procesadores de pago habilitados. Puede recibir uno o dos objetos dependiendo si tiene solo asignado Carnet o MasterCard"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/PaymentProcessorsArray"
-            400:
-              description: "Bad Request"
-            401:
-              description: "Sin acceso"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "El usuario caduco su sesion o no ha iniciado sesion"
-      /api/enabled-cards/commerce:
-        get:
-          tags:
-            - Viabo Card [ES]
-          summary: Lista de tarjetas por procesador de pago [Encrypted]
-          description: Obtiene las tarjetas asociadas al usuario logueado y por procesador de pago (MasterCard o Carnet)
-          parameters:
-            - name: paymentProcessorId
-              in: query
-              description: Id del procesador de pago
-              required: true
-              schema:
-                type: string
-                example: 1
-          responses:
-            200:
-              description: "Arreglo de objetos json con tarjetas habilitadas. Puede recibir un arreglo vacío en caso de que el usuario no cuente contarjetas del procesador de pago elegido"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/CardsArray"
-            400:
-              description: "Bad Request"
-            401:
-              description: "Sin acceso"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Sin acceso"
-      /api/card/information/{cardId}:
-        get:
-          tags:
-            - Viabo Card [ES]
-          summary: Información de tarjeta [Encrypted]
-          description: Obtiene la información de la tarjeta seleccionada
-          parameters:
-            - name: cardId
-              in: path
-              description: Id de la tarjeta
-              required: true
-              schema:
-                type: string
-                example: 7c213897-20b1-4b65-8e4a-364bd86060c0
-          responses:
-            200:
-              description: "Objeto json con información de la tarjeta"
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/CardInformation"
-            400:
-              description: "Bad Request"
-            401:
-              description: "Sin acceso"
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: "Sin acceso"
-      /api/card/movements:
+      # /api/payment-processors/of/commerce:
+      #   get:
+      #     tags:
+      #       - Viabo Card [ES]
+      #     summary: Lista de procesadores de pago del comercio [Encrypted]
+      #     description: Obtiene los tipos de procesadores de pago para las tarjetas del comercio o usuario loggeado
+      #     responses:
+      #       200:
+      #         description: "Arreglo de objetos json con procesadores de pago habilitados. Puede recibir uno o dos objetos dependiendo si tiene solo asignado Carnet o MasterCard"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/PaymentProcessorsArray"
+      #       400:
+      #         description: "Bad Request"
+      #       401:
+      #         description: "Sin acceso"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "El usuario caduco su sesion o no ha iniciado sesion"
+      # /api/enabled-cards/commerce:
+      #   get:
+      #     tags:
+      #       - Viabo Card [ES]
+      #     summary: Lista de tarjetas por procesador de pago [Encrypted]
+      #     description: Obtiene las tarjetas asociadas al usuario logueado y por procesador de pago (MasterCard o Carnet)
+      #     parameters:
+      #       - name: paymentProcessorId
+      #         in: query
+      #         description: Id del procesador de pago
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 1
+      #     responses:
+      #       200:
+      #         description: "Arreglo de objetos json con tarjetas habilitadas. Puede recibir un arreglo vacío en caso de que el usuario no cuente contarjetas del procesador de pago elegido"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/CardsArray"
+      #       400:
+      #         description: "Bad Request"
+      #       401:
+      #         description: "Sin acceso"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso"
+      # /api/card/information/{cardId}:
+      #   get:
+      #     tags:
+      #       - Viabo Card [ES]
+      #     summary: Información de tarjeta [Encrypted]
+      #     description: Obtiene la información de la tarjeta seleccionada
+      #     parameters:
+      #       - name: cardId
+      #         in: path
+      #         description: Id de la tarjeta
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 7c213897-20b1-4b65-8e4a-364bd86060c0
+      #     responses:
+      #       200:
+      #         description: "Objeto json con información de la tarjeta"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/CardInformation"
+      #       400:
+      #         description: "Bad Request"
+      #       401:
+      #         description: "Sin acceso"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso"
+      # /api/card/movements:
+      #   get:
+      #     security:
+      #       - Bearer: []
+      #     tags:
+      #       - Viabo Card [ES]
+      #     summary: Movimientos de tarjeta [Encrypted]
+      #     description: Obtiene los movimientos de la tarjeta seleccionada en un rango de fechas
+      #     parameters:
+      #       - name: cardId
+      #         in: query
+      #         description: Id de la tarjeta
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 7c213897-20b1-4b65-8e4a-364bd86060c0
+      #       - name: startDate
+      #         in: query
+      #         description: Fecha inicial
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 2023-08-01
+      #       - name: endDate
+      #         in: query
+      #         description: Fecha final
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 2023-08-31
+      #     responses:
+      #       200:
+      #         description: "Arreglo de objetos json con movimientos de la tarjeta"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/CardMovementsArray"
+      #       400:
+      #         description: "Bad Request"
+      #       401:
+      #         description: "Sin acceso"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso"
+      # /api/card/{cardId}/block/blocked:
+      #   put:
+      #     tags:
+      #       - Viabo Card [ES]
+      #     summary: Bloqueo de tarjeta [Encrypted]
+      #     description: Bloquea la tarjeta seleccionada
+      #     parameters:
+      #       - name: cardId
+      #         in: path
+      #         description: Id de la tarjeta
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 7c213897-20b1-4b65-8e4a-364bd86060c0
+      #     responses:
+      #       200:
+      #         description: "Objeto json vacío. Validar únicamente el status de la respuesta"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/Empty"
+      #       400:
+      #         description: "Bad Request"
+      #       401:
+      #         description: "Sin acceso"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso"
+      # /api/card/{cardId}/block/unblocked:
+      #   put:
+      #     tags:
+      #       - Viabo Card [ES]
+      #     summary: Desbloqueo de tarjeta [Encrypted]
+      #     description: Desbloquea la tarjeta seleccionada
+      #     parameters:
+      #       - name: cardId
+      #         in: path
+      #         description: Id de la tarjeta
+      #         required: true
+      #         schema:
+      #           type: string
+      #           example: 7c213897-20b1-4b65-8e4a-364bd86060c0
+      #     responses:
+      #       200:
+      #         description: "Objeto json vacío. Validar únicamente el status de la respuesta"
+      #         content:
+      #           application/json:
+      #             schema:
+      #               $ref: "#/components/schemas/Empty"
+      #       400:
+      #         description: "Bad Request"
+      #       401:
+      #         description: "Sin acceso"
+      #         content:
+      #           text/plain:
+      #             schema:
+      #               type: string
+      #               example: "Sin acceso"
+
+      /api/cardCloud/user-cards:
         get:
           security:
             - Bearer: []
           tags:
-            - Viabo Card [ES]
-          summary: Movimientos de tarjeta [Encrypted]
-          description: Obtiene los movimientos de la tarjeta seleccionada en un rango de fechas
+            - Card Cloud [ES]
+          summary: Obtener tarjetas de usuario
+          description: Este endpoint obtiene las tarjetas asignadas al usuario
+          responses:
+            200:
+              description: Arreglo de json con la lista de tarjetas
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CardsListOfCardCloud"
+            400:
+              description: "Bad Request"
+            401:
+              description: Unauthorized
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso"
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
+      /api/cardCloud/card/{cardId}/movements:
+        get:
+          tags:
+            - Card Cloud [ES]
+          summary: Movimientos Tarjeta
+          description: Obten los movimientos de la tarjeta seleccionada
           parameters:
             - name: cardId
-              in: query
+              in: path
               description: Id de la tarjeta
               required: true
               schema:
                 type: string
-                example: 7c213897-20b1-4b65-8e4a-364bd86060c0
-            - name: startDate
+                format: uuid
+                example: xxxxxx-xxxx-xxxx-xxxx-364bd86060c0
+            - name: fromDate
               in: query
-              description: Fecha inicial
+              description: Fecha inicial Unix Timestamp
               required: true
               schema:
-                type: string
-                example: 2023-08-01
-            - name: endDate
+                type: number
+                example: 1718517600
+            - name: toDate
               in: query
-              description: Fecha final
+              description: Fecha final Unix Timestamp
               required: true
               schema:
-                type: string
-                example: 2023-08-31
+                type: number
+                example: 1721195999
           responses:
             200:
-              description: "Arreglo de objetos json con movimientos de la tarjeta"
+              description: json con la lista de movimientos e informacion de sus filtros
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/CardMovementsArray"
+                    $ref: "#/components/schemas/CardMovementsListOfCardCloud"
             400:
               description: "Bad Request"
             401:
@@ -1119,11 +1485,96 @@ nelmio_api_doc:
                   schema:
                     type: string
                     example: "Sin acceso"
-      /api/card/{cardId}/block/blocked:
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
+      /api/cardCloud/card/{cardId}/sensitive:
+        get:
+          tags:
+            - Card Cloud [ES]
+          summary: Informacion Sensible Tarjeta [Encrypted]
+          description: Obten la información sensible de la tarjeta seleccionada. Antes de desencriptar el sensive_data , se necesitar decodear base64 [base64decode sensitive_data]
+          parameters:
+            - name: cardId
+              in: path
+              description: Id de la tarjeta
+              required: true
+              schema:
+                type: string
+                format: uuid
+                example: xxxxxx-xxxx-xxxx-xxxx-364bd86060c0
+
+          responses:
+            200:
+              description: json con la informacion sensible de la tarjeta
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CardSensiveDataOfCardCloud"
+            400:
+              description: "Bad Request"
+            401:
+              description: "Sin acceso"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso"
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
+      /api/cardCloud/card/{cardId}/cvv:
+        get:
+          tags:
+            - Card Cloud [ES]
+          summary: CVV Dinamico [Encrypted]
+          description: Obten el CVV dinamico para las tarjetas de tipo VIRTUAL.
+          parameters:
+            - name: cardId
+              in: path
+              description: Id de la tarjeta
+              required: true
+              schema:
+                type: string
+                format: uuid
+                example: xxxxxx-xxxx-xxxx-xxxx-364bd86060c0
+
+          responses:
+            200:
+              description: json con el cvv dinamico
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CardDynamicCVVOfCardCloud"
+            400:
+              description: "Bad Request"
+            401:
+              description: "Sin acceso"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso"
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
+      /api/cardCloud/card/{cardId}/block/block:
         put:
           tags:
-            - Viabo Card [ES]
-          summary: Bloqueo de tarjeta [Encrypted]
+            - Card Cloud [ES]
+          summary: Bloqueo de tarjeta
           description: Bloquea la tarjeta seleccionada
           parameters:
             - name: cardId
@@ -1132,14 +1583,15 @@ nelmio_api_doc:
               required: true
               schema:
                 type: string
-                example: 7c213897-20b1-4b65-8e4a-364bd86060c0
+                format: uuid
+                example: xxxxxx-xxxx-xxxx-xxxx-364bd86060c0
           responses:
             200:
-              description: "Objeto json vacío. Validar únicamente el status de la respuesta"
+              description: "Objeto json con la tarjeta actualizada."
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/Empty"
+                    $ref: "#/components/schemas/CardChangeResponseOfCardCloud"
             400:
               description: "Bad Request"
             401:
@@ -1149,11 +1601,18 @@ nelmio_api_doc:
                   schema:
                     type: string
                     example: "Sin acceso"
-      /api/card/{cardId}/block/unblocked:
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
+      /api/cardCloud/card/{cardId}/block/unblock:
         put:
           tags:
-            - Viabo Card [ES]
-          summary: Desbloqueo de tarjeta [Encrypted]
+            - Card Cloud [ES]
+          summary: Desbloqueo de tarjeta
           description: Desbloquea la tarjeta seleccionada
           parameters:
             - name: cardId
@@ -1162,14 +1621,16 @@ nelmio_api_doc:
               required: true
               schema:
                 type: string
-                example: 7c213897-20b1-4b65-8e4a-364bd86060c0
+                format: uuid
+                example: xxxxxx-xxxx-xxxx-xxxx-364bd86060c0
           responses:
             200:
-              description: "Objeto json vacío. Validar únicamente el status de la respuesta"
+              description: "Objeto json con la tarjeta actualizada."
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/Empty"
+                    $ref: "#/components/schemas/CardChangeResponseOfCardCloud"
+
             400:
               description: "Bad Request"
             401:
@@ -1179,13 +1640,57 @@ nelmio_api_doc:
                   schema:
                     type: string
                     example: "Sin acceso"
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
+      /api/cardCloud/transfer:
+        post:
+          tags:
+            - Card Cloud [ES]
+          summary: Transferir
+          description: Transfiere desde tarjeta a otras tarjetas o subcuenta
+          requestBody:
+            description: Informacion necesaria del origen y destino de la transaccion
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/CardTransferRequest"
+          responses:
+            200:
+              description: "Objeto json con la tarjeta actualizada."
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CardTransferResponse"
+
+            400:
+              description: "Bad Request"
+            401:
+              description: "Sin acceso"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Sin acceso"
+            403:
+              description: "Error Interno del Servicio"
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: "Credenciales incorrectas"
 
       /api/commerces/terminals:
         get:
           security:
             - Bearer: []
           tags:
-            - Viabo Pay [EN]
+            - Pay Cloud [EN]
           summary: Get Terminals List
           description: This endpoint allows to get terminals list associated with user
           responses:
@@ -1209,7 +1714,7 @@ nelmio_api_doc:
           security:
             - Bearer: []
           tags:
-            - Viabo Pay [EN]
+            - Pay Cloud [EN]
           summary: Generate New Payment For Virtual Terminals
           description: This endpoint allows to create new payment from virtual terminal
           requestBody:
@@ -1244,7 +1749,7 @@ nelmio_api_doc:
       /api/spei/accounts:
         get:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Obtencion de cuentas spei [Encrypted]
           description: Obtener cuentas,empresas o centros de costos dependiendo del perfil
           responses:
@@ -1266,7 +1771,7 @@ nelmio_api_doc:
       /api/spei/transaccions/balance:
         get:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Balance - Total de depositos y transferencias
           description: Obtener balance y total de depositos (speiIn, speiInCount), transferencias (speiOut,speiOutCount)
           parameters:
@@ -1311,7 +1816,7 @@ nelmio_api_doc:
       /api/spei/transaccions:
         get:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Movimientos de una cuenta SPEI
           description: Obtener los movimientos de una SPEI
           parameters:
@@ -1365,7 +1870,7 @@ nelmio_api_doc:
           security:
             - Bearer: []
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Realizar transferencia a cuentas (SPEI OUT) [Encrypted]
           description: Realiza transferencia a cuentas externas (terceros) o internas (empresa,concentradora)
           requestBody:
@@ -1399,7 +1904,7 @@ nelmio_api_doc:
       /api/spei/banks:
         get:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Obtencion de lista de bancos SPEI
           description: Obtener lista de bancos para utilizarlos para crear una cuenta tercero
           responses:
@@ -1421,7 +1926,7 @@ nelmio_api_doc:
       /api/spei/external-account/new:
         post:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Alta cuenta de tercero
           description: Crea una cuenta de tercero asociado al usuario(empresa) para realizar spei out
           requestBody:
@@ -1455,7 +1960,7 @@ nelmio_api_doc:
       /api/spei/external-accounts:
         get:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Lista de cuentas de terceros (externas)
           description: Obtener lista de cuentas externas para utilizarlos para realizar un spei out
           responses:
@@ -1477,7 +1982,7 @@ nelmio_api_doc:
       /api/spei/external-account/disable:
         put:
           tags:
-            - Viabo SPEI Cloud [ES]
+            - SPEI Cloud [ES]
           summary: Eliminar Cuenta de Tercero (Externa)
           description: Elimina una cuenta de tercero asociado al usuario(empresa)
           requestBody:

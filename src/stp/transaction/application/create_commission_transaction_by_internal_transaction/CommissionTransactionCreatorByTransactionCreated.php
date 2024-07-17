@@ -27,7 +27,7 @@ final readonly class CommissionTransactionCreatorByTransactionCreated
         $commissionTotal = $this->commissionTotal($transaction['commissions']);
         if ($this->hasCommissions($commissionTotal)) {
             $stpAccount = $this->queryBus->ask(new StpAccountQueryByBusiness($transaction['businessId']));
-            $transaction['commissions'] = json_encode($transaction['commissions']);
+            $transaction['commissions'] = '';
             $transaction['concept'] = "Comisión Cobrada la transacción {$transaction['reference']}";
             $transaction['amount'] = $commissionTotal;
             $transaction['reference'] = strval($transaction['reference'] + 1);

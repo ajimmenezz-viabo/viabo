@@ -64,7 +64,7 @@ final readonly class AccountsDataFinder
                 ['bankAccount' => $transaction['cuentaBeneficiario'], 'businessId' => $transaction['businessId']]
             ]);
             $data = ['sourceCompany' => $sourceCompany[0], 'destinationCompany' => $destinationCompany[0]];
-            return array_merge($transaction, $data, ['commissions' => []]);
+            return array_merge($transaction, $data, ['commissions' => $transaction['commissions'] ?? []]);
         }, $transactions);
     }
 

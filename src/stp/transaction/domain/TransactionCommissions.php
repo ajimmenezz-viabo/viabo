@@ -4,6 +4,7 @@
 namespace Viabo\stp\transaction\domain;
 
 
+use Viabo\shared\domain\utils\NumberFormat;
 use Viabo\shared\domain\valueObjects\StringValueObject;
 
 final class TransactionCommissions extends StringValueObject
@@ -46,8 +47,17 @@ final class TransactionCommissions extends StringValueObject
 
     public static function fromSpeiIn(array $commissions, float|string $amount): static
     {
-        $commissions = self::calculateSpeinInCommissions($commissions, $amount);
+        $commissions = self::calculateSpeiInCommissions($commissions, $amount);
         return new static(json_encode($commissions));
+    }
+
+    public function format(float $amount): array
+    {
+        if (empty($this->value)) {
+            self::$data['total'] = $amount;
+            return self::$data;
+        }
+        return json_decode($this->value, true);
     }
 
     private static function calculateExternalCommissions(array $commissions, float|string $amount): array
@@ -89,7 +99,7 @@ final class TransactionCommissions extends StringValueObject
         return self::$data;
     }
 
-    private static function calculateSpeinInCommissions(array $commissions, float|string $amount): array
+    private static function calculateSpeiInCommissions(array $commissions, float|string $amount): array
     {
         self::clearData();
         self::$data['speiIn'] = self::calculatePercentage($amount, $commissions['speiIn']);
@@ -99,7 +109,7 @@ final class TransactionCommissions extends StringValueObject
 
     private static function calculatePercentage(float|string $amount, $percentage): float
     {
-        return $amount * $percentage / 100;
+        return NumberFormat::float($amount * $percentage / 100);
     }
 
     private static function clearData(): void
@@ -118,15 +128,5 @@ final class TransactionCommissions extends StringValueObject
     {
         return empty($this->value) ? [] : json_decode($this->value, true);
     }
-
-    public function format(float $amount): array
-    {
-        if(empty($this->value)){
-            self::$data['total'] = $amount;
-            return self::$data;
-        }
-        return json_decode($this->value, true);
-    }
-
 
 }

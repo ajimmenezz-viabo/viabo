@@ -71,7 +71,8 @@ final readonly class AccountsDataFinder
     private function companies(array $companies): array
     {
         return array_map(function (array $company) {
-            $bankAccountData = $this->getBankAccountData($company['bankAccount'], $company['businessId']);
+            $businessId = $company['businessId'] ?? '';
+            $bankAccountData = $this->getBankAccountData($company['bankAccount'], $businessId);
             $company['type'] = $bankAccountData['type'];
             $company['companyId'] = $bankAccountData['companyId'];
             $company['rfc'] = $bankAccountData['rfc'];
@@ -89,8 +90,9 @@ final readonly class AccountsDataFinder
         $stpAccount = $this->queryBus->ask(new StpAccountQueryByNumber($bankAccount));
 
         if (!empty($stpAccount->data)) {
-            $admins = $this->queryBus->ask(new AdministratorsStpQuery($businessId));
             $data = $stpAccount->data[0];
+            $businessId = empty($businessId) ? $data['businessId'] : $businessId;
+            $admins = $this->queryBus->ask(new AdministratorsStpQuery($businessId));
             return [
                 'type' => 'stpAccount',
                 'companyId' => '',

@@ -12,7 +12,7 @@ final readonly class CardCloudCardTransferCreatorQuery implements Query
         public string $source,
         public string $destinationType,
         public string $destination,
-        public int    $amount,
+        public float  $amount,
         public string $description
     )
     {

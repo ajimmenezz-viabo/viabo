@@ -12,3 +12,8 @@ assign-card-to-user:
   path: '/api/cardCloud/cards/assign-user'
   controller: Viabo\Backend\Controller\stp\cardCloud\update\CardCloudCardsAssignUserController
   methods: PUT
+
+assign-cards-to-users:
+  path: '/api/cardCloud/cards/assign-user-from-file'
+  controller: Viabo\Backend\Controller\stp\cardCloud\update\CardCloudCardsAssignUserFromFileController
+  methods: POST

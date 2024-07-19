@@ -17,7 +17,7 @@ final class CardCloudCardTransferCreator
         string $source,
         string $destinationType,
         string $destination,
-        int    $amount,
+        float  $amount,
         string $description
     ): CardCloudServiceResponse
     {
@@ -30,7 +30,7 @@ final class CardCloudCardTransferCreator
             'description' => $description
         ];
         return new CardCloudServiceResponse(
-            $this->repository->createTransfer($businessId,$transferData)
+            $this->repository->createTransfer($businessId, $transferData)
         );
     }
 }

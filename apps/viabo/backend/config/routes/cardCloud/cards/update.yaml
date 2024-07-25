@@ -3,7 +3,7 @@ update-card-cloud-card-status:
   controller: Viabo\Backend\Controller\cardCloud\cards\update\CardCloudCardBlockController
   methods: PUT
 
-assigned-cards-to-company:
+assigned-cards-cloud-to-company:
   path: '/api/cardCloud/cards/assign'
   controller: Viabo\Backend\Controller\cardCloud\cards\update\CardCloudCardsAssignController
   methods: PUT

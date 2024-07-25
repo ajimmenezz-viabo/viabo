@@ -1,0 +1,29 @@
+find-subaccounts-cards:
+  path: '/api/cardCloud/sub-account/{subAccountId}/cards'
+  controller: Viabo\Backend\Controller\cardCloud\cards\find\CardCloudSubAccountCardsFinderController
+  methods: GET
+
+find-card-details:
+  path: '/api/cardCloud/card/{cardId}/details'
+  controller: Viabo\Backend\Controller\cardCloud\cards\find\CardCloudCardDetailsFinderController
+  methods: GET
+
+find-card-movements:
+  path: '/api/cardCloud/card/{cardId}/movements'
+  controller: Viabo\Backend\Controller\cardCloud\cards\find\CardCloudCardMovementsFinderController
+  methods: GET
+
+find-card-sensitive:
+  path: '/api/cardCloud/card/{cardId}/sensitive'
+  controller: Viabo\Backend\Controller\cardCloud\cards\find\CardCloudCardSensitiveFinderController
+  methods: GET
+
+find-card-cvv:
+  path: '/api/cardCloud/card/{cardId}/cvv'
+  controller: Viabo\Backend\Controller\cardCloud\cards\find\CardCloudCardCVVFinderController
+  methods: GET
+
+find-cards-stock:
+  path: '/api/cardCloud/cards-stock'
+  controller: Viabo\Backend\Controller\cardCloud\cards\find\CardCloudCardsStockFinderController
+  methods: GET

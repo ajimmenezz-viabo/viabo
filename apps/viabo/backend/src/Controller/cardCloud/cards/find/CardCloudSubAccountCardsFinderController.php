@@ -1,29 +1,28 @@
 <?php declare(strict_types=1);
 
-namespace Viabo\Backend\Controller\backoffice\projection\find;
+namespace Viabo\Backend\Controller\cardCloud\cards\find;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Viabo\cardCloud\subAccount\application\find_sub_account_movements_by_company\SubAccountCardCloudServiceMovementsByCompanyQuery;
+use Viabo\cardCloud\cards\application\find_sub_account_cards\CardCloudSubAccountCardsQuery;
 use Viabo\shared\infrastructure\symfony\ApiController;
+use Viabo\cardCloud\users\application\find_users_by_business\CardCloudUsersQuery;
 
-final readonly class SubAccountMovementsFinderController extends ApiController
+final readonly class CardCloudSubAccountCardsFinderController extends ApiController
 {
 
     public function __invoke(string $subAccountId, Request $request): Response
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $fromDate = $request->query->get('fromDate');
-            $toDate = $request->query->get('toDate');
-            $company = $this->ask(new SubAccountCardCloudServiceMovementsByCompanyQuery(
+            $users = $this->ask(new CardCloudUsersQuery($tokenData['businessId']));
+            $cardCloudCards = $this->ask(new CardCloudSubAccountCardsQuery(
                 $tokenData['businessId'],
                 $subAccountId,
-                $fromDate,
-                $toDate
+                $users->data
             ));
-            return new JsonResponse($company->data);
+            return new JsonResponse($cardCloudCards->data);
         } catch (\DomainException $exception) {
             return new JsonResponse($exception->getMessage(), $exception->getCode());
         }

@@ -1,4 +1,0 @@
-find-user-cards:
-  path: '/api/cardCloud/user-cards'
-  controller: Viabo\Backend\Controller\stp\users\find\CardsCloudUserFinderController
-  methods: GET

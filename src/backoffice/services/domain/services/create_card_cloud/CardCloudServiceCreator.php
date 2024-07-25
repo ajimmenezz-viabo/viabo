@@ -4,8 +4,8 @@ namespace Viabo\backoffice\services\domain\services\create_card_cloud;
 
 use Viabo\backoffice\services\domain\new\ServiceFactory;
 use Viabo\backoffice\services\domain\new\ServiceRepository;
+use Viabo\cardCloud\subAccount\application\create_sub_account\CardCloudSubAccountCreatorQuery;
 use Viabo\shared\domain\bus\query\QueryBus;
-use Viabo\stp\cardCloud\application\create_sub_account\CardCloudSubAccountCreatorQuery;
 
 final readonly class CardCloudServiceCreator
 {

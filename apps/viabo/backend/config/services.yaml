@@ -12,6 +12,7 @@ imports:
   - { resource: ../../../../src/landingPages/shared/infrastructure/symfony/dependencyInjection/landingPages_database.yaml }
   - { resource: ../../../../src/tickets/shared/infrastructure/symfony/dependencyInjection/tickets_database.yaml }
   - { resource: ../../../../src/stp/shared/infrastructure/symfony/dependencyInjection/stp_database.yaml }
+  - { resource: ../../../../src/cardCloud/shared/infrastructure/symfony/dependencyInjection/card_cloud_database.yaml }
   - { resource: ../../../../src/backoffice/shared/infrastructure/symfony/dependencyInjection/backoffice_database.yaml }
   - { resource: ../../../../src/backofficeBusiness/shared/infrastructure/symfony/dependencyInjection/backoffice_business_database.yaml }
 

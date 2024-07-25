@@ -4,10 +4,10 @@
 namespace Viabo\cardCloud\users\application\find_user_by_card;
 
 
-use Viabo\shared\domain\criteria\Criteria;
-use Viabo\shared\domain\criteria\Filters;
 use Viabo\cardCloud\users\application\UserCardCloudResponse;
 use Viabo\cardCloud\users\domain\UserCardCloudRepository;
+use Viabo\shared\domain\criteria\Criteria;
+use Viabo\shared\domain\criteria\Filters;
 
 final readonly class CardCloudUserFinderByCard
 {
@@ -28,7 +28,7 @@ final readonly class CardCloudUserFinderByCard
     public function userData(array $users): array
     {
         if (empty($users)) {
-            return ['ownerId' => '', 'name' => ''];
+            return ['ownerId' => '', 'name' => '', 'lastname' => '', 'email' => ''];
         }
 
         $user = $users[0]->toArray();
@@ -36,7 +36,6 @@ final readonly class CardCloudUserFinderByCard
             $user['id'],
             $user['businessId'],
             $user['cardId'],
-            $user['email'],
             $user['createdByUser'],
             $user['createDate']
         );

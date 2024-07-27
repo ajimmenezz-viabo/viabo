@@ -219,6 +219,11 @@ final class Transaction extends AggregateRoot
         $this->additionalData = $additionalData;
     }
 
+    public function incrementTrackingKey(int $second): void
+    {
+        $this->trackingKey->increment($second);
+    }
+
     public function toArray(): array
     {
         return [

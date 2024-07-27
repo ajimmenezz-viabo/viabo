@@ -56,11 +56,15 @@ final readonly class SpeiOutTransactionCreator
         bool         $internalTransaction
     ): void
     {
-        array_map(function (Transaction $transaction) use ($stpAccount, $internalTransaction) {
+        $second = 0;
+        array_map(function (Transaction $transaction) use ($stpAccount, $internalTransaction,&$second) {
+            $transaction->incrementTrackingKey($second++);
+
             if (!$internalTransaction) {
                 $stpData = $this->stpRepository->processPayment($stpAccount, $transaction->toArray());
                 $transaction->updateStpData($stpData);
             }
+
             $this->repository->save($transaction);
 
             $this->bus->publish(...$transaction->pullDomainEvents());

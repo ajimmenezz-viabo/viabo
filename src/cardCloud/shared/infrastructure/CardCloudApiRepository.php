@@ -86,7 +86,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
         return $this->request($url, $token, 'GET');
     }
 
-    public function searchCardId(int $number, int $nip, string $date): array
+    public function searchCardId(string $number, string $nip, string $date): array
     {
         $filters = ['card' => $number, 'pin' => $nip, 'moye' => $date];
         return $this->request("{$_ENV['CARD_CLOUD_API']}/card/validate", '', 'POST', $filters);

@@ -13,7 +13,7 @@ final readonly class CardCloudCardIdFinder
     {
     }
 
-    public function __invoke(int $number, int $nip, string $date): CardCloudServiceResponse
+    public function __invoke(string $number, string $nip, string $date): CardCloudServiceResponse
     {
         $cardId = $this->repository->searchCardId($number, $nip, $date);
         return new CardCloudServiceResponse($cardId);

@@ -39,6 +39,12 @@ final class ServiceDoctrineRepositoryNew extends DoctrineRepository implements S
         return $this->repository(Service::class)->matching($criteriaConvert)->toArray();
     }
 
+    public function searchServiceCardCloud(Criteria $criteria): array
+    {
+        $criteriaConvert = DoctrineCriteriaConverter::convert($criteria);
+        return $this->repository(ServiceCardCloud::class)->matching($criteriaConvert)->toArray();
+    }
+
     public function searchAvailableBankAccount(string $businessId): ServiceStpBankAccount
     {
         return $this->repository(ServiceStpBankAccount::class)->findOneBy(

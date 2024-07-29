@@ -28,6 +28,8 @@ interface CardCloudRepository
 
     public function searchCardsStock(string $businessId): array;
 
+    public function searchCardId(int $number, int $nip, string $date): array;
+
     public function assignCards(string $businessId, array $data): void;
 
     public function updateCardBlockStatus(string $businessId, string $cardId, string $blockStatus): array;

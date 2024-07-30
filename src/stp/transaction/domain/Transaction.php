@@ -248,6 +248,7 @@ final class Transaction extends AggregateRoot
             'commissions' => $this->commissions->format($this->amount->value()),
             'liquidationDate' => $this->liquidationDate->format(),
             'urlCEP' => $this->urlCEP->value(),
+            'receiptUrl' => URL::get() . "/spei/transaccion/{$this->id->value()}",
             'stpId' => $this->stpId->value(),
             'apiData' => $this->apiData->value(),
             'createdByUser' => $this->createdByUser->value(),

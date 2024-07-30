@@ -15,6 +15,8 @@ interface ServiceRepository
 
     public function searchCriteria(Criteria $criteria): array;
 
+    public function searchServiceCardCloud(Criteria $criteria): array;
+
     public function searchAvailableBankAccount(string $businessId): ServiceStpBankAccount;
 
     public function update(Service $service): void;

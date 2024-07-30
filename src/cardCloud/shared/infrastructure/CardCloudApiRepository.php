@@ -29,8 +29,7 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
     public function createTransferFromFile(string $businessId, string $subAccountId, array $fileData): void
     {
         list($token, $url) = $this->getUrlAndToken($businessId, "/v1/subaccounts/$subAccountId/fund");
-        $response = $this->request($url, $token, 'POST', $fileData);
-//        var_dump($response);
+        $this->request($url, $token, 'POST', $fileData);
     }
 
     public function searchSubAccount(string $businessId, string $subAccountId): array
@@ -85,6 +84,12 @@ final class CardCloudApiRepository extends DoctrineRepository implements CardClo
     {
         list($token, $url) = $this->getUrlAndToken($businessId, '/v1/account/cards');
         return $this->request($url, $token, 'GET');
+    }
+
+    public function searchCardId(string $number, string $nip, string $date): array
+    {
+        $filters = ['card' => $number, 'pin' => $nip, 'moye' => $date];
+        return $this->request("{$_ENV['CARD_CLOUD_API']}/card/validate", '', 'POST', $filters);
     }
 
     public function assignCards(string $businessId, array $data): void

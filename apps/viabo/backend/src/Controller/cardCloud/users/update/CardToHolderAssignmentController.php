@@ -23,7 +23,7 @@ final readonly class CardToHolderAssignmentController extends ApiController
             $data['cards'] = [$data['card']];
 
             $user = $this->searchUser($data['email']);
-            $this->ensureUserProfile($user['profileId']);
+            $this->ensureUserProfile($user);
 
             $data['user'] = empty($user) ? '' : $user['id'];
             $service = $this->ask(new ServiceCardCloudQueryBySubAccount($data['subAccount']));
@@ -50,14 +50,18 @@ final readonly class CardToHolderAssignmentController extends ApiController
             $user = $this->ask(new UserQueryByUsername($email));
             return $user->data;
         } catch (\DomainException) {
-            return ['profileId' => '8'];
+            return [];
         }
     }
 
-    private function ensureUserProfile(string $userProfileId): void
+    private function ensureUserProfile(array $user): void
     {
+        if (empty($user)) {
+            return;
+        }
+
         $ownerProfile = '8';
-        if ($userProfileId !== $ownerProfile) {
+        if ($user['profileId'] !== $ownerProfile) {
             throw new \DomainException('No se le puede asignar tarjetas al usuario por su perfil', 400);
         }
     }

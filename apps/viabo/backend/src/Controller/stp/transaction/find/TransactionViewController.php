@@ -49,7 +49,7 @@ final readonly class TransactionViewController extends ApiController
             $html = $twig->render("stp/$templateFile/notification/emails/spei.external.transaction.html.twig", $data);
             $pdf = $pdfRepository->output($html, [
                 'margin-top' => 0,
-                'margin-bottom' => 0 ,
+                'margin-bottom' => 0,
                 'page-width' => '180mm',
                 'page-height' => '310mm',
             ]);
@@ -57,7 +57,7 @@ final readonly class TransactionViewController extends ApiController
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="file.pdf"',
             ]);
-        } catch (\DomainException) {
+        } catch (\DomainException $exception) {
             $html = $twig->render('stp/shared/notification/emails/transaction.spei.not.exist.html.twig');
             return new Response($html);
         }
@@ -82,11 +82,16 @@ final readonly class TransactionViewController extends ApiController
             if (empty($account->data)) {
                 $account = $this->ask(new CompanyQueryByBankAccount($accountNumber));
             }
-            return ['rfc' => $account->data['rfc'] ?? 'N/A', 'bankName' => 'N/A'];
+            return ['rfc' => $account->data['rfc'] ?? 'N/A', 'bankName' => 'STP'];
         } catch (\DomainException) {
+        }
+
+        try {
             $account = $this->ask(new ExternalAccountQuery($accountNumber));
             $bank = $this->ask(new BankQuery($account->data['bankId']));
             return ['rfc' => $account->data['rfc'], 'bankName' => $bank->data['shortName']];
+        } catch (\DomainException) {
+            return ['rfc' => $account->data['rfc'] ?? 'N/A', 'bankName' => 'N/A'];
         }
     }
 }

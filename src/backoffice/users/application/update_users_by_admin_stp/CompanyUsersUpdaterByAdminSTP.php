@@ -24,23 +24,40 @@ final readonly class CompanyUsersUpdaterByAdminSTP
 
     public function __invoke(array $company): void
     {
-        $this->deleteCompanyUsers($company['id']);
-        $company['users'] = array_map(function (string $userId) use ($company) {
-            $user = $this->creator->__invoke($userId, $company['id'], $company['businessId']);
-            return $user->toArray();
-        }, $company['users']);
-
+        $this->deleteCompaniesAdmins($company['id']);
+        $this->addCompaniesAdmins($company);
+        $company['users'] = $this->searchUsers($company['id']);
         $this->bus->publish(new CompanyUsersUpdatedDomainEventByAdminStp($company['id'], $company));
     }
 
-    private function deleteCompanyUsers(string $companyId): void
+    private function deleteCompaniesAdmins(string $companyId): void
     {
-        $filters = Filters::fromValues([['field' => 'companyId', 'operator' => '=', 'value' => $companyId]]);
-        $companyUsers = $this->repository->searchCriteria(new Criteria($filters));
+        $filters = Filters::fromValues([
+            ['field' => 'companyId', 'operator' => '=', 'value' => $companyId],
+            ['field' => 'profileId.value', 'operator' => '=', 'value' => '7']
+        ]);
+        $users = $this->repository->searchCriteria(new Criteria($filters));
 
         array_map(function (CompanyUser $user) {
             $this->repository->delete($user);
-        }, $companyUsers);
+        }, $users);
+    }
+
+    private function addCompaniesAdmins(array $company): void
+    {
+        array_map(function (string $userId) use ($company) {
+            $this->creator->__invoke($userId, $company['id'], $company['businessId']);
+        }, $company['users']);
+    }
+
+    private function searchUsers(string $companyId): array
+    {
+        $filters = Filters::fromValues([['field' => 'companyId', 'operator' => '=', 'value' => $companyId]]);
+        $users = $this->repository->searchCriteria(new Criteria($filters));
+
+        return array_map(function (CompanyUser $user) {
+            return $user->toArray();
+        }, $users);
     }
 
 }

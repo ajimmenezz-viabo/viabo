@@ -12,6 +12,7 @@ use Viabo\stp\shared\domain\stp\StpRepository;
 use Viabo\stp\stpAccount\application\find\StpAccountQueryByCompany;
 use Viabo\stp\stpAccount\application\find_stp_accounts\StpAccountsQuery;
 use Viabo\stp\transaction\domain\services\AccountsDataFinder;
+use Viabo\stp\transaction\domain\services\FormatStpData;
 use Viabo\stp\transaction\domain\services\StatusFinder;
 use Viabo\stp\transaction\domain\services\TransactionsCreatorByStp;
 use Viabo\stp\transaction\domain\Transaction;
@@ -27,6 +28,7 @@ final readonly class SpeiOutTransactionCreatorByStp
         private StpRepository            $stpRepository,
         private StatusFinder             $statusFinder,
         private TransactionsCreatorByStp $transactionsCreator,
+        private FormatStpData            $formatStpData,
         private QueryBus                 $queryBus,
         private EventBus                 $bus
     )
@@ -60,13 +62,7 @@ final readonly class SpeiOutTransactionCreatorByStp
         foreach ($stpAccounts as $stpAccount) {
             try {
                 $stpTransactions = $this->stpRepository->speiOut($stpAccount);
-                $stpTransactions = array_map(function (array $transaction) use ($stpAccount) {
-                    $transaction['api'] = $transaction;
-                    $transaction['stpAccountId'] = $stpAccount['id'];
-                    $transaction['stpAccountNumber'] = $stpAccount['number'];
-                    $transaction['businessId'] = $stpAccount['businessId'];
-                    return $transaction;
-                }, $stpTransactions);
+                $stpTransactions = $this->formatStpData->__invoke($stpTransactions, $stpAccount);
             } catch (\DomainException) {
                 continue;
             };

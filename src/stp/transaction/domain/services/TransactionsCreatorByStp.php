@@ -41,7 +41,7 @@ final readonly class TransactionsCreatorByStp
                 'commissions' => $transaction['commissions'],
                 'liquidationDate' => $transaction['tsLiquidacion'],
                 'urlCEP' => $transaction['urlCEP'] ?? '',
-                'stpId' => $transaction['id'] ?? $transaction['idEF'],
+                'stpId' => $transaction['id'],
                 'api' => $transaction['api'],
                 'userId' => '',
                 'additionalData' => $this->setAdditionalData($stpOperationType, $transaction)

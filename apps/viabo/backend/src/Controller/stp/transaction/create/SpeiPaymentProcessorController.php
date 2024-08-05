@@ -27,6 +27,7 @@ final readonly class SpeiPaymentProcessorController extends ApiController
             $destinationsAccounts = $this->addTransactionId($data['destinationsAccounts']);
             $this->dispatch(new CreateSpeiOutTransactionCommand(
                 $tokenData['id'],
+                $tokenData['businessId'],
                 $data['originBankAccount'],
                 $destinationsAccounts,
                 $data['concept'],
@@ -39,12 +40,12 @@ final readonly class SpeiPaymentProcessorController extends ApiController
         }
     }
 
-    private function addTransactionId(array $collection): array
+    private function addTransactionId(array $destinationsAccounts): array
     {
-        return array_map(function (array $data) {
-            $data['transactionId'] = $this->generateUuid();
-            return $data;
-        }, $collection);
+        return array_map(function (array $account){
+            $account['transactionId'] = $this->generateUuid();
+            return $account;
+        }, $destinationsAccounts);
     }
 
     private function searchTransactionUrls(array $destinationsAccounts): array

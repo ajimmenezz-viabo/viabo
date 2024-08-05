@@ -31,15 +31,21 @@ final readonly class SpeiOutTransactionCreator
 
     public function __invoke(
         string $userId,
+        string $businessId,
         string $originBankAccount,
         array  $destinationsAccounts,
         string $concept,
         bool   $isInternalTransaction
     ): void
     {
+
         $originAccount = $this->originAccountDataFinder->__invoke($originBankAccount, $isInternalTransaction);
         $this->balanceValidator->__invoke($originAccount, $destinationsAccounts, $isInternalTransaction);
-        $destinationsAccounts = $this->accountsDataFinder->__invoke($destinationsAccounts, $isInternalTransaction);
+        $destinationsAccounts = $this->accountsDataFinder->__invoke(
+            $businessId,
+            $destinationsAccounts,
+            $isInternalTransaction
+        );
         $transactions = $this->transactionsCreator->__invoke(
             $originAccount,
             $destinationsAccounts,
@@ -57,10 +63,10 @@ final readonly class SpeiOutTransactionCreator
     ): void
     {
         $second = 0;
-        array_map(function (Transaction $transaction) use ($stpAccount, $internalTransaction,&$second) {
+        array_map(function (Transaction $transaction) use ($stpAccount, $internalTransaction, &$second) {
             $transaction->incrementTrackingKey($second++);
 
-            if (!$internalTransaction) {
+            if (!$transaction->isExternalTransaction()) {
                 $stpData = $this->stpRepository->processPayment($stpAccount, $transaction->toArray());
                 $transaction->updateStpData($stpData);
             }

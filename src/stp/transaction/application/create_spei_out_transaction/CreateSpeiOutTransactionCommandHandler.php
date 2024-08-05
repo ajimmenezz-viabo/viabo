@@ -16,6 +16,7 @@ final readonly class CreateSpeiOutTransactionCommandHandler implements CommandHa
     {
         $this->paymentProcessor->__invoke(
             $command->userId,
+            $command->businessId,
             $command->originBankAccount,
             $command->destinationsAccounts,
             $command->concept,

@@ -76,11 +76,7 @@ final class Transaction extends AggregateRoot
         return $transaction;
     }
 
-    public static function fromValues(
-        array               $value,
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): static
+    public static function fromValues(array $value): static
     {
         if ($value['additionalData']['isInternalTransaction']) {
             $value['trackingKey'] = TransactionTrackingKey::empty();
@@ -100,8 +96,6 @@ final class Transaction extends AggregateRoot
             $value['bankCode'] = TransactionDestinationBankCode::create($value['bankCode']);
             $value['active'] = TransactionActive::enable();
         }
-        $value['transactionType'] = $transactionType;
-        $value['statusId'] = $statusId;
         $value['transactionId'] = new TransactionId($value['transactionId']);
         $transaction = self::create($value);
         $transaction->record(
@@ -212,6 +206,11 @@ final class Transaction extends AggregateRoot
     public function isSpeiOut(): bool
     {
         return $this->typeId->isSpeiOutType();
+    }
+
+    public function isExternalTransaction(): bool
+    {
+        return !$this->additionalData['isInternalTransaction'];
     }
 
     public function setAdditionData(array $additionalData): void

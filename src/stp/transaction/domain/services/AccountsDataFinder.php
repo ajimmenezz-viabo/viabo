@@ -17,30 +17,28 @@ final readonly class AccountsDataFinder
     {
     }
 
-    public function __invoke(array $accounts, bool $isInternalTransaction): array
+    public function __invoke(string $businessId, array $accounts, bool $isInternalTransaction): array
     {
         if ($isInternalTransaction) {
             return $this->companies($accounts);
         } else {
-            return $this->externalAccounts($accounts);
+            return $this->externalAccounts($accounts, $businessId);
         }
     }
 
-    public function externalAccounts(array $externalAccounts): array
+    public function externalAccounts(array $externalAccounts, string $businessId): array
     {
-        return array_map(function (array $externalAccount) {
-            $account = $this->queryBus->ask(new ExternalAccountQuery($externalAccount['bankAccount']));
-            $bank = $this->queryBus->ask(new BankQuery($account->data['bankId']));
-            $externalAccount['type'] = 'externalAccount';
-            $externalAccount['companyId'] = '';
-            $externalAccount['rfc'] = $account->data['rfc'];
-            $externalAccount['bankAccount'] = $account->data['interbankCLABE'];
-            $externalAccount['beneficiary'] = $account->data['beneficiary'];
-            $externalAccount['email'] = $account->data['email'];
-            $externalAccount['bankName'] = $bank->data['shortName'];
-            $externalAccount['bankCode'] = $bank->data['code'];
-
-            return $externalAccount;
+        return array_map(function (array $externalAccount) use ($businessId) {
+            $account = $this->getBankAccountData($externalAccount['bankAccount'], $businessId);
+            if ($this->isInternalAccount($account)) {
+                $externalAccount['isInternalTransaction'] = true;
+            } else {
+                $externalAccount['isInternalTransaction'] = false;
+                $account = $this->queryBus->ask(new ExternalAccountQuery($externalAccount['bankAccount']));
+                $bank = $this->queryBus->ask(new BankQuery($account->data['bankId']));
+                $account = array_merge($bank->data, $account->data);
+            }
+            return $this->addAccountData($externalAccount, $account);
         }, $externalAccounts);
     }
 
@@ -71,17 +69,10 @@ final readonly class AccountsDataFinder
     private function companies(array $companies): array
     {
         return array_map(function (array $company) {
+            $company['isInternalTransaction'] = true;
             $businessId = $company['businessId'] ?? '';
             $bankAccountData = $this->getBankAccountData($company['bankAccount'], $businessId);
-            $company['type'] = $bankAccountData['type'];
-            $company['companyId'] = $bankAccountData['companyId'];
-            $company['rfc'] = $bankAccountData['rfc'];
-            $company['beneficiary'] = $bankAccountData['beneficiary'];
-            $company['email'] = $bankAccountData['emails'];
-            $company['bankName'] = '';
-            $company['bankCode'] = '';
-
-            return $company;
+            return $this->addAccountData($company, $bankAccountData);
         }, $companies);
     }
 
@@ -119,6 +110,24 @@ final readonly class AccountsDataFinder
         }, $users);
 
         return implode(',', $emails);
+    }
+
+    private function isInternalAccount(array $bankAccountData): bool
+    {
+        return !empty($bankAccountData['companyId']);
+    }
+
+    private function addAccountData(array $account, array $data): array
+    {
+        $account['type'] = $data['type'] ?? 'externalAccount';
+        $account['companyId'] = $data['companyId'] ?? '';
+        $account['rfc'] = $data['rfc'];
+        $account['bankAccount'] = $data['interbankCLABE'] ?? $account['bankAccount'];
+        $account['beneficiary'] = $data['beneficiary'];
+        $account['email'] = $data['email'] ?? $data['emails'];
+        $account['bankName'] = $data['shortName'] ?? '';
+        $account['bankCode'] = $data['code'] ?? '';
+        return $account;
     }
 
 }

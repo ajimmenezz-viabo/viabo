@@ -6,6 +6,7 @@ namespace Viabo\stp\transaction\domain\services;
 
 use Viabo\shared\domain\utils\NumberFormat;
 use Viabo\stp\transaction\domain\Transactions;
+use Viabo\stp\transaction\domain\TransactionStatusId;
 
 final readonly class TransactionsCreator
 {
@@ -24,15 +25,13 @@ final readonly class TransactionsCreator
         bool   $isInternalTransaction
     ): Transactions
     {
-        $outType = $this->typeFinder->speiOutType();
-        $statusId = $isInternalTransaction ?
-            $this->statusFinder->liquidated() :
-            $this->statusFinder->inTransit();
         $transactionsData = [];
         foreach ($destinationsAccounts as $destinationsAccount) {
             $transactionsData[] = [
                 'transactionId' => $destinationsAccount['transactionId'],
                 'businessId' => $originAccount['businessId'],
+                'transactionType' => $this->typeFinder->speiOutType(),
+                'statusId' => $this->getStatusId($destinationsAccount['isInternalTransaction']),
                 'concept' => $concept,
                 'sourceAccountType' => $originAccount['type'],
                 'sourceAccount' => $originAccount['bankAccount'],
@@ -48,7 +47,7 @@ final readonly class TransactionsCreator
                 'commissions' => $originAccount['commissions'],
                 'userId' => $userId,
                 'additionalData' => [
-                    'isInternalTransaction' => $isInternalTransaction,
+                    'isInternalTransaction' => $destinationsAccount['isInternalTransaction'],
                     'sourceCompanyId' => $originAccount['companyId'],
                     'sourceRfc' => $originAccount['rfc'],
                     'destinationCompanyId' => $destinationsAccount['companyId'],
@@ -57,7 +56,14 @@ final readonly class TransactionsCreator
                 ]
             ];
         }
-        return Transactions::fromValues($transactionsData, $outType, $statusId);
+        return Transactions::fromValues($transactionsData);
+    }
+
+    public function getStatusId(bool $isInternalTransaction): TransactionStatusId
+    {
+        return $isInternalTransaction ?
+            $this->statusFinder->liquidated() :
+            $this->statusFinder->inTransit();
     }
 
 }

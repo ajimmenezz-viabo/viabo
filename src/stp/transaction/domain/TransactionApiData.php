@@ -10,7 +10,7 @@ final class TransactionApiData extends StringValueObject
 {
     public static function empty(): static
     {
-        return new static('');
+        return new static('[]');
     }
 
     public static function create(array $value): static

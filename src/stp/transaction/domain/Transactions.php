@@ -9,21 +9,14 @@ use Viabo\shared\domain\Collection;
 final class Transactions extends Collection
 {
 
-    public static function fromValues(
-        array               $values,
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): static
+    public static function fromValues(array $values): static
     {
-        return new static(array_map(self::TransactionBuilderFromValues($transactionType, $statusId), $values));
+        return new static(array_map(self::TransactionBuilderFromValues(), $values));
     }
 
-    private static function TransactionBuilderFromValues(
-        TransactionTypeId   $transactionType,
-        TransactionStatusId $statusId
-    ): callable
+    private static function TransactionBuilderFromValues(): callable
     {
-        return fn(array $values): Transaction => Transaction::fromValues($values, $transactionType, $statusId);
+        return fn(array $values): Transaction => Transaction::fromValues($values);
     }
 
     public static function fromStp(

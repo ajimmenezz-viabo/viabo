@@ -10,6 +10,7 @@ final readonly class CreateSpeiOutTransactionCommand implements Command
 {
     public function __construct(
         public string $userId,
+        public string $businessId,
         public string $originBankAccount,
         public array  $destinationsAccounts,
         public string $concept,

@@ -7,7 +7,6 @@ namespace Viabo\stp\transaction\domain;
 use Viabo\shared\domain\aggregate\AggregateRoot;
 use Viabo\shared\domain\utils\URL;
 use Viabo\stp\transaction\domain\events\InternalSpeiInTransactionCreatedDomainEvent;
-use Viabo\stp\transaction\domain\events\StpTransactionCreatedDomainEvent;
 use Viabo\stp\transaction\domain\events\TransactionCreatedDomainEventByStp;
 use Viabo\stp\transaction\domain\events\TransactionUpdatedDomainEventByStpSpeiOut;
 
@@ -97,11 +96,7 @@ final class Transaction extends AggregateRoot
             $value['active'] = TransactionActive::enable();
         }
         $value['transactionId'] = new TransactionId($value['transactionId']);
-        $transaction = self::create($value);
-        $transaction->record(
-            new StpTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray())
-        );
-        return $transaction;
+        return self::create($value);
     }
 
     public static function fromInternalSpeiIn(
@@ -221,6 +216,11 @@ final class Transaction extends AggregateRoot
     public function incrementTrackingKey(int $second): void
     {
         $this->trackingKey->increment($second);
+    }
+
+    public function incrementReference(int $count): void
+    {
+        $this->reference = $this->reference->increment($count);
     }
 
     public function toArray(): array

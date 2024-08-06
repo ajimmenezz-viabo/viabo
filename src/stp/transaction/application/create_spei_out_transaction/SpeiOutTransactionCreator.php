@@ -6,6 +6,7 @@ namespace Viabo\stp\transaction\application\create_spei_out_transaction;
 
 use Viabo\shared\domain\bus\event\EventBus;
 use Viabo\stp\shared\domain\stp\StpRepository;
+use Viabo\stp\transaction\domain\events\StpTransactionCreatedDomainEvent;
 use Viabo\stp\transaction\domain\services\AccountsDataFinder;
 use Viabo\stp\transaction\domain\services\BalanceValidator;
 use Viabo\stp\transaction\domain\services\OriginAccountDataFinder;
@@ -65,15 +66,15 @@ final readonly class SpeiOutTransactionCreator
         $second = 0;
         array_map(function (Transaction $transaction) use ($stpAccount, $internalTransaction, &$second) {
             $transaction->incrementTrackingKey($second++);
+            $transaction->incrementReference($second++);
 
             if (!$transaction->isExternalTransaction()) {
                 $stpData = $this->stpRepository->processPayment($stpAccount, $transaction->toArray());
                 $transaction->updateStpData($stpData);
             }
-
             $this->repository->save($transaction);
 
-            $this->bus->publish(...$transaction->pullDomainEvents());
+            $this->bus->publish(new StpTransactionCreatedDomainEvent($transaction->id(), $transaction->toArray()));
         }, $transactions->elements());
     }
 }

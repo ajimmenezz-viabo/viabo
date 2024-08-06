@@ -149,7 +149,6 @@ final class Company extends AggregateRoot
 
     public function decreaseBalance(float $amount, string $user = '', string $date = ''): void
     {
-//        $this->balanceOld = $this->balance->value();
         $this->balance = $this->balance->decrease($amount);
         $this->updatedByUser = $this->updatedByUser->update($user);
         $this->updateDate = $this->updateDate->update($date);
@@ -158,7 +157,6 @@ final class Company extends AggregateRoot
 
     public function incrementBalance(float $amount, string $user = '', string $date = ''): void
     {
-//        $this->balanceOld = $this->balance->value();
         $this->balance = $this->balance->increment($amount);
         $this->updatedByUser = $this->updatedByUser->update($user);
         $this->updateDate = $this->updateDate->update($date);

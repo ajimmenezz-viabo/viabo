@@ -30,7 +30,7 @@ final readonly class CommissionTransactionCreatorByTransactionCreated
             $transaction['commissions'] = '';
             $transaction['concept'] = "Comisión Cobrada la transacción {$transaction['reference']}";
             $transaction['amount'] = $commissionTotal;
-            $transaction['reference'] = strval($transaction['reference'] + 1);
+            $transaction['reference'] = $transaction['reference'] . '01';
             $transaction['sourceAccount'] = '1';
             $transaction['sourceName'] = 'N/A';
             $transaction['sourceEmail'] = '';
@@ -47,7 +47,7 @@ final readonly class CommissionTransactionCreatorByTransactionCreated
 
     private function commissionTotal(array|string &$commissions): float|int
     {
-        if (empty($commissions)){
+        if (empty($commissions)) {
             return 0;
         }
         unset($commissions['total']);

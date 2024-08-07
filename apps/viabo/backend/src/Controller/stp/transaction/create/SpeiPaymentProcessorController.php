@@ -18,7 +18,6 @@ final readonly class SpeiPaymentProcessorController extends ApiController
     {
         try {
             $tokenData = $this->decode($request->headers->get('Authorization'));
-            $data = $request->toArray();
             $data = $this->opensslDecrypt($request->toArray());
             $this->dispatch(new ValidateGoogleAuthenticatorCommand(
                 $tokenData['id'],

@@ -68,7 +68,7 @@ final readonly class SpeiOutTransactionCreator
             $transaction->incrementTrackingKey($second++);
             $transaction->incrementReference($second++);
 
-            if (!$transaction->isExternalTransaction()) {
+            if ($transaction->isExternalTransaction()) {
                 $stpData = $this->stpRepository->processPayment($stpAccount, $transaction->toArray());
                 $transaction->updateStpData($stpData);
             }
